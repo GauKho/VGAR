@@ -1,0 +1,3 @@
+{"timestamp": "2026-09-28T17:15:43.143040+00:00", "tool": "search_symbols", "arguments": {"query": "login", "limit": 10}, "status": "ok"}
+{"timestamp": "2026-09-28T17:15:44.041217+00:00", "tool": "get_callers", "arguments": {"symbol_id": "function:auth.login"}, "status": "ok"}
+{"timestamp": "2026-09-28T17:15:45.040204+00:00", "tool": "get_callees", "arguments": {"symbol_id": "function:web.login_handler"}, "status": "ok"}
