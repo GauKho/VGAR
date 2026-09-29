@@ -9,9 +9,9 @@ from langgraph.prebuilt import (
     tools_condition,
 )
 
-from src.config.settings import get_settings
-from src.mcp.client import create_mcp_client
-from src.models.huggingface import create_huggingface_model
+from vgar.config.settings import get_settings
+from vgar.mcp.client import create_mcp_client
+from vgar.models.huggingface import create_huggingface_model
 
 
 async def create_agent():

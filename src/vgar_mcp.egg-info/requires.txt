@@ -1,0 +1,10 @@
+torch
+accelerate
+transformers>=4.51.0
+safetensors
+langchain<2,>=1.4
+langgraph
+langchain-huggingface<2,>=1.2
+langchain-mcp-adapters==0.3.2
+mcp[cli]<2,>=1.24
+pydantic>=2

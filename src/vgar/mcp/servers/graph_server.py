@@ -5,11 +5,9 @@ from typing import Any
 from mcp.server.fastmcp import FastMCP
 
 from vgar.graph.demo_service import DemoGraphService
-from vgar.mcp.audit import write_audit
 
 
 mcp = FastMCP("vgar-graph")
-
 graph_service = DemoGraphService()
 
 
@@ -19,116 +17,80 @@ def search_symbols(
     limit: int = 20,
 ) -> dict[str, Any]:
     """
-    Search repository symbols by name,
-    qualified identifier, or file path.
+    Search repository symbols.
 
-    Use this tool when the exact symbol_id
-    is not known yet.
+    Search the deterministic demo graph.
     """
+    result = graph_service.search_symbols(
+        query=query,
+        limit=limit,
+    )
 
-    args = {
-        "query": query,
+    return {
+        "status": "OK",
+        "query": result.query,
+        "symbols": [
+            symbol.model_dump()
+            for symbol in result.symbols
+        ],
         "limit": limit,
+        "metadata": {
+            "backend": "demo",
+        },
     }
-
-    try:
-        result = graph_service.search_symbols(
-            query=query,
-            limit=limit,
-        )
-
-        write_audit(
-            tool="search_symbols",
-            arguments=args,
-            status="ok",
-        )
-
-        return result.model_dump()
-
-    except Exception:
-        write_audit(
-            tool="search_symbols",
-            arguments=args,
-            status="error",
-        )
-
-        raise
 
 
 @mcp.tool()
 def get_callers(
     symbol_id: str,
+    depth: int = 1,
 ) -> dict[str, Any]:
     """
-    Return repository symbols that call
-    the exact symbol identified by symbol_id.
-
-    Use search_symbols first when the exact
-    symbol_id is unknown.
+    Return callers of a symbol.
     """
+    result = graph_service.get_callers(symbol_id)
 
-    args = {
+    return {
+        "status": "OK",
         "symbol_id": symbol_id,
+        "depth": depth,
+        "callers": [
+            symbol.model_dump()
+            for symbol in result.symbols
+        ],
+        "metadata": {
+            "backend": "demo",
+        },
     }
-
-    try:
-        result = graph_service.get_callers(
-            symbol_id
-        )
-
-        write_audit(
-            tool="get_callers",
-            arguments=args,
-            status="ok",
-        )
-
-        return result.model_dump()
-
-    except Exception:
-        write_audit(
-            tool="get_callers",
-            arguments=args,
-            status="error",
-        )
-
-        raise
 
 
 @mcp.tool()
 def get_callees(
     symbol_id: str,
+    depth: int = 1,
 ) -> dict[str, Any]:
     """
-    Return repository symbols called by
-    the exact symbol identified by symbol_id.
+    Return callees of a symbol.
     """
+    result = graph_service.get_callees(symbol_id)
 
-    args = {
+    return {
+        "status": "OK",
         "symbol_id": symbol_id,
+        "depth": depth,
+        "callees": [
+            symbol.model_dump()
+            for symbol in result.symbols
+        ],
+        "metadata": {
+            "backend": "demo",
+        },
     }
 
-    try:
-        result = graph_service.get_callees(
-            symbol_id
-        )
 
-        write_audit(
-            tool="get_callees",
-            arguments=args,
-            status="ok",
-        )
-
-        return result.model_dump()
-
-    except Exception:
-        write_audit(
-            tool="get_callees",
-            arguments=args,
-            status="error",
-        )
-
-        raise
+def main() -> None:
+    mcp.run(transport="stdio")
 
 
 if __name__ == "__main__":
-    mcp.run(transport="stdio")
+    main()

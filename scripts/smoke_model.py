@@ -1,24 +1,21 @@
-import os
-os.sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from __future__ import annotations
+
+import asyncio
+
 from langchain_core.messages import HumanMessage
 
-from src.config.settings import get_settings
-from src.models.huggingface import create_huggingface_model
+from vgar.models.huggingface.hf_model import create_local_chat_model
 
 
-def main() -> None:
-    settings = get_settings()
+async def main() -> None:
+    model = create_local_chat_model()
 
-    model = create_huggingface_model(
-        settings,
-    )
-
-    response = model.invoke(
+    response = await model.ainvoke(
         [
             HumanMessage(
                 content=(
                     "Reply with exactly: "
-                    "VGAR model ready"
+                    "VGAR_MODEL_OK"
                 )
             )
         ]
@@ -28,4 +25,4 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    asyncio.run(main())

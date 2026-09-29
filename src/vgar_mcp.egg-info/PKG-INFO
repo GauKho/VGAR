@@ -1,0 +1,14 @@
+Metadata-Version: 2.4
+Name: vgar-mcp
+Version: 0.1.0
+Requires-Python: <3.14,>=3.11
+Requires-Dist: torch
+Requires-Dist: accelerate
+Requires-Dist: transformers>=4.51.0
+Requires-Dist: safetensors
+Requires-Dist: langchain<2,>=1.4
+Requires-Dist: langgraph
+Requires-Dist: langchain-huggingface<2,>=1.2
+Requires-Dist: langchain-mcp-adapters==0.3.2
+Requires-Dist: mcp[cli]<2,>=1.24
+Requires-Dist: pydantic>=2

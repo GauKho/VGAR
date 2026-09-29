@@ -1,0 +1,25 @@
+servers:
+  graph:
+    transport: stdio
+    command: python
+    args:
+      - "-m"
+      - "vgar.mcp.servers.graph_server"
+
+  repository:
+    transport: stdio
+    command: python
+    args:
+      - "-m"
+      - "vgar.mcp.servers.repository_server"
+
+  execution:
+    transport: stdio
+    command: python
+    args:
+      - "-m"
+      - "vgar.mcp.servers.execution_server"
+
+client:
+  tool_name_prefix: true
+  handle_tool_errors: true
