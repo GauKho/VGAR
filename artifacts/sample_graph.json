@@ -1,0 +1,2099 @@
+{
+  "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc",
+  "repo_key": "demo/vgar-fixture",
+  "repository_revision": "fixture-revision",
+  "nodes": [
+    {
+      "id": "vgar:demo/vgar-fixture:repository",
+      "type": "Repository",
+      "repo_key": "demo/vgar-fixture",
+      "name": "sample_repo",
+      "qualified_name": "demo/vgar-fixture",
+      "path": null,
+      "language": null,
+      "range": null,
+      "properties": {
+        "root_uri": "file:///D:/kltn/vgar_mcp_mvp_demo/tests/fixtures/sample_repo",
+        "default_language": "python",
+        "repository_revision": "fixture-revision"
+      },
+      "content_hash": "sha256:3a56bc1379de842d1d6414106f19f26b394229120871c0b7fcb1ee41794245c3",
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "vgar:demo/vgar-fixture:python:file:src/auth/service.py",
+      "type": "File",
+      "repo_key": "demo/vgar-fixture",
+      "name": "service.py",
+      "qualified_name": "src/auth/service.py",
+      "path": "src/auth/service.py",
+      "language": "python",
+      "range": {
+        "start_line": 1,
+        "start_col": 0,
+        "end_line": 3,
+        "end_col": 0,
+        "start_byte": 0,
+        "end_byte": 88
+      },
+      "properties": {
+        "extension": ".py",
+        "size_bytes": 88,
+        "parse_status": "parsed",
+        "is_test_file": false
+      },
+      "content_hash": "sha256:c7378331f8bd79ea22c98b285e475407d8eb91765c3957445698f8f525a48732",
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "vgar:demo/vgar-fixture:python:module:src/auth/service.py:auth.service",
+      "type": "Module",
+      "repo_key": "demo/vgar-fixture",
+      "name": "service",
+      "qualified_name": "auth.service",
+      "path": "src/auth/service.py",
+      "language": "python",
+      "range": {
+        "start_line": 1,
+        "start_col": 0,
+        "end_line": 3,
+        "end_col": 0,
+        "start_byte": 0,
+        "end_byte": 88
+      },
+      "properties": {
+        "module_name": "auth.service",
+        "is_package": false,
+        "is_external": false,
+        "resolution_status": "resolved"
+      },
+      "content_hash": "sha256:c7378331f8bd79ea22c98b285e475407d8eb91765c3957445698f8f525a48732",
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "vgar:demo/vgar-fixture:python:function:src/auth/service.py:auth.service.login",
+      "type": "Function",
+      "repo_key": "demo/vgar-fixture",
+      "name": "login",
+      "qualified_name": "auth.service.login",
+      "path": "src/auth/service.py",
+      "language": "python",
+      "range": {
+        "start_line": 1,
+        "start_col": 0,
+        "end_line": 2,
+        "end_col": 38,
+        "start_byte": 0,
+        "end_byte": 87
+      },
+      "properties": {
+        "signature": "def login(username: str, password: str) -> bool",
+        "parameters": [
+          "username",
+          "password"
+        ],
+        "return_annotation": "bool",
+        "decorators": [],
+        "is_async": false,
+        "visibility": "public"
+      },
+      "content_hash": "sha256:ec4917be97fe00c1ae28b0d9dc9bb83ab3232dde356daa38e24e7e7dcedeecf7",
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "vgar:demo/vgar-fixture:python:callsite:src/auth/service.py:auth.service.login:f55552b283ea",
+      "type": "CallSite",
+      "repo_key": "demo/vgar-fixture",
+      "name": "bool",
+      "qualified_name": "auth.service.login::<call:1>",
+      "path": "src/auth/service.py",
+      "language": "python",
+      "range": {
+        "start_line": 2,
+        "start_col": 11,
+        "end_line": 2,
+        "end_col": 38,
+        "start_byte": 60,
+        "end_byte": 87
+      },
+      "properties": {
+        "callee_text": "bool",
+        "argument_count": 1,
+        "dispatch_kind": "direct",
+        "resolution_status": "unresolved",
+        "candidate_count": 0
+      },
+      "content_hash": "sha256:952c7d9e8c0b74b363d7c6799ddd8847efe881ed5463a9382c908b024276cd1a",
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "vgar:demo/vgar-fixture:python:file:src/relative_pkg/__init__.py",
+      "type": "File",
+      "repo_key": "demo/vgar-fixture",
+      "name": "__init__.py",
+      "qualified_name": "src/relative_pkg/__init__.py",
+      "path": "src/relative_pkg/__init__.py",
+      "language": "python",
+      "range": {
+        "start_line": 1,
+        "start_col": 0,
+        "end_line": 2,
+        "end_col": 0,
+        "start_byte": 0,
+        "end_byte": 37
+      },
+      "properties": {
+        "extension": ".py",
+        "size_bytes": 37,
+        "parse_status": "parsed",
+        "is_test_file": false
+      },
+      "content_hash": "sha256:540efc2463c81450bbc25c97829b9cf6473a91e59814ec978b09ddd0e6dc1323",
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "vgar:demo/vgar-fixture:python:module:src/relative_pkg/__init__.py:relative_pkg",
+      "type": "Module",
+      "repo_key": "demo/vgar-fixture",
+      "name": "relative_pkg",
+      "qualified_name": "relative_pkg",
+      "path": "src/relative_pkg/__init__.py",
+      "language": "python",
+      "range": {
+        "start_line": 1,
+        "start_col": 0,
+        "end_line": 2,
+        "end_col": 0,
+        "start_byte": 0,
+        "end_byte": 37
+      },
+      "properties": {
+        "module_name": "relative_pkg",
+        "is_package": true,
+        "is_external": false,
+        "resolution_status": "resolved"
+      },
+      "content_hash": "sha256:540efc2463c81450bbc25c97829b9cf6473a91e59814ec978b09ddd0e6dc1323",
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "vgar:demo/vgar-fixture:python:import:src/relative_pkg/__init__.py:1:0:155c861c26a7",
+      "type": "Import",
+      "repo_key": "demo/vgar-fixture",
+      "name": "RelativeService",
+      "qualified_name": "relative_pkg::<import:RelativeService:155c861c26a7>",
+      "path": "src/relative_pkg/__init__.py",
+      "language": "python",
+      "range": {
+        "start_line": 1,
+        "start_col": 0,
+        "end_line": 1,
+        "end_col": 36,
+        "start_byte": 0,
+        "end_byte": 36
+      },
+      "properties": {
+        "raw_text": "from .service import RelativeService",
+        "imported_module": ".service",
+        "imported_name": "RelativeService",
+        "alias": null,
+        "level": 1,
+        "resolution_status": "resolved"
+      },
+      "content_hash": "sha256:7e27f367b9cc258627fc94806d8e1cad3fff376814890ca10e0a70b03f9aa8cb",
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "vgar:demo/vgar-fixture:python:file:src/relative_pkg/base.py",
+      "type": "File",
+      "repo_key": "demo/vgar-fixture",
+      "name": "base.py",
+      "qualified_name": "src/relative_pkg/base.py",
+      "path": "src/relative_pkg/base.py",
+      "language": "python",
+      "range": {
+        "start_line": 1,
+        "start_col": 0,
+        "end_line": 3,
+        "end_col": 0,
+        "start_byte": 0,
+        "end_byte": 29
+      },
+      "properties": {
+        "extension": ".py",
+        "size_bytes": 29,
+        "parse_status": "parsed",
+        "is_test_file": false
+      },
+      "content_hash": "sha256:e4cc7430d88ed09e7b3a1a86a29ee697d694fc023a34152b0e9abe8d45ac61d8",
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "vgar:demo/vgar-fixture:python:module:src/relative_pkg/base.py:relative_pkg.base",
+      "type": "Module",
+      "repo_key": "demo/vgar-fixture",
+      "name": "base",
+      "qualified_name": "relative_pkg.base",
+      "path": "src/relative_pkg/base.py",
+      "language": "python",
+      "range": {
+        "start_line": 1,
+        "start_col": 0,
+        "end_line": 3,
+        "end_col": 0,
+        "start_byte": 0,
+        "end_byte": 29
+      },
+      "properties": {
+        "module_name": "relative_pkg.base",
+        "is_package": false,
+        "is_external": false,
+        "resolution_status": "resolved"
+      },
+      "content_hash": "sha256:e4cc7430d88ed09e7b3a1a86a29ee697d694fc023a34152b0e9abe8d45ac61d8",
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "vgar:demo/vgar-fixture:python:class:src/relative_pkg/base.py:relative_pkg.base.RelativeBase",
+      "type": "Class",
+      "repo_key": "demo/vgar-fixture",
+      "name": "RelativeBase",
+      "qualified_name": "relative_pkg.base.RelativeBase",
+      "path": "src/relative_pkg/base.py",
+      "language": "python",
+      "range": {
+        "start_line": 1,
+        "start_col": 0,
+        "end_line": 2,
+        "end_col": 8,
+        "start_byte": 0,
+        "end_byte": 28
+      },
+      "properties": {
+        "bases": [],
+        "decorators": [],
+        "is_abstract": false,
+        "docstring_summary": null
+      },
+      "content_hash": "sha256:c2a2f9d7aa3416fd1c2e5ff49b1c2f756006926d1da9b8af6bf3e0abcc1ad098",
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "vgar:demo/vgar-fixture:python:file:src/relative_pkg/service.py",
+      "type": "File",
+      "repo_key": "demo/vgar-fixture",
+      "name": "service.py",
+      "qualified_name": "src/relative_pkg/service.py",
+      "path": "src/relative_pkg/service.py",
+      "language": "python",
+      "range": {
+        "start_line": 1,
+        "start_col": 0,
+        "end_line": 8,
+        "end_col": 0,
+        "start_byte": 0,
+        "end_byte": 150
+      },
+      "properties": {
+        "extension": ".py",
+        "size_bytes": 150,
+        "parse_status": "parsed",
+        "is_test_file": false
+      },
+      "content_hash": "sha256:34b2cd31ed7c0f3715bc4bc229758bc297fb5487c4876855c2f366b13bcd9435",
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "vgar:demo/vgar-fixture:python:module:src/relative_pkg/service.py:relative_pkg.service",
+      "type": "Module",
+      "repo_key": "demo/vgar-fixture",
+      "name": "service",
+      "qualified_name": "relative_pkg.service",
+      "path": "src/relative_pkg/service.py",
+      "language": "python",
+      "range": {
+        "start_line": 1,
+        "start_col": 0,
+        "end_line": 8,
+        "end_col": 0,
+        "start_byte": 0,
+        "end_byte": 150
+      },
+      "properties": {
+        "module_name": "relative_pkg.service",
+        "is_package": false,
+        "is_external": false,
+        "resolution_status": "resolved"
+      },
+      "content_hash": "sha256:34b2cd31ed7c0f3715bc4bc229758bc297fb5487c4876855c2f366b13bcd9435",
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "vgar:demo/vgar-fixture:python:import:src/relative_pkg/service.py:1:0:8a1291372acc",
+      "type": "Import",
+      "repo_key": "demo/vgar-fixture",
+      "name": "RelativeBase",
+      "qualified_name": "relative_pkg.service::<import:RelativeBase:8a1291372acc>",
+      "path": "src/relative_pkg/service.py",
+      "language": "python",
+      "range": {
+        "start_line": 1,
+        "start_col": 0,
+        "end_line": 1,
+        "end_col": 30,
+        "start_byte": 0,
+        "end_byte": 30
+      },
+      "properties": {
+        "raw_text": "from .base import RelativeBase",
+        "imported_module": ".base",
+        "imported_name": "RelativeBase",
+        "alias": null,
+        "level": 1,
+        "resolution_status": "resolved"
+      },
+      "content_hash": "sha256:66f72038789b2af6511063c0e305897a0745378410ec3c42a4a87efbd2573ffc",
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "vgar:demo/vgar-fixture:python:class:src/relative_pkg/service.py:relative_pkg.service.RelativeService",
+      "type": "Class",
+      "repo_key": "demo/vgar-fixture",
+      "name": "RelativeService",
+      "qualified_name": "relative_pkg.service.RelativeService",
+      "path": "src/relative_pkg/service.py",
+      "language": "python",
+      "range": {
+        "start_line": 4,
+        "start_col": 0,
+        "end_line": 7,
+        "end_col": 20,
+        "start_byte": 33,
+        "end_byte": 149
+      },
+      "properties": {
+        "bases": [
+          "RelativeBase"
+        ],
+        "decorators": [],
+        "is_abstract": false,
+        "docstring_summary": null
+      },
+      "content_hash": "sha256:74b016411d12f5fb6e329450467e287f7a23d9db4ff344c30e3cae05ee9e94c9",
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "vgar:demo/vgar-fixture:python:method:src/relative_pkg/service.py:relative_pkg.service.RelativeService.create",
+      "type": "Method",
+      "repo_key": "demo/vgar-fixture",
+      "name": "create",
+      "qualified_name": "relative_pkg.service.RelativeService.create",
+      "path": "src/relative_pkg/service.py",
+      "language": "python",
+      "range": {
+        "start_line": 6,
+        "start_col": 4,
+        "end_line": 7,
+        "end_col": 20,
+        "start_byte": 91,
+        "end_byte": 149
+      },
+      "properties": {
+        "signature": "def create(cls) -> \"RelativeService\"",
+        "parameters": [
+          "cls"
+        ],
+        "return_annotation": "\"RelativeService\"",
+        "decorators": [
+          "@classmethod"
+        ],
+        "is_async": false,
+        "visibility": "public",
+        "method_kind": "class",
+        "owner_class_id": "vgar:demo/vgar-fixture:python:class:src/relative_pkg/service.py:relative_pkg.service.RelativeService"
+      },
+      "content_hash": "sha256:c1d52e2816d0630795b7a97619fac1d1cd9326472211ef51fbd1f14fb4493614",
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "vgar:demo/vgar-fixture:python:callsite:src/relative_pkg/service.py:relative_pkg.service.RelativeService.create:59f1747b9774",
+      "type": "CallSite",
+      "repo_key": "demo/vgar-fixture",
+      "name": "cls",
+      "qualified_name": "relative_pkg.service.RelativeService.create::<call:1>",
+      "path": "src/relative_pkg/service.py",
+      "language": "python",
+      "range": {
+        "start_line": 7,
+        "start_col": 15,
+        "end_line": 7,
+        "end_col": 20,
+        "start_byte": 144,
+        "end_byte": 149
+      },
+      "properties": {
+        "callee_text": "cls",
+        "argument_count": 0,
+        "dispatch_kind": "constructor",
+        "resolution_status": "resolved",
+        "candidate_count": 1
+      },
+      "content_hash": "sha256:f401e81004c7145376cfab923786eba07e567aa0e39c777fabf9e7131c977f51",
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "vgar:demo/vgar-fixture:python:file:src/users/base.py",
+      "type": "File",
+      "repo_key": "demo/vgar-fixture",
+      "name": "base.py",
+      "qualified_name": "src/users/base.py",
+      "path": "src/users/base.py",
+      "language": "python",
+      "range": {
+        "start_line": 1,
+        "start_col": 0,
+        "end_line": 3,
+        "end_col": 0,
+        "start_byte": 0,
+        "end_byte": 28
+      },
+      "properties": {
+        "extension": ".py",
+        "size_bytes": 28,
+        "parse_status": "parsed",
+        "is_test_file": false
+      },
+      "content_hash": "sha256:53c57106090f3b9d48fedcc9e0d69d9c30292a7763298ea5cba760f59defd152",
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "vgar:demo/vgar-fixture:python:module:src/users/base.py:users.base",
+      "type": "Module",
+      "repo_key": "demo/vgar-fixture",
+      "name": "base",
+      "qualified_name": "users.base",
+      "path": "src/users/base.py",
+      "language": "python",
+      "range": {
+        "start_line": 1,
+        "start_col": 0,
+        "end_line": 3,
+        "end_col": 0,
+        "start_byte": 0,
+        "end_byte": 28
+      },
+      "properties": {
+        "module_name": "users.base",
+        "is_package": false,
+        "is_external": false,
+        "resolution_status": "resolved"
+      },
+      "content_hash": "sha256:53c57106090f3b9d48fedcc9e0d69d9c30292a7763298ea5cba760f59defd152",
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "vgar:demo/vgar-fixture:python:class:src/users/base.py:users.base.BaseService",
+      "type": "Class",
+      "repo_key": "demo/vgar-fixture",
+      "name": "BaseService",
+      "qualified_name": "users.base.BaseService",
+      "path": "src/users/base.py",
+      "language": "python",
+      "range": {
+        "start_line": 1,
+        "start_col": 0,
+        "end_line": 2,
+        "end_col": 8,
+        "start_byte": 0,
+        "end_byte": 27
+      },
+      "properties": {
+        "bases": [],
+        "decorators": [],
+        "is_abstract": false,
+        "docstring_summary": null
+      },
+      "content_hash": "sha256:713a0e2829608f7dba380eb27205f5ff77a6aeb4e1ab7211a2585e586d90cdb8",
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "vgar:demo/vgar-fixture:python:file:src/users/service.py",
+      "type": "File",
+      "repo_key": "demo/vgar-fixture",
+      "name": "service.py",
+      "qualified_name": "src/users/service.py",
+      "path": "src/users/service.py",
+      "language": "python",
+      "range": {
+        "start_line": 1,
+        "start_col": 0,
+        "end_line": 14,
+        "end_col": 0,
+        "start_byte": 0,
+        "end_byte": 289
+      },
+      "properties": {
+        "extension": ".py",
+        "size_bytes": 289,
+        "parse_status": "parsed",
+        "is_test_file": false
+      },
+      "content_hash": "sha256:aac36e7b2cc7c219b62534c828e2051966b8d035dfadd3d22efd306fbc4bf13f",
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "vgar:demo/vgar-fixture:python:module:src/users/service.py:users.service",
+      "type": "Module",
+      "repo_key": "demo/vgar-fixture",
+      "name": "service",
+      "qualified_name": "users.service",
+      "path": "src/users/service.py",
+      "language": "python",
+      "range": {
+        "start_line": 1,
+        "start_col": 0,
+        "end_line": 14,
+        "end_col": 0,
+        "start_byte": 0,
+        "end_byte": 289
+      },
+      "properties": {
+        "module_name": "users.service",
+        "is_package": false,
+        "is_external": false,
+        "resolution_status": "resolved"
+      },
+      "content_hash": "sha256:aac36e7b2cc7c219b62534c828e2051966b8d035dfadd3d22efd306fbc4bf13f",
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "vgar:demo/vgar-fixture:python:import:src/users/service.py:1:0:38619e88d4eb",
+      "type": "Import",
+      "repo_key": "demo/vgar-fixture",
+      "name": "BaseService",
+      "qualified_name": "users.service::<import:BaseService:38619e88d4eb>",
+      "path": "src/users/service.py",
+      "language": "python",
+      "range": {
+        "start_line": 1,
+        "start_col": 0,
+        "end_line": 1,
+        "end_col": 34,
+        "start_byte": 0,
+        "end_byte": 34
+      },
+      "properties": {
+        "raw_text": "from users.base import BaseService",
+        "imported_module": "users.base",
+        "imported_name": "BaseService",
+        "alias": null,
+        "level": 0,
+        "resolution_status": "resolved"
+      },
+      "content_hash": "sha256:5e44b0338d3cef487b7cdad71ad944aaada52b77f4970ae2422c91511c5d091a",
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "vgar:demo/vgar-fixture:python:class:src/users/service.py:users.service.UserService",
+      "type": "Class",
+      "repo_key": "demo/vgar-fixture",
+      "name": "UserService",
+      "qualified_name": "users.service.UserService",
+      "path": "src/users/service.py",
+      "language": "python",
+      "range": {
+        "start_line": 4,
+        "start_col": 0,
+        "end_line": 9,
+        "end_col": 35,
+        "start_byte": 37,
+        "end_byte": 219
+      },
+      "properties": {
+        "bases": [
+          "BaseService"
+        ],
+        "decorators": [],
+        "is_abstract": false,
+        "docstring_summary": null
+      },
+      "content_hash": "sha256:ab33d2b1dd012578fb05d5aefa5d5f855fbd0b8199849b10fd779a649b840e91",
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "vgar:demo/vgar-fixture:python:method:src/users/service.py:users.service.UserService.normalize",
+      "type": "Method",
+      "repo_key": "demo/vgar-fixture",
+      "name": "normalize",
+      "qualified_name": "users.service.UserService.normalize",
+      "path": "src/users/service.py",
+      "language": "python",
+      "range": {
+        "start_line": 5,
+        "start_col": 4,
+        "end_line": 6,
+        "end_col": 27,
+        "start_byte": 73,
+        "end_byte": 139
+      },
+      "properties": {
+        "signature": "def normalize(self, name: str) -> str",
+        "parameters": [
+          "self",
+          "name"
+        ],
+        "return_annotation": "str",
+        "decorators": [],
+        "is_async": false,
+        "visibility": "public",
+        "method_kind": "instance",
+        "owner_class_id": "vgar:demo/vgar-fixture:python:class:src/users/service.py:users.service.UserService"
+      },
+      "content_hash": "sha256:7be394fdb12369f3e3fd2ff1120ae3078f4d778c08dd4c438587a30306b40236",
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "vgar:demo/vgar-fixture:python:callsite:src/users/service.py:users.service.UserService.normalize:d58d3793da5e",
+      "type": "CallSite",
+      "repo_key": "demo/vgar-fixture",
+      "name": "name.strip",
+      "qualified_name": "users.service.UserService.normalize::<call:1>",
+      "path": "src/users/service.py",
+      "language": "python",
+      "range": {
+        "start_line": 6,
+        "start_col": 15,
+        "end_line": 6,
+        "end_col": 27,
+        "start_byte": 127,
+        "end_byte": 139
+      },
+      "properties": {
+        "callee_text": "name.strip",
+        "argument_count": 0,
+        "dispatch_kind": "attribute",
+        "resolution_status": "unresolved",
+        "candidate_count": 0
+      },
+      "content_hash": "sha256:e4ee4c2cedc31a3b9e016d3e8a7710cc7907b986d18c3c47b0db7b3ed122ba0e",
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "vgar:demo/vgar-fixture:python:method:src/users/service.py:users.service.UserService.find_user",
+      "type": "Method",
+      "repo_key": "demo/vgar-fixture",
+      "name": "find_user",
+      "qualified_name": "users.service.UserService.find_user",
+      "path": "src/users/service.py",
+      "language": "python",
+      "range": {
+        "start_line": 8,
+        "start_col": 4,
+        "end_line": 9,
+        "end_col": 35,
+        "start_byte": 145,
+        "end_byte": 219
+      },
+      "properties": {
+        "signature": "def find_user(self, name: str) -> str",
+        "parameters": [
+          "self",
+          "name"
+        ],
+        "return_annotation": "str",
+        "decorators": [],
+        "is_async": false,
+        "visibility": "public",
+        "method_kind": "instance",
+        "owner_class_id": "vgar:demo/vgar-fixture:python:class:src/users/service.py:users.service.UserService"
+      },
+      "content_hash": "sha256:9800e6add5e137edd4b2143a0ff1303b6c533845e0011f673fe3e5c57083115a",
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "vgar:demo/vgar-fixture:python:callsite:src/users/service.py:users.service.UserService.find_user:f35c78736bcc",
+      "type": "CallSite",
+      "repo_key": "demo/vgar-fixture",
+      "name": "self.normalize",
+      "qualified_name": "users.service.UserService.find_user::<call:1>",
+      "path": "src/users/service.py",
+      "language": "python",
+      "range": {
+        "start_line": 9,
+        "start_col": 15,
+        "end_line": 9,
+        "end_col": 35,
+        "start_byte": 199,
+        "end_byte": 219
+      },
+      "properties": {
+        "callee_text": "self.normalize",
+        "argument_count": 1,
+        "dispatch_kind": "attribute",
+        "resolution_status": "resolved",
+        "candidate_count": 1
+      },
+      "content_hash": "sha256:444b6052401772e0f1979a2aa14580154f86c8dad7ecb59149845e0bba839317",
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "vgar:demo/vgar-fixture:python:function:src/users/service.py:users.service.create_user_service",
+      "type": "Function",
+      "repo_key": "demo/vgar-fixture",
+      "name": "create_user_service",
+      "qualified_name": "users.service.create_user_service",
+      "path": "src/users/service.py",
+      "language": "python",
+      "range": {
+        "start_line": 12,
+        "start_col": 0,
+        "end_line": 13,
+        "end_col": 24,
+        "start_byte": 222,
+        "end_byte": 288
+      },
+      "properties": {
+        "signature": "def create_user_service() -> UserService",
+        "parameters": [],
+        "return_annotation": "UserService",
+        "decorators": [],
+        "is_async": false,
+        "visibility": "public"
+      },
+      "content_hash": "sha256:46551777de92fb1a06b48f3b03c63a1cb4e94c5e513e21762f989f1676f88943",
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "vgar:demo/vgar-fixture:python:callsite:src/users/service.py:users.service.create_user_service:aef12b28d2da",
+      "type": "CallSite",
+      "repo_key": "demo/vgar-fixture",
+      "name": "UserService",
+      "qualified_name": "users.service.create_user_service::<call:1>",
+      "path": "src/users/service.py",
+      "language": "python",
+      "range": {
+        "start_line": 13,
+        "start_col": 11,
+        "end_line": 13,
+        "end_col": 24,
+        "start_byte": 275,
+        "end_byte": 288
+      },
+      "properties": {
+        "callee_text": "UserService",
+        "argument_count": 0,
+        "dispatch_kind": "constructor",
+        "resolution_status": "resolved",
+        "candidate_count": 1
+      },
+      "content_hash": "sha256:d2f8bc37561750ac87a6d456152faf2662d237bcd5c1655891b5c5610495866a",
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "vgar:demo/vgar-fixture:python:file:src/web/routes.py",
+      "type": "File",
+      "repo_key": "demo/vgar-fixture",
+      "name": "routes.py",
+      "qualified_name": "src/web/routes.py",
+      "path": "src/web/routes.py",
+      "language": "python",
+      "range": {
+        "start_line": 1,
+        "start_col": 0,
+        "end_line": 6,
+        "end_col": 0,
+        "start_byte": 0,
+        "end_byte": 127
+      },
+      "properties": {
+        "extension": ".py",
+        "size_bytes": 127,
+        "parse_status": "parsed",
+        "is_test_file": false
+      },
+      "content_hash": "sha256:8d7f44bfae16146393620381ec7cfe8f6d1f9fc5a76fe8f13acf054a18867ae6",
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "vgar:demo/vgar-fixture:python:module:src/web/routes.py:web.routes",
+      "type": "Module",
+      "repo_key": "demo/vgar-fixture",
+      "name": "routes",
+      "qualified_name": "web.routes",
+      "path": "src/web/routes.py",
+      "language": "python",
+      "range": {
+        "start_line": 1,
+        "start_col": 0,
+        "end_line": 6,
+        "end_col": 0,
+        "start_byte": 0,
+        "end_byte": 127
+      },
+      "properties": {
+        "module_name": "web.routes",
+        "is_package": false,
+        "is_external": false,
+        "resolution_status": "resolved"
+      },
+      "content_hash": "sha256:8d7f44bfae16146393620381ec7cfe8f6d1f9fc5a76fe8f13acf054a18867ae6",
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "vgar:demo/vgar-fixture:python:import:src/web/routes.py:1:0:810bf507f264",
+      "type": "Import",
+      "repo_key": "demo/vgar-fixture",
+      "name": "login",
+      "qualified_name": "web.routes::<import:login:810bf507f264>",
+      "path": "src/web/routes.py",
+      "language": "python",
+      "range": {
+        "start_line": 1,
+        "start_col": 0,
+        "end_line": 1,
+        "end_col": 30,
+        "start_byte": 0,
+        "end_byte": 30
+      },
+      "properties": {
+        "raw_text": "from auth.service import login",
+        "imported_module": "auth.service",
+        "imported_name": "login",
+        "alias": null,
+        "level": 0,
+        "resolution_status": "resolved"
+      },
+      "content_hash": "sha256:2509ecc32e8883f4efee290b42b6254e916d3b3c847f3e56f973069e369577f7",
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "vgar:demo/vgar-fixture:python:function:src/web/routes.py:web.routes.login_handler",
+      "type": "Function",
+      "repo_key": "demo/vgar-fixture",
+      "name": "login_handler",
+      "qualified_name": "web.routes.login_handler",
+      "path": "src/web/routes.py",
+      "language": "python",
+      "range": {
+        "start_line": 4,
+        "start_col": 0,
+        "end_line": 5,
+        "end_col": 36,
+        "start_byte": 33,
+        "end_byte": 126
+      },
+      "properties": {
+        "signature": "def login_handler(username: str, password: str) -> bool",
+        "parameters": [
+          "username",
+          "password"
+        ],
+        "return_annotation": "bool",
+        "decorators": [],
+        "is_async": false,
+        "visibility": "public"
+      },
+      "content_hash": "sha256:c0825bdcaed0aefae01a07adbac7392afea4bd24fbb504750f33d77df956c437",
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "vgar:demo/vgar-fixture:python:callsite:src/web/routes.py:web.routes.login_handler:c565ae8139cb",
+      "type": "CallSite",
+      "repo_key": "demo/vgar-fixture",
+      "name": "login",
+      "qualified_name": "web.routes.login_handler::<call:1>",
+      "path": "src/web/routes.py",
+      "language": "python",
+      "range": {
+        "start_line": 5,
+        "start_col": 11,
+        "end_line": 5,
+        "end_col": 36,
+        "start_byte": 101,
+        "end_byte": 126
+      },
+      "properties": {
+        "callee_text": "login",
+        "argument_count": 2,
+        "dispatch_kind": "direct",
+        "resolution_status": "resolved",
+        "candidate_count": 1
+      },
+      "content_hash": "sha256:5fcddad3bc1df05a57785acbcceacc4a72061f5fca27dfd2cf97d600414e9c6d",
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "vgar:demo/vgar-fixture:python:file:tests/test_auth.py",
+      "type": "File",
+      "repo_key": "demo/vgar-fixture",
+      "name": "test_auth.py",
+      "qualified_name": "tests/test_auth.py",
+      "path": "tests/test_auth.py",
+      "language": "python",
+      "range": {
+        "start_line": 1,
+        "start_col": 0,
+        "end_line": 6,
+        "end_col": 0,
+        "start_byte": 0,
+        "end_byte": 95
+      },
+      "properties": {
+        "extension": ".py",
+        "size_bytes": 95,
+        "parse_status": "parsed",
+        "is_test_file": true
+      },
+      "content_hash": "sha256:cc9f89ac62c08ba4fd28dd4a1257ffc4804a45a10b9363c5d68f54e23925ead7",
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "vgar:demo/vgar-fixture:python:module:tests/test_auth.py:tests.test_auth",
+      "type": "Module",
+      "repo_key": "demo/vgar-fixture",
+      "name": "test_auth",
+      "qualified_name": "tests.test_auth",
+      "path": "tests/test_auth.py",
+      "language": "python",
+      "range": {
+        "start_line": 1,
+        "start_col": 0,
+        "end_line": 6,
+        "end_col": 0,
+        "start_byte": 0,
+        "end_byte": 95
+      },
+      "properties": {
+        "module_name": "tests.test_auth",
+        "is_package": false,
+        "is_external": false,
+        "resolution_status": "resolved"
+      },
+      "content_hash": "sha256:cc9f89ac62c08ba4fd28dd4a1257ffc4804a45a10b9363c5d68f54e23925ead7",
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "vgar:demo/vgar-fixture:python:import:tests/test_auth.py:1:0:20bcd98bef94",
+      "type": "Import",
+      "repo_key": "demo/vgar-fixture",
+      "name": "login",
+      "qualified_name": "tests.test_auth::<import:login:20bcd98bef94>",
+      "path": "tests/test_auth.py",
+      "language": "python",
+      "range": {
+        "start_line": 1,
+        "start_col": 0,
+        "end_line": 1,
+        "end_col": 30,
+        "start_byte": 0,
+        "end_byte": 30
+      },
+      "properties": {
+        "raw_text": "from auth.service import login",
+        "imported_module": "auth.service",
+        "imported_name": "login",
+        "alias": null,
+        "level": 0,
+        "resolution_status": "resolved"
+      },
+      "content_hash": "sha256:2509ecc32e8883f4efee290b42b6254e916d3b3c847f3e56f973069e369577f7",
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "vgar:demo/vgar-fixture:python:test:tests/test_auth.py:tests.test_auth.test_login",
+      "type": "Test",
+      "repo_key": "demo/vgar-fixture",
+      "name": "test_login",
+      "qualified_name": "tests.test_auth.test_login",
+      "path": "tests/test_auth.py",
+      "language": "python",
+      "range": {
+        "start_line": 4,
+        "start_col": 0,
+        "end_line": 5,
+        "end_col": 35,
+        "start_byte": 33,
+        "end_byte": 94
+      },
+      "properties": {
+        "framework": "pytest",
+        "test_kind": "function",
+        "markers": [],
+        "test_command_hint": "pytest tests/test_auth.py::test_login"
+      },
+      "content_hash": "sha256:8ca2416bcbb933c059438af0e81c40543b65e5c8bc40f2d54856cf870c2b37f8",
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "vgar:demo/vgar-fixture:python:callsite:tests/test_auth.py:tests.test_auth.test_login:21ec6118b2eb",
+      "type": "CallSite",
+      "repo_key": "demo/vgar-fixture",
+      "name": "login",
+      "qualified_name": "tests.test_auth.test_login::<call:1>",
+      "path": "tests/test_auth.py",
+      "language": "python",
+      "range": {
+        "start_line": 5,
+        "start_col": 11,
+        "end_line": 5,
+        "end_col": 35,
+        "start_byte": 70,
+        "end_byte": 94
+      },
+      "properties": {
+        "callee_text": "login",
+        "argument_count": 2,
+        "dispatch_kind": "direct",
+        "resolution_status": "resolved",
+        "candidate_count": 1
+      },
+      "content_hash": "sha256:7a4722a3f3a3f72b152355e5c029f7d93ab2bb79f8f3bbef228deee1edbbac25",
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    }
+  ],
+  "edges": [
+    {
+      "id": "sha256:4e3f9d3990c89ae32b4e4e78b174c447451df2aeb62cb6a3b4f34703adb47e09",
+      "type": "CONTAINS",
+      "source_id": "vgar:demo/vgar-fixture:repository",
+      "target_id": "vgar:demo/vgar-fixture:python:file:src/auth/service.py",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "repository.file.v1",
+        "source_revision": "fixture-revision",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 0
+      },
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "sha256:e6d48c3476326afeca55ee9521a7d8772ef3016831430deab159c7e98db185ef",
+      "type": "CONTAINS",
+      "source_id": "vgar:demo/vgar-fixture:python:file:src/auth/service.py",
+      "target_id": "vgar:demo/vgar-fixture:python:module:src/auth/service.py:auth.service",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.file.module.v1",
+        "source_revision": "fixture-revision",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 0
+      },
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "sha256:98bf8206561ba7e7fb48023c3d2aeb0fd71bb47328612900f299f1996015a631",
+      "type": "CONTAINS",
+      "source_id": "vgar:demo/vgar-fixture:python:module:src/auth/service.py:auth.service",
+      "target_id": "vgar:demo/vgar-fixture:python:function:src/auth/service.py:auth.service.login",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.scope.function.v1",
+        "source_revision": "fixture-revision",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 0
+      },
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "sha256:f226541cfcca2056597b980660d015756bb55d00e9d79ce4507622da51480742",
+      "type": "CONTAINS",
+      "source_id": "vgar:demo/vgar-fixture:python:function:src/auth/service.py:auth.service.login",
+      "target_id": "vgar:demo/vgar-fixture:python:callsite:src/auth/service.py:auth.service.login:f55552b283ea",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.function.callsite.v1",
+        "source_revision": "fixture-revision",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 0
+      },
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "sha256:931a77bcf621967df286d7a7d243b1d1bc24459664fe8fc5bf203d0a989a265b",
+      "type": "CONTAINS",
+      "source_id": "vgar:demo/vgar-fixture:repository",
+      "target_id": "vgar:demo/vgar-fixture:python:file:src/relative_pkg/__init__.py",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "repository.file.v1",
+        "source_revision": "fixture-revision",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 1
+      },
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "sha256:2dfbebac40f7867a68b3098d9245425f19ac7c995a1a3b906b16405e02f823ce",
+      "type": "CONTAINS",
+      "source_id": "vgar:demo/vgar-fixture:python:file:src/relative_pkg/__init__.py",
+      "target_id": "vgar:demo/vgar-fixture:python:module:src/relative_pkg/__init__.py:relative_pkg",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.file.module.v1",
+        "source_revision": "fixture-revision",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 0
+      },
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "sha256:8c62749100865af741db4a8e7e54c77f1bb1a3856080ea081b3bdf1f81a1e434",
+      "type": "CONTAINS",
+      "source_id": "vgar:demo/vgar-fixture:python:module:src/relative_pkg/__init__.py:relative_pkg",
+      "target_id": "vgar:demo/vgar-fixture:python:import:src/relative_pkg/__init__.py:1:0:155c861c26a7",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.module.import.v1",
+        "source_revision": "fixture-revision",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 0
+      },
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "sha256:62b8b74c0d43dcc6e7689e351e64283bfa23085be4fe24ddb5d7d8b1fa4d419d",
+      "type": "CONTAINS",
+      "source_id": "vgar:demo/vgar-fixture:repository",
+      "target_id": "vgar:demo/vgar-fixture:python:file:src/relative_pkg/base.py",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "repository.file.v1",
+        "source_revision": "fixture-revision",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 2
+      },
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "sha256:0ed5e86f88173b193f9d04892a492f996dfc0563b554e294ac4d5a7ed1b32bf9",
+      "type": "CONTAINS",
+      "source_id": "vgar:demo/vgar-fixture:python:file:src/relative_pkg/base.py",
+      "target_id": "vgar:demo/vgar-fixture:python:module:src/relative_pkg/base.py:relative_pkg.base",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.file.module.v1",
+        "source_revision": "fixture-revision",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 0
+      },
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "sha256:b85fe407fe414fe4cd177b654da9b39cc1cc45b3ed24bc42ae3e4d60736af0ae",
+      "type": "CONTAINS",
+      "source_id": "vgar:demo/vgar-fixture:python:module:src/relative_pkg/base.py:relative_pkg.base",
+      "target_id": "vgar:demo/vgar-fixture:python:class:src/relative_pkg/base.py:relative_pkg.base.RelativeBase",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.scope.class.v1",
+        "source_revision": "fixture-revision",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 0
+      },
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "sha256:49b9fe533531aab67bf0fdecba1699cec821fd88a0b30c9e1467ab6ae53cfbcb",
+      "type": "CONTAINS",
+      "source_id": "vgar:demo/vgar-fixture:repository",
+      "target_id": "vgar:demo/vgar-fixture:python:file:src/relative_pkg/service.py",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "repository.file.v1",
+        "source_revision": "fixture-revision",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 3
+      },
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "sha256:215b739191bab29afed417697fe1e1d8281fe805b5d754be81fbea9b99f1cf6c",
+      "type": "CONTAINS",
+      "source_id": "vgar:demo/vgar-fixture:python:file:src/relative_pkg/service.py",
+      "target_id": "vgar:demo/vgar-fixture:python:module:src/relative_pkg/service.py:relative_pkg.service",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.file.module.v1",
+        "source_revision": "fixture-revision",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 0
+      },
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "sha256:b61ae62bb3da5b9613383e9a87efd315fe32c15353d2366491855af9d165c147",
+      "type": "CONTAINS",
+      "source_id": "vgar:demo/vgar-fixture:python:module:src/relative_pkg/service.py:relative_pkg.service",
+      "target_id": "vgar:demo/vgar-fixture:python:import:src/relative_pkg/service.py:1:0:8a1291372acc",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.module.import.v1",
+        "source_revision": "fixture-revision",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 0
+      },
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "sha256:e6f6574c82ce05b1747b996b434e1f723f1ff408386e950e8f6562fc3035018a",
+      "type": "CONTAINS",
+      "source_id": "vgar:demo/vgar-fixture:python:module:src/relative_pkg/service.py:relative_pkg.service",
+      "target_id": "vgar:demo/vgar-fixture:python:class:src/relative_pkg/service.py:relative_pkg.service.RelativeService",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.scope.class.v1",
+        "source_revision": "fixture-revision",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 1
+      },
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "sha256:42177e9cce63bd6d373ea5653a2557ad7b16f44597565a6a7749e712ae1a5fc4",
+      "type": "CONTAINS",
+      "source_id": "vgar:demo/vgar-fixture:python:class:src/relative_pkg/service.py:relative_pkg.service.RelativeService",
+      "target_id": "vgar:demo/vgar-fixture:python:method:src/relative_pkg/service.py:relative_pkg.service.RelativeService.create",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.scope.function.v1",
+        "source_revision": "fixture-revision",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 0
+      },
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "sha256:f040381d44ae7b0155d61203c4310c55f55cedac66634b92bdee3850c6bdb1dd",
+      "type": "CONTAINS",
+      "source_id": "vgar:demo/vgar-fixture:python:method:src/relative_pkg/service.py:relative_pkg.service.RelativeService.create",
+      "target_id": "vgar:demo/vgar-fixture:python:callsite:src/relative_pkg/service.py:relative_pkg.service.RelativeService.create:59f1747b9774",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.method.callsite.v1",
+        "source_revision": "fixture-revision",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 0
+      },
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "sha256:38643ef8a6a7099ff9fc60b196dbcdef79ade1f7c2e6a0e8e55dfd4e2e0e2ce8",
+      "type": "CONTAINS",
+      "source_id": "vgar:demo/vgar-fixture:repository",
+      "target_id": "vgar:demo/vgar-fixture:python:file:src/users/base.py",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "repository.file.v1",
+        "source_revision": "fixture-revision",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 4
+      },
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "sha256:4f0b06dae6d3246330a0f8e838a3c4a3fa56d033000dbf1827c866c235a579c8",
+      "type": "CONTAINS",
+      "source_id": "vgar:demo/vgar-fixture:python:file:src/users/base.py",
+      "target_id": "vgar:demo/vgar-fixture:python:module:src/users/base.py:users.base",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.file.module.v1",
+        "source_revision": "fixture-revision",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 0
+      },
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "sha256:254eb97d3c8ab6eb65d66cc2b65ed074f1079812acf718cdea3e81fd740f4b5d",
+      "type": "CONTAINS",
+      "source_id": "vgar:demo/vgar-fixture:python:module:src/users/base.py:users.base",
+      "target_id": "vgar:demo/vgar-fixture:python:class:src/users/base.py:users.base.BaseService",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.scope.class.v1",
+        "source_revision": "fixture-revision",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 0
+      },
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "sha256:498eec68e119a3220f0273f8c6174de2fe13959fda89a39f9952939c5569b18e",
+      "type": "CONTAINS",
+      "source_id": "vgar:demo/vgar-fixture:repository",
+      "target_id": "vgar:demo/vgar-fixture:python:file:src/users/service.py",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "repository.file.v1",
+        "source_revision": "fixture-revision",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 5
+      },
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "sha256:9506a8fee652242b5a484b9914a9a4b87b6102de0e7fd1c0b5090b57086b0234",
+      "type": "CONTAINS",
+      "source_id": "vgar:demo/vgar-fixture:python:file:src/users/service.py",
+      "target_id": "vgar:demo/vgar-fixture:python:module:src/users/service.py:users.service",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.file.module.v1",
+        "source_revision": "fixture-revision",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 0
+      },
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "sha256:d333e7807de0d2ead675355b33529a0ef53f4f4d6e1b8c6ad68f93c059175fbe",
+      "type": "CONTAINS",
+      "source_id": "vgar:demo/vgar-fixture:python:module:src/users/service.py:users.service",
+      "target_id": "vgar:demo/vgar-fixture:python:import:src/users/service.py:1:0:38619e88d4eb",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.module.import.v1",
+        "source_revision": "fixture-revision",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 0
+      },
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "sha256:c6ad8e8f506ae20732b6a9cc607dfd813e073d059ad6cc9e2df88b1f7dde1d57",
+      "type": "CONTAINS",
+      "source_id": "vgar:demo/vgar-fixture:python:module:src/users/service.py:users.service",
+      "target_id": "vgar:demo/vgar-fixture:python:class:src/users/service.py:users.service.UserService",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.scope.class.v1",
+        "source_revision": "fixture-revision",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 1
+      },
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "sha256:e5acb69619ea3d7117cfa6f539d94ae2f107887dc2ce482b9f046c5276810ae1",
+      "type": "CONTAINS",
+      "source_id": "vgar:demo/vgar-fixture:python:class:src/users/service.py:users.service.UserService",
+      "target_id": "vgar:demo/vgar-fixture:python:method:src/users/service.py:users.service.UserService.normalize",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.scope.function.v1",
+        "source_revision": "fixture-revision",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 0
+      },
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "sha256:88a0ab62f13c19e2770bdba5059c73ed87ff0b889c28a4afafae21b4f9f6548a",
+      "type": "CONTAINS",
+      "source_id": "vgar:demo/vgar-fixture:python:method:src/users/service.py:users.service.UserService.normalize",
+      "target_id": "vgar:demo/vgar-fixture:python:callsite:src/users/service.py:users.service.UserService.normalize:d58d3793da5e",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.method.callsite.v1",
+        "source_revision": "fixture-revision",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 0
+      },
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "sha256:161cec94c40751d36159781a77831ed28fd2fc46f52e92aa2285e0ab7a97917c",
+      "type": "CONTAINS",
+      "source_id": "vgar:demo/vgar-fixture:python:class:src/users/service.py:users.service.UserService",
+      "target_id": "vgar:demo/vgar-fixture:python:method:src/users/service.py:users.service.UserService.find_user",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.scope.function.v1",
+        "source_revision": "fixture-revision",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 1
+      },
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "sha256:fe47d0dfa436d524e064aadaf51dd4122f7c7e3db16b1dca45193b614cf0c637",
+      "type": "CONTAINS",
+      "source_id": "vgar:demo/vgar-fixture:python:method:src/users/service.py:users.service.UserService.find_user",
+      "target_id": "vgar:demo/vgar-fixture:python:callsite:src/users/service.py:users.service.UserService.find_user:f35c78736bcc",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.method.callsite.v1",
+        "source_revision": "fixture-revision",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 0
+      },
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "sha256:16989ee3f37d2b56180b5ed3ba28c360f728c83c33b7b7bf35b31e1ee7c1c408",
+      "type": "CONTAINS",
+      "source_id": "vgar:demo/vgar-fixture:python:module:src/users/service.py:users.service",
+      "target_id": "vgar:demo/vgar-fixture:python:function:src/users/service.py:users.service.create_user_service",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.scope.function.v1",
+        "source_revision": "fixture-revision",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 2
+      },
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "sha256:7d212955585470dbd0e45ebf512ca02ffc8f33a8240f2a3d4e61aa33ee1063b3",
+      "type": "CONTAINS",
+      "source_id": "vgar:demo/vgar-fixture:python:function:src/users/service.py:users.service.create_user_service",
+      "target_id": "vgar:demo/vgar-fixture:python:callsite:src/users/service.py:users.service.create_user_service:aef12b28d2da",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.function.callsite.v1",
+        "source_revision": "fixture-revision",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 0
+      },
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "sha256:e2214c752bd6d6dcae030006fa38c231c7785ff80d226038f727d4480810f0b1",
+      "type": "CONTAINS",
+      "source_id": "vgar:demo/vgar-fixture:repository",
+      "target_id": "vgar:demo/vgar-fixture:python:file:src/web/routes.py",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "repository.file.v1",
+        "source_revision": "fixture-revision",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 6
+      },
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "sha256:0b55d7ccbc7e3b480855fdd605c59bd67f3c893acc3d740ab330c4c049e4a340",
+      "type": "CONTAINS",
+      "source_id": "vgar:demo/vgar-fixture:python:file:src/web/routes.py",
+      "target_id": "vgar:demo/vgar-fixture:python:module:src/web/routes.py:web.routes",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.file.module.v1",
+        "source_revision": "fixture-revision",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 0
+      },
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "sha256:6f8d3915d36c92bd08eb434523c23a7e4e46a45615a3da0ed0b0369c4d6569d8",
+      "type": "CONTAINS",
+      "source_id": "vgar:demo/vgar-fixture:python:module:src/web/routes.py:web.routes",
+      "target_id": "vgar:demo/vgar-fixture:python:import:src/web/routes.py:1:0:810bf507f264",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.module.import.v1",
+        "source_revision": "fixture-revision",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 0
+      },
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "sha256:f1dfdff0340d9749624dd6161d75035b2c56f6d88ece5cf9415f2bb9be1c22c5",
+      "type": "CONTAINS",
+      "source_id": "vgar:demo/vgar-fixture:python:module:src/web/routes.py:web.routes",
+      "target_id": "vgar:demo/vgar-fixture:python:function:src/web/routes.py:web.routes.login_handler",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.scope.function.v1",
+        "source_revision": "fixture-revision",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 1
+      },
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "sha256:69a785b52808527d17db94040b2a3a8e9e311d73cb0b0e94cc9d0fbfdd41b783",
+      "type": "CONTAINS",
+      "source_id": "vgar:demo/vgar-fixture:python:function:src/web/routes.py:web.routes.login_handler",
+      "target_id": "vgar:demo/vgar-fixture:python:callsite:src/web/routes.py:web.routes.login_handler:c565ae8139cb",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.function.callsite.v1",
+        "source_revision": "fixture-revision",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 0
+      },
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "sha256:f6bf2938fbac430a9657c3eeb9bf4b137be95ff004c36255edd9bca27c6cff3a",
+      "type": "CONTAINS",
+      "source_id": "vgar:demo/vgar-fixture:repository",
+      "target_id": "vgar:demo/vgar-fixture:python:file:tests/test_auth.py",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "repository.file.v1",
+        "source_revision": "fixture-revision",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 7
+      },
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "sha256:3ebe84eb7b7e74ad13d36f7f2cc3c7622c88a987da63e0d97fb40230a82e9234",
+      "type": "CONTAINS",
+      "source_id": "vgar:demo/vgar-fixture:python:file:tests/test_auth.py",
+      "target_id": "vgar:demo/vgar-fixture:python:module:tests/test_auth.py:tests.test_auth",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.file.module.v1",
+        "source_revision": "fixture-revision",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 0
+      },
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "sha256:4d95f9baf0b2b7f0ef2263e1d85086320d03edccf976344b232eb37d5c615b9a",
+      "type": "CONTAINS",
+      "source_id": "vgar:demo/vgar-fixture:python:module:tests/test_auth.py:tests.test_auth",
+      "target_id": "vgar:demo/vgar-fixture:python:import:tests/test_auth.py:1:0:20bcd98bef94",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.module.import.v1",
+        "source_revision": "fixture-revision",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 0
+      },
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "sha256:13d50b56b0241e35dc1cd1e234a7e9db5b50d31cb4efd40c3773b3c7d8c24ecc",
+      "type": "CONTAINS",
+      "source_id": "vgar:demo/vgar-fixture:python:module:tests/test_auth.py:tests.test_auth",
+      "target_id": "vgar:demo/vgar-fixture:python:test:tests/test_auth.py:tests.test_auth.test_login",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.scope.function.v1",
+        "source_revision": "fixture-revision",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 1
+      },
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "sha256:18c2f858e15124f8c38c919676c6e8786e9414239a1e5718c669a84d8aa93c9e",
+      "type": "CONTAINS",
+      "source_id": "vgar:demo/vgar-fixture:python:test:tests/test_auth.py:tests.test_auth.test_login",
+      "target_id": "vgar:demo/vgar-fixture:python:callsite:tests/test_auth.py:tests.test_auth.test_login:21ec6118b2eb",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.test.callsite.v1",
+        "source_revision": "fixture-revision",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 0
+      },
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "sha256:4e123eace6954cbdbca8c7e537125b3df604dc35a9daa8941754d355abfeb857",
+      "type": "IMPORTS",
+      "source_id": "vgar:demo/vgar-fixture:python:import:src/relative_pkg/__init__.py:1:0:155c861c26a7",
+      "target_id": "vgar:demo/vgar-fixture:python:module:src/relative_pkg/service.py:relative_pkg.service",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.import.resolve.v1",
+        "source_revision": "fixture-revision",
+        "evidence": []
+      },
+      "properties": {
+        "imported_name": "RelativeService",
+        "alias": null,
+        "is_wildcard": false
+      },
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "sha256:45843ec21332082e57d1f44156f9ada8f0462ef8849e9de2bdfcbb4502f5a7c2",
+      "type": "IMPORTS",
+      "source_id": "vgar:demo/vgar-fixture:python:import:src/relative_pkg/service.py:1:0:8a1291372acc",
+      "target_id": "vgar:demo/vgar-fixture:python:module:src/relative_pkg/base.py:relative_pkg.base",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.import.resolve.v1",
+        "source_revision": "fixture-revision",
+        "evidence": []
+      },
+      "properties": {
+        "imported_name": "RelativeBase",
+        "alias": null,
+        "is_wildcard": false
+      },
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "sha256:49b572bf1e5bf361e3b58e86295c1918f257ed8a9e84661545ed880ba6665934",
+      "type": "IMPORTS",
+      "source_id": "vgar:demo/vgar-fixture:python:import:src/users/service.py:1:0:38619e88d4eb",
+      "target_id": "vgar:demo/vgar-fixture:python:module:src/users/base.py:users.base",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.import.resolve.v1",
+        "source_revision": "fixture-revision",
+        "evidence": []
+      },
+      "properties": {
+        "imported_name": "BaseService",
+        "alias": null,
+        "is_wildcard": false
+      },
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "sha256:a68680cc37584d8c8e3ec9e617ab016e3fb27149e74381e295fff65f0d8ef06f",
+      "type": "IMPORTS",
+      "source_id": "vgar:demo/vgar-fixture:python:import:src/web/routes.py:1:0:810bf507f264",
+      "target_id": "vgar:demo/vgar-fixture:python:module:src/auth/service.py:auth.service",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.import.resolve.v1",
+        "source_revision": "fixture-revision",
+        "evidence": []
+      },
+      "properties": {
+        "imported_name": "login",
+        "alias": null,
+        "is_wildcard": false
+      },
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "sha256:0f111ceb7daf5aeff021e0055c60ad85e187510331080530c98cdb7c46c00368",
+      "type": "IMPORTS",
+      "source_id": "vgar:demo/vgar-fixture:python:import:tests/test_auth.py:1:0:20bcd98bef94",
+      "target_id": "vgar:demo/vgar-fixture:python:module:src/auth/service.py:auth.service",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.import.resolve.v1",
+        "source_revision": "fixture-revision",
+        "evidence": []
+      },
+      "properties": {
+        "imported_name": "login",
+        "alias": null,
+        "is_wildcard": false
+      },
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "sha256:30f8796edddc53259b079b859f3cbaa94abbaccfad30905b14b97304e3a768bb",
+      "type": "INHERITS",
+      "source_id": "vgar:demo/vgar-fixture:python:class:src/relative_pkg/service.py:relative_pkg.service.RelativeService",
+      "target_id": "vgar:demo/vgar-fixture:python:class:src/relative_pkg/base.py:relative_pkg.base.RelativeBase",
+      "confidence": 0.9,
+      "resolution": "analyzer",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.inheritance.resolve.v1",
+        "source_revision": "fixture-revision",
+        "evidence": []
+      },
+      "properties": {
+        "base_expression": "RelativeBase",
+        "mro_position": 1
+      },
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "sha256:9e92b7f88ded378e0ee1b05d98b0ab5283d0864fc8af5eb395ec8149f5a7e0eb",
+      "type": "INHERITS",
+      "source_id": "vgar:demo/vgar-fixture:python:class:src/users/service.py:users.service.UserService",
+      "target_id": "vgar:demo/vgar-fixture:python:class:src/users/base.py:users.base.BaseService",
+      "confidence": 0.9,
+      "resolution": "analyzer",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.inheritance.resolve.v1",
+        "source_revision": "fixture-revision",
+        "evidence": []
+      },
+      "properties": {
+        "base_expression": "BaseService",
+        "mro_position": 1
+      },
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "sha256:9a013fe48a9800b2e37a049037a83f745497ff2f256e4e63df1d30abe374765d",
+      "type": "CALLS",
+      "source_id": "vgar:demo/vgar-fixture:python:callsite:src/relative_pkg/service.py:relative_pkg.service.RelativeService.create:59f1747b9774",
+      "target_id": "vgar:demo/vgar-fixture:python:class:src/relative_pkg/service.py:relative_pkg.service.RelativeService",
+      "confidence": 0.95,
+      "resolution": "analyzer",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.call.resolve.v1",
+        "source_revision": "fixture-revision",
+        "evidence": []
+      },
+      "properties": {
+        "binding_kind": "constructor",
+        "argument_match": null,
+        "candidate_rank": 1,
+        "confidence_reason": "Unique deterministic symbol match"
+      },
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "sha256:6aec112880dde95ec7bff00c2a7bece674ec5272a1c4c91219da19b3e0f5d744",
+      "type": "CALLS",
+      "source_id": "vgar:demo/vgar-fixture:python:callsite:src/users/service.py:users.service.UserService.find_user:f35c78736bcc",
+      "target_id": "vgar:demo/vgar-fixture:python:method:src/users/service.py:users.service.UserService.normalize",
+      "confidence": 0.8,
+      "resolution": "analyzer",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.call.resolve.v1",
+        "source_revision": "fixture-revision",
+        "evidence": []
+      },
+      "properties": {
+        "binding_kind": "self_method",
+        "argument_match": null,
+        "candidate_rank": 1,
+        "confidence_reason": "Unique deterministic symbol match"
+      },
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "sha256:19388d9e1adbf9d512d31defbca2491179f693d9268812eef95d80ef76dbb900",
+      "type": "CALLS",
+      "source_id": "vgar:demo/vgar-fixture:python:callsite:src/users/service.py:users.service.create_user_service:aef12b28d2da",
+      "target_id": "vgar:demo/vgar-fixture:python:class:src/users/service.py:users.service.UserService",
+      "confidence": 0.95,
+      "resolution": "analyzer",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.call.resolve.v1",
+        "source_revision": "fixture-revision",
+        "evidence": []
+      },
+      "properties": {
+        "binding_kind": "constructor",
+        "argument_match": null,
+        "candidate_rank": 1,
+        "confidence_reason": "Unique deterministic symbol match"
+      },
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "sha256:afe31b4f1dea3105d2269755720b28369424e852ee2596d36615f1ee51b77b58",
+      "type": "CALLS",
+      "source_id": "vgar:demo/vgar-fixture:python:callsite:src/web/routes.py:web.routes.login_handler:c565ae8139cb",
+      "target_id": "vgar:demo/vgar-fixture:python:function:src/auth/service.py:auth.service.login",
+      "confidence": 0.95,
+      "resolution": "analyzer",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.call.resolve.v1",
+        "source_revision": "fixture-revision",
+        "evidence": []
+      },
+      "properties": {
+        "binding_kind": "imported_symbol",
+        "argument_match": null,
+        "candidate_rank": 1,
+        "confidence_reason": "Unique deterministic symbol match"
+      },
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "sha256:d16ef9c9ee753992909bd4ebf1d8a678a5e3b26ec7342639ee40957f853f8796",
+      "type": "CALLS",
+      "source_id": "vgar:demo/vgar-fixture:python:callsite:tests/test_auth.py:tests.test_auth.test_login:21ec6118b2eb",
+      "target_id": "vgar:demo/vgar-fixture:python:function:src/auth/service.py:auth.service.login",
+      "confidence": 0.95,
+      "resolution": "analyzer",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.call.resolve.v1",
+        "source_revision": "fixture-revision",
+        "evidence": []
+      },
+      "properties": {
+        "binding_kind": "imported_symbol",
+        "argument_match": null,
+        "candidate_rank": 1,
+        "confidence_reason": "Unique deterministic symbol match"
+      },
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    },
+    {
+      "id": "sha256:d6a0a17ff54a4be0269ae4f1814f41c96b8706a21b1faa2183caf4b6b9fd2e05",
+      "type": "TESTS",
+      "source_id": "vgar:demo/vgar-fixture:python:test:tests/test_auth.py:tests.test_auth.test_login",
+      "target_id": "vgar:demo/vgar-fixture:python:function:src/auth/service.py:auth.service.login",
+      "confidence": 0.95,
+      "resolution": "analyzer",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.test.direct_call.v1",
+        "source_revision": "fixture-revision",
+        "evidence": []
+      },
+      "properties": {
+        "link_method": "direct_call",
+        "coverage_count": null
+      },
+      "graph_version": "sha256:d5723937a3f42e85d140b91bf423ae88f04b84bf15cb37be29af20782bc5becc"
+    }
+  ],
+  "statistics": {
+    "node_count": 40,
+    "edge_count": 52,
+    "node_counts_by_type": {
+      "Repository": 1,
+      "File": 8,
+      "Module": 8,
+      "Function": 3,
+      "CallSite": 7,
+      "Import": 5,
+      "Class": 4,
+      "Method": 3,
+      "Test": 1
+    },
+    "edge_counts_by_type": {
+      "CONTAINS": 39,
+      "IMPORTS": 5,
+      "INHERITS": 2,
+      "CALLS": 5,
+      "TESTS": 1
+    },
+    "callsite_count": 7,
+    "unresolved_call_count": 2,
+    "unresolved_call_rate": 0.2857142857142857,
+    "partial_file_count": 0,
+    "build_time_ms": 687.927
+  }
+}

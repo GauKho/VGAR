@@ -4,9 +4,8 @@ from pathlib import Path
 import sys
 from typing import Any
 
-from langchain_mcp_adapters.client import (
-    MultiServerMCPClient,
-)
+from langchain_mcp_adapters.client import MultiServerMCPClient
+
 
 from vgar.config import load_mcp_config
 

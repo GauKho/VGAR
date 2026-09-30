@@ -1,0 +1,28 @@
+{
+  "graph_version": "sha256:contract-fixture",
+  "anchor_ids": [
+    "vgar:demo/vgar-fixture:python:function:src/auth/service.py:login"
+  ],
+  "items": [
+    {
+      "node_id": "vgar:demo/vgar-fixture:python:function:src/auth/service.py:login",
+      "path": "src/auth/service.py",
+      "symbol": "auth.service.login",
+      "range": {
+        "start_line": 1,
+        "start_col": 0,
+        "end_line": 2,
+        "end_col": 39
+      },
+      "snippet": "def login(username: str, password: str) -> bool:\n    return bool(username and password)",
+      "relevance_score": 1.0,
+      "graph_distance": 0,
+      "graph_rationale": ["TASK_ANCHOR"],
+      "confidence": 1.0,
+      "token_count": 48
+    }
+  ],
+  "total_token_count": 48,
+  "token_budget": 512,
+  "truncated": false
+}

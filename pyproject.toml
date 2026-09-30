@@ -21,9 +21,18 @@ dependencies = [
     "langchain-mcp-adapters==0.3.2",
     "mcp[cli]>=1.24,<2",
 
+    "jedi==0.20.0",
     "pydantic>=2",
+    "tree-sitter==0.26.0",
+    "tree-sitter-python==0.25.0",
 ]
 
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = ["--ignore=tests/fixtures"]
+pythonpath = ["src"]

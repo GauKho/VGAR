@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from copy import deepcopy
+
 import torch
 
 from transformers import (
@@ -57,25 +59,41 @@ def create_local_chat_model(
         model.device,
     )
 
+    model_generation_config = model.generation_config
+    model_generation_config.max_length = None
+    model_generation_config.max_new_tokens = max_new_tokens
+    model_generation_config.do_sample = False
+
+    # Transformers 5 fills None values from the model config
+    # immediately before generate(). These are the neutral values
+    # for greedy decoding and therefore survive that merge without
+    # enabling sampling or producing invalid-flag warnings.
+    model_generation_config.temperature = 1.0
+    model_generation_config.top_p = 1.0
+    model_generation_config.top_k = 50
+
+    construction_config = deepcopy(
+        model_generation_config
+    )
+
     generation_pipeline = pipeline(
         task="text-generation",
         model=model,
         tokenizer=tokenizer,
+        generation_config=construction_config,
         return_full_text=False,
         clean_up_tokenization_spaces=False,
     )
 
-    # The text-generation pipeline creates its own copy of
-    # the model's generation config and applies task defaults.
-    # Configure that effective copy so greedy decoding does not
-    # retain sampling options or the legacy max_length value.
+    # The pipeline owns a private copy, so keep both effective
+    # configs aligned.
     generation_config = generation_pipeline.generation_config
     generation_config.max_length = None
     generation_config.max_new_tokens = max_new_tokens
     generation_config.do_sample = False
-    generation_config.temperature = None
-    generation_config.top_p = None
-    generation_config.top_k = None
+    generation_config.temperature = 1.0
+    generation_config.top_p = 1.0
+    generation_config.top_k = 50
 
     llm = HuggingFacePipeline(
         pipeline=generation_pipeline,

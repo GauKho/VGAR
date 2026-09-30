@@ -1,0 +1,11 @@
+{
+  "symbol_id": "vgar:demo/vgar-fixture:python:function:src/web/routes.py:login_handler",
+  "symbols": [
+    {
+      "symbol_id": "vgar:demo/vgar-fixture:python:function:src/auth/service.py:login",
+      "name": "login",
+      "kind": "function",
+      "path": "src/auth/service.py"
+    }
+  ]
+}

@@ -7,3 +7,29 @@
 {"timestamp": "2026-09-29T07:50:03.309779+00:00", "tool": "search_symbols", "arguments": {"query": "login", "limit": 10}, "status": "ok"}
 {"timestamp": "2026-09-29T07:50:04.164350+00:00", "tool": "get_callers", "arguments": {"symbol_id": "function:auth.login"}, "status": "ok"}
 {"timestamp": "2026-09-29T07:50:05.007815+00:00", "tool": "get_callees", "arguments": {"symbol_id": "function:web.login_handler"}, "status": "ok"}
+{"timestamp": "2026-09-30T07:05:33.958219+00:00", "event_type": "tool_call", "payload": {"server": "graph", "backend": "demo", "tool": "search_symbols", "query": "auth", "limit": 20, "result_count": 2}}
+{"timestamp": "2026-09-30T07:05:33.960233+00:00", "event_type": "tool_call", "payload": {"server": "graph", "backend": "demo", "tool": "search_symbols", "query": "login", "limit": 10, "result_count": 2}}
+{"timestamp": "2026-09-30T07:05:33.960233+00:00", "event_type": "tool_call", "payload": {"server": "graph", "backend": "demo", "tool": "get_callers", "symbol_id": "function:auth.login", "depth": 1, "result_count": 1}}
+{"timestamp": "2026-09-30T07:05:33.961232+00:00", "event_type": "tool_call", "payload": {"server": "graph", "backend": "demo", "tool": "get_callees", "symbol_id": "function:auth.login", "depth": 1, "result_count": 0}}
+{"timestamp": "2026-09-30T07:06:45.874300+00:00", "event_type": "tool_call", "payload": {"server": "graph", "backend": "demo", "tool": "search_symbols", "query": "auth", "limit": 20, "result_count": 2}}
+{"timestamp": "2026-09-30T07:06:54.075275+00:00", "event_type": "tool_call", "payload": {"server": "graph", "backend": "demo", "tool": "search_symbols", "query": "auth", "limit": 20, "result_count": 2}}
+{"timestamp": "2026-09-30T07:06:54.078274+00:00", "event_type": "tool_call", "payload": {"server": "graph", "backend": "demo", "tool": "search_symbols", "query": "login", "limit": 10, "result_count": 2}}
+{"timestamp": "2026-09-30T07:06:54.078274+00:00", "event_type": "tool_call", "payload": {"server": "graph", "backend": "demo", "tool": "get_callers", "symbol_id": "function:auth.login", "depth": 1, "result_count": 1}}
+{"timestamp": "2026-09-30T07:06:54.078274+00:00", "event_type": "tool_call", "payload": {"server": "graph", "backend": "demo", "tool": "get_callees", "symbol_id": "function:auth.login", "depth": 1, "result_count": 0}}
+{"timestamp": "2026-09-30T07:07:03.335312+00:00", "event_type": "tool_call", "payload": {"server": "graph", "backend": "demo", "tool": "search_symbols", "query": "auth", "limit": 20, "result_count": 2}}
+{"timestamp": "2026-09-30T07:07:03.336370+00:00", "event_type": "tool_call", "payload": {"server": "graph", "backend": "demo", "tool": "search_symbols", "query": "login", "limit": 10, "result_count": 2}}
+{"timestamp": "2026-09-30T07:07:03.336370+00:00", "event_type": "tool_call", "payload": {"server": "graph", "backend": "demo", "tool": "get_callers", "symbol_id": "function:auth.login", "depth": 1, "result_count": 1}}
+{"timestamp": "2026-09-30T07:07:03.336370+00:00", "event_type": "tool_call", "payload": {"server": "graph", "backend": "demo", "tool": "get_callees", "symbol_id": "function:auth.login", "depth": 1, "result_count": 0}}
+{"timestamp": "2026-09-30T07:12:59.294497+00:00", "event_type": "tool_call", "payload": {"server": "graph", "backend": "demo", "tool": "search_symbols", "query": "auth", "limit": 20, "result_count": 2}}
+{"timestamp": "2026-09-30T07:13:07.516634+00:00", "event_type": "tool_call", "payload": {"server": "graph", "backend": "demo", "tool": "search_symbols", "query": "auth", "limit": 20, "result_count": 2}}
+{"timestamp": "2026-09-30T07:13:07.517762+00:00", "event_type": "tool_call", "payload": {"server": "graph", "backend": "demo", "tool": "search_symbols", "query": "login", "limit": 10, "result_count": 2}}
+{"timestamp": "2026-09-30T07:13:07.519249+00:00", "event_type": "tool_call", "payload": {"server": "graph", "backend": "demo", "tool": "get_callers", "symbol_id": "function:auth.login", "depth": 1, "result_count": 1}}
+{"timestamp": "2026-09-30T07:13:07.519249+00:00", "event_type": "tool_call", "payload": {"server": "graph", "backend": "demo", "tool": "get_callees", "symbol_id": "function:auth.login", "depth": 1, "result_count": 0}}
+{"timestamp": "2026-09-30T07:13:09.183050+00:00", "event_type": "tool_call", "payload": {"server": "graph", "backend": "demo", "tool": "search_symbols", "query": "auth", "limit": 20, "result_count": 2}}
+{"timestamp": "2026-09-30T07:13:09.183553+00:00", "event_type": "tool_call", "payload": {"server": "graph", "backend": "demo", "tool": "search_symbols", "query": "login", "limit": 10, "result_count": 2}}
+{"timestamp": "2026-09-30T07:13:09.184567+00:00", "event_type": "tool_call", "payload": {"server": "graph", "backend": "demo", "tool": "get_callers", "symbol_id": "function:auth.login", "depth": 1, "result_count": 1}}
+{"timestamp": "2026-09-30T07:13:09.184567+00:00", "event_type": "tool_call", "payload": {"server": "graph", "backend": "demo", "tool": "get_callees", "symbol_id": "function:auth.login", "depth": 1, "result_count": 0}}
+{"timestamp": "2026-09-30T07:34:51.768680+00:00", "event_type": "tool_call", "payload": {"server": "graph", "backend": "demo", "tool": "search_symbols", "query": "login", "limit": 10, "result_count": 2}}
+{"timestamp": "2026-09-30T07:44:45.427194+00:00", "event_type": "tool_call", "payload": {"server": "graph", "backend": "demo", "tool": "search_symbols", "query": "login", "limit": 10, "result_count": 2}}
+{"timestamp": "2026-09-30T07:44:47.227630+00:00", "event_type": "tool_call", "payload": {"server": "graph", "backend": "demo", "tool": "get_callers", "symbol_id": "function:auth.login", "depth": 1, "result_count": 1}}
+{"timestamp": "2026-09-30T07:44:49.308056+00:00", "event_type": "tool_call", "payload": {"server": "graph", "backend": "demo", "tool": "get_callees", "symbol_id": "function:auth.login", "depth": 1, "result_count": 0}}

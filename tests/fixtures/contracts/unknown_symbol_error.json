@@ -1,0 +1,8 @@
+{
+  "code": "NODE_NOT_FOUND",
+  "message": "Unknown symbol: missing:symbol",
+  "details": {
+    "entity": "symbol",
+    "node_id": "missing:symbol"
+  }
+}

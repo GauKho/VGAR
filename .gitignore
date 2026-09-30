@@ -1,0 +1,5 @@
+.env
+.__pycache__/
+vgar_mcp_mvp_demo.egg-info/
+.venv/
+logs/

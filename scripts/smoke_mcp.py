@@ -3,7 +3,7 @@ from __future__ import annotations
 import asyncio
 import traceback
 
-from vgar.mcp import create_mcp_client
+from vgar.mcp.client import create_mcp_client
 
 
 async def main() -> None:

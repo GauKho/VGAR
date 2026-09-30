@@ -23,8 +23,13 @@ src/vgar/contracts/error.py
 src/vgar/contracts/evidence.py
 src/vgar/contracts/graph.py
 src/vgar/contracts/repair.py
+src/vgar/graph/builder.py
 src/vgar/graph/demo_service.py
+src/vgar/graph/factory.py
+src/vgar/graph/jedi_resolver.py
 src/vgar/graph/port.py
+src/vgar/graph/sqlite_service.py
+src/vgar/graph/sqlite_store.py
 src/vgar/mcp/__init__.py
 src/vgar/mcp/audit.py
 src/vgar/mcp/client.py
