@@ -68,6 +68,27 @@ M3 chỉ cần thay điểm khởi tạo trong `graph_server.py` từ `DemoGraph
 
 Không copy SQLite schema hoặc query logic vào MCP server. MCP server chỉ gọi `GraphService` để giữ storage implementation thuộc M1.
 
+## M2 W3–W4: baseline repair/verification infrastructure
+
+This integrated `VGAR` tree contains M1 graph and M3 MCP code plus M2's disposable workspace, pytest wrapper, and pre-patch EvidenceBundle. The older `D:\KLTN\M1` instructions in this README describe the original standalone M1 workspace; use the commands below from this `VGAR` root for M2.
+
+Install the development test dependency in a Python 3.11–3.13 environment (the full project dependencies are listed in `pyproject.toml`):
+
+```powershell
+python -m pip install -e '.[dev]'
+$env:VGAR_M2_TEMP_ROOT = 'D:\Project\CAPSTONES\m2-temp'
+python scripts\record_m2_test.py tests/m2 --timeout-seconds 120
+python scripts\run_m2_baseline.py tests\fixtures\sample_repo tests/test_auth.py --task-id sample-auth
+```
+
+Every invocation saves one detailed JSON under `artifacts/m2/test-runs/`. A deliberate failing example returns exit code 1 while still saving evidence:
+
+```powershell
+python scripts\run_m2_baseline.py tests\fixtures\m2\failing_repo tests/test_demo.py --task-id deliberate-fail
+```
+
+See `docs/verification_design.md` for scope/safety, `docs/evidence_bundle_schema.md` for JSON fields, and `docs/m2_w3_w4_handoff.md` for verification records and deferred work. These W3–W4 scripts do not invoke an LLM, modify the source repo, apply a patch, or add MCP execution tools. Review raw test logs for secrets before sharing artifacts.
+
 ## Build Graph MVP
 
 ```powershell

@@ -1,0 +1,203 @@
+{
+  "run_id": "b78a5e48013044089c23d19c4b4f81fe",
+  "task_id": "my-m2-check",
+  "started_utc": "2026-09-30T12:17:14.074934+00:00",
+  "ended_utc": "2026-09-30T12:17:24.249442+00:00",
+  "source_repo": "D:\\Project\\CAPSTONES\\VGAR",
+  "source_hash_before": "9fa3a833c3fcd12d82d3b0d05c5a31e7139bbf885b4dfe35a2978d931a8ee3f1",
+  "source_hash_after": "9fa3a833c3fcd12d82d3b0d05c5a31e7139bbf885b4dfe35a2978d931a8ee3f1",
+  "worktree_id": "development-test",
+  "cwd": "D:\\Project\\CAPSTONES\\VGAR",
+  "argv": [
+    "D:\\Project\\CAPSTONES\\VGAR\\.venv\\Scripts\\python.exe",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "--junitxml=D:\\Project\\CAPSTONES\\VGAR\\.m2-pytest-yyf7wlxt\\junit.xml",
+    "tests/m2"
+  ],
+  "timeout_seconds": 120.0,
+  "python_executable": "D:\\Project\\CAPSTONES\\VGAR\\.venv\\Scripts\\python.exe",
+  "python_version": "3.11.6",
+  "pytest_version": "8.4.2",
+  "environment": {
+    "PYTHONPATH": "D:\\Project\\CAPSTONES\\VGAR\\src;D:\\Project\\CAPSTONES\\VGAR",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTEST_DISABLE_PLUGIN_AUTOLOAD": "1"
+  },
+  "status": "PASS",
+  "complete": true,
+  "test_result": {
+    "status": "PASS",
+    "command": "D:\\Project\\CAPSTONES\\VGAR\\.venv\\Scripts\\python.exe -m pytest -q -p no:cacheprovider --junitxml=D:\\Project\\CAPSTONES\\VGAR\\.m2-pytest-yyf7wlxt\\junit.xml tests/m2",
+    "argv": [
+      "D:\\Project\\CAPSTONES\\VGAR\\.venv\\Scripts\\python.exe",
+      "-m",
+      "pytest",
+      "-q",
+      "-p",
+      "no:cacheprovider",
+      "--junitxml=D:\\Project\\CAPSTONES\\VGAR\\.m2-pytest-yyf7wlxt\\junit.xml",
+      "tests/m2"
+    ],
+    "exit_code": 0,
+    "duration_ms": 10078,
+    "stdout": ".....................s.                                                  [100%]\r\n- generated xml file: D:\\Project\\CAPSTONES\\VGAR\\.m2-pytest-yyf7wlxt\\junit.xml -\r\n22 passed, 1 skipped in 9.44s\r\n",
+    "stderr": "",
+    "timeout_seconds": 120.0,
+    "cases": [
+      {
+        "name": "tests.m2.test_baseline::test_clean_baseline_is_pass_and_source_unchanged",
+        "status": "PASS",
+        "duration_ms": 719,
+        "detail": null
+      },
+      {
+        "name": "tests.m2.test_baseline::test_failing_baseline_is_fail_not_patch_failure",
+        "status": "PASS",
+        "duration_ms": 833,
+        "detail": null
+      },
+      {
+        "name": "tests.m2.test_baseline::test_timeout_is_recorded_and_workspace_cleaned",
+        "status": "PASS",
+        "duration_ms": 590,
+        "detail": null
+      },
+      {
+        "name": "tests.m2.test_baseline::test_writer_failure_leaves_pending_record",
+        "status": "PASS",
+        "duration_ms": 552,
+        "detail": null
+      },
+      {
+        "name": "tests.m2.test_contracts::test_patch_apply_contract_roundtrip",
+        "status": "PASS",
+        "duration_ms": 1,
+        "detail": null
+      },
+      {
+        "name": "tests.m2.test_contracts::test_failed_patch_requires_reason",
+        "status": "PASS",
+        "duration_ms": 1,
+        "detail": null
+      },
+      {
+        "name": "tests.m2.test_contracts::test_baseline_bundle_never_claims_unrun_checks",
+        "status": "PASS",
+        "duration_ms": 1,
+        "detail": null
+      },
+      {
+        "name": "tests.m2.test_contracts::test_invalid_success_exit_code_rejected",
+        "status": "PASS",
+        "duration_ms": 1,
+        "detail": null
+      },
+      {
+        "name": "tests.m2.test_contracts::test_check_default_is_not_run",
+        "status": "PASS",
+        "duration_ms": 1,
+        "detail": null
+      },
+      {
+        "name": "tests.m2.test_evidence_writer::test_pending_and_finished_are_one_file",
+        "status": "PASS",
+        "duration_ms": 34,
+        "detail": null
+      },
+      {
+        "name": "tests.m2.test_evidence_writer::test_two_runs_have_distinct_paths_and_interrupted_is_pending",
+        "status": "PASS",
+        "duration_ms": 31,
+        "detail": null
+      },
+      {
+        "name": "tests.m2.test_test_runner::test_pass_records_case_and_stdout",
+        "status": "PASS",
+        "duration_ms": 607,
+        "detail": null
+      },
+      {
+        "name": "tests.m2.test_test_runner::test_assertion_failure_is_fail_not_error",
+        "status": "PASS",
+        "duration_ms": 543,
+        "detail": null
+      },
+      {
+        "name": "tests.m2.test_test_runner::test_invalid_selector_rejected_without_running",
+        "status": "PASS",
+        "duration_ms": 3,
+        "detail": null
+      },
+      {
+        "name": "tests.m2.test_test_runner::test_timeout_is_error",
+        "status": "PASS",
+        "duration_ms": 529,
+        "detail": null
+      },
+      {
+        "name": "tests.m2.test_test_runner::test_missing_pytest_target_is_error",
+        "status": "PASS",
+        "duration_ms": 518,
+        "detail": null
+      },
+      {
+        "name": "tests.m2.test_test_runner::test_launch_failure_is_error",
+        "status": "PASS",
+        "duration_ms": 11,
+        "detail": null
+      },
+      {
+        "name": "tests.m2.test_test_runner::test_timeout_kills_spawned_child",
+        "status": "PASS",
+        "duration_ms": 3031,
+        "detail": null
+      },
+      {
+        "name": "tests.m2.test_test_runner::test_output_limit_is_error_even_for_fast_process",
+        "status": "PASS",
+        "duration_ms": 1062,
+        "detail": null
+      },
+      {
+        "name": "tests.m2.test_workspace::test_copy_is_isolated_and_cleaned",
+        "status": "PASS",
+        "duration_ms": 22,
+        "detail": null
+      },
+      {
+        "name": "tests.m2.test_workspace::test_parent_traversal_and_absolute_selector_rejected",
+        "status": "PASS",
+        "duration_ms": 0,
+        "detail": null
+      },
+      {
+        "name": "tests.m2.test_workspace::test_external_symlink_rejected",
+        "status": "NOT_RUN",
+        "duration_ms": 3,
+        "detail": "D:\\Project\\CAPSTONES\\VGAR\\tests\\m2\\test_workspace.py:46: symlink creation is not available"
+      },
+      {
+        "name": "tests.m2.test_workspace::test_large_source_rejected",
+        "status": "PASS",
+        "duration_ms": 4,
+        "detail": null
+      }
+    ],
+    "case_counts": {
+      "passed": 22,
+      "failed": 0,
+      "error": 0,
+      "skipped": 1
+    },
+    "reason": null,
+    "complete": true,
+    "output_truncated": false,
+    "stdout_bytes": 193,
+    "stderr_bytes": 0
+  },
+  "command": "D:\\Project\\CAPSTONES\\VGAR\\.venv\\Scripts\\python.exe -m pytest -q -p no:cacheprovider --junitxml=D:\\Project\\CAPSTONES\\VGAR\\.m2-pytest-yyf7wlxt\\junit.xml tests/m2"
+}

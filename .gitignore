@@ -1,5 +1,8 @@
 .env
 .__pycache__/
+__pycache__/
 vgar_mcp_mvp_demo.egg-info/
 .venv/
 logs/
+.m2-pytest-*/
+m2-temp/
