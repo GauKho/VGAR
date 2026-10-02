@@ -1,69 +1,39 @@
 from __future__ import annotations
 
-from pathlib import Path
+import os
 import sys
 from typing import Any
 
 from langchain_mcp_adapters.client import MultiServerMCPClient
 
+from vgar.config.settings import SECRET_KEYS, Settings, get_settings
 
-from vgar.config import load_mcp_config
-
-
-def _resolve_server_config(
-    server: dict[str, Any],
-) -> dict[str, Any]:
-    transport = server.get(
-        "transport",
-        "stdio",
-    )
-
-    if transport != "stdio":
-        return server
-
-    command = server.get("command")
-
-    if command == "python":
-        command = sys.executable
-
-    return {
-        **server,
-        "command": command,
-    }
+SERVER_NAMES = ("graph", "repository", "execution")
 
 
-def create_mcp_client() -> MultiServerMCPClient:
-    config = load_mcp_config()
+def _child_env(settings: Settings) -> dict[str, str]:
+    """Parent env minus secrets, with VGAR_* derived from the Settings object."""
+    env = {k: v for k, v in os.environ.items() if k not in SECRET_KEYS}
+    env.update(settings.to_env())
+    return env
 
-    raw_servers = config.get("servers", {})
 
-    if not raw_servers:
-        raise RuntimeError(
-            "No MCP servers configured."
-        )
+def create_mcp_client(settings: Settings | None = None) -> MultiServerMCPClient:
+    settings = settings or get_settings()
+    env = _child_env(settings)
 
     connections = {
-        name: _resolve_server_config(server)
-        for name, server in raw_servers.items()
+        name: {
+            "transport": "stdio",
+            "command": sys.executable,  # same interpreter/venv as the caller
+            "args": ["-m", f"vgar.mcp.servers.{name}_server"],
+            "env": env,
+        }
+        for name in SERVER_NAMES
     }
-
-    client_config = config.get(
-        "client",
-        {},
-    )
 
     return MultiServerMCPClient(
         connections,
-        tool_name_prefix=bool(
-            client_config.get(
-                "tool_name_prefix",
-                True,
-            )
-        ),
-        handle_tool_errors=bool(
-            client_config.get(
-                "handle_tool_errors",
-                True,
-            )
-        ),
+        tool_name_prefix=True,
+        handle_tool_errors=True,
     )

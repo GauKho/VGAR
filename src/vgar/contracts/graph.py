@@ -37,16 +37,29 @@ class GraphRange(BaseModel):
     end_col: int | None = None
 
 
-class GraphNodeRef(BaseModel):
+class GraphNodeRepo(BaseModel):
+    """Frozen public repository-node payload used across M1 -> M3 boundaries."""
+
     node_id: str
-    node_type: str
-    repo_key: str
-    name: str
-    qualified_name: str
+    type: str
     path: str | None = None
-    source_range: GraphRange | None = None
-    content_hash: str | None = None
-    properties: dict[str, Any] = Field(default_factory=dict)
+    start_line: int | None = None
+    start_col: int | None = None
+    end_line: int | None = None
+    end_col: int | None = None
+    confidence: float = Field(default=1.0, ge=0.0, le=1.0)
+    provenance: str
+    metadata: dict[str, Any] = Field(default_factory=dict)
+
+
+class GraphNodeRef(BaseModel):
+    """Public GraphNode wrapper frozen at W1-W2.
+
+    M1 may keep its internal JSON/SQLite node representation flat; the service
+    adapter maps it to this boundary contract.
+    """
+
+    repo: GraphNodeRepo
 
 
 class GraphEdgeRef(BaseModel):

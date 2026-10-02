@@ -1,3 +1,4 @@
+from langchain_core.messages import SystemMessage
 from langgraph.graph import (
     END,
     START,
@@ -9,35 +10,32 @@ from langgraph.prebuilt import (
     tools_condition,
 )
 
-from vgar.config.settings import get_settings
-from vgar.mcp.client import create_mcp_client
-from vgar.models.huggingface import create_huggingface_model
+from vgar.agents.core import load_mcp_tools, load_system_prompt
+from vgar.config.settings import Settings, get_settings
+from vgar.models.factory import create_core_model
 
 
-async def create_agent():
-    settings = get_settings()
+async def create_agent(settings: Settings | None = None):
+    settings = settings or get_settings()
 
     # 1. Load MCP tools
-    client = create_mcp_client()
+    tools = await load_mcp_tools(settings)
 
-    tools = await client.get_tools()
-
-    # 2. Create core LLM
-    model = create_huggingface_model(
-        settings,
-    )
+    # 2. Create core LLM (single factory, driven by Settings)
+    model = create_core_model(settings.model)
 
     # 3. Bind MCP tools to model
     model_with_tools = model.bind_tools(
         tools,
     )
+    system_message = SystemMessage(content=load_system_prompt())
 
     # 4. Model node
     async def call_model(
         state: MessagesState,
     ):
         response = await model_with_tools.ainvoke(
-            state["messages"]
+            [system_message, *state["messages"]]
         )
 
         return {

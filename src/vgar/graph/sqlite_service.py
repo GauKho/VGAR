@@ -3,7 +3,7 @@ from __future__ import annotations
 from vgar.contracts.graph import (
     GraphEdgeRef,
     GraphNodeRef,
-    GraphRange,
+    GraphNodeRepo,
     GraphSubgraphResult,
     RepositorySummaryResult,
     SearchSymbolsResult,
@@ -63,16 +63,29 @@ def _to_symbol_contract(symbol: StoredSymbol) -> SymbolRef:
 
 
 def _to_node_contract(node: StoredNode) -> GraphNodeRef:
-    source_range = None
-    if any(value is not None for value in (node.start_line, node.start_col, node.end_line, node.end_col)):
-        source_range = GraphRange(
-            start_line=node.start_line, start_col=node.start_col,
-            end_line=node.end_line, end_col=node.end_col,
-        )
+    # Keep M1's builder/SQLite schema unchanged and adapt only at the frozen
+    # VGAR boundary. Source-backed nodes are syntactically extracted by
+    # tree-sitter; SQLite is persistence, not provenance.
+    provenance = "tree-sitter" if node.path is not None else "graph-builder"
     return GraphNodeRef(
-        node_id=node.node_id, node_type=node.node_type, repo_key=node.repo_key,
-        name=node.name, qualified_name=node.qualified_name, path=node.path,
-        source_range=source_range, content_hash=node.content_hash, properties=node.properties,
+        repo=GraphNodeRepo(
+            node_id=node.node_id,
+            type=node.node_type,
+            path=node.path,
+            start_line=node.start_line,
+            start_col=node.start_col,
+            end_line=node.end_line,
+            end_col=node.end_col,
+            confidence=1.0,
+            provenance=provenance,
+            metadata={
+                "repo_key": node.repo_key,
+                "name": node.name,
+                "qualified_name": node.qualified_name,
+                "content_hash": node.content_hash,
+                "properties": node.properties,
+            },
+        )
     )
 
 

@@ -1,8 +1,9 @@
 .env
 .__pycache__/
 __pycache__/
+.pytest_cache/
 vgar_mcp_mvp_demo.egg-info/
 .venv/
-logs/
 .m2-pytest-*/
 m2-temp/
+tore -- README.md pyproject.toml

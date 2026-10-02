@@ -13,5 +13,8 @@ Requires-Dist: langchain-mcp-adapters==0.3.2
 Requires-Dist: mcp[cli]<2,>=1.24
 Requires-Dist: jedi==0.20.0
 Requires-Dist: pydantic>=2
+Requires-Dist: python-dotenv>=1.0
 Requires-Dist: tree-sitter==0.26.0
 Requires-Dist: tree-sitter-python==0.25.0
+Provides-Extra: dev
+Requires-Dist: pytest<9,>=8; extra == "dev"

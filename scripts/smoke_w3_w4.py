@@ -1,70 +1,87 @@
 from __future__ import annotations
 
+import argparse
 import asyncio
 import json
 import os
-
-from vgar.mcp import create_mcp_client
-from vgar.mcp.registry import W3_W4_REQUIRED_GRAPH_TOOLS, validate_required_tools
-
-import json
-from typing import Any
+from pathlib import Path
 
 
-def parse_mcp_result(result: Any) -> dict:
-    """Normalize LangChain/MCP tool output into a Python dict."""
+# W3-W4 is the M1 integration checkpoint, so this smoke test intentionally
+# exercises the real SQLite backend by default. Production/backend selection
+# remains configurable through create_graph_service().
+_REPO_ROOT = Path(__file__).resolve().parents[1]
+os.environ.setdefault("VGAR_GRAPH_BACKEND", "sqlite")
+os.environ.setdefault(
+    "VGAR_GRAPH_DATABASE",
+    str((_REPO_ROOT / "artifacts" / "sample_graph.db").resolve()),
+)
 
-    # MCP/LangChain may already return a dictionary.
-    if isinstance(result, dict):
-        return result
+from vgar.mcp import create_mcp_client  # noqa: E402
+from vgar.mcp.registry import W3_W4_REQUIRED_GRAPH_TOOLS, validate_required_tools  # noqa: E402
 
-    # Older/simple adapters may return raw JSON text.
-    if isinstance(result, str):
-        return json.loads(result)
 
-    # Current langchain-mcp-adapters may return MCP content blocks.
-    if isinstance(result, list):
-        for block in result:
-            # Common dict representation:
-            # {"type": "text", "text": "..."}
-            if isinstance(block, dict):
-                text = block.get("text")
-                if isinstance(text, str):
-                    return json.loads(text)
 
-            # Some MCP versions expose TextContent objects.
-            text = getattr(block, "text", None)
-            if isinstance(text, str):
-                return json.loads(text)
+from vgar.mcp.result_parser import parse_mcp_json_result  # noqa: E402
 
-    raise TypeError(
-        f"Unsupported MCP result type: {type(result).__name__}: {result!r}"
-    )
 
-async def main() -> None:
+async def main(query: str) -> None:
+    expected_backend = os.environ["VGAR_GRAPH_BACKEND"].strip().lower()
     client = create_mcp_client()
     tools = await client.get_tools()
     validate_required_tools(tools, W3_W4_REQUIRED_GRAPH_TOOLS)
     by_name = {tool.name: tool for tool in tools}
 
-    search = await by_name["graph_search_symbols"].ainvoke({"query": "login", "limit": 10})
+    search_raw = await by_name["graph_search_symbols"].ainvoke(
+        {"query": query, "limit": 10}
+    )
+    search = parse_mcp_json_result(search_raw)
     print("graph_search_symbols:")
-    print(search)
+    print(json.dumps(search, indent=2, ensure_ascii=False))
 
-    payload = parse_mcp_result(search)
-    symbols = payload.get("symbols", [])
+    backend = search.get("metadata", {}).get("backend")
+    if backend != expected_backend:
+        raise RuntimeError(
+            "W3-W4 smoke used the wrong graph backend: "
+            f"expected={expected_backend!r}, actual={backend!r}"
+        )
+
+    symbols = search.get("symbols", [])
     if not symbols:
-        raise RuntimeError("W3-W4 smoke failed: no symbol matching 'login'")
+        raise RuntimeError(f"W3-W4 smoke failed: no symbol matching {query!r}")
 
     symbol_id = symbols[0]["symbol_id"]
-    callers = await by_name["graph_get_callers"].ainvoke({"symbol_id": symbol_id, "depth": 1})
-    callees = await by_name["graph_get_callees"].ainvoke({"symbol_id": symbol_id, "depth": 1})
+    callers = parse_mcp_json_result(
+        await by_name["graph_get_callers"].ainvoke(
+            {"symbol_id": symbol_id, "depth": 1}
+        )
+    )
+    callees = parse_mcp_json_result(
+        await by_name["graph_get_callees"].ainvoke(
+            {"symbol_id": symbol_id, "depth": 1}
+        )
+    )
+
+    if callers.get("metadata", {}).get("backend") != expected_backend:
+        raise RuntimeError("graph_get_callers did not use the expected backend")
+    if callees.get("metadata", {}).get("backend") != expected_backend:
+        raise RuntimeError("graph_get_callees did not use the expected backend")
+
     print("graph_get_callers:")
-    print(callers)
+    print(json.dumps(callers, indent=2, ensure_ascii=False))
     print("graph_get_callees:")
-    print(callees)
-    print("W3-W4 MCP tool smoke PASS")
+    print(json.dumps(callees, indent=2, ensure_ascii=False))
+    print(f"W3-W4 MCP tool smoke PASS (backend={expected_backend})")
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    parser = argparse.ArgumentParser(
+        description="Smoke-test W3-W4 graph MCP tools through langchain-mcp-adapters."
+    )
+    parser.add_argument(
+        "--query",
+        default=os.getenv("VGAR_W3_W4_QUERY", "login"),
+        help="Symbol query expected to exist in the configured graph database.",
+    )
+    args = parser.parse_args()
+    asyncio.run(main(args.query))

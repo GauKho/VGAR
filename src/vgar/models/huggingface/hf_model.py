@@ -23,6 +23,8 @@ DEFAULT_MODEL_ID = "Qwen/Qwen3-4B-Instruct-2507"
 def create_local_chat_model(
     model_id: str = DEFAULT_MODEL_ID,
     max_new_tokens: int = 256,
+    device_map: str = "auto",
+    torch_dtype: str = "auto",
 ) -> LocalChatModel:
 
     print(
@@ -45,8 +47,8 @@ def create_local_chat_model(
 
     model = AutoModelForCausalLM.from_pretrained(
         model_id,
-        torch_dtype="auto",
-        device_map="auto",
+        torch_dtype=torch_dtype,
+        device_map=device_map,
     )
 
     print(

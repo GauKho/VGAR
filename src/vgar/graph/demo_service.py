@@ -3,6 +3,7 @@ from __future__ import annotations
 from vgar.contracts.graph import (
     GraphEdgeRef,
     GraphNodeRef,
+    GraphNodeRepo,
     GraphSubgraphResult,
     RepositorySummaryResult,
     SearchSymbolsResult,
@@ -50,9 +51,20 @@ class DemoGraphService:
     def get_node(self, node_id: str) -> GraphNodeRef:
         symbol = self._find(node_id)
         return GraphNodeRef(
-            node_id=symbol.symbol_id, node_type="Function", repo_key="demo",
-            name=symbol.name, qualified_name=symbol.symbol_id, path=symbol.path,
-            properties={},
+            repo=GraphNodeRepo(
+                node_id=symbol.symbol_id,
+                type="Function",
+                path=symbol.path,
+                confidence=1.0,
+                provenance="demo-fixture",
+                metadata={
+                    "repo_key": "demo",
+                    "name": symbol.name,
+                    "qualified_name": symbol.symbol_id,
+                    "content_hash": None,
+                    "properties": {},
+                },
+            )
         )
 
     def get_subgraph(self, node_id: str, *, depth: int = 2, limit: int = 200) -> GraphSubgraphResult:

@@ -23,9 +23,13 @@ dependencies = [
 
     "jedi==0.20.0",
     "pydantic>=2",
+    "python-dotenv>=1.0",
     "tree-sitter==0.26.0",
     "tree-sitter-python==0.25.0",
 ]
+
+[project.scripts]
+vgar = "vgar.cli:main"
 
 [project.optional-dependencies]
 dev = ["pytest>=8,<9"]

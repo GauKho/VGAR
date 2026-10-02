@@ -5,8 +5,9 @@ from pathlib import Path
 from langchain.agents import create_agent
 from langchain_core.tools import BaseTool
 
+from vgar.config.settings import Settings, get_settings
 from vgar.mcp import create_mcp_client
-from vgar.models.huggingface.hf_model import create_local_chat_model
+from vgar.models.factory import create_core_model
 
 
 PROMPT_PATH = (
@@ -22,8 +23,8 @@ def load_system_prompt() -> str:
     )
 
 
-async def load_mcp_tools() -> list[BaseTool]:
-    client = create_mcp_client()
+async def load_mcp_tools(settings: Settings | None = None) -> list[BaseTool]:
+    client = create_mcp_client(settings)
 
     tools = await client.get_tools()
 
@@ -35,10 +36,12 @@ async def load_mcp_tools() -> list[BaseTool]:
     return tools
 
 
-async def create_core_agent():
-    tools = await load_mcp_tools()
+async def create_core_agent(settings: Settings | None = None):
+    settings = settings or get_settings()
 
-    model = create_local_chat_model()
+    tools = await load_mcp_tools(settings)
+
+    model = create_core_model(settings.model)
 
     agent = create_agent(
         model=model,

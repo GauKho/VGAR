@@ -1,27 +1,69 @@
+"""Single source of configuration for VGAR.
+
+Precedence (high -> low):  real environment  >  .env  >  defaults below.
+Nothing else in the code base should call os.getenv for VGAR_* / HF_* keys.
+"""
 from __future__ import annotations
 
-from dataclasses import dataclass
+import os
+from dataclasses import dataclass, field
+from functools import lru_cache
 from pathlib import Path
-from typing import Any
 
-import yaml
-
+from dotenv import load_dotenv
 
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
-CONFIG_DIR = PROJECT_ROOT / "configs"
+
+# Never forwarded to MCP child processes (the execution server runs pytest on
+# untrusted repositories, so secrets must not be in its environment).
+SECRET_KEYS = frozenset({"HF_TOKEN", "HUGGING_FACE_HUB_TOKEN", "OPENAI_API_KEY"})
 
 
-def _load_yaml(path: Path) -> dict[str, Any]:
-    if not path.exists():
-        raise FileNotFoundError(f"Config file does not exist: {path}")
+def load_env(dotenv_path: Path | None = None) -> None:
+    """Load .env without overriding variables that are already set."""
+    load_dotenv(dotenv_path or PROJECT_ROOT / ".env", override=False)
 
-    with path.open("r", encoding="utf-8") as file:
-        data = yaml.safe_load(file) or {}
 
-    if not isinstance(data, dict):
-        raise ValueError(f"Expected mapping in config: {path}")
+# --------------------------------------------------------------------- parsers
+def _raw(name: str) -> str | None:
+    value = os.environ.get(name)
+    return value.strip() if value and value.strip() else None  # "" == unset
 
-    return data
+
+def _str(name: str, default: str) -> str:
+    return _raw(name) or default
+
+
+def _int(name: str, default: int) -> int:
+    value = _raw(name)
+    try:
+        return default if value is None else int(value)
+    except ValueError as exc:
+        raise ValueError(f"{name} must be an integer, got {value!r}") from exc
+
+
+def _float(name: str, default: float) -> float:
+    value = _raw(name)
+    try:
+        return default if value is None else float(value)
+    except ValueError as exc:
+        raise ValueError(f"{name} must be a number, got {value!r}") from exc
+
+
+def _path(name: str, default: str) -> Path:
+    path = Path(_str(name, default)).expanduser()
+    return path if path.is_absolute() else (PROJECT_ROOT / path).resolve()
+
+
+# -------------------------------------------------------------------- sections
+@dataclass(frozen=True)
+class ModelSettings:
+    provider: str = "huggingface"
+    model_id: str = "Qwen/Qwen3-4B-Instruct-2507"
+    temperature: float = 0.0
+    max_new_tokens: int = 512
+    device_map: str = "auto"
+    torch_dtype: str = "auto"
 
 
 @dataclass(frozen=True)
@@ -29,53 +71,69 @@ class AgentSettings:
     max_iterations: int = 5
     max_tool_calls: int = 30
     recursion_limit: int = 50
+    token_budget: int = 8000
 
 
 @dataclass(frozen=True)
-class ModelSettings:
-    provider: str
-    model_id: str
-    temperature: float
-    max_new_tokens: int
-    device: str
-    torch_dtype: str
-    trust_remote_code: bool
+class GraphSettings:
+    backend: str = "demo"  # demo | sqlite
+    database: Path | None = None
+    version: str | None = None
 
 
-def load_agent_settings() -> AgentSettings:
-    config = _load_yaml(CONFIG_DIR / "agent.yaml")
+@dataclass(frozen=True)
+class Settings:
+    model: ModelSettings = field(default_factory=ModelSettings)
+    agent: AgentSettings = field(default_factory=AgentSettings)
+    graph: GraphSettings = field(default_factory=GraphSettings)
+    audit_log: Path = PROJECT_ROOT / "logs" / "mcp_audit.jsonl"
 
-    agent = config.get("agent", {})
-    workflow = config.get("workflow", {})
+    def to_env(self) -> dict[str, str]:
+        """Variables the MCP servers read (graph/factory.py, graph_server.py)."""
+        src = str(PROJECT_ROOT / "src")
+        pythonpath = os.pathsep.join(p for p in (src, os.environ.get("PYTHONPATH", "")) if p)
+        return {
+            "VGAR_GRAPH_BACKEND": self.graph.backend,
+            "VGAR_GRAPH_DATABASE": str(self.graph.database or ""),
+            "VGAR_GRAPH_VERSION": self.graph.version or "",
+            "VGAR_MCP_AUDIT_LOG": str(self.audit_log),
+            "PYTHONPATH": pythonpath,
+        }
 
-    return AgentSettings(
-        max_iterations=int(agent.get("max_iterations", 5)),
-        max_tool_calls=int(agent.get("max_tool_calls", 30)),
-        recursion_limit=int(workflow.get("recursion_limit", 50)),
+
+def _build() -> Settings:
+    database = _raw("VGAR_GRAPH_DATABASE")
+    return Settings(
+        model=ModelSettings(
+            provider=_str("VGAR_MODEL_PROVIDER", "huggingface").lower(),
+            model_id=_str("HF_MODEL_ID", ModelSettings.model_id),
+            temperature=_float("VGAR_TEMPERATURE", 0.0),
+            max_new_tokens=_int("MAX_NEW_TOKENS", 512),
+            device_map=_str("VGAR_DEVICE_MAP", "auto"),
+            torch_dtype=_str("VGAR_TORCH_DTYPE", "auto"),
+        ),
+        agent=AgentSettings(
+            max_iterations=_int("MAX_ITERATIONS", 5),
+            max_tool_calls=_int("VGAR_MAX_TOOL_CALLS", 30),
+            recursion_limit=_int("VGAR_RECURSION_LIMIT", 50),
+            token_budget=_int("VGAR_TOKEN_BUDGET", 8000),
+        ),
+        graph=GraphSettings(
+            backend=_str("VGAR_GRAPH_BACKEND", "demo").lower(),
+            database=_path("VGAR_GRAPH_DATABASE", database) if database else None,
+            version=_raw("VGAR_GRAPH_VERSION"),
+        ),
+        audit_log=_path("VGAR_MCP_AUDIT_LOG", "logs/mcp_audit.jsonl"),
     )
 
 
-def load_model_settings() -> ModelSettings:
-    config = _load_yaml(CONFIG_DIR / "model.yaml")
-
-    model = config.get("model", {})
-    generation = config.get("generation", {})
-    runtime = config.get("runtime", {})
-
-    return ModelSettings(
-        provider=str(config.get("provider", "huggingface")),
-        model_id=str(model["model_id"]),
-        temperature=float(generation.get("temperature", 0.0)),
-        max_new_tokens=int(
-            generation.get("max_new_tokens", 2048)
-        ),
-        device=str(runtime.get("device", "auto")),
-        torch_dtype=str(runtime.get("torch_dtype", "auto")),
-        trust_remote_code=bool(
-            runtime.get("trust_remote_code", True)
-        ),
-    )
+@lru_cache(maxsize=1)
+def get_settings() -> Settings:
+    load_env()
+    return _build()
 
 
-def load_mcp_config() -> dict[str, Any]:
-    return _load_yaml(CONFIG_DIR / "mcp.yaml")
+def reload_settings() -> Settings:
+    """Drop the cache (tests / after changing os.environ at runtime)."""
+    get_settings.cache_clear()
+    return get_settings()
