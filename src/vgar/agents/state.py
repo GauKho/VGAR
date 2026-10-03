@@ -14,6 +14,17 @@ class VGARState(TypedDict, total=False):
     repo_path: str
 
     # ---------------------------------------------------------
+    # Sandbox (created by prepare_workspace)
+    # ---------------------------------------------------------
+
+    work_dir: str
+    workspace_path: str
+    worktree_id: str
+    source_hash_before: str
+    graph_db: str
+    graph_node_count: int
+
+    # ---------------------------------------------------------
     # Original task
     # ---------------------------------------------------------
 
@@ -40,6 +51,7 @@ class VGARState(TypedDict, total=False):
     # ---------------------------------------------------------
 
     agent_messages: list[Any]
+    tool_call_count: int
 
     # ---------------------------------------------------------
     # Repair artifacts

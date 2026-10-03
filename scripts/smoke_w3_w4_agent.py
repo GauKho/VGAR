@@ -98,7 +98,7 @@ class ScriptedToolModel(BaseChatModel):
             msg = AIMessage(content="", tool_calls=[{"name": name, "args": args, "id": f"call_{uuid.uuid4().hex[:8]}"}])
             return ChatResult(generations=[ChatGeneration(message=msg)])
 
-        symbols = tool_json(results[0]).get("symbols", []) if step >= 1 else []
+        symbols = (tool_json(results[0]).get("data") or {}).get("symbols", []) if step >= 1 else []
         target = next((s for s in symbols if str(s.get("symbol_id", "")).endswith(f".{c.symbol_query}")),
                       symbols[0] if symbols else {})
         sym_id = target.get("symbol_id", "")

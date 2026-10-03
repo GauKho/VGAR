@@ -46,6 +46,8 @@ EDGE_ENDPOINTS: dict[str, set[tuple[str, str]]] = {
         ("Method", "Class"),
         ("Method", "CallSite"),
         ("Test", "CallSite"),
+        ("Test", "Function"),
+        ("Test", "Class"),
     },
     "IMPORTS": {("Import", "Module")},
     "INHERITS": {("Class", "Class")},

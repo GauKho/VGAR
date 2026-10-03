@@ -120,14 +120,14 @@ async def run(query: str, keep: bool, strict_resources: bool) -> None:
     stage("3. Graph tools + resources via MCP")
     search = await call("graph_search_symbols", {"query": query, "limit": 10})
     check("search backend is sqlite", search["metadata"]["backend"] == "sqlite")
-    check(f"search {query!r} returns symbols", len(search["symbols"]) > 0)
-    symbol_id = search["symbols"][0]["symbol_id"]
+    check(f"search {query!r} returns symbols", len(search["data"]["symbols"]) > 0)
+    symbol_id = search["data"]["symbols"][0]["symbol_id"]
 
     callers = await call("graph_get_callers", {"symbol_id": symbol_id, "depth": 1})
     callees = await call("graph_get_callees", {"symbol_id": symbol_id, "depth": 1})
-    check("callers response OK", callers["status"] == "OK" and "callers" in callers)
-    check("callees response OK", callees["status"] == "OK" and "callees" in callees)
-    print(f"     symbol={symbol_id} callers={len(callers['callers'])} callees={len(callees['callees'])}")
+    check("callers response OK", callers["status"] == "PASS" and "callers" in callers["data"])
+    check("callees response OK", callees["status"] == "PASS" and "callees" in callees["data"])
+    print(f"     symbol={symbol_id} callers={len(callers['data']['callers'])} callees={len(callees['data']['callees'])}")
 
     # Resources (vgar://...) - read through the graph server connection.
     async def read_resource(uri: str) -> dict:

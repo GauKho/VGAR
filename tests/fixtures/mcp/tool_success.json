@@ -1,0 +1,22 @@
+{
+  "status": "PASS",
+  "data": {
+    "query": "login",
+    "limit": 20,
+    "symbols": [
+      {
+        "symbol_id": "vgar:demo/vgar-fixture:python:function:src/auth/service.py:auth.service.login",
+        "name": "login",
+        "kind": "function",
+        "path": "src/auth/service.py"
+      }
+    ]
+  },
+  "error": null,
+  "metadata": {
+    "duration_ms": 0,
+    "request_id": "00000000000000000000000000000000",
+    "backend": "sqlite",
+    "tool": "search_symbols"
+  }
+}

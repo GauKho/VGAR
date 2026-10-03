@@ -1,120 +1,226 @@
-# VGAR-MCP — M1 Graph & Retrieval
+# VGAR-MCP
 
-Thư mục làm việc độc lập. Mục tiêu là xây graph construction, storage và retrieval.
-
-## Cấu trúc hiện tại
+Verified Graph-Augmented Reasoning via Model Context Protocol: agent sửa lỗi Python dựa trên graph của repository, gọi tool qua MCP và xác minh patch bằng test.
 
 ```text
-M1/
-├── src/vgar/graph/
-│   ├── builder.py
-│   ├── context.py
-│   ├── errors.py
-│   ├── schema.py
-│   ├── sqlite_store.py
-│   ├── sqlite_service.py
-│   └── factory.py
-├── scripts/load_graph_fixture.py
-├── scripts/build_graph.py
-└── tests/
-    ├── fixtures/
-    ├── test_graph_schema.py
-    └── test_sqlite_graph_service.py
+vgar CLI ──► LangChain / LangGraph agent ──► langchain-mcp-adapters
+                   │                              │
+          Settings (.env)                 ┌───────┼────────────┐
+                   │                    graph   repository   execution
+             HF model (local)           (M1)       (M2)        (M2)
 ```
 
-## Ranh giới với M3
+| Phần | Owner | Thư mục |
+|---|---|---|
+| Graph & Retrieval | M1 | `src/vgar/graph/` |
+| Repair & Verification | M2 | `src/vgar/repair/`, `src/vgar/mcp/servers/{repository,execution}_server.py` |
+| MCP, Agent, Evaluation | M3 | `src/vgar/mcp/`, `src/vgar/agents/`, `src/vgar/cli.py` |
+| Config, Model | chung | `src/vgar/config/`, `src/vgar/models/` |
 
-M1 không sở hữu MCP decorators, MCP transport hoặc LangChain/LangGraph orchestration. M1 cung cấp backend tuân theo interface hiện có của M3:
+---
+
+## 1. Cài đặt
+
+Yêu cầu: Python 3.11–3.13. GPU CUDA là tùy chọn nhưng nên có cho model local.
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+
+pip install -e .            # thêm '.[dev]' nếu cần pytest
+copy .env.example .env      # rồi điền HF_TOKEN
+```
+
+Sau `pip install -e .` có lệnh `vgar`. Nếu chưa muốn cài entry point: `python -m vgar.cli <lệnh>`.
+
+---
+
+## 2. Cấu hình (`.env`)
+
+Toàn bộ cấu hình nằm ở `src/vgar/config/settings.py` và được nạp từ `.env`. Không còn YAML (`configs/*.yaml` không được đọc nữa).
+
+**Thứ tự ưu tiên:** biến môi trường thật > `.env` > giá trị mặc định trong code.
+
+Ví dụ đặt tạm một biến cho một phiên shell: `$env:MAX_NEW_TOKENS = "1024"`.
+
+| Biến | Mặc định | Ý nghĩa |
+|---|---|---|
+| `VGAR_MODEL_PROVIDER` | `huggingface` | Hiện chỉ hỗ trợ `huggingface` |
+| `HF_MODEL_ID` | `Qwen/Qwen3-4B-Instruct-2507` | Model local |
+| `HF_TOKEN` | – | Token HF, chỉ dùng ở tiến trình chính |
+| `VGAR_TEMPERATURE` | `0` | Model local chỉ chạy greedy; giá trị khác 0 sẽ báo lỗi |
+| `MAX_NEW_TOKENS` | `512` | Giới hạn token sinh ra |
+| `VGAR_DEVICE_MAP` | `auto` | Truyền vào `device_map` của transformers |
+| `VGAR_TORCH_DTYPE` | `auto` | Truyền vào `torch_dtype` |
+| `MAX_ITERATIONS` | `5` | |
+| `VGAR_MAX_TOOL_CALLS` | `30` | CLI cảnh báo nếu agent vượt ngân sách này |
+| `VGAR_RECURSION_LIMIT` | `50` | `recursion_limit` của LangGraph |
+| `VGAR_TOKEN_BUDGET` | `8000` | Ngân sách context retrieval |
+| `VGAR_GRAPH_BACKEND` | `demo` | `demo` hoặc `sqlite` |
+| `VGAR_GRAPH_DATABASE` | – | Bắt buộc khi backend là `sqlite`; đường dẫn tương đối tính từ thư mục gốc project |
+| `VGAR_GRAPH_VERSION` | – | Ghim một snapshot; để trống = snapshot ready mới nhất |
+| `VGAR_MCP_AUDIT_LOG` | `logs/mcp_audit.jsonl` | File audit của MCP server |
+| `VGAR_M2_TEMP_ROOT` | `<cha của repo>/m2-temp` | Thư mục workspace tạm của script M2 (chưa nằm trong `Settings`, đọc trực tiếp bởi script) |
+
+Quy tắc cần nhớ:
+
+- Biến để trống (`VGAR_GRAPH_VERSION=`) được coi là chưa đặt.
+- Giá trị sai kiểu (ví dụ `MAX_NEW_TOKENS=abc`) báo lỗi nêu đúng tên biến.
+- Các MCP server con nhận `VGAR_*` từ `Settings` nhưng **không** nhận `HF_TOKEN`, vì `execution_server` chạy pytest trên repo không tin cậy.
+- Code mới không gọi `os.getenv` cho biến `VGAR_*`/`HF_*`; hãy dùng `get_settings()`.
 
 ```python
-search_symbols(query: str, limit: int = 20)
-get_callers(symbol_id: str)
-get_callees(symbol_id: str)
+from vgar.config import get_settings
+
+s = get_settings()
+s.model.model_id, s.agent.max_tool_calls, s.graph.backend
 ```
 
-`sqlite_service.py` cố ý import DTO từ `vgar.contracts.graph` của M3. Đây là compatibility boundary; không nhân bản contract sang M1.
+---
 
-## Chạy test schema độc lập
-
-Từ `D:\KLTN\M1`:
+## 3. CLI
 
 ```powershell
-$env:PYTHONPATH = "D:\KLTN\M1\src"
-python -m unittest discover -s tests -p "test_graph_schema.py" -v
+vgar doctor                # in settings đã resolve, không load model
+vgar tools                 # dựng 3 MCP server, liệt kê 8 tool
+vgar index tests/fixtures/m2/failing_repo --db artifacts/graph.db
+vgar run "Fix the failing test" --repo tests/fixtures/m2/failing_repo `
+    --selector tests/test_demo.py::test_answer --engine langgraph
+vgar chat --repo tests/fixtures/m2/failing_repo        # REPL, giữ lịch sử hội thoại
 ```
 
-Môi trường phát triển chuẩn hiện tại là `.venv-win` (Python 3.12). Chạy toàn bộ tests:
+| Lệnh | Việc làm | Cần model |
+|---|---|---|
+| `vgar doctor` | In settings đã resolve và cho biết `HF_TOKEN` có được đặt không | không |
+| `vgar tools` | Spawn graph/repository/execution server và liệt kê tool (kỳ vọng: 8) | không |
+| `vgar index REPO --db PATH` | Build graph snapshot của REPO vào SQLite (mặc định `artifacts/graph.db`) | không |
+| `vgar run "<task>" --repo REPO` | Chạy agent một lượt | có |
+| `vgar chat --repo REPO` | Chạy agent nhiều lượt; dòng trống hoặc Ctrl-D để thoát | có |
 
-```powershell
-$env:PYTHONPATH = "D:\KLTN\M1\src;D:\KLTN\VGAR\src"
-$env:PYTHONDONTWRITEBYTECODE = "1"
-& ".\.venv-win\Scripts\python.exe" -m unittest discover -s tests -p "test_*.py" -v
+Tùy chọn của `run` và `chat`:
+
+| Cờ | Ý nghĩa |
+|---|---|
+| `--selector tests/x.py::test_y` | pytest selector. Với `run`, CLI tự chạy lại pytest độc lập sau khi agent xong |
+| `--engine langchain` (mặc định) | `create_agent` của langchain, trong `agents/core.py` |
+| `--engine langgraph` | `StateGraph` tự dựng, trong `agents/graph.py` |
+| `--keep` | Giữ thư mục tạm để kiểm tra sau |
+
+### Cách `run` và `chat` hoạt động
+
+```text
+REPO ──index──► graph.db (tạm, backend=sqlite)
+  └──copy────► workspace tạm (vgar-m2-*)  ◄── agent chỉ sửa bản này
+                         │
+                 pytest độc lập ──► PASS/FAIL (không tin lời agent)
 ```
 
-## Chạy contract test với M3
+- Repo gốc không bị sửa. CLI so sánh fingerprint trước và sau, rồi in `source repo untouched`.
+- Exit code của `run` là 0 khi pytest độc lập PASS và repo gốc không đổi, ngược lại là 1. Nếu không truyền `--selector`, bước pytest độc lập bị bỏ qua.
+- `run` và `chat` luôn dùng graph tạm của chính REPO, bất kể `VGAR_GRAPH_BACKEND` trong `.env`. `.env` chỉ quyết định backend cho `vgar tools` và các script.
 
-Sau khi cài dependencies trong môi trường phát triển:
+### Smoke test
 
 ```powershell
-$env:PYTHONPATH = "D:\KLTN\M1\src;D:\KLTN\VGAR\src"
-python -m unittest discover -s tests -p "test_sqlite_graph_service.py" -v
+python scripts/smoke_w3_w4_agent.py --model scripted   # không cần GPU, kiểm tra orchestrator + MCP
+python scripts/smoke_w3_w4_agent.py --model hf --query "Fix the failing test tests/test_demo.py::test_answer"
 ```
 
-Thứ tự `M1\src` trước `VGAR\src` cho phép thêm implementation `vgar.graph.*`, còn DTO `vgar.contracts.graph` và port tiếp tục lấy từ repo M3.
+Nếu `scripted` pass mà `hf` fail, lỗi nằm ở model (prompt hoặc định dạng tool-call), không phải ở MCP hay orchestrator.
 
-## Cách tích hợp dự kiến
+---
 
-M3 chỉ cần thay điểm khởi tạo trong `graph_server.py` từ `DemoGraphService()` sang factory khi hai bên sẵn sàng merge. Backend `demo` vẫn là mặc định, vì vậy smoke flow hiện tại của M3 không bị phá.
-
-Không copy SQLite schema hoặc query logic vào MCP server. MCP server chỉ gọi `GraphService` để giữ storage implementation thuộc M1.
-
-## M2 W3–W4: baseline repair/verification infrastructure
-
-This integrated `VGAR` tree contains M1 graph and M3 MCP code plus M2's disposable workspace, pytest wrapper, and pre-patch EvidenceBundle. The older `D:\KLTN\M1` instructions in this README describe the original standalone M1 workspace; use the commands below from this `VGAR` root for M2.
-
-Install the development test dependency in a Python 3.11–3.13 environment (the full project dependencies are listed in `pyproject.toml`):
+## 4. Test
 
 ```powershell
-python -m pip install -e '.[dev]'
-$env:VGAR_M2_TEMP_ROOT = 'D:\Project\CAPSTONES\m2-temp'
+python -m pytest -q
+```
+
+`pyproject.toml` đã đặt `pythonpath = ["src"]` và bỏ qua `tests/fixtures`. `tests/test_hf_model.py` cần `torch` và `transformers`. Nếu chỉ muốn kiểm tra phần không cần GPU: `python -m pytest -q --ignore=tests/test_hf_model.py`.
+
+`tests/test_settings.py` bao phủ: giá trị mặc định, override qua env, lỗi parse, từ chối provider/temperature sai, và việc server con không nhận secret.
+
+---
+
+## 5. Graph (M1)
+
+Graph builder extract `Repository`, `File`, `Module`, `Class`, `Function`, `Method`, `Test`, `Import`, `CallSite`. Ngoài ra nó tạo containment, resolve import nội bộ/ngoại bộ, kế thừa cơ bản và các call trực tiếp/qua import/qua `self`.
+
+Jedi 0.20.0 là tầng static-analysis bổ sung cho các call còn unresolved, chỉ chấp nhận kết quả map ngược được về symbol nội bộ. Call không resolve được vẫn được giữ dưới dạng `CallSite` có `candidate_count=0`.
+
+Build thủ công qua JSON rồi nạp vào SQLite:
+
+```powershell
+python scripts\build_graph.py tests\fixtures\sample_repo artifacts\sample_graph.json `
+    --repo-key "demo/vgar-fixture" --revision "fixture-revision"
+
+python scripts\load_graph_fixture.py artifacts\sample_graph.json artifacts\sample_graph.db
+```
+
+Thêm `--no-jedi` vào `build_graph.py` để đo baseline Tree-sitter/resolver nội bộ.
+
+Dùng graph SQLite với MCP server:
+
+```powershell
+$env:VGAR_GRAPH_BACKEND  = "sqlite"
+$env:VGAR_GRAPH_DATABASE = "artifacts\sample_graph.db"
+vgar tools
+```
+
+Ghi chú hợp đồng:
+
+- Graph document không công khai `schema_version`; `graph_version` chỉ nhận dạng một snapshot.
+- `context.py` định nghĩa và kiểm tra `ContextPayload`; `errors.py` cung cấp error code ổn định để ánh xạ vào MCP response.
+- MCP server chỉ gọi `GraphService`; không copy SQLite schema hay query logic vào server. `sqlite_service.py` import DTO từ `vgar.contracts.graph`, đây là ranh giới tương thích, không nhân bản contract.
+- Backend `demo` vẫn là mặc định, nên các smoke flow cũ không bị phá.
+
+Số liệu đo gần nhất trên repo VGAR (trước khi thêm CLI): 227 nodes, 263 edges, 19 call edge resolved (review thủ công: 19/19 đúng đích), 57 call site unresolved.
+
+---
+
+## 6. MCP tools
+
+Tên tool có prefix theo server (`tool_name_prefix=True`):
+
+| Server | Tool |
+|---|---|
+| graph | `graph_search_symbols`, `graph_get_callers`, `graph_get_callees` |
+| repository | `repository_health`, `repository_read_file`, `repository_apply_patch` |
+| execution | `execution_health`, `execution_run_pytest` |
+
+Server được dựng trong `src/vgar/mcp/client.py` bằng `sys.executable -m vgar.mcp.servers.<name>_server`, nên luôn dùng cùng Python/venv với tiến trình gọi. Mọi tool call của graph server được ghi vào `VGAR_MCP_AUDIT_LOG`. Xem `docs/mcp_tool_contract.md` cho schema chi tiết.
+
+---
+
+## 7. Baseline repair/verification (M2)
+
+Các script này không gọi LLM, không sửa repo nguồn, không apply patch. Chúng chạy test trong workspace tạm và lưu EvidenceBundle trước khi có patch.
+
+```powershell
+$env:VGAR_M2_TEMP_ROOT = 'D:\Project\CAPSTONES\m2-temp'   # tùy chọn
 python scripts\record_m2_test.py tests/m2 --timeout-seconds 120
 python scripts\run_m2_baseline.py tests\fixtures\sample_repo tests/test_auth.py --task-id sample-auth
 ```
 
-Every invocation saves one detailed JSON under `artifacts/m2/test-runs/`. A deliberate failing example returns exit code 1 while still saving evidence:
+Mỗi lần chạy lưu một JSON chi tiết vào `artifacts/m2/test-runs/`. Ví dụ cố ý fail, exit code 1 nhưng vẫn lưu evidence:
 
 ```powershell
 python scripts\run_m2_baseline.py tests\fixtures\m2\failing_repo tests/test_demo.py --task-id deliberate-fail
 ```
 
-See `docs/verification_design.md` for scope/safety, `docs/evidence_bundle_schema.md` for JSON fields, and `docs/m2_w3_w4_handoff.md` for verification records and deferred work. These W3–W4 scripts do not invoke an LLM, modify the source repo, apply a patch, or add MCP execution tools. Review raw test logs for secrets before sharing artifacts.
+Xem `docs/verification_design.md` (phạm vi, an toàn), `docs/evidence_bundle_schema.md` (các field JSON) và `docs/m2_w3_w4_handoff.md` (ghi nhận kiểm chứng, việc hoãn lại). Kiểm tra log test thô để tìm secret trước khi chia sẻ artifact.
 
-## Build Graph MVP
+---
 
-```powershell
-$env:PYTHONPATH = "D:\KLTN\M1\src;D:\KLTN\VGAR\src"
+## 8. Xử lý sự cố
 
-& ".\.venv\Scripts\python.exe" .\scripts\build_graph.py `
-  .\tests\fixtures\sample_repo `
-  .\artifacts\sample_graph.json `
-  --repo-key "demo/vgar-fixture" `
-  --revision "fixture-revision"
-
-& ".\.venv\Scripts\python.exe" .\scripts\load_graph_fixture.py `
-  .\artifacts\sample_graph.json `
-  .\artifacts\sample_graph.db
-```
-
-Graph builder hiện extract `Repository`, `File`, `Module`, `Class`, `Function`, `Method`, `Test`, `Import`, `CallSite`; tạo containment, resolve internal/external imports, inheritance cơ bản và direct/imported/self calls. Jedi 0.20.0 là tầng static-analysis enrichment cho các call còn unresolved, chỉ chấp nhận kết quả map ngược được về symbol nội bộ. Unresolved calls vẫn được giữ dưới dạng `CallSite` có `candidate_count=0`.
-
-Graph document không công khai `schema_version`. `graph_version` chỉ nhận dạng snapshot cụ thể. `context.py` định nghĩa và kiểm tra `ContextPayload`; `errors.py` cung cấp error code ổn định để M3 ánh xạ vào MCP response.
-
-Có thể tắt Jedi để đo baseline Tree-sitter/resolver nội bộ bằng cờ `--no-jedi` khi chạy `build_graph.py`.
-
-## Checkpoint hiện tại
-
-- 27/27 tests pass.
-- End-to-end source → graph → validation → SQLite → M3 DTO pass.
-- Manual review xác nhận 19/19 edge `CALLS` đã resolve trên repo VGAR đúng đích.
-- Graph thật của VGAR: 227 nodes, 263 edges, 19 resolved và 57 unresolved call sites.
-- Factory giữ demo backend làm mặc định.
+| Triệu chứng | Nguyên nhân thường gặp |
+|---|---|
+| `Unsupported VGAR_MODEL_PROVIDER` | Sai giá trị trong `.env`; hiện chỉ có `huggingface` |
+| `Local HF model is greedy-only` | `VGAR_TEMPERATURE` khác 0 |
+| `VGAR_GRAPH_DATABASE is required when VGAR_GRAPH_BACKEND=sqlite` | Backend là `sqlite` nhưng chưa đặt đường dẫn DB |
+| Cảnh báo "unauthenticated requests to the HF Hub" | `HF_TOKEN` chưa có trong `.env` hoặc còn giá trị mẫu `hf_your_token_here` |
+| Log có "offloaded to the cpu", chạy hàng trăm giây | Model không vừa VRAM nên phải offload; xem lại `VGAR_TORCH_DTYPE`, `VGAR_DEVICE_MAP` hoặc dùng model nhỏ hơn |
+| `vgar: command not found` | Chưa kích hoạt venv hoặc chưa `pip install -e .`; dùng tạm `python -m vgar.cli ...` |
+| `vgar tools` trả 0 tool hoặc treo | Một MCP server con không khởi động được; chạy thử `python -m vgar.mcp.servers.graph_server` để xem lỗi import |
+| Đổi `.env` nhưng không có tác dụng | Biến cùng tên đã được đặt trong shell; biến môi trường thật luôn thắng `.env` |

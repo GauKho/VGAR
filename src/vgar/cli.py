@@ -4,6 +4,7 @@
     vgar tools                       # spawn MCP servers, list tools
     vgar index REPO --db graph.db    # build graph snapshot
     vgar run "Fix ..." --repo REPO --selector tests/test_x.py::test_y
+    vgar solve "Fix ..." --repo REPO --selector tests/test_x.py::test_y   # workflow with verify/retry
     vgar chat --repo REPO            # interactive session on a disposable copy
 
 Agent commands never touch REPO: they index it, copy it to a temp workspace
@@ -24,20 +25,11 @@ from pathlib import Path
 
 from langchain_core.messages import AIMessage, BaseMessage, HumanMessage, ToolMessage
 
+from vgar.agents.runtime import index_repo
 from vgar.config.settings import Settings, get_settings
 
 
 # ----------------------------------------------------------------- shared helpers
-def index_repo(repo: Path, db: Path) -> int:
-    from vgar.graph.builder import PythonGraphBuilder
-    from vgar.graph.sqlite_store import SQLiteGraphStore
-
-    doc = PythonGraphBuilder(repo_key=repo.name, repository_revision="cli", use_jedi=True).build(repo)
-    db.parent.mkdir(parents=True, exist_ok=True)
-    SQLiteGraphStore(db).ingest(doc)
-    return len(doc["nodes"])
-
-
 @contextmanager
 def sandbox(repo: Path, settings: Settings, keep: bool = False):
     """Index `repo`, copy it to a disposable workspace, yield (settings, lease)."""
@@ -148,6 +140,25 @@ async def cmd_run(args: argparse.Namespace) -> int:
     return 0 if ok and untouched else 1
 
 
+async def cmd_solve(args: argparse.Namespace) -> int:
+    """Full outer workflow: index -> repair -> independent verify -> retry."""
+    from vgar.agents.runtime import Runtime
+    from vgar.agents.workflow import run_task
+
+    state = await run_task(
+        repo=Path(args.repo).resolve(),
+        issue_text=args.query,
+        selectors=args.selector,
+        runtime=Runtime(engine=args.engine, keep_workspace=args.keep),
+    )
+    print(f"[status] {state['status']} after {state.get('attempts', 0)} attempt(s), "
+          f"{state.get('tool_call_count', 0)} tool call(s)")
+    print(json.dumps(state.get("evidence", {}), indent=2, ensure_ascii=False, default=str))
+    if state.get("failure_reason"):
+        print(f"[reason] {state['failure_reason']}")
+    return 0 if state["status"] == "COMPLETED" else 1
+
+
 async def cmd_chat(args: argparse.Namespace) -> int:
     repo = Path(args.repo).resolve()
     with sandbox(repo, get_settings(), args.keep) as (s, lease):
@@ -184,6 +195,14 @@ def parser() -> argparse.ArgumentParser:
     ix.add_argument("repo")
     ix.add_argument("--db", default="artifacts/graph.db")
     ix.set_defaults(fn=cmd_index)
+
+    sv = sub.add_parser("solve", help="run the verified repair workflow (retries until tests pass)")
+    sv.add_argument("query")
+    sv.add_argument("--repo", required=True)
+    sv.add_argument("--selector", action="append", required=True, help="pytest selector; repeatable")
+    sv.add_argument("--engine", choices=["langchain", "langgraph"], default="langchain")
+    sv.add_argument("--keep", action="store_true", help="keep temp dir")
+    sv.set_defaults(fn=cmd_solve)
 
     for name, fn in (("run", cmd_run), ("chat", cmd_chat)):
         sp = sub.add_parser(name, help=f"{name} the agent on a disposable copy of --repo")

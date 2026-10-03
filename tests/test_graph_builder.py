@@ -195,5 +195,116 @@ class PythonGraphBuilderTests(unittest.TestCase):
         )
 
 
+class GraphBuilderRegressionTests(unittest.TestCase):
+    def _build(self, source: str, *, use_jedi: bool = False) -> dict:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "app.py").write_text(source, encoding="utf-8")
+            return PythonGraphBuilder(
+                repo_key="demo/regression",
+                repository_revision="regression",
+                use_jedi=use_jedi,
+            ).build(root)
+
+    def _targets(self, document: dict) -> list[str]:
+        nodes = {node["id"]: node for node in document["nodes"]}
+        return [
+            nodes[edge["target_id"]]["qualified_name"]
+            for edge in document["edges"] if edge["type"] == "CALLS"
+        ]
+
+    def test_repeated_test_calls_keep_callsites_and_one_tests_relation(self) -> None:
+        document = self._build(
+            "def helper():\n    return 1\n\n"
+            "def test_helper():\n    helper()\n    helper()\n"
+        )
+        self.assertEqual(self._targets(document), ["app.helper", "app.helper"])
+        self.assertEqual(sum(edge["type"] == "TESTS" for edge in document["edges"]), 1)
+        self.assertEqual(len({edge["id"] for edge in document["edges"]}), len(document["edges"]))
+
+    def test_test_can_contain_nested_function_and_class(self) -> None:
+        document = self._build(
+            "def test_outer():\n"
+            "    def test_helper():\n        return 1\n"
+            "    class Worker:\n        pass\n"
+            "    test_helper()\n    Worker()\n"
+        )
+        self.assertEqual(set(self._targets(document)), {"app.test_outer.test_helper", "app.test_outer.Worker"})
+        self.assertEqual(sum(node["type"] == "Test" for node in document["nodes"]), 1)
+
+    def test_nested_function_shadows_module_function(self) -> None:
+        for use_jedi in (False, True):
+            with self.subTest(use_jedi=use_jedi):
+                document = self._build(
+                    "def helper():\n    return 1\n\n"
+                    "def caller():\n"
+                    "    def helper():\n        return 2\n"
+                    "    return helper()\n", use_jedi=use_jedi,
+                )
+                self.assertEqual(self._targets(document), ["app.caller.helper"])
+
+    def test_parameter_and_assignment_shadow_module_function(self) -> None:
+        for use_jedi in (False, True):
+            for caller in (
+                "def caller(helper):\n    return helper()\n",
+                "def caller():\n    helper = lambda: 2\n    return helper()\n",
+            ):
+                with self.subTest(use_jedi=use_jedi, caller=caller):
+                    document = self._build(
+                        "def helper():\n    return 1\n\n" + caller, use_jedi=use_jedi,
+                    )
+                    self.assertEqual(self._targets(document), [])
+                    self.assertEqual(document["statistics"]["unresolved_call_count"], 1)
+
+    def test_closure_resolves_enclosing_function_binding(self) -> None:
+        document = self._build(
+            "def helper():\n    return 1\n\n"
+            "def outer():\n"
+            "    def helper():\n        return 2\n"
+            "    def inner():\n        return helper()\n"
+            "    return inner()\n"
+        )
+        self.assertEqual(set(self._targets(document)), {"app.outer.helper", "app.outer.inner"})
+
+    def test_method_does_not_use_class_namespace_for_bare_call(self) -> None:
+        document = self._build(
+            "def helper():\n    return 1\n\n"
+            "class Worker:\n"
+            "    def helper(self):\n        return 2\n"
+            "    def caller(self):\n        return helper()\n"
+        )
+        self.assertEqual(self._targets(document), ["app.helper"])
+
+    def test_nested_class_does_not_overwrite_module_definition(self) -> None:
+        document = self._build(
+            "class Worker:\n    pass\n\n"
+            "def outer():\n    class Worker:\n        pass\n\n"
+            "def caller():\n    return Worker()\n"
+        )
+        self.assertEqual(self._targets(document), ["app.Worker"])
+
+    def test_nested_symbol_is_not_repository_global_fallback(self) -> None:
+        document = self._build(
+            "def outer():\n    def helper():\n        return 1\n\n"
+            "def caller():\n    return helper()\n"
+        )
+        self.assertEqual(self._targets(document), [])
+
+    def test_local_import_shadows_module_symbol(self) -> None:
+        for use_jedi in (False, True):
+            with self.subTest(use_jedi=use_jedi), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                (root / "app.py").write_text(
+                    "def helper():\n    return 1\n\n"
+                    "def caller():\n    from other import helper as helper\n    return helper()\n",
+                    encoding="utf-8",
+                )
+                (root / "other.py").write_text("def helper():\n    return 2\n", encoding="utf-8")
+                document = PythonGraphBuilder(
+                    repo_key="demo/local-import", repository_revision="fixture", use_jedi=use_jedi,
+                ).build(root)
+                self.assertEqual(self._targets(document), ["other.helper"] if use_jedi else [])
+
+
 if __name__ == "__main__":
     unittest.main()

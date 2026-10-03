@@ -1,9 +1,16 @@
 .env
 .__pycache__/
 __pycache__/
-.pytest_cache/
 vgar_mcp_mvp_demo.egg-info/
 .venv/
+logs/
 .m2-pytest-*/
 m2-temp/
-tore -- README.md pyproject.toml
+# M1: downloaded tokenizer assets; hashes/revisions live in acceptance manifest.
+artifacts/m1/tokenizers/
+# M1: review/progress documents kept locally, excluded from the GitHub handoff.
+/docs/m1_contract_review_2026-10-03.md
+/docs/m1_tokenizer_acceptance_review_2026-10-03.md
+/docs/m1_w3_w4_handoff.md
+/docs/m1_milestone_2_progress.md
+/docs/m1_milestone_3_progress.md

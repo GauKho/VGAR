@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from pathlib import PurePosixPath
+from pathlib import PurePosixPath, PureWindowsPath
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
@@ -38,7 +38,12 @@ class ContextItem(BaseModel):
     def validate_repository_relative_path(self) -> ContextItem:
         normalized = self.path.replace("\\", "/")
         path = PurePosixPath(normalized)
-        if path.is_absolute() or ".." in path.parts or normalized != self.path:
+        if (
+            path.is_absolute()
+            or PureWindowsPath(normalized).drive
+            or ".." in path.parts
+            or normalized != self.path
+        ):
             raise ValueError("path must be a normalized repository-relative POSIX path")
         return self
 

@@ -39,6 +39,12 @@ async def main(query: str) -> None:
     print("graph_search_symbols:")
     print(json.dumps(search, indent=2, ensure_ascii=False))
 
+    if search.get("status") != "PASS" or search.get("error") is not None:
+        raise RuntimeError(f"graph_search_symbols did not PASS: {search.get('error')}")
+    for key in ("duration_ms", "request_id"):
+        if key not in search.get("metadata", {}):
+            raise RuntimeError(f"envelope metadata is missing {key!r}")
+
     backend = search.get("metadata", {}).get("backend")
     if backend != expected_backend:
         raise RuntimeError(
@@ -46,7 +52,7 @@ async def main(query: str) -> None:
             f"expected={expected_backend!r}, actual={backend!r}"
         )
 
-    symbols = search.get("symbols", [])
+    symbols = (search.get("data") or {}).get("symbols", [])
     if not symbols:
         raise RuntimeError(f"W3-W4 smoke failed: no symbol matching {query!r}")
 
@@ -66,6 +72,21 @@ async def main(query: str) -> None:
         raise RuntimeError("graph_get_callers did not use the expected backend")
     if callees.get("metadata", {}).get("backend") != expected_backend:
         raise RuntimeError("graph_get_callees did not use the expected backend")
+
+    for name, resp in (("graph_get_callers", callers), ("graph_get_callees", callees)):
+        if resp.get("status") != "PASS" or resp.get("error") is not None:
+            raise RuntimeError(f"{name} did not PASS: {resp.get('error')}")
+
+    # Error path must come back as a structured envelope, not a raw exception string.
+    missing = parse_mcp_json_result(
+        await by_name["graph_get_callers"].ainvoke(
+            {"symbol_id": "missing:symbol", "depth": 1}
+        )
+    )
+    err = missing.get("error") or {}
+    if missing.get("status") != "ERROR" or err.get("code") != "NODE_NOT_FOUND" or missing.get("data") is not None:
+        raise RuntimeError(f"unknown symbol did not return NODE_NOT_FOUND envelope: {missing}")
+    print(f"error path OK: {err['code']} - {err['message']}")
 
     print("graph_get_callers:")
     print(json.dumps(callers, indent=2, ensure_ascii=False))

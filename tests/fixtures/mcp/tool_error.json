@@ -1,0 +1,18 @@
+{
+  "status": "ERROR",
+  "data": null,
+  "error": {
+    "code": "NODE_NOT_FOUND",
+    "message": "Unknown symbol: missing:symbol",
+    "details": {
+      "entity": "symbol",
+      "node_id": "missing:symbol"
+    }
+  },
+  "metadata": {
+    "duration_ms": 0,
+    "request_id": "00000000000000000000000000000000",
+    "backend": "sqlite",
+    "tool": "get_callers"
+  }
+}

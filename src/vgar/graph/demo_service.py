@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from vgar.contracts.error import NodeNotFoundError
 from vgar.contracts.graph import (
     GraphEdgeRef,
     GraphNodeRef,
@@ -33,10 +34,12 @@ class DemoGraphService:
         return SearchSymbolsResult(query=query, symbols=matches[:limit])
 
     def get_callers(self, symbol_id: str) -> SymbolRelationsResult:
+        self._find(symbol_id)  # same NODE_NOT_FOUND behaviour as the sqlite backend
         caller_ids = [caller for caller, callees in self._calls.items() if symbol_id in callees]
         return SymbolRelationsResult(symbol_id=symbol_id, symbols=[self._find(item) for item in caller_ids])
 
     def get_callees(self, symbol_id: str) -> SymbolRelationsResult:
+        self._find(symbol_id)
         return SymbolRelationsResult(symbol_id=symbol_id, symbols=[self._find(item) for item in self._calls.get(symbol_id, [])])
 
     def get_repository_summary(self) -> RepositorySummaryResult:
@@ -95,4 +98,4 @@ class DemoGraphService:
         for symbol in self._symbols:
             if symbol.symbol_id == symbol_id:
                 return symbol
-        raise KeyError(f"Unknown symbol: {symbol_id}")
+        raise NodeNotFoundError(symbol_id, entity="symbol")
