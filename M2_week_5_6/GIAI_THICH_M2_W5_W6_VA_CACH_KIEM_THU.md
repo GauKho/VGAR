@@ -1253,6 +1253,55 @@ $testResult.stderr
 
 Đừng chỉ nhìn `$LASTEXITCODE` ở một terminal sau nhiều lệnh không liên quan; JSON `exit_code` của đúng run là bằng chứng lâu dài.
 
+#### D. Vì sao run mới chưa có REPORT.md và cách tạo báo cáo
+
+Trong trạng thái đã kiểm tra ngày03/10/2026, chỉ run bàn giao `20261001T134641055034Z-5295e04e781d` có `REPORT.md`. Nguyên nhân nằm ở cách gọi scripts, không phải thiếu file khi push:
+
+- `scripts/run_evaluation.py` lưu `result.json`, `tasks/` và `m1_requests/`, nhưng **không gọi hàm tạo REPORT.md**.
+- `scripts/compare_m1.py` gọi `write_report()` trong `src/m2_retrieval/report.py` sau bước comparison, để sinh báo cáo trong thư mục retrieval run đã chọn.
+- Run bàn giao đã thực hiện bước comparison/report. Những run chỉ chạy evaluation chưa tự có báo cáo Markdown.
+
+**Không có REPORT.md không đồng nghĩa chạy thất bại.** Xem `status`, `exit_code`, `summary.completed_tasks` và `summary.failed_tasks` trong `result.json` của chính run đó. REPORT.md là bản trình bày bảng từ evidence JSON, không thay thế dữ liệu gốc và không phải điều kiện để BM25 evaluation thành công.
+
+Chạy từ thư mục `M2_week_5_6` chứa `scripts/` và `results/`; dùng môi trường đã cài, không cần cài lại. Lệnh này **tạo/cập nhật báo cáo và ghi một comparison run mới**, không phải thao tác chỉ đọc:
+
+```powershell
+# CHỌN RUN: THAY tên folder bằng run của bạn; không thêm result.json vào cuối.
+$run = '.\results\retrieval\20261003T122200185674Z-f579ac51a355'
+
+# KIỂM TRA: phải có result.json trước khi tạo báo cáo.
+if (-not (Test-Path -LiteralPath (Join-Path $run 'result.json'))) {
+    throw 'Không tìm thấy result.json; hãy chọn đúng thư mục retrieval run.'
+}
+
+# TẠO REPORT: không chạy lại BM25, không tải lại source archives.
+# Mặc định tìm M1 exports ở data/m1_exports.
+& '.\.venv\Scripts\python.exe' '.\scripts\compare_m1.py' --run $run
+
+# XEM EXIT CODE NGAY SAU SCRIPT: đọc ý nghĩa bên dưới, không tự coi exit2 là lỗi BM25.
+$LASTEXITCODE
+
+# ĐỌC BÁO CÁO: đường dẫn là <run bạn chọn>\REPORT.md.
+Get-Content -Encoding UTF8 (Join-Path $run 'REPORT.md')
+```
+
+Input là `<run>/result.json`, và khi có M1 exports để so sánh thì còn đọc task artifacts trong `<run>/tasks/` cùng exports. Output gồm:
+
+- `<run>/REPORT.md`: bảng BM25, trạng thái comparison và bảng từng task.
+- `results/comparison/<comparison_run_id>/result.json`: evidence của lần comparison, với đường dẫn được script in ra. Đây là run khác với retrieval run.
+
+Cách hiểu kết quả comparison:
+
+| Trạng thái | Exit code | Ý nghĩa |
+|---|---:|---|
+| `AWAITING_M1` | 2 | Chưa có cặp Graph hợp lệ và không có exports bị đánh dấu invalid; báo cáo vẫn được tạo, chưa đủ dữ liệu so sánh |
+| `INCOMPLETE_COMPARISON` | 2 | Thiếu một phần exports hoặc có exports không hợp lệ; đọc `missing_exports`/`invalid_exports` trong comparison JSON |
+| `SUCCEEDED` | 0 | Đủ exports hợp lệ cho các task BM25 thành công được xét; không còn missing/invalid exports |
+
+Nếu chưa có output M1, `AWAITING_M1` + exit2 là trạng thái chờ **comparison**, không phải bằng chứng BM25 chạy thất bại và không được ghi điểm Graph bằng0. Nếu script báo exception hoặc không tạo được REPORT.md, phải kiểm tra thông báo lỗi riêng, không mặc định đó cũng là trạng thái chờ M1.
+
+Lưu ý: gọi lại `compare_m1.py` sẽ **ghi đè REPORT.md hiện có của run đã chọn** bằng báo cáo mới; các comparison JSON được ghi ở thư mục riêng. Không chạy lên run bàn giao chuẩn chỉ để thử lệnh nếu muốn giữ nguyên báo cáo bàn giao. Trên bản clone GitHub, các task details của runs ngoài run bàn giao cần lấy từ ZIP Releases nếu muốn thực hiện comparison với M1 exports cho những runs đó.
+
 ### 17.7. Tự inspection một task từ đầu đến cuối
 
 1. Chọn ID trong manifest, ví dụ Django10554.
