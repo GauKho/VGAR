@@ -1,0 +1,10 @@
+﻿{
+    "exit_code":  1,
+    "run_id":  "bootstrap-red",
+    "output":  "python.exe : test_core (unittest.loader._FailedTest.test_core) ... ERROR\r\nAt line:3 char:123\r\n+ ... ); $lines = \u0026 .\\.venv\\Scripts\\python.exe -m unittest discover -s test ...\r\n+                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\r\n    + CategoryInfo          : NotSpecified: (test_core (unit...core) ... ERROR:String) [], RemoteException\r\n    + FullyQualifiedErrorId : NativeCommandError\r\n \r\n\r\n======================================================================\r\nERROR: test_core (unittest.loader._FailedTest.test_core)\r\n----------------------------------------------------------------------\r\nImportError: Failed to import test module: test_core\r\nTraceback (most recent call last):\r\n  File \"C:\\Program Files\\Python311\\Lib\\unittest\\loader.py\", line 419, in _find_test_path\r\n    module = self._get_module_from_name(name)\r\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\n  File \"C:\\Program Files\\Python311\\Lib\\unittest\\loader.py\", line 362, in _get_module_from_name\r\n    __import__(name)\r\n  File \"D:\\Project\\CAPSTONES\\M2_week_5_6\\tests\\test_core.py\", line 6, in \u003cmodule\u003e\r\n    from m2_retrieval.bm25 import BM25, tokenize, pack_context\r\nModuleNotFoundError: No module named \u0027m2_retrieval\u0027\r\n\r\n\r\n----------------------------------------------------------------------\r\nRan 1 test in 0.000s\r\n\r\nFAILED (errors=1)\r\n",
+    "cwd":  "D:\\Project\\CAPSTONES\\M2_week_5_6",
+    "started_utc":  "2026-10-01T13:19:08.5026606Z",
+    "command":  ".venv/Scripts/python.exe -m unittest discover -s tests -v",
+    "duration_seconds":  0.17210709999999999,
+    "status":  "RED"
+}

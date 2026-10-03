@@ -1,0 +1,350 @@
+{
+  "run_id": "20261001T132614642557Z-91f7f9d14f23",
+  "kind": "retrieval",
+  "status": "PARTIAL_FAILURE",
+  "started_utc": "2026-10-01T13:26:14.642557+00:00",
+  "complete": true,
+  "python": "3.11.6 (tags/v3.11.6:8b6ee5b, Oct  2 2023, 14:57:12) [MSC v.1935 64 bit (AMD64)]",
+  "interpreter": "D:\\Project\\CAPSTONES\\M2_week_5_6\\.venv\\Scripts\\python.exe",
+  "platform": "Windows-10-10.0.26300-SP0",
+  "command_argv": [
+    "scripts\\run_evaluation.py",
+    "--manifest",
+    "data\\manifests\\verified-c104f840cc67-25.json",
+    "--limit",
+    "3"
+  ],
+  "cwd": "D:\\Project\\CAPSTONES\\M2_week_5_6",
+  "config": {
+    "manifest_hash": "sha256:44a426382f9925b7eee961a88bbf0968d618d1559d37fd60ac58fd04a0c8568f",
+    "budget_tokens": 4000,
+    "k1": 1.2,
+    "b": 0.75,
+    "token_policy": "utf8_bytes_ceil_div4",
+    "window_lines": 80,
+    "overlap_lines": 16,
+    "limit": 3
+  },
+  "source": {
+    "files": {
+      "pyproject.toml": "sha256:2df1d4e47316b8a94e585df3bc535b98493aa90c40e87b1a7ec980cc59357cee",
+      "scripts/prepare_dataset.py": "sha256:b34696c18153664e208666f3cc1c51be596de84c1204c0a62e462b456fe002c8",
+      "scripts/record_tests.py": "sha256:67b3118a1b64066b69b51b3cbf1a635dc034b117486ae689957c9801a0669dd1",
+      "scripts/run_evaluation.py": "sha256:ef63e8ffe666f6970e86f6ade2a081076f0846c497ff4b18c6dc2fa4fe56cd80",
+      "src/m2_retrieval/__init__.py": "sha256:774473da58e39e63570d37e779fe639daaff20aaa3eaf765a5fdc7c13548ba7e",
+      "src/m2_retrieval/bm25.py": "sha256:6315dcfeebeee40a9bcb747eaccca4769ba88522d084727ab00daa91b18c0638",
+      "src/m2_retrieval/chunks.py": "sha256:418fdc6525eb79fc0b2f1126961aa811a475462f0ed0c6ce444afdf3a0fbb16f",
+      "src/m2_retrieval/dataset.py": "sha256:1ebd052f6f93ca8ae9b9ab45914db67a3b64b388978fd37d893fd3ea11cd9336",
+      "src/m2_retrieval/evaluation.py": "sha256:bd2c8f00cf0556a308e62313bac85d624f85fa49a922f430bbe61c5b864ba58a",
+      "src/m2_retrieval/evidence.py": "sha256:a5a846974e39d99f9f6a0ab1ff14f860a5c67a134623398a22cbc91deb9544bd",
+      "src/m2_retrieval/gold_labels.py": "sha256:45da1f04e69a23bb82c49f98edf1662068d18426cd464d1c9afef0423ed8cae6",
+      "src/m2_retrieval/m1_adapter.py": "sha256:fbf3b09d5fba94c7fb484f05b70800341e3c00a7d65f13c3e1e60ac3abea66a0",
+      "src/m2_retrieval/metrics.py": "sha256:18263bb2ceed690658de0fcc67936ec344a5848c41fbaa0504267dc680e1c1b7",
+      "tests/test_core.py": "sha256:7449fc4158b6ed8f08a9ad6fe19ebae9e79aacda853a30d81dd49bdb00430694",
+      "tests/test_gold_boundaries.py": "sha256:7948ea983806b2cdcb3309132af7a1f481054f67369846cc04ad24a1b7b1e23d",
+      "tests/test_pipeline.py": "sha256:bb554a8cfb2f9becbe2baecf974068684e3fc8e8077655e0579499403f21ff02"
+    },
+    "digest": "sha256:89fe7f46cce863a64e712f3e15eb3e660a6e5c1c012933d713f2e984b399a8c5"
+  },
+  "binding_hash": "sha256:708234923e64055b998c50b59408cb97296e03a9811af7623baebe747c3567ae",
+  "dataset_id": "princeton-nlp/SWE-bench_Verified",
+  "dataset_revision": "c104f840cc67f8b6eec6f759ebc8b2693d585d4a",
+  "manifest_path": "D:\\Project\\CAPSTONES\\M2_week_5_6\\data\\manifests\\verified-c104f840cc67-25.json",
+  "task_results": [
+    {
+      "instance_id": "astropy__astropy-13398",
+      "repository": "astropy/astropy",
+      "base_commit": "6500928dc0e57be8f06d1162eacc3ba5e2eff692",
+      "status": "SUCCEEDED",
+      "query_hash": "sha256:c26c8dc258dc5cb9dd34f30bdbaaed3f19a8ada137e0f19d81d7f57dc5f11bba",
+      "patch_hash": "sha256:5124ad079250b10166141d9deeb28d2cdf58ca42e50fb898b0ec8819bacc06e1",
+      "corpus_hash": "sha256:c757f57a32dd8ce03326477855ede56a888a66f9ae95285460cfca2b0c25aa13",
+      "corpus_chunk_count": 17276,
+      "parse_failures": [],
+      "ranking_saved_count": 100,
+      "ranking_total_count": 17251,
+      "metrics": {
+        "file_gold_count": 3,
+        "file_mrr": 0.25,
+        "file_recall@1": 0.0,
+        "file_all_gold@1": 0,
+        "file_recall@3": 0.0,
+        "file_all_gold@3": 0,
+        "file_recall@5": 0.3333333333333333,
+        "file_all_gold@5": 0,
+        "file_recall@10": 0.3333333333333333,
+        "file_all_gold@10": 0,
+        "file_recall@20": 0.3333333333333333,
+        "file_all_gold@20": 0,
+        "function_gold_count": 5,
+        "function_mrr": 0.16666666666666666,
+        "function_recall@1": 0.0,
+        "function_all_gold@1": 0,
+        "function_recall@3": 0.0,
+        "function_all_gold@3": 0,
+        "function_recall@5": 0.0,
+        "function_all_gold@5": 0,
+        "function_recall@10": 0.8,
+        "function_all_gold@10": 0,
+        "function_recall@20": 0.8,
+        "function_all_gold@20": 0,
+        "context_token_estimate": 3995,
+        "index_seconds": 7.328506100006052,
+        "retrieval_seconds": 0.1419506999955047,
+        "mapping_coverage": 1.0,
+        "file_retrievability_coverage": 0.75
+      },
+      "context_metrics": {
+        "file_gold_count": 3,
+        "file_mrr": 0.25,
+        "file_recall@1": 0.0,
+        "file_all_gold@1": 0,
+        "file_recall@3": 0.0,
+        "file_all_gold@3": 0,
+        "file_recall@5": 0.3333333333333333,
+        "file_all_gold@5": 0,
+        "file_recall@10": 0.3333333333333333,
+        "file_all_gold@10": 0,
+        "file_recall@20": 0.3333333333333333,
+        "file_all_gold@20": 0,
+        "function_gold_count": 5,
+        "function_mrr": 0.16666666666666666,
+        "function_recall@1": 0.0,
+        "function_all_gold@1": 0,
+        "function_recall@3": 0.0,
+        "function_all_gold@3": 0,
+        "function_recall@5": 0.0,
+        "function_all_gold@5": 0,
+        "function_recall@10": 0.8,
+        "function_all_gold@10": 0,
+        "function_recall@20": 0.8,
+        "function_all_gold@20": 0
+      },
+      "source_provenance": {
+        "base_commit_verified": "6500928dc0e57be8f06d1162eacc3ba5e2eff692",
+        "git_tree": "059e0f861b196c0e3d666cbef9c8b13281c31b9f",
+        "source_file_count": 502,
+        "source_bytes": 7430300,
+        "excluded_sources": [],
+        "cache_path": "D:\\Project\\CAPSTONES\\M2_week_5_6\\data\\repositories\\astropy__astropy"
+      },
+      "duration_seconds": 13.01443460000155
+    },
+    {
+      "instance_id": "django__django-10554",
+      "repository": "django/django",
+      "base_commit": "14d026cccb144c6877294ba4cd4e03ebf0842498",
+      "status": "SUCCEEDED",
+      "query_hash": "sha256:2f72fa6137f1d53983cff629a05e06c42a2ad477ea4557746c4688cbd6aeb724",
+      "patch_hash": "sha256:98523eeb6147f2d4be05885f8e4f49a8505b3368c2e1ec4ecd39ea9fc880105d",
+      "corpus_hash": "sha256:278e72b2a766dc811db949dbc8fae04634f8f55ee9e16fcbf0aa3c97cf5bebb7",
+      "corpus_chunk_count": 12269,
+      "parse_failures": [],
+      "ranking_saved_count": 100,
+      "ranking_total_count": 12269,
+      "metrics": {
+        "file_gold_count": 2,
+        "file_mrr": 0.5,
+        "file_recall@1": 0.0,
+        "file_all_gold@1": 0,
+        "file_recall@3": 0.5,
+        "file_all_gold@3": 0,
+        "file_recall@5": 0.5,
+        "file_all_gold@5": 0,
+        "file_recall@10": 1.0,
+        "file_all_gold@10": 1,
+        "file_recall@20": 1.0,
+        "file_all_gold@20": 1,
+        "function_gold_count": 1,
+        "function_mrr": 0.05,
+        "function_recall@1": 0.0,
+        "function_all_gold@1": 0,
+        "function_recall@3": 0.0,
+        "function_all_gold@3": 0,
+        "function_recall@5": 0.0,
+        "function_all_gold@5": 0,
+        "function_recall@10": 0.0,
+        "function_all_gold@10": 0,
+        "function_recall@20": 1.0,
+        "function_all_gold@20": 1,
+        "context_token_estimate": 3994,
+        "index_seconds": 4.222586199990474,
+        "retrieval_seconds": 0.0907325000007404,
+        "mapping_coverage": 1.0,
+        "file_retrievability_coverage": 1.0
+      },
+      "context_metrics": {
+        "file_gold_count": 2,
+        "file_mrr": 0.5,
+        "file_recall@1": 0.0,
+        "file_all_gold@1": 0,
+        "file_recall@3": 0.5,
+        "file_all_gold@3": 0,
+        "file_recall@5": 0.5,
+        "file_all_gold@5": 0,
+        "file_recall@10": 1.0,
+        "file_all_gold@10": 1,
+        "file_recall@20": 1.0,
+        "file_all_gold@20": 1,
+        "function_gold_count": 1,
+        "function_mrr": 0,
+        "function_recall@1": 0.0,
+        "function_all_gold@1": 0,
+        "function_recall@3": 0.0,
+        "function_all_gold@3": 0,
+        "function_recall@5": 0.0,
+        "function_all_gold@5": 0,
+        "function_recall@10": 0.0,
+        "function_all_gold@10": 0,
+        "function_recall@20": 0.0,
+        "function_all_gold@20": 0
+      },
+      "source_provenance": {
+        "base_commit_verified": "14d026cccb144c6877294ba4cd4e03ebf0842498",
+        "git_tree": "b3f2ad248aec2b040a5860e6ddc4c27db4329b5b",
+        "source_file_count": 818,
+        "source_bytes": 4583533,
+        "excluded_sources": [],
+        "cache_path": "D:\\Project\\CAPSTONES\\M2_week_5_6\\data\\repositories\\django__django"
+      },
+      "duration_seconds": 10.926833299992722
+    },
+    {
+      "instance_id": "matplotlib__matplotlib-14623",
+      "status": "FAILED",
+      "error_class": "RuntimeError",
+      "error": "",
+      "duration_seconds": 240.0558430999954
+    }
+  ],
+  "resume_from": null,
+  "m1_comparison_status": "AWAITING_REAL_M1_EXPORTS",
+  "stdout": "[1/3] astropy__astropy-13398: SUCCEEDED (13.01s)\n[2/3] django__django-10554: SUCCEEDED (10.93s)\n[3/3] matplotlib__matplotlib-14623: FAILED (240.06s)\n",
+  "stderr": "matplotlib__matplotlib-14623: RuntimeError: \n",
+  "exit_code": 1,
+  "summary": {
+    "attempted_tasks": 3,
+    "completed_tasks": 2,
+    "failed_tasks": 1,
+    "metrics": {
+      "context_token_estimate": {
+        "mean": 3994.5,
+        "eligible_tasks": 2
+      },
+      "file_all_gold@1": {
+        "mean": 0,
+        "eligible_tasks": 2
+      },
+      "file_all_gold@10": {
+        "mean": 0.5,
+        "eligible_tasks": 2
+      },
+      "file_all_gold@20": {
+        "mean": 0.5,
+        "eligible_tasks": 2
+      },
+      "file_all_gold@3": {
+        "mean": 0,
+        "eligible_tasks": 2
+      },
+      "file_all_gold@5": {
+        "mean": 0,
+        "eligible_tasks": 2
+      },
+      "file_gold_count": {
+        "mean": 2.5,
+        "eligible_tasks": 2
+      },
+      "file_mrr": {
+        "mean": 0.375,
+        "eligible_tasks": 2
+      },
+      "file_recall@1": {
+        "mean": 0.0,
+        "eligible_tasks": 2
+      },
+      "file_recall@10": {
+        "mean": 0.6666666666666666,
+        "eligible_tasks": 2
+      },
+      "file_recall@20": {
+        "mean": 0.6666666666666666,
+        "eligible_tasks": 2
+      },
+      "file_recall@3": {
+        "mean": 0.25,
+        "eligible_tasks": 2
+      },
+      "file_recall@5": {
+        "mean": 0.41666666666666663,
+        "eligible_tasks": 2
+      },
+      "file_retrievability_coverage": {
+        "mean": 0.875,
+        "eligible_tasks": 2
+      },
+      "function_all_gold@1": {
+        "mean": 0,
+        "eligible_tasks": 2
+      },
+      "function_all_gold@10": {
+        "mean": 0,
+        "eligible_tasks": 2
+      },
+      "function_all_gold@20": {
+        "mean": 0.5,
+        "eligible_tasks": 2
+      },
+      "function_all_gold@3": {
+        "mean": 0,
+        "eligible_tasks": 2
+      },
+      "function_all_gold@5": {
+        "mean": 0,
+        "eligible_tasks": 2
+      },
+      "function_gold_count": {
+        "mean": 3,
+        "eligible_tasks": 2
+      },
+      "function_mrr": {
+        "mean": 0.10833333333333334,
+        "eligible_tasks": 2
+      },
+      "function_recall@1": {
+        "mean": 0.0,
+        "eligible_tasks": 2
+      },
+      "function_recall@10": {
+        "mean": 0.4,
+        "eligible_tasks": 2
+      },
+      "function_recall@20": {
+        "mean": 0.9,
+        "eligible_tasks": 2
+      },
+      "function_recall@3": {
+        "mean": 0.0,
+        "eligible_tasks": 2
+      },
+      "function_recall@5": {
+        "mean": 0.0,
+        "eligible_tasks": 2
+      },
+      "index_seconds": {
+        "mean": 5.775546149998263,
+        "eligible_tasks": 2
+      },
+      "mapping_coverage": {
+        "mean": 1.0,
+        "eligible_tasks": 2
+      },
+      "retrieval_seconds": {
+        "mean": 0.11634159999812255,
+        "eligible_tasks": 2
+      }
+    }
+  },
+  "ended_utc": "2026-10-01T13:30:39.092131+00:00",
+  "duration_seconds": 264.39204629999585
+}

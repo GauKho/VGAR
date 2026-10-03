@@ -6,7 +6,7 @@ Mục đích: làm baseline BM25 trên Python function/code chunks, lấy gold l
 
 ## Đọc theo thứ tự
 
-Khi lấy project từ nhánh GitHub, đọc [Hướng dẫn bàn giao/clone và tái tạo dữ liệu](docs/GITHUB_HANDOFF.md): bộ task artifacts lớn chỉ giữ ở local, không nằm trên Git.
+Khi lấy project từ nhánh GitHub, đọc [Hướng dẫn bàn giao/clone và tái tạo dữ liệu](docs/GITHUB_HANDOFF.md): gold patches, logs và toàn bộ task artifacts của run bàn giao có trên nhánh; lịch sử kết quả chi tiết được đóng gói ở GitHub Releases. Source cache và `.venv` không được commit.
 
 Nếu cần hiểu cặn kẽ từng yêu cầu, file, thuật ngữ, luồng input/output và cách tự test, đọc [Bản giải thích tổng thể M2 tuần 5–6](GIAI_THICH_M2_W5_W6_VA_CACH_KIEM_THU.md). Tài liệu này phân biệt lệnh setup lần đầu với lệnh chạy lại và phần còn chờ M1.
 

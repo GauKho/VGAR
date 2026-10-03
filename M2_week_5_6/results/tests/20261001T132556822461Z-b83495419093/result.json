@@ -1,0 +1,49 @@
+{
+  "run_id": "20261001T132556822461Z-b83495419093",
+  "kind": "test",
+  "status": "PASS",
+  "started_utc": "2026-10-01T13:25:56.822461+00:00",
+  "complete": true,
+  "python": "3.11.6 (tags/v3.11.6:8b6ee5b, Oct  2 2023, 14:57:12) [MSC v.1935 64 bit (AMD64)]",
+  "interpreter": "D:\\Project\\CAPSTONES\\M2_week_5_6\\.venv\\Scripts\\python.exe",
+  "platform": "Windows-10-10.0.26300-SP0",
+  "command_argv": [
+    "D:\\Project\\CAPSTONES\\M2_week_5_6\\.venv\\Scripts\\python.exe",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "tests",
+    "-p",
+    "test*.py",
+    "-v"
+  ],
+  "cwd": "D:\\Project\\CAPSTONES\\M2_week_5_6",
+  "timeout_seconds": 120,
+  "source": {
+    "files": {
+      "pyproject.toml": "sha256:2df1d4e47316b8a94e585df3bc535b98493aa90c40e87b1a7ec980cc59357cee",
+      "scripts/prepare_dataset.py": "sha256:b34696c18153664e208666f3cc1c51be596de84c1204c0a62e462b456fe002c8",
+      "scripts/record_tests.py": "sha256:67b3118a1b64066b69b51b3cbf1a635dc034b117486ae689957c9801a0669dd1",
+      "scripts/run_evaluation.py": "sha256:ef63e8ffe666f6970e86f6ade2a081076f0846c497ff4b18c6dc2fa4fe56cd80",
+      "src/m2_retrieval/__init__.py": "sha256:774473da58e39e63570d37e779fe639daaff20aaa3eaf765a5fdc7c13548ba7e",
+      "src/m2_retrieval/bm25.py": "sha256:6315dcfeebeee40a9bcb747eaccca4769ba88522d084727ab00daa91b18c0638",
+      "src/m2_retrieval/chunks.py": "sha256:418fdc6525eb79fc0b2f1126961aa811a475462f0ed0c6ce444afdf3a0fbb16f",
+      "src/m2_retrieval/dataset.py": "sha256:1ebd052f6f93ca8ae9b9ab45914db67a3b64b388978fd37d893fd3ea11cd9336",
+      "src/m2_retrieval/evaluation.py": "sha256:bd2c8f00cf0556a308e62313bac85d624f85fa49a922f430bbe61c5b864ba58a",
+      "src/m2_retrieval/evidence.py": "sha256:a5a846974e39d99f9f6a0ab1ff14f860a5c67a134623398a22cbc91deb9544bd",
+      "src/m2_retrieval/gold_labels.py": "sha256:45da1f04e69a23bb82c49f98edf1662068d18426cd464d1c9afef0423ed8cae6",
+      "src/m2_retrieval/m1_adapter.py": "sha256:fbf3b09d5fba94c7fb484f05b70800341e3c00a7d65f13c3e1e60ac3abea66a0",
+      "src/m2_retrieval/metrics.py": "sha256:18263bb2ceed690658de0fcc67936ec344a5848c41fbaa0504267dc680e1c1b7",
+      "tests/test_core.py": "sha256:7449fc4158b6ed8f08a9ad6fe19ebae9e79aacda853a30d81dd49bdb00430694",
+      "tests/test_gold_boundaries.py": "sha256:7948ea983806b2cdcb3309132af7a1f481054f67369846cc04ad24a1b7b1e23d",
+      "tests/test_pipeline.py": "sha256:bb554a8cfb2f9becbe2baecf974068684e3fc8e8077655e0579499403f21ff02"
+    },
+    "digest": "sha256:89fe7f46cce863a64e712f3e15eb3e660a6e5c1c012933d713f2e984b399a8c5"
+  },
+  "exit_code": 0,
+  "stdout": "",
+  "stderr": "test_bm25_matches_hand_calculated_score (test_core.CoreTests.test_bm25_matches_hand_calculated_score) ... ok\ntest_chunks_preserve_decorator_nested_names_and_module (test_core.CoreTests.test_chunks_preserve_decorator_nested_names_and_module) ... ok\ntest_empty_gold_is_ineligible_not_perfect_or_zero (test_core.CoreTests.test_empty_gold_is_ineligible_not_perfect_or_zero) ... ok\ntest_function_metrics_dedup_windows_before_k (test_core.CoreTests.test_function_metrics_dedup_windows_before_k) ... ok\ntest_gold_changed_function_and_module_boundary (test_core.CoreTests.test_gold_changed_function_and_module_boundary) ... ok\ntest_new_file_cannot_be_retrieved_from_base (test_core.CoreTests.test_new_file_cannot_be_retrieved_from_base) ... ok\ntest_packing_never_exceeds_budget_and_reports_skips (test_core.CoreTests.test_packing_never_exceeds_budget_and_reports_skips) ... ok\ntest_parse_failure_is_recorded_not_silently_skipped (test_core.CoreTests.test_parse_failure_is_recorded_not_silently_skipped) ... ok\ntest_tokenizer_splits_snake_camel_and_paths (test_core.CoreTests.test_tokenizer_splits_snake_camel_and_paths) ... ok\ntest_added_only_function_is_explicitly_unretrievable (test_gold_boundaries.GoldBoundaryTests.test_added_only_function_is_explicitly_unretrievable) ... ok\ntest_addition_inside_existing_function_is_retrievable (test_gold_boundaries.GoldBoundaryTests.test_addition_inside_existing_function_is_retrievable) ... ok\ntest_decorator_change_maps_decorated_function (test_gold_boundaries.GoldBoundaryTests.test_decorator_change_maps_decorated_function) ... ok\ntest_long_functions_have_stable_parent_and_unique_windows (test_gold_boundaries.GoldBoundaryTests.test_long_functions_have_stable_parent_and_unique_windows) ... ok\ntest_malformed_hunk_and_unsafe_path_do_not_generate_labels (test_gold_boundaries.GoldBoundaryTests.test_malformed_hunk_and_unsafe_path_do_not_generate_labels) ... ok\ntest_nested_edit_labels_only_innermost_not_outer (test_gold_boundaries.GoldBoundaryTests.test_nested_edit_labels_only_innermost_not_outer) ... ok\ntest_rename_and_delete_use_old_path (test_gold_boundaries.GoldBoundaryTests.test_rename_and_delete_use_old_path) ... ok\ntest_evaluation_retrieves_gold_and_does_not_mutate_source (test_pipeline.PipelineTests.test_evaluation_retrieves_gold_and_does_not_mutate_source) ... ok\ntest_m1_rejects_wrong_commit_and_unsafe_context (test_pipeline.PipelineTests.test_m1_rejects_wrong_commit_and_unsafe_context) ... ok\ntest_m1_valid_context_maps_span_to_function_without_fabricating_graph_fields (test_pipeline.PipelineTests.test_m1_valid_context_maps_span_to_function_without_fabricating_graph_fields) ... ok\ntest_path_traversal_repo_or_non_hash_revision_is_rejected (test_pipeline.PipelineTests.test_path_traversal_repo_or_non_hash_revision_is_rejected) ... ok\ntest_ranking_does_not_change_when_gold_patch_changes (test_pipeline.PipelineTests.test_ranking_does_not_change_when_gold_patch_changes) ... ok\ntest_recorder_keeps_full_output_and_timeout (test_pipeline.PipelineTests.test_recorder_keeps_full_output_and_timeout) ... ok\ntest_selection_is_deterministic_stratified_and_excludes_single_file (test_pipeline.PipelineTests.test_selection_is_deterministic_stratified_and_excludes_single_file) ... ok\n\n----------------------------------------------------------------------\nRan 23 tests in 0.248s\n\nOK\n",
+  "duration_seconds": 0.4658681000000797,
+  "ended_utc": "2026-10-01T13:25:57.345891+00:00"
+}

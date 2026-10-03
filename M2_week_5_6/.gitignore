@@ -4,6 +4,9 @@ __pycache__/
 data/downloads/
 data/repositories/
 data/chunks/
-data/gold/
 data/m1_exports/
-results/
+# Keep gold patches and small evidence logs; publish full details for the handoff run.
+results/retrieval/*/tasks/
+results/retrieval/*/m1_requests/
+!results/retrieval/20261001T134641055034Z-5295e04e781d/tasks/
+!results/retrieval/20261001T134641055034Z-5295e04e781d/m1_requests/

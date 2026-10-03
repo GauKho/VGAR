@@ -1,0 +1,50 @@
+{
+  "run_id": "20261001T132726529177Z-80b7a785e40d",
+  "kind": "test",
+  "status": "FAIL",
+  "started_utc": "2026-10-01T13:27:26.530176+00:00",
+  "complete": true,
+  "python": "3.11.6 (tags/v3.11.6:8b6ee5b, Oct  2 2023, 14:57:12) [MSC v.1935 64 bit (AMD64)]",
+  "interpreter": "D:\\Project\\CAPSTONES\\M2_week_5_6\\.venv\\Scripts\\python.exe",
+  "platform": "Windows-10-10.0.26300-SP0",
+  "command_argv": [
+    "D:\\Project\\CAPSTONES\\M2_week_5_6\\.venv\\Scripts\\python.exe",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "tests",
+    "-p",
+    "test_handoff_and_failure.py",
+    "-v"
+  ],
+  "cwd": "D:\\Project\\CAPSTONES\\M2_week_5_6",
+  "timeout_seconds": 120,
+  "source": {
+    "files": {
+      "pyproject.toml": "sha256:2df1d4e47316b8a94e585df3bc535b98493aa90c40e87b1a7ec980cc59357cee",
+      "scripts/prepare_dataset.py": "sha256:b34696c18153664e208666f3cc1c51be596de84c1204c0a62e462b456fe002c8",
+      "scripts/record_tests.py": "sha256:67b3118a1b64066b69b51b3cbf1a635dc034b117486ae689957c9801a0669dd1",
+      "scripts/run_evaluation.py": "sha256:ef63e8ffe666f6970e86f6ade2a081076f0846c497ff4b18c6dc2fa4fe56cd80",
+      "src/m2_retrieval/__init__.py": "sha256:774473da58e39e63570d37e779fe639daaff20aaa3eaf765a5fdc7c13548ba7e",
+      "src/m2_retrieval/bm25.py": "sha256:6315dcfeebeee40a9bcb747eaccca4769ba88522d084727ab00daa91b18c0638",
+      "src/m2_retrieval/chunks.py": "sha256:418fdc6525eb79fc0b2f1126961aa811a475462f0ed0c6ce444afdf3a0fbb16f",
+      "src/m2_retrieval/dataset.py": "sha256:1ebd052f6f93ca8ae9b9ab45914db67a3b64b388978fd37d893fd3ea11cd9336",
+      "src/m2_retrieval/evaluation.py": "sha256:bd2c8f00cf0556a308e62313bac85d624f85fa49a922f430bbe61c5b864ba58a",
+      "src/m2_retrieval/evidence.py": "sha256:a5a846974e39d99f9f6a0ab1ff14f860a5c67a134623398a22cbc91deb9544bd",
+      "src/m2_retrieval/gold_labels.py": "sha256:45da1f04e69a23bb82c49f98edf1662068d18426cd464d1c9afef0423ed8cae6",
+      "src/m2_retrieval/m1_adapter.py": "sha256:fbf3b09d5fba94c7fb484f05b70800341e3c00a7d65f13c3e1e60ac3abea66a0",
+      "src/m2_retrieval/metrics.py": "sha256:18263bb2ceed690658de0fcc67936ec344a5848c41fbaa0504267dc680e1c1b7",
+      "tests/test_core.py": "sha256:7449fc4158b6ed8f08a9ad6fe19ebae9e79aacda853a30d81dd49bdb00430694",
+      "tests/test_gold_boundaries.py": "sha256:7948ea983806b2cdcb3309132af7a1f481054f67369846cc04ad24a1b7b1e23d",
+      "tests/test_handoff_and_failure.py": "sha256:7103ef84745c1b915f1bdbecbf984c75c84157f05448f6f56ce50f005b4ed354",
+      "tests/test_pipeline.py": "sha256:bb554a8cfb2f9becbe2baecf974068684e3fc8e8077655e0579499403f21ff02"
+    },
+    "digest": "sha256:826c6aeffcd2276215803f7582f1fb466d712053a0c7d42e9ed080b69d6163f7"
+  },
+  "exit_code": 1,
+  "stdout": "",
+  "stderr": "test_handoff_and_failure (unittest.loader._FailedTest.test_handoff_and_failure) ... ERROR\n\n======================================================================\nERROR: test_handoff_and_failure (unittest.loader._FailedTest.test_handoff_and_failure)\n----------------------------------------------------------------------\nImportError: Failed to import test module: test_handoff_and_failure\nTraceback (most recent call last):\n  File \"C:\\Program Files\\Python311\\Lib\\unittest\\loader.py\", line 419, in _find_test_path\n    module = self._get_module_from_name(name)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Program Files\\Python311\\Lib\\unittest\\loader.py\", line 362, in _get_module_from_name\n    __import__(name)\n  File \"D:\\Project\\CAPSTONES\\M2_week_5_6\\tests\\test_handoff_and_failure.py\", line 10, in <module>\n    from m2_retrieval.m1_adapter import adapt_context, compare_run\nImportError: cannot import name 'compare_run' from 'm2_retrieval.m1_adapter' (D:\\Project\\CAPSTONES\\M2_week_5_6\\src\\m2_retrieval\\m1_adapter.py)\n\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nFAILED (errors=1)\n",
+  "duration_seconds": 0.29817090000142343,
+  "ended_utc": "2026-10-01T13:27:26.930137+00:00"
+}

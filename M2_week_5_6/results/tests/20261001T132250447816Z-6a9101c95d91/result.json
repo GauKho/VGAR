@@ -1,0 +1,44 @@
+{
+  "run_id": "20261001T132250447816Z-6a9101c95d91",
+  "kind": "test",
+  "status": "FAIL",
+  "started_utc": "2026-10-01T13:22:50.447816+00:00",
+  "complete": true,
+  "python": "3.11.6 (tags/v3.11.6:8b6ee5b, Oct  2 2023, 14:57:12) [MSC v.1935 64 bit (AMD64)]",
+  "interpreter": "D:\\Project\\CAPSTONES\\M2_week_5_6\\.venv\\Scripts\\python.exe",
+  "platform": "Windows-10-10.0.26300-SP0",
+  "command_argv": [
+    "D:\\Project\\CAPSTONES\\M2_week_5_6\\.venv\\Scripts\\python.exe",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "tests",
+    "-p",
+    "test_pipeline.py",
+    "-v"
+  ],
+  "cwd": "D:\\Project\\CAPSTONES\\M2_week_5_6",
+  "timeout_seconds": 120,
+  "source": {
+    "files": {
+      "pyproject.toml": "sha256:2df1d4e47316b8a94e585df3bc535b98493aa90c40e87b1a7ec980cc59357cee",
+      "scripts/record_tests.py": "sha256:67b3118a1b64066b69b51b3cbf1a635dc034b117486ae689957c9801a0669dd1",
+      "src/m2_retrieval/__init__.py": "sha256:774473da58e39e63570d37e779fe639daaff20aaa3eaf765a5fdc7c13548ba7e",
+      "src/m2_retrieval/bm25.py": "sha256:6315dcfeebeee40a9bcb747eaccca4769ba88522d084727ab00daa91b18c0638",
+      "src/m2_retrieval/chunks.py": "sha256:418fdc6525eb79fc0b2f1126961aa811a475462f0ed0c6ce444afdf3a0fbb16f",
+      "src/m2_retrieval/evidence.py": "sha256:a5a846974e39d99f9f6a0ab1ff14f860a5c67a134623398a22cbc91deb9544bd",
+      "src/m2_retrieval/gold_labels.py": "sha256:45da1f04e69a23bb82c49f98edf1662068d18426cd464d1c9afef0423ed8cae6",
+      "src/m2_retrieval/metrics.py": "sha256:18263bb2ceed690658de0fcc67936ec344a5848c41fbaa0504267dc680e1c1b7",
+      "tests/test_core.py": "sha256:7449fc4158b6ed8f08a9ad6fe19ebae9e79aacda853a30d81dd49bdb00430694",
+      "tests/test_gold_boundaries.py": "sha256:7948ea983806b2cdcb3309132af7a1f481054f67369846cc04ad24a1b7b1e23d",
+      "tests/test_pipeline.py": "sha256:ba961fc3811ba34c404a54600550d302ff2c666fb8a642d285e48aba7a34e121"
+    },
+    "digest": "sha256:569be016d2e4292bc2d7e762d975a579cbbc0f19f66d465747680f7baf469906"
+  },
+  "exit_code": 1,
+  "stdout": "",
+  "stderr": "test_pipeline (unittest.loader._FailedTest.test_pipeline) ... ERROR\n\n======================================================================\nERROR: test_pipeline (unittest.loader._FailedTest.test_pipeline)\n----------------------------------------------------------------------\nImportError: Failed to import test module: test_pipeline\nTraceback (most recent call last):\n  File \"C:\\Program Files\\Python311\\Lib\\unittest\\loader.py\", line 419, in _find_test_path\n    module = self._get_module_from_name(name)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Program Files\\Python311\\Lib\\unittest\\loader.py\", line 362, in _get_module_from_name\n    __import__(name)\n  File \"D:\\Project\\CAPSTONES\\M2_week_5_6\\tests\\test_pipeline.py\", line 7, in <module>\n    from m2_retrieval.dataset import select_tasks, validate_task\nModuleNotFoundError: No module named 'm2_retrieval.dataset'\n\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nFAILED (errors=1)\n",
+  "duration_seconds": 0.14326319999236148,
+  "ended_utc": "2026-10-01T13:22:50.655869+00:00"
+}

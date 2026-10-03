@@ -1,0 +1,23 @@
+{
+  "run_id": "20261001T132557556030Z-18debf8fac06",
+  "kind": "dataset_preparation",
+  "status": "SUCCEEDED",
+  "started_utc": "2026-10-01T13:25:57.556030+00:00",
+  "complete": true,
+  "python": "3.11.6 (tags/v3.11.6:8b6ee5b, Oct  2 2023, 14:57:12) [MSC v.1935 64 bit (AMD64)]",
+  "interpreter": "D:\\Project\\CAPSTONES\\M2_week_5_6\\.venv\\Scripts\\python.exe",
+  "platform": "Windows-10-10.0.26300-SP0",
+  "command_argv": [
+    "scripts\\prepare_dataset.py",
+    "--count",
+    "25"
+  ],
+  "cwd": "D:\\Project\\CAPSTONES\\M2_week_5_6",
+  "manifest": "D:\\Project\\CAPSTONES\\M2_week_5_6\\data\\manifests\\verified-c104f840cc67-25.json",
+  "dataset_revision": "c104f840cc67f8b6eec6f759ebc8b2693d585d4a",
+  "raw_count": 500,
+  "eligible_count": 70,
+  "selected_count": 25,
+  "exit_code": 0,
+  "ended_utc": "2026-10-01T13:26:00.508398+00:00"
+}

@@ -95,3 +95,10 @@ Các edits phiên này chỉ nằm trong M2_week_5_6. Repo VGAR vẫn25 dirty pa
 - Evidence suite khi viết tài liệu: `results/tests/20261001T143918867222Z-bd8d53c32643/result.json`,41 tests PASS, exit0, unittest0.706s; recorder0.927s. Phiên tiếp tục chỉ đọc lại evidence, không chạy lại phần đã hoàn thành.
 - Kiểm tra tài liệu ở phiên trước:15 PowerShell code blocks parse được, không thiếu file ở các links nội bộ, không có ký tự thay thế Unicode. Kiểm tra cuối được thực hiện lại sau bổ sung link/checkpoint.
 - Task tạo tài liệu giải thích đã hoàn thành; còn M1 output thật/paired comparison và xác nhận M1/M3 như mục phục hồi phía trên. Không tự chuyển sang các task chưa được yêu cầu.
+
+## Bổ sung phạm vi bàn giao GitHub — 03/10/2026
+
+- Theo xác nhận của người dùng, nhánh M2 được bổ sung25 gold patches, toàn bộ logs nhỏ và full artifacts của run bàn giao `20261001T134641055034Z-5295e04e781d`, gồm25 tasks/25 M1 requests.
+- `.gitignore` giữ loại `.venv`, bytecode và source/download caches, nhưng không còn loại gold hoặc toàn bộ results. Task details của các runs ngoài run bàn giao vẫn không đưa trực tiếp vào Git.
+- Lịch sử `results/` đầy đủ, gold và manifest được đóng gói riêng cho GitHub Releases; xem `docs/GITHUB_HANDOFF.md` để lấy ZIP/checksum. Các files local và metrics cũ giữ nguyên; không chạy lại retrieval25 hoặc sửa src/scripts/tests.
+- Nhánh chỉ chứa `M2_week_5_6/` ở cấp gốc; không merge trực tiếp các commit loại file VGAR vào main.
