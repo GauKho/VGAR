@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "m2-retrieval-w5-w6"
+version = "0.1.0"
+description = "Independent, reproducible BM25 and SWE-bench retrieval evaluation"
+requires-python = ">=3.11,<3.14"
+dependencies = []
+
+[project.optional-dependencies]
+data = ["pyarrow==23.0.1"]
+
+[tool.setuptools.packages.find]
+where = ["src"]

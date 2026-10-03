@@ -1,0 +1,9 @@
+.venv/
+__pycache__/
+*.egg-info/
+data/downloads/
+data/repositories/
+data/chunks/
+data/gold/
+data/m1_exports/
+results/
