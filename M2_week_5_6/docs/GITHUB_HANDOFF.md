@@ -4,6 +4,10 @@ Ngày: 03/10/2026. Repository đích: `https://github.com/GauKho/VGAR.git`.
 
 Project được đặt tại `M2_week_5_6/` trên nhánh riêng `m2-week-5-6-20261003`, không tích hợp logic vào code VGAR và không thay đổi nhánh main.
 
+Sau điều chỉnh bố trí theo yêu cầu, snapshot mới nhất của nhánh chỉ có `M2_week_5_6/` ở cấp gốc; các file VGAR kế thừa từ main không còn xuất hiện trên nhánh M2. Lịch sử commit được giữ để khôi phục, không dùng force push.
+
+**Không merge trực tiếp nhánh bàn giao này vào main:** commit điều chỉnh bố trí loại các file VGAR khỏi snapshot của nhánh M2. Khi muốn tích hợp, lấy riêng thư mục M2 hoặc cherry-pick commit thêm package `b453d0e`; không đưa các thay đổi xóa file VGAR vào main.
+
 ## Những gì được đưa lên nhánh
 
 - Code `src/`, các CLI `scripts/`, toàn bộ source tests, `pyproject.toml` và `.gitignore`.
