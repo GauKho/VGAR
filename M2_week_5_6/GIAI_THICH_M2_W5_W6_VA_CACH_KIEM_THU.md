@@ -124,23 +124,23 @@ Thư mục này **độc lập theo yêu cầu của bạn**. Nó không gọi M
 
 Các đường dẫn trong bảng tính từ `D:\Project\CAPSTONES\M2_week_5_6\`. Mục 4–6 ghi cụ thể cấu trúc và các đường dẫn đầy đủ.
 
-| Nội dung                       | Hoàn thành ở mức nào?                                                | Nằm ở đâu?                                                                                 | Output/nội dung                                                                    | Tác dụng và giới hạn                                                    |
-| ------------------------------ | -------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
-| Tách function/code chunks      | Đã triển khai và kiểm thử                                            | `src/m2_retrieval/chunks.py`                                                               | Chunks: ID, parent ID, path, symbol, range, snippet, hashes; parse failures        | Tạo corpus BM25; dùng Python AST, không tạo call graph                  |
-| BM25 baseline                  | Đã triển khai và kiểm thử                                            | `src/m2_retrieval/bm25.py`                                                                 | Ranked chunks có score; packed context                                             | Baseline lexical độc lập; không hiểu ngữ nghĩa/quan hệ gọi hàm          |
-| Gold-file extraction           | Đã triển khai theo policy                                            | `src/m2_retrieval/gold_labels.py`                                                          | `gold_files`, `all_changed_source_files`, `unretrievable_files`                    | Chấm các file có thể tìm ở base; file mới được báo riêng                |
-| Gold-function extraction       | Đã triển khai theo policy, có boundary/regression tests              | Cùng `gold_labels.py`                                                                      | `gold_functions`, `mapping_events`, `mapping_coverage`, `function_labels_complete` | Gold là changed-code proxy, không phải toàn bộ causal relevance         |
-| Dataset pin và manifest        | Đã tạo bộ25 task thật                                                | `dataset.py`, `scripts/prepare_dataset.py`, `data/manifests/verified-c104f840cc67-25.json` | Revision, tasks, commit/query/patch hashes, selection audit                        | Không chọn theo điểm retrieval; chưa là subset chung M3/final blind set |
-| Source tại base commit         | Đã tải/cache và dùng trong25 task                                    | `dataset.py`, `data/repositories/archives/`                                                | Commit tar.gz + `.tar.json` provenance                                             | Không checkout/import code benchmark; không có Git object/tree proof    |
-| Script Recall@k/MRR            | Đã triển khai                                                        | `metrics.py`, `evaluation.py`, `scripts/run_evaluation.py`                                 | File/function Recall@1/3/5/10/20, MRR, all-gold coverage                           | Dedup trước k; N/A có denominator rõ                                    |
-| Retrieval evaluation20–30 task | Đã hoàn thành25/25,0 failed                                          | `results/retrieval/20261001T134641055034Z-5295e04e781d/`                                   | Summary, task JSON, context, gold, rankings, requests                              | Chứng minh retrieval pipeline chạy, không chứng minh sửa lỗi PASS       |
-| Lưu test evidence              | Đã triển khai                                                        | `evidence.py`, `scripts/record_tests.py`, `results/tests/`                                 | Command, stdout/stderr, exit, time, interpreter, source fingerprint                | Test suite có một result.json/run; retrieval có thêm task files         |
-| Resume có kiểm tra integrity   | Đã triển khai và kiểm thử                                            | `evaluation.py`, `tests/test_resume.py`, `tests/test_review_regressions.py`                | Run mới tái sử dụng task artifact phù hợp                                          | Khác source/config/manifest hoặc artifact bị sửa thì từ chối            |
-| M1 request/adapter             | Đã triển khai và kiểm thử bằng fixtures                              | `m1_adapter.py`, `m1_requests/`, `docs/M1_M3_HANDOFF.md`                                   | Gold-free requests; validate/export mapping                                        | Fixtures chỉ chứng minh adapter, không phải kết quả Graph thật          |
-| Phối hợp M1 debug thật         | **Chưa hoàn thành**                                                  | Handoff/checklist đã có trong `docs/M1_M3_HANDOFF.md`                                      | Cần export thật và thống nhất mapping                                              | Không thể thay bằng việc unit tests PASS                                |
-| Bảng Graph vs BM25             | **Chưa hoàn thành**                                                  | `scripts/compare_m1.py`, `results/comparison/`, `REPORT.md`                                | Hiện `AWAITING_M1`,0/25 pairs                                                      | Không có số Graph giả, không coi missing là score0                      |
-| Inspection ≥10 task            | Đã có10 case notes do assistant; **chưa có human/team confirmation** | `docs/INSPECTION_10_TASKS.md`                                                              | Issue/diff/gold/ranking và nhận xét từng case                                      | Cần thành viên/leader kiểm tra lại và ghi xác nhận                      |
-| Manifest chung M3              | **Chưa thống nhất**                                                  | `provisional_m3_alignment` trong manifest, handoff docs                                    | Bộ25 pilot hiện tại                                                                | Chưa xác nhận môi trường chạy benchmark tests                           |
+| Nội dung                       | Hoàn thành ở mức nào?                                               | Nằm ở đâu?                                                                                 | Output/nội dung                                                                    | Tác dụng và giới hạn                                                    |
+| ------------------------------ | ------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| Tách function/code chunks      | Đã triển khai và kiểm thử                                           | `src/m2_retrieval/chunks.py`                                                               | Chunks: ID, parent ID, path, symbol, range, snippet, hashes; parse failures        | Tạo corpus BM25; dùng Python AST, không tạo call graph                  |
+| BM25 baseline                  | Đã triển khai và kiểm thử                                           | `src/m2_retrieval/bm25.py`                                                                 | Ranked chunks có score; packed context                                             | Baseline lexical độc lập; không hiểu ngữ nghĩa/quan hệ gọi hàm          |
+| Gold-file extraction           | Đã triển khai theo policy                                           | `src/m2_retrieval/gold_labels.py`                                                          | `gold_files`, `all_changed_source_files`, `unretrievable_files`                    | Chấm các file có thể tìm ở base; file mới được báo riêng                |
+| Gold-function extraction       | Đã triển khai theo policy, có boundary/regression tests             | Cùng`gold_labels.py`                                                                       | `gold_functions`, `mapping_events`, `mapping_coverage`, `function_labels_complete` | Gold là changed-code proxy, không phải toàn bộ causal relevance         |
+| Dataset pin và manifest        | Đã tạo bộ25 task thật                                               | `dataset.py`, `scripts/prepare_dataset.py`, `data/manifests/verified-c104f840cc67-25.json` | Revision, tasks, commit/query/patch hashes, selection audit                        | Không chọn theo điểm retrieval; chưa là subset chung M3/final blind set |
+| Source tại base commit         | Đã tải/cache và dùng trong25 task                                   | `dataset.py`, `data/repositories/archives/`                                                | Commit tar.gz +`.tar.json` provenance                                              | Không checkout/import code benchmark; không có Git object/tree proof    |
+| Script Recall@k/MRR            | Đã triển khai                                                       | `metrics.py`, `evaluation.py`, `scripts/run_evaluation.py`                                 | File/function Recall@1/3/5/10/20, MRR, all-gold coverage                           | Dedup trước k; N/A có denominator rõ                                    |
+| Retrieval evaluation20–30 task | Đã hoàn thành25/25,0 failed                                         | `results/retrieval/20261001T134641055034Z-5295e04e781d/`                                   | Summary, task JSON, context, gold, rankings, requests                              | Chứng minh retrieval pipeline chạy, không chứng minh sửa lỗi PASS       |
+| Lưu test evidence              | Đã triển khai                                                       | `evidence.py`, `scripts/record_tests.py`, `results/tests/`                                 | Command, stdout/stderr, exit, time, interpreter, source fingerprint                | Test suite có một result.json/run; retrieval có thêm task files         |
+| Resume có kiểm tra integrity   | Đã triển khai và kiểm thử                                           | `evaluation.py`, `tests/test_resume.py`, `tests/test_review_regressions.py`                | Run mới tái sử dụng task artifact phù hợp                                          | Khác source/config/manifest hoặc artifact bị sửa thì từ chối            |
+| M1 request/adapter             | Đã triển khai và kiểm thử bằng fixtures                             | `m1_adapter.py`, `m1_requests/`, `docs/M1_M3_HANDOFF.md`                                   | Gold-free requests; validate/export mapping                                        | Fixtures chỉ chứng minh adapter, không phải kết quả Graph thật          |
+| Phối hợp M1 debug thật         | **Chưa hoàn thành**                                                 | Handoff/checklist đã có trong`docs/M1_M3_HANDOFF.md`                                       | Cần export thật và thống nhất mapping                                              | Không thể thay bằng việc unit tests PASS                                |
+| Bảng Graph vs BM25             | **Chưa hoàn thành**                                                 | `scripts/compare_m1.py`, `results/comparison/`, `REPORT.md`                                | Hiện`AWAITING_M1`,0/25 pairs                                                       | Không có số Graph giả, không coi missing là score0                      |
+| Inspection ≥10 task            | Đã có10 case notes do assistant;**chưa có human/team confirmation** | `docs/INSPECTION_10_TASKS.md`                                                              | Issue/diff/gold/ranking và nhận xét từng case                                      | Cần thành viên/leader kiểm tra lại và ghi xác nhận                      |
+| Manifest chung M3              | **Chưa thống nhất**                                                 | `provisional_m3_alignment` trong manifest, handoff docs                                    | Bộ25 pilot hiện tại                                                                | Chưa xác nhận môi trường chạy benchmark tests                           |
 
 **Kết luận:** phần implementation/evaluation của M2 đã có bằng chứng hoạt động. Không đánh dấu “100% DoD chung tuần 5–6” khi chưa có Graph outputs, paired comparison và xác nhận phối hợp.
 
@@ -254,7 +254,7 @@ Python có thể tạo `__pycache__/` trong src/scripts/tests. Đó là cache by
 | `D:\Project\CAPSTONES\M2_week_5_6\results\`                    | Bằng chứng mỗi lần chạy; không chỉnh tay để tăng điểm                                                                                                  |
 | `D:\Project\CAPSTONES\M2_week_5_6\docs\`                       | Plan, guide ngắn, contract, inspection và review findings                                                                                              |
 | `D:\Project\CAPSTONES\M2_week_5_6\.venv\`                      | Interpreter/dependencies riêng; có thể tái tạo khi chuyển máy, không phải code cần bàn giao qua Git                                                    |
-| `D:\Project\CAPSTONES\M2_week_5_6\pyproject.toml`              | Tên package, Python `>=3.11,<3.14`, setuptools build config; runtime dependencies trống, data extra pin `pyarrow==23.0.1`                              |
+| `D:\Project\CAPSTONES\M2_week_5_6\pyproject.toml`              | Tên package, Python`>=3.11,<3.14`, setuptools build config; runtime dependencies trống, data extra pin `pyarrow==23.0.1`                               |
 | `D:\Project\CAPSTONES\M2_week_5_6\.gitignore`                  | Bỏ qua venv, pycache, caches, gold, results khi sau này dùng Git. Không đồng nghĩa các artifacts không quan trọng: phải bàn giao qua gói dữ liệu riêng |
 | `D:\Project\CAPSTONES\M2_week_5_6\README.md`                   | Đọc nhanh scope, commands, kết quả và giới hạn                                                                                                         |
 | `D:\Project\CAPSTONES\M2_week_5_6\PROGRESS.md`                 | Checkpoint khôi phục qua các phiên; mốc cũ giữ để đối chiếu, trạng thái cuối ở phần bàn giao cuối                                                      |
@@ -571,19 +571,19 @@ Developer patch + base source
 
 ### 8.2. Policy cho những trường hợp đặc biệt
 
-| Trường hợp                                          | Xử lý hiện tại                                             | Ý nghĩa khi chấm                                     |
-| --------------------------------------------------- | ---------------------------------------------------------- | ---------------------------------------------------- |
-| Sửa dòng trong hàm có sẵn                           | Map tới base parent ID                                     | Function trở thành gold                              |
-| Thêm dòng trong hàm có sẵn                          | Dùng AST/origins để map về hàm cũ                          | Không nhầm thành hàm mới                             |
-| Sửa nested function                                 | Ưu tiên owner lồng sâu nhất                                | Không tự đánh gold cả parent chỉ vì chứa nested code |
-| Sửa decorator                                       | Decorator nằm trong span entity                            | Map tới function được decorate                       |
-| Sửa import/hằng số/module code                      | `module_edit`                                              | File có thể gold, không invent gold function         |
-| Thêm function mới                                   | `new_function`                                             | Không có base function để retrieve; báo disposition  |
-| Thêm file mới                                       | `new_file`, `unretrievable_files`                          | Không tính như file tìm được từ base; báo coverage   |
-| Rename/delete                                       | Sử dụng old path và ghi event                              | Chấm trên source trước sửa                           |
-| Duplicate qualified name                            | Disambiguate bằng defining spans/line origins              | Tránh getter/setter khác bị tính false hit           |
-| Hunk header lệch                                    | Chỉ exact old-context mapping hợp lệ; ghi `hunk_relocated` | Không fuzzy-match để tăng coverage                   |
-| Missing/ambiguous source context hoặc parse failure | `unmapped`/`unmapped_after`/`missing_base_file`            | Function labels incomplete → function metrics N/A    |
+| Trường hợp                                          | Xử lý hiện tại                                            | Ý nghĩa khi chấm                                     |
+| --------------------------------------------------- | --------------------------------------------------------- | ---------------------------------------------------- |
+| Sửa dòng trong hàm có sẵn                           | Map tới base parent ID                                    | Function trở thành gold                              |
+| Thêm dòng trong hàm có sẵn                          | Dùng AST/origins để map về hàm cũ                         | Không nhầm thành hàm mới                             |
+| Sửa nested function                                 | Ưu tiên owner lồng sâu nhất                               | Không tự đánh gold cả parent chỉ vì chứa nested code |
+| Sửa decorator                                       | Decorator nằm trong span entity                           | Map tới function được decorate                       |
+| Sửa import/hằng số/module code                      | `module_edit`                                             | File có thể gold, không invent gold function         |
+| Thêm function mới                                   | `new_function`                                            | Không có base function để retrieve; báo disposition  |
+| Thêm file mới                                       | `new_file`, `unretrievable_files`                         | Không tính như file tìm được từ base; báo coverage   |
+| Rename/delete                                       | Sử dụng old path và ghi event                             | Chấm trên source trước sửa                           |
+| Duplicate qualified name                            | Disambiguate bằng defining spans/line origins             | Tránh getter/setter khác bị tính false hit           |
+| Hunk header lệch                                    | Chỉ exact old-context mapping hợp lệ; ghi`hunk_relocated` | Không fuzzy-match để tăng coverage                   |
+| Missing/ambiguous source context hoặc parse failure | `unmapped`/`unmapped_after`/`missing_base_file`           | Function labels incomplete → function metrics N/A    |
 
 ### 8.3. Gold không đồng nghĩa toàn bộ code cần để sửa
 
@@ -744,9 +744,9 @@ flowchart LR
 | Manifest25         | `D:\Project\CAPSTONES\M2_week_5_6\data\manifests\verified-c104f840cc67-25.json` | Khóa tasks/commits/query/hashes   |
 | Issue query        | `tasks[i].problem_statement` trong manifest                                     | Input duy nhất dùng để query BM25 |
 | Source base        | `D:\Project\CAPSTONES\M2_week_5_6\data\repositories\archives\...tar.gz`         | Corpus trước sửa                  |
-| Archive provenance | Cùng folder, `...tar.json`                                                      | Kiểm tra snapshot/cache           |
+| Archive provenance | Cùng folder,`...tar.json`                                                       | Kiểm tra snapshot/cache           |
 | Developer patch    | `D:\Project\CAPSTONES\M2_week_5_6\data\gold\patches\<instance_id>.patch`        | Nhãn offline, không input search  |
-| Evaluation config  | Arguments + `config` trong result.json                                          | k1/b/window/overlap/budget/limit  |
+| Evaluation config  | Arguments +`config` trong result.json                                           | k1/b/window/overlap/budget/limit  |
 
 ### 12.2. Xử lý một task, theo thứ tự thật
 
@@ -782,22 +782,22 @@ Run chuẩn hiện tại:
 
 ### 12.4. Các fields quan trọng trong task JSON
 
-| Field                                        | Ý nghĩa                                                                                                         |
-| -------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
-| `query`, `query_hash`                        | Issue text thực sự được dùng và hash                                                                            |
-| `base_commit`, `repository`                  | Source snapshot/task                                                                                            |
-| `patch_hash`                                 | Nhận diện patch dùng làm nhãn, không phải agent patch                                                           |
-| `corpus_hash`, `corpus_chunk_count`          | Nhận diện corpus và số chunks                                                                                   |
-| `source_provenance`                          | Cache path/URL/archive hash/commit validation/source counts/exclusions                                          |
-| `parse_failures`                             | Source files không parse được, không bị silent drop                                                             |
-| `gold`                                       | Label sets, dispositions và coverage                                                                            |
-| `ranked`                                     | Snippets đầu ranking và representatives để inspection; **không mặc định mọi snippet toàn ranking đều được lưu** |
-| `ranking_saved_count`, `ranking_total_count` | Số ranked snippets lưu và tổng hits                                                                             |
-| `ranked_identity_order`                      | Toàn bộ dedup file/function order, replay Recall/MRR kể cả tail                                                 |
-| `candidate_map`                              | Chunks/spans/base snippets cho adapter/handoff                                                                  |
-| `context`                                    | Items thực được pack, budget, token estimate, skipped IDs                                                       |
-| `metrics`, `context_metrics`                 | Full-ranking metrics và budgeted-context metrics                                                                |
-| `duration_seconds`                           | Thời gian task theo điểm đo trong pipeline                                                                      |
+| Field                                        | Ý nghĩa                                                                                                        |
+| -------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| `query`, `query_hash`                        | Issue text thực sự được dùng và hash                                                                           |
+| `base_commit`, `repository`                  | Source snapshot/task                                                                                           |
+| `patch_hash`                                 | Nhận diện patch dùng làm nhãn, không phải agent patch                                                          |
+| `corpus_hash`, `corpus_chunk_count`          | Nhận diện corpus và số chunks                                                                                  |
+| `source_provenance`                          | Cache path/URL/archive hash/commit validation/source counts/exclusions                                         |
+| `parse_failures`                             | Source files không parse được, không bị silent drop                                                            |
+| `gold`                                       | Label sets, dispositions và coverage                                                                           |
+| `ranked`                                     | Snippets đầu ranking và representatives để inspection;**không mặc định mọi snippet toàn ranking đều được lưu** |
+| `ranking_saved_count`, `ranking_total_count` | Số ranked snippets lưu và tổng hits                                                                            |
+| `ranked_identity_order`                      | Toàn bộ dedup file/function order, replay Recall/MRR kể cả tail                                                |
+| `candidate_map`                              | Chunks/spans/base snippets cho adapter/handoff                                                                 |
+| `context`                                    | Items thực được pack, budget, token estimate, skipped IDs                                                      |
+| `metrics`, `context_metrics`                 | Full-ranking metrics và budgeted-context metrics                                                               |
+| `duration_seconds`                           | Thời gian task theo điểm đo trong pipeline                                                                     |
 
 ### 12.5. Sơ đồ retrieval và scorer tách biệt
 
@@ -974,16 +974,16 @@ flowchart LR
 
 ### 15.1. Các nhóm tests hiện có — tổng41
 
-| File trong `D:\Project\CAPSTONES\M2_week_5_6\tests\` | Số tests | Nội dung kiểm tra                                                                                                                                                                                          |
-| ---------------------------------------------------- | -------: | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `test_core.py`                                       |        9 | Code tokenizer; decorators/nested/method/module chunks; parse failure; BM25 khớp tính tay; không vượt budget; function/module gold; new file; dedup windows; empty gold N/A                                |
-| `test_pipeline.py`                                   |        7 | Chạy pipeline fixture không sửa source; đổi patch không đổi ranking; deterministic selection; metadata/path validation; stdout/stderr/timeout recorder; wrong M1 commit; valid M1 span mapping giữ node ID |
-| `test_gold_boundaries.py`                            |        7 | Decorator edits; innermost nested owner; new-only functions; thêm dòng trong function cũ; rename/delete; malformed hunks/paths; long function windows                                                      |
-| `test_handoff_and_failure.py`                        |        5 | Snippet giả bị reject; token/path/column inconsistency; incomplete labels không score giả; missing M1 không score0; so sánh budgeted contexts thay vì full ranking                                         |
-| `test_archive.py`                                    |        2 | Đọc pinned archive source, không execute code, loại tests; wrong root/commit/traversal bị reject                                                                                                           |
-| `test_resume.py`                                     |        2 | Resume giữ full task artifact và M1 request; binding manifest thay đổi bị reject                                                                                                                           |
-| `test_review_regressions.py`                         |        9 | `testing/` filter; formfeed lines; module-only mapping; exact hunk relocation; duplicate qname; malformed M1 root; tampered resume artifact; tail MRR replay; deterministic scores qua hash seeds          |
-| **Tổng**                                             |   **41** | Test implementation/adapter/integrity, không phải41 SWE-bench repair tasks                                                                                                                                 |
+| File trong`D:\Project\CAPSTONES\M2_week_5_6\tests\` | Số tests | Nội dung kiểm tra                                                                                                                                                                                          |
+| --------------------------------------------------- | -------: | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `test_core.py`                                      |        9 | Code tokenizer; decorators/nested/method/module chunks; parse failure; BM25 khớp tính tay; không vượt budget; function/module gold; new file; dedup windows; empty gold N/A                                |
+| `test_pipeline.py`                                  |        7 | Chạy pipeline fixture không sửa source; đổi patch không đổi ranking; deterministic selection; metadata/path validation; stdout/stderr/timeout recorder; wrong M1 commit; valid M1 span mapping giữ node ID |
+| `test_gold_boundaries.py`                           |        7 | Decorator edits; innermost nested owner; new-only functions; thêm dòng trong function cũ; rename/delete; malformed hunks/paths; long function windows                                                      |
+| `test_handoff_and_failure.py`                       |        5 | Snippet giả bị reject; token/path/column inconsistency; incomplete labels không score giả; missing M1 không score0; so sánh budgeted contexts thay vì full ranking                                         |
+| `test_archive.py`                                   |        2 | Đọc pinned archive source, không execute code, loại tests; wrong root/commit/traversal bị reject                                                                                                           |
+| `test_resume.py`                                    |        2 | Resume giữ full task artifact và M1 request; binding manifest thay đổi bị reject                                                                                                                           |
+| `test_review_regressions.py`                        |        9 | `testing/` filter; formfeed lines; module-only mapping; exact hunk relocation; duplicate qname; malformed M1 root; tampered resume artifact; tail MRR replay; deterministic scores qua hash seeds          |
+| **Tổng**                                            |   **41** | Test implementation/adapter/integrity, không phải41 SWE-bench repair tasks                                                                                                                                 |
 
 Một test có thể chứa nhiều assertions. Số41 là số unittest test methods, không phải số files hoặc số production features được chứng minh đầy đủ.
 
@@ -1076,33 +1076,111 @@ Chưa thể nói:
 
 ### 17.1. Chọn đúng tình huống, tránh cài/chạy lại không cần thiết
 
-| Tình huống                                                | Làm gì?                                                             | Không cần làm gì?                                     |
-| --------------------------------------------------------- | ------------------------------------------------------------------- | ----------------------------------------------------- |
-| Máy bạn hiện tại đã có `.venv`, manifest và archive cache | Mục17.3 kiểm tra/tests;17.5 nếu muốn evaluation lại;17.6 xem output | Không tạo venv/cài pyarrow/tải dataset lại            |
-| Chỉ muốn đọc kết quả đã có                                | Mục17.6                                                             | Không chạy test hoặc evaluation lại                   |
-| Thành viên mới copy/clone code, chưa có venv/data         | Mục17.2 →17.3 →17.4 →17.5                                           | Không cài model/Torch/Docker/VGAR                     |
-| Chạy lại sau mất mạng/gián đoạn                           | Mục17.8 nếu binding còn phù hợp                                     | Không sửa manifest/code để lách resume                |
-| Đã nhận output M1 thật                                    | Mục17.9                                                             | Không regenerate BM25 nếu cùng source/manifest/budget |
+| Tình huống                                               | Làm gì?                                                             | Không cần làm gì?                                     |
+| -------------------------------------------------------- | ------------------------------------------------------------------- | ----------------------------------------------------- |
+| Máy bạn hiện tại đã có`.venv`, manifest và archive cache | Mục17.3 kiểm tra/tests;17.5 nếu muốn evaluation lại;17.6 xem output | Không tạo venv/cài pyarrow/tải dataset lại            |
+| Chỉ muốn đọc kết quả đã có                               | Mục17.6                                                             | Không chạy test hoặc evaluation lại                   |
+| Thành viên mới copy/clone code, chưa có venv/data        | Mục17.2 →17.3 →17.4 →17.5                                           | Không cài model/Torch/Docker/VGAR                     |
+| Chạy lại sau mất mạng/gián đoạn                          | Mục17.8 nếu binding còn phù hợp                                     | Không sửa manifest/code để lách resume                |
+| Đã nhận output M1 thật                                   | Mục17.9                                                             | Không regenerate BM25 nếu cùng source/manifest/budget |
 
-Commands dùng executable `.venv` trực tiếp: không phụ thuộc việc terminal đang hiện `(.venv)`, không cần Activate.ps1, không cần biến `$python`. Nếu chuyển sang máy/folder khác, đổi project root cho đúng.
+Commands dùng executable `.venv` trực tiếp: không phụ thuộc việc terminal đang hiện `(.venv)`, không cần Activate.ps1 hoặc biến `$python`. Tên run/test/task được tìm tự động. Dataset revision và tên manifest pin vẫn cố định theo protocol; đó không phải tên run phải thay thủ công.
+
+**MỖI TERMINAL MỚI: chạy block17.1 dưới đây trước các mục còn lại.** Block chỉ chọn cwd và khai báo hàm đọc evidence; không cài đặt, chạy test/evaluation hoặc ghi file. Mở terminal tại `M2_week_5_6` hoặc folder cha trực tiếp (CAPSTONES/root clone); nếu đang ở nơi khác, chọn “Open in Integrated Terminal” trên folder project. Không cần nhập đường dẫn ổD.
+
+```powershell
+# MỖI PHIÊN: nhận diện project tại cwd hoặc folder con, không quét ổ đĩa.
+if (Test-Path -LiteralPath '.\scripts\record_tests.py') {
+    # Đang ở đúng project.
+} elseif (Test-Path -LiteralPath '.\M2_week_5_6\scripts\record_tests.py') {
+    Set-Location '.\M2_week_5_6'
+} else {
+    throw 'Mở terminal tại M2_week_5_6 hoặc folder cha trực tiếp, rồi chạy lại17.1.'
+}
+Write-Host "Project: $((Get-Location).Path)"
+
+# CHỈ ĐỌC: chọn run mới nhất đúng loại; không bỏ qua run lỗi để lấy run cũ.
+function Get-M2LatestEvidence {
+    param(
+        [Parameter(Mandatory)]
+        [ValidateSet('retrieval', 'tests', 'comparison', 'dataset')]
+        [string]$Kind,
+        [switch]$RequireComplete
+    )
+    if (-not (Test-Path -LiteralPath '.\scripts\record_tests.py')) {
+        throw 'Working directory đã đổi; chạy lại17.1.'
+    }
+    $base = Join-Path '.\results' $Kind
+    if (-not (Test-Path -LiteralPath $base -PathType Container)) {
+        throw "Chưa có folder results/$Kind; chạy bước tương ứng trước."
+    }
+    $folder = Get-ChildItem -LiteralPath $base -Directory -ErrorAction Stop |
+        Sort-Object Name -Descending | Select-Object -First 1
+    if (-not $folder) { throw "Chưa có run trong results/$Kind." }
+    $path = Join-Path $folder.FullName 'result.json'
+    if (-not (Test-Path -LiteralPath $path)) {
+        throw "Run mới nhất chưa có result.json: $($folder.FullName). Không tự chọn run cũ."
+    }
+    $record = Get-Content -Raw -Encoding UTF8 $path -ErrorAction Stop |
+        ConvertFrom-Json -ErrorAction Stop
+    if ($RequireComplete -and $record.complete -ne $true) {
+        throw "Run chưa kết thúc: $($folder.FullName). Chờ hoặc kiểm tra tiến trình bị ngắt."
+    }
+    Write-Host "Run $Kind tự chọn: $($folder.FullName)"
+    [pscustomobject]@{ Path=$folder.FullName; EvidencePath=$path; Result=$record }
+}
+
+# CHỈ ĐỌC: chọn task thành công đầu tiên có artifact trong retrieval run mới nhất.
+function Get-M2TaskEvidence {
+    $selected = Get-M2LatestEvidence -Kind retrieval
+    $task = $selected.Result.task_results | Where-Object {
+        $_.status -eq 'SUCCEEDED' -and
+        (Test-Path -LiteralPath (Join-Path $selected.Path ('tasks/' + $_.instance_id + '.json')))
+    } | Select-Object -First 1
+    if (-not $task) {
+        throw 'Không có task SUCCEEDED với artifact ở run này. Kiểm tra tiến độ; nếu clone thiếu tasks/, lấy đúng artifacts từ ZIP Releases. Không tự chọn run khác.'
+    }
+    $path = Join-Path $selected.Path ('tasks/' + $task.instance_id + '.json')
+    $detail = Get-Content -Raw -Encoding UTF8 $path -ErrorAction Stop |
+        ConvertFrom-Json -ErrorAction Stop
+    Write-Host "Task tự chọn: $($task.instance_id)"
+    [pscustomobject]@{
+        Run=$selected; InstanceId=$task.instance_id; Detail=$detail
+        PatchPath=(Join-Path '.\data\gold\patches' ($task.instance_id + '.patch'))
+    }
+}
+```
+
+**Quy tắc chọn:** sắp xếp tên timestamp UTC giảm dần, không dùng LastWriteTime vì tạo REPORT.md có thể đổi thời gian sửa folder. “Mới nhất” không mặc định là full25/PASS/run bàn giao chuẩn. Không che một run đang chạy hoặc FAIL bằng cách lấy run cũ đã PASS. Xem số liệu bàn giao cố định ở mục16/README.
+
+Các block đọc kết quả A/B/C/D tự lấy dữ liệu riêng, không cần chạy A trước B/C/D; nhưng đều cần hàm của17.1 trong cùng terminal. Nếu báo hàm không được nhận diện, chạy lại17.1, không cài thêm package. Block có `& { ... }` chạy trong scope riêng và dừng khi throw; không cần giữ biến `$run`, `$detail`, `$testPath` từ block trước.
 
 ### 17.2. Chỉ chạy khi máy mới/chưa có môi trường
 
 ```powershell
-# LẦN ĐẦU: vào đúng thư mục independent M2.
-Set-Location 'D:\Project\CAPSTONES\M2_week_5_6'
+# SAU17.1: chỉ tạo venv/cài pyarrow khi thiếu, không cài lại mỗi phiên.
+& {
+    $ErrorActionPreference = 'Stop'
+    if (-not (Test-Path -LiteralPath '.\.venv\Scripts\python.exe')) {
+        py -3.11 -m venv .venv
+        if ($LASTEXITCODE -ne 0) { throw 'Tạo venv thất bại; kiểm tra Python bằng py -0p.' }
+    } else {
+        Write-Host '.venv đã có; không tạo lại.'
+    }
+    & '.\.venv\Scripts\python.exe' --version
+    if ($LASTEXITCODE -ne 0) { throw 'Interpreter .venv không hoạt động.' }
 
-# LẦN ĐẦU: liệt kê Python đã cài. Environment hiện tại dùng Python 3.11.6.
-py -0p
-
-# CHỈ KHI CHƯA CÓ .venv: tạo environment riêng, không ghi vào VGAR/vgar_mcp_mvp.
-py -3.11 -m venv .venv
-
-# CHỈ KHI PYARROW CHƯA CÓ: dùng để đọc Parquet khi prepare dataset.
-& '.\.venv\Scripts\python.exe' -m pip install pyarrow==23.0.1
-
-# KIỂM TRA: không phải lệnh cài lại.
-& '.\.venv\Scripts\python.exe' -m pip check
+    # pyarrow chỉ cần cho chuẩn bị Parquet, không phải test/BM25.
+    & '.\.venv\Scripts\python.exe' -c "import importlib.util, sys; sys.exit(0 if importlib.util.find_spec('pyarrow') else 1)"
+    if ($LASTEXITCODE -ne 0) {
+        & '.\.venv\Scripts\python.exe' -m pip install pyarrow==23.0.1
+        if ($LASTEXITCODE -ne 0) { throw 'Cài pyarrow thất bại.' }
+    } else {
+        Write-Host 'pyarrow đã có; không cài lại. Phiên bản đã đối chiếu cho dự án là23.0.1.'
+    }
+    & '.\.venv\Scripts\python.exe' -m pip check
+    if ($LASTEXITCODE -ne 0) { throw 'Dependency check thất bại; đọc lỗi pip phía trên.' }
+}
 ```
 
 Nếu `py -3.11` không có, cài Python phù hợp hoặc dùng interpreter đã có trong dải `>=3.11,<3.14`; Python3.11 là environment đã dùng cho artifacts này. Không suy ra tất cả phiên bản/máy đã được qualification đầy đủ.
@@ -1112,8 +1190,8 @@ Không cần `pip install -e .` để chạy scripts: mỗi script tự thêm sr
 ### 17.3. Mỗi phiên terminal và chạy test suite
 
 ```powershell
-# MỖI TERMINAL MỚI: chọn working directory đúng.
-Set-Location 'D:\Project\CAPSTONES\M2_week_5_6'
+# MỖI TERMINAL MỚI: đã chạy17.1 để chọn cwd và khai báo hàm.
+Get-Location
 
 # KIỂM TRA INTERPRETER: không cài gì.
 & '.\.venv\Scripts\python.exe' --version
@@ -1140,15 +1218,30 @@ $LASTEXITCODE
 ### 17.4. Chỉ chuẩn bị dataset khi chưa có manifest/data phù hợp
 
 ```powershell
-# KIỂM TRA: True nghĩa manifest hiện có, không phải xác nhận mọi cache đều đủ.
-Test-Path '.\data\manifests\verified-c104f840cc67-25.json'
-
-# CHỈ KHI CẦN CHUẨN BỊ: giữ SHA để dùng đúng snapshot hiện tại.
-& '.\.venv\Scripts\python.exe' '.\scripts\prepare_dataset.py' --count 25 --revision c104f840cc67f8b6eec6f759ebc8b2693d585d4a
-$LASTEXITCODE
+# TỰ KIỂM TRA: chỉ preparation nếu thiếu manifest hoặc gold patches.
+& {
+    $ErrorActionPreference = 'Stop'
+    $manifestPath = '.\data\manifests\verified-c104f840cc67-25.json'
+    $needPreparation = -not (Test-Path -LiteralPath $manifestPath)
+    if (-not $needPreparation) {
+        $manifest = Get-Content -Raw -Encoding UTF8 $manifestPath | ConvertFrom-Json
+        $missingGold = @($manifest.tasks | Where-Object {
+            -not (Test-Path -LiteralPath $_.gold_patch_path)
+        })
+        $needPreparation = $missingGold.Count -gt 0
+    }
+    if ($needPreparation) {
+        # Cần Internet và pyarrow; giữ revision pin, không lấy latest.
+        & '.\.venv\Scripts\python.exe' '.\scripts\prepare_dataset.py' --count 25 --revision c104f840cc67f8b6eec6f759ebc8b2693d585d4a
+        Write-Host "Preparation exit code: $LASTEXITCODE"
+        if ($LASTEXITCODE -ne 0) { throw 'Preparation thất bại; đọc evidence/thông báo lỗi.' }
+    } else {
+        Write-Host 'Manifest và gold patches đã có; bỏ qua preparation.'
+    }
+}
 ```
 
-Hai block trên là kiểm tra rồi lệnh chuẩn bị **nếu cần**, không bắt buộc chạy preparation mỗi lần. Máy hiện tại đã có manifest25 và patches; có thể bỏ bước này.
+Block chỉ preparation khi thiếu manifest/gold. Bản clone đã có hai loại này không cần tải lại Parquet chỉ vì thiếu data/downloads. Kiểm tra tồn tại không thay thế kiểm tra hash; evaluation vẫn xác minh patch/query hash. Source archives được tải riêng ở17.5 nếu thiếu.
 
 Kỳ vọng preparation: eligible70, selected25, exit0 và in manifest/evidence path. Không bỏ `--revision` để lấy latest rồi trộn với kết quả cũ. Manifest khác cùng tên bị reject thay vì âm thầm ghi đè selection.
 
@@ -1170,92 +1263,100 @@ $LASTEXITCODE
 
 ```powershell
 # FULL25: chạy tất cả25 task trong manifest, không chạy toàn500 Verified.
-# OFFLINE: máy hiện tại đã có cache25; máy mới chưa đủ archives phải bỏ --offline.
-& '.\.venv\Scripts\python.exe' '.\scripts\run_evaluation.py' --manifest '.\data\manifests\verified-c104f840cc67-25.json' --budget-tokens 4000 --offline
+# MẶC ĐỊNH: tận dụng cache đã có; tự tải source qua Internet nếu cache thiếu.
+& '.\.venv\Scripts\python.exe' '.\scripts\run_evaluation.py' --manifest '.\data\manifests\verified-c104f840cc67-25.json' --budget-tokens 4000
 $LASTEXITCODE
 ```
 
-Script in `[i/25] <instance>: SUCCEEDED (...)`, rồi evidence path và completed/failed. Exit0 +25/25 là retrieval batch hoàn tất. Điểm Recall thấp không đổi thành pipeline FAIL nếu pipeline xử lý đúng.
+Không cần đặt tên output folder: script tự tạo run ID. Chỉ thêm `--offline` khi đã có đủ archives/sidecars của các task cần xử lý; thiếu cache thì offline báo lỗi. Script in `[i/25] <instance>: SUCCEEDED (...)`, rồi evidence path khi kết thúc. Exit0 +25/25 là retrieval batch hoàn tất. Điểm Recall thấp không đổi thành pipeline FAIL nếu pipeline xử lý đúng.
 
 “Full” ở đây là **full manifest25**, không phải chạy toàn hệ thống vgar_mcp_mvp, không phải repair toàn repository, không phải benchmark grading. Query BM25 được chạy trên các source chunks hợp lệ của từng repository snapshot, không chỉ gold files.
 
 ### 17.6. Đọc kết quả đã có — không cần rerun
 
-#### A. Đọc đúng run chuẩn hiện tại
+#### A. Tự chọn và đọc retrieval run mới nhất
+
+Chạy từ thư mục `M2_week_5_6`. Block này chỉ đọc dữ liệu, tự chọn folder mới nhất trong `results/retrieval`, không cần nhập tên run. Sắp xếp theo tên timestamp, không theo thời gian sửa folder. Run mới nhất có thể là smoke3/pilot5/full25 hoặc đang chạy; luôn đọc trạng thái và số task trước khi sử dụng số liệu, không coi “mới nhất” là “run bàn giao chuẩn”.
 
 ```powershell
-# CHỈ ĐỌC: chọn explicit final run để không nhầm latest smoke với full25.
-$run = 'D:\Project\CAPSTONES\M2_week_5_6\results\retrieval\20261001T134641055034Z-5295e04e781d'
-
-# CHỈ ĐỌC: mở run-level JSON theo UTF-8.
-$result = Get-Content -Raw -Encoding UTF8 (Join-Path $run 'result.json') | ConvertFrom-Json
-
-# CHỈ ĐỌC: trạng thái/exit/duration.
-$result | Select-Object run_id,status,complete,exit_code,duration_seconds
-
-# CHỈ ĐỌC: completed/failed và các metric mean/denominator.
-$result.summary | ConvertTo-Json -Depth 6
-
-# CHỈ ĐỌC: danh sách task/status, không mở hàng nghìn snippets.
-$result.task_results | Select-Object instance_id,status,duration_seconds
-
-# CHỈ ĐỌC: báo cáo đã được sinh cho run chuẩn.
-Get-Content -Encoding UTF8 (Join-Path $run 'REPORT.md')
+# CHỈ ĐỌC: tự chọn retrieval run mới nhất; cần chạy17.1 trong terminal này.
+& {
+    $ErrorActionPreference = 'Stop'
+    $selected = Get-M2LatestEvidence -Kind retrieval
+    $result = $selected.Result
+    $result | Select-Object run_id,status,complete,exit_code,duration_seconds | Format-List
+    $result.summary | ConvertTo-Json -Depth 6
+    $result.task_results | Select-Object instance_id,status,duration_seconds | Format-Table -AutoSize
+    if ($result.complete -ne $true) {
+        Write-Warning 'Run chưa kết thúc; đây chỉ là snapshot tiến độ.'
+    }
+    $reportPath = Join-Path $selected.Path 'REPORT.md'
+    if (Test-Path -LiteralPath $reportPath) {
+        Get-Content -Encoding UTF8 $reportPath
+    } else {
+        Write-Host 'Chưa có REPORT.md; xem17.6.D để tạo khi run đã kết thúc.'
+    }
+}
 ```
 
-Với run mới của bạn, **thay `$run` bằng folder trong dòng Evidence vừa in**, bỏ phần `\result.json` cuối. Không đổi thành `results/tests/...` khi muốn xem retrieval.
+Không cần thay `$run` thủ công: mỗi lần chạy block sẽ tự lấy retrieval run mới nhất tại thời điểm đọc. A/B/C/D tự lấy dữ liệu riêng qua hàm17.1, không cần giữ biến từ block khác. Block chỉ đọc `results/retrieval`, không chọn nhầm unittest runs.
 
 #### B. Đọc một task cụ thể
 
-```powershell
-# CHỈ ĐỌC: mở Django case đã dùng trong giải thích.
-$detail = Get-Content -Raw -Encoding UTF8 (Join-Path $run 'tasks\django__django-10554.json') | ConvertFrom-Json
-
-# ISSUE INPUT.
-$detail.query
-
-# GOLD LABELS + MAPPING EVENTS: scorer reference, không phải agent output.
-$detail.gold | ConvertTo-Json -Depth 8
-
-# RANKING METRICS và CONTEXT METRICS: đọc riêng hai bộ.
-$detail.metrics | ConvertTo-Json -Depth 5
-$detail.context_metrics | ConvertTo-Json -Depth 5
-
-# TOP10 RANKED CHUNKS: có thể nhiều chunks thuộc cùng file/function.
-$detail.ranked | Select-Object -First 10 path,symbol,start_line,end_line,kind,score
-
-# CONTEXT BUDGET VÀ SNIPPETS THỰC ĐƯỢC PACK.
-$detail.context | Select-Object total_token_count,token_budget,truncated,token_policy
-$detail.context.items | Select-Object path,symbol,start_line,end_line,token_count,snippet
-
-# PROVENANCE: source archive thực sự đã dùng.
-$detail.source_provenance | ConvertTo-Json -Depth 5
-```
-
-Để xem raw developer diff:
+Block tự chọn task SUCCEEDED đầu tiên có artifact trong retrieval run mới nhất, không chọn theo điểm Recall và không hard-code Django10554. Không cần chạy A trước B, chỉ cần17.1. Nếu run chưa có task thành công hoặc bản clone thiếu `tasks/`, block báo thiếu dữ liệu; lấy artifacts đúng run từ ZIP Releases nếu cần, không âm thầm chuyển sang run khác.
 
 ```powershell
-# CHỈ ĐỌC PATCH NHÃN ĐẦU VÀO, không apply patch.
-Get-Content -Encoding UTF8 '.\data\gold\patches\django__django-10554.patch'
+# CHỈ ĐỌC: tự chọn task thành công đầu tiên có artifact, không hard-code Django.
+& {
+    $ErrorActionPreference = 'Stop'
+    $taskEvidence = Get-M2TaskEvidence
+    $detail = $taskEvidence.Detail
+    $detail.query
+    $detail.gold | ConvertTo-Json -Depth 8
+    $detail.metrics | ConvertTo-Json -Depth 5
+    $detail.context_metrics | ConvertTo-Json -Depth 5
+    $detail.ranked | Select-Object -First 10 path,symbol,start_line,end_line,kind,score | Format-Table -AutoSize
+    $detail.context | Select-Object total_token_count,token_budget,truncated,token_policy | Format-List
+    $detail.context.items | Select-Object path,symbol,start_line,end_line,token_count,snippet | Format-List
+    $detail.source_provenance | ConvertTo-Json -Depth 5
+
+    # GOLD LABEL INPUT: chỉ xem diff của cùng task, không apply patch vào source.
+    if (Test-Path -LiteralPath $taskEvidence.PatchPath) {
+        Write-Host "Gold patch: $($taskEvidence.PatchPath)"
+        Get-Content -Encoding UTF8 $taskEvidence.PatchPath
+    } else {
+        Write-Warning 'Thiếu gold patch của task đã chọn; không lấy patch của task khác.'
+    }
+}
 ```
+
+Raw developer diff của chính task được chọn đã được đọc ở cuối blockB. Hàm in run/task ID trước khi đọc để tránh nhầm patch của task khác. Đây là gold label input, không phải patch sửa lỗi do agent tạo. Muốn inspection nhiều cases, xem17.7; tự đọc một task không tương đương đã inspection cả10.
 
 #### C. Đọc evidence của lần unittest
 
+Block tự chọn thư mục mới nhất trong `results/tests`. Run mới nhất có thể là test nhóm, TIMEOUT hoặc FAIL; không mặc định đó là saved suite41. Đọc `command_argv`, stdout/stderr và exit_code của chính run để biết đã chạy full suite hay pattern nào. Không dùng exit2 của comparison để kết luận test FAIL.
+
 ```powershell
-# CHỈ ĐỌC: saved suite41 đã đối chiếu; thay bằng Evidence mới khi bạn tự chạy.
-$testPath = 'D:\Project\CAPSTONES\M2_week_5_6\results\tests\20261001T135440291251Z-0d46873dde55\result.json'
-$testResult = Get-Content -Raw -Encoding UTF8 $testPath | ConvertFrom-Json
-$testResult | Select-Object status,complete,exit_code,duration_seconds,interpreter
-$testResult.command_argv
-$testResult.stdout
-$testResult.stderr
+# CHỈ ĐỌC: tự chọn test run mới nhất, không nhập tên folder hoặc JSON path.
+& {
+    $ErrorActionPreference = 'Stop'
+    $selected = Get-M2LatestEvidence -Kind tests
+    $testResult = $selected.Result
+    $testResult | Select-Object run_id,status,complete,exit_code,duration_seconds,interpreter | Format-List
+    $testResult.command_argv
+    $testResult.stdout
+    $testResult.stderr
+    if ($testResult.complete -ne $true) {
+        Write-Warning 'Test run chưa kết thúc; chưa kết luận PASS/FAIL cuối cùng.'
+    }
+}
 ```
 
 Đừng chỉ nhìn `$LASTEXITCODE` ở một terminal sau nhiều lệnh không liên quan; JSON `exit_code` của đúng run là bằng chứng lâu dài.
 
 #### D. Vì sao run mới chưa có REPORT.md và cách tạo báo cáo
 
-Trong trạng thái đã kiểm tra ngày03/10/2026, chỉ run bàn giao `20261001T134641055034Z-5295e04e781d` có `REPORT.md`. Nguyên nhân nằm ở cách gọi scripts, không phải thiếu file khi push:
+Trong snapshot bàn giao ban đầu đã kiểm tra ngày03/10/2026, chỉ run bàn giao `20261001T134641055034Z-5295e04e781d` có `REPORT.md`; các run mới có thể có báo cáo sau khi bạn thực hiện bước này. Nguyên nhân nằm ở cách gọi scripts, không phải thiếu file khi push:
 
 - `scripts/run_evaluation.py` lưu `result.json`, `tasks/` và `m1_requests/`, nhưng **không gọi hàm tạo REPORT.md**.
 - `scripts/compare_m1.py` gọi `write_report()` trong `src/m2_retrieval/report.py` sau bước comparison, để sinh báo cáo trong thư mục retrieval run đã chọn.
@@ -1263,26 +1364,25 @@ Trong trạng thái đã kiểm tra ngày03/10/2026, chỉ run bàn giao `202610
 
 **Không có REPORT.md không đồng nghĩa chạy thất bại.** Xem `status`, `exit_code`, `summary.completed_tasks` và `summary.failed_tasks` trong `result.json` của chính run đó. REPORT.md là bản trình bày bảng từ evidence JSON, không thay thế dữ liệu gốc và không phải điều kiện để BM25 evaluation thành công.
 
-Chạy từ thư mục `M2_week_5_6` chứa `scripts/` và `results/`; dùng môi trường đã cài, không cần cài lại. Lệnh này **tạo/cập nhật báo cáo và ghi một comparison run mới**, không phải thao tác chỉ đọc:
+Chạy từ thư mục `M2_week_5_6` chứa `scripts/` và `results/`; dùng môi trường đã cài, không cần cài lại. Block dưới đây **tự chọn retrieval run mới nhất**, không cần nhập tên folder. Tên run bắt đầu bằng timestamp UTC nên sắp xếp tên giảm dần sẽ chọn lượt được tạo mới nhất; không dùng thời gian sửa folder vì việc tạo REPORT.md có thể thay đổi thời gian đó.
+
+Block hiển thị đường dẫn/trạng thái/số task trước khi tạo báo cáo và dừng nếu run mới nhất chưa kết thúc; không âm thầm chuyển sang một run cũ. **Run mới nhất có thể là smoke3 hoặc pilot5, không mặc định là full25 hay run bàn giao chuẩn.** Mục17.6.A cũng tự chọn run mới nhất nhưng chỉ đọc, không tạo báo cáo. Kết quả bàn giao cố định vẫn được dẫn riêng trong README và mục kết quả của tài liệu. Lệnh tạo báo cáo **tạo/cập nhật REPORT.md và ghi một comparison run mới**, không phải thao tác chỉ đọc:
 
 ```powershell
-# CHỌN RUN: THAY tên folder bằng run của bạn; không thêm result.json vào cuối.
-$run = '.\results\retrieval\20261003T122200185674Z-f579ac51a355'
-
-# KIỂM TRA: phải có result.json trước khi tạo báo cáo.
-if (-not (Test-Path -LiteralPath (Join-Path $run 'result.json'))) {
-    throw 'Không tìm thấy result.json; hãy chọn đúng thư mục retrieval run.'
+# TẠO REPORT: tự chọn run mới nhất đã kết thúc; không chạy lại BM25.
+& {
+    $ErrorActionPreference = 'Stop'
+    $selected = Get-M2LatestEvidence -Kind retrieval -RequireComplete
+    $selected.Result | Select-Object run_id,status,complete,exit_code | Format-List
+    $selected.Result.summary | Select-Object attempted_tasks,completed_tasks,failed_tasks | Format-List
+    & '.\.venv\Scripts\python.exe' '.\scripts\compare_m1.py' --run $selected.Path
+    $comparisonExit = $LASTEXITCODE
+    Write-Host "Comparison exit code: $comparisonExit"
+    if ($comparisonExit -notin @(0, 2)) {
+        throw 'Comparison lỗi; đọc thông báo phía trên, không dùng báo cáo cũ làm kết quả mới.'
+    }
+    Get-Content -Encoding UTF8 (Join-Path $selected.Path 'REPORT.md')
 }
-
-# TẠO REPORT: không chạy lại BM25, không tải lại source archives.
-# Mặc định tìm M1 exports ở data/m1_exports.
-& '.\.venv\Scripts\python.exe' '.\scripts\compare_m1.py' --run $run
-
-# XEM EXIT CODE NGAY SAU SCRIPT: đọc ý nghĩa bên dưới, không tự coi exit2 là lỗi BM25.
-$LASTEXITCODE
-
-# ĐỌC BÁO CÁO: đường dẫn là <run bạn chọn>\REPORT.md.
-Get-Content -Encoding UTF8 (Join-Path $run 'REPORT.md')
 ```
 
 Input là `<run>/result.json`, và khi có M1 exports để so sánh thì còn đọc task artifacts trong `<run>/tasks/` cùng exports. Output gồm:
@@ -1292,11 +1392,11 @@ Input là `<run>/result.json`, và khi có M1 exports để so sánh thì còn �
 
 Cách hiểu kết quả comparison:
 
-| Trạng thái | Exit code | Ý nghĩa |
-|---|---:|---|
-| `AWAITING_M1` | 2 | Chưa có cặp Graph hợp lệ và không có exports bị đánh dấu invalid; báo cáo vẫn được tạo, chưa đủ dữ liệu so sánh |
-| `INCOMPLETE_COMPARISON` | 2 | Thiếu một phần exports hoặc có exports không hợp lệ; đọc `missing_exports`/`invalid_exports` trong comparison JSON |
-| `SUCCEEDED` | 0 | Đủ exports hợp lệ cho các task BM25 thành công được xét; không còn missing/invalid exports |
+| Trạng thái              | Exit code | Ý nghĩa                                                                                                           |
+| ----------------------- | --------: | ----------------------------------------------------------------------------------------------------------------- |
+| `AWAITING_M1`           |         2 | Chưa có cặp Graph hợp lệ và không có exports bị đánh dấu invalid; báo cáo vẫn được tạo, chưa đủ dữ liệu so sánh   |
+| `INCOMPLETE_COMPARISON` |         2 | Thiếu một phần exports hoặc có exports không hợp lệ; đọc`missing_exports`/`invalid_exports` trong comparison JSON |
+| `SUCCEEDED`             |         0 | Đủ exports hợp lệ cho các task BM25 thành công được xét; không còn missing/invalid exports                        |
 
 Nếu chưa có output M1, `AWAITING_M1` + exit2 là trạng thái chờ **comparison**, không phải bằng chứng BM25 chạy thất bại và không được ghi điểm Graph bằng0. Nếu script báo exception hoặc không tạo được REPORT.md, phải kiểm tra thông báo lỗi riêng, không mặc định đó cũng là trạng thái chờ M1.
 
@@ -1304,7 +1404,7 @@ Lưu ý: gọi lại `compare_m1.py` sẽ **ghi đè REPORT.md hiện có của 
 
 ### 17.7. Tự inspection một task từ đầu đến cuối
 
-1. Chọn ID trong manifest, ví dụ Django10554.
+1. Chạy17.6.B để tự chọn và hiển thị task có artifact, không nhập đường dẫn. Khi inspection nhiều cases, dùng danh sách task_results ở17.6.A và rubric/docs; chọn tự động một case không thay thế việc kiểm tra ít nhất10 cases.
 2. Mở `problem_statement`/`$detail.query`, ghi symptoms/symbols/paths nêu trong issue.
 3. Đọc developer patch **trong vai trò người chấm**, không đưa vào retrieval input.
 4. Đọc gold sets/events, kiểm tra new-function/module-edit/rename/missing cases.
@@ -1320,16 +1420,49 @@ Lưu ý: gọi lại `compare_m1.py` sẽ **ghi đè REPORT.md hiện có của 
 
 Resume không phải tiếp tục ghi vào folder cũ: tạo folder mới, copy/reuse artifacts đủ điều kiện, chạy lại task lỗi/chưa hoàn tất.
 
-Ví dụ dưới dùng run chuẩn hiện có để minh họa cách gọi có thể chạy được; vì run ấy đã đủ25 nên không cần resume nó trừ khi muốn kiểm tra cơ chế:
+Block dưới tự chọn retrieval run mới nhất, đọc limit/budget từ config cũ và tìm manifest local khớp SHA256, không nhập tên folder. Nó dừng nếu run đã SUCCEEDED hoàn chỉnh. **Trước resume phải xác nhận evaluation cũ đã dừng:** complete=false có thể là tiến trình vẫn chạy, không tự chứng minh bị ngắt. Nhập RESUME là xác nhận an toàn, không phải nhập đường dẫn.
 
 ```powershell
-# CHỈ KHI CẦN RESUME: với run gián đoạn của bạn, thay $oldRun đúng folder đó.
-$oldRun = '.\results\retrieval\20261001T134641055034Z-5295e04e781d'
-& '.\.venv\Scripts\python.exe' '.\scripts\run_evaluation.py' --manifest '.\data\manifests\verified-c104f840cc67-25.json' --budget-tokens 4000 --resume $oldRun --offline
-$LASTEXITCODE
+# CHỈ KHI CẦN RESUME: không chạy song song với evaluation cũ.
+& {
+    $ErrorActionPreference = 'Stop'
+    $old = Get-M2LatestEvidence -Kind retrieval
+    if ($old.Result.complete -eq $true -and $old.Result.status -eq 'SUCCEEDED') {
+        throw 'Run mới nhất đã SUCCEEDED; không cần resume. Xem17.6 để đọc kết quả.'
+    }
+    $old.Result | Select-Object run_id,status,complete,exit_code | Format-List
+    $config = $old.Result.config
+    if (-not $config.manifest_hash -or [int]$config.budget_tokens -lt 1) {
+        throw 'Config cũ thiếu manifest hash/budget hợp lệ; không tự điền tham số.'
+    }
+
+    # CHỈ ĐỌC: tìm manifest trên máy này bằng hash, không dùng saved absolute path ổD.
+    $manifest = Get-ChildItem '.\data\manifests' -Filter '*.json' -File |
+        Sort-Object Name | Where-Object {
+            ('sha256:' + (Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant()) -eq $config.manifest_hash
+        } | Select-Object -First 1
+    if (-not $manifest) { throw 'Không có manifest khớp run cũ; không resume bằng manifest khác.' }
+    $resumeArgs = @(
+        '.\scripts\run_evaluation.py', '--manifest', $manifest.FullName,
+        '--budget-tokens', [string]$config.budget_tokens, '--resume', $old.Path
+    )
+    if ($null -ne $config.limit) {
+        if ([int]$config.limit -lt 1) { throw 'Limit trong config không hợp lệ.' }
+        $resumeArgs += @('--limit', [string]$config.limit)
+    }
+    Write-Host ('Tham số resume: ' + ($resumeArgs -join ' '))
+    $confirmation = Read-Host 'Đã xác nhận evaluation cũ dừng? Gõ RESUME để tiếp tục'
+    if ($confirmation -cne 'RESUME') { throw 'Đã hủy resume; không tạo run mới.' }
+
+    # TẠO RUN MỚI: tận dụng cache; tải source thiếu qua Internet nếu cần.
+    & '.\.venv\Scripts\python.exe' @resumeArgs
+    Write-Host "Resume exit code: $LASTEXITCODE"
+}
 ```
 
-Phải giữ limit/budget/manifest/source phù hợp run cũ. Nếu cũ dùng `--limit 3`, resume cũng giữ3; không coi limit3 → full25 là resume cùng config. Nếu source/test/pyproject hoặc bytes manifest đổi, tạo fresh run, không sửa hashes cho qua validation.
+Block giữ limit/budget/manifest hash của run cũ; limit3 không tự đổi thành full25. Script Python vẫn kiểm tra binding/source và task artifact hashes, helper không bỏ qua kiểm tra này. Source/test/pyproject hoặc manifest bytes đổi thì dùng fresh run, không sửa hashes để lách validation. Bản clone có summary nhưng thiếu tasks/ của run cũ phải lấy đầy đủ artifacts đúng run trước khi resume.
+
+Block không tìm ngầm run gián đoạn cũ nếu run mới nhất là một smoke khác đã xong; trong tình huống đó không dùng resume tự động này. Nếu muốn offline, chỉ thêm --offline vào resumeArgs khi đã có cache cho các task cần xử lý. Mặc định không offline để tránh máy clone thiếu archive bị lỗi ngay.
 
 Doc Markdown không nằm trong source fingerprint, nên chỉ thêm tài liệu này không đổi fingerprint của code final25.
 
@@ -1344,14 +1477,34 @@ New-Item -ItemType Directory -Path '.\data\m1_exports' -Force | Out-Null
 Đặt file thật theo `data\m1_exports\<instance_id>.json`, đúng metadata/policy của requests. Không dùng fixture hoặc BM25 output đổi tên làm Graph.
 
 ```powershell
-# SO SÁNH: dùng cùng BM25 run chuẩn; nếu dùng run khác thay --run cho đúng.
-& '.\.venv\Scripts\python.exe' '.\scripts\compare_m1.py' --run '.\results\retrieval\20261001T134641055034Z-5295e04e781d' --exports '.\data\m1_exports'
-$LASTEXITCODE
+# SO SÁNH: tự chọn BM25 run mới nhất đã kết thúc, không nhập folder.
+& {
+    $ErrorActionPreference = 'Stop'
+    $selected = Get-M2LatestEvidence -Kind retrieval -RequireComplete
+    $selected.Result | Select-Object run_id,status,complete,exit_code | Format-List
+    $selected.Result.summary | Select-Object attempted_tasks,completed_tasks,failed_tasks | Format-List
+
+    # M1 exports phải khớp đúng run hiển thị; adapter kiểm tra, không sửa metadata cho qua.
+    & '.\.venv\Scripts\python.exe' '.\scripts\compare_m1.py' --run $selected.Path --exports '.\data\m1_exports'
+    $comparisonExit = $LASTEXITCODE
+    Write-Host "Comparison exit code: $comparisonExit"
+    if ($comparisonExit -notin @(0, 2)) { throw 'Comparison lỗi; đọc stderr phía trên.' }
+
+    # ĐỌC COMPARISON MỚI: xác minh nó tham chiếu retrieval run đã chọn, tránh trộn results.
+    $comparison = Get-M2LatestEvidence -Kind comparison -RequireComplete
+    if ([System.IO.Path]::GetFullPath($comparison.Result.bm25_run) -ne $selected.Path) {
+        throw 'Comparison mới nhất thuộc retrieval run khác; không dùng kết quả đó.'
+    }
+    $comparison.Result | Select-Object status,exit_code,paired_tasks,eligible_bm25_tasks | Format-List
+    $comparison.Result.missing_exports
+    $comparison.Result.invalid_exports | ConvertTo-Json -Depth 6
+    Get-Content -Encoding UTF8 (Join-Path $selected.Path 'REPORT.md')
+}
 ```
 
-Nếu bạn chạy hiện tại chưa có exports: expected `AWAITING_M1`, pairs0/25, exit2. Đây là pending, không phải hoàn tất DoD.
+Nếu chưa có exports: expected `AWAITING_M1`, pairs0/N, exit2; N là số task BM25 thành công của run đã chọn, không mặc định25. Đây là pending, không phải hoàn tất DoD. M1 phải dùng m1_requests của đúng run đã hiển thị; không tự đổi run để xuất được điểm.
 
-Khi nhận đủ25 valid exports: kiểm tra `SUCCEEDED`, pairs25/25, missing/invalid đều rỗng; cùng M1/M3 kiểm tra số liệu/inspection trước ghi completion.
+Với mục tiêu bàn giao25 tasks: kiểm tra run được chọn completed25/failed0, comparison SUCCEEDED, pairs25/25 và missing/invalid rỗng; cùng M1/M3 kiểm tra số liệu/inspection trước ghi completion. Comparison smoke3 thành công không chứng minh đã xong comparison25.
 
 ### 17.10. Commands trợ giúp
 
@@ -1365,23 +1518,23 @@ Scripts này không có tham số repair task tự do hoặc `--repo-path` để
 
 ## 18. Xử lý lỗi và các nhầm lẫn thường gặp
 
-| Triệu chứng                                 | Giải thích/kiểm tra                                              | Hành động phù hợp                                                               |
-| ------------------------------------------- | ---------------------------------------------------------------- | ------------------------------------------------------------------------------- |
-| `& $python` báo expression invalid          | Biến `$python` chưa gán hoặc không trỏ command                   | Dùng executable trực tiếp như mục17; nếu dùng biến phải gán lại ở terminal mới  |
-| Không thấy `.venv/Scripts/python.exe`       | Sai cwd hoặc chưa tạo venv riêng                                 | Set-Location đúng folder, Test-Path; setup chỉ khi thiếu                        |
-| `No module named pyarrow` khi prepare       | Interpreter chạy preparation chưa có pyarrow                     | Cài vào đúng `.venv`, không cài lại model/VGAR                                  |
-| `Missing archive ... run once with network` | Dùng offline nhưng cache task thiếu                              | Bỏ offline cho lần cần tải; không giả source HEAD khác commit                   |
-| Archive hash/provenance mismatch            | Archive/sidecar không phù hợp hoặc bị thay                       | Giữ evidence, xác minh cache; không tự sửa expected hash để lách                |
-| Resume mismatch                             | Source/config/manifest khác hoặc artifact bị sửa                 | Fresh run khi cố ý thay inputs; không trộn kết quả                              |
-| Existing locked manifest differs            | Preparation tạo selection/metadata khác cùng tên                 | Kiểm tra snapshot/policy, thống nhất experiment manifest mới với nhóm           |
-| `PARTIAL_FAILURE`, exit1                    | Có task pipeline lỗi                                             | Đọc `task_results`, `tasks/<id>.json` và stderr; không bỏ task để làm score đẹp |
-| Recall0 nhưng task SUCCEEDED                | Pipeline chạy, baseline không tìm gold ở top-k                   | Phân tích issue/ranking/gold; không gọi đó là repair/test failure               |
-| `AWAITING_M1`, exit2                        | Chưa có Graph outputs                                            | Liên hệ M1; không tăng budget/chạy LLM để giải quyết thiếu export               |
-| Stderr có `...ok`, `Ran41 tests`, `OK`      | unittest dùng stderr cho report bình thường                      | Xem status/exit và assertion failures, không chỉ kiểm stderr có rỗng không      |
-| Không có patch output sửa repo              | Đây là retrieval task, không phải repair agent                   | Patch đang thấy là developer label input; không mong source bị tự sửa           |
-| Có source/test folders ngay khi tạo project | Đó là cấu trúc code/tests, không phải bằng chứng tự chạy sửa lỗi | Xem results timestamps/commands mới biết đã chạy gì                             |
-| JSON hiển thị đường dẫn có `\\`             | JSON escape của dấu `\` Windows                                  | ConvertFrom-Json để xem giá trị; không phải đường dẫn có dấu gạch thừa          |
-| Mermaid không hiện hình                     | Markdown viewer không render Mermaid                             | Sơ đồ text/flow prose vẫn đầy đủ; không cần thay nội dung thuật toán            |
+| Triệu chứng                                 | Giải thích/kiểm tra                                              | Hành động phù hợp                                                              |
+| ------------------------------------------- | ---------------------------------------------------------------- | ------------------------------------------------------------------------------ | --- |
+| `& $python` báo expression invalid          | Biến `$python` chưa gán hoặc không trỏ command                   | Dùng executable trực tiếp như mục17; nếu dùng biến phải gán lại ở terminal mới |     |
+| Không thấy`.venv/Scripts/python.exe`        | Sai cwd hoặc chưa tạo venv riêng                                 | Set-Location đúng folder, Test-Path; setup chỉ khi thiếu                       |
+| `No module named pyarrow` khi prepare       | Interpreter chạy preparation chưa có pyarrow                     | Cài vào đúng`.venv`, không cài lại model/VGAR                                  |
+| `Missing archive ... run once with network` | Dùng offline nhưng cache task thiếu                              | Bỏ offline cho lần cần tải; không giả source HEAD khác commit                  |
+| Archive hash/provenance mismatch            | Archive/sidecar không phù hợp hoặc bị thay                       | Giữ evidence, xác minh cache; không tự sửa expected hash để lách               |
+| Resume mismatch                             | Source/config/manifest khác hoặc artifact bị sửa                 | Fresh run khi cố ý thay inputs; không trộn kết quả                             |
+| Existing locked manifest differs            | Preparation tạo selection/metadata khác cùng tên                 | Kiểm tra snapshot/policy, thống nhất experiment manifest mới với nhóm          |
+| `PARTIAL_FAILURE`, exit1                    | Có task pipeline lỗi                                             | Đọc`task_results`, `tasks/<id>.json` và stderr; không bỏ task để làm score đẹp |
+| Recall0 nhưng task SUCCEEDED                | Pipeline chạy, baseline không tìm gold ở top-k                   | Phân tích issue/ranking/gold; không gọi đó là repair/test failure              |
+| `AWAITING_M1`, exit2                        | Chưa có Graph outputs                                            | Liên hệ M1; không tăng budget/chạy LLM để giải quyết thiếu export              |
+| Stderr có`...ok`, `Ran41 tests`, `OK`       | unittest dùng stderr cho report bình thường                      | Xem status/exit và assertion failures, không chỉ kiểm stderr có rỗng không     |
+| Không có patch output sửa repo              | Đây là retrieval task, không phải repair agent                   | Patch đang thấy là developer label input; không mong source bị tự sửa          |
+| Có source/test folders ngay khi tạo project | Đó là cấu trúc code/tests, không phải bằng chứng tự chạy sửa lỗi | Xem results timestamps/commands mới biết đã chạy gì                            |
+| JSON hiển thị đường dẫn có`\\`              | JSON escape của dấu`\` Windows                                   | ConvertFrom-Json để xem giá trị; không phải đường dẫn có dấu gạch thừa         |
+| Mermaid không hiện hình                     | Markdown viewer không render Mermaid                             | Sơ đồ text/flow prose vẫn đầy đủ; không cần thay nội dung thuật toán           |
 
 `$env:PYTHONUTF8='1'` có thể đặt nếu terminal/subprocess Unicode gặp vấn đề, nhưng không bắt buộc trong guide này vì file I/O và subprocess capture được chỉ rõ UTF-8. Nó không giúp tăng Recall hoặc RAM.
 
