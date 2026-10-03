@@ -1,0 +1,144 @@
+{
+  "date": "2026-10-01",
+  "base_commit": "2491a047638c183a6d6adee41c8a8f79b8b9020d",
+  "branch": "integrated-w3-w4-m1-m2-m3-20260930",
+  "working_tree_dirty": true,
+  "interpreter": "D:\\KLTN\\M1\\.venv-win\\Scripts\\python.exe",
+  "python": "3.12.14",
+  "packages": {
+    "tree-sitter": "0.25.2",
+    "tree-sitter-python": "0.25.0",
+    "jedi": "0.20.0",
+    "pydantic": "2.13.5"
+  },
+  "builds": {
+    "vgar_fixed_no_jedi": {
+      "graph_version": "sha256:19b5472f96c88728e966eb11ae1e4c8fa1db1558f5051eab596c3c17659ff24e",
+      "repo_key": "GauKho/VGAR",
+      "repository_revision": "2491a047-worktree-m1",
+      "use_jedi": false,
+      "source_roots": [
+        "src"
+      ],
+      "resolver_profile": "lexical-v2",
+      "statistics": {
+        "node_count": 2683,
+        "edge_count": 3452,
+        "node_counts_by_type": {
+          "Repository": 1,
+          "File": 98,
+          "Module": 150,
+          "Import": 373,
+          "Function": 88,
+          "CallSite": 1706,
+          "Class": 66,
+          "Method": 120,
+          "Test": 81
+        },
+        "edge_counts_by_type": {
+          "CONTAINS": 2630,
+          "IMPORTS": 373,
+          "INHERITS": 6,
+          "CALLS": 360,
+          "TESTS": 83
+        },
+        "callsite_count": 1706,
+        "unresolved_call_count": 1346,
+        "unresolved_call_rate": 0.7889800703399765,
+        "partial_file_count": 0,
+        "build_time_ms": 241.678
+      },
+      "full_document": "D:\\KLTN\\reports\\vgar_m1_20261001\\crash_diagnosis\\vgar_fixed_no_jedi.json",
+      "document_sha256": "37f0532920296a78b40b431ad77a065aab2b894974b8c80a13bd13b8092c29dc"
+    },
+    "vgar_fixed_jedi": {
+      "graph_version": "sha256:386de1c50a8a82efff72574598c07a638a59d7f219e3a515c4912ca07a7ea2f7",
+      "repo_key": "GauKho/VGAR",
+      "repository_revision": "2491a047-worktree-m1",
+      "use_jedi": true,
+      "source_roots": [
+        "src"
+      ],
+      "resolver_profile": "lexical-v2",
+      "statistics": {
+        "node_count": 2683,
+        "edge_count": 3562,
+        "node_counts_by_type": {
+          "Repository": 1,
+          "File": 98,
+          "Module": 150,
+          "Import": 373,
+          "Function": 88,
+          "CallSite": 1706,
+          "Class": 66,
+          "Method": 120,
+          "Test": 81
+        },
+        "edge_counts_by_type": {
+          "CONTAINS": 2630,
+          "IMPORTS": 373,
+          "INHERITS": 6,
+          "CALLS": 432,
+          "TESTS": 121
+        },
+        "callsite_count": 1706,
+        "unresolved_call_count": 1274,
+        "unresolved_call_rate": 0.7467760844079718,
+        "partial_file_count": 0,
+        "build_time_ms": 18504.435
+      },
+      "full_document": "D:\\KLTN\\reports\\vgar_m1_20261001\\crash_diagnosis\\vgar_fixed_jedi.json",
+      "document_sha256": "296099a48a57d8d05112caa8ffadb01ee2e11881b3a23edd4af1d0b219314986"
+    },
+    "sample_fixed": {
+      "graph_version": "sha256:cbabcefea7f2a52fa9d26874294bdf26c671254df5a7655753a4e53bacfb3428",
+      "repo_key": "demo/vgar-fixture",
+      "repository_revision": "fixture-revision",
+      "use_jedi": false,
+      "source_roots": [
+        "src"
+      ],
+      "resolver_profile": "lexical-v2",
+      "statistics": {
+        "node_count": 40,
+        "edge_count": 52,
+        "node_counts_by_type": {
+          "Repository": 1,
+          "File": 8,
+          "Module": 8,
+          "Function": 3,
+          "CallSite": 7,
+          "Import": 5,
+          "Class": 4,
+          "Method": 3,
+          "Test": 1
+        },
+        "edge_counts_by_type": {
+          "CONTAINS": 39,
+          "IMPORTS": 5,
+          "INHERITS": 2,
+          "CALLS": 5,
+          "TESTS": 1
+        },
+        "callsite_count": 7,
+        "unresolved_call_count": 2,
+        "unresolved_call_rate": 0.2857142857142857,
+        "partial_file_count": 0,
+        "build_time_ms": 9.783
+      },
+      "full_document": "D:\\KLTN\\reports\\vgar_m1_20261001\\crash_diagnosis\\sample_fixed.json",
+      "document_sha256": "2f996915a8f1e2a45522e0d33da05b955646af4a486c072f8fa140c33e906c0c"
+    }
+  },
+  "m1_tests": {
+    "run": 46,
+    "failures": 0,
+    "errors": 0
+  },
+  "source_review": {
+    "rows": 20,
+    "matches": 20,
+    "sampling": "5 CALLS and 5 IMPORTS per snapshot, sorted path/line/edge ID; distinct import statement-target; VGAR sources restricted to src/vgar/graph",
+    "not_recall_or_population_precision": true
+  }
+}

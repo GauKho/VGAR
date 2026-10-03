@@ -1,0 +1,58 @@
+{
+  "context": {
+    "graph_version": "sha256:1945059a32b9114003f3fbb98b2f0cdb482db216820f87d3f217cfc15ccf53ec",
+    "anchor_ids": [],
+    "items": [],
+    "total_token_count": 0,
+    "token_budget": 8000,
+    "truncated": false
+  },
+  "overlay_id": "sha256:4cf0e0a23acc75687fc8ef0e36ea0be4f893f2a5571ad4861e2c21ea1016fc19",
+  "counter_label": "local-hf:Qwen/Qwen3-4B-Instruct-2507@cdbee75f17c01a7cc42f958dc650907174af0554:sha256=aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4:no-special-tokens",
+  "config": {
+    "max_hops": 2,
+    "max_candidates": 100,
+    "min_edge_confidence": 0.6,
+    "weights": {
+      "task_similarity": 0.2,
+      "graph_distance": 0.3,
+      "edge_confidence": 0.2,
+      "failing_test_proximity": 0.2,
+      "public_api_risk": 0.1,
+      "recent_change_frequency": 0.1
+    },
+    "profile": "semantic-context-v1",
+    "active_features": [
+      "task_similarity",
+      "graph_distance",
+      "edge_confidence",
+      "public_api_risk"
+    ],
+    "normalized_weights": {
+      "task_similarity": 0.25,
+      "graph_distance": 0.37499999999999994,
+      "edge_confidence": 0.25,
+      "public_api_risk": 0.125
+    },
+    "failing_test_traversal_limited": false
+  },
+  "candidates": [],
+  "omissions": [],
+  "traversal_limited": false,
+  "unavailable_features": [
+    "architecture_dependencies",
+    "recent_change_frequency",
+    "failing_test_proximity"
+  ],
+  "history_label": null,
+  "tokenizer_provenance": {
+    "model_id": "Qwen/Qwen3-4B-Instruct-2507",
+    "revision": "cdbee75f17c01a7cc42f958dc650907174af0554",
+    "tokenizer_json_sha256": "aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4",
+    "manifest_sha256": "691f593426cdbdba3c4674d4735862bc9e1f81bf04efdba7d4ba3f5abc674d61",
+    "tokenizers_version": "0.22.1",
+    "counting_policy": "encode-each-snippet:add_special_tokens=false:sum-item-counts",
+    "padding": false,
+    "truncation": false
+  }
+}

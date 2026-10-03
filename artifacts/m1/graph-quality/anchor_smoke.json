@@ -1,0 +1,38 @@
+{
+  "graph_version": "sha256:cbabcefea7f2a52fa9d26874294bdf26c671254df5a7655753a4e53bacfb3428",
+  "anchors": [
+    {
+      "node_id": "vgar:demo/vgar-fixture:python:test:tests/test_auth.py:tests.test_auth.test_login",
+      "path": "tests/test_auth.py",
+      "symbol": "tests.test_auth.test_login",
+      "score": 1.0,
+      "evidence": [
+        {
+          "kind": "pytest_selector",
+          "matched_text": "tests/test_auth.py::test_login",
+          "source": "failing_test"
+        }
+      ]
+    },
+    {
+      "node_id": "vgar:demo/vgar-fixture:python:function:src/auth/service.py:auth.service.login",
+      "path": "src/auth/service.py",
+      "symbol": "auth.service.login",
+      "score": 0.95,
+      "evidence": [
+        {
+          "kind": "path_line",
+          "matched_text": "src/auth/service.py:2",
+          "source": "issue"
+        },
+        {
+          "kind": "symbol",
+          "matched_text": "login",
+          "source": "issue"
+        }
+      ]
+    }
+  ],
+  "ambiguous_matches": [],
+  "unmatched_locations": []
+}

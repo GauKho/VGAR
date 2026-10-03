@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import ast
 import hashlib
+import symtable
 import time
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -94,6 +95,8 @@ class PythonGraphBuilder:
         self.unique_symbols_by_name: dict[str, str] = {}
         self.calls: list[_CallRecord] = []
         self.classes: list[_ClassRecord] = []
+        self.scope_tables: dict[str, symtable.SymbolTable] = {}
+        self.scope_parents: dict[str, str] = {}
         self.graph_version = ""
 
     def build(self, repository_root: str | Path) -> dict[str, Any]:
@@ -170,6 +173,7 @@ class PythonGraphBuilder:
         digest.update(self.repository_revision.encode("utf-8"))
         digest.update(b"\0resolver:")
         digest.update(b"jedi" if self.use_jedi else b"tree-sitter-only")
+        digest.update(b"\0resolver-profile:lexical-v2")
         for path in files:
             digest.update(b"\0")
             digest.update(path.relative_to(root).as_posix().encode("utf-8"))
@@ -261,6 +265,7 @@ class PythonGraphBuilder:
             is_package=file_path.name == "__init__.py",
         )
         self.modules[module_name] = module
+        self._index_scopes(source, module)
         self._walk_scope(
             root_node,
             source,
@@ -460,7 +465,8 @@ class PythonGraphBuilder:
             rule_id="python.scope.class.v1",
             properties={"ordinal": ordinal},
         )
-        module.definitions[name] = node_id
+        if self.nodes_by_id[parent_id]["type"] == "Module":
+            module.definitions[name] = node_id
         self.symbols_by_qualified_name[qualified_name] = node_id
         self.classes.append(
             _ClassRecord(
@@ -489,7 +495,7 @@ class PythonGraphBuilder:
             raise ValueError("function definition has no name")
         name = self._text(name_node, source)
         qualified_name = f"{parent_qualified_name}.{name}"
-        is_test = name.startswith("test_")
+        is_test = name.startswith("test_") and parent_type in {"Module", "Class"}
         node_type = "Test" if is_test else ("Method" if parent_type == "Class" else "Function")
         id_kind = node_type.lower()
         node_id = f"vgar:{self.repo_key}:python:{id_kind}:{module.path}:{qualified_name}"
@@ -756,13 +762,16 @@ class PythonGraphBuilder:
                 )
 
     def _resolve_calls(self) -> None:
+        test_targets: dict[tuple[str, str], float] = {}
         for call in self.calls:
             module = self.modules[call.module_name]
-            target_id = self._resolve_symbol(
-                module,
-                call.callee_text,
-                owner_class_name=call.owner_class_name,
-            )
+            has_lexical_binding, target_id = self._resolve_lexical_binding(call)
+            if not has_lexical_binding:
+                target_id = self._resolve_symbol(
+                    module,
+                    call.callee_text,
+                    owner_class_name=call.owner_class_name,
+                )
             resolved_by_jedi = False
             if target_id is None:
                 target_id = self._resolve_call_with_jedi(call)
@@ -772,6 +781,8 @@ class PythonGraphBuilder:
                 continue
 
             target = self.nodes_by_id[target_id]
+            if target["type"] not in {"Function", "Method", "Class"}:
+                continue
             imported_symbol = module.imported_symbols.get(call.callee_text)
             exact_import_target = None
             if imported_symbol is not None:
@@ -838,18 +849,66 @@ class PythonGraphBuilder:
             call_node["properties"]["candidate_count"] = 1
 
             if call.caller_type == "Test":
-                self._add_edge(
-                    "TESTS",
-                    call.caller_id,
-                    target_id,
-                    confidence=confidence,
-                    resolution="analyzer",
-                    rule_id="python.test.direct_call.v1",
-                    properties={
-                        "link_method": "direct_call",
-                        "coverage_count": None,
-                    },
-                )
+                key = (call.caller_id, target_id)
+                test_targets[key] = max(test_targets.get(key, 0.0), confidence)
+
+        # TESTS is one relation per test/target; CALLS keeps every call site.
+        for (test_id, target_id), confidence in test_targets.items():
+            self._add_edge(
+                "TESTS",
+                test_id,
+                target_id,
+                confidence=confidence,
+                resolution="analyzer",
+                rule_id="python.test.direct_call.v1",
+                properties={"link_method": "direct_call", "coverage_count": None},
+            )
+
+    def _index_scopes(self, source: bytes, module: _ModuleState) -> None:
+        try:
+            table = symtable.symtable(source.decode("utf-8"), module.path, "exec")
+        except (SyntaxError, UnicodeError):
+            # Partial Tree-sitter parses still produce nodes, but no lexical guess.
+            return
+
+        def visit(table: symtable.SymbolTable, qualified_name: str) -> None:
+            self.scope_tables[qualified_name] = table
+            for child in table.get_children():
+                if child.get_name() in {"lambda", "listcomp", "setcomp", "dictcomp", "genexpr"}:
+                    continue
+                child_name = f"{qualified_name}.{child.get_name()}"
+                self.scope_parents[child_name] = qualified_name
+                visit(child, child_name)
+
+        visit(table, module.module_name)
+
+    def _resolve_lexical_binding(self, call: _CallRecord) -> tuple[bool, str | None]:
+        """Prevent module/global guesses from overriding Python local bindings."""
+        if (
+            call.callee_text == "cls"
+            or call.callee_text.startswith(("self.", "cls."))
+        ) and call.owner_class_name:
+            return False, None
+        name = call.callee_text.split(".", 1)[0]
+        if not name.isidentifier():
+            return False, None
+        scope_name = self.nodes_by_id[call.caller_id]["qualified_name"]
+        while scope_name != call.module_name:
+            table = self.scope_tables.get(scope_name)
+            if table is None:
+                return True, None
+            # A method does not close over its class namespace.
+            if table.get_type() == "function" and name in table.get_identifiers():
+                symbol = table.lookup(name)
+                if symbol.is_global():
+                    return False, None
+                if symbol.is_local():
+                    target = None
+                    if call.callee_text == name and symbol.is_namespace():
+                        target = self.symbols_by_qualified_name.get(f"{scope_name}.{name}")
+                    return True, target
+            scope_name = self.scope_parents.get(scope_name, call.module_name)
+        return False, None
 
     def _resolve_call_with_jedi(self, call: _CallRecord) -> str | None:
         if self.jedi_resolver is None:
@@ -946,8 +1005,12 @@ class PythonGraphBuilder:
 
     def _build_unique_symbol_index(self) -> None:
         candidates: dict[str, list[str]] = {}
+        modules_by_path = {module.path: module for module in self.modules.values()}
         for node in self.nodes:
             if node["type"] not in {"Class", "Function"}:
+                continue
+            module = modules_by_path.get(node["path"])
+            if module is None or node["qualified_name"] != f"{module.module_name}.{node['name']}":
                 continue
             candidates.setdefault(node["name"], []).append(node["id"])
         self.unique_symbols_by_name = {

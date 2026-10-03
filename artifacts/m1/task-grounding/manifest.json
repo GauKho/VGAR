@@ -1,0 +1,101 @@
+{
+  "date": "2026-10-03",
+  "base_commit": "2491a047638c183a6d6adee41c8a8f79b8b9020d",
+  "working_tree_dirty": true,
+  "use_jedi": false,
+  "graph_version": "sha256:0c454e676371e32458f7bfe630762b23d5a5c8928db9b491fc9761fdf0448505",
+  "graph_json_sha256": "8009a04b9918d9ba1321db94657a6ec5e2e3953388f49a73a8f1c91890f9bdc9",
+  "graph_artifact": "D:\\KLTN\\reports\\vgar_m1_20261003\\graph_m1_ms2_release_no_jedi.json",
+  "sqlite_artifact": "D:\\KLTN\\reports\\vgar_m1_20261003\\graph_m1_ms2_release.db",
+  "statistics": {
+    "node_count": 3037,
+    "edge_count": 3897,
+    "node_counts_by_type": {
+      "Repository": 1,
+      "File": 101,
+      "Module": 153,
+      "Import": 403,
+      "Function": 92,
+      "CallSite": 1996,
+      "Class": 66,
+      "Method": 123,
+      "Test": 102
+    },
+    "edge_counts_by_type": {
+      "CONTAINS": 2984,
+      "IMPORTS": 403,
+      "INHERITS": 6,
+      "CALLS": 401,
+      "TESTS": 103
+    },
+    "callsite_count": 1996,
+    "unresolved_call_count": 1595,
+    "unresolved_call_rate": 0.7990981963927856,
+    "partial_file_count": 0,
+    "build_time_ms": 274.676
+  },
+  "tasks": [
+    {
+      "task_id": "graph-builder",
+      "artifact": "graph-builder.json",
+      "overlay_id": "sha256:a33e9a6adc90ed73a36ed983b65c0f5c300d85ada0ca5144a9b92e9d85fc2c45",
+      "anchor_count": 2,
+      "edge_counts": {
+        "MENTIONS": 2,
+        "REPRODUCES": 1
+      },
+      "ambiguous_count": 0,
+      "unmatched_locations": [],
+      "single_run_ms": 24.345
+    },
+    {
+      "task_id": "context-path",
+      "artifact": "context-path.json",
+      "overlay_id": "sha256:c9485e1efd31ffd7e4e1e3f4567d02decccbf73229c189ceb0369e38669a8c5c",
+      "anchor_count": 3,
+      "edge_counts": {
+        "MENTIONS": 3,
+        "REPRODUCES": 1
+      },
+      "ambiguous_count": 0,
+      "unmatched_locations": [
+        "C:/repo/service.py"
+      ],
+      "single_run_ms": 26.642
+    },
+    {
+      "task_id": "ambiguous-context",
+      "artifact": "ambiguous-context.json",
+      "overlay_id": "sha256:392e2b3e5114cdcc7f79d0f18a70d945e365f1b70559947b58810cc8aad14d1b",
+      "anchor_count": 2,
+      "edge_counts": {
+        "MENTIONS": 2
+      },
+      "ambiguous_count": 1,
+      "unmatched_locations": [
+        "missing.py::test_unknown"
+      ],
+      "single_run_ms": 25.011
+    },
+    {
+      "task_id": "unmatched",
+      "artifact": "unmatched.json",
+      "overlay_id": "sha256:bfafeecb572844325305ddef83d08fd1be1f405dc0f61572a3e18c590706a609",
+      "anchor_count": 0,
+      "edge_counts": {},
+      "ambiguous_count": 0,
+      "unmatched_locations": [
+        "missing.py:999"
+      ],
+      "single_run_ms": 21.683
+    }
+  ],
+  "source_unchanged_during_smoke": true,
+  "base_graph_unchanged_during_smoke": true,
+  "sqlite_contains_base_snapshot_only": true,
+  "limitations": [
+    "Synthetic task inputs, not actual executed failures",
+    "Single-run durations are not a latency benchmark",
+    "No retrieval Recall/MRR or MCP/repair end-to-end claim"
+  ]
+}

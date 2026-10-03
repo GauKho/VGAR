@@ -1,21 +1,28 @@
 # VGAR-MCP — M1 Graph & Retrieval
 
-Thư mục làm việc độc lập. Mục tiêu là xây graph construction, storage và retrieval.
+Repo tích hợp M1/M2/M3. M1 phụ trách graph construction, storage và retrieval.
 
 ## Cấu trúc hiện tại
 
 ```text
-M1/
+VGAR/
 ├── src/vgar/graph/
 │   ├── builder.py
 │   ├── context.py
-│   ├── errors.py
-│   ├── schema.py
+│   ├── grounding.py
+│   ├── task_overlay.py
+│   ├── retrieval.py
+│   ├── token_counter.py
 │   ├── sqlite_store.py
 │   ├── sqlite_service.py
 │   └── factory.py
-├── scripts/load_graph_fixture.py
+├── src/vgar/contracts/      # schema/error/DTO dùng chung
+├── scripts/run_m1_tests.py
+├── scripts/find_task_anchors.py
+├── scripts/build_task_overlay.py
+├── scripts/get_related_context.py
 ├── scripts/build_graph.py
+├── scripts/load_graph_fixture.py
 └── tests/
     ├── fixtures/
     ├── test_graph_schema.py
@@ -34,43 +41,81 @@ get_callees(symbol_id: str)
 
 `sqlite_service.py` cố ý import DTO từ `vgar.contracts.graph` của M3. Đây là compatibility boundary; không nhân bản contract sang M1.
 
-## Chạy test schema độc lập
+## Chạy kiểm thử M1
 
-Từ `D:\KLTN\M1`:
-
-```powershell
-$env:PYTHONPATH = "D:\KLTN\M1\src"
-python -m unittest discover -s tests -p "test_graph_schema.py" -v
-```
-
-Môi trường phát triển chuẩn hiện tại là `.venv-win` (Python 3.12). Chạy toàn bộ tests:
+Chạy từ thư mục gốc của bản clone, sau khi đã chuẩn bị môi trường Windows
+Python và các dependency của VGAR. Checkpoint M1 đã dùng Python 3.12,
+Tree-sitter 0.25.2, grammar Python 0.25.0 và Jedi 0.20.0.
+Ví dụ dưới chọn interpreter trong `.venv` của bản clone; nếu dùng môi trường
+khác, thay đường dẫn `$m1Python` bằng interpreter tương ứng:
 
 ```powershell
-$env:PYTHONPATH = "D:\KLTN\M1\src;D:\KLTN\VGAR\src"
-$env:PYTHONDONTWRITEBYTECODE = "1"
-& ".\.venv-win\Scripts\python.exe" -m unittest discover -s tests -p "test_*.py" -v
+$m1Python = (Resolve-Path '.\.venv\Scripts\python.exe').Path
+& $m1Python scripts/run_m1_tests.py
 ```
 
-## Chạy contract test với M3
+Script ưu tiên `VGAR/src` để không lấy nhầm editable package từ workspace M1 cũ.
+Đây là bộ test M1, gồm schema, builder, context, SQLite, pipeline, grounding,
+overlay, retrieval và tokenizer. Dependencies của VGAR được khai báo trong
+`pyproject.toml`; đổi file này không tự cập nhật môi trường đã cài trước đây.
 
-Sau khi cài dependencies trong môi trường phát triển:
+Để chạy cả phần tokenizer, cài runtime riêng ngoài repo và provision assets
+đúng revision một lần. Các lệnh cài/provision cần mạng:
 
 ```powershell
-$env:PYTHONPATH = "D:\KLTN\M1\src;D:\KLTN\VGAR\src"
-python -m unittest discover -s tests -p "test_sqlite_graph_service.py" -v
+$m1TokenizerRuntime = Join-Path (Get-Location).Path '..\runtime\m1-tokenizers'
+& $m1Python -m pip install --target $m1TokenizerRuntime --no-deps `
+  -r scripts/requirements_m1_tokenizer.txt
+& $m1Python scripts/provision_m1_tokenizer.py `
+  --model-id 'Qwen/Qwen3-4B-Instruct-2507' `
+  --revision cdbee75f17c01a7cc42f958dc650907174af0554 `
+  --assets-root artifacts/m1/tokenizers `
+  --manifest artifacts/m1/tokenizer-acceptance/tokenizer_manifest.json
+$env:PYTHONPATH = $m1TokenizerRuntime
+& $m1Python scripts/run_m1_tests.py
 ```
 
-Thứ tự `M1\src` trước `VGAR\src` cho phép thêm implementation `vgar.graph.*`, còn DTO `vgar.contracts.graph` và port tiếp tục lấy từ repo M3.
+Assets tokenizer được Git-ignore; người clone cần provision riêng. Sau khi
+chuẩn bị xong, counter dùng assets local. Nếu thiếu runtime/assets, các tests
+tokenizer có thể skip; lượt đó không thay cho bằng chứng 95/95 không skip.
+Đường dẫn môi trường checkpoint cũ `D:/KLTN/M1` hiện không tồn tại; xem
+[handoff hiện tại](docs/m1_handoff_2026-10-03.md) để đối chiếu môi trường.
+
+## Trạng thái M1 và tài liệu bàn giao
+
+M1 đang ở **W5–W6 theo deliverables của kế hoạch 16 tuần**: graph builder,
+grounding/task overlay, traversal/ranking, source-verified snippets và context
+packing đã triển khai. Context models dùng chung qua re-export; validator đã
+từ chối Windows drive paths theo quyết định được duyệt.
+
+Checkpoint ngày 03/10/2026 ghi nhận **95/95 tests M1 đạt, không skip**, cùng
+standalone API/CLI và token budget boundary checks. Counter dùng tokenizer
+Qwen đã pin revision, budget **8000 token cho snippets**. Các mốc 49/67/86 tests
+là checkpoint trước đó; logs và manifests nằm trong `artifacts/m1/`.
+Đây là bằng chứng đã lưu, không phải xác nhận một lượt chạy mới trên bản clone.
+
+Đánh giá Graph–BM25 trên dev tasks và tích hợp consumer M2/M3 còn thiếu;
+**chưa đóng toàn bộ W5–W6**. Ngân sách snippet không đại diện tổng prompt.
+
+| Tài liệu M1 | Vai trò |
+|---|---|
+| [Handoff ngày 03/10](docs/m1_handoff_2026-10-03.md) | Deliverables, bằng chứng, môi trường và công việc tiếp theo |
+| [Retrieval method](docs/m1_retrieval_method.md) | API, traversal/ranking, source checks và packing |
+| [Tokenizer acceptance](docs/m1_tokenizer_acceptance.md) | Revision/hashes, counting policy và kết quả nghiệm thu |
+| [Contract decision log](docs/m1_contract_decision_log.md) | Quyết định đã duyệt và consumer sign-off còn thiếu |
+| [Change scope](docs/m1_change_scope_2026-10-03.md) | Phạm vi M1 và ảnh hưởng của thay đổi dùng chung |
+| [Document index](docs/m1_documents.md) | Mục lục contract, thiết kế, nghiên cứu và bằng chứng |
 
 ## Cách tích hợp dự kiến
 
-M3 chỉ cần thay điểm khởi tạo trong `graph_server.py` từ `DemoGraphService()` sang factory khi hai bên sẵn sàng merge. Backend `demo` vẫn là mặc định, vì vậy smoke flow hiện tại của M3 không bị phá.
+Factory đã hỗ trợ backend SQLite; backend `demo` vẫn là mặc định.
+M3 sở hữu cấu hình MCP và integration flow. Grounding hiện chạy độc lập ở M1.
 
 Không copy SQLite schema hoặc query logic vào MCP server. MCP server chỉ gọi `GraphService` để giữ storage implementation thuộc M1.
 
 ## M2 W3–W4: baseline repair/verification infrastructure
 
-This integrated `VGAR` tree contains M1 graph and M3 MCP code plus M2's disposable workspace, pytest wrapper, and pre-patch EvidenceBundle. The older `D:\KLTN\M1` instructions in this README describe the original standalone M1 workspace; use the commands below from this `VGAR` root for M2.
+This integrated `VGAR` tree contains M1 graph and M3 MCP code plus M2's disposable workspace, pytest wrapper, and pre-patch EvidenceBundle. Run the commands below from this `VGAR` root for M2.
 
 Install the development test dependency in a Python 3.11–3.13 environment (the full project dependencies are listed in `pyproject.toml`):
 
@@ -92,29 +137,31 @@ See `docs/verification_design.md` for scope/safety, `docs/evidence_bundle_schema
 ## Build Graph MVP
 
 ```powershell
-$env:PYTHONPATH = "D:\KLTN\M1\src;D:\KLTN\VGAR\src"
+$m1Python = (Resolve-Path '.\.venv\Scripts\python.exe').Path
+$env:PYTHONPATH = (Resolve-Path '.\src').Path
 
-& ".\.venv\Scripts\python.exe" .\scripts\build_graph.py `
+& $m1Python .\scripts\build_graph.py `
   .\tests\fixtures\sample_repo `
   .\artifacts\sample_graph.json `
   --repo-key "demo/vgar-fixture" `
   --revision "fixture-revision"
 
-& ".\.venv\Scripts\python.exe" .\scripts\load_graph_fixture.py `
+& $m1Python .\scripts\load_graph_fixture.py `
   .\artifacts\sample_graph.json `
   .\artifacts\sample_graph.db
 ```
 
 Graph builder hiện extract `Repository`, `File`, `Module`, `Class`, `Function`, `Method`, `Test`, `Import`, `CallSite`; tạo containment, resolve internal/external imports, inheritance cơ bản và direct/imported/self calls. Jedi 0.20.0 là tầng static-analysis enrichment cho các call còn unresolved, chỉ chấp nhận kết quả map ngược được về symbol nội bộ. Unresolved calls vẫn được giữ dưới dạng `CallSite` có `candidate_count=0`.
 
-Graph document không công khai `schema_version`. `graph_version` chỉ nhận dạng snapshot cụ thể. `context.py` định nghĩa và kiểm tra `ContextPayload`; `errors.py` cung cấp error code ổn định để M3 ánh xạ vào MCP response.
+Graph document không công khai `schema_version`. `graph_version` chỉ nhận dạng snapshot cụ thể. Context models kiểm tra `ContextPayload`; `vgar.contracts.error` cung cấp error code dùng chung. Xem [graph schema](docs/graph_schema.md) và [grounding/retrieval](docs/retrieval_design.md).
 
 Có thể tắt Jedi để đo baseline Tree-sitter/resolver nội bộ bằng cờ `--no-jedi` khi chạy `build_graph.py`.
 
-## Checkpoint hiện tại
+## Checkpoint graph ngày 01/10/2026 — lịch sử
 
-- 27/27 tests pass.
+- 46/46 tests M1 pass tại checkpoint 01/10/2026.
 - End-to-end source → graph → validation → SQLite → M3 DTO pass.
-- Manual review xác nhận 19/19 edge `CALLS` đã resolve trên repo VGAR đúng đích.
-- Graph thật của VGAR: 227 nodes, 263 edges, 19 resolved và 57 unresolved call sites.
+- Build toàn repo tích hợp vượt qua validation khi bật và tắt Jedi, sau khi sửa Tree-sitter và builder.
+- Số liệu build và mẫu kiểm source được ghi trong [graph quality report](docs/graph_quality_report.md); không dùng số graph của workspace M1 cũ làm số liệu repo tích hợp.
+- Tại checkpoint này, `find_task_anchors` đã hỗ trợ path, line, traceback, symbol và pytest selector. Retrieval/packing được bổ sung sau đó, như phần trạng thái M1 ở trên.
 - Factory giữ demo backend làm mặc định.

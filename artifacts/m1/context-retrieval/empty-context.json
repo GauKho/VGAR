@@ -1,0 +1,48 @@
+{
+  "context": {
+    "graph_version": "sha256:ec5be3d0b0bfd064a0f185de9d19b59b094ef3570038f1d58857c5f1e730ca45",
+    "anchor_ids": [],
+    "items": [],
+    "total_token_count": 0,
+    "token_budget": 200,
+    "truncated": false
+  },
+  "overlay_id": "sha256:c3284a91940f14766474de983725a4fb6813c989ec1ffa2e90a896464af9321f",
+  "counter_label": "demo-whitespace-units:not-model-tokens",
+  "config": {
+    "max_hops": 2,
+    "max_candidates": 100,
+    "min_edge_confidence": 0.6,
+    "weights": {
+      "task_similarity": 0.2,
+      "graph_distance": 0.3,
+      "edge_confidence": 0.2,
+      "failing_test_proximity": 0.2,
+      "public_api_risk": 0.1,
+      "recent_change_frequency": 0.1
+    },
+    "profile": "semantic-context-v1",
+    "active_features": [
+      "task_similarity",
+      "graph_distance",
+      "edge_confidence",
+      "public_api_risk"
+    ],
+    "normalized_weights": {
+      "task_similarity": 0.25,
+      "graph_distance": 0.37499999999999994,
+      "edge_confidence": 0.25,
+      "public_api_risk": 0.125
+    },
+    "failing_test_traversal_limited": false
+  },
+  "candidates": [],
+  "omissions": [],
+  "traversal_limited": false,
+  "unavailable_features": [
+    "architecture_dependencies",
+    "recent_change_frequency",
+    "failing_test_proximity"
+  ],
+  "history_label": null
+}

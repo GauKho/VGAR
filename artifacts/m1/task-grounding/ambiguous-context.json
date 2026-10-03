@@ -1,0 +1,124 @@
+{
+  "graph_version": "sha256:0c454e676371e32458f7bfe630762b23d5a5c8928db9b491fc9761fdf0448505",
+  "overlay_id": "sha256:392e2b3e5114cdcc7f79d0f18a70d945e365f1b70559947b58810cc8aad14d1b",
+  "task_id": "ambiguous-context",
+  "nodes": [
+    {
+      "id": "vgar:GauKho/VGAR:issue:sha256:c37533c2f50a8a7fa5498c94f1f8521c9601f9f761807b301d0af6b8127f14ba",
+      "type": "Issue",
+      "repo_key": "GauKho/VGAR",
+      "name": "ambiguous-context",
+      "qualified_name": "ambiguous-context",
+      "path": null,
+      "language": null,
+      "range": null,
+      "graph_version": "sha256:0c454e676371e32458f7bfe630762b23d5a5c8928db9b491fc9761fdf0448505",
+      "content_hash": "sha256:19165fa7c067cc377aad11666ce0d7e4e20550557382d368ef04c394311e0126",
+      "properties": {
+        "task_id": "ambiguous-context",
+        "issue_text": "context.py has a problem",
+        "failing_tests": [
+          "missing.py::test_unknown"
+        ],
+        "overlay_id": "sha256:392e2b3e5114cdcc7f79d0f18a70d945e365f1b70559947b58810cc8aad14d1b"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "sha256:26c0c0565b75eb05b235d7672d41c7fc0954a8da6220222c01d02259c8e53e72",
+      "type": "MENTIONS",
+      "source_id": "vgar:GauKho/VGAR:issue:sha256:c37533c2f50a8a7fa5498c94f1f8521c9601f9f761807b301d0af6b8127f14ba",
+      "target_id": "vgar:GauKho/VGAR:python:file:src/vgar/contracts/context.py",
+      "confidence": 0.5,
+      "resolution": "heuristic",
+      "graph_version": "sha256:0c454e676371e32458f7bfe630762b23d5a5c8928db9b491fc9761fdf0448505",
+      "properties": {
+        "overlay_id": "sha256:392e2b3e5114cdcc7f79d0f18a70d945e365f1b70559947b58810cc8aad14d1b",
+        "has_ambiguous_evidence": true
+      },
+      "provenance": {
+        "source_tool": "vgar-m1-task-overlay",
+        "source_tool_version": "0.1.0",
+        "rule_id": "task.mentions.v1",
+        "source_revision": "2491a047-worktree-m1-ms2-20261003",
+        "evidence": [
+          {
+            "kind": "path",
+            "matched_text": "context.py",
+            "source": "issue"
+          }
+        ]
+      }
+    },
+    {
+      "id": "sha256:dd390091a29f053b27dac933cdfc3212c8ad7cc36f09eccf31c1cb28248ea034",
+      "type": "MENTIONS",
+      "source_id": "vgar:GauKho/VGAR:issue:sha256:c37533c2f50a8a7fa5498c94f1f8521c9601f9f761807b301d0af6b8127f14ba",
+      "target_id": "vgar:GauKho/VGAR:python:file:src/vgar/graph/context.py",
+      "confidence": 0.5,
+      "resolution": "heuristic",
+      "graph_version": "sha256:0c454e676371e32458f7bfe630762b23d5a5c8928db9b491fc9761fdf0448505",
+      "properties": {
+        "overlay_id": "sha256:392e2b3e5114cdcc7f79d0f18a70d945e365f1b70559947b58810cc8aad14d1b",
+        "has_ambiguous_evidence": true
+      },
+      "provenance": {
+        "source_tool": "vgar-m1-task-overlay",
+        "source_tool_version": "0.1.0",
+        "rule_id": "task.mentions.v1",
+        "source_revision": "2491a047-worktree-m1-ms2-20261003",
+        "evidence": [
+          {
+            "kind": "path",
+            "matched_text": "context.py",
+            "source": "issue"
+          }
+        ]
+      }
+    }
+  ],
+  "grounding": {
+    "graph_version": "sha256:0c454e676371e32458f7bfe630762b23d5a5c8928db9b491fc9761fdf0448505",
+    "anchors": [
+      {
+        "node_id": "vgar:GauKho/VGAR:python:file:src/vgar/contracts/context.py",
+        "path": "src/vgar/contracts/context.py",
+        "symbol": "src/vgar/contracts/context.py",
+        "score": 0.5,
+        "evidence": [
+          {
+            "kind": "path",
+            "matched_text": "context.py",
+            "source": "issue"
+          }
+        ]
+      },
+      {
+        "node_id": "vgar:GauKho/VGAR:python:file:src/vgar/graph/context.py",
+        "path": "src/vgar/graph/context.py",
+        "symbol": "src/vgar/graph/context.py",
+        "score": 0.5,
+        "evidence": [
+          {
+            "kind": "path",
+            "matched_text": "context.py",
+            "source": "issue"
+          }
+        ]
+      }
+    ],
+    "ambiguous_matches": [
+      {
+        "matched_text": "context.py",
+        "candidate_ids": [
+          "vgar:GauKho/VGAR:python:file:src/vgar/contracts/context.py",
+          "vgar:GauKho/VGAR:python:file:src/vgar/graph/context.py"
+        ]
+      }
+    ],
+    "unmatched_locations": [
+      "missing.py::test_unknown"
+    ]
+  }
+}

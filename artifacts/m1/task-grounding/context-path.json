@@ -1,0 +1,182 @@
+{
+  "graph_version": "sha256:0c454e676371e32458f7bfe630762b23d5a5c8928db9b491fc9761fdf0448505",
+  "overlay_id": "sha256:c9485e1efd31ffd7e4e1e3f4567d02decccbf73229c189ceb0369e38669a8c5c",
+  "task_id": "context-path",
+  "nodes": [
+    {
+      "id": "vgar:GauKho/VGAR:issue:sha256:abe3d47cb0d3fb1f383d8df1b71350b389a9b469445dd96d3894462ffa917fa8",
+      "type": "Issue",
+      "repo_key": "GauKho/VGAR",
+      "name": "context-path",
+      "qualified_name": "context-path",
+      "path": null,
+      "language": null,
+      "range": null,
+      "graph_version": "sha256:0c454e676371e32458f7bfe630762b23d5a5c8928db9b491fc9761fdf0448505",
+      "content_hash": "sha256:39f7bec6655696e16c5a760bd6ba25a539e06a1071e8e6df9a1fbcb5444eb8a8",
+      "properties": {
+        "task_id": "context-path",
+        "issue_text": "ContextItem rejects C:/repo/service.py in src/vgar/contracts/context.py",
+        "failing_tests": [
+          "tests/test_context_contract.py::ContextPayloadContractTests::test_windows_drive_and_unc_paths_are_rejected_through_both_imports"
+        ],
+        "overlay_id": "sha256:c9485e1efd31ffd7e4e1e3f4567d02decccbf73229c189ceb0369e38669a8c5c"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "sha256:0c697c7de6bd94fcaa1be511123391af78464f54b7fe7caa2031d67e7193efd3",
+      "type": "MENTIONS",
+      "source_id": "vgar:GauKho/VGAR:issue:sha256:abe3d47cb0d3fb1f383d8df1b71350b389a9b469445dd96d3894462ffa917fa8",
+      "target_id": "vgar:GauKho/VGAR:python:class:src/vgar/contracts/context.py:vgar.contracts.context.ContextItem",
+      "confidence": 0.6,
+      "resolution": "heuristic",
+      "graph_version": "sha256:0c454e676371e32458f7bfe630762b23d5a5c8928db9b491fc9761fdf0448505",
+      "properties": {
+        "overlay_id": "sha256:c9485e1efd31ffd7e4e1e3f4567d02decccbf73229c189ceb0369e38669a8c5c",
+        "has_ambiguous_evidence": false
+      },
+      "provenance": {
+        "source_tool": "vgar-m1-task-overlay",
+        "source_tool_version": "0.1.0",
+        "rule_id": "task.mentions.v1",
+        "source_revision": "2491a047-worktree-m1-ms2-20261003",
+        "evidence": [
+          {
+            "kind": "symbol",
+            "matched_text": "ContextItem",
+            "source": "issue"
+          }
+        ]
+      }
+    },
+    {
+      "id": "sha256:7206ed8fdc8fef9f7690fc8b211c996222a568a23e0d3b9b0d03237fdc49afa7",
+      "type": "MENTIONS",
+      "source_id": "vgar:GauKho/VGAR:issue:sha256:abe3d47cb0d3fb1f383d8df1b71350b389a9b469445dd96d3894462ffa917fa8",
+      "target_id": "vgar:GauKho/VGAR:python:file:src/vgar/contracts/context.py",
+      "confidence": 0.7,
+      "resolution": "heuristic",
+      "graph_version": "sha256:0c454e676371e32458f7bfe630762b23d5a5c8928db9b491fc9761fdf0448505",
+      "properties": {
+        "overlay_id": "sha256:c9485e1efd31ffd7e4e1e3f4567d02decccbf73229c189ceb0369e38669a8c5c",
+        "has_ambiguous_evidence": false
+      },
+      "provenance": {
+        "source_tool": "vgar-m1-task-overlay",
+        "source_tool_version": "0.1.0",
+        "rule_id": "task.mentions.v1",
+        "source_revision": "2491a047-worktree-m1-ms2-20261003",
+        "evidence": [
+          {
+            "kind": "path",
+            "matched_text": "src/vgar/contracts/context.py",
+            "source": "issue"
+          }
+        ]
+      }
+    },
+    {
+      "id": "sha256:dd2e6d12b3a7c7b768456a81fd5f6d2e194af4cb15f2d5eb13c976847b1e90b2",
+      "type": "MENTIONS",
+      "source_id": "vgar:GauKho/VGAR:issue:sha256:abe3d47cb0d3fb1f383d8df1b71350b389a9b469445dd96d3894462ffa917fa8",
+      "target_id": "vgar:GauKho/VGAR:python:test:tests/test_context_contract.py:tests.test_context_contract.ContextPayloadContractTests.test_windows_drive_and_unc_paths_are_rejected_through_both_imports",
+      "confidence": 1.0,
+      "resolution": "heuristic",
+      "graph_version": "sha256:0c454e676371e32458f7bfe630762b23d5a5c8928db9b491fc9761fdf0448505",
+      "properties": {
+        "overlay_id": "sha256:c9485e1efd31ffd7e4e1e3f4567d02decccbf73229c189ceb0369e38669a8c5c",
+        "has_ambiguous_evidence": false
+      },
+      "provenance": {
+        "source_tool": "vgar-m1-task-overlay",
+        "source_tool_version": "0.1.0",
+        "rule_id": "task.mentions.v1",
+        "source_revision": "2491a047-worktree-m1-ms2-20261003",
+        "evidence": [
+          {
+            "kind": "pytest_selector",
+            "matched_text": "tests/test_context_contract.py::ContextPayloadContractTests::test_windows_drive_and_unc_paths_are_rejected_through_both_imports",
+            "source": "failing_test"
+          }
+        ]
+      }
+    },
+    {
+      "id": "sha256:579e522a81351de01ae4e279fae2de0120e15e07b719971096458f8c0eb994fb",
+      "type": "REPRODUCES",
+      "source_id": "vgar:GauKho/VGAR:python:test:tests/test_context_contract.py:tests.test_context_contract.ContextPayloadContractTests.test_windows_drive_and_unc_paths_are_rejected_through_both_imports",
+      "target_id": "vgar:GauKho/VGAR:issue:sha256:abe3d47cb0d3fb1f383d8df1b71350b389a9b469445dd96d3894462ffa917fa8",
+      "confidence": 1.0,
+      "resolution": "heuristic",
+      "graph_version": "sha256:0c454e676371e32458f7bfe630762b23d5a5c8928db9b491fc9761fdf0448505",
+      "properties": {
+        "overlay_id": "sha256:c9485e1efd31ffd7e4e1e3f4567d02decccbf73229c189ceb0369e38669a8c5c",
+        "input_reported_failure": true,
+        "execution_verified": false
+      },
+      "provenance": {
+        "source_tool": "vgar-m1-task-overlay",
+        "source_tool_version": "0.1.0",
+        "rule_id": "task.reproduces.v1",
+        "source_revision": "2491a047-worktree-m1-ms2-20261003",
+        "evidence": [
+          {
+            "kind": "pytest_selector",
+            "matched_text": "tests/test_context_contract.py::ContextPayloadContractTests::test_windows_drive_and_unc_paths_are_rejected_through_both_imports",
+            "source": "failing_test"
+          }
+        ]
+      }
+    }
+  ],
+  "grounding": {
+    "graph_version": "sha256:0c454e676371e32458f7bfe630762b23d5a5c8928db9b491fc9761fdf0448505",
+    "anchors": [
+      {
+        "node_id": "vgar:GauKho/VGAR:python:test:tests/test_context_contract.py:tests.test_context_contract.ContextPayloadContractTests.test_windows_drive_and_unc_paths_are_rejected_through_both_imports",
+        "path": "tests/test_context_contract.py",
+        "symbol": "tests.test_context_contract.ContextPayloadContractTests.test_windows_drive_and_unc_paths_are_rejected_through_both_imports",
+        "score": 1.0,
+        "evidence": [
+          {
+            "kind": "pytest_selector",
+            "matched_text": "tests/test_context_contract.py::ContextPayloadContractTests::test_windows_drive_and_unc_paths_are_rejected_through_both_imports",
+            "source": "failing_test"
+          }
+        ]
+      },
+      {
+        "node_id": "vgar:GauKho/VGAR:python:file:src/vgar/contracts/context.py",
+        "path": "src/vgar/contracts/context.py",
+        "symbol": "src/vgar/contracts/context.py",
+        "score": 0.7,
+        "evidence": [
+          {
+            "kind": "path",
+            "matched_text": "src/vgar/contracts/context.py",
+            "source": "issue"
+          }
+        ]
+      },
+      {
+        "node_id": "vgar:GauKho/VGAR:python:class:src/vgar/contracts/context.py:vgar.contracts.context.ContextItem",
+        "path": "src/vgar/contracts/context.py",
+        "symbol": "vgar.contracts.context.ContextItem",
+        "score": 0.6,
+        "evidence": [
+          {
+            "kind": "symbol",
+            "matched_text": "ContextItem",
+            "source": "issue"
+          }
+        ]
+      }
+    ],
+    "ambiguous_matches": [],
+    "unmatched_locations": [
+      "C:/repo/service.py"
+    ]
+  }
+}
