@@ -1,0 +1,232 @@
+{
+  "summary": {
+    "graph_version": "sha256:386de1c50a8a82efff72574598c07a638a59d7f219e3a515c4912ca07a7ea2f7",
+    "repo_key": "GauKho/VGAR",
+    "repository_revision": "2491a047-worktree-m1",
+    "node_count": 2683,
+    "edge_count": 3562,
+    "node_counts_by_type": {
+      "CallSite": 1706,
+      "Class": 66,
+      "File": 98,
+      "Function": 88,
+      "Import": 373,
+      "Method": 120,
+      "Module": 150,
+      "Repository": 1,
+      "Test": 81
+    },
+    "edge_counts_by_type": {
+      "CALLS": 432,
+      "CONTAINS": 2630,
+      "IMPORTS": 373,
+      "INHERITS": 6,
+      "TESTS": 121
+    },
+    "statistics": {
+      "build_time_ms": 18504.435,
+      "callsite_count": 1706,
+      "edge_count": 3562,
+      "edge_counts_by_type": {
+        "CALLS": 432,
+        "CONTAINS": 2630,
+        "IMPORTS": 373,
+        "INHERITS": 6,
+        "TESTS": 121
+      },
+      "node_count": 2683,
+      "node_counts_by_type": {
+        "CallSite": 1706,
+        "Class": 66,
+        "File": 98,
+        "Function": 88,
+        "Import": 373,
+        "Method": 120,
+        "Module": 150,
+        "Repository": 1,
+        "Test": 81
+      },
+      "partial_file_count": 0,
+      "unresolved_call_count": 1274,
+      "unresolved_call_rate": 0.7467760844079718
+    }
+  },
+  "search": {
+    "query": "TaskAnchorFinder",
+    "symbols": [
+      {
+        "symbol_id": "vgar:GauKho/VGAR:python:class:src/vgar/graph/grounding.py:vgar.graph.grounding.TaskAnchorFinder",
+        "name": "TaskAnchorFinder",
+        "kind": "class",
+        "path": "src/vgar/graph/grounding.py"
+      },
+      {
+        "symbol_id": "vgar:GauKho/VGAR:python:method:src/vgar/graph/grounding.py:vgar.graph.grounding.TaskAnchorFinder.__init__",
+        "name": "__init__",
+        "kind": "method",
+        "path": "src/vgar/graph/grounding.py"
+      },
+      {
+        "symbol_id": "vgar:GauKho/VGAR:python:method:src/vgar/graph/grounding.py:vgar.graph.grounding.TaskAnchorFinder._match_paths",
+        "name": "_match_paths",
+        "kind": "method",
+        "path": "src/vgar/graph/grounding.py"
+      },
+      {
+        "symbol_id": "vgar:GauKho/VGAR:python:method:src/vgar/graph/grounding.py:vgar.graph.grounding.TaskAnchorFinder.find_task_anchors",
+        "name": "find_task_anchors",
+        "kind": "method",
+        "path": "src/vgar/graph/grounding.py"
+      },
+      {
+        "symbol_id": "vgar:GauKho/VGAR:python:function:src/vgar/graph/grounding.py:vgar.graph.grounding.TaskAnchorFinder.find_task_anchors.add",
+        "name": "add",
+        "kind": "function",
+        "path": "src/vgar/graph/grounding.py"
+      }
+    ]
+  },
+  "callers": {
+    "symbol_id": "vgar:GauKho/VGAR:python:method:src/vgar/graph/builder.py:vgar.graph.builder.PythonGraphBuilder.build",
+    "symbols": [
+      {
+        "symbol_id": "vgar:GauKho/VGAR:python:function:scripts/build_graph.py:scripts.build_graph.main",
+        "name": "main",
+        "kind": "function",
+        "path": "scripts/build_graph.py"
+      },
+      {
+        "symbol_id": "vgar:GauKho/VGAR:python:test:tests/test_end_to_end_graph_pipeline.py:tests.test_end_to_end_graph_pipeline.EndToEndGraphPipelineTests.test_source_to_sqlite_to_m3_contract",
+        "name": "test_source_to_sqlite_to_m3_contract",
+        "kind": "test",
+        "path": "tests/test_end_to_end_graph_pipeline.py"
+      },
+      {
+        "symbol_id": "vgar:GauKho/VGAR:python:method:tests/test_graph_builder.py:tests.test_graph_builder.GraphBuilderRegressionTests._build",
+        "name": "_build",
+        "kind": "method",
+        "path": "tests/test_graph_builder.py"
+      },
+      {
+        "symbol_id": "vgar:GauKho/VGAR:python:test:tests/test_graph_builder.py:tests.test_graph_builder.GraphBuilderRegressionTests.test_local_import_shadows_module_symbol",
+        "name": "test_local_import_shadows_module_symbol",
+        "kind": "test",
+        "path": "tests/test_graph_builder.py"
+      },
+      {
+        "symbol_id": "vgar:GauKho/VGAR:python:method:tests/test_graph_builder.py:tests.test_graph_builder.PythonGraphBuilderTests.setUp",
+        "name": "setUp",
+        "kind": "method",
+        "path": "tests/test_graph_builder.py"
+      },
+      {
+        "symbol_id": "vgar:GauKho/VGAR:python:test:tests/test_graph_builder.py:tests.test_graph_builder.PythonGraphBuilderTests.test_graph_version_is_deterministic",
+        "name": "test_graph_version_is_deterministic",
+        "kind": "test",
+        "path": "tests/test_graph_builder.py"
+      },
+      {
+        "symbol_id": "vgar:GauKho/VGAR:python:test:tests/test_graph_builder.py:tests.test_graph_builder.PythonGraphBuilderTests.test_jedi_can_be_disabled",
+        "name": "test_jedi_can_be_disabled",
+        "kind": "test",
+        "path": "tests/test_graph_builder.py"
+      },
+      {
+        "symbol_id": "vgar:GauKho/VGAR:python:test:tests/test_graph_builder.py:tests.test_graph_builder.PythonGraphBuilderTests.test_jedi_resolves_typed_receiver_method",
+        "name": "test_jedi_resolves_typed_receiver_method",
+        "kind": "test",
+        "path": "tests/test_graph_builder.py"
+      },
+      {
+        "symbol_id": "vgar:GauKho/VGAR:python:test:tests/test_graph_builder.py:tests.test_graph_builder.PythonGraphBuilderTests.test_unique_repository_symbol_is_low_confidence_fallback",
+        "name": "test_unique_repository_symbol_is_low_confidence_fallback",
+        "kind": "test",
+        "path": "tests/test_graph_builder.py"
+      },
+      {
+        "symbol_id": "vgar:GauKho/VGAR:python:method:tests/test_task_anchors.py:tests.test_task_anchors.TaskAnchorTests.setUpClass",
+        "name": "setUpClass",
+        "kind": "method",
+        "path": "tests/test_task_anchors.py"
+      }
+    ]
+  },
+  "callees": {
+    "symbol_id": "vgar:GauKho/VGAR:python:method:src/vgar/graph/builder.py:vgar.graph.builder.PythonGraphBuilder.build",
+    "symbols": [
+      {
+        "symbol_id": "vgar:GauKho/VGAR:python:function:src/vgar/contracts/schema.py:vgar.contracts.schema.validate_graph_document",
+        "name": "validate_graph_document",
+        "kind": "function",
+        "path": "src/vgar/contracts/schema.py"
+      },
+      {
+        "symbol_id": "vgar:GauKho/VGAR:python:method:src/vgar/graph/builder.py:vgar.graph.builder.PythonGraphBuilder._add_node",
+        "name": "_add_node",
+        "kind": "method",
+        "path": "src/vgar/graph/builder.py"
+      },
+      {
+        "symbol_id": "vgar:GauKho/VGAR:python:method:src/vgar/graph/builder.py:vgar.graph.builder.PythonGraphBuilder._build_unique_symbol_index",
+        "name": "_build_unique_symbol_index",
+        "kind": "method",
+        "path": "src/vgar/graph/builder.py"
+      },
+      {
+        "symbol_id": "vgar:GauKho/VGAR:python:method:src/vgar/graph/builder.py:vgar.graph.builder.PythonGraphBuilder._calculate_graph_version",
+        "name": "_calculate_graph_version",
+        "kind": "method",
+        "path": "src/vgar/graph/builder.py"
+      },
+      {
+        "symbol_id": "vgar:GauKho/VGAR:python:method:src/vgar/graph/builder.py:vgar.graph.builder.PythonGraphBuilder._discover_python_files",
+        "name": "_discover_python_files",
+        "kind": "method",
+        "path": "src/vgar/graph/builder.py"
+      },
+      {
+        "symbol_id": "vgar:GauKho/VGAR:python:method:src/vgar/graph/builder.py:vgar.graph.builder.PythonGraphBuilder._extract_file",
+        "name": "_extract_file",
+        "kind": "method",
+        "path": "src/vgar/graph/builder.py"
+      },
+      {
+        "symbol_id": "vgar:GauKho/VGAR:python:method:src/vgar/graph/builder.py:vgar.graph.builder.PythonGraphBuilder._hash_text",
+        "name": "_hash_text",
+        "kind": "method",
+        "path": "src/vgar/graph/builder.py"
+      },
+      {
+        "symbol_id": "vgar:GauKho/VGAR:python:method:src/vgar/graph/builder.py:vgar.graph.builder.PythonGraphBuilder._link_imports",
+        "name": "_link_imports",
+        "kind": "method",
+        "path": "src/vgar/graph/builder.py"
+      },
+      {
+        "symbol_id": "vgar:GauKho/VGAR:python:method:src/vgar/graph/builder.py:vgar.graph.builder.PythonGraphBuilder._link_inheritance",
+        "name": "_link_inheritance",
+        "kind": "method",
+        "path": "src/vgar/graph/builder.py"
+      },
+      {
+        "symbol_id": "vgar:GauKho/VGAR:python:method:src/vgar/graph/builder.py:vgar.graph.builder.PythonGraphBuilder._resolve_calls",
+        "name": "_resolve_calls",
+        "kind": "method",
+        "path": "src/vgar/graph/builder.py"
+      },
+      {
+        "symbol_id": "vgar:GauKho/VGAR:python:method:src/vgar/graph/builder.py:vgar.graph.builder.PythonGraphBuilder._statistics",
+        "name": "_statistics",
+        "kind": "method",
+        "path": "src/vgar/graph/builder.py"
+      },
+      {
+        "symbol_id": "vgar:GauKho/VGAR:python:class:src/vgar/graph/jedi_resolver.py:vgar.graph.jedi_resolver.JediSymbolResolver",
+        "name": "JediSymbolResolver",
+        "kind": "class",
+        "path": "src/vgar/graph/jedi_resolver.py"
+      }
+    ]
+  },
+  "subgraph_node_count": 138
+}

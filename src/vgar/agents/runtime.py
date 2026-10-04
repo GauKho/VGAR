@@ -28,10 +28,7 @@ def index_repo(repo: Path, db: Path) -> int:
     return len(doc["nodes"])
 
 
-async def default_agent_factory(engine: str, settings: Settings) -> Any:
-    if engine == "langgraph":
-        from vgar.agents.graph import create_agent
-        return await create_agent(settings)
+async def default_agent_factory(settings: Settings) -> Any:
     from vgar.agents.core import create_core_agent
     return await create_core_agent(settings)
 
@@ -39,7 +36,6 @@ async def default_agent_factory(engine: str, settings: Settings) -> Any:
 @dataclass
 class Runtime:
     settings: Settings | None = None
-    engine: str = "langchain"
     keep_workspace: bool = False
     test_timeout: float = 120.0
     agent_factory: AgentFactory | None = None  # injectable for tests
@@ -56,7 +52,7 @@ class Runtime:
             if self.agent_factory is not None:
                 self.agent = await self.agent_factory(self.sandboxed)
             else:
-                self.agent = await default_agent_factory(self.engine, self.sandboxed)
+                self.agent = await default_agent_factory(self.sandboxed)
         return self.agent
 
 

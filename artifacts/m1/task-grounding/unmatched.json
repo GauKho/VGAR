@@ -1,0 +1,34 @@
+{
+  "graph_version": "sha256:0c454e676371e32458f7bfe630762b23d5a5c8928db9b491fc9761fdf0448505",
+  "overlay_id": "sha256:bfafeecb572844325305ddef83d08fd1be1f405dc0f61572a3e18c590706a609",
+  "task_id": "unmatched",
+  "nodes": [
+    {
+      "id": "vgar:GauKho/VGAR:issue:sha256:c2e3dbbb9e8a1a9fe174e025287360fd228ddaa2b6b172c4512a960b193dd185",
+      "type": "Issue",
+      "repo_key": "GauKho/VGAR",
+      "name": "unmatched",
+      "qualified_name": "unmatched",
+      "path": null,
+      "language": null,
+      "range": null,
+      "graph_version": "sha256:0c454e676371e32458f7bfe630762b23d5a5c8928db9b491fc9761fdf0448505",
+      "content_hash": "sha256:0c1a5b5efb57eacbaade4bcfe1e7970ac91149fa8f3cf5929886350f4d55f70c",
+      "properties": {
+        "task_id": "unmatched",
+        "issue_text": "missing.py:999",
+        "failing_tests": [],
+        "overlay_id": "sha256:bfafeecb572844325305ddef83d08fd1be1f405dc0f61572a3e18c590706a609"
+      }
+    }
+  ],
+  "edges": [],
+  "grounding": {
+    "graph_version": "sha256:0c454e676371e32458f7bfe630762b23d5a5c8928db9b491fc9761fdf0448505",
+    "anchors": [],
+    "ambiguous_matches": [],
+    "unmatched_locations": [
+      "missing.py:999"
+    ]
+  }
+}

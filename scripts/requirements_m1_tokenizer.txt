@@ -1,0 +1,2 @@
+# Standalone M1 snippet counting only; no transformers, Torch or model weights.
+tokenizers==0.22.1

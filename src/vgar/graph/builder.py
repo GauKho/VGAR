@@ -98,6 +98,9 @@ class PythonGraphBuilder:
         self.scope_tables: dict[str, symtable.SymbolTable] = {}
         self.scope_parents: dict[str, str] = {}
         self.graph_version = ""
+        self.skipped_overload_count: int = 0
+        self.renamed_duplicate_count: int = 0
+        self.skipped_failed_files: list[dict[str, str]] = []
 
     def build(self, repository_root: str | Path) -> dict[str, Any]:
         started_at = time.perf_counter()
@@ -181,6 +184,24 @@ class PythonGraphBuilder:
             digest.update(path.read_bytes())
         return f"sha256:{digest.hexdigest()}"
 
+    @staticmethod
+    def _is_setter_decorator(decorators: list[str]) -> bool:
+        """Check whether any decorator is a property-setter pattern like @x.setter."""
+        for dec in decorators:
+            stripped = dec.lstrip("@").strip()
+            if "." in stripped and not stripped.startswith("("):
+                return True
+        return False
+
+    @staticmethod
+    def _is_overload_decorator(decorators: list[str]) -> bool:
+        """Return True when any decorator resolves to the typing.overload builtin."""
+        for dec in decorators:
+            name = dec.lstrip("@").strip().rsplit(".", 1)[-1].split("(", 1)[0]
+            if name == "overload":
+                return True
+        return False
+
     def _extract_file(
         self,
         root: Path,
@@ -191,6 +212,8 @@ class PythonGraphBuilder:
         source = file_path.read_bytes()
         tree = self.parser.parse(source)
         root_node = tree.root_node
+        # Snapshot before this file so rollback removes only this file's nodes.
+        nodes_before = len(self.nodes)
 
         file_id = f"vgar:{self.repo_key}:python:file:{relative_path}"
         file_range = self._range(root_node)
@@ -266,15 +289,24 @@ class PythonGraphBuilder:
         )
         self.modules[module_name] = module
         self._index_scopes(source, module)
-        self._walk_scope(
-            root_node,
-            source,
-            module,
-            parent_id=module_id,
-            parent_type="Module",
-            parent_qualified_name=module_name,
-            owner_class_name=None,
-        )
+        try:
+            self._walk_scope(
+                root_node,
+                source,
+                module,
+                parent_id=module_id,
+                parent_type="Module",
+                parent_qualified_name=module_name,
+                owner_class_name=None,
+            )
+        except Exception as exc:  # noqa: BLE001 - isolate file errors
+            # Only roll back nodes added for this specific file, plus edges referencing them.
+            ids_to_remove = {n["id"] for n in self.nodes[nodes_before:] if n.get("path") == relative_path}
+            self.nodes = [n for n in self.nodes if n["id"] not in ids_to_remove]
+            self.nodes_by_id = {k: v for k, v in self.nodes_by_id.items() if k not in ids_to_remove}
+            self.edges = [e for e in self.edges if e["source_id"] not in ids_to_remove and e["target_id"] not in ids_to_remove]
+            self.modules.pop(module_name, None)
+            self.skipped_failed_files.append({"path": relative_path, "error_type": type(exc).__name__, "error": str(exc)})
 
     def _walk_scope(
         self,
@@ -304,6 +336,9 @@ class PythonGraphBuilder:
                     if item.type in {"class_definition", "function_definition"}
                 ]
                 if not definitions:
+                    continue
+                if self._is_overload_decorator(decorators):
+                    self.skipped_overload_count += len(definitions)
                     continue
                 definition = definitions[-1]
 
@@ -495,10 +530,17 @@ class PythonGraphBuilder:
             raise ValueError("function definition has no name")
         name = self._text(name_node, source)
         qualified_name = f"{parent_qualified_name}.{name}"
-        is_test = name.startswith("test_") and parent_type in {"Module", "Class"}
+        is_test = (
+            name.startswith("test_")
+            and parent_type in {"Module", "Class"}
+            and self._is_test_path(module.path)
+        )
         node_type = "Test" if is_test else ("Method" if parent_type == "Class" else "Function")
         id_kind = node_type.lower()
-        node_id = f"vgar:{self.repo_key}:python:{id_kind}:{module.path}:{qualified_name}"
+        suffix = ".setter" if self._is_setter_decorator(decorators) else ""
+        if suffix:
+            self.renamed_duplicate_count += 1
+        node_id = f"vgar:{self.repo_key}:python:{id_kind}:{module.path}:{qualified_name}{suffix}"
 
         if node_type == "Test":
             properties: dict[str, Any] = {
@@ -1255,5 +1297,9 @@ class PythonGraphBuilder:
                 unresolved_calls / len(callsites) if callsites else 0.0
             ),
             "partial_file_count": partial_files,
+            "skipped_overload_count": self.skipped_overload_count,
+            "renamed_duplicate_count": self.renamed_duplicate_count,
+            "failed_file_count": len(self.skipped_failed_files),
+            "failed_files": self.skipped_failed_files,
             "build_time_ms": round((time.perf_counter() - started_at) * 1000, 3),
         }

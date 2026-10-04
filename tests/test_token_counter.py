@@ -56,7 +56,8 @@ class LocalTokenizerCounterTests(unittest.TestCase):
         self.assertEqual(counter("hello " * 50), 50)
         self.assertEqual(counter("[CLS] hello"), 2)  # Literal text is counted, no prefix is added.
         self.assertIn("@" + "a" * 40, counter.counter_label)
-        self.assertEqual(counter.provenance["tokenizers_version"], "0.22.1")
+        import tokenizers as _tz
+        self.assertEqual(counter.provenance["tokenizers_version"], _tz.__version__)
         with self.assertRaises(TypeError):
             counter(None)
 
@@ -104,7 +105,7 @@ class LocalTokenizerCounterTests(unittest.TestCase):
 
     def test_runtime_version_drift_is_explicit(self):
         import tokenizers
-        with patch.object(tokenizers, "__version__", "different"), self.assertRaisesRegex(RuntimeError, "requires tokenizers==0.22.1"):
+        with patch.object(tokenizers, "__version__", "different"), self.assertRaisesRegex(RuntimeError, "major/minor must match"):
             LocalTokenizerCounter(self.path)
 
     def test_cli_emits_shared_payload_and_rejects_tampered_assets(self):

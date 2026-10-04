@@ -1,0 +1,1371 @@
+{
+  "context": {
+    "graph_version": "sha256:1945059a32b9114003f3fbb98b2f0cdb482db216820f87d3f217cfc15ccf53ec",
+    "anchor_ids": [
+      "vgar:GauKho/VGAR:python:class:src/vgar/contracts/context.py:vgar.contracts.context.ContextItem",
+      "vgar:GauKho/VGAR:python:test:tests/test_context_contract.py:tests.test_context_contract.ContextPayloadContractTests.test_windows_drive_and_unc_paths_are_rejected_through_both_imports"
+    ],
+    "items": [
+      {
+        "node_id": "vgar:GauKho/VGAR:python:test:tests/test_context_contract.py:tests.test_context_contract.ContextPayloadContractTests.test_windows_drive_and_unc_paths_are_rejected_through_both_imports",
+        "path": "tests/test_context_contract.py",
+        "symbol": "tests.test_context_contract.ContextPayloadContractTests.test_windows_drive_and_unc_paths_are_rejected_through_both_imports",
+        "range": {
+          "start_line": 46,
+          "start_col": 4,
+          "end_line": 57,
+          "end_col": 53
+        },
+        "snippet": "def test_windows_drive_and_unc_paths_are_rejected_through_both_imports(self) -> None:\n        for model in (ContextPayload, shared_context.ContextPayload):\n            for path in (\n                \"C:/repo/service.py\",\n                \"c:service.py\",\n                \"//server/share/service.py\",\n            ):\n                with self.subTest(model=model, path=path):\n                    invalid = copy.deepcopy(self.payload)\n                    invalid[\"items\"][0][\"path\"] = path\n                    with self.assertRaises(ValidationError):\n                        model.model_validate(invalid)",
+        "relevance_score": 0.7166666666666667,
+        "graph_distance": 0,
+        "graph_rationale": [
+          "TASK_ANCHOR"
+        ],
+        "confidence": 1.0,
+        "token_count": 106
+      },
+      {
+        "node_id": "vgar:GauKho/VGAR:python:class:src/vgar/contracts/context.py:vgar.contracts.context.ContextItem",
+        "path": "src/vgar/contracts/context.py",
+        "symbol": "vgar.contracts.context.ContextItem",
+        "range": {
+          "start_line": 23,
+          "start_col": 0,
+          "end_line": 48,
+          "end_col": 19
+        },
+        "snippet": "class ContextItem(BaseModel):\r\n    model_config = ConfigDict(extra=\"forbid\")\r\n\r\n    node_id: str = Field(min_length=1)\r\n    path: str = Field(min_length=1)\r\n    symbol: str = Field(min_length=1)\r\n    range: SourceRange\r\n    snippet: str\r\n    relevance_score: float = Field(ge=0.0, le=1.0)\r\n    graph_distance: int = Field(ge=0)\r\n    graph_rationale: list[str] = Field(min_length=1)\r\n    confidence: float = Field(ge=0.0, le=1.0)\r\n    token_count: int = Field(ge=0)\r\n\r\n    @model_validator(mode=\"after\")\r\n    def validate_repository_relative_path(self) -> ContextItem:\r\n        normalized = self.path.replace(\"\\\\\", \"/\")\r\n        path = PurePosixPath(normalized)\r\n        if (\n            path.is_absolute()\n            or PureWindowsPath(normalized).drive\n            or \"..\" in path.parts\n            or normalized != self.path\n        ):\n            raise ValueError(\"path must be a normalized repository-relative POSIX path\")\r\n        return self",
+        "relevance_score": 0.61,
+        "graph_distance": 0,
+        "graph_rationale": [
+          "TASK_ANCHOR"
+        ],
+        "confidence": 0.95,
+        "token_count": 232
+      },
+      {
+        "node_id": "vgar:GauKho/VGAR:python:method:src/vgar/graph/retrieval.py:vgar.graph.retrieval.GraphContextRetriever.retrieve",
+        "path": "src/vgar/graph/retrieval.py",
+        "symbol": "vgar.graph.retrieval.GraphContextRetriever.retrieve",
+        "range": {
+          "start_line": 96,
+          "start_col": 4,
+          "end_line": 211,
+          "end_col": 108
+        },
+        "snippet": "def retrieve(\n        self, anchor_ids: list[str], budget_tokens: int, *,\n        issue_text: str = \"\", overlay: TaskOverlay | None = None,\n    ) -> RetrievalResult:\n        if isinstance(budget_tokens, bool) or not isinstance(budget_tokens, int) or budget_tokens <= 0:\n            raise InvalidLimitError(\"budget_tokens must be a positive integer\")\n        if not isinstance(anchor_ids, list) or any(not isinstance(value, str) for value in anchor_ids):\n            raise InvalidQueryError(\"anchor_ids must be a list of node ID strings\")\n        if not isinstance(issue_text, str):\n            raise InvalidQueryError(\"issue_text must be a string\")\n        anchors = sorted(set(anchor_ids))\n        for node_id in anchors:\n            if node_id not in self.nodes:\n                raise NodeNotFoundError(node_id)\n            if not self._eligible(self.nodes[node_id]):\n                raise InvalidQueryError(\"anchor must be a source-backed file/module/symbol/test\")\n        anchor_scores: dict[str, float] = {}\n        failing_tests: list[str] = []\n        if overlay is not None:\n            if overlay.graph_version != self.document[\"graph_version\"]:\n                raise InvalidQueryError(\"task overlay belongs to a different graph snapshot\")\n            validate_graph_document({\n                **self.document, \"nodes\": self.document[\"nodes\"] + overlay.nodes,\n                \"edges\": self.document[\"edges\"] + overlay.edges,\n            })\n            anchor_scores = {anchor.node_id: anchor.score for anchor in overlay.grounding.anchors}\n            failing_tests = sorted({edge[\"source_id\"] for edge in overlay.edges\n                                    if edge[\"type\"] == \"REPRODUCES\"})\n            if not issue_text:\n                issue_text = overlay.nodes[0][\"properties\"].get(\"issue_text\", \"\")\n        available = list(_WEIGHTS)\n        unavailable = [\"architecture_dependencies\"]\n        if self.change_counts is None:\n            available.remove(\"recent_change_frequency\")\n            unavailable.append(\"recent_change_frequency\")\n        if not failing_tests:\n            available.remove(\"failing_test_proximity\")\n            unavailable.append(\"failing_test_proximity\")\n        weight_sum = sum(self.config.weights[name] for name in available)\n        if weight_sum <= 0:\n            raise InvalidQueryError(\"active ranking features must have positive total weight\")\n        states, limited = self._walk(anchors, anchor_scores)\n        test_states, test_limited = self._walk(failing_tests, {})\n        task_words = _words(issue_text)\n        history_max = max(self.change_counts.values(), default=0) if self.change_counts is not None else 0\n        candidates = []\n        for node_id, (distance, confidence, rationale) in states.items():\n            node = self.nodes[node_id]\n            words = _words(\" \".join((node[\"name\"], node[\"qualified_name\"], node[\"path\"],\n                                    node[\"properties\"].get(\"signature\", \"\"))))\n            public = node[\"properties\"].get(\"visibility\") == \"public\"\n            fanin = len(self.callers[node_id])\n            features = {\n                \"task_similarity\": len(words & task_words) / max(1, len(words | task_words)),\n                \"graph_distance\": 1 / (1 + distance), \"edge_confidence\": confidence,\n                \"failing_test_proximity\": (1 / (1 + test_states[node_id][0])\n                                           if node_id in test_states else 0.0) if failing_tests else None,\n                \"public_api_risk\": (0.5 + 0.5 * fanin / (1 + fanin)) if public else 0.0,\n                \"recent_change_frequency\": (self.change_counts.get(node_id,\n                    self.change_counts.get(node[\"path\"], 0)) / history_max if history_max else 0.0)\n                    if self.change_counts is not None else None,\n            }\n            score = sum(self.config.weights[name] * features[name] for name in available) / weight_sum\n            candidates.append({\"node_id\": node_id, \"path\": node[\"path\"], \"symbol\": node[\"qualified_name\"],\n                               \"graph_distance\": distance, \"confidence\": confidence,\n                               \"graph_rationale\": list(rationale), \"features\": features,\n                               \"relevance_score\": score})\n        candidates.sort(key=lambda item: (-item[\"relevance_score\"], item[\"graph_distance\"],\n                                          item[\"path\"], item[\"symbol\"], item[\"node_id\"]))\n        items: list[ContextItem] = []\n        omissions = []\n        total = 0\n        truncated = limited\n        if candidates:\n            sources = self._verify_snapshot()\n            selected: list[tuple[str, int, int]] = []\n            for candidate in candidates:\n                node = self.nodes[candidate[\"node_id\"]]\n                source_range = node[\"range\"]\n                start, end = source_range[\"start_byte\"], source_range[\"end_byte\"]\n                if node[\"path\"] not in sources:\n                    raise GraphError(\"Graph node path has no source File in this snapshot\")\n                snippet = self._snippet(node, sources[node[\"path\"]])\n                if any(path == node[\"path\"] and start < other_end and other_start < end\n                       for path, other_start, other_end in selected):\n                    omissions.append({\"node_id\": node[\"id\"], \"reason\": \"overlapping_selected_range\"})\n                    continue\n                tokens = self.count_tokens(snippet)\n                if isinstance(tokens, bool) or not isinstance(tokens, int) or tokens < 0:\n                    raise InvalidQueryError(\"count_tokens must return a nonnegative integer\")\n                candidate[\"token_count\"] = tokens\n                if total + tokens > budget_tokens:\n                    truncated = True\n                    omissions.append({\"node_id\": node[\"id\"], \"reason\": \"token_budget\"})\n                    continue\n                items.append(ContextItem(\n                    node_id=node[\"id\"], path=node[\"path\"], symbol=node[\"qualified_name\"],\n                    range=SourceRange(**{key: source_range[key] for key in\n                                        (\"start_line\", \"start_col\", \"end_line\", \"end_col\")}),\n                    snippet=snippet, relevance_score=candidate[\"relevance_score\"],\n                    graph_distance=candidate[\"graph_distance\"], graph_rationale=candidate[\"graph_rationale\"],\n                    confidence=candidate[\"confidence\"], token_count=tokens,\n                ))\n                selected.append((node[\"path\"], start, end))\n                total += tokens\n            # Detect edits/additions/deletions while token counting/packing was running.\n            self._verify_snapshot()\n        result = ContextPayload(graph_version=self.document[\"graph_version\"], anchor_ids=anchors,\n                                items=items, total_token_count=total,\n                                token_budget=budget_tokens, truncated=truncated)\n        diagnostics = asdict(self.config)\n        diagnostics.update({\"profile\": \"semantic-context-v1\", \"active_features\": available,\n                            \"normalized_weights\": {name: self.config.weights[name] / weight_sum for name in available},\n                            \"failing_test_traversal_limited\": test_limited})\n        return RetrievalResult(result, overlay.overlay_id if overlay else None, self.counter_label,\n                               diagnostics, candidates, omissions, limited, unavailable, self.history_label)",
+        "relevance_score": 0.4425862068965517,
+        "graph_distance": 1,
+        "graph_rationale": [
+          "TASK_ANCHOR",
+          "CALLERS:vgar:GauKho/VGAR:python:class:src/vgar/contracts/context.py:vgar.contracts.context.ContextItem->vgar:GauKho/VGAR:python:method:src/vgar/graph/retrieval.py:vgar.graph.retrieval.GraphContextRetriever.retrieve"
+        ],
+        "confidence": 0.95,
+        "token_count": 1472
+      },
+      {
+        "node_id": "vgar:GauKho/VGAR:python:method:tests/test_context_contract.py:tests.test_context_contract.ContextPayloadContractTests.setUp",
+        "path": "tests/test_context_contract.py",
+        "symbol": "tests.test_context_contract.ContextPayloadContractTests.setUp",
+        "range": {
+          "start_line": 19,
+          "start_col": 4,
+          "end_line": 20,
+          "end_col": 70
+        },
+        "snippet": "def setUp(self) -> None:\r\n        self.payload = json.loads(FIXTURE.read_text(encoding=\"utf-8\"))",
+        "relevance_score": 0.43771929824561406,
+        "graph_distance": 2,
+        "graph_rationale": [
+          "TASK_ANCHOR",
+          "CONTAINED_BY:vgar:GauKho/VGAR:python:test:tests/test_context_contract.py:tests.test_context_contract.ContextPayloadContractTests.test_windows_drive_and_unc_paths_are_rejected_through_both_imports->vgar:GauKho/VGAR:python:class:tests/test_context_contract.py:tests.test_context_contract.ContextPayloadContractTests",
+          "CONTAINS:vgar:GauKho/VGAR:python:class:tests/test_context_contract.py:tests.test_context_contract.ContextPayloadContractTests->vgar:GauKho/VGAR:python:method:tests/test_context_contract.py:tests.test_context_contract.ContextPayloadContractTests.setUp"
+        ],
+        "confidence": 1.0,
+        "token_count": 24
+      },
+      {
+        "node_id": "vgar:GauKho/VGAR:python:function:src/vgar/contracts/schema.py:vgar.contracts.schema.validate_graph_document",
+        "path": "src/vgar/contracts/schema.py",
+        "symbol": "vgar.contracts.schema.validate_graph_document",
+        "range": {
+          "start_line": 111,
+          "start_col": 0,
+          "end_line": 264,
+          "end_col": 42
+        },
+        "snippet": "def validate_graph_document(document: Mapping[str, Any]) -> None:\r\n    \"\"\"Validate the portable JSON graph document used by M1 and M3.\"\"\"\r\n\r\n    errors: list[str] = []\r\n\r\n    graph_version = document.get(\"graph_version\")\r\n    if not isinstance(graph_version, str) or not graph_version:\r\n        errors.append(\"graph_version must be a non-empty string\")\r\n\r\n    nodes = document.get(\"nodes\")\r\n    edges = document.get(\"edges\")\r\n\r\n    if not isinstance(nodes, list):\r\n        errors.append(\"nodes must be a list\")\r\n        nodes = []\r\n    if not isinstance(edges, list):\r\n        errors.append(\"edges must be a list\")\r\n        edges = []\r\n\r\n    nodes_by_id: dict[str, Mapping[str, Any]] = {}\r\n    repository_count = 0\r\n\r\n    for index, node in enumerate(nodes):\r\n        prefix = f\"nodes[{index}]\"\r\n        if not isinstance(node, Mapping):\r\n            errors.append(f\"{prefix} must be an object\")\r\n            continue\r\n\r\n        node_id = node.get(\"id\")\r\n        node_type = node.get(\"type\")\r\n\r\n        if not isinstance(node_id, str) or not node_id:\r\n            errors.append(f\"{prefix}.id must be a non-empty string\")\r\n        elif node_id in nodes_by_id:\r\n            errors.append(f\"duplicate node id: {node_id}\")\r\n        else:\r\n            nodes_by_id[node_id] = node\r\n\r\n        if node_type not in NODE_TYPES:\r\n            errors.append(f\"{prefix}.type is unsupported: {node_type!r}\")\r\n        if node_type == \"Repository\":\r\n            repository_count += 1\r\n\r\n        for field in (\"repo_key\", \"name\", \"qualified_name\"):\r\n            if not isinstance(node.get(field), str) or not node[field]:\r\n                errors.append(f\"{prefix}.{field} must be a non-empty string\")\r\n\r\n        if node.get(\"graph_version\") != graph_version:\r\n            errors.append(f\"{prefix}.graph_version must match document graph_version\")\r\n\r\n        if not isinstance(node.get(\"properties\"), Mapping):\r\n            errors.append(f\"{prefix}.properties must be an object\")\r\n\r\n        if node_type in SOURCE_BACKED_NODE_TYPES:\r\n            if not isinstance(node.get(\"path\"), str) or not node[\"path\"]:\r\n                errors.append(f\"{prefix}.path is required for {node_type}\")\r\n            if not _valid_range(node.get(\"range\")):\r\n                errors.append(f\"{prefix}.range is invalid for {node_type}\")\r\n        elif node_type == \"Module\":\r\n            properties = node.get(\"properties\") or {}\r\n            if not properties.get(\"is_external\"):\r\n                if not isinstance(node.get(\"path\"), str) or not node[\"path\"]:\r\n                    errors.append(f\"{prefix}.path is required for internal Module\")\r\n                if not _valid_range(node.get(\"range\")):\r\n                    errors.append(f\"{prefix}.range is invalid for internal Module\")\r\n\r\n    if repository_count != 1:\r\n        errors.append(f\"exactly one Repository node is required, got {repository_count}\")\r\n\r\n    edge_ids: set[str] = set()\r\n    contains_adjacency: dict[str, list[str]] = defaultdict(list)\r\n    call_counts: dict[str, int] = defaultdict(int)\r\n\r\n    for index, edge in enumerate(edges):\r\n        prefix = f\"edges[{index}]\"\r\n        if not isinstance(edge, Mapping):\r\n            errors.append(f\"{prefix} must be an object\")\r\n            continue\r\n\r\n        edge_id = edge.get(\"id\")\r\n        edge_type = edge.get(\"type\")\r\n        source_id = edge.get(\"source_id\")\r\n        target_id = edge.get(\"target_id\")\r\n\r\n        if not isinstance(edge_id, str) or not edge_id:\r\n            errors.append(f\"{prefix}.id must be a non-empty string\")\r\n        elif edge_id in edge_ids:\r\n            errors.append(f\"duplicate edge id: {edge_id}\")\r\n        else:\r\n            edge_ids.add(edge_id)\r\n\r\n        if edge_type not in EDGE_ENDPOINTS:\r\n            errors.append(f\"{prefix}.type is unsupported: {edge_type!r}\")\r\n\r\n        source = nodes_by_id.get(source_id)\r\n        target = nodes_by_id.get(target_id)\r\n        if source is None:\r\n            errors.append(f\"{prefix}.source_id does not exist: {source_id!r}\")\r\n        if target is None:\r\n            errors.append(f\"{prefix}.target_id does not exist: {target_id!r}\")\r\n\r\n        if source_id == target_id:\r\n            errors.append(f\"{prefix} must not be a self-loop\")\r\n\r\n        if source is not None and target is not None and edge_type in EDGE_ENDPOINTS:\r\n            endpoint = (source.get(\"type\"), target.get(\"type\"))\r\n            if endpoint not in EDGE_ENDPOINTS[edge_type]:\r\n                errors.append(\r\n                    f\"{prefix} has invalid endpoints for {edge_type}: \"\r\n                    f\"{endpoint[0]} -> {endpoint[1]}\"\r\n                )\r\n\r\n        confidence = edge.get(\"confidence\")\r\n        if (\r\n            isinstance(confidence, bool)\r\n            or not isinstance(confidence, (int, float))\r\n            or not 0.0 <= confidence <= 1.0\r\n        ):\r\n            errors.append(f\"{prefix}.confidence must be within [0, 1]\")\r\n\r\n        if edge.get(\"graph_version\") != graph_version:\r\n            errors.append(f\"{prefix}.graph_version must match document graph_version\")\r\n\r\n        provenance = edge.get(\"provenance\")\r\n        if not isinstance(provenance, Mapping):\r\n            errors.append(f\"{prefix}.provenance must be an object\")\r\n        else:\r\n            for field in (\"source_tool\", \"rule_id\", \"source_revision\"):\r\n                if not isinstance(provenance.get(field), str) or not provenance[field]:\r\n                    errors.append(f\"{prefix}.provenance.{field} is required\")\r\n\r\n        if not isinstance(edge.get(\"properties\"), Mapping):\r\n            errors.append(f\"{prefix}.properties must be an object\")\r\n\r\n        if edge_type == \"CONTAINS\" and source_id and target_id:\r\n            contains_adjacency[source_id].append(target_id)\r\n        if edge_type == \"CALLS\" and source_id:\r\n            call_counts[source_id] += 1\r\n\r\n    errors.extend(_containment_cycle_errors(contains_adjacency))\r\n\r\n    for node_id, node in nodes_by_id.items():\r\n        if node.get(\"type\") != \"CallSite\":\r\n            continue\r\n        properties = node.get(\"properties\") or {}\r\n        candidate_count = properties.get(\"candidate_count\")\r\n        if candidate_count != call_counts[node_id]:\r\n            errors.append(\r\n                f\"CallSite {node_id!r} candidate_count={candidate_count!r} \"\r\n                f\"but has {call_counts[node_id]} outgoing CALLS edges\"\r\n            )\r\n\r\n    if errors:\r\n        raise GraphValidationError(errors)",
+        "relevance_score": 0.42853383458646616,
+        "graph_distance": 2,
+        "graph_rationale": [
+          "TASK_ANCHOR",
+          "CALLERS:vgar:GauKho/VGAR:python:class:src/vgar/contracts/context.py:vgar.contracts.context.ContextItem->vgar:GauKho/VGAR:python:method:src/vgar/graph/retrieval.py:vgar.graph.retrieval.GraphContextRetriever.retrieve",
+          "CALLS:vgar:GauKho/VGAR:python:method:src/vgar/graph/retrieval.py:vgar.graph.retrieval.GraphContextRetriever.retrieve->vgar:GauKho/VGAR:python:function:src/vgar/contracts/schema.py:vgar.contracts.schema.validate_graph_document"
+        ],
+        "confidence": 0.95,
+        "token_count": 1358
+      },
+      {
+        "node_id": "vgar:GauKho/VGAR:python:test:tests/test_context_contract.py:tests.test_context_contract.ContextPayloadContractTests.test_path_must_be_repository_relative_posix",
+        "path": "tests/test_context_contract.py",
+        "symbol": "tests.test_context_contract.ContextPayloadContractTests.test_path_must_be_repository_relative_posix",
+        "range": {
+          "start_line": 38,
+          "start_col": 4,
+          "end_line": 44,
+          "end_col": 58
+        },
+        "snippet": "def test_path_must_be_repository_relative_posix(self) -> None:\n        for path in (\"C:\\\\repo\\\\service.py\", \"/repo/service.py\", \"../service.py\"):\n            with self.subTest(path=path):\n                invalid = copy.deepcopy(self.payload)\n                invalid[\"items\"][0][\"path\"] = path\n                with self.assertRaises(ValidationError):\n                    ContextPayload.model_validate(invalid)",
+        "relevance_score": 0.39824561403508774,
+        "graph_distance": 2,
+        "graph_rationale": [
+          "TASK_ANCHOR",
+          "CONTAINED_BY:vgar:GauKho/VGAR:python:test:tests/test_context_contract.py:tests.test_context_contract.ContextPayloadContractTests.test_windows_drive_and_unc_paths_are_rejected_through_both_imports->vgar:GauKho/VGAR:python:class:tests/test_context_contract.py:tests.test_context_contract.ContextPayloadContractTests",
+          "CONTAINS:vgar:GauKho/VGAR:python:class:tests/test_context_contract.py:tests.test_context_contract.ContextPayloadContractTests->vgar:GauKho/VGAR:python:test:tests/test_context_contract.py:tests.test_context_contract.ContextPayloadContractTests.test_path_must_be_repository_relative_posix"
+        ],
+        "confidence": 1.0,
+        "token_count": 79
+      },
+      {
+        "node_id": "vgar:GauKho/VGAR:python:test:tests/test_context_contract.py:tests.test_context_contract.ContextPayloadContractTests.test_fixture_is_valid",
+        "path": "tests/test_context_contract.py",
+        "symbol": "tests.test_context_contract.ContextPayloadContractTests.test_fixture_is_valid",
+        "range": {
+          "start_line": 22,
+          "start_col": 4,
+          "end_line": 26,
+          "end_col": 70
+        },
+        "snippet": "def test_fixture_is_valid(self) -> None:\r\n        context = ContextPayload.model_validate(self.payload)\r\n\r\n        self.assertEqual(context.total_token_count, 48)\r\n        self.assertEqual(context.items[0].path, \"src/auth/service.py\")",
+        "relevance_score": 0.39019607843137255,
+        "graph_distance": 2,
+        "graph_rationale": [
+          "TASK_ANCHOR",
+          "CONTAINED_BY:vgar:GauKho/VGAR:python:test:tests/test_context_contract.py:tests.test_context_contract.ContextPayloadContractTests.test_windows_drive_and_unc_paths_are_rejected_through_both_imports->vgar:GauKho/VGAR:python:class:tests/test_context_contract.py:tests.test_context_contract.ContextPayloadContractTests",
+          "CONTAINS:vgar:GauKho/VGAR:python:class:tests/test_context_contract.py:tests.test_context_contract.ContextPayloadContractTests->vgar:GauKho/VGAR:python:test:tests/test_context_contract.py:tests.test_context_contract.ContextPayloadContractTests.test_fixture_is_valid"
+        ],
+        "confidence": 1.0,
+        "token_count": 48
+      },
+      {
+        "node_id": "vgar:GauKho/VGAR:python:test:tests/test_context_contract.py:tests.test_context_contract.ContextPayloadContractTests.test_payload_must_fit_token_budget",
+        "path": "tests/test_context_contract.py",
+        "symbol": "tests.test_context_contract.ContextPayloadContractTests.test_payload_must_fit_token_budget",
+        "range": {
+          "start_line": 66,
+          "start_col": 4,
+          "end_line": 71,
+          "end_col": 50
+        },
+        "snippet": "def test_payload_must_fit_token_budget(self) -> None:\r\n        invalid = copy.deepcopy(self.payload)\r\n        invalid[\"token_budget\"] = 40\r\n\r\n        with self.assertRaises(ValidationError):\r\n            ContextPayload.model_validate(invalid)",
+        "relevance_score": 0.3888888888888889,
+        "graph_distance": 2,
+        "graph_rationale": [
+          "TASK_ANCHOR",
+          "CONTAINED_BY:vgar:GauKho/VGAR:python:test:tests/test_context_contract.py:tests.test_context_contract.ContextPayloadContractTests.test_windows_drive_and_unc_paths_are_rejected_through_both_imports->vgar:GauKho/VGAR:python:class:tests/test_context_contract.py:tests.test_context_contract.ContextPayloadContractTests",
+          "CONTAINS:vgar:GauKho/VGAR:python:class:tests/test_context_contract.py:tests.test_context_contract.ContextPayloadContractTests->vgar:GauKho/VGAR:python:test:tests/test_context_contract.py:tests.test_context_contract.ContextPayloadContractTests.test_payload_must_fit_token_budget"
+        ],
+        "confidence": 1.0,
+        "token_count": 47
+      },
+      {
+        "node_id": "vgar:GauKho/VGAR:python:test:tests/test_context_contract.py:tests.test_context_contract.ContextPayloadContractTests.test_total_token_count_must_match_items",
+        "path": "tests/test_context_contract.py",
+        "symbol": "tests.test_context_contract.ContextPayloadContractTests.test_total_token_count_must_match_items",
+        "range": {
+          "start_line": 59,
+          "start_col": 4,
+          "end_line": 64,
+          "end_col": 50
+        },
+        "snippet": "def test_total_token_count_must_match_items(self) -> None:\r\n        invalid = copy.deepcopy(self.payload)\r\n        invalid[\"total_token_count\"] = 47\r\n\r\n        with self.assertRaises(ValidationError):\r\n            ContextPayload.model_validate(invalid)",
+        "relevance_score": 0.38666666666666666,
+        "graph_distance": 2,
+        "graph_rationale": [
+          "TASK_ANCHOR",
+          "CONTAINED_BY:vgar:GauKho/VGAR:python:test:tests/test_context_contract.py:tests.test_context_contract.ContextPayloadContractTests.test_windows_drive_and_unc_paths_are_rejected_through_both_imports->vgar:GauKho/VGAR:python:class:tests/test_context_contract.py:tests.test_context_contract.ContextPayloadContractTests",
+          "CONTAINS:vgar:GauKho/VGAR:python:class:tests/test_context_contract.py:tests.test_context_contract.ContextPayloadContractTests->vgar:GauKho/VGAR:python:test:tests/test_context_contract.py:tests.test_context_contract.ContextPayloadContractTests.test_total_token_count_must_match_items"
+        ],
+        "confidence": 1.0,
+        "token_count": 49
+      },
+      {
+        "node_id": "vgar:GauKho/VGAR:python:test:tests/test_context_contract.py:tests.test_context_contract.ContextPayloadContractTests.test_fixture_round_trip_through_shared_import_is_unchanged",
+        "path": "tests/test_context_contract.py",
+        "symbol": "tests.test_context_contract.ContextPayloadContractTests.test_fixture_round_trip_through_shared_import_is_unchanged",
+        "range": {
+          "start_line": 33,
+          "start_col": 4,
+          "end_line": 36,
+          "end_col": 70
+        },
+        "snippet": "def test_fixture_round_trip_through_shared_import_is_unchanged(self) -> None:\n        context = ContextPayload.model_validate(self.payload)\n        shared = shared_context.ContextPayload.model_validate_json(context.model_dump_json())\n        self.assertEqual(shared.model_dump(mode=\"json\"), self.payload)",
+        "relevance_score": 0.38484848484848483,
+        "graph_distance": 2,
+        "graph_rationale": [
+          "TASK_ANCHOR",
+          "CONTAINED_BY:vgar:GauKho/VGAR:python:test:tests/test_context_contract.py:tests.test_context_contract.ContextPayloadContractTests.test_windows_drive_and_unc_paths_are_rejected_through_both_imports->vgar:GauKho/VGAR:python:class:tests/test_context_contract.py:tests.test_context_contract.ContextPayloadContractTests",
+          "CONTAINS:vgar:GauKho/VGAR:python:class:tests/test_context_contract.py:tests.test_context_contract.ContextPayloadContractTests->vgar:GauKho/VGAR:python:test:tests/test_context_contract.py:tests.test_context_contract.ContextPayloadContractTests.test_fixture_round_trip_through_shared_import_is_unchanged"
+        ],
+        "confidence": 1.0,
+        "token_count": 55
+      },
+      {
+        "node_id": "vgar:GauKho/VGAR:python:test:tests/test_context_contract.py:tests.test_context_contract.ContextPayloadContractTests.test_m1_and_consumers_use_the_same_model_classes",
+        "path": "tests/test_context_contract.py",
+        "symbol": "tests.test_context_contract.ContextPayloadContractTests.test_m1_and_consumers_use_the_same_model_classes",
+        "range": {
+          "start_line": 28,
+          "start_col": 4,
+          "end_line": 31,
+          "end_col": 62
+        },
+        "snippet": "def test_m1_and_consumers_use_the_same_model_classes(self) -> None:\n        self.assertIs(ContextPayload, shared_context.ContextPayload)\n        self.assertIs(ContextItem, shared_context.ContextItem)\n        self.assertIs(SourceRange, shared_context.SourceRange)",
+        "relevance_score": 0.38484848484848483,
+        "graph_distance": 2,
+        "graph_rationale": [
+          "TASK_ANCHOR",
+          "CONTAINED_BY:vgar:GauKho/VGAR:python:test:tests/test_context_contract.py:tests.test_context_contract.ContextPayloadContractTests.test_windows_drive_and_unc_paths_are_rejected_through_both_imports->vgar:GauKho/VGAR:python:class:tests/test_context_contract.py:tests.test_context_contract.ContextPayloadContractTests",
+          "CONTAINS:vgar:GauKho/VGAR:python:class:tests/test_context_contract.py:tests.test_context_contract.ContextPayloadContractTests->vgar:GauKho/VGAR:python:test:tests/test_context_contract.py:tests.test_context_contract.ContextPayloadContractTests.test_m1_and_consumers_use_the_same_model_classes"
+        ],
+        "confidence": 1.0,
+        "token_count": 50
+      },
+      {
+        "node_id": "vgar:GauKho/VGAR:python:class:src/vgar/contracts/context.py:vgar.contracts.context.ContextPayload",
+        "path": "src/vgar/contracts/context.py",
+        "symbol": "vgar.contracts.context.ContextPayload",
+        "range": {
+          "start_line": 51,
+          "start_col": 0,
+          "end_line": 72,
+          "end_col": 19
+        },
+        "snippet": "class ContextPayload(BaseModel):\r\n    \"\"\"Validated context bundle passed from retrieval to prompt assembly.\"\"\"\r\n\r\n    model_config = ConfigDict(extra=\"forbid\")\r\n\r\n    graph_version: str = Field(min_length=1)\r\n    anchor_ids: list[str]\r\n    items: list[ContextItem]\r\n    total_token_count: int = Field(ge=0)\r\n    token_budget: int = Field(gt=0)\r\n    truncated: bool = False\r\n\r\n    @model_validator(mode=\"after\")\r\n    def validate_budget_accounting(self) -> ContextPayload:\r\n        calculated = sum(item.token_count for item in self.items)\r\n        if self.total_token_count != calculated:\r\n            raise ValueError(\r\n                \"total_token_count must equal the sum of item token_count values\"\r\n            )\r\n        if self.total_token_count > self.token_budget:\r\n            raise ValueError(\"total_token_count must not exceed token_budget\")\r\n        return self",
+        "relevance_score": 0.3809090909090909,
+        "graph_distance": 2,
+        "graph_rationale": [
+          "TASK_ANCHOR",
+          "CALLERS:vgar:GauKho/VGAR:python:class:src/vgar/contracts/context.py:vgar.contracts.context.ContextItem->vgar:GauKho/VGAR:python:method:src/vgar/graph/retrieval.py:vgar.graph.retrieval.GraphContextRetriever.retrieve",
+          "CALLS:vgar:GauKho/VGAR:python:method:src/vgar/graph/retrieval.py:vgar.graph.retrieval.GraphContextRetriever.retrieve->vgar:GauKho/VGAR:python:class:src/vgar/contracts/context.py:vgar.contracts.context.ContextPayload"
+        ],
+        "confidence": 0.95,
+        "token_count": 179
+      },
+      {
+        "node_id": "vgar:GauKho/VGAR:python:class:src/vgar/contracts/context.py:vgar.contracts.context.SourceRange",
+        "path": "src/vgar/contracts/context.py",
+        "symbol": "vgar.contracts.context.SourceRange",
+        "range": {
+          "start_line": 8,
+          "start_col": 0,
+          "end_line": 20,
+          "end_col": 19
+        },
+        "snippet": "class SourceRange(BaseModel):\r\n    model_config = ConfigDict(extra=\"forbid\")\r\n\r\n    start_line: int = Field(ge=1)\r\n    start_col: int = Field(ge=0)\r\n    end_line: int = Field(ge=1)\r\n    end_col: int = Field(ge=0)\r\n\r\n    @model_validator(mode=\"after\")\r\n    def validate_order(self) -> SourceRange:\r\n        if (self.end_line, self.end_col) < (self.start_line, self.start_col):\r\n            raise ValueError(\"range end must not precede range start\")\r\n        return self",
+        "relevance_score": 0.37333333333333335,
+        "graph_distance": 2,
+        "graph_rationale": [
+          "TASK_ANCHOR",
+          "CALLERS:vgar:GauKho/VGAR:python:class:src/vgar/contracts/context.py:vgar.contracts.context.ContextItem->vgar:GauKho/VGAR:python:method:src/vgar/graph/retrieval.py:vgar.graph.retrieval.GraphContextRetriever.retrieve",
+          "CALLS:vgar:GauKho/VGAR:python:method:src/vgar/graph/retrieval.py:vgar.graph.retrieval.GraphContextRetriever.retrieve->vgar:GauKho/VGAR:python:class:src/vgar/contracts/context.py:vgar.contracts.context.SourceRange"
+        ],
+        "confidence": 0.95,
+        "token_count": 120
+      },
+      {
+        "node_id": "vgar:GauKho/VGAR:python:module:src/vgar/graph/context.py:vgar.graph.context",
+        "path": "src/vgar/graph/context.py",
+        "symbol": "vgar.graph.context",
+        "range": {
+          "start_line": 1,
+          "start_col": 0,
+          "end_line": 11,
+          "end_col": 0
+        },
+        "snippet": "\"\"\"M1 import compatibility for the shared context contract.\n\nDefine context models in vgar.contracts.context so producer and consumers use\nthe same classes and validators. Existing vgar.graph.context imports remain valid.\n\"\"\"\n\nfrom vgar.contracts.context import ContextItem, ContextPayload, SourceRange\n\n\n__all__ = [\"SourceRange\", \"ContextItem\", \"ContextPayload\"]\n",
+        "relevance_score": 0.36272727272727273,
+        "graph_distance": 2,
+        "graph_rationale": [
+          "TASK_ANCHOR",
+          "CONTAINED_BY:vgar:GauKho/VGAR:python:class:src/vgar/contracts/context.py:vgar.contracts.context.ContextItem->vgar:GauKho/VGAR:python:module:src/vgar/contracts/context.py:vgar.contracts.context",
+          "IMPORTED_BY:vgar:GauKho/VGAR:python:module:src/vgar/contracts/context.py:vgar.contracts.context->vgar:GauKho/VGAR:python:module:src/vgar/graph/context.py:vgar.graph.context"
+        ],
+        "confidence": 0.95,
+        "token_count": 74
+      },
+      {
+        "node_id": "vgar:GauKho/VGAR:python:class:src/vgar/contracts/error.py:vgar.contracts.error.GraphError",
+        "path": "src/vgar/contracts/error.py",
+        "symbol": "vgar.contracts.error.GraphError",
+        "range": {
+          "start_line": 6,
+          "start_col": 0,
+          "end_line": 20,
+          "end_col": 22
+        },
+        "snippet": "class GraphError(Exception):\r\n    \"\"\"Base error with a stable machine-readable code for the MCP boundary.\"\"\"\r\n\r\n    code = \"GRAPH_ERROR\"\r\n\r\n    def __init__(self, message: str, *, details: dict[str, Any] | None = None) -> None:\r\n        self.message = message\r\n        self.details = details or {}\r\n        super().__init__(message)\r\n\r\n    def to_dict(self) -> dict[str, Any]:\r\n        payload: dict[str, Any] = {\"code\": self.code, \"message\": self.message}\r\n        if self.details:\r\n            payload[\"details\"] = self.details\r\n        return payload",
+        "relevance_score": 0.3566666666666667,
+        "graph_distance": 2,
+        "graph_rationale": [
+          "TASK_ANCHOR",
+          "CALLERS:vgar:GauKho/VGAR:python:class:src/vgar/contracts/context.py:vgar.contracts.context.ContextItem->vgar:GauKho/VGAR:python:method:src/vgar/graph/retrieval.py:vgar.graph.retrieval.GraphContextRetriever.retrieve",
+          "CALLS:vgar:GauKho/VGAR:python:method:src/vgar/graph/retrieval.py:vgar.graph.retrieval.GraphContextRetriever.retrieve->vgar:GauKho/VGAR:python:class:src/vgar/contracts/error.py:vgar.contracts.error.GraphError"
+        ],
+        "confidence": 0.95,
+        "token_count": 125
+      },
+      {
+        "node_id": "vgar:GauKho/VGAR:python:class:src/vgar/contracts/error.py:vgar.contracts.error.InvalidLimitError",
+        "path": "src/vgar/contracts/error.py",
+        "symbol": "vgar.contracts.error.InvalidLimitError",
+        "range": {
+          "start_line": 27,
+          "start_col": 0,
+          "end_line": 28,
+          "end_col": 26
+        },
+        "snippet": "class InvalidLimitError(GraphError, ValueError):\r\n    code = \"INVALID_LIMIT\"",
+        "relevance_score": 0.3515384615384615,
+        "graph_distance": 2,
+        "graph_rationale": [
+          "TASK_ANCHOR",
+          "CALLERS:vgar:GauKho/VGAR:python:class:src/vgar/contracts/context.py:vgar.contracts.context.ContextItem->vgar:GauKho/VGAR:python:method:src/vgar/graph/retrieval.py:vgar.graph.retrieval.GraphContextRetriever.retrieve",
+          "CALLS:vgar:GauKho/VGAR:python:method:src/vgar/graph/retrieval.py:vgar.graph.retrieval.GraphContextRetriever.retrieve->vgar:GauKho/VGAR:python:class:src/vgar/contracts/error.py:vgar.contracts.error.InvalidLimitError"
+        ],
+        "confidence": 0.95,
+        "token_count": 16
+      },
+      {
+        "node_id": "vgar:GauKho/VGAR:python:class:src/vgar/contracts/error.py:vgar.contracts.error.InvalidQueryError",
+        "path": "src/vgar/contracts/error.py",
+        "symbol": "vgar.contracts.error.InvalidQueryError",
+        "range": {
+          "start_line": 23,
+          "start_col": 0,
+          "end_line": 24,
+          "end_col": 26
+        },
+        "snippet": "class InvalidQueryError(GraphError, ValueError):\r\n    code = \"INVALID_QUERY\"",
+        "relevance_score": 0.3515384615384615,
+        "graph_distance": 2,
+        "graph_rationale": [
+          "TASK_ANCHOR",
+          "CALLERS:vgar:GauKho/VGAR:python:class:src/vgar/contracts/context.py:vgar.contracts.context.ContextItem->vgar:GauKho/VGAR:python:method:src/vgar/graph/retrieval.py:vgar.graph.retrieval.GraphContextRetriever.retrieve",
+          "CALLS:vgar:GauKho/VGAR:python:method:src/vgar/graph/retrieval.py:vgar.graph.retrieval.GraphContextRetriever.retrieve->vgar:GauKho/VGAR:python:class:src/vgar/contracts/error.py:vgar.contracts.error.InvalidQueryError"
+        ],
+        "confidence": 0.95,
+        "token_count": 16
+      },
+      {
+        "node_id": "vgar:GauKho/VGAR:python:class:src/vgar/contracts/error.py:vgar.contracts.error.NodeNotFoundError",
+        "path": "src/vgar/contracts/error.py",
+        "symbol": "vgar.contracts.error.NodeNotFoundError",
+        "range": {
+          "start_line": 31,
+          "start_col": 0,
+          "end_line": 38,
+          "end_col": 9
+        },
+        "snippet": "class NodeNotFoundError(GraphError, KeyError):\r\n    code = \"NODE_NOT_FOUND\"\r\n\r\n    def __init__(self, node_id: str, *, entity: str = \"node\") -> None:\r\n        super().__init__(\r\n            f\"Unknown {entity}: {node_id}\",\r\n            details={\"entity\": entity, \"node_id\": node_id},\r\n        )",
+        "relevance_score": 0.34714285714285714,
+        "graph_distance": 2,
+        "graph_rationale": [
+          "TASK_ANCHOR",
+          "CALLERS:vgar:GauKho/VGAR:python:class:src/vgar/contracts/context.py:vgar.contracts.context.ContextItem->vgar:GauKho/VGAR:python:method:src/vgar/graph/retrieval.py:vgar.graph.retrieval.GraphContextRetriever.retrieve",
+          "CALLS:vgar:GauKho/VGAR:python:method:src/vgar/graph/retrieval.py:vgar.graph.retrieval.GraphContextRetriever.retrieve->vgar:GauKho/VGAR:python:class:src/vgar/contracts/error.py:vgar.contracts.error.NodeNotFoundError"
+        ],
+        "confidence": 0.95,
+        "token_count": 73
+      },
+      {
+        "node_id": "vgar:GauKho/VGAR:python:method:src/vgar/graph/retrieval.py:vgar.graph.retrieval.GraphContextRetriever.get_related_context",
+        "path": "src/vgar/graph/retrieval.py",
+        "symbol": "vgar.graph.retrieval.GraphContextRetriever.get_related_context",
+        "range": {
+          "start_line": 93,
+          "start_col": 4,
+          "end_line": 94,
+          "end_col": 73
+        },
+        "snippet": "def get_related_context(self, anchor_ids: list[str], budget_tokens: int, **kwargs: Any) -> ContextPayload:\n        return self.retrieve(anchor_ids, budget_tokens, **kwargs).context",
+        "relevance_score": 0.33962962962962967,
+        "graph_distance": 2,
+        "graph_rationale": [
+          "TASK_ANCHOR",
+          "CALLERS:vgar:GauKho/VGAR:python:class:src/vgar/contracts/context.py:vgar.contracts.context.ContextItem->vgar:GauKho/VGAR:python:method:src/vgar/graph/retrieval.py:vgar.graph.retrieval.GraphContextRetriever.retrieve",
+          "CALLERS:vgar:GauKho/VGAR:python:method:src/vgar/graph/retrieval.py:vgar.graph.retrieval.GraphContextRetriever.retrieve->vgar:GauKho/VGAR:python:method:src/vgar/graph/retrieval.py:vgar.graph.retrieval.GraphContextRetriever.get_related_context"
+        ],
+        "confidence": 0.8,
+        "token_count": 40
+      },
+      {
+        "node_id": "vgar:GauKho/VGAR:python:class:src/vgar/graph/retrieval.py:vgar.graph.retrieval.RetrievalResult",
+        "path": "src/vgar/graph/retrieval.py",
+        "symbol": "vgar.graph.retrieval.RetrievalResult",
+        "range": {
+          "start_line": 49,
+          "start_col": 0,
+          "end_line": 60,
+          "end_col": 29
+        },
+        "snippet": "class RetrievalResult:\n    \"\"\"M1 diagnostics sidecar; ContextPayload remains the shared output.\"\"\"\n\n    context: ContextPayload\n    overlay_id: str | None\n    counter_label: str\n    config: dict[str, Any]\n    candidates: list[dict[str, Any]]\n    omissions: list[dict[str, str]]\n    traversal_limited: bool\n    unavailable_features: list[str]\n    history_label: str | None",
+        "relevance_score": 0.33615384615384614,
+        "graph_distance": 2,
+        "graph_rationale": [
+          "TASK_ANCHOR",
+          "CALLERS:vgar:GauKho/VGAR:python:class:src/vgar/contracts/context.py:vgar.contracts.context.ContextItem->vgar:GauKho/VGAR:python:method:src/vgar/graph/retrieval.py:vgar.graph.retrieval.GraphContextRetriever.retrieve",
+          "CALLS:vgar:GauKho/VGAR:python:method:src/vgar/graph/retrieval.py:vgar.graph.retrieval.GraphContextRetriever.retrieve->vgar:GauKho/VGAR:python:class:src/vgar/graph/retrieval.py:vgar.graph.retrieval.RetrievalResult"
+        ],
+        "confidence": 0.95,
+        "token_count": 90
+      },
+      {
+        "node_id": "vgar:GauKho/VGAR:python:function:src/vgar/graph/retrieval.py:vgar.graph.retrieval._words",
+        "path": "src/vgar/graph/retrieval.py",
+        "symbol": "vgar.graph.retrieval._words",
+        "range": {
+          "start_line": 331,
+          "start_col": 0,
+          "end_line": 333,
+          "end_col": 64
+        },
+        "snippet": "def _words(text: str) -> set[str]:\n    expanded = re.sub(r\"([a-z])([A-Z])\", r\"\\1 \\2\", text)\n    return {match.lower() for match in _WORDS.findall(expanded)}",
+        "relevance_score": 0.32529411764705884,
+        "graph_distance": 2,
+        "graph_rationale": [
+          "TASK_ANCHOR",
+          "CALLERS:vgar:GauKho/VGAR:python:class:src/vgar/contracts/context.py:vgar.contracts.context.ContextItem->vgar:GauKho/VGAR:python:method:src/vgar/graph/retrieval.py:vgar.graph.retrieval.GraphContextRetriever.retrieve",
+          "CALLS:vgar:GauKho/VGAR:python:method:src/vgar/graph/retrieval.py:vgar.graph.retrieval.GraphContextRetriever.retrieve->vgar:GauKho/VGAR:python:function:src/vgar/graph/retrieval.py:vgar.graph.retrieval._words"
+        ],
+        "confidence": 0.95,
+        "token_count": 50
+      },
+      {
+        "node_id": "vgar:GauKho/VGAR:python:module:scripts/accept_m1_tokenizer.py:scripts.accept_m1_tokenizer",
+        "path": "scripts/accept_m1_tokenizer.py",
+        "symbol": "scripts.accept_m1_tokenizer",
+        "range": {
+          "start_line": 1,
+          "start_col": 0,
+          "end_line": 146,
+          "end_col": 0
+        },
+        "snippet": "\"\"\"Reproduce standalone M1 retrieval acceptance with the approved local tokenizer.\"\"\"\nfrom __future__ import annotations\n\nimport argparse\nimport hashlib\nimport json\nimport subprocess\nimport sys\nimport tempfile\nfrom dataclasses import asdict\nfrom pathlib import Path\n\nROOT = Path(__file__).resolve().parents[1]\nsys.path.insert(0, str(ROOT / \"src\"))\n\nfrom vgar.contracts.context import ContextPayload\nfrom vgar.graph.builder import IGNORED_DIRECTORY_NAMES, PythonGraphBuilder\nfrom vgar.graph.retrieval import GraphContextRetriever, RetrievalConfig\nfrom vgar.graph.task_overlay import TaskOverlayBuilder\nfrom vgar.graph.token_counter import LocalTokenizerCounter\n\n\ndef write(path: Path, data: dict) -> None:\n    path.parent.mkdir(parents=True, exist_ok=True)\n    path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + \"\\n\", encoding=\"utf-8\")\n\n\ndef source_hashes(root: Path) -> dict:\n    return {path.relative_to(root).as_posix(): hashlib.sha256(path.read_bytes()).hexdigest()\n            for path in root.rglob(\"*.py\")\n            if not any(part in IGNORED_DIRECTORY_NAMES for part in path.relative_to(root).parts)}\n\n\ndef main() -> None:\n    for stream in (sys.stdout, sys.stderr):\n        if hasattr(stream, \"reconfigure\"):\n            stream.reconfigure(encoding=\"utf-8\")\n    parser = argparse.ArgumentParser(description=__doc__)\n    parser.add_argument(\"--tokenizer-manifest\", type=Path, required=True)\n    parser.add_argument(\"--graph-output\", type=Path, required=True)\n    parser.add_argument(\"--output-directory\", type=Path, required=True)\n    args = parser.parse_args()\n    counter = LocalTokenizerCounter(args.tokenizer_manifest)\n    import tokenizers\n    manifest_path = args.tokenizer_manifest.resolve()\n    manifest = json.loads(manifest_path.read_text(encoding=\"utf-8\"))\n    assets = Path(manifest[\"assets_directory\"])\n    if not assets.is_absolute():\n        assets = manifest_path.parent / assets\n    native = tokenizers.Tokenizer.from_file(str(assets / \"tokenizer.json\"))\n    native.no_padding()\n    native.no_truncation()\n    samples = (\"\", \"def f():\\n    return 42\\n\", \"đếm token 世界 🐻\\r\\n\", \"<|im_start|>user\\n\", \"return 42\\n\" * 2000)\n    sample_counts = []\n    for text in samples:\n        expected = len(native.encode(text, add_special_tokens=False).ids)\n        assert counter(text) == expected\n        sample_counts.append({\"text_sha256\": hashlib.sha256(text.encode()).hexdigest(), \"token_count\": expected})\n    # A single candidate establishes exact-fit/one-token-short behavior using real tokens.\n    with tempfile.TemporaryDirectory() as directory:\n        tiny_root = Path(directory)\n        (tiny_root / \"unicode.py\").write_bytes('def café():\\r\\n    return \"đếm 世界 🐻\"\\r\\n'.encode(\"utf-8\"))\n        tiny_graph = PythonGraphBuilder(repo_key=\"tokenizer-boundary\", repository_revision=\"fixture\",\n                                        use_jedi=False).build(tiny_root)\n        anchor = next(node for node in tiny_graph[\"nodes\"] if node[\"type\"] == \"Function\" and node[\"name\"] == \"café\")\n        raw = (tiny_root / \"unicode.py\").read_bytes()\n        snippet = raw[anchor[\"range\"][\"start_byte\"]:anchor[\"range\"][\"end_byte\"]].decode(\"utf-8\")\n        cost = len(native.encode(snippet, add_special_tokens=False).ids)\n        tiny_retriever = GraphContextRetriever(tiny_graph, tiny_root, count_tokens=counter,\n            counter_label=counter.counter_label, config=RetrievalConfig(max_hops=0))\n        fit = tiny_retriever.get_related_context([anchor[\"id\"]], cost)\n        short = tiny_retriever.get_related_context([anchor[\"id\"]], cost - 1)\n        assert len(fit.items) == 1 and fit.total_token_count == cost and not fit.truncated\n        assert not short.items and short.total_token_count == 0 and short.truncated\n        assert fit.items[0].snippet == snippet\n\n    source_before = source_hashes(ROOT)\n    shared_paths = (\"src/vgar/contracts/schema.py\", \"src/vgar/contracts/context.py\",\n                    \"src/vgar/contracts/graph.py\", \"src/vgar/contracts/error.py\")\n    shared_before = {name: hashlib.sha256((ROOT / name).read_bytes()).hexdigest() for name in shared_paths}\n    git = [\"git\", \"-c\", f\"safe.directory={ROOT.as_posix()}\", \"-C\", str(ROOT)]\n    base_commit = subprocess.check_output(git + [\"rev-parse\", \"HEAD\"], text=True).strip()\n    dirty = bool(subprocess.check_output(git + [\"status\", \"--porcelain\"], text=True).strip())\n    graph = PythonGraphBuilder(repo_key=\"GauKho/VGAR\", repository_revision=f\"{base_commit}-worktree-m1-tokenizer\",\n                               use_jedi=False).build(ROOT)\n    write(args.graph_output, graph)\n    graph_hash = hashlib.sha256(args.graph_output.read_bytes()).hexdigest()\n    retriever = GraphContextRetriever(graph, ROOT, count_tokens=counter, counter_label=counter.counter_label)\n    tasks = [\n        (\"builder-context\", \"src/vgar/graph/builder.py:93 has a nested scope bug\",\n         [\"tests/test_graph_builder.py::GraphBuilderRegressionTests::test_nested_function_shadows_module_function\"]),\n        (\"validator-context\", \"ContextItem path validation in src/vgar/contracts/context.py:36 fails\",\n         [\"tests/test_context_contract.py::ContextPayloadContractTests::test_windows_drive_and_unc_paths_are_rejected_through_both_imports\"]),\n        (\"empty-context\", \"missing.py:999\", []),\n    ]\n    task_results = []\n    for task_id, issue, failures in tasks:\n        overlay = TaskOverlayBuilder(graph).build(task_id, issue, failures)\n        result = retriever.retrieve([anchor.node_id for anchor in overlay.grounding.anchors], 8000,\n                                    issue_text=issue, overlay=overlay)\n        counts = [len(native.encode(item.snippet, add_special_tokens=False).ids) for item in result.context.items]\n        assert counts == [item.token_count for item in result.context.items]\n        assert result.context.total_token_count == sum(counts) <= 8000\n        if task_id == \"empty-context\":\n            assert not result.context.items and not result.context.truncated\n        else:\n            assert result.context.items\n        output = asdict(result)\n        output[\"context\"] = result.context.model_dump(mode=\"json\")\n        output[\"tokenizer_provenance\"] = counter.provenance\n        ContextPayload.model_validate(output[\"context\"])\n        write(args.output_directory / f\"{task_id}.json\", output)\n        task_results.append({\"task_id\": task_id, \"artifact\": f\"{task_id}.json\", \"item_count\": len(counts),\n                             \"candidate_count\": len(result.candidates), \"budget_tokens\": 8000,\n                             \"total_token_count\": sum(counts), \"truncated\": result.context.truncated})\n    cli = subprocess.run([sys.executable, str(ROOT / \"scripts/get_related_context.py\"), str(args.graph_output), str(ROOT),\n                          \"--budget-tokens\", \"8000\", \"--tokenizer-manifest\", str(manifest_path), \"--explain\",\n                          \"--task-id\", tasks[0][0], \"--issue-text\", tasks[0][1], \"--failing-test\", tasks[0][2][0]],\n                         check=True, capture_output=True, text=True, encoding=\"utf-8\")\n    cli_output = json.loads(cli.stdout)\n    assert cli_output == json.loads((args.output_directory / \"builder-context.json\").read_text(encoding=\"utf-8\"))\n    write(args.output_directory / \"cli_context.json\", cli_output)\n    assert source_hashes(ROOT) == source_before\n    assert hashlib.sha256(args.graph_output.read_bytes()).hexdigest() == graph_hash\n    assert shared_before == {name: hashlib.sha256((ROOT / name).read_bytes()).hexdigest() for name in shared_paths}\n    write(args.output_directory / \"manifest.json\", {\n        \"date\": \"2026-10-03\", \"base_commit\": base_commit, \"working_tree_dirty\": dirty,\n        \"graph_artifact\": str(args.graph_output.resolve()), \"graph_version\": graph[\"graph_version\"],\n        \"graph_json_sha256\": graph_hash, \"statistics\": graph[\"statistics\"], \"use_jedi\": False,\n        \"tokenizer_provenance\": counter.provenance, \"snippet_only_budget\": True,\n        \"native_count_comparison\": True, \"sample_counts\": sample_counts,\n        \"boundary\": {\"exact_fit_tokens\": cost, \"one_token_short_budget\": cost - 1, \"checks_passed\": True},\n        \"tasks\": task_results, \"cli_pass\": True,\n        \"source_hashes_before\": source_before, \"source_hashes_after\": source_hashes(ROOT),\n        \"source_unchanged_during_acceptance\": True, \"base_graph_unchanged_during_acceptance\": True,\n        \"shared_contract_hashes\": shared_before,\n        \"limitations\": [\"Synthetic inputs; no real failing-test execution claimed\", \"No retrieval quality/latency benchmark\",\n                        \"Standalone M1; M3 model revision/prompt allocation/integration remain separate\"],\n    })\n    print(json.dumps({\"tasks\": task_results, \"boundary_tokens\": cost, \"native_count_comparison\": True,\n                      \"cli_pass\": True, \"statistics\": graph[\"statistics\"]}, ensure_ascii=False, indent=2))\n\n\nif __name__ == \"__main__\":\n    main()\n",
+        "relevance_score": 0.30428571428571427,
+        "graph_distance": 2,
+        "graph_rationale": [
+          "TASK_ANCHOR",
+          "CONTAINED_BY:vgar:GauKho/VGAR:python:class:src/vgar/contracts/context.py:vgar.contracts.context.ContextItem->vgar:GauKho/VGAR:python:module:src/vgar/contracts/context.py:vgar.contracts.context",
+          "IMPORTED_BY:vgar:GauKho/VGAR:python:module:src/vgar/contracts/context.py:vgar.contracts.context->vgar:GauKho/VGAR:python:module:scripts/accept_m1_tokenizer.py:scripts.accept_m1_tokenizer"
+        ],
+        "confidence": 0.95,
+        "token_count": 2054
+      },
+      {
+        "node_id": "vgar:GauKho/VGAR:python:method:src/vgar/graph/retrieval.py:vgar.graph.retrieval.GraphContextRetriever._eligible",
+        "path": "src/vgar/graph/retrieval.py",
+        "symbol": "vgar.graph.retrieval.GraphContextRetriever._eligible",
+        "range": {
+          "start_line": 214,
+          "start_col": 4,
+          "end_line": 215,
+          "end_col": 98
+        },
+        "snippet": "def _eligible(node: dict[str, Any]) -> bool:\n        return node[\"type\"] in _RETRIEVABLE and bool(node.get(\"path\")) and bool(node.get(\"range\"))",
+        "relevance_score": 0.30000000000000004,
+        "graph_distance": 2,
+        "graph_rationale": [
+          "TASK_ANCHOR",
+          "CALLERS:vgar:GauKho/VGAR:python:class:src/vgar/contracts/context.py:vgar.contracts.context.ContextItem->vgar:GauKho/VGAR:python:method:src/vgar/graph/retrieval.py:vgar.graph.retrieval.GraphContextRetriever.retrieve",
+          "CALLS:vgar:GauKho/VGAR:python:method:src/vgar/graph/retrieval.py:vgar.graph.retrieval.GraphContextRetriever.retrieve->vgar:GauKho/VGAR:python:method:src/vgar/graph/retrieval.py:vgar.graph.retrieval.GraphContextRetriever._eligible"
+        ],
+        "confidence": 0.8,
+        "token_count": 40
+      },
+      {
+        "node_id": "vgar:GauKho/VGAR:python:method:src/vgar/graph/retrieval.py:vgar.graph.retrieval.GraphContextRetriever._verify_snapshot",
+        "path": "src/vgar/graph/retrieval.py",
+        "symbol": "vgar.graph.retrieval.GraphContextRetriever._verify_snapshot",
+        "range": {
+          "start_line": 277,
+          "start_col": 4,
+          "end_line": 300,
+          "end_col": 22
+        },
+        "snippet": "def _verify_snapshot(self) -> dict[str, bytes]:\n        actual = {path.relative_to(self.root).as_posix() for path in self.root.rglob(\"*.py\")\n                  if not any(part in IGNORED_DIRECTORY_NAMES for part in path.parts)}\n        if actual != set(self.files):\n            raise GraphError(\"Source file set differs from graph snapshot; rebuild graph\",\n                             details={\"reason\": \"source_snapshot_mismatch\",\n                                      \"added\": sorted(actual - set(self.files)),\n                                      \"missing\": sorted(set(self.files) - actual)})\n        sources = {}\n        for relative, node in sorted(self.files.items()):\n            path = PurePosixPath(relative)\n            if path.is_absolute() or PureWindowsPath(relative).drive or \"..\" in path.parts or path.as_posix() != relative:\n                raise GraphError(\"Invalid repository-relative graph source path\")\n            resolved = (self.root / relative).resolve()\n            if not resolved.is_relative_to(self.root):\n                raise GraphError(\"Graph source path escapes repository root\")\n            try:\n                data = resolved.read_bytes()\n            except OSError as error:\n                raise GraphError(\"Cannot read graph source; rebuild graph\", details={\"path\": relative}) from error\n            if _hash(data) != node.get(\"content_hash\"):\n                raise GraphError(\"Source content differs from graph snapshot; rebuild graph\", details={\"path\": relative})\n            sources[relative] = data\n        return sources",
+        "relevance_score": 0.30000000000000004,
+        "graph_distance": 2,
+        "graph_rationale": [
+          "TASK_ANCHOR",
+          "CALLERS:vgar:GauKho/VGAR:python:class:src/vgar/contracts/context.py:vgar.contracts.context.ContextItem->vgar:GauKho/VGAR:python:method:src/vgar/graph/retrieval.py:vgar.graph.retrieval.GraphContextRetriever.retrieve",
+          "CALLS:vgar:GauKho/VGAR:python:method:src/vgar/graph/retrieval.py:vgar.graph.retrieval.GraphContextRetriever.retrieve->vgar:GauKho/VGAR:python:method:src/vgar/graph/retrieval.py:vgar.graph.retrieval.GraphContextRetriever._verify_snapshot"
+        ],
+        "confidence": 0.8,
+        "token_count": 291
+      },
+      {
+        "node_id": "vgar:GauKho/VGAR:python:method:src/vgar/graph/retrieval.py:vgar.graph.retrieval.GraphContextRetriever._snippet",
+        "path": "src/vgar/graph/retrieval.py",
+        "symbol": "vgar.graph.retrieval.GraphContextRetriever._snippet",
+        "range": {
+          "start_line": 303,
+          "start_col": 4,
+          "end_line": 320,
+          "end_col": 77
+        },
+        "snippet": "def _snippet(node: dict[str, Any], data: bytes) -> str:\n        source_range = node[\"range\"]\n        start, end = source_range[\"start_byte\"], source_range[\"end_byte\"]\n        if not 0 <= start <= end <= len(data):\n            raise GraphError(\"Graph source byte range is out of bounds\")\n        for prefix, offset in ((\"start\", start), (\"end\", end)):\n            head = data[:offset]\n            line = head.count(b\"\\n\") + 1\n            column = len(head.rsplit(b\"\\n\", 1)[-1])\n            if (line, column) != (source_range[f\"{prefix}_line\"], source_range[f\"{prefix}_col\"]):\n                raise GraphError(\"Graph byte range does not match line/column metadata\")\n        snippet = data[start:end]\n        if _hash(snippet) != node.get(\"content_hash\"):\n            raise GraphError(\"Graph snippet content hash mismatch; rebuild graph\")\n        try:\n            return snippet.decode(\"utf-8\")\n        except UnicodeDecodeError as error:\n            raise GraphError(\"Snippet cannot be decoded as UTF-8\") from error",
+        "relevance_score": 0.29809523809523814,
+        "graph_distance": 2,
+        "graph_rationale": [
+          "TASK_ANCHOR",
+          "CALLERS:vgar:GauKho/VGAR:python:class:src/vgar/contracts/context.py:vgar.contracts.context.ContextItem->vgar:GauKho/VGAR:python:method:src/vgar/graph/retrieval.py:vgar.graph.retrieval.GraphContextRetriever.retrieve",
+          "CALLS:vgar:GauKho/VGAR:python:method:src/vgar/graph/retrieval.py:vgar.graph.retrieval.GraphContextRetriever.retrieve->vgar:GauKho/VGAR:python:method:src/vgar/graph/retrieval.py:vgar.graph.retrieval.GraphContextRetriever._snippet"
+        ],
+        "confidence": 0.8,
+        "token_count": 233
+      },
+      {
+        "node_id": "vgar:GauKho/VGAR:python:method:src/vgar/graph/retrieval.py:vgar.graph.retrieval.GraphContextRetriever._walk",
+        "path": "src/vgar/graph/retrieval.py",
+        "symbol": "vgar.graph.retrieval.GraphContextRetriever._walk",
+        "range": {
+          "start_line": 247,
+          "start_col": 4,
+          "end_line": 275,
+          "end_col": 30
+        },
+        "snippet": "def _walk(\n        self, starts: list[str], scores: dict[str, float],\n    ) -> tuple[dict[str, tuple[int, float, tuple[str, ...]]], bool]:\n        states: dict[str, tuple[int, float, tuple[str, ...]]] = {}\n        queue = []\n        ordered = sorted(set(starts), key=lambda node_id: (-scores.get(node_id, 1.0), node_id))\n        limited = len(ordered) > self.config.max_candidates\n        for node_id in ordered[:self.config.max_candidates]:\n            confidence = scores.get(node_id, 1.0)\n            states[node_id] = (0, confidence, (\"TASK_ANCHOR\",))\n            heapq.heappush(queue, (0, -confidence, node_id, (\"TASK_ANCHOR\",)))\n        while queue:\n            distance, negative, node_id, rationale = heapq.heappop(queue)\n            if states[node_id] != (distance, -negative, rationale) or distance >= self.config.max_hops:\n                continue\n            for target, edge_confidence, relation in self.adjacency[node_id]:\n                path = rationale + (f\"{relation}:{node_id}->{target}\",)\n                candidate = (distance + 1, min(-negative, edge_confidence), path)\n                existing = states.get(target)\n                if existing is not None and (existing[0], -existing[1], existing[2]) <= (\n                    candidate[0], -candidate[1], candidate[2]\n                ):\n                    continue\n                if existing is None and len(states) >= self.config.max_candidates:\n                    limited = True\n                    continue\n                states[target] = candidate\n                heapq.heappush(queue, (candidate[0], -candidate[1], target, candidate[2]))\n        return states, limited",
+        "relevance_score": 0.29200000000000004,
+        "graph_distance": 2,
+        "graph_rationale": [
+          "TASK_ANCHOR",
+          "CALLERS:vgar:GauKho/VGAR:python:class:src/vgar/contracts/context.py:vgar.contracts.context.ContextItem->vgar:GauKho/VGAR:python:method:src/vgar/graph/retrieval.py:vgar.graph.retrieval.GraphContextRetriever.retrieve",
+          "CALLS:vgar:GauKho/VGAR:python:method:src/vgar/graph/retrieval.py:vgar.graph.retrieval.GraphContextRetriever.retrieve->vgar:GauKho/VGAR:python:method:src/vgar/graph/retrieval.py:vgar.graph.retrieval.GraphContextRetriever._walk"
+        ],
+        "confidence": 0.8,
+        "token_count": 374
+      }
+    ],
+    "total_token_count": 7295,
+    "token_budget": 8000,
+    "truncated": true
+  },
+  "overlay_id": "sha256:24c3be8e96129e92445fae27995537cee4db3e4f28206d2e07aeef5e327d4503",
+  "counter_label": "local-hf:Qwen/Qwen3-4B-Instruct-2507@cdbee75f17c01a7cc42f958dc650907174af0554:sha256=aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4:no-special-tokens",
+  "config": {
+    "max_hops": 2,
+    "max_candidates": 100,
+    "min_edge_confidence": 0.6,
+    "weights": {
+      "task_similarity": 0.2,
+      "graph_distance": 0.3,
+      "edge_confidence": 0.2,
+      "failing_test_proximity": 0.2,
+      "public_api_risk": 0.1,
+      "recent_change_frequency": 0.1
+    },
+    "profile": "semantic-context-v1",
+    "active_features": [
+      "task_similarity",
+      "graph_distance",
+      "edge_confidence",
+      "failing_test_proximity",
+      "public_api_risk"
+    ],
+    "normalized_weights": {
+      "task_similarity": 0.2,
+      "graph_distance": 0.3,
+      "edge_confidence": 0.2,
+      "failing_test_proximity": 0.2,
+      "public_api_risk": 0.1
+    },
+    "failing_test_traversal_limited": false
+  },
+  "candidates": [
+    {
+      "node_id": "vgar:GauKho/VGAR:python:test:tests/test_context_contract.py:tests.test_context_contract.ContextPayloadContractTests.test_windows_drive_and_unc_paths_are_rejected_through_both_imports",
+      "path": "tests/test_context_contract.py",
+      "symbol": "tests.test_context_contract.ContextPayloadContractTests.test_windows_drive_and_unc_paths_are_rejected_through_both_imports",
+      "graph_distance": 0,
+      "confidence": 1.0,
+      "graph_rationale": [
+        "TASK_ANCHOR"
+      ],
+      "features": {
+        "task_similarity": 0.08333333333333333,
+        "graph_distance": 1.0,
+        "edge_confidence": 1.0,
+        "failing_test_proximity": 1.0,
+        "public_api_risk": 0.0,
+        "recent_change_frequency": null
+      },
+      "relevance_score": 0.7166666666666667,
+      "token_count": 106
+    },
+    {
+      "node_id": "vgar:GauKho/VGAR:python:class:src/vgar/contracts/context.py:vgar.contracts.context.ContextItem",
+      "path": "src/vgar/contracts/context.py",
+      "symbol": "vgar.contracts.context.ContextItem",
+      "graph_distance": 0,
+      "confidence": 0.95,
+      "graph_rationale": [
+        "TASK_ANCHOR"
+      ],
+      "features": {
+        "task_similarity": 0.6,
+        "graph_distance": 1.0,
+        "edge_confidence": 0.95,
+        "failing_test_proximity": 0.0,
+        "public_api_risk": 0.0,
+        "recent_change_frequency": null
+      },
+      "relevance_score": 0.61,
+      "token_count": 232
+    },
+    {
+      "node_id": "vgar:GauKho/VGAR:python:method:src/vgar/contracts/context.py:vgar.contracts.context.ContextItem.validate_repository_relative_path",
+      "path": "src/vgar/contracts/context.py",
+      "symbol": "vgar.contracts.context.ContextItem.validate_repository_relative_path",
+      "graph_distance": 1,
+      "confidence": 0.95,
+      "graph_rationale": [
+        "TASK_ANCHOR",
+        "CONTAINS:vgar:GauKho/VGAR:python:class:src/vgar/contracts/context.py:vgar.contracts.context.ContextItem->vgar:GauKho/VGAR:python:method:src/vgar/contracts/context.py:vgar.contracts.context.ContextItem.validate_repository_relative_path"
+      ],
+      "features": {
+        "task_similarity": 0.4666666666666667,
+        "graph_distance": 0.5,
+        "edge_confidence": 0.95,
+        "failing_test_proximity": 0.0,
+        "public_api_risk": 0.5,
+        "recent_change_frequency": null
+      },
+      "relevance_score": 0.48333333333333334
+    },
+    {
+      "node_id": "vgar:GauKho/VGAR:python:class:tests/test_context_contract.py:tests.test_context_contract.ContextPayloadContractTests",
+      "path": "tests/test_context_contract.py",
+      "symbol": "tests.test_context_contract.ContextPayloadContractTests",
+      "graph_distance": 1,
+      "confidence": 1.0,
+      "graph_rationale": [
+        "TASK_ANCHOR",
+        "CONTAINED_BY:vgar:GauKho/VGAR:python:test:tests/test_context_contract.py:tests.test_context_contract.ContextPayloadContractTests.test_windows_drive_and_unc_paths_are_rejected_through_both_imports->vgar:GauKho/VGAR:python:class:tests/test_context_contract.py:tests.test_context_contract.ContextPayloadContractTests"
+      ],
+      "features": {
+        "task_similarity": 0.14285714285714285,
+        "graph_distance": 0.5,
+        "edge_confidence": 1.0,
+        "failing_test_proximity": 0.5,
+        "public_api_risk": 0.0,
+        "recent_change_frequency": null
+      },
+      "relevance_score": 0.4785714285714286
+    },
+    {
+      "node_id": "vgar:GauKho/VGAR:python:method:src/vgar/graph/retrieval.py:vgar.graph.retrieval.GraphContextRetriever.retrieve",
+      "path": "src/vgar/graph/retrieval.py",
+      "symbol": "vgar.graph.retrieval.GraphContextRetriever.retrieve",
+      "graph_distance": 1,
+      "confidence": 0.95,
+      "graph_rationale": [
+        "TASK_ANCHOR",
+        "CALLERS:vgar:GauKho/VGAR:python:class:src/vgar/contracts/context.py:vgar.contracts.context.ContextItem->vgar:GauKho/VGAR:python:method:src/vgar/graph/retrieval.py:vgar.graph.retrieval.GraphContextRetriever.retrieve"
+      ],
+      "features": {
+        "task_similarity": 0.13793103448275862,
+        "graph_distance": 0.5,
+        "edge_confidence": 0.95,
+        "failing_test_proximity": 0.0,
+        "public_api_risk": 0.75,
+        "recent_change_frequency": null
+      },
+      "relevance_score": 0.4425862068965517,
+      "token_count": 1472
+    },
+    {
+      "node_id": "vgar:GauKho/VGAR:python:module:src/vgar/contracts/context.py:vgar.contracts.context",
+      "path": "src/vgar/contracts/context.py",
+      "symbol": "vgar.contracts.context",
+      "graph_distance": 1,
+      "confidence": 0.95,
+      "graph_rationale": [
+        "TASK_ANCHOR",
+        "CONTAINED_BY:vgar:GauKho/VGAR:python:class:src/vgar/contracts/context.py:vgar.contracts.context.ContextItem->vgar:GauKho/VGAR:python:module:src/vgar/contracts/context.py:vgar.contracts.context"
+      ],
+      "features": {
+        "task_similarity": 0.5,
+        "graph_distance": 0.5,
+        "edge_confidence": 0.95,
+        "failing_test_proximity": 0.0,
+        "public_api_risk": 0.0,
+        "recent_change_frequency": null
+      },
+      "relevance_score": 0.44
+    },
+    {
+      "node_id": "vgar:GauKho/VGAR:python:method:tests/test_context_contract.py:tests.test_context_contract.ContextPayloadContractTests.setUp",
+      "path": "tests/test_context_contract.py",
+      "symbol": "tests.test_context_contract.ContextPayloadContractTests.setUp",
+      "graph_distance": 2,
+      "confidence": 1.0,
+      "graph_rationale": [
+        "TASK_ANCHOR",
+        "CONTAINED_BY:vgar:GauKho/VGAR:python:test:tests/test_context_contract.py:tests.test_context_contract.ContextPayloadContractTests.test_windows_drive_and_unc_paths_are_rejected_through_both_imports->vgar:GauKho/VGAR:python:class:tests/test_context_contract.py:tests.test_context_contract.ContextPayloadContractTests",
+        "CONTAINS:vgar:GauKho/VGAR:python:class:tests/test_context_contract.py:tests.test_context_contract.ContextPayloadContractTests->vgar:GauKho/VGAR:python:method:tests/test_context_contract.py:tests.test_context_contract.ContextPayloadContractTests.setUp"
+      ],
+      "features": {
+        "task_similarity": 0.10526315789473684,
+        "graph_distance": 0.3333333333333333,
+        "edge_confidence": 1.0,
+        "failing_test_proximity": 0.3333333333333333,
+        "public_api_risk": 0.5,
+        "recent_change_frequency": null
+      },
+      "relevance_score": 0.43771929824561406,
+      "token_count": 24
+    },
+    {
+      "node_id": "vgar:GauKho/VGAR:python:function:src/vgar/contracts/schema.py:vgar.contracts.schema.validate_graph_document",
+      "path": "src/vgar/contracts/schema.py",
+      "symbol": "vgar.contracts.schema.validate_graph_document",
+      "graph_distance": 2,
+      "confidence": 0.95,
+      "graph_rationale": [
+        "TASK_ANCHOR",
+        "CALLERS:vgar:GauKho/VGAR:python:class:src/vgar/contracts/context.py:vgar.contracts.context.ContextItem->vgar:GauKho/VGAR:python:method:src/vgar/graph/retrieval.py:vgar.graph.retrieval.GraphContextRetriever.retrieve",
+        "CALLS:vgar:GauKho/VGAR:python:method:src/vgar/graph/retrieval.py:vgar.graph.retrieval.GraphContextRetriever.retrieve->vgar:GauKho/VGAR:python:function:src/vgar/contracts/schema.py:vgar.contracts.schema.validate_graph_document"
+      ],
+      "features": {
+        "task_similarity": 0.21052631578947367,
+        "graph_distance": 0.3333333333333333,
+        "edge_confidence": 0.95,
+        "failing_test_proximity": 0.0,
+        "public_api_risk": 0.9642857142857143,
+        "recent_change_frequency": null
+      },
+      "relevance_score": 0.42853383458646616,
+      "token_count": 1358
+    },
+    {
+      "node_id": "vgar:GauKho/VGAR:python:test:tests/test_context_contract.py:tests.test_context_contract.ContextPayloadContractTests.test_path_must_be_repository_relative_posix",
+      "path": "tests/test_context_contract.py",
+      "symbol": "tests.test_context_contract.ContextPayloadContractTests.test_path_must_be_repository_relative_posix",
+      "graph_distance": 2,
+      "confidence": 1.0,
+      "graph_rationale": [
+        "TASK_ANCHOR",
+        "CONTAINED_BY:vgar:GauKho/VGAR:python:test:tests/test_context_contract.py:tests.test_context_contract.ContextPayloadContractTests.test_windows_drive_and_unc_paths_are_rejected_through_both_imports->vgar:GauKho/VGAR:python:class:tests/test_context_contract.py:tests.test_context_contract.ContextPayloadContractTests",
+        "CONTAINS:vgar:GauKho/VGAR:python:class:tests/test_context_contract.py:tests.test_context_contract.ContextPayloadContractTests->vgar:GauKho/VGAR:python:test:tests/test_context_contract.py:tests.test_context_contract.ContextPayloadContractTests.test_path_must_be_repository_relative_posix"
+      ],
+      "features": {
+        "task_similarity": 0.15789473684210525,
+        "graph_distance": 0.3333333333333333,
+        "edge_confidence": 1.0,
+        "failing_test_proximity": 0.3333333333333333,
+        "public_api_risk": 0.0,
+        "recent_change_frequency": null
+      },
+      "relevance_score": 0.39824561403508774,
+      "token_count": 79
+    },
+    {
+      "node_id": "vgar:GauKho/VGAR:python:module:tests/test_context_contract.py:tests.test_context_contract",
+      "path": "tests/test_context_contract.py",
+      "symbol": "tests.test_context_contract",
+      "graph_distance": 2,
+      "confidence": 1.0,
+      "graph_rationale": [
+        "TASK_ANCHOR",
+        "CONTAINED_BY:vgar:GauKho/VGAR:python:test:tests/test_context_contract.py:tests.test_context_contract.ContextPayloadContractTests.test_windows_drive_and_unc_paths_are_rejected_through_both_imports->vgar:GauKho/VGAR:python:class:tests/test_context_contract.py:tests.test_context_contract.ContextPayloadContractTests",
+        "CONTAINED_BY:vgar:GauKho/VGAR:python:class:tests/test_context_contract.py:tests.test_context_contract.ContextPayloadContractTests->vgar:GauKho/VGAR:python:module:tests/test_context_contract.py:tests.test_context_contract"
+      ],
+      "features": {
+        "task_similarity": 0.15384615384615385,
+        "graph_distance": 0.3333333333333333,
+        "edge_confidence": 1.0,
+        "failing_test_proximity": 0.3333333333333333,
+        "public_api_risk": 0.0,
+        "recent_change_frequency": null
+      },
+      "relevance_score": 0.39743589743589747
+    },
+    {
+      "node_id": "vgar:GauKho/VGAR:python:test:tests/test_context_contract.py:tests.test_context_contract.ContextPayloadContractTests.test_fixture_is_valid",
+      "path": "tests/test_context_contract.py",
+      "symbol": "tests.test_context_contract.ContextPayloadContractTests.test_fixture_is_valid",
+      "graph_distance": 2,
+      "confidence": 1.0,
+      "graph_rationale": [
+        "TASK_ANCHOR",
+        "CONTAINED_BY:vgar:GauKho/VGAR:python:test:tests/test_context_contract.py:tests.test_context_contract.ContextPayloadContractTests.test_windows_drive_and_unc_paths_are_rejected_through_both_imports->vgar:GauKho/VGAR:python:class:tests/test_context_contract.py:tests.test_context_contract.ContextPayloadContractTests",
+        "CONTAINS:vgar:GauKho/VGAR:python:class:tests/test_context_contract.py:tests.test_context_contract.ContextPayloadContractTests->vgar:GauKho/VGAR:python:test:tests/test_context_contract.py:tests.test_context_contract.ContextPayloadContractTests.test_fixture_is_valid"
+      ],
+      "features": {
+        "task_similarity": 0.11764705882352941,
+        "graph_distance": 0.3333333333333333,
+        "edge_confidence": 1.0,
+        "failing_test_proximity": 0.3333333333333333,
+        "public_api_risk": 0.0,
+        "recent_change_frequency": null
+      },
+      "relevance_score": 0.39019607843137255,
+      "token_count": 48
+    },
+    {
+      "node_id": "vgar:GauKho/VGAR:python:file:src/vgar/contracts/context.py",
+      "path": "src/vgar/contracts/context.py",
+      "symbol": "src/vgar/contracts/context.py",
+      "graph_distance": 2,
+      "confidence": 0.95,
+      "graph_rationale": [
+        "TASK_ANCHOR",
+        "CONTAINED_BY:vgar:GauKho/VGAR:python:class:src/vgar/contracts/context.py:vgar.contracts.context.ContextItem->vgar:GauKho/VGAR:python:module:src/vgar/contracts/context.py:vgar.contracts.context",
+        "CONTAINED_BY:vgar:GauKho/VGAR:python:module:src/vgar/contracts/context.py:vgar.contracts.context->vgar:GauKho/VGAR:python:file:src/vgar/contracts/context.py"
+      ],
+      "features": {
+        "task_similarity": 0.5,
+        "graph_distance": 0.3333333333333333,
+        "edge_confidence": 0.95,
+        "failing_test_proximity": 0.0,
+        "public_api_risk": 0.0,
+        "recent_change_frequency": null
+      },
+      "relevance_score": 0.39
+    },
+    {
+      "node_id": "vgar:GauKho/VGAR:python:test:tests/test_context_contract.py:tests.test_context_contract.ContextPayloadContractTests.test_payload_must_fit_token_budget",
+      "path": "tests/test_context_contract.py",
+      "symbol": "tests.test_context_contract.ContextPayloadContractTests.test_payload_must_fit_token_budget",
+      "graph_distance": 2,
+      "confidence": 1.0,
+      "graph_rationale": [
+        "TASK_ANCHOR",
+        "CONTAINED_BY:vgar:GauKho/VGAR:python:test:tests/test_context_contract.py:tests.test_context_contract.ContextPayloadContractTests.test_windows_drive_and_unc_paths_are_rejected_through_both_imports->vgar:GauKho/VGAR:python:class:tests/test_context_contract.py:tests.test_context_contract.ContextPayloadContractTests",
+        "CONTAINS:vgar:GauKho/VGAR:python:class:tests/test_context_contract.py:tests.test_context_contract.ContextPayloadContractTests->vgar:GauKho/VGAR:python:test:tests/test_context_contract.py:tests.test_context_contract.ContextPayloadContractTests.test_payload_must_fit_token_budget"
+      ],
+      "features": {
+        "task_similarity": 0.1111111111111111,
+        "graph_distance": 0.3333333333333333,
+        "edge_confidence": 1.0,
+        "failing_test_proximity": 0.3333333333333333,
+        "public_api_risk": 0.0,
+        "recent_change_frequency": null
+      },
+      "relevance_score": 0.3888888888888889,
+      "token_count": 47
+    },
+    {
+      "node_id": "vgar:GauKho/VGAR:python:test:tests/test_context_contract.py:tests.test_context_contract.ContextPayloadContractTests.test_total_token_count_must_match_items",
+      "path": "tests/test_context_contract.py",
+      "symbol": "tests.test_context_contract.ContextPayloadContractTests.test_total_token_count_must_match_items",
+      "graph_distance": 2,
+      "confidence": 1.0,
+      "graph_rationale": [
+        "TASK_ANCHOR",
+        "CONTAINED_BY:vgar:GauKho/VGAR:python:test:tests/test_context_contract.py:tests.test_context_contract.ContextPayloadContractTests.test_windows_drive_and_unc_paths_are_rejected_through_both_imports->vgar:GauKho/VGAR:python:class:tests/test_context_contract.py:tests.test_context_contract.ContextPayloadContractTests",
+        "CONTAINS:vgar:GauKho/VGAR:python:class:tests/test_context_contract.py:tests.test_context_contract.ContextPayloadContractTests->vgar:GauKho/VGAR:python:test:tests/test_context_contract.py:tests.test_context_contract.ContextPayloadContractTests.test_total_token_count_must_match_items"
+      ],
+      "features": {
+        "task_similarity": 0.1,
+        "graph_distance": 0.3333333333333333,
+        "edge_confidence": 1.0,
+        "failing_test_proximity": 0.3333333333333333,
+        "public_api_risk": 0.0,
+        "recent_change_frequency": null
+      },
+      "relevance_score": 0.38666666666666666,
+      "token_count": 49
+    },
+    {
+      "node_id": "vgar:GauKho/VGAR:python:test:tests/test_context_contract.py:tests.test_context_contract.ContextPayloadContractTests.test_fixture_round_trip_through_shared_import_is_unchanged",
+      "path": "tests/test_context_contract.py",
+      "symbol": "tests.test_context_contract.ContextPayloadContractTests.test_fixture_round_trip_through_shared_import_is_unchanged",
+      "graph_distance": 2,
+      "confidence": 1.0,
+      "graph_rationale": [
+        "TASK_ANCHOR",
+        "CONTAINED_BY:vgar:GauKho/VGAR:python:test:tests/test_context_contract.py:tests.test_context_contract.ContextPayloadContractTests.test_windows_drive_and_unc_paths_are_rejected_through_both_imports->vgar:GauKho/VGAR:python:class:tests/test_context_contract.py:tests.test_context_contract.ContextPayloadContractTests",
+        "CONTAINS:vgar:GauKho/VGAR:python:class:tests/test_context_contract.py:tests.test_context_contract.ContextPayloadContractTests->vgar:GauKho/VGAR:python:test:tests/test_context_contract.py:tests.test_context_contract.ContextPayloadContractTests.test_fixture_round_trip_through_shared_import_is_unchanged"
+      ],
+      "features": {
+        "task_similarity": 0.09090909090909091,
+        "graph_distance": 0.3333333333333333,
+        "edge_confidence": 1.0,
+        "failing_test_proximity": 0.3333333333333333,
+        "public_api_risk": 0.0,
+        "recent_change_frequency": null
+      },
+      "relevance_score": 0.38484848484848483,
+      "token_count": 55
+    },
+    {
+      "node_id": "vgar:GauKho/VGAR:python:test:tests/test_context_contract.py:tests.test_context_contract.ContextPayloadContractTests.test_m1_and_consumers_use_the_same_model_classes",
+      "path": "tests/test_context_contract.py",
+      "symbol": "tests.test_context_contract.ContextPayloadContractTests.test_m1_and_consumers_use_the_same_model_classes",
+      "graph_distance": 2,
+      "confidence": 1.0,
+      "graph_rationale": [
+        "TASK_ANCHOR",
+        "CONTAINED_BY:vgar:GauKho/VGAR:python:test:tests/test_context_contract.py:tests.test_context_contract.ContextPayloadContractTests.test_windows_drive_and_unc_paths_are_rejected_through_both_imports->vgar:GauKho/VGAR:python:class:tests/test_context_contract.py:tests.test_context_contract.ContextPayloadContractTests",
+        "CONTAINS:vgar:GauKho/VGAR:python:class:tests/test_context_contract.py:tests.test_context_contract.ContextPayloadContractTests->vgar:GauKho/VGAR:python:test:tests/test_context_contract.py:tests.test_context_contract.ContextPayloadContractTests.test_m1_and_consumers_use_the_same_model_classes"
+      ],
+      "features": {
+        "task_similarity": 0.09090909090909091,
+        "graph_distance": 0.3333333333333333,
+        "edge_confidence": 1.0,
+        "failing_test_proximity": 0.3333333333333333,
+        "public_api_risk": 0.0,
+        "recent_change_frequency": null
+      },
+      "relevance_score": 0.38484848484848483,
+      "token_count": 50
+    },
+    {
+      "node_id": "vgar:GauKho/VGAR:python:class:src/vgar/contracts/context.py:vgar.contracts.context.ContextPayload",
+      "path": "src/vgar/contracts/context.py",
+      "symbol": "vgar.contracts.context.ContextPayload",
+      "graph_distance": 2,
+      "confidence": 0.95,
+      "graph_rationale": [
+        "TASK_ANCHOR",
+        "CALLERS:vgar:GauKho/VGAR:python:class:src/vgar/contracts/context.py:vgar.contracts.context.ContextItem->vgar:GauKho/VGAR:python:method:src/vgar/graph/retrieval.py:vgar.graph.retrieval.GraphContextRetriever.retrieve",
+        "CALLS:vgar:GauKho/VGAR:python:method:src/vgar/graph/retrieval.py:vgar.graph.retrieval.GraphContextRetriever.retrieve->vgar:GauKho/VGAR:python:class:src/vgar/contracts/context.py:vgar.contracts.context.ContextPayload"
+      ],
+      "features": {
+        "task_similarity": 0.45454545454545453,
+        "graph_distance": 0.3333333333333333,
+        "edge_confidence": 0.95,
+        "failing_test_proximity": 0.0,
+        "public_api_risk": 0.0,
+        "recent_change_frequency": null
+      },
+      "relevance_score": 0.3809090909090909,
+      "token_count": 179
+    },
+    {
+      "node_id": "vgar:GauKho/VGAR:python:class:src/vgar/contracts/context.py:vgar.contracts.context.SourceRange",
+      "path": "src/vgar/contracts/context.py",
+      "symbol": "vgar.contracts.context.SourceRange",
+      "graph_distance": 2,
+      "confidence": 0.95,
+      "graph_rationale": [
+        "TASK_ANCHOR",
+        "CALLERS:vgar:GauKho/VGAR:python:class:src/vgar/contracts/context.py:vgar.contracts.context.ContextItem->vgar:GauKho/VGAR:python:method:src/vgar/graph/retrieval.py:vgar.graph.retrieval.GraphContextRetriever.retrieve",
+        "CALLS:vgar:GauKho/VGAR:python:method:src/vgar/graph/retrieval.py:vgar.graph.retrieval.GraphContextRetriever.retrieve->vgar:GauKho/VGAR:python:class:src/vgar/contracts/context.py:vgar.contracts.context.SourceRange"
+      ],
+      "features": {
+        "task_similarity": 0.4166666666666667,
+        "graph_distance": 0.3333333333333333,
+        "edge_confidence": 0.95,
+        "failing_test_proximity": 0.0,
+        "public_api_risk": 0.0,
+        "recent_change_frequency": null
+      },
+      "relevance_score": 0.37333333333333335,
+      "token_count": 120
+    },
+    {
+      "node_id": "vgar:GauKho/VGAR:python:module:src/vgar/graph/context.py:vgar.graph.context",
+      "path": "src/vgar/graph/context.py",
+      "symbol": "vgar.graph.context",
+      "graph_distance": 2,
+      "confidence": 0.95,
+      "graph_rationale": [
+        "TASK_ANCHOR",
+        "CONTAINED_BY:vgar:GauKho/VGAR:python:class:src/vgar/contracts/context.py:vgar.contracts.context.ContextItem->vgar:GauKho/VGAR:python:module:src/vgar/contracts/context.py:vgar.contracts.context",
+        "IMPORTED_BY:vgar:GauKho/VGAR:python:module:src/vgar/contracts/context.py:vgar.contracts.context->vgar:GauKho/VGAR:python:module:src/vgar/graph/context.py:vgar.graph.context"
+      ],
+      "features": {
+        "task_similarity": 0.36363636363636365,
+        "graph_distance": 0.3333333333333333,
+        "edge_confidence": 0.95,
+        "failing_test_proximity": 0.0,
+        "public_api_risk": 0.0,
+        "recent_change_frequency": null
+      },
+      "relevance_score": 0.36272727272727273,
+      "token_count": 74
+    },
+    {
+      "node_id": "vgar:GauKho/VGAR:python:class:src/vgar/contracts/error.py:vgar.contracts.error.GraphError",
+      "path": "src/vgar/contracts/error.py",
+      "symbol": "vgar.contracts.error.GraphError",
+      "graph_distance": 2,
+      "confidence": 0.95,
+      "graph_rationale": [
+        "TASK_ANCHOR",
+        "CALLERS:vgar:GauKho/VGAR:python:class:src/vgar/contracts/context.py:vgar.contracts.context.ContextItem->vgar:GauKho/VGAR:python:method:src/vgar/graph/retrieval.py:vgar.graph.retrieval.GraphContextRetriever.retrieve",
+        "CALLS:vgar:GauKho/VGAR:python:method:src/vgar/graph/retrieval.py:vgar.graph.retrieval.GraphContextRetriever.retrieve->vgar:GauKho/VGAR:python:class:src/vgar/contracts/error.py:vgar.contracts.error.GraphError"
+      ],
+      "features": {
+        "task_similarity": 0.3333333333333333,
+        "graph_distance": 0.3333333333333333,
+        "edge_confidence": 0.95,
+        "failing_test_proximity": 0.0,
+        "public_api_risk": 0.0,
+        "recent_change_frequency": null
+      },
+      "relevance_score": 0.3566666666666667,
+      "token_count": 125
+    },
+    {
+      "node_id": "vgar:GauKho/VGAR:python:class:src/vgar/contracts/error.py:vgar.contracts.error.InvalidLimitError",
+      "path": "src/vgar/contracts/error.py",
+      "symbol": "vgar.contracts.error.InvalidLimitError",
+      "graph_distance": 2,
+      "confidence": 0.95,
+      "graph_rationale": [
+        "TASK_ANCHOR",
+        "CALLERS:vgar:GauKho/VGAR:python:class:src/vgar/contracts/context.py:vgar.contracts.context.ContextItem->vgar:GauKho/VGAR:python:method:src/vgar/graph/retrieval.py:vgar.graph.retrieval.GraphContextRetriever.retrieve",
+        "CALLS:vgar:GauKho/VGAR:python:method:src/vgar/graph/retrieval.py:vgar.graph.retrieval.GraphContextRetriever.retrieve->vgar:GauKho/VGAR:python:class:src/vgar/contracts/error.py:vgar.contracts.error.InvalidLimitError"
+      ],
+      "features": {
+        "task_similarity": 0.3076923076923077,
+        "graph_distance": 0.3333333333333333,
+        "edge_confidence": 0.95,
+        "failing_test_proximity": 0.0,
+        "public_api_risk": 0.0,
+        "recent_change_frequency": null
+      },
+      "relevance_score": 0.3515384615384615,
+      "token_count": 16
+    },
+    {
+      "node_id": "vgar:GauKho/VGAR:python:class:src/vgar/contracts/error.py:vgar.contracts.error.InvalidQueryError",
+      "path": "src/vgar/contracts/error.py",
+      "symbol": "vgar.contracts.error.InvalidQueryError",
+      "graph_distance": 2,
+      "confidence": 0.95,
+      "graph_rationale": [
+        "TASK_ANCHOR",
+        "CALLERS:vgar:GauKho/VGAR:python:class:src/vgar/contracts/context.py:vgar.contracts.context.ContextItem->vgar:GauKho/VGAR:python:method:src/vgar/graph/retrieval.py:vgar.graph.retrieval.GraphContextRetriever.retrieve",
+        "CALLS:vgar:GauKho/VGAR:python:method:src/vgar/graph/retrieval.py:vgar.graph.retrieval.GraphContextRetriever.retrieve->vgar:GauKho/VGAR:python:class:src/vgar/contracts/error.py:vgar.contracts.error.InvalidQueryError"
+      ],
+      "features": {
+        "task_similarity": 0.3076923076923077,
+        "graph_distance": 0.3333333333333333,
+        "edge_confidence": 0.95,
+        "failing_test_proximity": 0.0,
+        "public_api_risk": 0.0,
+        "recent_change_frequency": null
+      },
+      "relevance_score": 0.3515384615384615,
+      "token_count": 16
+    },
+    {
+      "node_id": "vgar:GauKho/VGAR:python:class:src/vgar/graph/retrieval.py:vgar.graph.retrieval.GraphContextRetriever",
+      "path": "src/vgar/graph/retrieval.py",
+      "symbol": "vgar.graph.retrieval.GraphContextRetriever",
+      "graph_distance": 2,
+      "confidence": 0.95,
+      "graph_rationale": [
+        "TASK_ANCHOR",
+        "CALLERS:vgar:GauKho/VGAR:python:class:src/vgar/contracts/context.py:vgar.contracts.context.ContextItem->vgar:GauKho/VGAR:python:method:src/vgar/graph/retrieval.py:vgar.graph.retrieval.GraphContextRetriever.retrieve",
+        "CONTAINED_BY:vgar:GauKho/VGAR:python:method:src/vgar/graph/retrieval.py:vgar.graph.retrieval.GraphContextRetriever.retrieve->vgar:GauKho/VGAR:python:class:src/vgar/graph/retrieval.py:vgar.graph.retrieval.GraphContextRetriever"
+      ],
+      "features": {
+        "task_similarity": 0.3076923076923077,
+        "graph_distance": 0.3333333333333333,
+        "edge_confidence": 0.95,
+        "failing_test_proximity": 0.0,
+        "public_api_risk": 0.0,
+        "recent_change_frequency": null
+      },
+      "relevance_score": 0.3515384615384615
+    },
+    {
+      "node_id": "vgar:GauKho/VGAR:python:class:src/vgar/contracts/error.py:vgar.contracts.error.NodeNotFoundError",
+      "path": "src/vgar/contracts/error.py",
+      "symbol": "vgar.contracts.error.NodeNotFoundError",
+      "graph_distance": 2,
+      "confidence": 0.95,
+      "graph_rationale": [
+        "TASK_ANCHOR",
+        "CALLERS:vgar:GauKho/VGAR:python:class:src/vgar/contracts/context.py:vgar.contracts.context.ContextItem->vgar:GauKho/VGAR:python:method:src/vgar/graph/retrieval.py:vgar.graph.retrieval.GraphContextRetriever.retrieve",
+        "CALLS:vgar:GauKho/VGAR:python:method:src/vgar/graph/retrieval.py:vgar.graph.retrieval.GraphContextRetriever.retrieve->vgar:GauKho/VGAR:python:class:src/vgar/contracts/error.py:vgar.contracts.error.NodeNotFoundError"
+      ],
+      "features": {
+        "task_similarity": 0.2857142857142857,
+        "graph_distance": 0.3333333333333333,
+        "edge_confidence": 0.95,
+        "failing_test_proximity": 0.0,
+        "public_api_risk": 0.0,
+        "recent_change_frequency": null
+      },
+      "relevance_score": 0.34714285714285714,
+      "token_count": 73
+    },
+    {
+      "node_id": "vgar:GauKho/VGAR:python:module:src/vgar/graph/retrieval.py:vgar.graph.retrieval",
+      "path": "src/vgar/graph/retrieval.py",
+      "symbol": "vgar.graph.retrieval",
+      "graph_distance": 2,
+      "confidence": 0.95,
+      "graph_rationale": [
+        "TASK_ANCHOR",
+        "CONTAINED_BY:vgar:GauKho/VGAR:python:class:src/vgar/contracts/context.py:vgar.contracts.context.ContextItem->vgar:GauKho/VGAR:python:module:src/vgar/contracts/context.py:vgar.contracts.context",
+        "IMPORTED_BY:vgar:GauKho/VGAR:python:module:src/vgar/contracts/context.py:vgar.contracts.context->vgar:GauKho/VGAR:python:module:src/vgar/graph/retrieval.py:vgar.graph.retrieval"
+      ],
+      "features": {
+        "task_similarity": 0.25,
+        "graph_distance": 0.3333333333333333,
+        "edge_confidence": 0.95,
+        "failing_test_proximity": 0.0,
+        "public_api_risk": 0.0,
+        "recent_change_frequency": null
+      },
+      "relevance_score": 0.33999999999999997
+    },
+    {
+      "node_id": "vgar:GauKho/VGAR:python:method:src/vgar/graph/retrieval.py:vgar.graph.retrieval.GraphContextRetriever.get_related_context",
+      "path": "src/vgar/graph/retrieval.py",
+      "symbol": "vgar.graph.retrieval.GraphContextRetriever.get_related_context",
+      "graph_distance": 2,
+      "confidence": 0.8,
+      "graph_rationale": [
+        "TASK_ANCHOR",
+        "CALLERS:vgar:GauKho/VGAR:python:class:src/vgar/contracts/context.py:vgar.contracts.context.ContextItem->vgar:GauKho/VGAR:python:method:src/vgar/graph/retrieval.py:vgar.graph.retrieval.GraphContextRetriever.retrieve",
+        "CALLERS:vgar:GauKho/VGAR:python:method:src/vgar/graph/retrieval.py:vgar.graph.retrieval.GraphContextRetriever.retrieve->vgar:GauKho/VGAR:python:method:src/vgar/graph/retrieval.py:vgar.graph.retrieval.GraphContextRetriever.get_related_context"
+      ],
+      "features": {
+        "task_similarity": 0.14814814814814814,
+        "graph_distance": 0.3333333333333333,
+        "edge_confidence": 0.8,
+        "failing_test_proximity": 0.0,
+        "public_api_risk": 0.5,
+        "recent_change_frequency": null
+      },
+      "relevance_score": 0.33962962962962967,
+      "token_count": 40
+    },
+    {
+      "node_id": "vgar:GauKho/VGAR:python:class:src/vgar/graph/retrieval.py:vgar.graph.retrieval.RetrievalResult",
+      "path": "src/vgar/graph/retrieval.py",
+      "symbol": "vgar.graph.retrieval.RetrievalResult",
+      "graph_distance": 2,
+      "confidence": 0.95,
+      "graph_rationale": [
+        "TASK_ANCHOR",
+        "CALLERS:vgar:GauKho/VGAR:python:class:src/vgar/contracts/context.py:vgar.contracts.context.ContextItem->vgar:GauKho/VGAR:python:method:src/vgar/graph/retrieval.py:vgar.graph.retrieval.GraphContextRetriever.retrieve",
+        "CALLS:vgar:GauKho/VGAR:python:method:src/vgar/graph/retrieval.py:vgar.graph.retrieval.GraphContextRetriever.retrieve->vgar:GauKho/VGAR:python:class:src/vgar/graph/retrieval.py:vgar.graph.retrieval.RetrievalResult"
+      ],
+      "features": {
+        "task_similarity": 0.23076923076923078,
+        "graph_distance": 0.3333333333333333,
+        "edge_confidence": 0.95,
+        "failing_test_proximity": 0.0,
+        "public_api_risk": 0.0,
+        "recent_change_frequency": null
+      },
+      "relevance_score": 0.33615384615384614,
+      "token_count": 90
+    },
+    {
+      "node_id": "vgar:GauKho/VGAR:python:function:src/vgar/graph/retrieval.py:vgar.graph.retrieval._words",
+      "path": "src/vgar/graph/retrieval.py",
+      "symbol": "vgar.graph.retrieval._words",
+      "graph_distance": 2,
+      "confidence": 0.95,
+      "graph_rationale": [
+        "TASK_ANCHOR",
+        "CALLERS:vgar:GauKho/VGAR:python:class:src/vgar/contracts/context.py:vgar.contracts.context.ContextItem->vgar:GauKho/VGAR:python:method:src/vgar/graph/retrieval.py:vgar.graph.retrieval.GraphContextRetriever.retrieve",
+        "CALLS:vgar:GauKho/VGAR:python:method:src/vgar/graph/retrieval.py:vgar.graph.retrieval.GraphContextRetriever.retrieve->vgar:GauKho/VGAR:python:function:src/vgar/graph/retrieval.py:vgar.graph.retrieval._words"
+      ],
+      "features": {
+        "task_similarity": 0.17647058823529413,
+        "graph_distance": 0.3333333333333333,
+        "edge_confidence": 0.95,
+        "failing_test_proximity": 0.0,
+        "public_api_risk": 0.0,
+        "recent_change_frequency": null
+      },
+      "relevance_score": 0.32529411764705884,
+      "token_count": 50
+    },
+    {
+      "node_id": "vgar:GauKho/VGAR:python:module:scripts/accept_m1_tokenizer.py:scripts.accept_m1_tokenizer",
+      "path": "scripts/accept_m1_tokenizer.py",
+      "symbol": "scripts.accept_m1_tokenizer",
+      "graph_distance": 2,
+      "confidence": 0.95,
+      "graph_rationale": [
+        "TASK_ANCHOR",
+        "CONTAINED_BY:vgar:GauKho/VGAR:python:class:src/vgar/contracts/context.py:vgar.contracts.context.ContextItem->vgar:GauKho/VGAR:python:module:src/vgar/contracts/context.py:vgar.contracts.context",
+        "IMPORTED_BY:vgar:GauKho/VGAR:python:module:src/vgar/contracts/context.py:vgar.contracts.context->vgar:GauKho/VGAR:python:module:scripts/accept_m1_tokenizer.py:scripts.accept_m1_tokenizer"
+      ],
+      "features": {
+        "task_similarity": 0.07142857142857142,
+        "graph_distance": 0.3333333333333333,
+        "edge_confidence": 0.95,
+        "failing_test_proximity": 0.0,
+        "public_api_risk": 0.0,
+        "recent_change_frequency": null
+      },
+      "relevance_score": 0.30428571428571427,
+      "token_count": 2054
+    },
+    {
+      "node_id": "vgar:GauKho/VGAR:python:module:tests/test_graph_retrieval.py:tests.test_graph_retrieval",
+      "path": "tests/test_graph_retrieval.py",
+      "symbol": "tests.test_graph_retrieval",
+      "graph_distance": 2,
+      "confidence": 0.95,
+      "graph_rationale": [
+        "TASK_ANCHOR",
+        "CONTAINED_BY:vgar:GauKho/VGAR:python:class:src/vgar/contracts/context.py:vgar.contracts.context.ContextItem->vgar:GauKho/VGAR:python:module:src/vgar/contracts/context.py:vgar.contracts.context",
+        "IMPORTED_BY:vgar:GauKho/VGAR:python:module:src/vgar/contracts/context.py:vgar.contracts.context->vgar:GauKho/VGAR:python:module:tests/test_graph_retrieval.py:tests.test_graph_retrieval"
+      ],
+      "features": {
+        "task_similarity": 0.07142857142857142,
+        "graph_distance": 0.3333333333333333,
+        "edge_confidence": 0.95,
+        "failing_test_proximity": 0.0,
+        "public_api_risk": 0.0,
+        "recent_change_frequency": null
+      },
+      "relevance_score": 0.30428571428571427,
+      "token_count": 3601
+    },
+    {
+      "node_id": "vgar:GauKho/VGAR:python:method:src/vgar/graph/retrieval.py:vgar.graph.retrieval.GraphContextRetriever._eligible",
+      "path": "src/vgar/graph/retrieval.py",
+      "symbol": "vgar.graph.retrieval.GraphContextRetriever._eligible",
+      "graph_distance": 2,
+      "confidence": 0.8,
+      "graph_rationale": [
+        "TASK_ANCHOR",
+        "CALLERS:vgar:GauKho/VGAR:python:class:src/vgar/contracts/context.py:vgar.contracts.context.ContextItem->vgar:GauKho/VGAR:python:method:src/vgar/graph/retrieval.py:vgar.graph.retrieval.GraphContextRetriever.retrieve",
+        "CALLS:vgar:GauKho/VGAR:python:method:src/vgar/graph/retrieval.py:vgar.graph.retrieval.GraphContextRetriever.retrieve->vgar:GauKho/VGAR:python:method:src/vgar/graph/retrieval.py:vgar.graph.retrieval.GraphContextRetriever._eligible"
+      ],
+      "features": {
+        "task_similarity": 0.2,
+        "graph_distance": 0.3333333333333333,
+        "edge_confidence": 0.8,
+        "failing_test_proximity": 0.0,
+        "public_api_risk": 0.0,
+        "recent_change_frequency": null
+      },
+      "relevance_score": 0.30000000000000004,
+      "token_count": 40
+    },
+    {
+      "node_id": "vgar:GauKho/VGAR:python:method:src/vgar/graph/retrieval.py:vgar.graph.retrieval.GraphContextRetriever._verify_snapshot",
+      "path": "src/vgar/graph/retrieval.py",
+      "symbol": "vgar.graph.retrieval.GraphContextRetriever._verify_snapshot",
+      "graph_distance": 2,
+      "confidence": 0.8,
+      "graph_rationale": [
+        "TASK_ANCHOR",
+        "CALLERS:vgar:GauKho/VGAR:python:class:src/vgar/contracts/context.py:vgar.contracts.context.ContextItem->vgar:GauKho/VGAR:python:method:src/vgar/graph/retrieval.py:vgar.graph.retrieval.GraphContextRetriever.retrieve",
+        "CALLS:vgar:GauKho/VGAR:python:method:src/vgar/graph/retrieval.py:vgar.graph.retrieval.GraphContextRetriever.retrieve->vgar:GauKho/VGAR:python:method:src/vgar/graph/retrieval.py:vgar.graph.retrieval.GraphContextRetriever._verify_snapshot"
+      ],
+      "features": {
+        "task_similarity": 0.2,
+        "graph_distance": 0.3333333333333333,
+        "edge_confidence": 0.8,
+        "failing_test_proximity": 0.0,
+        "public_api_risk": 0.0,
+        "recent_change_frequency": null
+      },
+      "relevance_score": 0.30000000000000004,
+      "token_count": 291
+    },
+    {
+      "node_id": "vgar:GauKho/VGAR:python:method:src/vgar/graph/retrieval.py:vgar.graph.retrieval.GraphContextRetriever._snippet",
+      "path": "src/vgar/graph/retrieval.py",
+      "symbol": "vgar.graph.retrieval.GraphContextRetriever._snippet",
+      "graph_distance": 2,
+      "confidence": 0.8,
+      "graph_rationale": [
+        "TASK_ANCHOR",
+        "CALLERS:vgar:GauKho/VGAR:python:class:src/vgar/contracts/context.py:vgar.contracts.context.ContextItem->vgar:GauKho/VGAR:python:method:src/vgar/graph/retrieval.py:vgar.graph.retrieval.GraphContextRetriever.retrieve",
+        "CALLS:vgar:GauKho/VGAR:python:method:src/vgar/graph/retrieval.py:vgar.graph.retrieval.GraphContextRetriever.retrieve->vgar:GauKho/VGAR:python:method:src/vgar/graph/retrieval.py:vgar.graph.retrieval.GraphContextRetriever._snippet"
+      ],
+      "features": {
+        "task_similarity": 0.19047619047619047,
+        "graph_distance": 0.3333333333333333,
+        "edge_confidence": 0.8,
+        "failing_test_proximity": 0.0,
+        "public_api_risk": 0.0,
+        "recent_change_frequency": null
+      },
+      "relevance_score": 0.29809523809523814,
+      "token_count": 233
+    },
+    {
+      "node_id": "vgar:GauKho/VGAR:python:method:src/vgar/graph/retrieval.py:vgar.graph.retrieval.GraphContextRetriever._walk",
+      "path": "src/vgar/graph/retrieval.py",
+      "symbol": "vgar.graph.retrieval.GraphContextRetriever._walk",
+      "graph_distance": 2,
+      "confidence": 0.8,
+      "graph_rationale": [
+        "TASK_ANCHOR",
+        "CALLERS:vgar:GauKho/VGAR:python:class:src/vgar/contracts/context.py:vgar.contracts.context.ContextItem->vgar:GauKho/VGAR:python:method:src/vgar/graph/retrieval.py:vgar.graph.retrieval.GraphContextRetriever.retrieve",
+        "CALLS:vgar:GauKho/VGAR:python:method:src/vgar/graph/retrieval.py:vgar.graph.retrieval.GraphContextRetriever.retrieve->vgar:GauKho/VGAR:python:method:src/vgar/graph/retrieval.py:vgar.graph.retrieval.GraphContextRetriever._walk"
+      ],
+      "features": {
+        "task_similarity": 0.16,
+        "graph_distance": 0.3333333333333333,
+        "edge_confidence": 0.8,
+        "failing_test_proximity": 0.0,
+        "public_api_risk": 0.0,
+        "recent_change_frequency": null
+      },
+      "relevance_score": 0.29200000000000004,
+      "token_count": 374
+    }
+  ],
+  "omissions": [
+    {
+      "node_id": "vgar:GauKho/VGAR:python:method:src/vgar/contracts/context.py:vgar.contracts.context.ContextItem.validate_repository_relative_path",
+      "reason": "overlapping_selected_range"
+    },
+    {
+      "node_id": "vgar:GauKho/VGAR:python:class:tests/test_context_contract.py:tests.test_context_contract.ContextPayloadContractTests",
+      "reason": "overlapping_selected_range"
+    },
+    {
+      "node_id": "vgar:GauKho/VGAR:python:module:src/vgar/contracts/context.py:vgar.contracts.context",
+      "reason": "overlapping_selected_range"
+    },
+    {
+      "node_id": "vgar:GauKho/VGAR:python:module:tests/test_context_contract.py:tests.test_context_contract",
+      "reason": "overlapping_selected_range"
+    },
+    {
+      "node_id": "vgar:GauKho/VGAR:python:file:src/vgar/contracts/context.py",
+      "reason": "overlapping_selected_range"
+    },
+    {
+      "node_id": "vgar:GauKho/VGAR:python:class:src/vgar/graph/retrieval.py:vgar.graph.retrieval.GraphContextRetriever",
+      "reason": "overlapping_selected_range"
+    },
+    {
+      "node_id": "vgar:GauKho/VGAR:python:module:src/vgar/graph/retrieval.py:vgar.graph.retrieval",
+      "reason": "overlapping_selected_range"
+    },
+    {
+      "node_id": "vgar:GauKho/VGAR:python:module:tests/test_graph_retrieval.py:tests.test_graph_retrieval",
+      "reason": "token_budget"
+    }
+  ],
+  "traversal_limited": false,
+  "unavailable_features": [
+    "architecture_dependencies",
+    "recent_change_frequency"
+  ],
+  "history_label": null,
+  "tokenizer_provenance": {
+    "model_id": "Qwen/Qwen3-4B-Instruct-2507",
+    "revision": "cdbee75f17c01a7cc42f958dc650907174af0554",
+    "tokenizer_json_sha256": "aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4",
+    "manifest_sha256": "691f593426cdbdba3c4674d4735862bc9e1f81bf04efdba7d4ba3f5abc674d61",
+    "tokenizers_version": "0.22.1",
+    "counting_policy": "encode-each-snippet:add_special_tokens=false:sum-item-counts",
+    "padding": false,
+    "truncation": false
+  }
+}

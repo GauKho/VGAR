@@ -1,0 +1,141 @@
+{
+  "graph_version": "sha256:0c454e676371e32458f7bfe630762b23d5a5c8928db9b491fc9761fdf0448505",
+  "overlay_id": "sha256:a33e9a6adc90ed73a36ed983b65c0f5c300d85ada0ca5144a9b92e9d85fc2c45",
+  "task_id": "graph-builder",
+  "nodes": [
+    {
+      "id": "vgar:GauKho/VGAR:issue:sha256:2e1b7dfd451bfdf66f160eebc7d771d02240e8eb60185b1725a552b7df1f3d03",
+      "type": "Issue",
+      "repo_key": "GauKho/VGAR",
+      "name": "graph-builder",
+      "qualified_name": "graph-builder",
+      "path": null,
+      "language": null,
+      "range": null,
+      "graph_version": "sha256:0c454e676371e32458f7bfe630762b23d5a5c8928db9b491fc9761fdf0448505",
+      "content_hash": "sha256:2651a3088014ddd2992c90553b3f286dc79b98833fe60ae486fe94e775401547",
+      "properties": {
+        "task_id": "graph-builder",
+        "issue_text": "src/vgar/graph/builder.py has incorrect nested definitions",
+        "failing_tests": [
+          "tests/test_graph_builder.py::GraphBuilderRegressionTests::test_nested_function_shadows_module_function"
+        ],
+        "overlay_id": "sha256:a33e9a6adc90ed73a36ed983b65c0f5c300d85ada0ca5144a9b92e9d85fc2c45"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "sha256:e342d392b108ac18fec5809a16ed7b5acbcf0b8d8d9ed3c43d710e73a9dfcfe5",
+      "type": "MENTIONS",
+      "source_id": "vgar:GauKho/VGAR:issue:sha256:2e1b7dfd451bfdf66f160eebc7d771d02240e8eb60185b1725a552b7df1f3d03",
+      "target_id": "vgar:GauKho/VGAR:python:file:src/vgar/graph/builder.py",
+      "confidence": 0.7,
+      "resolution": "heuristic",
+      "graph_version": "sha256:0c454e676371e32458f7bfe630762b23d5a5c8928db9b491fc9761fdf0448505",
+      "properties": {
+        "overlay_id": "sha256:a33e9a6adc90ed73a36ed983b65c0f5c300d85ada0ca5144a9b92e9d85fc2c45",
+        "has_ambiguous_evidence": false
+      },
+      "provenance": {
+        "source_tool": "vgar-m1-task-overlay",
+        "source_tool_version": "0.1.0",
+        "rule_id": "task.mentions.v1",
+        "source_revision": "2491a047-worktree-m1-ms2-20261003",
+        "evidence": [
+          {
+            "kind": "path",
+            "matched_text": "src/vgar/graph/builder.py",
+            "source": "issue"
+          }
+        ]
+      }
+    },
+    {
+      "id": "sha256:f7d76f34c04136a301c456f7a12f1d6eef0c40aa3693025ad79c99b04be2deff",
+      "type": "MENTIONS",
+      "source_id": "vgar:GauKho/VGAR:issue:sha256:2e1b7dfd451bfdf66f160eebc7d771d02240e8eb60185b1725a552b7df1f3d03",
+      "target_id": "vgar:GauKho/VGAR:python:test:tests/test_graph_builder.py:tests.test_graph_builder.GraphBuilderRegressionTests.test_nested_function_shadows_module_function",
+      "confidence": 1.0,
+      "resolution": "heuristic",
+      "graph_version": "sha256:0c454e676371e32458f7bfe630762b23d5a5c8928db9b491fc9761fdf0448505",
+      "properties": {
+        "overlay_id": "sha256:a33e9a6adc90ed73a36ed983b65c0f5c300d85ada0ca5144a9b92e9d85fc2c45",
+        "has_ambiguous_evidence": false
+      },
+      "provenance": {
+        "source_tool": "vgar-m1-task-overlay",
+        "source_tool_version": "0.1.0",
+        "rule_id": "task.mentions.v1",
+        "source_revision": "2491a047-worktree-m1-ms2-20261003",
+        "evidence": [
+          {
+            "kind": "pytest_selector",
+            "matched_text": "tests/test_graph_builder.py::GraphBuilderRegressionTests::test_nested_function_shadows_module_function",
+            "source": "failing_test"
+          }
+        ]
+      }
+    },
+    {
+      "id": "sha256:d95b854eda59b325e9bce63bf263c8a69bd703b2f5f514a10d63cca89ae00f85",
+      "type": "REPRODUCES",
+      "source_id": "vgar:GauKho/VGAR:python:test:tests/test_graph_builder.py:tests.test_graph_builder.GraphBuilderRegressionTests.test_nested_function_shadows_module_function",
+      "target_id": "vgar:GauKho/VGAR:issue:sha256:2e1b7dfd451bfdf66f160eebc7d771d02240e8eb60185b1725a552b7df1f3d03",
+      "confidence": 1.0,
+      "resolution": "heuristic",
+      "graph_version": "sha256:0c454e676371e32458f7bfe630762b23d5a5c8928db9b491fc9761fdf0448505",
+      "properties": {
+        "overlay_id": "sha256:a33e9a6adc90ed73a36ed983b65c0f5c300d85ada0ca5144a9b92e9d85fc2c45",
+        "input_reported_failure": true,
+        "execution_verified": false
+      },
+      "provenance": {
+        "source_tool": "vgar-m1-task-overlay",
+        "source_tool_version": "0.1.0",
+        "rule_id": "task.reproduces.v1",
+        "source_revision": "2491a047-worktree-m1-ms2-20261003",
+        "evidence": [
+          {
+            "kind": "pytest_selector",
+            "matched_text": "tests/test_graph_builder.py::GraphBuilderRegressionTests::test_nested_function_shadows_module_function",
+            "source": "failing_test"
+          }
+        ]
+      }
+    }
+  ],
+  "grounding": {
+    "graph_version": "sha256:0c454e676371e32458f7bfe630762b23d5a5c8928db9b491fc9761fdf0448505",
+    "anchors": [
+      {
+        "node_id": "vgar:GauKho/VGAR:python:test:tests/test_graph_builder.py:tests.test_graph_builder.GraphBuilderRegressionTests.test_nested_function_shadows_module_function",
+        "path": "tests/test_graph_builder.py",
+        "symbol": "tests.test_graph_builder.GraphBuilderRegressionTests.test_nested_function_shadows_module_function",
+        "score": 1.0,
+        "evidence": [
+          {
+            "kind": "pytest_selector",
+            "matched_text": "tests/test_graph_builder.py::GraphBuilderRegressionTests::test_nested_function_shadows_module_function",
+            "source": "failing_test"
+          }
+        ]
+      },
+      {
+        "node_id": "vgar:GauKho/VGAR:python:file:src/vgar/graph/builder.py",
+        "path": "src/vgar/graph/builder.py",
+        "symbol": "src/vgar/graph/builder.py",
+        "score": 0.7,
+        "evidence": [
+          {
+            "kind": "path",
+            "matched_text": "src/vgar/graph/builder.py",
+            "source": "issue"
+          }
+        ]
+      }
+    ],
+    "ambiguous_matches": [],
+    "unmatched_locations": []
+  }
+}

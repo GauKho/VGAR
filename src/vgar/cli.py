@@ -50,10 +50,7 @@ def sandbox(repo: Path, settings: Settings, keep: bool = False):
             shutil.rmtree(work, ignore_errors=True)
 
 
-async def build_agent(engine: str, settings: Settings):
-    if engine == "langgraph":
-        from vgar.agents.graph import create_agent
-        return await create_agent(settings)
+async def build_agent(settings: Settings):
     from vgar.agents.core import create_core_agent
     return await create_core_agent(settings)
 
@@ -116,7 +113,7 @@ async def cmd_run(args: argparse.Namespace) -> int:
     settings = get_settings()
     before = fingerprint_source(repo)
     with sandbox(repo, settings, args.keep) as (s, lease):
-        agent = await build_agent(args.engine, s)
+        agent = await build_agent(s)
         result = await agent.ainvoke(
             {"messages": [HumanMessage(content=task_prompt(args.query, lease.path, args.selector))]},
             config={"recursion_limit": s.agent.recursion_limit},
@@ -149,7 +146,7 @@ async def cmd_solve(args: argparse.Namespace) -> int:
         repo=Path(args.repo).resolve(),
         issue_text=args.query,
         selectors=args.selector,
-        runtime=Runtime(engine=args.engine, keep_workspace=args.keep),
+        runtime=Runtime(keep_workspace=args.keep),
     )
     print(f"[status] {state['status']} after {state.get('attempts', 0)} attempt(s), "
           f"{state.get('tool_call_count', 0)} tool call(s)")
@@ -162,7 +159,7 @@ async def cmd_solve(args: argparse.Namespace) -> int:
 async def cmd_chat(args: argparse.Namespace) -> int:
     repo = Path(args.repo).resolve()
     with sandbox(repo, get_settings(), args.keep) as (s, lease):
-        agent = await build_agent(args.engine, s)
+        agent = await build_agent(s)
         history: list[BaseMessage] = []
         print("Type a task (empty line or Ctrl-D to quit).")
         while True:
@@ -200,7 +197,6 @@ def parser() -> argparse.ArgumentParser:
     sv.add_argument("query")
     sv.add_argument("--repo", required=True)
     sv.add_argument("--selector", action="append", required=True, help="pytest selector; repeatable")
-    sv.add_argument("--engine", choices=["langchain", "langgraph"], default="langchain")
     sv.add_argument("--keep", action="store_true", help="keep temp dir")
     sv.set_defaults(fn=cmd_solve)
 
@@ -210,7 +206,6 @@ def parser() -> argparse.ArgumentParser:
             sp.add_argument("query")
         sp.add_argument("--repo", required=True)
         sp.add_argument("--selector", help="pytest selector, e.g. tests/test_x.py::test_y")
-        sp.add_argument("--engine", choices=["langchain", "langgraph"], default="langchain")
         sp.add_argument("--keep", action="store_true", help="keep temp dir")
         sp.set_defaults(fn=fn)
     return p

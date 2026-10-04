@@ -196,10 +196,12 @@ class PythonGraphBuilderTests(unittest.TestCase):
 
 
 class GraphBuilderRegressionTests(unittest.TestCase):
-    def _build(self, source: str, *, use_jedi: bool = False) -> dict:
+    def _build(self, source: str, *, use_jedi: bool = False, path: str = "app.py") -> dict:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
-            (root / "app.py").write_text(source, encoding="utf-8")
+            target = root / path
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_text(source, encoding="utf-8")
             return PythonGraphBuilder(
                 repo_key="demo/regression",
                 repository_revision="regression",
@@ -216,9 +218,10 @@ class GraphBuilderRegressionTests(unittest.TestCase):
     def test_repeated_test_calls_keep_callsites_and_one_tests_relation(self) -> None:
         document = self._build(
             "def helper():\n    return 1\n\n"
-            "def test_helper():\n    helper()\n    helper()\n"
+            "def test_helper():\n    helper()\n    helper()\n",
+            path="tests/test_app.py",
         )
-        self.assertEqual(self._targets(document), ["app.helper", "app.helper"])
+        self.assertEqual(self._targets(document), ["tests.test_app.helper", "tests.test_app.helper"])
         self.assertEqual(sum(edge["type"] == "TESTS" for edge in document["edges"]), 1)
         self.assertEqual(len({edge["id"] for edge in document["edges"]}), len(document["edges"]))
 
@@ -227,9 +230,10 @@ class GraphBuilderRegressionTests(unittest.TestCase):
             "def test_outer():\n"
             "    def test_helper():\n        return 1\n"
             "    class Worker:\n        pass\n"
-            "    test_helper()\n    Worker()\n"
+            "    test_helper()\n    Worker()\n",
+            path="tests/test_app.py",
         )
-        self.assertEqual(set(self._targets(document)), {"app.test_outer.test_helper", "app.test_outer.Worker"})
+        self.assertEqual(set(self._targets(document)), {"tests.test_app.test_outer.test_helper", "tests.test_app.test_outer.Worker"})
         self.assertEqual(sum(node["type"] == "Test" for node in document["nodes"]), 1)
 
     def test_nested_function_shadows_module_function(self) -> None:

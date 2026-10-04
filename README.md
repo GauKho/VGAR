@@ -85,7 +85,7 @@ vgar doctor                # in settings đã resolve, không load model
 vgar tools                 # dựng 3 MCP server, liệt kê 8 tool
 vgar index tests/fixtures/m2/failing_repo --db artifacts/graph.db
 vgar run "Fix the failing test" --repo tests/fixtures/m2/failing_repo `
-    --selector tests/test_demo.py::test_answer --engine langgraph
+    --selector tests/test_demo.py::test_answer
 vgar chat --repo tests/fixtures/m2/failing_repo        # REPL, giữ lịch sử hội thoại
 ```
 
@@ -102,8 +102,6 @@ Tùy chọn của `run` và `chat`:
 | Cờ | Ý nghĩa |
 |---|---|
 | `--selector tests/x.py::test_y` | pytest selector. Với `run`, CLI tự chạy lại pytest độc lập sau khi agent xong |
-| `--engine langchain` (mặc định) | `create_agent` của langchain, trong `agents/core.py` |
-| `--engine langgraph` | `StateGraph` tự dựng, trong `agents/graph.py` |
 | `--keep` | Giữ thư mục tạm để kiểm tra sau |
 
 ### Cách `run` và `chat` hoạt động
@@ -117,6 +115,7 @@ REPO ──index──► graph.db (tạm, backend=sqlite)
 
 - Repo gốc không bị sửa. CLI so sánh fingerprint trước và sau, rồi in `source repo untouched`.
 - Exit code của `run` là 0 khi pytest độc lập PASS và repo gốc không đổi, ngược lại là 1. Nếu không truyền `--selector`, bước pytest độc lập bị bỏ qua.
+- `VGAR_MAX_TOOL_CALLS` (mặc định 30) là giới hạn **cứng cho mỗi lượt chạy agent** (một `ainvoke`; với `solve` là mỗi lần retry). Khi chạm giới hạn, lời gọi tool tiếp theo bị chặn và lượt đó kết thúc; bước pytest độc lập vẫn chạy sau đó. Cơ chế nằm trong `agents/core.py`.
 - `run` và `chat` luôn dùng graph tạm của chính REPO, bất kể `VGAR_GRAPH_BACKEND` trong `.env`. `.env` chỉ quyết định backend cho `vgar tools` và các script.
 
 ### Smoke test

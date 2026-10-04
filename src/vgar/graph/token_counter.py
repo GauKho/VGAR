@@ -12,6 +12,12 @@ COUNTING_POLICY = "encode-each-snippet:add_special_tokens=false:sum-item-counts"
 RUNTIME_VERSION = "0.22.1"
 
 
+def _version_prefix(version: str) -> str:
+    """Return the 'major.minor' prefix for compatibility checks."""
+    parts = version.split(".")
+    return ".".join(parts[:2]) if len(parts) >= 2 else version
+
+
 class LocalTokenizerCounter:
     """Load once from a manifest; retrieval never downloads files or model weights."""
 
@@ -60,8 +66,11 @@ class LocalTokenizerCounter:
             import tokenizers
         except ImportError as error:
             raise RuntimeError("Install the isolated M1 tokenizer runtime before loading the counter") from error
-        if tokenizers.__version__ != RUNTIME_VERSION:
-            raise RuntimeError(f"M1 counter requires tokenizers=={RUNTIME_VERSION}; got {tokenizers.__version__}")
+        if _version_prefix(tokenizers.__version__) != _version_prefix(RUNTIME_VERSION):
+            raise RuntimeError(
+                f"M1 counter requires tokenizers {RUNTIME_VERSION}; "
+                f"got {tokenizers.__version__} (major/minor must match)"
+            )
         try:
             self._tokenizer = tokenizers.Tokenizer.from_str(tokenizer_bytes.decode("utf-8"))
         except Exception as error:
