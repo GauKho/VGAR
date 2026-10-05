@@ -778,6 +778,8 @@ class PythonGraphBuilder:
 
     def _link_inheritance(self) -> None:
         for record in self.classes:
+            if record.module_name not in self.modules:
+                continue
             module = self.modules[record.module_name]
             for position, base_expression in enumerate(record.bases, start=1):
                 target_id = self._resolve_symbol(
@@ -806,6 +808,8 @@ class PythonGraphBuilder:
     def _resolve_calls(self) -> None:
         test_targets: dict[tuple[str, str], float] = {}
         for call in self.calls:
+            if call.module_name not in self.modules:
+                continue
             module = self.modules[call.module_name]
             has_lexical_binding, target_id = self._resolve_lexical_binding(call)
             if not has_lexical_binding:

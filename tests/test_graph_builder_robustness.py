@@ -101,3 +101,56 @@ def test_test_named_function_outside_test_file_is_not_a_test(tmp_path: Path) -> 
     document = _build(tmp_path)
     assert _ids(document, "Test") == []
     assert len(_ids(document, "Method")) == 1
+
+
+def test_orphaned_class_from_failed_module_does_not_crash(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    _write(tmp_path, "src/pkg/good.py", "class Base: pass\n")
+    _write(tmp_path, "src/pkg/bad.py", "class Derived(Base): pass\n")
+
+    original = PythonGraphBuilder._extract_class
+
+    def flaky(self, *args, **kwargs):  # type: ignore[no-untyped-def]
+        module = args[2] if len(args) > 2 else kwargs.get("module")
+        if module and module.path.endswith("bad.py"):
+            raise RuntimeError("synthetic parse failure in bad.py")
+        return original(self, *args, **kwargs)
+
+    monkeypatch.setattr(PythonGraphBuilder, "_extract_class", flaky)
+    document = _build(tmp_path)
+
+    assert document["statistics"]["failed_file_count"] == 1
+    assert any("bad.py" in f["path"] for f in document["statistics"]["failed_files"])
+    paths = {n["path"] for n in document["nodes"] if n.get("path")}
+    assert paths == {"src/pkg/good.py"}
+    classes = [n for n in document["nodes"] if n["type"] == "Class"]
+    class_names = {n["name"] for n in classes}
+    assert "Base" in class_names
+    assert "Derived" not in class_names
+
+
+def test_orphaned_call_from_failed_module_does_not_crash(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    _write(
+        tmp_path, "src/pkg/good.py",
+        "def target():\n    return 1\n\ndef caller():\n    return target()\n",
+    )
+    _write(tmp_path, "src/pkg/bad.py", "def bad_caller():\n    return target()\n")
+
+    original = PythonGraphBuilder._extract_call
+
+    def flaky(self, node, source, module, *args, **kwargs):  # type: ignore[no-untyped-def]
+        if module.path.endswith("bad.py"):
+            raise RuntimeError("synthetic parse failure in bad.py")
+        return original(self, node, source, module, *args, **kwargs)
+
+    monkeypatch.setattr(PythonGraphBuilder, "_extract_call", flaky)
+    document = _build(tmp_path)
+
+    assert document["statistics"]["failed_file_count"] == 1
+    paths = {n["path"] for n in document["nodes"] if n.get("path")}
+    assert paths == {"src/pkg/good.py"}
+    call_edges = [e for e in document["edges"] if e["type"] == "CALLS"]
+    assert len(call_edges) >= 1
