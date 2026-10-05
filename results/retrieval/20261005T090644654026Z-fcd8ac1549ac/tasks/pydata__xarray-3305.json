@@ -1,0 +1,7 @@
+{
+  "instance_id": "pydata__xarray-3305",
+  "status": "FAILED",
+  "error_class": "KeyError",
+  "error": "'xarray.core.dataarray'",
+  "duration_seconds": 4.121565500001452
+}

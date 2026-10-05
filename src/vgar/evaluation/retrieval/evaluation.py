@@ -2,53 +2,63 @@ import json
 import time
 from pathlib import Path
 
-from .bm25 import BM25, pack_context
 from .chunks import extract_chunks
-from .dataset import read_repository_sources, validate_task
+from .dataset import read_repository_sources, require_split, validate_task
 from .evidence import new_run, sha256, source_fingerprint, utc_now, write_json
 from .gold_labels import extract_gold
-from .metrics import aggregate_metrics, evaluate_ranking, unique
+from .metrics import aggregate_metrics
+from .scoring import (FALLBACK_COUNTER_LABEL, SCORING_VERSION, bm25_rank, bytes_div4_counter, flat_metrics,
+                      score_record)
+
+DEFAULT_BUDGET_TOKENS = 8000      # decision W5-6: one shared budget
+DEFAULT_SNIPPET_LINES = 80        # same snippet policy for every arm
+TOP_DETAIL = 100                  # ranked rows saved with metadata; the FULL order is saved as rank_order
 
 
-def evaluate_task(task, sources, budget_tokens=4000, k1=1.2, b=0.75):
+def evaluate_task(task, sources, budget_tokens=DEFAULT_BUDGET_TOKENS, counter=None, counter_label=None,
+                  k1=1.2, b=0.75, max_snippet_lines=DEFAULT_SNIPPET_LINES):
+    """BM25 arm. Produces ONE rank, then scores it in two modes (rank = primary, packed = secondary)."""
     validate_task(task)
+    if counter is None:
+        counter, counter_label = bytes_div4_counter, FALLBACK_COUNTER_LABEL
+    elif not counter_label:
+        raise ValueError("A custom counter needs an explicit counter_label")
     started = time.perf_counter()
     chunks, parse_failures = extract_chunks(sources)
     if not chunks:
         raise ValueError("No parseable source chunks")
     corpus_hash = sha256(json.dumps({path: sha256(source) for path, source in sorted(sources.items())}, sort_keys=True))
-    engine = BM25(chunks, k1=k1, b=b)
-    index_seconds = time.perf_counter() - started
+    chunk_seconds = time.perf_counter() - started
     started = time.perf_counter()
-    ranked = engine.search(task["problem_statement"])
-    # Ranking and context have been frozen before gold patch is opened/extracted.
-    context = pack_context(ranked, budget_tokens)
-    retrieval_seconds = time.perf_counter() - started
+    record = bm25_rank(task["instance_id"], task["problem_statement"], sources, k1=k1, b=b,
+                       chunks=chunks, failures=parse_failures)
+    rank_seconds = time.perf_counter() - started
+    # Ranking is frozen (rank_hash) before the developer patch is opened.
+    frozen_hash = record.rank_hash
     gold = extract_gold(task["patch"], sources)
-    metrics = evaluate_ranking(ranked, gold)
-    metrics.update(context_token_estimate=context["total_token_count"], index_seconds=index_seconds,
-                   retrieval_seconds=retrieval_seconds, mapping_coverage=gold["mapping_coverage"],
+    scored = score_record(record, gold, budget_tokens=budget_tokens, counter=counter, counter_label=counter_label,
+                          max_snippet_lines=max_snippet_lines)
+    if scored["rank_hash"] != frozen_hash:
+        raise RuntimeError("Ranking changed after gold extraction")
+    metrics = flat_metrics(scored)
+    metrics.update(chunk_seconds=chunk_seconds, rank_seconds=rank_seconds, mapping_coverage=gold["mapping_coverage"],
                    file_retrievability_coverage=gold["file_retrievability_coverage"])
-    # Save first 20 unique files/functions even if large parent creates many windows.
-    selected, seen_file, seen_function = [], set(), set()
-    for item in ranked:
-        if len(selected) < 100 or item["path"] not in seen_file and len(seen_file) < 20 or item["parent_id"] not in seen_function and len(seen_function) < 20:
-            selected.append(item)
-        seen_file.add(item["path"])
-        if item["kind"] != "module":
-            seen_function.add(item["parent_id"])
+    detail = record.to_json()
     return {"instance_id": task["instance_id"], "repository": task["repo"], "base_commit": task["base_commit"],
-            "status": "SUCCEEDED", "query": task["problem_statement"], "query_hash": sha256(task["problem_statement"]),
-            "patch_hash": sha256(task["patch"]), "corpus_hash": corpus_hash, "corpus_chunk_count": len(chunks),
-            "parse_failures": parse_failures, "gold": gold, "ranked": selected, "ranking_saved_count": len(selected),
-            "ranking_total_count": len(ranked), "context": context, "metrics": metrics,
-            "ranked_identity_order": {"files": unique(c["path"] for c in ranked),
-                                      "functions": unique(c["parent_id"] for c in ranked if c["kind"] != "module")},
-            "context_metrics": evaluate_ranking(context["items"], gold),
-            "candidate_map": [{k: c[k] for k in ("chunk_id", "parent_id", "path", "symbol", "kind", "start_line", "end_line", "parent_start_line", "parent_end_line", "source_hash", "snippet")} for c in chunks]}
+            "status": "SUCCEEDED", "arm": "bm25", "query": task["problem_statement"],
+            "query_hash": sha256(task["problem_statement"]), "patch_hash": sha256(task["patch"]),
+            "corpus_hash": corpus_hash, "corpus_chunk_count": len(chunks), "parse_failures": parse_failures,
+            "gold": gold, "rank_hash": frozen_hash, "ranking_total_count": len(record.items),
+            "ranked": detail["items"][:TOP_DETAIL],
+            "rank_order": [i.item_id for i in record.items],     # full order: any budget/counter can be re-scored
+            "scoring": scored, "metrics": metrics,
+            "candidate_map": [{k: c[k] for k in ("chunk_id", "parent_id", "path", "symbol", "kind", "start_line", "end_line",
+                                                 "parent_start_line", "parent_end_line", "source_hash", "snippet")}
+                              for c in chunks]}
 
 
-def evaluate_manifest(root, manifest_path, limit=None, budget_tokens=4000, offline=False, resume=None):
+def evaluate_manifest(root, manifest_path, limit=None, budget_tokens=DEFAULT_BUDGET_TOKENS, offline=False, resume=None,
+                      counter=None, counter_label=None, max_snippet_lines=DEFAULT_SNIPPET_LINES, allow_heldout=False):
     root, manifest_path = Path(root), Path(manifest_path)
     manifest_bytes = manifest_path.read_bytes()
     manifest = json.loads(manifest_bytes)
@@ -56,10 +66,21 @@ def evaluate_manifest(root, manifest_path, limit=None, budget_tokens=4000, offli
         raise ValueError("Manifest tasks must be nonempty and limit/budget positive")
     for task in manifest["tasks"]:
         validate_task(task)
+    require_split(manifest, allowed=("dev", "heldout") if allow_heldout else ("dev",))
     if len({t["instance_id"] for t in manifest["tasks"]}) != len(manifest["tasks"]):
         raise ValueError("Duplicate tasks in manifest")
+    fallback = counter is None
+    if fallback:
+        counter, counter_label = bytes_div4_counter, FALLBACK_COUNTER_LABEL
+        print("WARNING: using fallback bytes/4 counter; token numbers are NOT comparable with M1 LocalTokenizerCounter",
+              flush=True)
+    elif not counter_label:
+        raise ValueError("A custom counter needs an explicit counter_label")
     config = {"manifest_hash": sha256(manifest_bytes), "budget_tokens": budget_tokens, "k1": 1.2, "b": 0.75,
-              "token_policy": "utf8_bytes_ceil_div4", "window_lines": 80, "overlap_lines": 16, "limit": limit}
+              "scoring_version": SCORING_VERSION, "counter_label": counter_label, "counter_is_fallback": fallback,
+              "snippet_policy": {"max_snippet_lines": max_snippet_lines, "header": True,
+                                 "overlap": "skip_if_overlaps_different_group"},
+              "window_lines": 80, "overlap_lines": 16, "limit": limit}
     source = source_fingerprint(root)
     binding = sha256(json.dumps({"config": config, "source": source["digest"]}, sort_keys=True))
     previous = {}
@@ -73,7 +94,7 @@ def evaluate_manifest(root, manifest_path, limit=None, budget_tokens=4000, offli
                 if summary.get("artifact_hash") != sha256(artifact):
                     raise ValueError("Resume artifact hash/integrity mismatch")
                 full = json.loads(artifact)
-                if full["instance_id"] != summary["instance_id"] or any(k not in full for k in ("gold", "context", "candidate_map", "ranked")):
+                if full["instance_id"] != summary["instance_id"] or any(k not in full for k in ("gold", "scoring", "rank_order", "candidate_map", "ranked")):
                     raise ValueError("Incomplete/tampered resume task artifact")
                 row = next((t for t in manifest["tasks"] if t["instance_id"] == full["instance_id"]), None)
                 if row is None or any(full[key] != row[key] for key in ("base_commit", "query_hash", "patch_hash")) or full["repository"] != row["repo"] or full["metrics"] != summary["metrics"] or full["corpus_hash"] != summary["corpus_hash"]:
@@ -100,12 +121,14 @@ def evaluate_manifest(root, manifest_path, limit=None, budget_tokens=4000, offli
                 result = dict(previous[row["instance_id"]], resumed=True)
             else:
                 sources, provenance = read_repository_sources(row, root / "data" / "repositories", network=not offline)
-                result = evaluate_task(dict(row, patch=patch), sources, budget_tokens)
+                result = evaluate_task(dict(row, patch=patch), sources, budget_tokens, counter=counter,
+                                       counter_label=counter_label, max_snippet_lines=max_snippet_lines)
                 result["source_provenance"] = provenance
             # Gold-free handoff material exists in both fresh and resumed runs.
             request = {"instance_id": result["instance_id"], "repository": result["repository"], "base_commit": result["base_commit"],
                        "query": result["query"], "query_hash": result["query_hash"], "corpus_hash": result["corpus_hash"],
-                       "budget_tokens": budget_tokens, "token_policy": config["token_policy"], "candidates": result["candidate_map"]}
+                       "budget_tokens": budget_tokens, "counter_label": counter_label, "scoring_version": SCORING_VERSION,
+                       "candidates": result["candidate_map"]}
             write_json(directory / "m1_requests" / f"{row['instance_id']}.json", request)
             result["duration_seconds"] = time.perf_counter() - task_start
             write_json(directory / "tasks" / f"{row['instance_id']}.json", result)
@@ -116,7 +139,7 @@ def evaluate_manifest(root, manifest_path, limit=None, budget_tokens=4000, offli
             record["stderr"] += f"{row['instance_id']}: {type(exc).__name__}: {exc}\n"
             write_json(directory / "tasks" / f"{row['instance_id']}.json", result)
             artifact_hash = sha256((directory / "tasks" / f"{row['instance_id']}.json").read_bytes())
-        record["task_results"].append({k: result[k] for k in result if k not in {"ranked", "context", "candidate_map", "gold", "query"}})
+        record["task_results"].append({k: result[k] for k in result if k not in {"ranked", "rank_order", "scoring", "candidate_map", "gold", "query"}})
         record["task_results"][-1]["artifact_hash"] = artifact_hash
         message = f"[{number}/{len(tasks)}] {row['instance_id']}: {result['status']} ({result['duration_seconds']:.2f}s)"
         print(message, flush=True)

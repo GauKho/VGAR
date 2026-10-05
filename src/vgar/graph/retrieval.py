@@ -95,7 +95,7 @@ class GraphContextRetriever:
 
     def retrieve(
         self, anchor_ids: list[str], budget_tokens: int, *,
-        issue_text: str = "", overlay: TaskOverlay | None = None,
+        issue_text: str = "", overlay: TaskOverlay | None = None, include: Callable[[dict[str, Any]], bool] | None = None,
     ) -> RetrievalResult:
         if isinstance(budget_tokens, bool) or not isinstance(budget_tokens, int) or budget_tokens <= 0:
             raise InvalidLimitError("budget_tokens must be a positive integer")
@@ -134,13 +134,17 @@ class GraphContextRetriever:
         weight_sum = sum(self.config.weights[name] for name in available)
         if weight_sum <= 0:
             raise InvalidQueryError("active ranking features must have positive total weight")
-        states, limited = self._walk(anchors, anchor_scores)
+        states, limited = self._walk(anchors, anchor_scores, include)
         test_states, test_limited = self._walk(failing_tests, {})
         task_words = _words(issue_text)
         history_max = max(self.change_counts.values(), default=0) if self.change_counts is not None else 0
         candidates = []
+        filtered_by_include = 0
         for node_id, (distance, confidence, rationale) in states.items():
             node = self.nodes[node_id]
+            if include is not None and (not include(node) or node["qualified_name"].startswith("tests.")):
+                filtered_by_include += 1
+                continue
             words = _words(" ".join((node["name"], node["qualified_name"], node["path"],
                                     node["properties"].get("signature", ""))))
             public = node["properties"].get("visibility") == "public"
@@ -171,6 +175,9 @@ class GraphContextRetriever:
             selected: list[tuple[str, int, int]] = []
             for candidate in candidates:
                 node = self.nodes[candidate["node_id"]]
+                if include is not None and (not include(node) or node["qualified_name"].startswith("tests.")):
+                    filtered_by_include += 1
+                    continue
                 source_range = node["range"]
                 start, end = source_range["start_byte"], source_range["end_byte"]
                 if node["path"] not in sources:
@@ -206,7 +213,8 @@ class GraphContextRetriever:
         diagnostics = asdict(self.config)
         diagnostics.update({"profile": "semantic-context-v1", "active_features": available,
                             "normalized_weights": {name: self.config.weights[name] / weight_sum for name in available},
-                            "failing_test_traversal_limited": test_limited})
+                            "failing_test_traversal_limited": test_limited,
+                            "filtered_by_include": filtered_by_include})
         return RetrievalResult(result, overlay.overlay_id if overlay else None, self.counter_label,
                                diagnostics, candidates, omissions, limited, unavailable, self.history_label)
 
@@ -246,7 +254,13 @@ class GraphContextRetriever:
 
     def _walk(
         self, starts: list[str], scores: dict[str, float],
+        include: Callable[[dict[str, Any]], bool] | None = None,
     ) -> tuple[dict[str, tuple[int, float, tuple[str, ...]]], bool]:
+        def counts(node_id: str) -> bool:
+            return include is None or include(self.nodes[node_id])
+
+        hard_cap = self.config.max_candidates * 4
+        kept = 0
         states: dict[str, tuple[int, float, tuple[str, ...]]] = {}
         queue = []
         ordered = sorted(set(starts), key=lambda node_id: (-scores.get(node_id, 1.0), node_id))
@@ -254,6 +268,7 @@ class GraphContextRetriever:
         for node_id in ordered[:self.config.max_candidates]:
             confidence = scores.get(node_id, 1.0)
             states[node_id] = (0, confidence, ("TASK_ANCHOR",))
+            kept += 1
             heapq.heappush(queue, (0, -confidence, node_id, ("TASK_ANCHOR",)))
         while queue:
             distance, negative, node_id, rationale = heapq.heappop(queue)
@@ -267,9 +282,15 @@ class GraphContextRetriever:
                     candidate[0], -candidate[1], candidate[2]
                 ):
                     continue
-                if existing is None and len(states) >= self.config.max_candidates:
-                    limited = True
-                    continue
+                if existing is None:
+                    if counts(target):
+                        if kept >= self.config.max_candidates:
+                            limited = True
+                            continue
+                        kept += 1
+                    elif len(states) >= hard_cap:
+                        limited = True
+                        continue
                 states[target] = candidate
                 heapq.heappush(queue, (candidate[0], -candidate[1], target, candidate[2]))
         return states, limited

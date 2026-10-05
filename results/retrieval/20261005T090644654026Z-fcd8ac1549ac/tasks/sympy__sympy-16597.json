@@ -1,0 +1,7 @@
+{
+  "instance_id": "sympy__sympy-16597",
+  "status": "FAILED",
+  "error_class": "KeyError",
+  "error": "'sympy.core.tests.test_arit'",
+  "duration_seconds": 110.30251119999957
+}

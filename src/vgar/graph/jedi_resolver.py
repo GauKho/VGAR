@@ -79,7 +79,7 @@ class JediSymbolResolver:
             )
             if not definitions:
                 definitions = script.infer(line=line, column=column)
-        except (ValueError, OSError):
+        except Exception:  # noqa: BLE001 - jedi can raise various internal errors
             return []
 
         results: list[JediResolution] = []

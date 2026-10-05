@@ -1,0 +1,7 @@
+{
+  "instance_id": "django__django-11138",
+  "status": "FAILED",
+  "error_class": "KeyError",
+  "error": "WindowsPath('C:/Users/nlhnh/AppData/Roaming/Python/Python311/site-packages/numpy/_core/einsumfunc.pyi')",
+  "duration_seconds": 132.30200220000552
+}

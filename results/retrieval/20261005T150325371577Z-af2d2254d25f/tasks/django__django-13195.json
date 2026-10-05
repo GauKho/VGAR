@@ -1,0 +1,7 @@
+{
+  "instance_id": "django__django-13195",
+  "status": "FAILED",
+  "error_class": "KeyError",
+  "error": "WindowsPath('D:/kltn/vgar_mcp_mvp_demo/data/repositories/trees/django__django-156a2138db20abc89933121e4ff2ee2ce56a173a/django/contrib/admin/options.py')",
+  "duration_seconds": 53.63657989999774
+}

@@ -1,0 +1,7 @@
+{
+  "instance_id": "astropy__astropy-8707",
+  "status": "FAILED",
+  "error_class": "KeyError",
+  "error": "WindowsPath('D:/kltn/vgar_mcp_mvp_demo/data/repositories/trees/astropy__astropy-a85a0747c54bac75e9c3b2fe436b105ea029d6cf/astropy/constants/constant.py')",
+  "duration_seconds": 41.58747819999553
+}

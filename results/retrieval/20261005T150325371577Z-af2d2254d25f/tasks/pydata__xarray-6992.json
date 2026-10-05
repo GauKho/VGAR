@@ -1,0 +1,7 @@
+{
+  "instance_id": "pydata__xarray-6992",
+  "status": "FAILED",
+  "error_class": "KeyError",
+  "error": "WindowsPath('C:/Users/nlhnh/AppData/Roaming/Python/Python311/site-packages/yaml/error.py')",
+  "duration_seconds": 30.330893100006506
+}

@@ -1,0 +1,7 @@
+{
+  "instance_id": "sympy__sympy-20438",
+  "status": "FAILED",
+  "error_class": "AttributeError",
+  "error": "'PurePosixPath' object has no attribute 'type'",
+  "duration_seconds": 0.043624199999612756
+}

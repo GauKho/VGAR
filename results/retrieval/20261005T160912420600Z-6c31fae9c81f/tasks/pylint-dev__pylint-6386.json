@@ -1,0 +1,7 @@
+{
+  "instance_id": "pylint-dev__pylint-6386",
+  "status": "FAILED",
+  "error_class": "AttributeError",
+  "error": "'PurePosixPath' object has no attribute 'type'",
+  "duration_seconds": 0.03992229999857955
+}

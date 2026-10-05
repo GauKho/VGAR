@@ -1,0 +1,7 @@
+{
+  "instance_id": "sympy__sympy-20438",
+  "status": "FAILED",
+  "error_class": "KeyError",
+  "error": "'vgar:sympy__sympy:python:class:sympy/core/numbers.py:sympy.core.numbers.Float'",
+  "duration_seconds": 118.71679229999427
+}

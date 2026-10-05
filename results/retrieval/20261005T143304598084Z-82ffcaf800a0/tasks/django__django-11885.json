@@ -1,0 +1,7 @@
+{
+  "instance_id": "django__django-11885",
+  "status": "FAILED",
+  "error_class": "KeyError",
+  "error": "WindowsPath('C:/Program Files/Python311/Lib/traceback.py')",
+  "duration_seconds": 35.49300460000086
+}

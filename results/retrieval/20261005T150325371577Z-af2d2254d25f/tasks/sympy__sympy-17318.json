@@ -1,0 +1,7 @@
+{
+  "instance_id": "sympy__sympy-17318",
+  "status": "FAILED",
+  "error_class": "KeyError",
+  "error": "WindowsPath('D:/kltn/vgar_mcp_mvp_demo/data/repositories/trees/sympy__sympy-d4e0231b08147337745dcf601e62de7eefe2fb2d/bin/coverage_doctest.py')",
+  "duration_seconds": 96.91059379999933
+}

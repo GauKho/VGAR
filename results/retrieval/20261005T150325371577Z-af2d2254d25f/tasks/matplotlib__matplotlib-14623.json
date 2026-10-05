@@ -1,0 +1,7 @@
+{
+  "instance_id": "matplotlib__matplotlib-14623",
+  "status": "FAILED",
+  "error_class": "KeyError",
+  "error": "WindowsPath('D:/kltn/vgar_mcp_mvp_demo/data/repositories/trees/matplotlib__matplotlib-d65c9ca20ddf81ef91199e6d819f9d3506ef477c/lib/matplotlib/_layoutbox.py')",
+  "duration_seconds": 61.10599819999334
+}

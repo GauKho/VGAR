@@ -1,0 +1,7 @@
+{
+  "instance_id": "pylint-dev__pylint-6386",
+  "status": "FAILED",
+  "error_class": "KeyError",
+  "error": "WindowsPath('C:/Users/nlhnh/AppData/Roaming/Python/Python311/site-packages/jedi/third_party/typeshed/stdlib/asyncio/base_events.pyi')",
+  "duration_seconds": 19.772170600001118
+}

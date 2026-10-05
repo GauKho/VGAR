@@ -1,0 +1,7 @@
+{
+  "instance_id": "sphinx-doc__sphinx-8120",
+  "status": "FAILED",
+  "error_class": "AttributeError",
+  "error": "'PurePosixPath' object has no attribute 'type'",
+  "duration_seconds": 0.04935079999995651
+}

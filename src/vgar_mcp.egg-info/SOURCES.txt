@@ -4,7 +4,6 @@ src/vgar/__init__.py
 src/vgar/cli.py
 src/vgar/agents/__init__.py
 src/vgar/agents/core.py
-src/vgar/agents/graph.py
 src/vgar/agents/routes.py
 src/vgar/agents/runtime.py
 src/vgar/agents/state.py
@@ -12,8 +11,6 @@ src/vgar/agents/workflow.py
 src/vgar/agents/nodes/__init__.py
 src/vgar/agents/nodes/finalize.py
 src/vgar/agents/nodes/initialize.py
-src/vgar/agents/nodes/model.py
-src/vgar/agents/nodes/observe.py
 src/vgar/agents/nodes/prepare.py
 src/vgar/agents/nodes/repair.py
 src/vgar/agents/nodes/verify.py
@@ -27,6 +24,20 @@ src/vgar/contracts/evidence.py
 src/vgar/contracts/graph.py
 src/vgar/contracts/repair.py
 src/vgar/contracts/schema.py
+src/vgar/evaluation/__init__.py
+src/vgar/evaluation/retrieval/__init__.py
+src/vgar/evaluation/retrieval/bm25.py
+src/vgar/evaluation/retrieval/chunks.py
+src/vgar/evaluation/retrieval/compare.py
+src/vgar/evaluation/retrieval/dataset.py
+src/vgar/evaluation/retrieval/evaluation.py
+src/vgar/evaluation/retrieval/evidence.py
+src/vgar/evaluation/retrieval/gold_labels.py
+src/vgar/evaluation/retrieval/graph_arm.py
+src/vgar/evaluation/retrieval/m1_adapter.py
+src/vgar/evaluation/retrieval/metrics.py
+src/vgar/evaluation/retrieval/report.py
+src/vgar/evaluation/retrieval/scoring.py
 src/vgar/graph/__init__.py
 src/vgar/graph/builder.py
 src/vgar/graph/demo_service.py

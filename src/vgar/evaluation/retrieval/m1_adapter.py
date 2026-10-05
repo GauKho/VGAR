@@ -1,4 +1,5 @@
-"""Sidecar metadata + frozen M1 ContextPayload; no invented graph relations."""
+"""LEGACY (packed-context only, bytes/4 token policy). Superseded by scoring.py (rank + packed from one rank).
+Kept for the frozen ContextPayload shape validation; do not use compare_run with scoring-v1 artifacts."""
 import math
 import json
 import time
@@ -114,6 +115,8 @@ def compare_run(run, exports, results_root):
             if task.get("artifact_hash") and task["artifact_hash"] != sha256(artifact):
                 raise ValueError("BM25 task artifact hash mismatch")
             result = json.loads(artifact)
+            if result.get("scoring_version"):
+                raise ValueError("Legacy compare_run needs pre-scoring-v1 artifacts; use scoring.graph_rank + score_record")
             context = adapt_context(json.loads(export_path.read_text(encoding="utf-8")), result)
             report["pairs"].append({"instance_id": instance, "export_hash": sha256(export_path.read_bytes()),
                                    "graph_metrics": evaluate_ranking(context["items"], result["gold"]),

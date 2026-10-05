@@ -1,0 +1,7 @@
+{
+  "instance_id": "django__django-11734",
+  "status": "FAILED",
+  "error_class": "AttributeError",
+  "error": "'PurePosixPath' object has no attribute 'type'",
+  "duration_seconds": 0.06261709999671439
+}

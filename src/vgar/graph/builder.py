@@ -500,7 +500,7 @@ class PythonGraphBuilder:
             rule_id="python.scope.class.v1",
             properties={"ordinal": ordinal},
         )
-        if self.nodes_by_id[parent_id]["type"] == "Module":
+        if self.nodes_by_id.get(parent_id, {}).get("type") == "Module":
             module.definitions[name] = node_id
         self.symbols_by_qualified_name[qualified_name] = node_id
         self.classes.append(
@@ -760,6 +760,8 @@ class PythonGraphBuilder:
                     resolution = "exact"
                     status = "resolved"
 
+                if import_id not in self.nodes_by_id:
+                    continue
                 self.nodes_by_id[import_id]["properties"]["resolution_status"] = status
                 properties = self.nodes_by_id[import_id]["properties"]
                 self._add_edge(
@@ -788,6 +790,8 @@ class PythonGraphBuilder:
                     owner_class_name=None,
                 )
                 if target_id is None:
+                    continue
+                if target_id not in self.nodes_by_id:
                     continue
                 target = self.nodes_by_id[target_id]
                 if target["type"] != "Class":
@@ -822,10 +826,14 @@ class PythonGraphBuilder:
             if target_id is None:
                 target_id = self._resolve_call_with_jedi(call)
                 resolved_by_jedi = target_id is not None
+            if call.node_id not in self.nodes_by_id:
+                continue
             call_node = self.nodes_by_id[call.node_id]
             if target_id is None:
                 continue
 
+            if target_id not in self.nodes_by_id:
+                continue
             target = self.nodes_by_id[target_id]
             if target["type"] not in {"Function", "Method", "Class"}:
                 continue
@@ -937,6 +945,8 @@ class PythonGraphBuilder:
             return False, None
         name = call.callee_text.split(".", 1)[0]
         if not name.isidentifier():
+            return False, None
+        if call.caller_id not in self.nodes_by_id:
             return False, None
         scope_name = self.nodes_by_id[call.caller_id]["qualified_name"]
         while scope_name != call.module_name:

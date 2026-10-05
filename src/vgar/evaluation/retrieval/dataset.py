@@ -1,4 +1,5 @@
 """Pinned HF snapshot, deterministic pilot manifest and bounded source-only Git cache."""
+import hashlib
 import json
 import re
 import tarfile
@@ -10,6 +11,31 @@ from pathlib import Path
 from .chunks import decode_source, is_source, normalize_path
 from .evidence import sha256, write_json
 from .gold_labels import parse_patch
+
+
+# ---- Split policy (decision W5-6): dev 40% / held-out 60%, by hash of instance_id ----
+DEV_PERCENT = 40
+SPLIT_POLICY = "sha256_instance_id_first8hex_mod100_lt40_dev_v1"
+SPLITS = ("dev", "heldout")
+
+
+def split_of(instance_id, dev_percent=DEV_PERCENT):
+    """Deterministic split. Depends only on instance_id: stable across machines, runs and dataset order."""
+    bucket = int(hashlib.sha256(instance_id.encode("utf-8")).hexdigest()[:8], 16) % 100
+    return "dev" if bucket < dev_percent else "heldout"
+
+
+def require_split(manifest, allowed=("dev",)):
+    """Guard: refuse to evaluate a manifest that contains tasks outside the allowed split(s).
+    The split is RECOMPUTED from instance_id, so a hand-edited 'split' field cannot bypass it."""
+    declared = manifest.get("split")
+    if declared not in allowed:
+        raise ValueError(f"Manifest split is {declared!r}; allowed {list(allowed)}. Regenerate it with scripts/prepare_manifest.py "
+                         "(held-out needs an explicit --allow-heldout and a recorded decision)")
+    for task in manifest.get("tasks", []):
+        actual = split_of(task["instance_id"])
+        if actual not in allowed or task.get("split") != actual:
+            raise ValueError(f"Task {task['instance_id']} is {actual!r} (manifest field: {task.get('split')!r}); allowed {list(allowed)}")
 
 
 def validate_task(row):
@@ -27,22 +53,33 @@ def changed_source_files(patch):
     return sorted({c["old_path"] or c["new_path"] for c in parse_patch(patch) if is_source(c["old_path"] or c["new_path"] or "")})
 
 
-def select_tasks(rows, count=25):
+def select_tasks(rows, count=25, split="dev", min_source_files=2):
+    """Pick `count` tasks from ONE split. Round-robin over repos keeps the pilot diverse.
+    min_source_files=2 -> multi-file pilot; min_source_files=1 -> retrieval pool that also contains single-file tasks."""
     if count < 1:
         raise ValueError("Task count must be positive")
+    if split not in SPLITS:
+        raise ValueError(f"split must be one of {SPLITS}")
+    if min_source_files < 1:
+        raise ValueError("min_source_files must be >= 1")
     groups, excluded, seen = defaultdict(list), [], set()
+    raw_by_split = {name: 0 for name in SPLITS}
     for row in rows:
         validate_task(row)
         if row["instance_id"] in seen:
             raise ValueError("Duplicate instance ID")
         seen.add(row["instance_id"])
+        row_split = split_of(row["instance_id"])
+        raw_by_split[row_split] += 1
+        if row_split != split:
+            continue                       # other split: counted, never inspected further
         try:
             paths = changed_source_files(row["patch"])
         except ValueError as exc:
             excluded.append({"instance_id": row["instance_id"], "reason": str(exc)})
             continue
-        if len(paths) < 2:
-            excluded.append({"instance_id": row["instance_id"], "reason": "fewer_than_two_source_python_files"})
+        if len(paths) < min_source_files:
+            excluded.append({"instance_id": row["instance_id"], "reason": f"fewer_than_{min_source_files}_source_python_files"})
             continue
         groups[row["repo"]].append(row)
     for values in groups.values():
@@ -50,13 +87,14 @@ def select_tasks(rows, count=25):
     selected, position = [], 0
     eligible = sum(map(len, groups.values()))
     if eligible < count:
-        raise ValueError(f"Only {eligible} eligible tasks; requested {count}")
+        raise ValueError(f"Only {eligible} eligible {split} tasks; requested {count}")
     while len(selected) < count:
         for repo in sorted(groups):
             if position < len(groups[repo]) and len(selected) < count:
                 selected.append(groups[repo][position])
         position += 1
-    return selected, {"raw_count": len(seen), "eligible_count": eligible, "excluded": excluded,
+    return selected, {"raw_count": len(seen), "raw_by_split": raw_by_split, "split": split, "min_source_files": min_source_files,
+                      "eligible_count": eligible, "excluded": excluded,
                       "selection_policy": "repo_round_robin_then_instance_id_v1", "seed": None,
                       "eligible_by_repo": {k: len(v) for k, v in sorted(groups.items())}}
 
@@ -79,7 +117,7 @@ def download(url, destination, max_bytes=100_000_000):
         temporary.unlink(missing_ok=True)
 
 
-def prepare_dataset(root, count=25, dataset_id="princeton-nlp/SWE-bench_Verified", revision=None):
+def prepare_dataset(root, count=25, dataset_id="princeton-nlp/SWE-bench_Verified", revision=None, split="dev", min_source_files=2):
     import pyarrow.parquet as parquet
     root = Path(root)
     if dataset_id not in {"princeton-nlp/SWE-bench_Verified", "SWE-bench/SWE-bench_Verified"}:
@@ -105,7 +143,7 @@ def prepare_dataset(root, count=25, dataset_id="princeton-nlp/SWE-bench_Verified
         downloads.append({"path": str(local.relative_to(root)), "hash": sha256(local.read_bytes())})
         for batch in parquet.ParquetFile(local).iter_batches(batch_size=64):
             rows.extend(batch.to_pylist())
-    selected, audit = select_tasks(rows, count)
+    selected, audit = select_tasks(rows, count, split=split, min_source_files=min_source_files)
     tasks = []
     for row in selected:
         patch_path = root / "data" / "gold" / "patches" / f"{row['instance_id']}.patch"
@@ -113,11 +151,14 @@ def prepare_dataset(root, count=25, dataset_id="princeton-nlp/SWE-bench_Verified
         patch_path.write_text(row["patch"], encoding="utf-8", newline="\n")
         tasks.append({k: row[k] for k in ("instance_id", "repo", "base_commit", "problem_statement", "difficulty") if k in row} | {
             "query_hash": sha256(row["problem_statement"]), "patch_hash": sha256(row["patch"]),
-            "gold_patch_path": patch_path.relative_to(root).as_posix(), "changed_source_files": changed_source_files(row["patch"])})
-    manifest = {"dataset_id": dataset_id, "dataset_revision": resolved, "split": "test", "purpose": "initial_retrieval_pilot_not_final_blind",
+            "gold_patch_path": patch_path.relative_to(root).as_posix(), "changed_source_files": changed_source_files(row["patch"]),
+            "split": split_of(row["instance_id"]), "is_multi_file": len(changed_source_files(row["patch"])) >= 2})
+    purpose = "retrieval_dev_tuning_allowed" if split == "dev" else "FINAL_HELDOUT_no_tuning_after_viewing"
+    manifest = {"dataset_id": dataset_id, "dataset_revision": resolved, "split": split, "purpose": purpose,
+                "split_policy": {"name": SPLIT_POLICY, "dev_percent": DEV_PERCENT}, "min_source_files": min_source_files,
                 "provisional_m3_alignment": True, "query_policy": "problem_statement_only_no_hints_or_gold", "target_count": count,
                 "downloads": downloads, "selection_audit": audit, "tasks": tasks}
-    destination = root / "data" / "manifests" / f"verified-{resolved[:12]}-{count}.json"
+    destination = root / "data" / "manifests" / f"verified-{resolved[:12]}-{split}-{count}.json"
     # Locked manifest: rerunning with same pinned input cannot replace a different selection.
     if destination.exists() and json.loads(destination.read_text(encoding="utf-8")) != manifest:
         raise ValueError("Existing locked manifest differs; choose a new experiment manifest")

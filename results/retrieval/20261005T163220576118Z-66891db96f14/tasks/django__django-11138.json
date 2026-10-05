@@ -1,0 +1,7 @@
+{
+  "instance_id": "django__django-11138",
+  "status": "FAILED",
+  "error_class": "MemoryError",
+  "error": "",
+  "duration_seconds": 56.85588730000018
+}

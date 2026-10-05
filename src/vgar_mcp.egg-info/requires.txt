@@ -1,7 +1,8 @@
 torch
 accelerate
-transformers>=4.51.0
+transformers<5,>=4.51.0
 safetensors
+tokenizers<=0.23.0,>=0.22.0
 langchain<2,>=1.4
 langgraph
 langchain-huggingface<2,>=1.2
@@ -12,6 +13,7 @@ pydantic>=2
 python-dotenv>=1.0
 tree-sitter==0.25.2
 tree-sitter-python==0.25.0
+pyarrow==23.0.1
 
 [dev]
 pytest<9,>=8

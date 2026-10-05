@@ -1,0 +1,7 @@
+{
+  "instance_id": "pydata__xarray-3993",
+  "status": "FAILED",
+  "error_class": "AttributeError",
+  "error": "'PurePosixPath' object has no attribute 'type'",
+  "duration_seconds": 0.04016480000427691
+}

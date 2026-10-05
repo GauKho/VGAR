@@ -68,6 +68,25 @@ class GraphRetrievalTests(unittest.TestCase):
         self.assertEqual(result.overlay_id, overlay.overlay_id)
         self.assertNotIn("failing_test_proximity", result.unavailable_features)
 
+    def test_include_filters_items_but_not_traversal_or_failing_test_proximity(self) -> None:
+        overlay = TaskOverlayBuilder(self.graph).build("login-task", "login fails", ["tests/test_auth.py::test_login"])
+        login = self.node_id("login")
+        retriever = self.retriever()
+        plain = retriever.retrieve([login], 1000, overlay=overlay)
+        filtered = retriever.retrieve([login], 1000, overlay=overlay, include=lambda node: node["type"] != "Test")
+        types = lambda result: {retriever.nodes[c["node_id"]]["type"] for c in result.candidates}
+        self.assertIn("Test", types(plain))
+        self.assertNotIn("Test", types(filtered))
+        self.assertFalse(any(item.symbol.startswith("tests.") for item in filtered.context.items))
+        self.assertGreater(filtered.config["filtered_by_include"], 0)
+        self.assertEqual(plain.config["filtered_by_include"], 0)
+        # Test nodes still serve failing_test_proximity of the remaining candidates.
+        kept = next(c for c in filtered.candidates if c["node_id"] == login)
+        self.assertEqual(kept["features"]["failing_test_proximity"], 0.5)
+        # include=None keeps the legacy behaviour exactly.
+        self.assertEqual([c["node_id"] for c in plain.candidates],
+                         [c["node_id"] for c in retriever.retrieve([login], 1000, overlay=overlay).candidates])
+
     def test_missing_features_are_explicit_and_history_needs_provenance(self) -> None:
         result = self.retriever().retrieve([self.node_id("login")], 1000, issue_text="login")
         self.assertIn("recent_change_frequency", result.unavailable_features)

@@ -1,0 +1,7 @@
+{
+  "instance_id": "django__django-13212",
+  "status": "FAILED",
+  "error_class": "KeyError",
+  "error": "WindowsPath('D:/kltn/vgar_mcp_mvp_demo/data/repositories/trees/django__django-f4e93919e4608cfc50849a1f764fd856e0917401/django/conf/urls/static.py')",
+  "duration_seconds": 62.90764889999991
+}

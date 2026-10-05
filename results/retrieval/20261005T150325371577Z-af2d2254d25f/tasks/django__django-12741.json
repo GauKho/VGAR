@@ -1,0 +1,7 @@
+{
+  "instance_id": "django__django-12741",
+  "status": "FAILED",
+  "error_class": "KeyError",
+  "error": "WindowsPath('C:/Users/nlhnh/AppData/Roaming/Python/Python311/site-packages/jedi/third_party/django-stubs/django-stubs/views/generic/list.pyi')",
+  "duration_seconds": 75.72888220000459
+}
