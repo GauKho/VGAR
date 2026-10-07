@@ -1,0 +1,288 @@
+{
+  "run_id": "20261006T153435535180Z-2f47aac71190",
+  "kind": "milestone-6-retrieval-mcp-target",
+  "status": "FAIL",
+  "started_utc": "2026-10-06T15:34:35.536188+00:00",
+  "complete": true,
+  "python": "3.11.6 (tags/v3.11.6:8b6ee5b, Oct  2 2023, 14:57:12) [MSC v.1935 64 bit (AMD64)]",
+  "interpreter": "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe",
+  "platform": "Windows-10-10.0.26300-SP0",
+  "command_argv": [
+    "-c"
+  ],
+  "cwd": "D:\\Project\\CAPSTONES\\VGAR",
+  "command": "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe -m pytest -q -p no:cacheprovider --junitxml=D:\\Project\\CAPSTONES\\VGAR\\.m2-pytest-0q86moz9\\junit.xml tests/test_w5_w6_retrieval_mcp.py tests/test_mcp_tool_contract.py tests/test_sqlite_graph_service.py",
+  "argv": [
+    "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "--junitxml=D:\\Project\\CAPSTONES\\VGAR\\.m2-pytest-0q86moz9\\junit.xml",
+    "tests/test_w5_w6_retrieval_mcp.py",
+    "tests/test_mcp_tool_contract.py",
+    "tests/test_sqlite_graph_service.py"
+  ],
+  "exit_code": 1,
+  "duration_ms": 3890,
+  "stdout": "..........FF............................                                 [100%]\r\n================================== FAILURES ===================================\r\n__ test_sqlite_roundtrip_preserves_full_snapshot_source_ranges_and_language ___\r\n\r\ngraph = (WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-465/test_sqlite_roundtrip_preserve0/repo'), {'edges':...90>, WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-465/test_sqlite_roundtrip_preserve0/audit.jsonl'))\r\n\r\n    def test_sqlite_roundtrip_preserves_full_snapshot_source_ranges_and_language(graph):\r\n        store = SQLiteGraphStore(graph[2].database_path)\r\n>       assert store.get_graph_document() == graph[1]\r\nE       AssertionError: assert {'edges': [{'...fixture', ...} == {'edges': [{'...fixture', ...}\r\nE         \r\nE         Omitting 4 identical items, use -vv to show\r\nE         Differing items:\r\nE         {'nodes': [{'content_hash': 'sha256:baaaab28496b45ea4f46d490ad31237d61d734fa433d52abb00348943e104ada', 'graph_version'...8167f75b6ee4851ccf80efb0e8a3141644d0e6a2e32deeda84765f5c57f', 'id': 'vgar:fixture:repository', 'language': None, ...}]} != {'nodes': [{'content_hash': 'sha256:cae662172fd450bb0cd710a769079c05bfc5d8e35efa6576edc7d0377afdd4a2', 'graph_version'...44d0e6a2e32deeda84765f5c57f', 'id': 'vgar:fixture:python:function:src/demo.py:demo.other', 'language': 'python', ...}]}\r\nE         {'edges': [{'confidence': 1.0, 'g...\r\nE         \r\nE         ...Full output truncated (2 lines hidden), use '-vv' to show\r\n\r\ntests\\test_w5_w6_retrieval_mcp.py:55: AssertionError\r\n_____ test_task_handles_survive_service_recreation_and_do_not_mix_issues ______\r\n\r\ngraph = (WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-465/test_task_handles_survive_serv0/repo'), {'edges':...90>, WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-465/test_task_handles_survive_serv0/audit.jsonl'))\r\n\r\n    def test_task_handles_survive_service_recreation_and_do_not_mix_issues(graph):\r\n        first = service(graph)\r\n        a = first.find_task_anchors(\"demo.answer returns wrong value\")\r\n        b = first.find_task_anchors(\"demo.answer must return a different value\")\r\n        assert a[\"task_handle\"] != b[\"task_handle\"] and a[\"anchor_ids\"] == b[\"anchor_ids\"]\r\n        second = service(graph)\r\n        one = second.get_related_context(a[\"anchor_ids\"], 1000, a[\"task_handle\"])\r\n        two = second.get_related_context(b[\"anchor_ids\"], 1000, b[\"task_handle\"])\r\n        assert one.context.graph_version == two.context.graph_version == graph[1][\"graph_version\"]\r\n        assert one.overlay_id != two.overlay_id\r\n        assert one.context.total_token_count <= 1000 and one.context.items\r\n>       assert graph[2].get_graph_document() == graph[1], \"task overlays must not change repository graph\"\r\nE       AssertionError: task overlays must not change repository graph\r\nE       assert {'edges': [{'...fixture', ...} == {'edges': [{'...fixture', ...}\r\nE         \r\nE         Omitting 4 identical items, use -vv to show\r\nE         Differing items:\r\nE         {'nodes': [{'content_hash': 'sha256:baaaab28496b45ea4f46d490ad31237d61d734fa433d52abb00348943e104ada', 'graph_version'...8167f75b6ee4851ccf80efb0e8a3141644d0e6a2e32deeda84765f5c57f', 'id': 'vgar:fixture:repository', 'language': None, ...}]} != {'nodes': [{'content_hash': 'sha256:cae662172fd450bb0cd710a769079c05bfc5d8e35efa6576edc7d0377afdd4a2', 'graph_version'...44d0e6a2e32deeda84765f5c57f', 'id': 'vgar:fixture:python:function:src/demo.py:demo.other', 'language': 'python', ...}]}\r\nE         {'edges': [{'confidence': 1.0, 'g...\r\nE         \r\nE         ...Full output truncated (2 lines hidden), use '-vv' to show\r\n\r\ntests\\test_w5_w6_retrieval_mcp.py:69: AssertionError\r\n- generated xml file: D:\\Project\\CAPSTONES\\VGAR\\.m2-pytest-0q86moz9\\junit.xml -\r\n=========================== short test summary info ===========================\r\nFAILED tests/test_w5_w6_retrieval_mcp.py::test_sqlite_roundtrip_preserves_full_snapshot_source_ranges_and_language\r\nFAILED tests/test_w5_w6_retrieval_mcp.py::test_task_handles_survive_service_recreation_and_do_not_mix_issues\r\n2 failed, 38 passed in 2.98s\r\n",
+  "stderr": "",
+  "timeout_seconds": 120.0,
+  "cases": [
+    {
+      "name": "tests.test_w5_w6_retrieval_mcp::test_relation_depth_is_not_echoed_without_real_traversal[0-get_callers]",
+      "status": "PASS",
+      "duration_ms": 41,
+      "detail": null
+    },
+    {
+      "name": "tests.test_w5_w6_retrieval_mcp::test_relation_depth_is_not_echoed_without_real_traversal[0-get_callees]",
+      "status": "PASS",
+      "duration_ms": 38,
+      "detail": null
+    },
+    {
+      "name": "tests.test_w5_w6_retrieval_mcp::test_relation_depth_is_not_echoed_without_real_traversal[2-get_callers]",
+      "status": "PASS",
+      "duration_ms": 35,
+      "detail": null
+    },
+    {
+      "name": "tests.test_w5_w6_retrieval_mcp::test_relation_depth_is_not_echoed_without_real_traversal[2-get_callees]",
+      "status": "PASS",
+      "duration_ms": 34,
+      "detail": null
+    },
+    {
+      "name": "tests.test_w5_w6_retrieval_mcp::test_relation_depth_is_not_echoed_without_real_traversal[-1-get_callers]",
+      "status": "PASS",
+      "duration_ms": 40,
+      "detail": null
+    },
+    {
+      "name": "tests.test_w5_w6_retrieval_mcp::test_relation_depth_is_not_echoed_without_real_traversal[-1-get_callees]",
+      "status": "PASS",
+      "duration_ms": 33,
+      "detail": null
+    },
+    {
+      "name": "tests.test_w5_w6_retrieval_mcp::test_relation_depth_is_not_echoed_without_real_traversal[True-get_callers]",
+      "status": "PASS",
+      "duration_ms": 32,
+      "detail": null
+    },
+    {
+      "name": "tests.test_w5_w6_retrieval_mcp::test_relation_depth_is_not_echoed_without_real_traversal[True-get_callees]",
+      "status": "PASS",
+      "duration_ms": 35,
+      "detail": null
+    },
+    {
+      "name": "tests.test_w5_w6_retrieval_mcp::test_resource_decodes_percent_encoded_real_graph_node[graph_node]",
+      "status": "PASS",
+      "duration_ms": 44,
+      "detail": null
+    },
+    {
+      "name": "tests.test_w5_w6_retrieval_mcp::test_resource_decodes_percent_encoded_real_graph_node[graph_subgraph]",
+      "status": "PASS",
+      "duration_ms": 40,
+      "detail": null
+    },
+    {
+      "name": "tests.test_w5_w6_retrieval_mcp::test_sqlite_roundtrip_preserves_full_snapshot_source_ranges_and_language",
+      "status": "FAIL",
+      "duration_ms": 35,
+      "detail": "graph = (WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-465/test_sqlite_roundtrip_preserve0/repo'), {'edges':...90>, WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-465/test_sqlite_roundtrip_preserve0/audit.jsonl'))\n\n    def test_sqlite_roundtrip_preserves_full_snapshot_source_ranges_and_language(graph):\n        store = SQLiteGraphStore(graph[2].database_path)\n>       assert store.get_graph_document() == graph[1]\nE       AssertionError: assert {'edges': [{'...fixture', ...} == {'edges': [{'...fixture', ...}\nE         \nE         Omitting 4 identical items, use -vv to show\nE         Differing items:\nE         {'nodes': [{'content_hash': 'sha256:baaaab28496b45ea4f46d490ad31237d61d734fa433d52abb00348943e104ada', 'graph_version'...8167f75b6ee4851ccf80efb0e8a3141644d0e6a2e32deeda84765f5c57f', 'id': 'vgar:fixture:repository', 'language': None, ...}]} != {'nodes': [{'content_hash': 'sha256:cae662172fd450bb0cd710a769079c05bfc5d8e35efa6576edc7d0377afdd4a2', 'graph_version'...44d0e6a2e32deeda84765f5c57f', 'id': 'vgar:fixture:python:function:src/demo.py:demo.other', 'language': 'python', ...}]}\nE         {'edges': [{'confidence': 1.0, 'g...\nE         \nE         ...Full output truncated (2 lines hidden), use '-vv' to show\n\ntests\\test_w5_w6_retrieval_mcp.py:55: AssertionError"
+    },
+    {
+      "name": "tests.test_w5_w6_retrieval_mcp::test_task_handles_survive_service_recreation_and_do_not_mix_issues",
+      "status": "FAIL",
+      "duration_ms": 76,
+      "detail": "graph = (WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-465/test_task_handles_survive_serv0/repo'), {'edges':...90>, WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-465/test_task_handles_survive_serv0/audit.jsonl'))\n\n    def test_task_handles_survive_service_recreation_and_do_not_mix_issues(graph):\n        first = service(graph)\n        a = first.find_task_anchors(\"demo.answer returns wrong value\")\n        b = first.find_task_anchors(\"demo.answer must return a different value\")\n        assert a[\"task_handle\"] != b[\"task_handle\"] and a[\"anchor_ids\"] == b[\"anchor_ids\"]\n        second = service(graph)\n        one = second.get_related_context(a[\"anchor_ids\"], 1000, a[\"task_handle\"])\n        two = second.get_related_context(b[\"anchor_ids\"], 1000, b[\"task_handle\"])\n        assert one.context.graph_version == two.context.graph_version == graph[1][\"graph_version\"]\n        assert one.overlay_id != two.overlay_id\n        assert one.context.total_token_count <= 1000 and one.context.items\n>       assert graph[2].get_graph_document() == graph[1], \"task overlays must not change repository graph\"\nE       AssertionError: task overlays must not change repository graph\nE       assert {'edges': [{'...fixture', ...} == {'edges': [{'...fixture', ...}\nE         \nE         Omitting 4 identical items, use -vv to show\nE         Differing items:\nE         {'nodes': [{'content_hash': 'sha256:baaaab28496b45ea4f46d490ad31237d61d734fa433d52abb00348943e104ada', 'graph_version'...8167f75b6ee4851ccf80efb0e8a3141644d0e6a2e32deeda84765f5c57f', 'id': 'vgar:fixture:repository', 'language': None, ...}]} != {'nodes': [{'content_hash': 'sha256:cae662172fd450bb0cd710a769079c05bfc5d8e35efa6576edc7d0377afdd4a2', 'graph_version'...44d0e6a2e32deeda84765f5c57f', 'id': 'vgar:fixture:python:function:src/demo.py:demo.other', 'language': 'python', ...}]}\nE         {'edges': [{'confidence': 1.0, 'g...\nE         \nE         ...Full output truncated (2 lines hidden), use '-vv' to show\n\ntests\\test_w5_w6_retrieval_mcp.py:69: AssertionError"
+    },
+    {
+      "name": "tests.test_w5_w6_retrieval_mcp::test_mcp_tools_return_frozen_context_and_task_diagnostics_in_metadata",
+      "status": "PASS",
+      "duration_ms": 45,
+      "detail": null
+    },
+    {
+      "name": "tests.test_w5_w6_retrieval_mcp::test_unknown_handle_bad_anchors_budget_and_stale_source_fail_closed",
+      "status": "PASS",
+      "duration_ms": 49,
+      "detail": null
+    },
+    {
+      "name": "tests.test_w5_w6_retrieval_mcp::test_handle_from_prior_graph_version_is_rejected_not_rebound",
+      "status": "PASS",
+      "duration_ms": 52,
+      "detail": null
+    },
+    {
+      "name": "tests.test_w5_w6_retrieval_mcp::test_no_anchor_is_empty_context_with_diagnostics_not_fake_match",
+      "status": "PASS",
+      "duration_ms": 43,
+      "detail": null
+    },
+    {
+      "name": "tests.test_w5_w6_retrieval_mcp::test_demo_backend_reports_retrieval_unavailable_not_fake_evidence",
+      "status": "PASS",
+      "duration_ms": 2,
+      "detail": null
+    },
+    {
+      "name": "tests.test_mcp_tool_contract::test_fixtures_are_valid_envelopes",
+      "status": "PASS",
+      "duration_ms": 1,
+      "detail": null
+    },
+    {
+      "name": "tests.test_mcp_tool_contract::test_success_matches_fixture_shape",
+      "status": "PASS",
+      "duration_ms": 9,
+      "detail": null
+    },
+    {
+      "name": "tests.test_mcp_tool_contract::test_error_matches_fixture_shape",
+      "status": "PASS",
+      "duration_ms": 5,
+      "detail": null
+    },
+    {
+      "name": "tests.test_mcp_tool_contract::test_relation_tools_pass_with_data[get_callers-callers]",
+      "status": "PASS",
+      "duration_ms": 6,
+      "detail": null
+    },
+    {
+      "name": "tests.test_mcp_tool_contract::test_relation_tools_pass_with_data[get_callees-callees]",
+      "status": "PASS",
+      "duration_ms": 6,
+      "detail": null
+    },
+    {
+      "name": "tests.test_mcp_tool_contract::test_unknown_symbol_is_node_not_found[get_callers]",
+      "status": "PASS",
+      "duration_ms": 4,
+      "detail": null
+    },
+    {
+      "name": "tests.test_mcp_tool_contract::test_unknown_symbol_is_node_not_found[get_callees]",
+      "status": "PASS",
+      "duration_ms": 4,
+      "detail": null
+    },
+    {
+      "name": "tests.test_mcp_tool_contract::test_empty_query_and_bad_limit_have_distinct_codes",
+      "status": "PASS",
+      "duration_ms": 3,
+      "detail": null
+    },
+    {
+      "name": "tests.test_mcp_tool_contract::test_unexpected_exception_is_internal_error_without_leak",
+      "status": "PASS",
+      "duration_ms": 3,
+      "detail": null
+    },
+    {
+      "name": "tests.test_mcp_tool_contract::test_every_call_is_audited_including_errors",
+      "status": "PASS",
+      "duration_ms": 6,
+      "detail": null
+    },
+    {
+      "name": "tests.test_mcp_tool_contract::test_request_ids_are_unique",
+      "status": "PASS",
+      "duration_ms": 11,
+      "detail": null
+    },
+    {
+      "name": "tests.test_mcp_tool_contract::test_resource_read_is_audited_and_errors_are_logged",
+      "status": "PASS",
+      "duration_ms": 6,
+      "detail": null
+    },
+    {
+      "name": "tests.test_mcp_tool_contract::test_demo_backend_uses_the_same_error_code",
+      "status": "PASS",
+      "duration_ms": 3,
+      "detail": null
+    },
+    {
+      "name": "tests.test_sqlite_graph_service.SQLiteGraphServiceContractTests::test_error_result_matches_frozen_json_fixture",
+      "status": "PASS",
+      "duration_ms": 43,
+      "detail": null
+    },
+    {
+      "name": "tests.test_sqlite_graph_service.SQLiteGraphServiceContractTests::test_get_callees_matches_m3_contract",
+      "status": "PASS",
+      "duration_ms": 44,
+      "detail": null
+    },
+    {
+      "name": "tests.test_sqlite_graph_service.SQLiteGraphServiceContractTests::test_get_callers_matches_m3_contract",
+      "status": "PASS",
+      "duration_ms": 46,
+      "detail": null
+    },
+    {
+      "name": "tests.test_sqlite_graph_service.SQLiteGraphServiceContractTests::test_get_importers_rejects_non_module",
+      "status": "PASS",
+      "duration_ms": 41,
+      "detail": null
+    },
+    {
+      "name": "tests.test_sqlite_graph_service.SQLiteGraphServiceContractTests::test_get_node_returns_range_and_properties",
+      "status": "PASS",
+      "duration_ms": 31,
+      "detail": null
+    },
+    {
+      "name": "tests.test_sqlite_graph_service.SQLiteGraphServiceContractTests::test_query_validation_has_stable_error_codes",
+      "status": "PASS",
+      "duration_ms": 32,
+      "detail": null
+    },
+    {
+      "name": "tests.test_sqlite_graph_service.SQLiteGraphServiceContractTests::test_relation_confidence_threshold_is_configurable_in_store",
+      "status": "PASS",
+      "duration_ms": 36,
+      "detail": null
+    },
+    {
+      "name": "tests.test_sqlite_graph_service.SQLiteGraphServiceContractTests::test_search_symbols_matches_m3_contract",
+      "status": "PASS",
+      "duration_ms": 31,
+      "detail": null
+    },
+    {
+      "name": "tests.test_sqlite_graph_service.SQLiteGraphServiceContractTests::test_success_results_match_frozen_json_fixtures",
+      "status": "PASS",
+      "duration_ms": 36,
+      "detail": null
+    },
+    {
+      "name": "tests.test_sqlite_graph_service.SQLiteGraphServiceContractTests::test_unknown_symbol_matches_demo_service_behavior",
+      "status": "PASS",
+      "duration_ms": 34,
+      "detail": null
+    }
+  ],
+  "case_counts": {
+    "passed": 38,
+    "failed": 2,
+    "error": 0,
+    "skipped": 0
+  },
+  "reason": {
+    "code": "TEST_FAILED",
+    "message": "Pytest assertions failed"
+  },
+  "output_truncated": false,
+  "stdout_bytes": 4155,
+  "stderr_bytes": 0,
+  "ended_utc": "2026-10-06T15:34:39.502872+00:00"
+}

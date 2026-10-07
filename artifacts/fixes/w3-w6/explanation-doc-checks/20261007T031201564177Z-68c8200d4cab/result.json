@@ -1,0 +1,306 @@
+{
+  "run_id": "20261007T031201564177Z-68c8200d4cab",
+  "kind": "explanation-structure-and-saved-evidence",
+  "status": "PASS",
+  "started_utc": "2026-10-07T03:12:01.564177+00:00",
+  "complete": true,
+  "python": "3.11.6 (tags/v3.11.6:8b6ee5b, Oct  2 2023, 14:57:12) [MSC v.1935 64 bit (AMD64)]",
+  "interpreter": "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe",
+  "platform": "Windows-10-10.0.26300-SP0",
+  "command_argv": [
+    "artifacts/fixes/w3-w6/verify_explanation_document.py"
+  ],
+  "cwd": "D:\\Project\\CAPSTONES\\VGAR",
+  "exit_code": 0,
+  "ended_utc": "2026-10-07T03:12:01.647587+00:00",
+  "duration_seconds": 0.033121100001153536,
+  "document": "D:\\Project\\CAPSTONES\\VGAR\\docs\\GIAI_THICH_VGAR_TRUOC_SAU_FIX_TUAN_3_6_VA_CACH_KIEM_THU.md",
+  "document_hash": "sha256:e272640e6019e30267c3927210d22ac6190194d4ab50caeaba4a6c152cc0c7fd",
+  "checks": [
+    {
+      "name": "13 requested sections",
+      "passed": true,
+      "detail": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "13"
+      ]
+    },
+    {
+      "name": "no unfinished placeholders",
+      "passed": true,
+      "detail": "Not a content-quality proof"
+    },
+    {
+      "name": "all audit identifiers explained",
+      "passed": true,
+      "detail": "F01-F12 / R01-R06"
+    },
+    {
+      "name": "unfinished before completed",
+      "passed": true,
+      "detail": "Status table order"
+    },
+    {
+      "name": "inline Python 1",
+      "passed": true,
+      "detail": "Python inline source parses; not executed"
+    },
+    {
+      "name": "inline Python 2",
+      "passed": true,
+      "detail": "Python inline source parses; not executed"
+    },
+    {
+      "name": "inline Python 3",
+      "passed": true,
+      "detail": "Python inline source parses; not executed"
+    },
+    {
+      "name": "saved evidence exists",
+      "passed": true,
+      "detail": "artifacts/fixes/w3-w6/20261006T142425974910Z-8fb13933b223/result.json"
+    },
+    {
+      "name": "saved evidence parses",
+      "passed": true,
+      "detail": "artifacts/fixes/w3-w6/20261006T142425974910Z-8fb13933b223/result.json"
+    },
+    {
+      "name": "saved evidence exists",
+      "passed": true,
+      "detail": "artifacts/fixes/w3-w6/20261006T143502696933Z-6cb5ab8fc972/result.json"
+    },
+    {
+      "name": "saved evidence parses",
+      "passed": true,
+      "detail": "artifacts/fixes/w3-w6/20261006T143502696933Z-6cb5ab8fc972/result.json"
+    },
+    {
+      "name": "saved evidence exists",
+      "passed": true,
+      "detail": "artifacts/fixes/w3-w6/20261006T155804375314Z-70ff70a28f6c/result.json"
+    },
+    {
+      "name": "saved evidence parses",
+      "passed": true,
+      "detail": "artifacts/fixes/w3-w6/20261006T155804375314Z-70ff70a28f6c/result.json"
+    },
+    {
+      "name": "saved evidence exists",
+      "passed": true,
+      "detail": "artifacts/fixes/w3-w6/20261007T012636266959Z-7ac7378bc98e/result.json"
+    },
+    {
+      "name": "saved evidence parses",
+      "passed": true,
+      "detail": "artifacts/fixes/w3-w6/20261007T012636266959Z-7ac7378bc98e/result.json"
+    },
+    {
+      "name": "saved evidence exists",
+      "passed": true,
+      "detail": "artifacts/fixes/w3-w6/benchmark-handoff/20261007T022932115081Z-785d8f78eb4e/result.json"
+    },
+    {
+      "name": "saved evidence parses",
+      "passed": true,
+      "detail": "artifacts/fixes/w3-w6/benchmark-handoff/20261007T022932115081Z-785d8f78eb4e/result.json"
+    },
+    {
+      "name": "saved evidence exists",
+      "passed": true,
+      "detail": "artifacts/fixes/w3-w6/doc-checks/20261007T023848631553Z-4a967f69cae2/result.json"
+    },
+    {
+      "name": "saved evidence parses",
+      "passed": true,
+      "detail": "artifacts/fixes/w3-w6/doc-checks/20261007T023848631553Z-4a967f69cae2/result.json"
+    },
+    {
+      "name": "saved evidence exists",
+      "passed": true,
+      "detail": "artifacts/fixes/w3-w6/host-source-binding/full-suite/20261007T022934073929Z-4a8c5e505aa4487993dca0fd82a2607f.json"
+    },
+    {
+      "name": "saved evidence parses",
+      "passed": true,
+      "detail": "artifacts/fixes/w3-w6/host-source-binding/full-suite/20261007T022934073929Z-4a8c5e505aa4487993dca0fd82a2607f.json"
+    },
+    {
+      "name": "saved evidence exists",
+      "passed": true,
+      "detail": "artifacts/fixes/w3-w6/host-source-binding/green/20261007T022850657004Z-ab7bcbcda011/result.json"
+    },
+    {
+      "name": "saved evidence parses",
+      "passed": true,
+      "detail": "artifacts/fixes/w3-w6/host-source-binding/green/20261007T022850657004Z-ab7bcbcda011/result.json"
+    },
+    {
+      "name": "saved evidence exists",
+      "passed": true,
+      "detail": "artifacts/fixes/w3-w6/host-source-binding/red/20261007T022822980290Z-56e0e1b5b2f0/result.json"
+    },
+    {
+      "name": "saved evidence parses",
+      "passed": true,
+      "detail": "artifacts/fixes/w3-w6/host-source-binding/red/20261007T022822980290Z-56e0e1b5b2f0/result.json"
+    },
+    {
+      "name": "saved evidence exists",
+      "passed": true,
+      "detail": "artifacts/fixes/w3-w6/manual10-no-jedi/baseline-recovery/20261007T020222087444Z-9d7a6463840c/result.json"
+    },
+    {
+      "name": "saved evidence parses",
+      "passed": true,
+      "detail": "artifacts/fixes/w3-w6/manual10-no-jedi/baseline-recovery/20261007T020222087444Z-9d7a6463840c/result.json"
+    },
+    {
+      "name": "saved evidence exists",
+      "passed": true,
+      "detail": "artifacts/fixes/w3-w6/manual10-no-jedi/completed/20261007T021118025559Z-44e2a8e0c817/result.json"
+    },
+    {
+      "name": "saved evidence parses",
+      "passed": true,
+      "detail": "artifacts/fixes/w3-w6/manual10-no-jedi/completed/20261007T021118025559Z-44e2a8e0c817/result.json"
+    },
+    {
+      "name": "saved evidence exists",
+      "passed": true,
+      "detail": "artifacts/fixes/w3-w6/milestone-3-recorder/20261006T144237228849Z-4325f253f000497e91f42f1d239d7a92.json"
+    },
+    {
+      "name": "saved evidence parses",
+      "passed": true,
+      "detail": "artifacts/fixes/w3-w6/milestone-3-recorder/20261006T144237228849Z-4325f253f000497e91f42f1d239d7a92.json"
+    },
+    {
+      "name": "saved evidence exists",
+      "passed": true,
+      "detail": "artifacts/fixes/w3-w6/milestone-4-final-recorder/20261006T145817942402Z-f51338144ff44baf9107386b9162e8fa.json"
+    },
+    {
+      "name": "saved evidence parses",
+      "passed": true,
+      "detail": "artifacts/fixes/w3-w6/milestone-4-final-recorder/20261006T145817942402Z-f51338144ff44baf9107386b9162e8fa.json"
+    },
+    {
+      "name": "saved evidence exists",
+      "passed": true,
+      "detail": "artifacts/fixes/w3-w6/milestone-5-final-lock-recorder/20261006T152645096811Z-b038ede0d432457686d956b8dae4f9d2.json"
+    },
+    {
+      "name": "saved evidence parses",
+      "passed": true,
+      "detail": "artifacts/fixes/w3-w6/milestone-5-final-lock-recorder/20261006T152645096811Z-b038ede0d432457686d956b8dae4f9d2.json"
+    },
+    {
+      "name": "saved evidence exists",
+      "passed": true,
+      "detail": "artifacts/m1/tokenizer-acceptance/tokenizer_manifest.json"
+    },
+    {
+      "name": "saved evidence parses",
+      "passed": true,
+      "detail": "artifacts/m1/tokenizer-acceptance/tokenizer_manifest.json"
+    },
+    {
+      "name": "saved evidence exists",
+      "passed": true,
+      "detail": "artifacts/reviews/2026-10-06-w1-w6/probes.json"
+    },
+    {
+      "name": "saved evidence parses",
+      "passed": true,
+      "detail": "artifacts/reviews/2026-10-06-w1-w6/probes.json"
+    },
+    {
+      "name": "saved evidence exists",
+      "passed": true,
+      "detail": "artifacts/reviews/2026-10-06-w1-w6/suite.json"
+    },
+    {
+      "name": "saved evidence parses",
+      "passed": true,
+      "detail": "artifacts/reviews/2026-10-06-w1-w6/suite.json"
+    },
+    {
+      "name": "saved evidence exists",
+      "passed": true,
+      "detail": "results/retrieval/20261007T013925676777Z-55ae5fb6a24a/result.json"
+    },
+    {
+      "name": "saved evidence parses",
+      "passed": true,
+      "detail": "results/retrieval/20261007T013925676777Z-55ae5fb6a24a/result.json"
+    },
+    {
+      "name": "saved evidence exists",
+      "passed": true,
+      "detail": "results/retrieval/20261007T014445273889Z-664d06a6c1c0/result.json"
+    },
+    {
+      "name": "saved evidence parses",
+      "passed": true,
+      "detail": "results/retrieval/20261007T014445273889Z-664d06a6c1c0/result.json"
+    },
+    {
+      "name": "saved evidence exists",
+      "passed": true,
+      "detail": "results/retrieval/20261007T022806825449Z-7e61dc92fe7b/result.json"
+    },
+    {
+      "name": "saved evidence parses",
+      "passed": true,
+      "detail": "results/retrieval/20261007T022806825449Z-7e61dc92fe7b/result.json"
+    },
+    {
+      "name": "historical suite claim",
+      "passed": true,
+      "detail": {
+        "passed": 359,
+        "failed": 0,
+        "error": 0,
+        "skipped": 4
+      }
+    },
+    {
+      "name": "historical dev25 claim",
+      "passed": true,
+      "detail": {
+        "SUCCEEDED": 19,
+        "FAILED": 3,
+        "ERROR": 3,
+        "NOT_RUN": 0
+      }
+    },
+    {
+      "name": "historical comparison claim",
+      "passed": true,
+      "detail": {
+        "paired_tasks": 19,
+        "status": "COMPARED_PARTIAL",
+        "exit_code": 1
+      }
+    },
+    {
+      "name": "document unchanged during validation",
+      "passed": true,
+      "detail": "sha256:e272640e6019e30267c3927210d22ac6190194d4ab50caeaba4a6c152cc0c7fd"
+    }
+  ],
+  "failures": [],
+  "limitations": "Read-only saved evidence/structure/syntax; no test/benchmark/model command executed or independently reproduced."
+}

@@ -1,0 +1,52 @@
+{
+  "run_id": "20261007T012518923284Z-0305790e711a",
+  "kind": "milestone-8-credential-filter-red",
+  "status": "FAIL",
+  "started_utc": "2026-10-07T01:25:18.923871+00:00",
+  "complete": true,
+  "python": "3.11.6 (tags/v3.11.6:8b6ee5b, Oct  2 2023, 14:57:12) [MSC v.1935 64 bit (AMD64)]",
+  "interpreter": "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe",
+  "platform": "Windows-10-10.0.26300-SP0",
+  "command_argv": [
+    "-c"
+  ],
+  "cwd": "D:\\Project\\CAPSTONES\\VGAR",
+  "command": "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe -m pytest -q -p no:cacheprovider --junitxml=D:\\Project\\CAPSTONES\\VGAR\\.m2-pytest-am3h3knw\\junit.xml tests/m2/test_retrieval_lifecycle.py::test_public_retrieval_worker_does_not_inherit_credentials",
+  "argv": [
+    "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "--junitxml=D:\\Project\\CAPSTONES\\VGAR\\.m2-pytest-am3h3knw\\junit.xml",
+    "tests/m2/test_retrieval_lifecycle.py::test_public_retrieval_worker_does_not_inherit_credentials"
+  ],
+  "exit_code": 1,
+  "duration_ms": 1156,
+  "stdout": "F                                                                        [100%]\r\n================================== FAILURES ===================================\r\n__________ test_public_retrieval_worker_does_not_inherit_credentials __________\r\ntests\\m2\\test_retrieval_lifecycle.py:96: in test_public_retrieval_worker_does_not_inherit_credentials\r\n    assert result[\"status\"] == \"SUCCEEDED\", result[\"stderr\"]\r\nE   AssertionError: Traceback (most recent call last):\r\r\nE       File \"<string>\", line 1, in <module>\r\r\nE     AssertionError: credential inherited\r\r\nE     \r\nE   assert 'ERROR' == 'SUCCEEDED'\r\nE     \r\nE     - SUCCEEDED\r\nE     + ERROR\r\n- generated xml file: D:\\Project\\CAPSTONES\\VGAR\\.m2-pytest-am3h3knw\\junit.xml -\r\n=========================== short test summary info ===========================\r\nFAILED tests/m2/test_retrieval_lifecycle.py::test_public_retrieval_worker_does_not_inherit_credentials\r\n1 failed in 0.49s\r\n",
+  "stderr": "",
+  "timeout_seconds": 30.0,
+  "cases": [
+    {
+      "name": "tests.m2.test_retrieval_lifecycle::test_public_retrieval_worker_does_not_inherit_credentials",
+      "status": "FAIL",
+      "duration_ms": 322,
+      "detail": "tests\\m2\\test_retrieval_lifecycle.py:96: in test_public_retrieval_worker_does_not_inherit_credentials\n    assert result[\"status\"] == \"SUCCEEDED\", result[\"stderr\"]\nE   AssertionError: Traceback (most recent call last):\n\nE       File \"<string>\", line 1, in <module>\n\nE     AssertionError: credential inherited\n\nE     \nE   assert 'ERROR' == 'SUCCEEDED'\nE     \nE     - SUCCEEDED\nE     + ERROR"
+    }
+  ],
+  "case_counts": {
+    "passed": 0,
+    "failed": 1,
+    "error": 0,
+    "skipped": 0
+  },
+  "reason": {
+    "code": "TEST_FAILED",
+    "message": "Pytest assertions failed"
+  },
+  "output_truncated": false,
+  "stdout_bytes": 927,
+  "stderr_bytes": 0,
+  "ended_utc": "2026-10-07T01:25:20.139850+00:00"
+}

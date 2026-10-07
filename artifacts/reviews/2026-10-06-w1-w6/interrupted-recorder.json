@@ -1,0 +1,14 @@
+{
+  "kind": "audit_diagnostic_attempt",
+  "command_argv": ["D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe", "-B", "scripts/record_m2_test.py", "tests", "--task-id", "audit-w1-w6-full", "--artifact-dir", "D:\\Project\\CAPSTONES\\.audit-tmp\\vgar-review-w1-w6-20261006\\tests", "--timeout-seconds", "240"],
+  "cwd": "D:\\Project\\CAPSTONES\\VGAR",
+  "status": "AUDIT_CANCELLED",
+  "exit_code": 1,
+  "duration_seconds": null,
+  "duration_note": "Exact duration was not captured; no duration is invented.",
+  "stdout": "",
+  "stderr": "",
+  "pytest_result": "NOT_OBTAINED",
+  "reason": "Recorder did not produce its pending artifact while performing the pre-test whole-repository source fingerprint. Auditor cancelled only the command started for this audit using its own execution session. This is not a failing pytest result.",
+  "followup": "Direct bounded run_tests wrapper executed by audit_checks.py suite; see suite.json and suite-invocation.json."
+}

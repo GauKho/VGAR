@@ -1,0 +1,158 @@
+{
+  "run_id": "20261006T145612758905Z-185f8c29e4ee",
+  "kind": "milestone-4-transport",
+  "status": "PASS",
+  "started_utc": "2026-10-06T14:56:12.758905+00:00",
+  "complete": true,
+  "python": "3.11.6 (tags/v3.11.6:8b6ee5b, Oct  2 2023, 14:57:12) [MSC v.1935 64 bit (AMD64)]",
+  "interpreter": "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe",
+  "platform": "Windows-10-10.0.26300-SP0",
+  "command_argv": [
+    "-c"
+  ],
+  "cwd": "D:\\Project\\CAPSTONES\\VGAR",
+  "command": "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe -m pytest -q -p no:cacheprovider --junitxml=D:\\Project\\CAPSTONES\\VGAR\\.m2-pytest-146w63u1\\junit.xml tests/test_mcp_workspace_guard.py tests/test_mcp_stdio_smoke.py",
+  "argv": [
+    "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "--junitxml=D:\\Project\\CAPSTONES\\VGAR\\.m2-pytest-146w63u1\\junit.xml",
+    "tests/test_mcp_workspace_guard.py",
+    "tests/test_mcp_stdio_smoke.py"
+  ],
+  "exit_code": 0,
+  "duration_ms": 49828,
+  "stdout": "............s.s.s..                                                      [100%]\r\n- generated xml file: D:\\Project\\CAPSTONES\\VGAR\\.m2-pytest-146w63u1\\junit.xml -\r\n16 passed, 3 skipped in 48.81s\r\n",
+  "stderr": "",
+  "timeout_seconds": 240.0,
+  "cases": [
+    {
+      "name": "tests.test_mcp_workspace_guard::test_host_workspace_setting_is_forwarded_and_unbound_clears_inherited_permission",
+      "status": "PASS",
+      "duration_ms": 11,
+      "detail": null
+    },
+    {
+      "name": "tests.test_mcp_workspace_guard::test_original_root_is_rejected_before_write_or_execution",
+      "status": "PASS",
+      "duration_ms": 7,
+      "detail": null
+    },
+    {
+      "name": "tests.test_mcp_workspace_guard::test_unbound_health_is_available_but_file_and_execution_tools_denied",
+      "status": "PASS",
+      "duration_ms": 7,
+      "detail": null
+    },
+    {
+      "name": "tests.test_mcp_workspace_guard::test_stale_lease_fails_closed",
+      "status": "PASS",
+      "duration_ms": 7,
+      "detail": null
+    },
+    {
+      "name": "tests.test_mcp_workspace_guard::test_path_and_test_selector_escape_rejected[../original/app.py]",
+      "status": "PASS",
+      "duration_ms": 7,
+      "detail": null
+    },
+    {
+      "name": "tests.test_mcp_workspace_guard::test_path_and_test_selector_escape_rejected[C:/outside.py]",
+      "status": "PASS",
+      "duration_ms": 7,
+      "detail": null
+    },
+    {
+      "name": "tests.test_mcp_workspace_guard::test_path_and_test_selector_escape_rejected[/outside.py]",
+      "status": "PASS",
+      "duration_ms": 7,
+      "detail": null
+    },
+    {
+      "name": "tests.test_mcp_workspace_guard::test_leased_read_patch_and_failed_patch_have_consistent_audit",
+      "status": "PASS",
+      "duration_ms": 31,
+      "detail": null
+    },
+    {
+      "name": "tests.test_mcp_workspace_guard::test_execution_uses_shared_m2_runner_and_saves_full_evidence[PASS-0-None]",
+      "status": "PASS",
+      "duration_ms": 18,
+      "detail": null
+    },
+    {
+      "name": "tests.test_mcp_workspace_guard::test_execution_uses_shared_m2_runner_and_saves_full_evidence[FAIL-1-TEST_FAILED]",
+      "status": "PASS",
+      "duration_ms": 19,
+      "detail": null
+    },
+    {
+      "name": "tests.test_mcp_workspace_guard::test_execution_uses_shared_m2_runner_and_saves_full_evidence[ERROR-None-TEST_TIMEOUT]",
+      "status": "PASS",
+      "duration_ms": 19,
+      "detail": null
+    },
+    {
+      "name": "tests.test_mcp_workspace_guard::test_real_execution_emits_junit_case_counts",
+      "status": "PASS",
+      "duration_ms": 440,
+      "detail": null
+    },
+    {
+      "name": "tests.test_mcp_workspace_guard::test_link_target_is_rejected_before_read_or_write",
+      "status": "NOT_RUN",
+      "duration_ms": 5,
+      "detail": "D:\\Project\\CAPSTONES\\VGAR\\tests\\test_mcp_workspace_guard.py:144: symlink creation unavailable"
+    },
+    {
+      "name": "tests.test_mcp_workspace_guard::test_workflow_binds_exact_created_workspace",
+      "status": "PASS",
+      "duration_ms": 2725,
+      "detail": null
+    },
+    {
+      "name": "tests.test_mcp_workspace_guard::test_root_symlink_cannot_redirect_lease_to_original",
+      "status": "NOT_RUN",
+      "duration_ms": 15,
+      "detail": "D:\\Project\\CAPSTONES\\VGAR\\tests\\test_mcp_workspace_guard.py:181: directory symlink creation unavailable"
+    },
+    {
+      "name": "tests.test_mcp_workspace_guard::test_oversize_exact_edit_never_writes",
+      "status": "PASS",
+      "duration_ms": 11,
+      "detail": null
+    },
+    {
+      "name": "tests.test_mcp_workspace_guard::test_selector_inside_lease_cannot_reference_external_symlink",
+      "status": "NOT_RUN",
+      "duration_ms": 11,
+      "detail": "D:\\Project\\CAPSTONES\\VGAR\\tests\\test_mcp_workspace_guard.py:200: directory symlink creation unavailable"
+    },
+    {
+      "name": "tests.test_mcp_stdio_smoke::test_real_stdio_smoke_saves_transcript_audit_patch_and_m2_evidence[smoke_w3_w4_full.py-args0-W3-W4 FULL SMOKE PASS]",
+      "status": "PASS",
+      "duration_ms": 27107,
+      "detail": null
+    },
+    {
+      "name": "tests.test_mcp_stdio_smoke::test_real_stdio_smoke_saves_transcript_audit_patch_and_m2_evidence[smoke_w3_w4_agent.py-args1-W3-W4 AGENT SMOKE PASS]",
+      "status": "PASS",
+      "duration_ms": 16915,
+      "detail": null
+    }
+  ],
+  "case_counts": {
+    "passed": 16,
+    "failed": 0,
+    "error": 0,
+    "skipped": 3
+  },
+  "reason": null,
+  "output_truncated": false,
+  "stdout_bytes": 194,
+  "stderr_bytes": 0,
+  "ended_utc": "2026-10-06T14:57:02.638941+00:00"
+}

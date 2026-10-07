@@ -132,6 +132,7 @@ def run_tests(workspace: Path, selectors: tuple[str, ...], timeout_seconds: floa
         with (tool_dir / "stdout.bin").open("wb") as out, (tool_dir / "stderr.bin").open("wb") as err:
             try:
                 process = subprocess.Popen(argv, cwd=root, env=environment, stdout=out, stderr=err,
+                                           stdin=subprocess.DEVNULL,
                                            shell=False, creationflags=subprocess.CREATE_NEW_PROCESS_GROUP if os.name == "nt" else 0,
                                            start_new_session=os.name != "nt")
                 if os.name == "nt":

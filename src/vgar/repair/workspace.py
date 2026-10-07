@@ -3,16 +3,12 @@
 from __future__ import annotations
 
 import hashlib
-import os
 import shutil
 import tempfile
 import uuid
 from dataclasses import dataclass
 from pathlib import Path, PurePosixPath, PureWindowsPath
-
-_IGNORED = {".git", ".venv", "venv", "__pycache__", ".pytest_cache", ".mypy_cache", ".ruff_cache",
-            "artifacts", "logs", ".vgar", "node_modules"}
-
+from vgar.source_scope import SourceScope
 
 def safe_relative_path(value: str) -> Path:
     """Accept one repository-relative path; never silently normalize traversal."""
@@ -26,33 +22,16 @@ def safe_relative_path(value: str) -> Path:
     return Path(*posix.parts)
 
 
-def _source_files(root: Path) -> list[tuple[str, Path]]:
-    found: list[tuple[str, Path]] = []
-
-    def visit(directory: Path) -> None:
-        for entry in sorted(os.scandir(directory), key=lambda item: item.name):
-            if entry.name in _IGNORED:
-                continue
-            path = Path(entry.path)
-            if entry.is_symlink() or (hasattr(path, "is_junction") and path.is_junction()):
-                raise ValueError(f"Source contains a link: {path}")
-            if entry.is_dir(follow_symlinks=False):
-                visit(path)
-            elif entry.is_file(follow_symlinks=False):
-                found.append((path.relative_to(root).as_posix(), path))
-            else:
-                raise ValueError(f"Unsupported source entry: {path}")
-
-    visit(root)
-    return found
+def _source_files(root: Path, scope: SourceScope | None = None) -> list[tuple[str, Path]]:
+    return (scope or SourceScope.for_repository(root)).files(root)
 
 
-def fingerprint_source(source_repo: Path) -> str:
+def fingerprint_source(source_repo: Path, *, scope: SourceScope | None = None) -> str:
     root = Path(source_repo).resolve(strict=True)
     if not root.is_dir():
         raise ValueError(f"Not a repository directory: {root}")
     digest = hashlib.sha256()
-    for relative, path in _source_files(root):
+    for relative, path in _source_files(root, scope):
         digest.update(relative.encode("utf-8"))
         digest.update(b"\0")
         with path.open("rb") as stream:

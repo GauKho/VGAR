@@ -1,0 +1,98 @@
+[
+  {
+    "run": "20261005T045625580136Z-7fa20ac5dd80",
+    "kind": "retrieval",
+    "complete": true,
+    "status": "SUCCEEDED",
+    "attempted": 25,
+    "succeeded": 25,
+    "error_classes": {},
+    "source_digest": "sha256:e57be206b42511cd80560fd4c357f2638f6019e2417c8c62bdab73ff746f2bd6",
+    "counter_label": "local-hf:Qwen/Qwen3-4B-Instruct-2507@cdbee75f17c01a7cc42f958dc650907174af0554:sha256=aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4:no-special-tokens",
+    "counter_is_fallback": false
+  },
+  {
+    "run": "20261005T082810770056Z-7a3ad261d8e4",
+    "kind": "retrieval",
+    "complete": true,
+    "status": "SUCCEEDED",
+    "attempted": 25,
+    "succeeded": 25,
+    "error_classes": {},
+    "source_digest": "sha256:c75edcaba04e5ebfa797410fecff5046527f450cffc1893f55a526da13552da6",
+    "counter_label": "local-hf:Qwen/Qwen3-4B-Instruct-2507@cdbee75f17c01a7cc42f958dc650907174af0554:sha256=aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4:no-special-tokens",
+    "counter_is_fallback": false
+  },
+  {
+    "run": "20261005T090644654026Z-fcd8ac1549ac",
+    "kind": "retrieval_graph",
+    "complete": false,
+    "status": "RUNNING",
+    "attempted": 9,
+    "succeeded": 0,
+    "error_classes": {
+      "KeyError": 9
+    },
+    "source_digest": "sha256:fb13167a431a9450bf766a716471e6685a146007fd9d27acbfd44a33f6a23544",
+    "counter_label": "local-hf:Qwen/Qwen3-4B-Instruct-2507@cdbee75f17c01a7cc42f958dc650907174af0554:sha256=aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4:no-special-tokens",
+    "counter_is_fallback": false
+  },
+  {
+    "run": "20261005T143304598084Z-82ffcaf800a0",
+    "kind": "retrieval_graph",
+    "complete": true,
+    "status": "PARTIAL_FAILURE",
+    "attempted": 25,
+    "succeeded": 0,
+    "error_classes": {
+      "KeyError": 25
+    },
+    "source_digest": "sha256:ead454959351fdb6f73b52aca5b34301d553b079efd297798caec153fcbb219f",
+    "counter_label": "local-hf:Qwen/Qwen3-4B-Instruct-2507@cdbee75f17c01a7cc42f958dc650907174af0554:sha256=aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4:no-special-tokens",
+    "counter_is_fallback": false
+  },
+  {
+    "run": "20261005T150325371577Z-af2d2254d25f",
+    "kind": "retrieval_graph",
+    "complete": true,
+    "status": "PARTIAL_FAILURE",
+    "attempted": 25,
+    "succeeded": 0,
+    "error_classes": {
+      "KeyError": 25
+    },
+    "source_digest": "sha256:48be69ab8ebbc18edbaaf2bd5bf83076d1dab80822b8237a5c658021eb0d3307",
+    "counter_label": "local-hf:Qwen/Qwen3-4B-Instruct-2507@cdbee75f17c01a7cc42f958dc650907174af0554:sha256=aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4:no-special-tokens",
+    "counter_is_fallback": false
+  },
+  {
+    "run": "20261005T160912420600Z-6c31fae9c81f",
+    "kind": "retrieval_graph",
+    "complete": true,
+    "status": "PARTIAL_FAILURE",
+    "attempted": 25,
+    "succeeded": 0,
+    "error_classes": {
+      "AttributeError": 25
+    },
+    "source_digest": "sha256:8300c104fe273e030effdab570e18c94615e283cc77c92c5d96a47818c13f773",
+    "counter_label": "local-hf:Qwen/Qwen3-4B-Instruct-2507@cdbee75f17c01a7cc42f958dc650907174af0554:sha256=aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4:no-special-tokens",
+    "counter_is_fallback": false
+  },
+  {
+    "run": "20261005T163220576118Z-66891db96f14",
+    "kind": "retrieval_graph",
+    "complete": false,
+    "status": "RUNNING",
+    "attempted": 12,
+    "succeeded": 1,
+    "error_classes": {
+      "MemoryError": 7,
+      "GraphError": 3,
+      "GraphValidationError": 1
+    },
+    "source_digest": "sha256:8300c104fe273e030effdab570e18c94615e283cc77c92c5d96a47818c13f773",
+    "counter_label": "local-hf:Qwen/Qwen3-4B-Instruct-2507@cdbee75f17c01a7cc42f958dc650907174af0554:sha256=aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4:no-special-tokens",
+    "counter_is_fallback": false
+  }
+]

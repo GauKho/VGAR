@@ -1,0 +1,71 @@
+{
+  "run_id": "fd687181a0424182ad0229070da2325e",
+  "task_id": "mcp-run-pytest",
+  "started_utc": "2026-10-06T14:57:00.411120+00:00",
+  "ended_utc": "2026-10-06T14:57:00.888021+00:00",
+  "source_repo": "C:\\Users\\pc\\AppData\\Local\\Temp\\vgar-smoke-agent-zk83180c\\ws\\vgar-m2-oxf7h8mx",
+  "source_hash_before": "cd4d62cd6e6f8ae8453179faee693a141551da767acb2813ba7c346b825bf574",
+  "source_hash_after": "cd4d62cd6e6f8ae8453179faee693a141551da767acb2813ba7c346b825bf574",
+  "worktree_id": "host-workspace",
+  "cwd": "C:\\Users\\pc\\AppData\\Local\\Temp\\vgar-smoke-agent-zk83180c\\ws\\vgar-m2-oxf7h8mx",
+  "argv": [
+    "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "--junitxml=C:\\Users\\pc\\AppData\\Local\\Temp\\vgar-smoke-agent-zk83180c\\ws\\vgar-m2-oxf7h8mx\\.m2-pytest-zcptspk2\\junit.xml",
+    "tests/test_demo.py::test_answer"
+  ],
+  "timeout_seconds": 60,
+  "python_executable": "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe",
+  "python_version": "3.11.6",
+  "pytest_version": "8.4.2",
+  "environment": {
+    "PYTHONPATH": "C:\\Users\\pc\\AppData\\Local\\Temp\\vgar-smoke-agent-zk83180c\\ws\\vgar-m2-oxf7h8mx\\src;C:\\Users\\pc\\AppData\\Local\\Temp\\vgar-smoke-agent-zk83180c\\ws\\vgar-m2-oxf7h8mx",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTEST_DISABLE_PLUGIN_AUTOLOAD": "1"
+  },
+  "status": "PASS",
+  "complete": true,
+  "test_result": {
+    "status": "PASS",
+    "command": "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe -m pytest -q -p no:cacheprovider --junitxml=C:\\Users\\pc\\AppData\\Local\\Temp\\vgar-smoke-agent-zk83180c\\ws\\vgar-m2-oxf7h8mx\\.m2-pytest-zcptspk2\\junit.xml tests/test_demo.py::test_answer",
+    "argv": [
+      "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe",
+      "-m",
+      "pytest",
+      "-q",
+      "-p",
+      "no:cacheprovider",
+      "--junitxml=C:\\Users\\pc\\AppData\\Local\\Temp\\vgar-smoke-agent-zk83180c\\ws\\vgar-m2-oxf7h8mx\\.m2-pytest-zcptspk2\\junit.xml",
+      "tests/test_demo.py::test_answer"
+    ],
+    "exit_code": 0,
+    "duration_ms": 469,
+    "stdout": ".                                                                        [100%]\r\n- generated xml file: C:\\Users\\pc\\AppData\\Local\\Temp\\vgar-smoke-agent-zk83180c\\ws\\vgar-m2-oxf7h8mx\\.m2-pytest-zcptspk2\\junit.xml -\r\n1 passed in 0.04s\r\n",
+    "stderr": "",
+    "timeout_seconds": 60.0,
+    "cases": [
+      {
+        "name": "tests.test_demo::test_answer",
+        "status": "PASS",
+        "duration_ms": 1,
+        "detail": null
+      }
+    ],
+    "case_counts": {
+      "passed": 1,
+      "failed": 0,
+      "error": 0,
+      "skipped": 0
+    },
+    "reason": null,
+    "complete": true,
+    "output_truncated": false,
+    "stdout_bytes": 232,
+    "stderr_bytes": 0
+  },
+  "command": "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe -m pytest -q -p no:cacheprovider --junitxml=C:\\Users\\pc\\AppData\\Local\\Temp\\vgar-smoke-agent-zk83180c\\ws\\vgar-m2-oxf7h8mx\\.m2-pytest-zcptspk2\\junit.xml tests/test_demo.py::test_answer"
+}

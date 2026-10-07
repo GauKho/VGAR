@@ -1,0 +1,190 @@
+{
+  "run_id": "20261006T143045093388Z-c60497ad17fc",
+  "kind": "milestone-2-red",
+  "status": "FAIL",
+  "started_utc": "2026-10-06T14:30:45.093388+00:00",
+  "complete": true,
+  "python": "3.11.6 (tags/v3.11.6:8b6ee5b, Oct  2 2023, 14:57:12) [MSC v.1935 64 bit (AMD64)]",
+  "interpreter": "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe",
+  "platform": "Windows-10-10.0.26300-SP0",
+  "command_argv": [
+    "-c"
+  ],
+  "cwd": "D:\\Project\\CAPSTONES\\VGAR",
+  "command": "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe -m pytest -q -p no:cacheprovider --junitxml=D:\\Project\\CAPSTONES\\VGAR\\.m2-pytest-q7nyrb7x\\junit.xml tests/test_graph_transaction_bindings.py",
+  "argv": [
+    "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "--junitxml=D:\\Project\\CAPSTONES\\VGAR\\.m2-pytest-q7nyrb7x\\junit.xml",
+    "tests/test_graph_transaction_bindings.py"
+  ],
+  "exit_code": 1,
+  "duration_ms": 1313,
+  "stdout": "FF.F..FFF.FFFFF..FFFFFFF                                                 [100%]\r\n================================== FAILURES ===================================\r\n____________ test_failed_file_rollback_removes_all_auxiliary_state ____________\r\ntests\\test_graph_transaction_bindings.py:56: in test_failed_file_rollback_removes_all_auxiliary_state\r\n    assert all(value in ids for value in instance.symbols_by_qualified_name.values())\r\nE   assert False\r\nE    +  where False = all(<generator object test_failed_file_rollback_removes_all_auxiliary_state.<locals>.<genexpr> at 0x0000020638B7CBA0>)\r\n_____________ test_good_source_can_be_retrieved_after_failed_file _____________\r\ntests\\test_graph_transaction_bindings.py:68: in test_good_source_can_be_retrieved_after_failed_file\r\n    assert retrieve(document, tmp_path, \"ok\").context.items\r\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\ntests\\test_graph_transaction_bindings.py:28: in retrieve\r\n    counter_label=\"test-whitespace\").retrieve([anchor], 1000)\r\n                                     ^^^^^^^^^^^^^^^^^^^^^^^^\r\nsrc\\vgar\\graph\\retrieval.py:174: in retrieve\r\n    sources = self._verify_snapshot()\r\n              ^^^^^^^^^^^^^^^^^^^^^^^\r\nsrc\\vgar\\graph\\retrieval.py:302: in _verify_snapshot\r\n    raise GraphError(\"Source file set differs from graph snapshot; rebuild graph\",\r\nE   vgar.contracts.error.GraphError: Source file set differs from graph snapshot; rebuild graph\r\n______ test_inventory_still_checks_failed_and_good_source[delete_failed] ______\r\ntests\\test_graph_transaction_bindings.py:83: in test_inventory_still_checks_failed_and_good_source\r\n    with pytest.raises(GraphError, match=\"snapshot\"):\r\nE   Failed: DID NOT RAISE <class 'vgar.contracts.error.GraphError'>\r\n_______ test_malformed_inventory_cannot_weaken_file_hashes[inventory0] ________\r\ntests\\test_graph_transaction_bindings.py:92: in test_malformed_inventory_cannot_weaken_file_hashes\r\n    with pytest.raises(GraphError):\r\nE   Failed: DID NOT RAISE <class 'vgar.contracts.error.GraphError'>\r\n_______ test_malformed_inventory_cannot_weaken_file_hashes[inventory1] ________\r\ntests\\test_graph_transaction_bindings.py:92: in test_malformed_inventory_cannot_weaken_file_hashes\r\n    with pytest.raises(GraphError):\r\nE   Failed: DID NOT RAISE <class 'vgar.contracts.error.GraphError'>\r\n_______ test_malformed_inventory_cannot_weaken_file_hashes[inventory2] ________\r\ntests\\test_graph_transaction_bindings.py:92: in test_malformed_inventory_cannot_weaken_file_hashes\r\n    with pytest.raises(GraphError):\r\nE   Failed: DID NOT RAISE <class 'vgar.contracts.error.GraphError'>\r\n______ test_imported_base_uses_binding_before_class_assignment[base.py] _______\r\ntests\\test_graph_transaction_bindings.py:111: in test_imported_base_uses_binding_before_class_assignment\r\n    document = builder().build(tmp_path)\r\n               ^^^^^^^^^^^^^^^^^^^^^^^^^\r\nsrc\\vgar\\graph\\builder.py:157: in build\r\n    validate_graph_document(document)\r\nsrc\\vgar\\contracts\\schema.py:264: in validate_graph_document\r\n    raise GraphValidationError(errors)\r\nE   vgar.contracts.schema.GraphValidationError: Invalid graph document:\r\nE   - edges[8] must not be a self-loop\r\n______ test_imported_base_uses_binding_before_class_assignment[zbase.py] ______\r\ntests\\test_graph_transaction_bindings.py:111: in test_imported_base_uses_binding_before_class_assignment\r\n    document = builder().build(tmp_path)\r\n               ^^^^^^^^^^^^^^^^^^^^^^^^^\r\nsrc\\vgar\\graph\\builder.py:157: in build\r\n    validate_graph_document(document)\r\nsrc\\vgar\\contracts\\schema.py:264: in validate_graph_document\r\n    raise GraphValidationError(errors)\r\nE   vgar.contracts.schema.GraphValidationError: Invalid graph document:\r\nE   - edges[8] must not be a self-loop\r\n____________ test_redefined_class_can_inherit_previous_occurrence _____________\r\ntests\\test_graph_transaction_bindings.py:121: in test_redefined_class_can_inherit_previous_occurrence\r\n    assert len(classes) == 2\r\nE   assert 0 == 2\r\nE    +  where 0 = len([])\r\n_ test_unbound_or_dynamic_base_is_unresolved_not_self_loop[class A(A): pass\\n] _\r\ntests\\test_graph_transaction_bindings.py:130: in test_unbound_or_dynamic_base_is_unresolved_not_self_loop\r\n    document = builder().build(tmp_path)\r\n               ^^^^^^^^^^^^^^^^^^^^^^^^^\r\nsrc\\vgar\\graph\\builder.py:157: in build\r\n    validate_graph_document(document)\r\nsrc\\vgar\\contracts\\schema.py:264: in validate_graph_document\r\n    raise GraphValidationError(errors)\r\nE   vgar.contracts.schema.GraphValidationError: Invalid graph document:\r\nE   - edges[3] must not be a self-loop\r\n_ test_unbound_or_dynamic_base_is_unresolved_not_self_loop[class A(factory()): pass\\n] _\r\ntests\\test_graph_transaction_bindings.py:132: in test_unbound_or_dynamic_base_is_unresolved_not_self_loop\r\n    assert document[\"statistics\"][\"unresolved_base_count\"] == 1\r\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\nE   KeyError: 'unresolved_base_count'\r\n____ test_only_property_setter_attribute_matches[@app.get('/login')-False] ____\r\ntests\\test_graph_transaction_bindings.py:141: in test_only_property_setter_attribute_matches\r\n    assert PythonGraphBuilder._is_setter_decorator([decorator]) is expected\r\nE   assert True is False\r\nE    +  where True = <function PythonGraphBuilder._is_setter_decorator at 0x0000020638826660>([\"@app.get('/login')\"])\r\nE    +    where <function PythonGraphBuilder._is_setter_decorator at 0x0000020638826660> = PythonGraphBuilder._is_setter_decorator\r\n_ test_only_property_setter_attribute_matches[@pytest.mark.parametrize('x', [1])-False] _\r\ntests\\test_graph_transaction_bindings.py:141: in test_only_property_setter_attribute_matches\r\n    assert PythonGraphBuilder._is_setter_decorator([decorator]) is expected\r\nE   assert True is False\r\nE    +  where True = <function PythonGraphBuilder._is_setter_decorator at 0x0000020638826660>([\"@pytest.mark.parametrize('x', [1])\"])\r\nE    +    where <function PythonGraphBuilder._is_setter_decorator at 0x0000020638826660> = PythonGraphBuilder._is_setter_decorator\r\n______ test_only_property_setter_attribute_matches[@value.deleter-False] ______\r\ntests\\test_graph_transaction_bindings.py:141: in test_only_property_setter_attribute_matches\r\n    assert PythonGraphBuilder._is_setter_decorator([decorator]) is expected\r\nE   AssertionError: assert True is False\r\nE    +  where True = <function PythonGraphBuilder._is_setter_decorator at 0x0000020638826660>(['@value.deleter'])\r\nE    +    where <function PythonGraphBuilder._is_setter_decorator at 0x0000020638826660> = PythonGraphBuilder._is_setter_decorator\r\n___ test_only_property_setter_attribute_matches[@something.setter()-False] ____\r\ntests\\test_graph_transaction_bindings.py:141: in test_only_property_setter_attribute_matches\r\n    assert PythonGraphBuilder._is_setter_decorator([decorator]) is expected\r\nE   AssertionError: assert True is False\r\nE    +  where True = <function PythonGraphBuilder._is_setter_decorator at 0x0000020638826660>(['@something.setter()'])\r\nE    +    where <function PythonGraphBuilder._is_setter_decorator at 0x0000020638826660> = PythonGraphBuilder._is_setter_decorator\r\n___ test_conditional_duplicate_and_nested_definitions_map_to_m2_occurrences ___\r\ntests\\test_graph_transaction_bindings.py:155: in test_conditional_duplicate_and_nested_definitions_map_to_m2_occurrences\r\n    assert len(functions) == 7\r\nE   AssertionError: assert 1 == 7\r\nE    +  where 1 = len([{'content_hash': 'sha256:1180cddce83d26d98700bdc7023a2986a762ecc10a83de0ef8f416406dd04412', 'graph_version': 'sha256:...fab5707c8e44', 'id': 'vgar:test/bindings:python:function:conditional.py:conditional.outer', 'language': 'python', ...}])\r\n___________ test_duplicate_scopes_do_not_share_local_binding_tables ___________\r\ntests\\test_graph_transaction_bindings.py:173: in test_duplicate_scopes_do_not_share_local_binding_tables\r\n    assert len(calls) == 2\r\nE   assert 0 == 2\r\nE    +  where 0 = len([])\r\n_____________ test_file_hash_in_inventory_is_raw_not_snippet_hash _____________\r\ntests\\test_graph_transaction_bindings.py:183: in test_file_hash_in_inventory_is_raw_not_snippet_hash\r\n    assert document[\"statistics\"][\"source_inventory\"][\"good.py\"] == \"sha256:\" + hashlib.sha256(source.encode()).hexdigest()\r\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\nE   KeyError: 'source_inventory'\r\n- generated xml file: D:\\Project\\CAPSTONES\\VGAR\\.m2-pytest-q7nyrb7x\\junit.xml -\r\n=========================== short test summary info ===========================\r\nFAILED tests/test_graph_transaction_bindings.py::test_failed_file_rollback_removes_all_auxiliary_state\r\nFAILED tests/test_graph_transaction_bindings.py::test_good_source_can_be_retrieved_after_failed_file\r\nFAILED tests/test_graph_transaction_bindings.py::test_inventory_still_checks_failed_and_good_source[delete_failed]\r\nFAILED tests/test_graph_transaction_bindings.py::test_malformed_inventory_cannot_weaken_file_hashes[inventory0]\r\nFAILED tests/test_graph_transaction_bindings.py::test_malformed_inventory_cannot_weaken_file_hashes[inventory1]\r\nFAILED tests/test_graph_transaction_bindings.py::test_malformed_inventory_cannot_weaken_file_hashes[inventory2]\r\nFAILED tests/test_graph_transaction_bindings.py::test_imported_base_uses_binding_before_class_assignment[base.py]\r\nFAILED tests/test_graph_transaction_bindings.py::test_imported_base_uses_binding_before_class_assignment[zbase.py]\r\nFAILED tests/test_graph_transaction_bindings.py::test_redefined_class_can_inherit_previous_occurrence\r\nFAILED tests/test_graph_transaction_bindings.py::test_unbound_or_dynamic_base_is_unresolved_not_self_loop[class A(A): pass\\n]\r\nFAILED tests/test_graph_transaction_bindings.py::test_unbound_or_dynamic_base_is_unresolved_not_self_loop[class A(factory()): pass\\n]\r\nFAILED tests/test_graph_transaction_bindings.py::test_only_property_setter_attribute_matches[@app.get('/login')-False]\r\nFAILED tests/test_graph_transaction_bindings.py::test_only_property_setter_attribute_matches[@pytest.mark.parametrize('x', [1])-False]\r\nFAILED tests/test_graph_transaction_bindings.py::test_only_property_setter_attribute_matches[@value.deleter-False]\r\nFAILED tests/test_graph_transaction_bindings.py::test_only_property_setter_attribute_matches[@something.setter()-False]\r\nFAILED tests/test_graph_transaction_bindings.py::test_conditional_duplicate_and_nested_definitions_map_to_m2_occurrences\r\nFAILED tests/test_graph_transaction_bindings.py::test_duplicate_scopes_do_not_share_local_binding_tables\r\nFAILED tests/test_graph_transaction_bindings.py::test_file_hash_in_inventory_is_raw_not_snippet_hash\r\n18 failed, 6 passed in 0.75s\r\n",
+  "stderr": "",
+  "timeout_seconds": 240.0,
+  "cases": [
+    {
+      "name": "tests.test_graph_transaction_bindings::test_failed_file_rollback_removes_all_auxiliary_state",
+      "status": "FAIL",
+      "duration_ms": 10,
+      "detail": "tests\\test_graph_transaction_bindings.py:56: in test_failed_file_rollback_removes_all_auxiliary_state\n    assert all(value in ids for value in instance.symbols_by_qualified_name.values())\nE   assert False\nE    +  where False = all(<generator object test_failed_file_rollback_removes_all_auxiliary_state.<locals>.<genexpr> at 0x0000020638B7CBA0>)"
+    },
+    {
+      "name": "tests.test_graph_transaction_bindings::test_good_source_can_be_retrieved_after_failed_file",
+      "status": "FAIL",
+      "duration_ms": 8,
+      "detail": "tests\\test_graph_transaction_bindings.py:68: in test_good_source_can_be_retrieved_after_failed_file\n    assert retrieve(document, tmp_path, \"ok\").context.items\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\ntests\\test_graph_transaction_bindings.py:28: in retrieve\n    counter_label=\"test-whitespace\").retrieve([anchor], 1000)\n                                     ^^^^^^^^^^^^^^^^^^^^^^^^\nsrc\\vgar\\graph\\retrieval.py:174: in retrieve\n    sources = self._verify_snapshot()\n              ^^^^^^^^^^^^^^^^^^^^^^^\nsrc\\vgar\\graph\\retrieval.py:302: in _verify_snapshot\n    raise GraphError(\"Source file set differs from graph snapshot; rebuild graph\",\nE   vgar.contracts.error.GraphError: Source file set differs from graph snapshot; rebuild graph"
+    },
+    {
+      "name": "tests.test_graph_transaction_bindings::test_inventory_still_checks_failed_and_good_source[modify_failed]",
+      "status": "PASS",
+      "duration_ms": 7,
+      "detail": null
+    },
+    {
+      "name": "tests.test_graph_transaction_bindings::test_inventory_still_checks_failed_and_good_source[delete_failed]",
+      "status": "FAIL",
+      "duration_ms": 7,
+      "detail": "tests\\test_graph_transaction_bindings.py:83: in test_inventory_still_checks_failed_and_good_source\n    with pytest.raises(GraphError, match=\"snapshot\"):\nE   Failed: DID NOT RAISE <class 'vgar.contracts.error.GraphError'>"
+    },
+    {
+      "name": "tests.test_graph_transaction_bindings::test_inventory_still_checks_failed_and_good_source[add_source]",
+      "status": "PASS",
+      "duration_ms": 10,
+      "detail": null
+    },
+    {
+      "name": "tests.test_graph_transaction_bindings::test_inventory_still_checks_failed_and_good_source[modify_good]",
+      "status": "PASS",
+      "duration_ms": 10,
+      "detail": null
+    },
+    {
+      "name": "tests.test_graph_transaction_bindings::test_malformed_inventory_cannot_weaken_file_hashes[inventory0]",
+      "status": "FAIL",
+      "duration_ms": 6,
+      "detail": "tests\\test_graph_transaction_bindings.py:92: in test_malformed_inventory_cannot_weaken_file_hashes\n    with pytest.raises(GraphError):\nE   Failed: DID NOT RAISE <class 'vgar.contracts.error.GraphError'>"
+    },
+    {
+      "name": "tests.test_graph_transaction_bindings::test_malformed_inventory_cannot_weaken_file_hashes[inventory1]",
+      "status": "FAIL",
+      "duration_ms": 8,
+      "detail": "tests\\test_graph_transaction_bindings.py:92: in test_malformed_inventory_cannot_weaken_file_hashes\n    with pytest.raises(GraphError):\nE   Failed: DID NOT RAISE <class 'vgar.contracts.error.GraphError'>"
+    },
+    {
+      "name": "tests.test_graph_transaction_bindings::test_malformed_inventory_cannot_weaken_file_hashes[inventory2]",
+      "status": "FAIL",
+      "duration_ms": 9,
+      "detail": "tests\\test_graph_transaction_bindings.py:92: in test_malformed_inventory_cannot_weaken_file_hashes\n    with pytest.raises(GraphError):\nE   Failed: DID NOT RAISE <class 'vgar.contracts.error.GraphError'>"
+    },
+    {
+      "name": "tests.test_graph_transaction_bindings::test_legacy_graph_without_inventory_remains_source_verified",
+      "status": "PASS",
+      "duration_ms": 9,
+      "detail": null
+    },
+    {
+      "name": "tests.test_graph_transaction_bindings::test_imported_base_uses_binding_before_class_assignment[base.py]",
+      "status": "FAIL",
+      "duration_ms": 4,
+      "detail": "tests\\test_graph_transaction_bindings.py:111: in test_imported_base_uses_binding_before_class_assignment\n    document = builder().build(tmp_path)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^\nsrc\\vgar\\graph\\builder.py:157: in build\n    validate_graph_document(document)\nsrc\\vgar\\contracts\\schema.py:264: in validate_graph_document\n    raise GraphValidationError(errors)\nE   vgar.contracts.schema.GraphValidationError: Invalid graph document:\nE   - edges[8] must not be a self-loop"
+    },
+    {
+      "name": "tests.test_graph_transaction_bindings::test_imported_base_uses_binding_before_class_assignment[zbase.py]",
+      "status": "FAIL",
+      "duration_ms": 5,
+      "detail": "tests\\test_graph_transaction_bindings.py:111: in test_imported_base_uses_binding_before_class_assignment\n    document = builder().build(tmp_path)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^\nsrc\\vgar\\graph\\builder.py:157: in build\n    validate_graph_document(document)\nsrc\\vgar\\contracts\\schema.py:264: in validate_graph_document\n    raise GraphValidationError(errors)\nE   vgar.contracts.schema.GraphValidationError: Invalid graph document:\nE   - edges[8] must not be a self-loop"
+    },
+    {
+      "name": "tests.test_graph_transaction_bindings::test_redefined_class_can_inherit_previous_occurrence",
+      "status": "FAIL",
+      "duration_ms": 4,
+      "detail": "tests\\test_graph_transaction_bindings.py:121: in test_redefined_class_can_inherit_previous_occurrence\n    assert len(classes) == 2\nE   assert 0 == 2\nE    +  where 0 = len([])"
+    },
+    {
+      "name": "tests.test_graph_transaction_bindings::test_unbound_or_dynamic_base_is_unresolved_not_self_loop[class A(A): pass\\n]",
+      "status": "FAIL",
+      "duration_ms": 3,
+      "detail": "tests\\test_graph_transaction_bindings.py:130: in test_unbound_or_dynamic_base_is_unresolved_not_self_loop\n    document = builder().build(tmp_path)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^\nsrc\\vgar\\graph\\builder.py:157: in build\n    validate_graph_document(document)\nsrc\\vgar\\contracts\\schema.py:264: in validate_graph_document\n    raise GraphValidationError(errors)\nE   vgar.contracts.schema.GraphValidationError: Invalid graph document:\nE   - edges[3] must not be a self-loop"
+    },
+    {
+      "name": "tests.test_graph_transaction_bindings::test_unbound_or_dynamic_base_is_unresolved_not_self_loop[class A(factory()): pass\\n]",
+      "status": "FAIL",
+      "duration_ms": 10,
+      "detail": "tests\\test_graph_transaction_bindings.py:132: in test_unbound_or_dynamic_base_is_unresolved_not_self_loop\n    assert document[\"statistics\"][\"unresolved_base_count\"] == 1\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE   KeyError: 'unresolved_base_count'"
+    },
+    {
+      "name": "tests.test_graph_transaction_bindings::test_only_property_setter_attribute_matches[@value.setter-True]",
+      "status": "PASS",
+      "duration_ms": 0,
+      "detail": null
+    },
+    {
+      "name": "tests.test_graph_transaction_bindings::test_only_property_setter_attribute_matches[@obj.value.setter-True]",
+      "status": "PASS",
+      "duration_ms": 0,
+      "detail": null
+    },
+    {
+      "name": "tests.test_graph_transaction_bindings::test_only_property_setter_attribute_matches[@app.get('/login')-False]",
+      "status": "FAIL",
+      "duration_ms": 1,
+      "detail": "tests\\test_graph_transaction_bindings.py:141: in test_only_property_setter_attribute_matches\n    assert PythonGraphBuilder._is_setter_decorator([decorator]) is expected\nE   assert True is False\nE    +  where True = <function PythonGraphBuilder._is_setter_decorator at 0x0000020638826660>([\"@app.get('/login')\"])\nE    +    where <function PythonGraphBuilder._is_setter_decorator at 0x0000020638826660> = PythonGraphBuilder._is_setter_decorator"
+    },
+    {
+      "name": "tests.test_graph_transaction_bindings::test_only_property_setter_attribute_matches[@pytest.mark.parametrize('x', [1])-False]",
+      "status": "FAIL",
+      "duration_ms": 1,
+      "detail": "tests\\test_graph_transaction_bindings.py:141: in test_only_property_setter_attribute_matches\n    assert PythonGraphBuilder._is_setter_decorator([decorator]) is expected\nE   assert True is False\nE    +  where True = <function PythonGraphBuilder._is_setter_decorator at 0x0000020638826660>([\"@pytest.mark.parametrize('x', [1])\"])\nE    +    where <function PythonGraphBuilder._is_setter_decorator at 0x0000020638826660> = PythonGraphBuilder._is_setter_decorator"
+    },
+    {
+      "name": "tests.test_graph_transaction_bindings::test_only_property_setter_attribute_matches[@value.deleter-False]",
+      "status": "FAIL",
+      "duration_ms": 1,
+      "detail": "tests\\test_graph_transaction_bindings.py:141: in test_only_property_setter_attribute_matches\n    assert PythonGraphBuilder._is_setter_decorator([decorator]) is expected\nE   AssertionError: assert True is False\nE    +  where True = <function PythonGraphBuilder._is_setter_decorator at 0x0000020638826660>(['@value.deleter'])\nE    +    where <function PythonGraphBuilder._is_setter_decorator at 0x0000020638826660> = PythonGraphBuilder._is_setter_decorator"
+    },
+    {
+      "name": "tests.test_graph_transaction_bindings::test_only_property_setter_attribute_matches[@something.setter()-False]",
+      "status": "FAIL",
+      "duration_ms": 1,
+      "detail": "tests\\test_graph_transaction_bindings.py:141: in test_only_property_setter_attribute_matches\n    assert PythonGraphBuilder._is_setter_decorator([decorator]) is expected\nE   AssertionError: assert True is False\nE    +  where True = <function PythonGraphBuilder._is_setter_decorator at 0x0000020638826660>(['@something.setter()'])\nE    +    where <function PythonGraphBuilder._is_setter_decorator at 0x0000020638826660> = PythonGraphBuilder._is_setter_decorator"
+    },
+    {
+      "name": "tests.test_graph_transaction_bindings::test_conditional_duplicate_and_nested_definitions_map_to_m2_occurrences",
+      "status": "FAIL",
+      "duration_ms": 6,
+      "detail": "tests\\test_graph_transaction_bindings.py:155: in test_conditional_duplicate_and_nested_definitions_map_to_m2_occurrences\n    assert len(functions) == 7\nE   AssertionError: assert 1 == 7\nE    +  where 1 = len([{'content_hash': 'sha256:1180cddce83d26d98700bdc7023a2986a762ecc10a83de0ef8f416406dd04412', 'graph_version': 'sha256:...fab5707c8e44', 'id': 'vgar:test/bindings:python:function:conditional.py:conditional.outer', 'language': 'python', ...}])"
+    },
+    {
+      "name": "tests.test_graph_transaction_bindings::test_duplicate_scopes_do_not_share_local_binding_tables",
+      "status": "FAIL",
+      "duration_ms": 4,
+      "detail": "tests\\test_graph_transaction_bindings.py:173: in test_duplicate_scopes_do_not_share_local_binding_tables\n    assert len(calls) == 2\nE   assert 0 == 2\nE    +  where 0 = len([])"
+    },
+    {
+      "name": "tests.test_graph_transaction_bindings::test_file_hash_in_inventory_is_raw_not_snippet_hash",
+      "status": "FAIL",
+      "duration_ms": 4,
+      "detail": "tests\\test_graph_transaction_bindings.py:183: in test_file_hash_in_inventory_is_raw_not_snippet_hash\n    assert document[\"statistics\"][\"source_inventory\"][\"good.py\"] == \"sha256:\" + hashlib.sha256(source.encode()).hexdigest()\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE   KeyError: 'source_inventory'"
+    }
+  ],
+  "case_counts": {
+    "passed": 6,
+    "failed": 18,
+    "error": 0,
+    "skipped": 0
+  },
+  "reason": {
+    "code": "TEST_FAILED",
+    "message": "Pytest assertions failed"
+  },
+  "output_truncated": false,
+  "stdout_bytes": 10549,
+  "stderr_bytes": 0,
+  "ended_utc": "2026-10-06T14:30:46.447167+00:00"
+}

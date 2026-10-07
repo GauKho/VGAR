@@ -1,0 +1,59 @@
+{
+  "run_id": "20261006T152641218379Z-fdb85439d0a4",
+  "kind": "milestone-5-atomic-lock-red",
+  "status": "FAIL",
+  "started_utc": "2026-10-06T15:26:41.219385+00:00",
+  "complete": true,
+  "python": "3.11.6 (tags/v3.11.6:8b6ee5b, Oct  2 2023, 14:57:12) [MSC v.1935 64 bit (AMD64)]",
+  "interpreter": "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe",
+  "platform": "Windows-10-10.0.26300-SP0",
+  "command_argv": [
+    "-c"
+  ],
+  "cwd": "D:\\Project\\CAPSTONES\\VGAR",
+  "command": "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe -m pytest -q -p no:cacheprovider --junitxml=D:\\Project\\CAPSTONES\\VGAR\\.m2-pytest-m9ego1eg\\junit.xml tests/m2/test_retrieval_lifecycle.py::test_atomic_evidence_write_retries_transient_windows_read_lock tests/m2/test_retrieval_lifecycle.py::test_atomic_write_permanent_lock_fails_without_overwriting_prior",
+  "argv": [
+    "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "--junitxml=D:\\Project\\CAPSTONES\\VGAR\\.m2-pytest-m9ego1eg\\junit.xml",
+    "tests/m2/test_retrieval_lifecycle.py::test_atomic_evidence_write_retries_transient_windows_read_lock",
+    "tests/m2/test_retrieval_lifecycle.py::test_atomic_write_permanent_lock_fails_without_overwriting_prior"
+  ],
+  "exit_code": 1,
+  "duration_ms": 797,
+  "stdout": "F.                                                                       [100%]\r\n================================== FAILURES ===================================\r\n_______ test_atomic_evidence_write_retries_transient_windows_read_lock ________\r\n\r\ntmp_path = WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-463/test_atomic_evidence_write_ret0')\r\nmonkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001EA596D0510>\r\n\r\n    def test_atomic_evidence_write_retries_transient_windows_read_lock(tmp_path, monkeypatch):\r\n        from vgar.evaluation.retrieval import evidence\r\n        path = tmp_path / \"telemetry.json\"\r\n        write_json(path, {\"phase\": \"SETUP\"})\r\n        original = evidence.os.replace\r\n        attempts = []\r\n    \r\n        def locked(source, target):\r\n            attempts.append(True)\r\n            if len(attempts) < 3:\r\n                assert json.loads(path.read_text())[\"phase\"] == \"SETUP\"\r\n                raise PermissionError(\"transient Windows read lock\")\r\n            original(source, target)\r\n    \r\n        monkeypatch.setattr(evidence.os, \"replace\", locked)\r\n>       evidence.write_json(path, {\"phase\": \"BUILD_GRAPH\"})\r\n\r\ntests\\m2\\test_retrieval_lifecycle.py:290: \r\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\r\nsrc\\vgar\\evaluation\\retrieval\\evidence.py:34: in write_json\r\n    os.replace(temporary, path)\r\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\r\n\r\nsource = WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-463/test_atomic_evidence_write_ret0/telemetry.json.a4e2fb177145468c821ca1f17964a0dc.tmp')\r\ntarget = WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-463/test_atomic_evidence_write_ret0/telemetry.json')\r\n\r\n    def locked(source, target):\r\n        attempts.append(True)\r\n        if len(attempts) < 3:\r\n            assert json.loads(path.read_text())[\"phase\"] == \"SETUP\"\r\n>           raise PermissionError(\"transient Windows read lock\")\r\nE           PermissionError: transient Windows read lock\r\n\r\ntests\\m2\\test_retrieval_lifecycle.py:286: PermissionError\r\n- generated xml file: D:\\Project\\CAPSTONES\\VGAR\\.m2-pytest-m9ego1eg\\junit.xml -\r\n=========================== short test summary info ===========================\r\nFAILED tests/m2/test_retrieval_lifecycle.py::test_atomic_evidence_write_retries_transient_windows_read_lock\r\n1 failed, 1 passed in 0.24s\r\n",
+  "stderr": "",
+  "timeout_seconds": 120.0,
+  "cases": [
+    {
+      "name": "tests.m2.test_retrieval_lifecycle::test_atomic_evidence_write_retries_transient_windows_read_lock",
+      "status": "FAIL",
+      "duration_ms": 13,
+      "detail": "tmp_path = WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-463/test_atomic_evidence_write_ret0')\nmonkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001EA596D0510>\n\n    def test_atomic_evidence_write_retries_transient_windows_read_lock(tmp_path, monkeypatch):\n        from vgar.evaluation.retrieval import evidence\n        path = tmp_path / \"telemetry.json\"\n        write_json(path, {\"phase\": \"SETUP\"})\n        original = evidence.os.replace\n        attempts = []\n    \n        def locked(source, target):\n            attempts.append(True)\n            if len(attempts) < 3:\n                assert json.loads(path.read_text())[\"phase\"] == \"SETUP\"\n                raise PermissionError(\"transient Windows read lock\")\n            original(source, target)\n    \n        monkeypatch.setattr(evidence.os, \"replace\", locked)\n>       evidence.write_json(path, {\"phase\": \"BUILD_GRAPH\"})\n\ntests\\m2\\test_retrieval_lifecycle.py:290: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\nsrc\\vgar\\evaluation\\retrieval\\evidence.py:34: in write_json\n    os.replace(temporary, path)\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n\nsource = WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-463/test_atomic_evidence_write_ret0/telemetry.json.a4e2fb177145468c821ca1f17964a0dc.tmp')\ntarget = WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-463/test_atomic_evidence_write_ret0/telemetry.json')\n\n    def locked(source, target):\n        attempts.append(True)\n        if len(attempts) < 3:\n            assert json.loads(path.read_text())[\"phase\"] == \"SETUP\"\n>           raise PermissionError(\"transient Windows read lock\")\nE           PermissionError: transient Windows read lock\n\ntests\\m2\\test_retrieval_lifecycle.py:286: PermissionError"
+    },
+    {
+      "name": "tests.m2.test_retrieval_lifecycle::test_atomic_write_permanent_lock_fails_without_overwriting_prior",
+      "status": "PASS",
+      "duration_ms": 10,
+      "detail": null
+    }
+  ],
+  "case_counts": {
+    "passed": 1,
+    "failed": 1,
+    "error": 0,
+    "skipped": 0
+  },
+  "reason": {
+    "code": "TEST_FAILED",
+    "message": "Pytest assertions failed"
+  },
+  "output_truncated": false,
+  "stdout_bytes": 2412,
+  "stderr_bytes": 0,
+  "ended_utc": "2026-10-06T15:26:42.067843+00:00"
+}

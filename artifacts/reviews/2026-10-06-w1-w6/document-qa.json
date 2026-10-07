@@ -1,0 +1,19 @@
+{
+  "command_description": "Read-only final SHA256 comparison against suite source inventory and UTF-8/local-link checks",
+  "exit_code": 0,
+  "wall_time_seconds": 0.6753517,
+  "stdout": "{\r\n    \"checked_at_utc\":  \"2026-10-06T13:58:58.3210891Z\",\r\n    \"source_files_checked\":  166,\r\n    \"code_unchanged\":  true,\r\n    \"changed_files\":  [\r\n\r\n                      ],\r\n    \"documents_checked\":  [\r\n                              \"PROGRESS.md\",\r\n                              \"docs/reviews/2026-10-06-review-vgar-week-1-6.md\",\r\n                              \"docs/superpowers/plans/2026-10-06-fix-vgar-integration-week-1-6.md\"\r\n                          ],\r\n    \"local_links_checked\":  28,\r\n    \"unicode_and_link_checks\":  \"PASS\"\r\n}\r\n",
+  "checks": {
+    "checked_at_utc": "2026-10-06T13:58:58.3210891Z",
+    "source_files_checked": 166,
+    "code_unchanged": true,
+    "changed_files": [],
+    "documents_checked": [
+      "PROGRESS.md",
+      "docs/reviews/2026-10-06-review-vgar-week-1-6.md",
+      "docs/superpowers/plans/2026-10-06-fix-vgar-integration-week-1-6.md"
+    ],
+    "local_links_checked": 28,
+    "unicode_and_link_checks": "PASS"
+  }
+}

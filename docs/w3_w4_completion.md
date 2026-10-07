@@ -1,6 +1,6 @@
 # W3-W4 Completion — Graph MVP + MCP/LangChain Connectivity
 
-This checkpoint closes the required W3-W4 scope without changing M1 graph-construction logic.
+Historical checkpoint before the integration fixes of 06/10/2026; see the dated addendum below for current status.
 
 ## Implemented
 
@@ -35,3 +35,11 @@ Expected gates:
 6. `logs/mcp_audit.jsonl` records graph tool/resource activity.
 
 W5-W6 task grounding and graph-guided context retrieval are intentionally not added here.
+
+## Addendum — 06/10/2026
+
+The preceding sentence describes the earlier checkpoint, not current tool availability. W6 SQLite/MCP retrieval now uses a persistent task_handle; [MCP contract](mcp_tool_contract.md) and [completion](w5_w6_completion.md) supersede operational details.
+
+Builder transaction/inventory/bindings/duplicate identities and shared source scope now have regressions. Repository/execution requires host workspace leases, uses common envelopes and the shared M2 pytest wrapper. Lease is not an OS sandbox.
+
+Full recorder: `../artifacts/fixes/w3-w6/milestone-6-final-recorder/20261006T154059255443Z-54a8f6ac3e3a41308263d01880fd43f2.json`: 353 passed, 4 symlink privilege skips. Strict W3-W4 stdio/resource smoke passes in that suite; previous node/subgraph WARNs were fixed. No real model/benchmark repair in that suite. [PROGRESS](../PROGRESS.md) records RED/GREEN provenance and pending owner sign-off.

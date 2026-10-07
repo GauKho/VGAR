@@ -1,0 +1,6 @@
+--- a/src/auth.py
++++ b/src/auth.py
+@@ -1,2 +1,2 @@
+ def login(user):
+-    return user == "root"
++    return user == "admin"

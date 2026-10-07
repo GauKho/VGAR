@@ -1,0 +1,594 @@
+{
+  "run_id": "20261007T021328575438Z-163e7ef931db",
+  "kind": "affected-doc-links-and-powershell-syntax",
+  "status": "PASS",
+  "started_utc": "2026-10-07T02:13:28.575438+00:00",
+  "complete": true,
+  "python": "3.11.6 (tags/v3.11.6:8b6ee5b, Oct  2 2023, 14:57:12) [MSC v.1935 64 bit (AMD64)]",
+  "interpreter": "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe",
+  "platform": "Windows-10-10.0.26300-SP0",
+  "command_argv": [
+    "artifacts/fixes/w3-w6/review_doc_checks.py"
+  ],
+  "cwd": "D:\\Project\\CAPSTONES\\VGAR",
+  "exit_code": 0,
+  "ended_utc": "2026-10-07T02:13:32.604000+00:00",
+  "duration_seconds": 3.970212600004743,
+  "links": [
+    {
+      "document": "README.md",
+      "target": "docs/m5_m6_retrieval_evaluation.md",
+      "exists": true
+    },
+    {
+      "document": "README.md",
+      "target": "PROGRESS.md",
+      "exists": true
+    },
+    {
+      "document": "README.md",
+      "target": "docs/w5_w6_completion.md",
+      "exists": true
+    },
+    {
+      "document": "PROGRESS.md",
+      "target": "docs/reviews/2026-10-06-review-vgar-week-1-6.md",
+      "exists": true
+    },
+    {
+      "document": "PROGRESS.md",
+      "target": "docs/superpowers/plans/2026-10-06-fix-vgar-integration-week-1-6.md",
+      "exists": true
+    },
+    {
+      "document": "PROGRESS.md",
+      "target": "artifacts/reviews/2026-10-06-w1-w6",
+      "exists": true
+    },
+    {
+      "document": "docs/w5_w6_completion.md",
+      "target": "BAO_CAO_TASK_CHUA_HOAN_THANH_W3_W6.md",
+      "exists": true
+    },
+    {
+      "document": "docs/w5_w6_completion.md",
+      "target": "../artifacts/fixes/w3-w6/milestone-6-final-recorder/20261006T154059255443Z-54a8f6ac3e3a41308263d01880fd43f2.json",
+      "exists": true
+    },
+    {
+      "document": "docs/w5_w6_completion.md",
+      "target": "../artifacts/fixes/w3-w6/milestone-8-tree-recovery-recorder/20261006T160554839620Z-209a0f28af6049328d43ab81cf33a219.json",
+      "exists": true
+    },
+    {
+      "document": "docs/w5_w6_completion.md",
+      "target": "../PROGRESS.md",
+      "exists": true
+    },
+    {
+      "document": "docs/w5_w6_completion.md",
+      "target": "../artifacts/fixes/w3-w6/20261006T155804375314Z-70ff70a28f6c/result.json",
+      "exists": true
+    },
+    {
+      "document": "docs/w5_w6_completion.md",
+      "target": "../results/retrieval/20261006T155910874325Z-e34289af181b/result.json",
+      "exists": true
+    },
+    {
+      "document": "docs/w5_w6_completion.md",
+      "target": "../results/retrieval/20261006T160820338280Z-24c3cf0056d1/result.json",
+      "exists": true
+    },
+    {
+      "document": "docs/w5_w6_completion.md",
+      "target": "../results/retrieval/20261006T162334561191Z-8d3c4f6a13e7/result.json",
+      "exists": true
+    },
+    {
+      "document": "docs/w5_w6_completion.md",
+      "target": "../artifacts/fixes/w3-w6/milestone-8-credential-final-recorder/20261007T012625128617Z-0a58010aea154438b18dba6077931c47.json",
+      "exists": true
+    },
+    {
+      "document": "docs/w5_w6_completion.md",
+      "target": "../artifacts/fixes/w3-w6/20261007T012636266959Z-7ac7378bc98e/result.json",
+      "exists": true
+    },
+    {
+      "document": "docs/w5_w6_completion.md",
+      "target": "../results/retrieval/20261007T013925676777Z-55ae5fb6a24a/result.json",
+      "exists": true
+    },
+    {
+      "document": "docs/w5_w6_completion.md",
+      "target": "reviews/2026-10-07-manual-retrieval-audit-10.md",
+      "exists": true
+    },
+    {
+      "document": "docs/w5_w6_completion.md",
+      "target": "m5_m6_retrieval_evaluation.md",
+      "exists": true
+    },
+    {
+      "document": "docs/w5_w6_completion.md",
+      "target": "mcp_tool_contract.md",
+      "exists": true
+    },
+    {
+      "document": "docs/w5_w6_completion.md",
+      "target": "adr/2026-10-06-stateless-task-handles-and-context-boundary.md",
+      "exists": true
+    },
+    {
+      "document": "docs/BAO_CAO_TASK_CHUA_HOAN_THANH_W3_W6.md",
+      "target": "../PROGRESS.md",
+      "exists": true
+    },
+    {
+      "document": "docs/BAO_CAO_TASK_CHUA_HOAN_THANH_W3_W6.md",
+      "target": "superpowers/plans/2026-10-06-fix-vgar-integration-week-1-6.md",
+      "exists": true
+    },
+    {
+      "document": "docs/BAO_CAO_TASK_CHUA_HOAN_THANH_W3_W6.md",
+      "target": "../artifacts/fixes/w3-w6/milestone-8-credential-final-recorder/20261007T012625128617Z-0a58010aea154438b18dba6077931c47.json",
+      "exists": true
+    },
+    {
+      "document": "docs/BAO_CAO_TASK_CHUA_HOAN_THANH_W3_W6.md",
+      "target": "../artifacts/fixes/w3-w6/20261007T012636266959Z-7ac7378bc98e/result.json",
+      "exists": true
+    },
+    {
+      "document": "docs/BAO_CAO_TASK_CHUA_HOAN_THANH_W3_W6.md",
+      "target": "../artifacts/m8-fixture-99543a81/",
+      "exists": true
+    },
+    {
+      "document": "docs/BAO_CAO_TASK_CHUA_HOAN_THANH_W3_W6.md",
+      "target": "../artifacts/m8-fixture-99543a81/compared/20261007T012637548656Z-15fbdea1ef97/REPORT.md",
+      "exists": true
+    },
+    {
+      "document": "docs/BAO_CAO_TASK_CHUA_HOAN_THANH_W3_W6.md",
+      "target": "reviews/2026-10-07-manual-retrieval-audit-10.md",
+      "exists": true
+    },
+    {
+      "document": "docs/BAO_CAO_TASK_CHUA_HOAN_THANH_W3_W6.md",
+      "target": "../results/retrieval/20261006T155910874325Z-e34289af181b/result.json",
+      "exists": true
+    },
+    {
+      "document": "docs/BAO_CAO_TASK_CHUA_HOAN_THANH_W3_W6.md",
+      "target": "../artifacts/fixes/w3-w6/20261006T160056698401Z-9df672c32ba9/result.json",
+      "exists": true
+    },
+    {
+      "document": "docs/BAO_CAO_TASK_CHUA_HOAN_THANH_W3_W6.md",
+      "target": "../results/retrieval/20261006T160820338280Z-24c3cf0056d1/result.json",
+      "exists": true
+    },
+    {
+      "document": "docs/BAO_CAO_TASK_CHUA_HOAN_THANH_W3_W6.md",
+      "target": "../results/retrieval/20261006T162334561191Z-8d3c4f6a13e7/result.json",
+      "exists": true
+    },
+    {
+      "document": "docs/BAO_CAO_TASK_CHUA_HOAN_THANH_W3_W6.md",
+      "target": "../artifacts/fixes/w3-w6/20261007T012123887065Z-1f83886bd988/result.json",
+      "exists": true
+    },
+    {
+      "document": "docs/BAO_CAO_TASK_CHUA_HOAN_THANH_W3_W6.md",
+      "target": "../artifacts/fixes/w3-w6/20261007T012331157674Z-e681a29a0215/result.json",
+      "exists": true
+    },
+    {
+      "document": "docs/BAO_CAO_TASK_CHUA_HOAN_THANH_W3_W6.md",
+      "target": "reviews/2026-10-07-manual-retrieval-audit-10.md",
+      "exists": true
+    },
+    {
+      "document": "docs/BAO_CAO_TASK_CHUA_HOAN_THANH_W3_W6.md",
+      "target": "../artifacts/fixes/w3-w6/20261007T012518923284Z-0305790e711a/result.json",
+      "exists": true
+    },
+    {
+      "document": "docs/BAO_CAO_TASK_CHUA_HOAN_THANH_W3_W6.md",
+      "target": "../artifacts/fixes/w3-w6/20261007T012531597287Z-42e1a0bf5de4/result.json",
+      "exists": true
+    },
+    {
+      "document": "docs/m5_m6_retrieval_evaluation.md",
+      "target": "adr/2026-10-06-stateless-task-handles-and-context-boundary.md",
+      "exists": true
+    },
+    {
+      "document": "docs/m5_m6_retrieval_evaluation.md",
+      "target": "../artifacts/fixes/w3-w6/manual10-no-jedi/baseline-recovery/20261007T020222087444Z-9d7a6463840c/result.json",
+      "exists": true
+    },
+    {
+      "document": "docs/m5_m6_retrieval_evaluation.md",
+      "target": "../PROGRESS.md",
+      "exists": true
+    },
+    {
+      "document": "docs/m5_m6_retrieval_evaluation.md",
+      "target": "w5_w6_completion.md",
+      "exists": true
+    },
+    {
+      "document": "docs/reviews/2026-10-07-manual-retrieval-audit-10.md",
+      "target": "../../results/retrieval/20261007T014445273889Z-664d06a6c1c0/result.json",
+      "exists": true
+    },
+    {
+      "document": "docs/reviews/2026-10-07-manual-retrieval-audit-10.md",
+      "target": "../../artifacts/fixes/w3-w6/manual10-no-jedi/baseline-recovery/20261007T020222087444Z-9d7a6463840c/recovered-run/result.json",
+      "exists": true
+    },
+    {
+      "document": "docs/reviews/2026-10-07-manual-retrieval-audit-10.md",
+      "target": "../../artifacts/fixes/w3-w6/manual10-no-jedi/baseline-recovery/20261007T020222087444Z-9d7a6463840c/result.json",
+      "exists": true
+    },
+    {
+      "document": "docs/reviews/2026-10-07-manual-retrieval-audit-10.md",
+      "target": "../../artifacts/fixes/w3-w6/manual10-no-jedi/evidence/20261007T020305188540Z-617ca4415d05/result.json",
+      "exists": true
+    },
+    {
+      "document": "docs/reviews/2026-10-07-affected-files-review-w3-w6.md",
+      "target": "../../PROGRESS.md",
+      "exists": true
+    },
+    {
+      "document": "docs/reviews/2026-10-07-affected-files-review-w3-w6.md",
+      "target": "../adr/2026-10-06-graph-transactions-and-definition-identities.md",
+      "exists": true
+    },
+    {
+      "document": "docs/reviews/2026-10-07-affected-files-review-w3-w6.md",
+      "target": "../adr/2026-10-06-stateless-task-handles-and-context-boundary.md",
+      "exists": true
+    },
+    {
+      "document": "docs/superpowers/plans/2026-10-06-fix-vgar-integration-week-1-6.md",
+      "target": "../../BAO_CAO_TASK_CHUA_HOAN_THANH_W3_W6.md",
+      "exists": true
+    },
+    {
+      "document": "docs/superpowers/plans/2026-10-06-fix-vgar-integration-week-1-6.md",
+      "target": "../../reviews/2026-10-06-review-vgar-week-1-6.md",
+      "exists": true
+    },
+    {
+      "document": "docs/superpowers/plans/2026-10-06-fix-vgar-integration-week-1-6.md",
+      "target": "../../../../New_task/project_plan_16_weeks.md",
+      "exists": true
+    },
+    {
+      "document": "docs/superpowers/plans/2026-10-06-fix-vgar-integration-week-1-6.md",
+      "target": "../../../../New_task/VGAR_MCP_Contract_Freeze_Plan_No_Schema_Versioning.md",
+      "exists": true
+    }
+  ],
+  "powershell_blocks": [
+    {
+      "document": "README.md",
+      "block": 1,
+      "command_argv": [
+        "powershell",
+        "-NoProfile",
+        "-NonInteractive",
+        "-Command",
+        "$code=[Console]::In.ReadToEnd(); $tokens=$null; $errors=$null; [void][System.Management.Automation.Language.Parser]::ParseInput($code,[ref]$tokens,[ref]$errors); if($errors.Count){$errors | ForEach-Object {$_.Message}; exit 1}; exit 0"
+      ],
+      "input_sha256": "sha256:1aca6eee9a17c2099c4a00f3555e17373da0ff0b7039629bbe3dc33ee31a6839",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "document": "README.md",
+      "block": 2,
+      "command_argv": [
+        "powershell",
+        "-NoProfile",
+        "-NonInteractive",
+        "-Command",
+        "$code=[Console]::In.ReadToEnd(); $tokens=$null; $errors=$null; [void][System.Management.Automation.Language.Parser]::ParseInput($code,[ref]$tokens,[ref]$errors); if($errors.Count){$errors | ForEach-Object {$_.Message}; exit 1}; exit 0"
+      ],
+      "input_sha256": "sha256:58eb399997555ea7d71da92a9390bffc45344d41761848704326e5eb8e9581cb",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "document": "README.md",
+      "block": 3,
+      "command_argv": [
+        "powershell",
+        "-NoProfile",
+        "-NonInteractive",
+        "-Command",
+        "$code=[Console]::In.ReadToEnd(); $tokens=$null; $errors=$null; [void][System.Management.Automation.Language.Parser]::ParseInput($code,[ref]$tokens,[ref]$errors); if($errors.Count){$errors | ForEach-Object {$_.Message}; exit 1}; exit 0"
+      ],
+      "input_sha256": "sha256:74202923881f314bf34ca023efa4e0258f860735a945681bbf2e46ff251bf073",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "document": "README.md",
+      "block": 4,
+      "command_argv": [
+        "powershell",
+        "-NoProfile",
+        "-NonInteractive",
+        "-Command",
+        "$code=[Console]::In.ReadToEnd(); $tokens=$null; $errors=$null; [void][System.Management.Automation.Language.Parser]::ParseInput($code,[ref]$tokens,[ref]$errors); if($errors.Count){$errors | ForEach-Object {$_.Message}; exit 1}; exit 0"
+      ],
+      "input_sha256": "sha256:a9dc631567267262620ff085b7de630c75725118137fdbaf326cc0a8b95d0d7e",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "document": "README.md",
+      "block": 5,
+      "command_argv": [
+        "powershell",
+        "-NoProfile",
+        "-NonInteractive",
+        "-Command",
+        "$code=[Console]::In.ReadToEnd(); $tokens=$null; $errors=$null; [void][System.Management.Automation.Language.Parser]::ParseInput($code,[ref]$tokens,[ref]$errors); if($errors.Count){$errors | ForEach-Object {$_.Message}; exit 1}; exit 0"
+      ],
+      "input_sha256": "sha256:bd7435aa2964e8c9f4e600807464bb24912f7521aa7245d346e5c5584360232d",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "document": "README.md",
+      "block": 6,
+      "command_argv": [
+        "powershell",
+        "-NoProfile",
+        "-NonInteractive",
+        "-Command",
+        "$code=[Console]::In.ReadToEnd(); $tokens=$null; $errors=$null; [void][System.Management.Automation.Language.Parser]::ParseInput($code,[ref]$tokens,[ref]$errors); if($errors.Count){$errors | ForEach-Object {$_.Message}; exit 1}; exit 0"
+      ],
+      "input_sha256": "sha256:0c1b2e996083954730ee2fe65ee3efcb7447ae8f87572e28f4dec304a10cdeff",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "document": "README.md",
+      "block": 7,
+      "command_argv": [
+        "powershell",
+        "-NoProfile",
+        "-NonInteractive",
+        "-Command",
+        "$code=[Console]::In.ReadToEnd(); $tokens=$null; $errors=$null; [void][System.Management.Automation.Language.Parser]::ParseInput($code,[ref]$tokens,[ref]$errors); if($errors.Count){$errors | ForEach-Object {$_.Message}; exit 1}; exit 0"
+      ],
+      "input_sha256": "sha256:4cfa13c66eb8d6d025afefae0dcde55ca3fe520062f2d8c566b99f56e35b6a1c",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "document": "README.md",
+      "block": 8,
+      "command_argv": [
+        "powershell",
+        "-NoProfile",
+        "-NonInteractive",
+        "-Command",
+        "$code=[Console]::In.ReadToEnd(); $tokens=$null; $errors=$null; [void][System.Management.Automation.Language.Parser]::ParseInput($code,[ref]$tokens,[ref]$errors); if($errors.Count){$errors | ForEach-Object {$_.Message}; exit 1}; exit 0"
+      ],
+      "input_sha256": "sha256:2155b9c20e8c866aa487978c5e2198aa23608a02baa9f0ea38a92bf3ea975be6",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "document": "README.md",
+      "block": 9,
+      "command_argv": [
+        "powershell",
+        "-NoProfile",
+        "-NonInteractive",
+        "-Command",
+        "$code=[Console]::In.ReadToEnd(); $tokens=$null; $errors=$null; [void][System.Management.Automation.Language.Parser]::ParseInput($code,[ref]$tokens,[ref]$errors); if($errors.Count){$errors | ForEach-Object {$_.Message}; exit 1}; exit 0"
+      ],
+      "input_sha256": "sha256:2a68ee9de9390921b19c760a4b87078553193c1655388e4b7fcd78e4bef2ef8a",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "document": "docs/m5_m6_retrieval_evaluation.md",
+      "block": 1,
+      "command_argv": [
+        "powershell",
+        "-NoProfile",
+        "-NonInteractive",
+        "-Command",
+        "$code=[Console]::In.ReadToEnd(); $tokens=$null; $errors=$null; [void][System.Management.Automation.Language.Parser]::ParseInput($code,[ref]$tokens,[ref]$errors); if($errors.Count){$errors | ForEach-Object {$_.Message}; exit 1}; exit 0"
+      ],
+      "input_sha256": "sha256:5718193f2c7f1e04fdd17033d63ee15eb7ce9566f6e72ad8dcd5b9693ae6ef5a",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "document": "docs/m5_m6_retrieval_evaluation.md",
+      "block": 2,
+      "command_argv": [
+        "powershell",
+        "-NoProfile",
+        "-NonInteractive",
+        "-Command",
+        "$code=[Console]::In.ReadToEnd(); $tokens=$null; $errors=$null; [void][System.Management.Automation.Language.Parser]::ParseInput($code,[ref]$tokens,[ref]$errors); if($errors.Count){$errors | ForEach-Object {$_.Message}; exit 1}; exit 0"
+      ],
+      "input_sha256": "sha256:9a02424712e00d47116aab0964363fadfeace58485c19b49850494b80d292f8e",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "document": "docs/m5_m6_retrieval_evaluation.md",
+      "block": 3,
+      "command_argv": [
+        "powershell",
+        "-NoProfile",
+        "-NonInteractive",
+        "-Command",
+        "$code=[Console]::In.ReadToEnd(); $tokens=$null; $errors=$null; [void][System.Management.Automation.Language.Parser]::ParseInput($code,[ref]$tokens,[ref]$errors); if($errors.Count){$errors | ForEach-Object {$_.Message}; exit 1}; exit 0"
+      ],
+      "input_sha256": "sha256:4223c9b2811a2f1e069d6b90aa6367779f034b50c5423b25145a71c699d0b891",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "document": "docs/m5_m6_retrieval_evaluation.md",
+      "block": 4,
+      "command_argv": [
+        "powershell",
+        "-NoProfile",
+        "-NonInteractive",
+        "-Command",
+        "$code=[Console]::In.ReadToEnd(); $tokens=$null; $errors=$null; [void][System.Management.Automation.Language.Parser]::ParseInput($code,[ref]$tokens,[ref]$errors); if($errors.Count){$errors | ForEach-Object {$_.Message}; exit 1}; exit 0"
+      ],
+      "input_sha256": "sha256:490dd4761b1fb33bbe5d181cf4ba35d8eb16e5d78e11234d351ba06a3ae0f85d",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "document": "docs/m5_m6_retrieval_evaluation.md",
+      "block": 5,
+      "command_argv": [
+        "powershell",
+        "-NoProfile",
+        "-NonInteractive",
+        "-Command",
+        "$code=[Console]::In.ReadToEnd(); $tokens=$null; $errors=$null; [void][System.Management.Automation.Language.Parser]::ParseInput($code,[ref]$tokens,[ref]$errors); if($errors.Count){$errors | ForEach-Object {$_.Message}; exit 1}; exit 0"
+      ],
+      "input_sha256": "sha256:c9989745cd52710c0363d2650c05cc85d85543b6163e11b5c1a580c6dbbf1156",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "document": "docs/m5_m6_retrieval_evaluation.md",
+      "block": 6,
+      "command_argv": [
+        "powershell",
+        "-NoProfile",
+        "-NonInteractive",
+        "-Command",
+        "$code=[Console]::In.ReadToEnd(); $tokens=$null; $errors=$null; [void][System.Management.Automation.Language.Parser]::ParseInput($code,[ref]$tokens,[ref]$errors); if($errors.Count){$errors | ForEach-Object {$_.Message}; exit 1}; exit 0"
+      ],
+      "input_sha256": "sha256:6e4f39057faf0723820b58c5931a611405dd75fa27665f52111040e12a9ff8b6",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "document": "docs/m5_m6_retrieval_evaluation.md",
+      "block": 7,
+      "command_argv": [
+        "powershell",
+        "-NoProfile",
+        "-NonInteractive",
+        "-Command",
+        "$code=[Console]::In.ReadToEnd(); $tokens=$null; $errors=$null; [void][System.Management.Automation.Language.Parser]::ParseInput($code,[ref]$tokens,[ref]$errors); if($errors.Count){$errors | ForEach-Object {$_.Message}; exit 1}; exit 0"
+      ],
+      "input_sha256": "sha256:1ef180e64532ac65dc1f7b41b4667076b24724ed268a8d0431281c989f356d40",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "document": "docs/m5_m6_retrieval_evaluation.md",
+      "block": 8,
+      "command_argv": [
+        "powershell",
+        "-NoProfile",
+        "-NonInteractive",
+        "-Command",
+        "$code=[Console]::In.ReadToEnd(); $tokens=$null; $errors=$null; [void][System.Management.Automation.Language.Parser]::ParseInput($code,[ref]$tokens,[ref]$errors); if($errors.Count){$errors | ForEach-Object {$_.Message}; exit 1}; exit 0"
+      ],
+      "input_sha256": "sha256:2fdc9d51a22eebc449920d92f364e9583f8d2b3368694836c8cf457fdbc8bb20",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "document": "docs/m5_m6_retrieval_evaluation.md",
+      "block": 9,
+      "command_argv": [
+        "powershell",
+        "-NoProfile",
+        "-NonInteractive",
+        "-Command",
+        "$code=[Console]::In.ReadToEnd(); $tokens=$null; $errors=$null; [void][System.Management.Automation.Language.Parser]::ParseInput($code,[ref]$tokens,[ref]$errors); if($errors.Count){$errors | ForEach-Object {$_.Message}; exit 1}; exit 0"
+      ],
+      "input_sha256": "sha256:edef3385ededbe79cf26bc7037884ec4b5b4e1db41bc5bd7be9291ff01938b34",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "document": "docs/superpowers/plans/2026-10-06-fix-vgar-integration-week-1-6.md",
+      "block": 1,
+      "command_argv": [
+        "powershell",
+        "-NoProfile",
+        "-NonInteractive",
+        "-Command",
+        "$code=[Console]::In.ReadToEnd(); $tokens=$null; $errors=$null; [void][System.Management.Automation.Language.Parser]::ParseInput($code,[ref]$tokens,[ref]$errors); if($errors.Count){$errors | ForEach-Object {$_.Message}; exit 1}; exit 0"
+      ],
+      "input_sha256": "sha256:405ed0040a23ea956e6f6ea217e34dcca1499b3cb97072b38c07af1c06d1f534",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "document": "docs/superpowers/plans/2026-10-06-fix-vgar-integration-week-1-6.md",
+      "block": 2,
+      "command_argv": [
+        "powershell",
+        "-NoProfile",
+        "-NonInteractive",
+        "-Command",
+        "$code=[Console]::In.ReadToEnd(); $tokens=$null; $errors=$null; [void][System.Management.Automation.Language.Parser]::ParseInput($code,[ref]$tokens,[ref]$errors); if($errors.Count){$errors | ForEach-Object {$_.Message}; exit 1}; exit 0"
+      ],
+      "input_sha256": "sha256:af7bae3082cbfdc578a1ea3c31fd0ba6b5aefbd16c6175f8ff163253ebb2c869",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "failures": [],
+  "document_hashes": {
+    "README.md": "sha256:92bea2f78dbfa89926d2efd34ec14df78f9bb5f6cc8f60b739985a46e7e838d3",
+    "PROGRESS.md": "sha256:6e3ac4e3be41f60ee8874edcb6c68411b14c5e903b98bce9b6116a8ff8bc0cdc",
+    "docs/w5_w6_completion.md": "sha256:ee3600f213227cc64aaa71aaa3364752ba891b0ef8caa7b3d4ce8322f1cb95ea",
+    "docs/BAO_CAO_TASK_CHUA_HOAN_THANH_W3_W6.md": "sha256:d67235dbc6beceab50f3081033f25026c8185666aad37e15d04b885cf38d0961",
+    "docs/m5_m6_retrieval_evaluation.md": "sha256:38e01b2be80bf3d11b1deea75433bd9a5219286ea9b0e8341402ca95aae9b1bd",
+    "docs/reviews/2026-10-07-manual-retrieval-audit-10.md": "sha256:bad90ab3f0f33a847a52e43966bbd49ce58d3724784aee50c9337a73c8cbf763",
+    "docs/reviews/2026-10-07-affected-files-review-w3-w6.md": "sha256:863bb9644b96f55df01f201153a064c9e1b9ecae017f28ac715e7313088e5458",
+    "docs/superpowers/plans/2026-10-06-fix-vgar-integration-week-1-6.md": "sha256:2c163e4138baa603d957c1c64ee6e1acd672708b329ef80c2ed3f75b40d17c49"
+  },
+  "documents_preserved": true,
+  "limitations": "Syntax/local existence only; no command execution, remote links or semantic proof."
+}

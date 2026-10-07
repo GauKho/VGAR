@@ -9,10 +9,12 @@ import asyncio
 import json
 import tempfile
 from pathlib import Path
+from dataclasses import replace
 
 from langchain_core.messages import HumanMessage, SystemMessage
 
 from vgar.agents.core import create_core_agent
+from vgar.config.settings import get_settings
 from vgar.contracts.evidence import EvidenceBundle, VerificationResult
 from vgar.repair.evidence_writer import begin_run, finish_run
 from vgar.repair.test_runner import run_tests
@@ -60,7 +62,7 @@ async def main() -> None:
             assert baseline.status == "FAIL", baseline.model_dump()
 
             # 2) Real LangChain agent gets the task and the real MCP tools.
-            agent = await create_core_agent()
+            agent = await create_core_agent(replace(get_settings(), workspace_root=lease.path))
             prompt = f"""
 You are executing W3-W4 repair smoke test in {lease.path}.
 Task: fix tests/test_calculator.py::test_add.

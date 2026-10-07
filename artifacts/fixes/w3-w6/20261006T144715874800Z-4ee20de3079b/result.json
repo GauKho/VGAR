@@ -1,0 +1,130 @@
+{
+  "run_id": "20261006T144715874800Z-4ee20de3079b",
+  "kind": "milestone-4-red",
+  "status": "ERROR",
+  "started_utc": "2026-10-06T14:47:15.874800+00:00",
+  "complete": true,
+  "python": "3.11.6 (tags/v3.11.6:8b6ee5b, Oct  2 2023, 14:57:12) [MSC v.1935 64 bit (AMD64)]",
+  "interpreter": "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe",
+  "platform": "Windows-10-10.0.26300-SP0",
+  "command_argv": [
+    "-c"
+  ],
+  "cwd": "D:\\Project\\CAPSTONES\\VGAR",
+  "command": "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe -m pytest -q -p no:cacheprovider --junitxml=D:\\Project\\CAPSTONES\\VGAR\\.m2-pytest-aw_n5ri0\\junit.xml tests/test_mcp_workspace_guard.py",
+  "argv": [
+    "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "--junitxml=D:\\Project\\CAPSTONES\\VGAR\\.m2-pytest-aw_n5ri0\\junit.xml",
+    "tests/test_mcp_workspace_guard.py"
+  ],
+  "exit_code": 1,
+  "duration_ms": 3734,
+  "stdout": "EEEEEEEEEEEEEE                                                           [100%]\r\n=================================== ERRORS ====================================\r\n_ ERROR at setup of test_host_workspace_setting_is_forwarded_and_unbound_clears_inherited_permission _\r\ntests\\test_mcp_workspace_guard.py:24: in leased\r\n    settings = replace(Settings(), workspace_root=root, audit_log=tmp_path / \"audit.jsonl\")\r\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\nC:\\Program Files\\Python311\\Lib\\dataclasses.py:1501: in replace\r\n    return obj.__class__(**changes)\r\n           ^^^^^^^^^^^^^^^^^^^^^^^^\r\nE   TypeError: Settings.__init__() got an unexpected keyword argument 'workspace_root'\r\n_ ERROR at setup of test_original_root_is_rejected_before_write_or_execution __\r\ntests\\test_mcp_workspace_guard.py:24: in leased\r\n    settings = replace(Settings(), workspace_root=root, audit_log=tmp_path / \"audit.jsonl\")\r\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\nC:\\Program Files\\Python311\\Lib\\dataclasses.py:1501: in replace\r\n    return obj.__class__(**changes)\r\n           ^^^^^^^^^^^^^^^^^^^^^^^^\r\nE   TypeError: Settings.__init__() got an unexpected keyword argument 'workspace_root'\r\n_ ERROR at setup of test_unbound_health_is_available_but_file_and_execution_tools_denied _\r\ntests\\test_mcp_workspace_guard.py:24: in leased\r\n    settings = replace(Settings(), workspace_root=root, audit_log=tmp_path / \"audit.jsonl\")\r\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\nC:\\Program Files\\Python311\\Lib\\dataclasses.py:1501: in replace\r\n    return obj.__class__(**changes)\r\n           ^^^^^^^^^^^^^^^^^^^^^^^^\r\nE   TypeError: Settings.__init__() got an unexpected keyword argument 'workspace_root'\r\n_______________ ERROR at setup of test_stale_lease_fails_closed _______________\r\ntests\\test_mcp_workspace_guard.py:24: in leased\r\n    settings = replace(Settings(), workspace_root=root, audit_log=tmp_path / \"audit.jsonl\")\r\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\nC:\\Program Files\\Python311\\Lib\\dataclasses.py:1501: in replace\r\n    return obj.__class__(**changes)\r\n           ^^^^^^^^^^^^^^^^^^^^^^^^\r\nE   TypeError: Settings.__init__() got an unexpected keyword argument 'workspace_root'\r\n_ ERROR at setup of test_path_and_test_selector_escape_rejected[../original/app.py] _\r\ntests\\test_mcp_workspace_guard.py:24: in leased\r\n    settings = replace(Settings(), workspace_root=root, audit_log=tmp_path / \"audit.jsonl\")\r\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\nC:\\Program Files\\Python311\\Lib\\dataclasses.py:1501: in replace\r\n    return obj.__class__(**changes)\r\n           ^^^^^^^^^^^^^^^^^^^^^^^^\r\nE   TypeError: Settings.__init__() got an unexpected keyword argument 'workspace_root'\r\n_ ERROR at setup of test_path_and_test_selector_escape_rejected[C:/outside.py] _\r\ntests\\test_mcp_workspace_guard.py:24: in leased\r\n    settings = replace(Settings(), workspace_root=root, audit_log=tmp_path / \"audit.jsonl\")\r\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\nC:\\Program Files\\Python311\\Lib\\dataclasses.py:1501: in replace\r\n    return obj.__class__(**changes)\r\n           ^^^^^^^^^^^^^^^^^^^^^^^^\r\nE   TypeError: Settings.__init__() got an unexpected keyword argument 'workspace_root'\r\n_ ERROR at setup of test_path_and_test_selector_escape_rejected[/outside.py] __\r\ntests\\test_mcp_workspace_guard.py:24: in leased\r\n    settings = replace(Settings(), workspace_root=root, audit_log=tmp_path / \"audit.jsonl\")\r\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\nC:\\Program Files\\Python311\\Lib\\dataclasses.py:1501: in replace\r\n    return obj.__class__(**changes)\r\n           ^^^^^^^^^^^^^^^^^^^^^^^^\r\nE   TypeError: Settings.__init__() got an unexpected keyword argument 'workspace_root'\r\n_ ERROR at setup of test_leased_read_patch_and_failed_patch_have_consistent_audit _\r\ntests\\test_mcp_workspace_guard.py:24: in leased\r\n    settings = replace(Settings(), workspace_root=root, audit_log=tmp_path / \"audit.jsonl\")\r\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\nC:\\Program Files\\Python311\\Lib\\dataclasses.py:1501: in replace\r\n    return obj.__class__(**changes)\r\n           ^^^^^^^^^^^^^^^^^^^^^^^^\r\nE   TypeError: Settings.__init__() got an unexpected keyword argument 'workspace_root'\r\n_ ERROR at setup of test_execution_uses_shared_m2_runner_and_saves_full_evidence[PASS-0-None] _\r\ntests\\test_mcp_workspace_guard.py:24: in leased\r\n    settings = replace(Settings(), workspace_root=root, audit_log=tmp_path / \"audit.jsonl\")\r\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\nC:\\Program Files\\Python311\\Lib\\dataclasses.py:1501: in replace\r\n    return obj.__class__(**changes)\r\n           ^^^^^^^^^^^^^^^^^^^^^^^^\r\nE   TypeError: Settings.__init__() got an unexpected keyword argument 'workspace_root'\r\n_ ERROR at setup of test_execution_uses_shared_m2_runner_and_saves_full_evidence[FAIL-1-TEST_FAILED] _\r\ntests\\test_mcp_workspace_guard.py:24: in leased\r\n    settings = replace(Settings(), workspace_root=root, audit_log=tmp_path / \"audit.jsonl\")\r\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\nC:\\Program Files\\Python311\\Lib\\dataclasses.py:1501: in replace\r\n    return obj.__class__(**changes)\r\n           ^^^^^^^^^^^^^^^^^^^^^^^^\r\nE   TypeError: Settings.__init__() got an unexpected keyword argument 'workspace_root'\r\n_ ERROR at setup of test_execution_uses_shared_m2_runner_and_saves_full_evidence[ERROR-None-TEST_TIMEOUT] _\r\ntests\\test_mcp_workspace_guard.py:24: in leased\r\n    settings = replace(Settings(), workspace_root=root, audit_log=tmp_path / \"audit.jsonl\")\r\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\nC:\\Program Files\\Python311\\Lib\\dataclasses.py:1501: in replace\r\n    return obj.__class__(**changes)\r\n           ^^^^^^^^^^^^^^^^^^^^^^^^\r\nE   TypeError: Settings.__init__() got an unexpected keyword argument 'workspace_root'\r\n________ ERROR at setup of test_real_execution_emits_junit_case_counts ________\r\ntests\\test_mcp_workspace_guard.py:24: in leased\r\n    settings = replace(Settings(), workspace_root=root, audit_log=tmp_path / \"audit.jsonl\")\r\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\nC:\\Program Files\\Python311\\Lib\\dataclasses.py:1501: in replace\r\n    return obj.__class__(**changes)\r\n           ^^^^^^^^^^^^^^^^^^^^^^^^\r\nE   TypeError: Settings.__init__() got an unexpected keyword argument 'workspace_root'\r\n_____ ERROR at setup of test_link_target_is_rejected_before_read_or_write _____\r\ntests\\test_mcp_workspace_guard.py:24: in leased\r\n    settings = replace(Settings(), workspace_root=root, audit_log=tmp_path / \"audit.jsonl\")\r\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\nC:\\Program Files\\Python311\\Lib\\dataclasses.py:1501: in replace\r\n    return obj.__class__(**changes)\r\n           ^^^^^^^^^^^^^^^^^^^^^^^^\r\nE   TypeError: Settings.__init__() got an unexpected keyword argument 'workspace_root'\r\n________ ERROR at setup of test_workflow_binds_exact_created_workspace ________\r\ntests\\test_mcp_workspace_guard.py:24: in leased\r\n    settings = replace(Settings(), workspace_root=root, audit_log=tmp_path / \"audit.jsonl\")\r\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\nC:\\Program Files\\Python311\\Lib\\dataclasses.py:1501: in replace\r\n    return obj.__class__(**changes)\r\n           ^^^^^^^^^^^^^^^^^^^^^^^^\r\nE   TypeError: Settings.__init__() got an unexpected keyword argument 'workspace_root'\r\n- generated xml file: D:\\Project\\CAPSTONES\\VGAR\\.m2-pytest-aw_n5ri0\\junit.xml -\r\n=========================== short test summary info ===========================\r\nERROR tests/test_mcp_workspace_guard.py::test_host_workspace_setting_is_forwarded_and_unbound_clears_inherited_permission\r\nERROR tests/test_mcp_workspace_guard.py::test_original_root_is_rejected_before_write_or_execution\r\nERROR tests/test_mcp_workspace_guard.py::test_unbound_health_is_available_but_file_and_execution_tools_denied\r\nERROR tests/test_mcp_workspace_guard.py::test_stale_lease_fails_closed - Type...\r\nERROR tests/test_mcp_workspace_guard.py::test_path_and_test_selector_escape_rejected[../original/app.py]\r\nERROR tests/test_mcp_workspace_guard.py::test_path_and_test_selector_escape_rejected[C:/outside.py]\r\nERROR tests/test_mcp_workspace_guard.py::test_path_and_test_selector_escape_rejected[/outside.py]\r\nERROR tests/test_mcp_workspace_guard.py::test_leased_read_patch_and_failed_patch_have_consistent_audit\r\nERROR tests/test_mcp_workspace_guard.py::test_execution_uses_shared_m2_runner_and_saves_full_evidence[PASS-0-None]\r\nERROR tests/test_mcp_workspace_guard.py::test_execution_uses_shared_m2_runner_and_saves_full_evidence[FAIL-1-TEST_FAILED]\r\nERROR tests/test_mcp_workspace_guard.py::test_execution_uses_shared_m2_runner_and_saves_full_evidence[ERROR-None-TEST_TIMEOUT]\r\nERROR tests/test_mcp_workspace_guard.py::test_real_execution_emits_junit_case_counts\r\nERROR tests/test_mcp_workspace_guard.py::test_link_target_is_rejected_before_read_or_write\r\nERROR tests/test_mcp_workspace_guard.py::test_workflow_binds_exact_created_workspace\r\n14 errors in 2.83s\r\n",
+  "stderr": "",
+  "timeout_seconds": 240.0,
+  "cases": [
+    {
+      "name": "tests.test_mcp_workspace_guard::test_host_workspace_setting_is_forwarded_and_unbound_clears_inherited_permission",
+      "status": "ERROR",
+      "duration_ms": 8,
+      "detail": "tests\\test_mcp_workspace_guard.py:24: in leased\n    settings = replace(Settings(), workspace_root=root, audit_log=tmp_path / \"audit.jsonl\")\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nC:\\Program Files\\Python311\\Lib\\dataclasses.py:1501: in replace\n    return obj.__class__(**changes)\n           ^^^^^^^^^^^^^^^^^^^^^^^^\nE   TypeError: Settings.__init__() got an unexpected keyword argument 'workspace_root'"
+    },
+    {
+      "name": "tests.test_mcp_workspace_guard::test_original_root_is_rejected_before_write_or_execution",
+      "status": "ERROR",
+      "duration_ms": 7,
+      "detail": "tests\\test_mcp_workspace_guard.py:24: in leased\n    settings = replace(Settings(), workspace_root=root, audit_log=tmp_path / \"audit.jsonl\")\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nC:\\Program Files\\Python311\\Lib\\dataclasses.py:1501: in replace\n    return obj.__class__(**changes)\n           ^^^^^^^^^^^^^^^^^^^^^^^^\nE   TypeError: Settings.__init__() got an unexpected keyword argument 'workspace_root'"
+    },
+    {
+      "name": "tests.test_mcp_workspace_guard::test_unbound_health_is_available_but_file_and_execution_tools_denied",
+      "status": "ERROR",
+      "duration_ms": 6,
+      "detail": "tests\\test_mcp_workspace_guard.py:24: in leased\n    settings = replace(Settings(), workspace_root=root, audit_log=tmp_path / \"audit.jsonl\")\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nC:\\Program Files\\Python311\\Lib\\dataclasses.py:1501: in replace\n    return obj.__class__(**changes)\n           ^^^^^^^^^^^^^^^^^^^^^^^^\nE   TypeError: Settings.__init__() got an unexpected keyword argument 'workspace_root'"
+    },
+    {
+      "name": "tests.test_mcp_workspace_guard::test_stale_lease_fails_closed",
+      "status": "ERROR",
+      "duration_ms": 4,
+      "detail": "tests\\test_mcp_workspace_guard.py:24: in leased\n    settings = replace(Settings(), workspace_root=root, audit_log=tmp_path / \"audit.jsonl\")\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nC:\\Program Files\\Python311\\Lib\\dataclasses.py:1501: in replace\n    return obj.__class__(**changes)\n           ^^^^^^^^^^^^^^^^^^^^^^^^\nE   TypeError: Settings.__init__() got an unexpected keyword argument 'workspace_root'"
+    },
+    {
+      "name": "tests.test_mcp_workspace_guard::test_path_and_test_selector_escape_rejected[../original/app.py]",
+      "status": "ERROR",
+      "duration_ms": 4,
+      "detail": "tests\\test_mcp_workspace_guard.py:24: in leased\n    settings = replace(Settings(), workspace_root=root, audit_log=tmp_path / \"audit.jsonl\")\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nC:\\Program Files\\Python311\\Lib\\dataclasses.py:1501: in replace\n    return obj.__class__(**changes)\n           ^^^^^^^^^^^^^^^^^^^^^^^^\nE   TypeError: Settings.__init__() got an unexpected keyword argument 'workspace_root'"
+    },
+    {
+      "name": "tests.test_mcp_workspace_guard::test_path_and_test_selector_escape_rejected[C:/outside.py]",
+      "status": "ERROR",
+      "duration_ms": 4,
+      "detail": "tests\\test_mcp_workspace_guard.py:24: in leased\n    settings = replace(Settings(), workspace_root=root, audit_log=tmp_path / \"audit.jsonl\")\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nC:\\Program Files\\Python311\\Lib\\dataclasses.py:1501: in replace\n    return obj.__class__(**changes)\n           ^^^^^^^^^^^^^^^^^^^^^^^^\nE   TypeError: Settings.__init__() got an unexpected keyword argument 'workspace_root'"
+    },
+    {
+      "name": "tests.test_mcp_workspace_guard::test_path_and_test_selector_escape_rejected[/outside.py]",
+      "status": "ERROR",
+      "duration_ms": 5,
+      "detail": "tests\\test_mcp_workspace_guard.py:24: in leased\n    settings = replace(Settings(), workspace_root=root, audit_log=tmp_path / \"audit.jsonl\")\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nC:\\Program Files\\Python311\\Lib\\dataclasses.py:1501: in replace\n    return obj.__class__(**changes)\n           ^^^^^^^^^^^^^^^^^^^^^^^^\nE   TypeError: Settings.__init__() got an unexpected keyword argument 'workspace_root'"
+    },
+    {
+      "name": "tests.test_mcp_workspace_guard::test_leased_read_patch_and_failed_patch_have_consistent_audit",
+      "status": "ERROR",
+      "duration_ms": 4,
+      "detail": "tests\\test_mcp_workspace_guard.py:24: in leased\n    settings = replace(Settings(), workspace_root=root, audit_log=tmp_path / \"audit.jsonl\")\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nC:\\Program Files\\Python311\\Lib\\dataclasses.py:1501: in replace\n    return obj.__class__(**changes)\n           ^^^^^^^^^^^^^^^^^^^^^^^^\nE   TypeError: Settings.__init__() got an unexpected keyword argument 'workspace_root'"
+    },
+    {
+      "name": "tests.test_mcp_workspace_guard::test_execution_uses_shared_m2_runner_and_saves_full_evidence[PASS-0-None]",
+      "status": "ERROR",
+      "duration_ms": 4,
+      "detail": "tests\\test_mcp_workspace_guard.py:24: in leased\n    settings = replace(Settings(), workspace_root=root, audit_log=tmp_path / \"audit.jsonl\")\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nC:\\Program Files\\Python311\\Lib\\dataclasses.py:1501: in replace\n    return obj.__class__(**changes)\n           ^^^^^^^^^^^^^^^^^^^^^^^^\nE   TypeError: Settings.__init__() got an unexpected keyword argument 'workspace_root'"
+    },
+    {
+      "name": "tests.test_mcp_workspace_guard::test_execution_uses_shared_m2_runner_and_saves_full_evidence[FAIL-1-TEST_FAILED]",
+      "status": "ERROR",
+      "duration_ms": 5,
+      "detail": "tests\\test_mcp_workspace_guard.py:24: in leased\n    settings = replace(Settings(), workspace_root=root, audit_log=tmp_path / \"audit.jsonl\")\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nC:\\Program Files\\Python311\\Lib\\dataclasses.py:1501: in replace\n    return obj.__class__(**changes)\n           ^^^^^^^^^^^^^^^^^^^^^^^^\nE   TypeError: Settings.__init__() got an unexpected keyword argument 'workspace_root'"
+    },
+    {
+      "name": "tests.test_mcp_workspace_guard::test_execution_uses_shared_m2_runner_and_saves_full_evidence[ERROR-None-TEST_TIMEOUT]",
+      "status": "ERROR",
+      "duration_ms": 4,
+      "detail": "tests\\test_mcp_workspace_guard.py:24: in leased\n    settings = replace(Settings(), workspace_root=root, audit_log=tmp_path / \"audit.jsonl\")\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nC:\\Program Files\\Python311\\Lib\\dataclasses.py:1501: in replace\n    return obj.__class__(**changes)\n           ^^^^^^^^^^^^^^^^^^^^^^^^\nE   TypeError: Settings.__init__() got an unexpected keyword argument 'workspace_root'"
+    },
+    {
+      "name": "tests.test_mcp_workspace_guard::test_real_execution_emits_junit_case_counts",
+      "status": "ERROR",
+      "duration_ms": 4,
+      "detail": "tests\\test_mcp_workspace_guard.py:24: in leased\n    settings = replace(Settings(), workspace_root=root, audit_log=tmp_path / \"audit.jsonl\")\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nC:\\Program Files\\Python311\\Lib\\dataclasses.py:1501: in replace\n    return obj.__class__(**changes)\n           ^^^^^^^^^^^^^^^^^^^^^^^^\nE   TypeError: Settings.__init__() got an unexpected keyword argument 'workspace_root'"
+    },
+    {
+      "name": "tests.test_mcp_workspace_guard::test_link_target_is_rejected_before_read_or_write",
+      "status": "ERROR",
+      "duration_ms": 4,
+      "detail": "tests\\test_mcp_workspace_guard.py:24: in leased\n    settings = replace(Settings(), workspace_root=root, audit_log=tmp_path / \"audit.jsonl\")\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nC:\\Program Files\\Python311\\Lib\\dataclasses.py:1501: in replace\n    return obj.__class__(**changes)\n           ^^^^^^^^^^^^^^^^^^^^^^^^\nE   TypeError: Settings.__init__() got an unexpected keyword argument 'workspace_root'"
+    },
+    {
+      "name": "tests.test_mcp_workspace_guard::test_workflow_binds_exact_created_workspace",
+      "status": "ERROR",
+      "duration_ms": 4,
+      "detail": "tests\\test_mcp_workspace_guard.py:24: in leased\n    settings = replace(Settings(), workspace_root=root, audit_log=tmp_path / \"audit.jsonl\")\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nC:\\Program Files\\Python311\\Lib\\dataclasses.py:1501: in replace\n    return obj.__class__(**changes)\n           ^^^^^^^^^^^^^^^^^^^^^^^^\nE   TypeError: Settings.__init__() got an unexpected keyword argument 'workspace_root'"
+    }
+  ],
+  "case_counts": {
+    "passed": 0,
+    "failed": 0,
+    "error": 14,
+    "skipped": 0
+  },
+  "reason": {
+    "code": "VERIFICATION_INCOMPLETE",
+    "message": "Pytest exited 1 before a valid result"
+  },
+  "output_truncated": false,
+  "stdout_bytes": 9500,
+  "stderr_bytes": 0,
+  "ended_utc": "2026-10-06T14:47:19.662508+00:00"
+}

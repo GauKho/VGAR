@@ -1,0 +1,52 @@
+{
+  "run_id": "20261006T152342467784Z-bb7009a58f85",
+  "kind": "milestone-5-cache-root-red",
+  "status": "FAIL",
+  "started_utc": "2026-10-06T15:23:42.468875+00:00",
+  "complete": true,
+  "python": "3.11.6 (tags/v3.11.6:8b6ee5b, Oct  2 2023, 14:57:12) [MSC v.1935 64 bit (AMD64)]",
+  "interpreter": "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe",
+  "platform": "Windows-10-10.0.26300-SP0",
+  "command_argv": [
+    "-c"
+  ],
+  "cwd": "D:\\Project\\CAPSTONES\\VGAR",
+  "command": "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe -m pytest -q -p no:cacheprovider --junitxml=D:\\Project\\CAPSTONES\\VGAR\\.m2-pytest-29gwln2j\\junit.xml tests/m2/test_retrieval_cache_integrity.py::test_cached_tree_rejects_root_reparse_metadata",
+  "argv": [
+    "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "--junitxml=D:\\Project\\CAPSTONES\\VGAR\\.m2-pytest-29gwln2j\\junit.xml",
+    "tests/m2/test_retrieval_cache_integrity.py::test_cached_tree_rejects_root_reparse_metadata"
+  ],
+  "exit_code": 1,
+  "duration_ms": 750,
+  "stdout": "F                                                                        [100%]\r\n================================== FAILURES ===================================\r\n_______________ test_cached_tree_rejects_root_reparse_metadata ________________\r\n\r\ntmp_path = WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-462/test_cached_tree_rejects_root_0')\r\nmonkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000027F5CDD6C10>\r\n\r\n    def test_cached_tree_rejects_root_reparse_metadata(tmp_path, monkeypatch):\r\n        from types import SimpleNamespace\r\n        archive, tree = tree_fixture(tmp_path)\r\n        original = Path.lstat\r\n    \r\n        def lstat(path):\r\n            stat = original(path)\r\n            return SimpleNamespace(st_mode=stat.st_mode, st_file_attributes=0x400) if path == tree else stat\r\n    \r\n        monkeypatch.setattr(Path, \"lstat\", lstat)\r\n>       with pytest.raises(ValueError, match=\"root|junction|link\"):\r\nE       Failed: DID NOT RAISE <class 'ValueError'>\r\n\r\ntests\\m2\\test_retrieval_cache_integrity.py:139: Failed\r\n- generated xml file: D:\\Project\\CAPSTONES\\VGAR\\.m2-pytest-29gwln2j\\junit.xml -\r\n=========================== short test summary info ===========================\r\nFAILED tests/m2/test_retrieval_cache_integrity.py::test_cached_tree_rejects_root_reparse_metadata\r\n1 failed in 0.17s\r\n",
+  "stderr": "",
+  "timeout_seconds": 120.0,
+  "cases": [
+    {
+      "name": "tests.m2.test_retrieval_cache_integrity::test_cached_tree_rejects_root_reparse_metadata",
+      "status": "FAIL",
+      "duration_ms": 15,
+      "detail": "tmp_path = WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-462/test_cached_tree_rejects_root_0')\nmonkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000027F5CDD6C10>\n\n    def test_cached_tree_rejects_root_reparse_metadata(tmp_path, monkeypatch):\n        from types import SimpleNamespace\n        archive, tree = tree_fixture(tmp_path)\n        original = Path.lstat\n    \n        def lstat(path):\n            stat = original(path)\n            return SimpleNamespace(st_mode=stat.st_mode, st_file_attributes=0x400) if path == tree else stat\n    \n        monkeypatch.setattr(Path, \"lstat\", lstat)\n>       with pytest.raises(ValueError, match=\"root|junction|link\"):\nE       Failed: DID NOT RAISE <class 'ValueError'>\n\ntests\\m2\\test_retrieval_cache_integrity.py:139: Failed"
+    }
+  ],
+  "case_counts": {
+    "passed": 0,
+    "failed": 1,
+    "error": 0,
+    "skipped": 0
+  },
+  "reason": {
+    "code": "TEST_FAILED",
+    "message": "Pytest assertions failed"
+  },
+  "output_truncated": false,
+  "stdout_bytes": 1334,
+  "stderr_bytes": 0,
+  "ended_utc": "2026-10-06T15:23:43.269734+00:00"
+}

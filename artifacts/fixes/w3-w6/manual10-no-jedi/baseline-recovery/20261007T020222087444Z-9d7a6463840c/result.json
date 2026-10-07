@@ -1,0 +1,230 @@
+{
+  "run_id": "20261007T020222087444Z-9d7a6463840c",
+  "kind": "git-blob-baseline-recovery",
+  "status": "PASS",
+  "started_utc": "2026-10-07T02:02:22.088438+00:00",
+  "complete": true,
+  "python": "3.11.6 (tags/v3.11.6:8b6ee5b, Oct  2 2023, 14:57:12) [MSC v.1935 64 bit (AMD64)]",
+  "interpreter": "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe",
+  "platform": "Windows-10-10.0.26300-SP0",
+  "command_argv": [
+    "artifacts/fixes/w3-w6/manual10-no-jedi/recover_committed_baseline.py"
+  ],
+  "cwd": "D:\\Project\\CAPSTONES\\VGAR",
+  "source_run": "results/retrieval/20261005T082810770056Z-7a3ad261d8e4",
+  "recovered_run": "D:\\Project\\CAPSTONES\\VGAR\\artifacts\\fixes\\w3-w6\\manual10-no-jedi\\baseline-recovery\\20261007T020222087444Z-9d7a6463840c\\recovered-run",
+  "files": [
+    {
+      "instance_id": "astropy__astropy-13398",
+      "expected_hash": "sha256:c971fe137f4947a6a85d4b9b81b9227ad34f2ace607f2c4b9e1949f83a7b728e",
+      "git_blob_hash": "sha256:c971fe137f4947a6a85d4b9b81b9227ad34f2ace607f2c4b9e1949f83a7b728e",
+      "current_checkout_hash": "sha256:670f53f9709815b7f9f8a0777e8c7bde422fddad51be6cfe9835f90e14e15052",
+      "checkout_lf_to_crlf_only": true,
+      "bytes": 19538131
+    },
+    {
+      "instance_id": "django__django-11138",
+      "expected_hash": "sha256:70c7b684d2ba76a523d967f67059713cf6545f9461acfcc81ddf3d42a7a992c7",
+      "git_blob_hash": "sha256:70c7b684d2ba76a523d967f67059713cf6545f9461acfcc81ddf3d42a7a992c7",
+      "current_checkout_hash": "sha256:8be216a9386c93efaee2f1541a82426cc3309cb5158ef0cfc7c6ea7a0d5baa3f",
+      "checkout_lf_to_crlf_only": true,
+      "bytes": 13449194
+    },
+    {
+      "instance_id": "matplotlib__matplotlib-14623",
+      "expected_hash": "sha256:953a6f460d58a62235b804e14a4494f7e7b6168e360ab8661e90d6426739e5e1",
+      "git_blob_hash": "sha256:953a6f460d58a62235b804e14a4494f7e7b6168e360ab8661e90d6426739e5e1",
+      "current_checkout_hash": "sha256:ce9c29c99775ab8dca680c642335d7d3f71b700ca18971b8bbd4ef391e7d1423",
+      "checkout_lf_to_crlf_only": true,
+      "bytes": 20528938
+    },
+    {
+      "instance_id": "pydata__xarray-3305",
+      "expected_hash": "sha256:ebbe2ba0b8eb0c2cdb914fcc20818ab1eadfabd83b9de69fa0df8640e84a7d56",
+      "git_blob_hash": "sha256:ebbe2ba0b8eb0c2cdb914fcc20818ab1eadfabd83b9de69fa0df8640e84a7d56",
+      "current_checkout_hash": "sha256:a81f39c507dceee153eba0a3b86c9786016163174572675694c507e66d5b4b15",
+      "checkout_lf_to_crlf_only": true,
+      "bytes": 3457299
+    },
+    {
+      "instance_id": "pylint-dev__pylint-4551",
+      "expected_hash": "sha256:66d1d143d3c7573de6e86e7f5655bba158c7e3306d1bf645874dcbd4f6d58517",
+      "git_blob_hash": "sha256:66d1d143d3c7573de6e86e7f5655bba158c7e3306d1bf645874dcbd4f6d58517",
+      "current_checkout_hash": "sha256:fd0a86b8839306a2fc9da80bca4f4084f4aea7797ace089ae1a1aca9f29ddfce",
+      "checkout_lf_to_crlf_only": true,
+      "bytes": 3169727
+    },
+    {
+      "instance_id": "sphinx-doc__sphinx-10673",
+      "expected_hash": "sha256:20cd013564ff072e09ecc81e42dc218c4e2c605fa85ac6c0995fbe340e1c4c9a",
+      "git_blob_hash": "sha256:20cd013564ff072e09ecc81e42dc218c4e2c605fa85ac6c0995fbe340e1c4c9a",
+      "current_checkout_hash": "sha256:0bd61400ca2022912f4a7f8386c51c778a1712d593868fdd77af17babddbeb3e",
+      "checkout_lf_to_crlf_only": true,
+      "bytes": 7250998
+    },
+    {
+      "instance_id": "sympy__sympy-16597",
+      "expected_hash": "sha256:2a0002fa0b7dfebd9c4f0d6827ad60e4085d880bb2a29a6f6fafd506a8c307a9",
+      "git_blob_hash": "sha256:2a0002fa0b7dfebd9c4f0d6827ad60e4085d880bb2a29a6f6fafd506a8c307a9",
+      "current_checkout_hash": "sha256:10a6571c5faf4ebc71c06dc28ca6e4317554e82ab78e502f90473ecdfe1db5d1",
+      "checkout_lf_to_crlf_only": true,
+      "bytes": 50577631
+    },
+    {
+      "instance_id": "astropy__astropy-8707",
+      "expected_hash": "sha256:8eeda5daf3d884f02e747440c509078ab27c031c4f2562939f4ac63cf9f0e73f",
+      "git_blob_hash": "sha256:8eeda5daf3d884f02e747440c509078ab27c031c4f2562939f4ac63cf9f0e73f",
+      "current_checkout_hash": "sha256:619ee7b8575696e2792fe2eb608f0cc6af3e9fea1f9d7b685f5f9de86ff08529",
+      "checkout_lf_to_crlf_only": true,
+      "bytes": 16426977
+    },
+    {
+      "instance_id": "django__django-11734",
+      "expected_hash": "sha256:481e06f817ba0bfb4f0fb34530811d509f8c3766b36061ff041ea8e41f97198b",
+      "git_blob_hash": "sha256:481e06f817ba0bfb4f0fb34530811d509f8c3766b36061ff041ea8e41f97198b",
+      "current_checkout_hash": "sha256:cc5350e7853be768d1ce451789851f0e7a9f8b4e5b75d43bf56360bd7bbb4fb7",
+      "checkout_lf_to_crlf_only": true,
+      "bytes": 13407404
+    },
+    {
+      "instance_id": "pydata__xarray-3993",
+      "expected_hash": "sha256:dc1b5b0be9f7d11cf9e8258f66df8427cf4393381e0a932e5245c88a1e95288d",
+      "git_blob_hash": "sha256:dc1b5b0be9f7d11cf9e8258f66df8427cf4393381e0a932e5245c88a1e95288d",
+      "current_checkout_hash": "sha256:dc38e46b9e0f65bd3e3bbca69a7030ee3f8b7a74082f4c13e38fa2d2920a5fda",
+      "checkout_lf_to_crlf_only": true,
+      "bytes": 3908128
+    },
+    {
+      "instance_id": "pylint-dev__pylint-4604",
+      "expected_hash": "sha256:4d39af7dec6fd715a566fa9c02cc4ce65dc96dc7bff89701c2442424606eca63",
+      "git_blob_hash": "sha256:4d39af7dec6fd715a566fa9c02cc4ce65dc96dc7bff89701c2442424606eca63",
+      "current_checkout_hash": "sha256:eb34e59ea3f4a814f0e1e9eb0e8041e047d918a0e76b4608c8bf380486c4d611",
+      "checkout_lf_to_crlf_only": true,
+      "bytes": 3148325
+    },
+    {
+      "instance_id": "sphinx-doc__sphinx-8120",
+      "expected_hash": "sha256:2f837a56a7839dd73a7e8872a0c69e97e8a4b8b0d8b82db6cce03674e5259537",
+      "git_blob_hash": "sha256:2f837a56a7839dd73a7e8872a0c69e97e8a4b8b0d8b82db6cce03674e5259537",
+      "current_checkout_hash": "sha256:2e3d7ce0f9bcfa82129f3636086d3134c692ba009ab1b18949441683ad3baaf4",
+      "checkout_lf_to_crlf_only": true,
+      "bytes": 7581297
+    },
+    {
+      "instance_id": "sympy__sympy-17318",
+      "expected_hash": "sha256:759b4a255507c9eadcc28bb68eb58025c1dbb821eec623f42733cc29d3ac226a",
+      "git_blob_hash": "sha256:759b4a255507c9eadcc28bb68eb58025c1dbb821eec623f42733cc29d3ac226a",
+      "current_checkout_hash": "sha256:bf0132d8c771ab0fd0b6a415f5654256dd151d7f91311f0f2e254cdbcd5677cb",
+      "checkout_lf_to_crlf_only": true,
+      "bytes": 52440246
+    },
+    {
+      "instance_id": "django__django-11885",
+      "expected_hash": "sha256:6b863492cacdd5701b6f8f1a724f668a615796c0183b191bdf45299081638503",
+      "git_blob_hash": "sha256:6b863492cacdd5701b6f8f1a724f668a615796c0183b191bdf45299081638503",
+      "current_checkout_hash": "sha256:cd5fe1702e0830a696f195fe5fa4ca7db2f1340c101b843f783f118a56d70cbd",
+      "checkout_lf_to_crlf_only": true,
+      "bytes": 13581996
+    },
+    {
+      "instance_id": "pydata__xarray-6992",
+      "expected_hash": "sha256:193d8c9d284dce6b6cb1af8b2f0ec55a8332770904ab72ec0f6d8512c62237b4",
+      "git_blob_hash": "sha256:193d8c9d284dce6b6cb1af8b2f0ec55a8332770904ab72ec0f6d8512c62237b4",
+      "current_checkout_hash": "sha256:e139afb0babdfe9f46f15679a142737eff9669ef1a929de807be88ba5b63035c",
+      "checkout_lf_to_crlf_only": true,
+      "bytes": 5478116
+    },
+    {
+      "instance_id": "pylint-dev__pylint-6386",
+      "expected_hash": "sha256:262e60aecce65909ec69d5b5278f903a4ba2bba1a111e594829fbbc1cb84d6c6",
+      "git_blob_hash": "sha256:262e60aecce65909ec69d5b5278f903a4ba2bba1a111e594829fbbc1cb84d6c6",
+      "current_checkout_hash": "sha256:bb4a8d7e895da845f8891cf4978e12926d4c5ff699c8685bd14b40c20b7e8f8b",
+      "checkout_lf_to_crlf_only": true,
+      "bytes": 4140973
+    },
+    {
+      "instance_id": "sphinx-doc__sphinx-8548",
+      "expected_hash": "sha256:c7f54883a8c16b502ec765ca0b8a4dfdd02327d2728f32cca21308da316bda9c",
+      "git_blob_hash": "sha256:c7f54883a8c16b502ec765ca0b8a4dfdd02327d2728f32cca21308da316bda9c",
+      "current_checkout_hash": "sha256:ba4b1d144f7b3be72cb0a85607d9e9732c28316e22f5f698fbb3e0e7f1431f8a",
+      "checkout_lf_to_crlf_only": true,
+      "bytes": 7705866
+    },
+    {
+      "instance_id": "sympy__sympy-20438",
+      "expected_hash": "sha256:a0f391485f925074a6ccffd071e70ae622944e7458964d8826d534d0d5c72696",
+      "git_blob_hash": "sha256:a0f391485f925074a6ccffd071e70ae622944e7458964d8826d534d0d5c72696",
+      "current_checkout_hash": "sha256:103db682c45fd71991baaabf660d1a2e68cc871259c37a9aa60712acddaf2134",
+      "checkout_lf_to_crlf_only": true,
+      "bytes": 52580929
+    },
+    {
+      "instance_id": "django__django-12155",
+      "expected_hash": "sha256:02bd8a24af15ecdf45d406c64a07381dae5a53c2e72148193cecc067fcafbffd",
+      "git_blob_hash": "sha256:02bd8a24af15ecdf45d406c64a07381dae5a53c2e72148193cecc067fcafbffd",
+      "current_checkout_hash": "sha256:bafe2ec4f6dd8fe9820bdd38ff8090a9df398459a0d092184c68e7934aff570c",
+      "checkout_lf_to_crlf_only": true,
+      "bytes": 13673427
+    },
+    {
+      "instance_id": "django__django-12325",
+      "expected_hash": "sha256:46cb92c73ad84067c6216a5a0933f33e40285b00c9249dcea3c4eb7fae783b4b",
+      "git_blob_hash": "sha256:46cb92c73ad84067c6216a5a0933f33e40285b00c9249dcea3c4eb7fae783b4b",
+      "current_checkout_hash": "sha256:1c197991ed04c4a96f544ef4eb13c52c4c6c9791766afd2ecbd2396b2cdba3a8",
+      "checkout_lf_to_crlf_only": true,
+      "bytes": 13693312
+    },
+    {
+      "instance_id": "django__django-12741",
+      "expected_hash": "sha256:f77dc219b93f0b4f38f8a45322e6e557d74f7d8850fa3b71c18d64be1a80b040",
+      "git_blob_hash": "sha256:f77dc219b93f0b4f38f8a45322e6e557d74f7d8850fa3b71c18d64be1a80b040",
+      "current_checkout_hash": "sha256:1c88a6d201aa8a1f4bc365a504ddaeefe3aa0883b9b936f895797176327115cd",
+      "checkout_lf_to_crlf_only": true,
+      "bytes": 13573978
+    },
+    {
+      "instance_id": "django__django-13195",
+      "expected_hash": "sha256:07d612cb3329eb0fa72d0bbfd7d863cc6e9059a34fd6895ad1fe9c76869b3511",
+      "git_blob_hash": "sha256:07d612cb3329eb0fa72d0bbfd7d863cc6e9059a34fd6895ad1fe9c76869b3511",
+      "current_checkout_hash": "sha256:2a0ac9f8c211c4594c4c8101ccdbd5e70b895adcb37561289fa5d80186ba841a",
+      "checkout_lf_to_crlf_only": true,
+      "bytes": 13903948
+    },
+    {
+      "instance_id": "django__django-13212",
+      "expected_hash": "sha256:14a9c3eac5202e7236c349b3c85d6f05c18af0f7413f49fd3e09ad0fc3ef05e5",
+      "git_blob_hash": "sha256:14a9c3eac5202e7236c349b3c85d6f05c18af0f7413f49fd3e09ad0fc3ef05e5",
+      "current_checkout_hash": "sha256:ee1e780621af90a69d5d53c1b258fa4a7a277a6d12d4a0645a4b99f448b354a6",
+      "checkout_lf_to_crlf_only": true,
+      "bytes": 13629226
+    },
+    {
+      "instance_id": "django__django-13344",
+      "expected_hash": "sha256:5d603158f9ba5430251cbebf287248a244aec3fe8a46d368b426f369d6d15cbb",
+      "git_blob_hash": "sha256:5d603158f9ba5430251cbebf287248a244aec3fe8a46d368b426f369d6d15cbb",
+      "current_checkout_hash": "sha256:4cd62498c50809b24d27179a007d2a2a023bf2c1ac67dd4f5852372232da60d6",
+      "checkout_lf_to_crlf_only": true,
+      "bytes": 14003890
+    },
+    {
+      "instance_id": "django__django-13512",
+      "expected_hash": "sha256:544b199add6a2b2756421ed01b257bd73538e38eb11418e0461b182b37e6d0d0",
+      "git_blob_hash": "sha256:544b199add6a2b2756421ed01b257bd73538e38eb11418e0461b182b37e6d0d0",
+      "current_checkout_hash": "sha256:9332129d6dbd92a9d9e7159b0125a2ba161d78874fb497f194f1ecfa41e1bf05",
+      "checkout_lf_to_crlf_only": true,
+      "bytes": 14041583
+    }
+  ],
+  "inference": "NOT_RUN",
+  "bm25_reexecuted": false,
+  "old_files_modified": false,
+  "stdout": "astropy__astropy-13398: original Git blob matches recorded hash; checkout preserved\ndjango__django-11138: original Git blob matches recorded hash; checkout preserved\nmatplotlib__matplotlib-14623: original Git blob matches recorded hash; checkout preserved\npydata__xarray-3305: original Git blob matches recorded hash; checkout preserved\npylint-dev__pylint-4551: original Git blob matches recorded hash; checkout preserved\nsphinx-doc__sphinx-10673: original Git blob matches recorded hash; checkout preserved\nsympy__sympy-16597: original Git blob matches recorded hash; checkout preserved\nastropy__astropy-8707: original Git blob matches recorded hash; checkout preserved\ndjango__django-11734: original Git blob matches recorded hash; checkout preserved\npydata__xarray-3993: original Git blob matches recorded hash; checkout preserved\npylint-dev__pylint-4604: original Git blob matches recorded hash; checkout preserved\nsphinx-doc__sphinx-8120: original Git blob matches recorded hash; checkout preserved\nsympy__sympy-17318: original Git blob matches recorded hash; checkout preserved\ndjango__django-11885: original Git blob matches recorded hash; checkout preserved\npydata__xarray-6992: original Git blob matches recorded hash; checkout preserved\npylint-dev__pylint-6386: original Git blob matches recorded hash; checkout preserved\nsphinx-doc__sphinx-8548: original Git blob matches recorded hash; checkout preserved\nsympy__sympy-20438: original Git blob matches recorded hash; checkout preserved\ndjango__django-12155: original Git blob matches recorded hash; checkout preserved\ndjango__django-12325: original Git blob matches recorded hash; checkout preserved\ndjango__django-12741: original Git blob matches recorded hash; checkout preserved\ndjango__django-13195: original Git blob matches recorded hash; checkout preserved\ndjango__django-13212: original Git blob matches recorded hash; checkout preserved\ndjango__django-13344: original Git blob matches recorded hash; checkout preserved\ndjango__django-13512: original Git blob matches recorded hash; checkout preserved\n",
+  "stderr": "",
+  "git_commit": "b39e0dbf87645d39b9a68e87b19d0655df264a05",
+  "exit_code": 0,
+  "recovered_tasks": 25,
+  "recovered_result_hash": "sha256:7169ba7eefc71c850d76388f26f6e3618391a4da1812bcea49aba257c6a47639",
+  "checkout_newline_only_tasks": 25,
+  "ended_utc": "2026-10-07T02:02:29.427483+00:00",
+  "duration_seconds": 7.29291650000232
+}

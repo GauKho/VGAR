@@ -1,0 +1,516 @@
+{
+  "run_id": "20261006T144118497049Z-2e0cfd3c1542",
+  "kind": "milestone-3-targeted",
+  "status": "PASS",
+  "started_utc": "2026-10-06T14:41:18.497049+00:00",
+  "complete": true,
+  "python": "3.11.6 (tags/v3.11.6:8b6ee5b, Oct  2 2023, 14:57:12) [MSC v.1935 64 bit (AMD64)]",
+  "interpreter": "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe",
+  "platform": "Windows-10-10.0.26300-SP0",
+  "command_argv": [
+    "-c"
+  ],
+  "cwd": "D:\\Project\\CAPSTONES\\VGAR",
+  "command": "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe -m pytest -q -p no:cacheprovider --junitxml=D:\\Project\\CAPSTONES\\VGAR\\.m2-pytest-idc97alm\\junit.xml tests/test_source_scope.py tests/m2/test_workspace.py tests/m2/test_baseline.py tests/m2/test_evidence_writer.py tests/test_graph_transaction_bindings.py tests/test_graph_retrieval.py",
+  "argv": [
+    "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "--junitxml=D:\\Project\\CAPSTONES\\VGAR\\.m2-pytest-idc97alm\\junit.xml",
+    "tests/test_source_scope.py",
+    "tests/m2/test_workspace.py",
+    "tests/m2/test_baseline.py",
+    "tests/m2/test_evidence_writer.py",
+    "tests/test_graph_transaction_bindings.py",
+    "tests/test_graph_retrieval.py"
+  ],
+  "exit_code": 0,
+  "duration_ms": 4594,
+  "stdout": ".................s...................................................... [ 92%]\r\n......                                                                   [100%]\r\n- generated xml file: D:\\Project\\CAPSTONES\\VGAR\\.m2-pytest-idc97alm\\junit.xml -\r\n77 passed, 1 skipped in 3.94s\r\n",
+  "stderr": "",
+  "timeout_seconds": 240.0,
+  "cases": [
+    {
+      "name": "tests.test_source_scope::test_vgar_cache_is_not_source_but_tests_are_kept",
+      "status": "PASS",
+      "duration_ms": 30,
+      "detail": null
+    },
+    {
+      "name": "tests.test_source_scope::test_workspace_matches_graph_scope_and_preserves_size_limits",
+      "status": "PASS",
+      "duration_ms": 35,
+      "detail": null
+    },
+    {
+      "name": "tests.test_source_scope::test_generic_data_results_artifacts_packages_are_not_blanket_ignored",
+      "status": "PASS",
+      "duration_ms": 27,
+      "detail": null
+    },
+    {
+      "name": "tests.test_source_scope::test_custom_scope_and_snapshot_use_exact_relative_paths",
+      "status": "PASS",
+      "duration_ms": 9,
+      "detail": null
+    },
+    {
+      "name": "tests.test_source_scope::test_invalid_scope_rejected[../source]",
+      "status": "PASS",
+      "duration_ms": 0,
+      "detail": null
+    },
+    {
+      "name": "tests.test_source_scope::test_invalid_scope_rejected[C:/source]",
+      "status": "PASS",
+      "duration_ms": 0,
+      "detail": null
+    },
+    {
+      "name": "tests.test_source_scope::test_invalid_scope_rejected[/source]",
+      "status": "PASS",
+      "duration_ms": 0,
+      "detail": null
+    },
+    {
+      "name": "tests.test_source_scope::test_invalid_scope_rejected[]",
+      "status": "PASS",
+      "duration_ms": 0,
+      "detail": null
+    },
+    {
+      "name": "tests.test_source_scope::test_invalid_scope_rejected[.]",
+      "status": "PASS",
+      "duration_ms": 0,
+      "detail": null
+    },
+    {
+      "name": "tests.test_source_scope::test_invalid_scope_rejected[data/../src]",
+      "status": "PASS",
+      "duration_ms": 0,
+      "detail": null
+    },
+    {
+      "name": "tests.test_source_scope::test_exclusions_are_pruned_before_scandir_descent",
+      "status": "PASS",
+      "duration_ms": 3,
+      "detail": null
+    },
+    {
+      "name": "tests.test_source_scope::test_recorder_pending_exists_before_preflight_and_error_is_finalized[error0]",
+      "status": "PASS",
+      "duration_ms": 20,
+      "detail": null
+    },
+    {
+      "name": "tests.test_source_scope::test_recorder_pending_exists_before_preflight_and_error_is_finalized[error1]",
+      "status": "PASS",
+      "duration_ms": 16,
+      "detail": null
+    },
+    {
+      "name": "tests.test_source_scope::test_postflight_error_preserves_pytest_output_but_never_returns_pass",
+      "status": "PASS",
+      "duration_ms": 22,
+      "detail": null
+    },
+    {
+      "name": "tests.test_source_scope::test_source_snapshot_worker_has_real_timeout",
+      "status": "PASS",
+      "duration_ms": 199,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_workspace::test_copy_is_isolated_and_cleaned",
+      "status": "PASS",
+      "duration_ms": 13,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_workspace::test_parent_traversal_and_absolute_selector_rejected",
+      "status": "PASS",
+      "duration_ms": 1,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_workspace::test_external_symlink_rejected",
+      "status": "NOT_RUN",
+      "duration_ms": 4,
+      "detail": "D:\\Project\\CAPSTONES\\VGAR\\tests\\m2\\test_workspace.py:46: symlink creation is not available"
+    },
+    {
+      "name": "tests.m2.test_workspace::test_large_source_rejected",
+      "status": "PASS",
+      "duration_ms": 5,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_baseline::test_clean_baseline_is_pass_and_source_unchanged",
+      "status": "PASS",
+      "duration_ms": 500,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_baseline::test_failing_baseline_is_fail_not_patch_failure",
+      "status": "PASS",
+      "duration_ms": 497,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_baseline::test_timeout_is_recorded_and_workspace_cleaned",
+      "status": "PASS",
+      "duration_ms": 543,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_baseline::test_writer_failure_leaves_pending_record",
+      "status": "PASS",
+      "duration_ms": 486,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_evidence_writer::test_pending_and_finished_are_one_file",
+      "status": "PASS",
+      "duration_ms": 14,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_evidence_writer::test_two_runs_have_distinct_paths_and_interrupted_is_pending",
+      "status": "PASS",
+      "duration_ms": 9,
+      "detail": null
+    },
+    {
+      "name": "tests.test_graph_transaction_bindings::test_failed_file_rollback_removes_all_auxiliary_state",
+      "status": "PASS",
+      "duration_ms": 5,
+      "detail": null
+    },
+    {
+      "name": "tests.test_graph_transaction_bindings::test_good_source_can_be_retrieved_after_failed_file",
+      "status": "PASS",
+      "duration_ms": 6,
+      "detail": null
+    },
+    {
+      "name": "tests.test_graph_transaction_bindings::test_inventory_still_checks_failed_and_good_source[modify_failed]",
+      "status": "PASS",
+      "duration_ms": 5,
+      "detail": null
+    },
+    {
+      "name": "tests.test_graph_transaction_bindings::test_inventory_still_checks_failed_and_good_source[delete_failed]",
+      "status": "PASS",
+      "duration_ms": 5,
+      "detail": null
+    },
+    {
+      "name": "tests.test_graph_transaction_bindings::test_inventory_still_checks_failed_and_good_source[add_source]",
+      "status": "PASS",
+      "duration_ms": 6,
+      "detail": null
+    },
+    {
+      "name": "tests.test_graph_transaction_bindings::test_inventory_still_checks_failed_and_good_source[modify_good]",
+      "status": "PASS",
+      "duration_ms": 8,
+      "detail": null
+    },
+    {
+      "name": "tests.test_graph_transaction_bindings::test_malformed_inventory_cannot_weaken_file_hashes[inventory0]",
+      "status": "PASS",
+      "duration_ms": 8,
+      "detail": null
+    },
+    {
+      "name": "tests.test_graph_transaction_bindings::test_malformed_inventory_cannot_weaken_file_hashes[inventory1]",
+      "status": "PASS",
+      "duration_ms": 8,
+      "detail": null
+    },
+    {
+      "name": "tests.test_graph_transaction_bindings::test_malformed_inventory_cannot_weaken_file_hashes[inventory2]",
+      "status": "PASS",
+      "duration_ms": 8,
+      "detail": null
+    },
+    {
+      "name": "tests.test_graph_transaction_bindings::test_legacy_graph_without_inventory_remains_source_verified",
+      "status": "PASS",
+      "duration_ms": 13,
+      "detail": null
+    },
+    {
+      "name": "tests.test_graph_transaction_bindings::test_imported_base_uses_binding_before_class_assignment[base.py]",
+      "status": "PASS",
+      "duration_ms": 8,
+      "detail": null
+    },
+    {
+      "name": "tests.test_graph_transaction_bindings::test_imported_base_uses_binding_before_class_assignment[zbase.py]",
+      "status": "PASS",
+      "duration_ms": 8,
+      "detail": null
+    },
+    {
+      "name": "tests.test_graph_transaction_bindings::test_redefined_class_can_inherit_previous_occurrence",
+      "status": "PASS",
+      "duration_ms": 8,
+      "detail": null
+    },
+    {
+      "name": "tests.test_graph_transaction_bindings::test_unbound_or_dynamic_base_is_unresolved_not_self_loop[class A(A): pass\\n]",
+      "status": "PASS",
+      "duration_ms": 7,
+      "detail": null
+    },
+    {
+      "name": "tests.test_graph_transaction_bindings::test_unbound_or_dynamic_base_is_unresolved_not_self_loop[class A(factory()): pass\\n]",
+      "status": "PASS",
+      "duration_ms": 6,
+      "detail": null
+    },
+    {
+      "name": "tests.test_graph_transaction_bindings::test_only_property_setter_attribute_matches[@value.setter-True]",
+      "status": "PASS",
+      "duration_ms": 1,
+      "detail": null
+    },
+    {
+      "name": "tests.test_graph_transaction_bindings::test_only_property_setter_attribute_matches[@obj.value.setter-True]",
+      "status": "PASS",
+      "duration_ms": 1,
+      "detail": null
+    },
+    {
+      "name": "tests.test_graph_transaction_bindings::test_only_property_setter_attribute_matches[@app.get('/login')-False]",
+      "status": "PASS",
+      "duration_ms": 1,
+      "detail": null
+    },
+    {
+      "name": "tests.test_graph_transaction_bindings::test_only_property_setter_attribute_matches[@pytest.mark.parametrize('x', [1])-False]",
+      "status": "PASS",
+      "duration_ms": 1,
+      "detail": null
+    },
+    {
+      "name": "tests.test_graph_transaction_bindings::test_only_property_setter_attribute_matches[@value.deleter-False]",
+      "status": "PASS",
+      "duration_ms": 1,
+      "detail": null
+    },
+    {
+      "name": "tests.test_graph_transaction_bindings::test_only_property_setter_attribute_matches[@something.setter()-False]",
+      "status": "PASS",
+      "duration_ms": 1,
+      "detail": null
+    },
+    {
+      "name": "tests.test_graph_transaction_bindings::test_conditional_duplicate_and_nested_definitions_map_to_m2_occurrences",
+      "status": "PASS",
+      "duration_ms": 11,
+      "detail": null
+    },
+    {
+      "name": "tests.test_graph_transaction_bindings::test_duplicate_scopes_do_not_share_local_binding_tables",
+      "status": "PASS",
+      "duration_ms": 6,
+      "detail": null
+    },
+    {
+      "name": "tests.test_graph_transaction_bindings::test_file_hash_in_inventory_is_raw_not_snippet_hash",
+      "status": "PASS",
+      "duration_ms": 6,
+      "detail": null
+    },
+    {
+      "name": "tests.test_graph_transaction_bindings::test_compound_statement_blocks_are_discovered[if X:\\n    def f(): pass\\nelif Y:\\n    def f(): pass\\nelse:\\n    def f(): pass\\n-3]",
+      "status": "PASS",
+      "duration_ms": 7,
+      "detail": null
+    },
+    {
+      "name": "tests.test_graph_transaction_bindings::test_compound_statement_blocks_are_discovered[try:\\n    def f(): pass\\nexcept Exception:\\n    def f(): pass\\nelse:\\n    def f(): pass\\nfinally:\\n    def f(): pass\\n-4]",
+      "status": "PASS",
+      "duration_ms": 9,
+      "detail": null
+    },
+    {
+      "name": "tests.test_graph_transaction_bindings::test_compound_statement_blocks_are_discovered[for x in y:\\n    def f(): pass\\nelse:\\n    def f(): pass\\n-2]",
+      "status": "PASS",
+      "duration_ms": 8,
+      "detail": null
+    },
+    {
+      "name": "tests.test_graph_transaction_bindings::test_compound_statement_blocks_are_discovered[while x:\\n    def f(): pass\\nelse:\\n    def f(): pass\\n-2]",
+      "status": "PASS",
+      "duration_ms": 7,
+      "detail": null
+    },
+    {
+      "name": "tests.test_graph_transaction_bindings::test_compound_statement_blocks_are_discovered[with lock:\\n    def f(): pass\\n-1]",
+      "status": "PASS",
+      "duration_ms": 8,
+      "detail": null
+    },
+    {
+      "name": "tests.test_graph_transaction_bindings::test_compound_statement_blocks_are_discovered[match x:\\n    case 1:\\n        def f(): pass\\n    case _:\\n        def f(): pass\\n-2]",
+      "status": "PASS",
+      "duration_ms": 7,
+      "detail": null
+    },
+    {
+      "name": "tests.test_graph_transaction_bindings::test_scope_indexing_failure_is_also_transactional",
+      "status": "PASS",
+      "duration_ms": 10,
+      "detail": null
+    },
+    {
+      "name": "tests.test_graph_transaction_bindings::test_duplicate_definition_calls_remain_ambiguous_without_execution_proof",
+      "status": "PASS",
+      "duration_ms": 7,
+      "detail": null
+    },
+    {
+      "name": "tests.test_graph_transaction_bindings::test_later_import_rebinds_earlier_class_before_inheritance",
+      "status": "PASS",
+      "duration_ms": 9,
+      "detail": null
+    },
+    {
+      "name": "tests.test_graph_retrieval.GraphRetrievalTests::test_bfs_cycles_confidence_filter_and_depth_bound",
+      "status": "PASS",
+      "duration_ms": 24,
+      "detail": null
+    },
+    {
+      "name": "tests.test_graph_retrieval.GraphRetrievalTests::test_budget_is_exact_and_whole_snippets_skip_without_clipping",
+      "status": "PASS",
+      "duration_ms": 25,
+      "detail": null
+    },
+    {
+      "name": "tests.test_graph_retrieval.GraphRetrievalTests::test_callers_callees_are_one_semantic_hop_not_callsite_hops",
+      "status": "PASS",
+      "duration_ms": 24,
+      "detail": null
+    },
+    {
+      "name": "tests.test_graph_retrieval.GraphRetrievalTests::test_changed_deleted_and_added_sources_require_snapshot_refresh",
+      "status": "PASS",
+      "duration_ms": 57,
+      "detail": null
+    },
+    {
+      "name": "tests.test_graph_retrieval.GraphRetrievalTests::test_cli_issue_to_context_keeps_base_graph_unchanged",
+      "status": "PASS",
+      "duration_ms": 391,
+      "detail": null
+    },
+    {
+      "name": "tests.test_graph_retrieval.GraphRetrievalTests::test_confidence_is_bottleneck_and_public_api_feature_is_a_proxy",
+      "status": "PASS",
+      "duration_ms": 9,
+      "detail": null
+    },
+    {
+      "name": "tests.test_graph_retrieval.GraphRetrievalTests::test_deterministic_ranking_input_dedup_and_candidate_limit",
+      "status": "PASS",
+      "duration_ms": 19,
+      "detail": null
+    },
+    {
+      "name": "tests.test_graph_retrieval.GraphRetrievalTests::test_empty_anchors_and_invalid_limits_or_counter",
+      "status": "PASS",
+      "duration_ms": 21,
+      "detail": null
+    },
+    {
+      "name": "tests.test_graph_retrieval.GraphRetrievalTests::test_failing_test_proximity_uses_confirmed_overlay_links",
+      "status": "PASS",
+      "duration_ms": 11,
+      "detail": null
+    },
+    {
+      "name": "tests.test_graph_retrieval.GraphRetrievalTests::test_import_edges_fold_import_node_and_keep_reverse_dependents",
+      "status": "PASS",
+      "duration_ms": 11,
+      "detail": null
+    },
+    {
+      "name": "tests.test_graph_retrieval.GraphRetrievalTests::test_include_filters_items_but_not_traversal_or_failing_test_proximity",
+      "status": "PASS",
+      "duration_ms": 22,
+      "detail": null
+    },
+    {
+      "name": "tests.test_graph_retrieval.GraphRetrievalTests::test_invalid_node_hash_and_inconsistent_byte_range_fail_closed",
+      "status": "PASS",
+      "duration_ms": 28,
+      "detail": null
+    },
+    {
+      "name": "tests.test_graph_retrieval.GraphRetrievalTests::test_missing_features_are_explicit_and_history_needs_provenance",
+      "status": "PASS",
+      "duration_ms": 25,
+      "detail": null
+    },
+    {
+      "name": "tests.test_graph_retrieval.GraphRetrievalTests::test_overlapping_ranges_do_not_duplicate_source_text",
+      "status": "PASS",
+      "duration_ms": 23,
+      "detail": null
+    },
+    {
+      "name": "tests.test_graph_retrieval.GraphRetrievalTests::test_oversized_candidate_does_not_block_later_smaller_candidate",
+      "status": "PASS",
+      "duration_ms": 15,
+      "detail": null
+    },
+    {
+      "name": "tests.test_graph_retrieval.GraphRetrievalTests::test_source_changed_during_token_counting_is_not_returned",
+      "status": "PASS",
+      "duration_ms": 28,
+      "detail": null
+    },
+    {
+      "name": "tests.test_graph_retrieval.GraphRetrievalTests::test_supplied_history_affects_ranking_without_being_invented",
+      "status": "PASS",
+      "duration_ms": 10,
+      "detail": null
+    },
+    {
+      "name": "tests.test_graph_retrieval.GraphRetrievalTests::test_task_similarity_can_rank_a_related_symbol_above_the_anchor",
+      "status": "PASS",
+      "duration_ms": 8,
+      "detail": null
+    },
+    {
+      "name": "tests.test_graph_retrieval.GraphRetrievalTests::test_unknown_non_source_and_wrong_snapshot_inputs_are_rejected",
+      "status": "PASS",
+      "duration_ms": 8,
+      "detail": null
+    },
+    {
+      "name": "tests.test_graph_retrieval.GraphRetrievalTests::test_utf8_and_crlf_snippet_ranges_match_actual_bytes",
+      "status": "PASS",
+      "duration_ms": 9,
+      "detail": null
+    }
+  ],
+  "case_counts": {
+    "passed": 77,
+    "failed": 0,
+    "error": 0,
+    "skipped": 1
+  },
+  "reason": null,
+  "output_truncated": false,
+  "stdout_bytes": 274,
+  "stderr_bytes": 0,
+  "ended_utc": "2026-10-06T14:41:23.138653+00:00"
+}

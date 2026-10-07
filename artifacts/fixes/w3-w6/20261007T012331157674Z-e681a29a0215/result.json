@@ -1,0 +1,443 @@
+{
+  "run_id": "20261007T012331157674Z-e681a29a0215",
+  "kind": "milestone-8-jedi-dynamic-params-off-diagnostic",
+  "status": "ERROR",
+  "started_utc": "2026-10-07T01:23:31.157674+00:00",
+  "complete": true,
+  "python": "3.11.6 (tags/v3.11.6:8b6ee5b, Oct  2 2023, 14:57:12) [MSC v.1935 64 bit (AMD64)]",
+  "interpreter": "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe",
+  "platform": "Windows-10-10.0.26300-SP0",
+  "command_argv": [
+    "-c"
+  ],
+  "cwd": "D:\\Project\\CAPSTONES\\VGAR",
+  "ended_utc": "2026-10-07T01:24:19.140630+00:00",
+  "diagnostic_only": true,
+  "primary_protocol_unchanged": true,
+  "setting_override": {
+    "jedi.settings.dynamic_params": false
+  },
+  "attempt": {
+    "instance_id": "pydata__xarray-3993",
+    "status": "ERROR",
+    "complete": true,
+    "command_argv": [
+      "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe",
+      "-B",
+      "-c",
+      "import faulthandler,jedi; jedi.settings.dynamic_params=False; faulthandler.dump_traceback_later(40); from vgar.evaluation.retrieval.worker import main; raise SystemExit(main())",
+      "D:\\Project\\CAPSTONES\\VGAR\\artifacts\\fixes\\w3-w6\\20261007T012331157674Z-e681a29a0215\\attempt\\request.json",
+      "D:\\Project\\CAPSTONES\\VGAR\\artifacts\\fixes\\w3-w6\\20261007T012331157674Z-e681a29a0215\\attempt"
+    ],
+    "cwd": "D:\\Project\\CAPSTONES\\VGAR",
+    "interpreter": "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe",
+    "timeout_seconds": 85,
+    "started_utc": "2026-10-07T01:23:31.242904+00:00",
+    "phase": "BUILD_GRAPH",
+    "peak_rss_bytes": 824516608,
+    "stages": [
+      {
+        "phase": "TOKENIZER",
+        "duration_seconds": 0.4633204999990994,
+        "peak_rss_bytes": 200810496
+      },
+      {
+        "phase": "LOAD_SOURCE",
+        "duration_seconds": 0.04268429999501677,
+        "peak_rss_bytes": 200810496
+      },
+      {
+        "phase": "EXTRACT_TREE",
+        "duration_seconds": 0.1009591999973054,
+        "peak_rss_bytes": 200810496
+      }
+    ],
+    "error_class": "WorkerProcessError",
+    "error": "Worker exited without terminal JSON",
+    "traceback": "",
+    "worker_exit_code": 3221225477,
+    "ended_utc": "2026-10-07T01:24:19.118580+00:00",
+    "duration_seconds": 47.873867499998596,
+    "rss_samples": [
+      {
+        "elapsed_seconds": 0.008597599997301586,
+        "peak_rss_bytes": 2899968
+      },
+      {
+        "elapsed_seconds": 0.5171780000018771,
+        "peak_rss_bytes": 58888192
+      },
+      {
+        "elapsed_seconds": 1.0384799000021303,
+        "peak_rss_bytes": 81920000
+      },
+      {
+        "elapsed_seconds": 1.5694412000011653,
+        "peak_rss_bytes": 82010112
+      },
+      {
+        "elapsed_seconds": 2.095916899997974,
+        "peak_rss_bytes": 82018304
+      },
+      {
+        "elapsed_seconds": 2.605982599998242,
+        "peak_rss_bytes": 82010112
+      },
+      {
+        "elapsed_seconds": 3.115027799998643,
+        "peak_rss_bytes": 82010112
+      },
+      {
+        "elapsed_seconds": 3.6248746999990544,
+        "peak_rss_bytes": 102793216
+      },
+      {
+        "elapsed_seconds": 4.133654099998239,
+        "peak_rss_bytes": 124878848
+      },
+      {
+        "elapsed_seconds": 4.641348400000425,
+        "peak_rss_bytes": 147496960
+      },
+      {
+        "elapsed_seconds": 5.157977499999106,
+        "peak_rss_bytes": 168603648
+      },
+      {
+        "elapsed_seconds": 5.6743908999997075,
+        "peak_rss_bytes": 190251008
+      },
+      {
+        "elapsed_seconds": 6.183348099999421,
+        "peak_rss_bytes": 200343552
+      },
+      {
+        "elapsed_seconds": 6.694759999998496,
+        "peak_rss_bytes": 222519296
+      },
+      {
+        "elapsed_seconds": 7.208751300000586,
+        "peak_rss_bytes": 245932032
+      },
+      {
+        "elapsed_seconds": 7.719618999995873,
+        "peak_rss_bytes": 282996736
+      },
+      {
+        "elapsed_seconds": 8.23010290000093,
+        "peak_rss_bytes": 322875392
+      },
+      {
+        "elapsed_seconds": 8.744803599998704,
+        "peak_rss_bytes": 333590528
+      },
+      {
+        "elapsed_seconds": 9.253577999996196,
+        "peak_rss_bytes": 337776640
+      },
+      {
+        "elapsed_seconds": 9.770298399998865,
+        "peak_rss_bytes": 342122496
+      },
+      {
+        "elapsed_seconds": 10.284777900000336,
+        "peak_rss_bytes": 351305728
+      },
+      {
+        "elapsed_seconds": 10.793725700001232,
+        "peak_rss_bytes": 352546816
+      },
+      {
+        "elapsed_seconds": 11.308336499998404,
+        "peak_rss_bytes": 361934848
+      },
+      {
+        "elapsed_seconds": 11.817994600001839,
+        "peak_rss_bytes": 367357952
+      },
+      {
+        "elapsed_seconds": 12.328750200002105,
+        "peak_rss_bytes": 386363392
+      },
+      {
+        "elapsed_seconds": 12.844926699995995,
+        "peak_rss_bytes": 386416640
+      },
+      {
+        "elapsed_seconds": 13.359065899996494,
+        "peak_rss_bytes": 388808704
+      },
+      {
+        "elapsed_seconds": 13.872022099996684,
+        "peak_rss_bytes": 392011776
+      },
+      {
+        "elapsed_seconds": 14.380203699998674,
+        "peak_rss_bytes": 406843392
+      },
+      {
+        "elapsed_seconds": 14.888015799995628,
+        "peak_rss_bytes": 462319616
+      },
+      {
+        "elapsed_seconds": 15.395545300001686,
+        "peak_rss_bytes": 474009600
+      },
+      {
+        "elapsed_seconds": 15.91481489999569,
+        "peak_rss_bytes": 474673152
+      },
+      {
+        "elapsed_seconds": 16.42773820000002,
+        "peak_rss_bytes": 479371264
+      },
+      {
+        "elapsed_seconds": 16.937194799997087,
+        "peak_rss_bytes": 486199296
+      },
+      {
+        "elapsed_seconds": 17.446716799997375,
+        "peak_rss_bytes": 513163264
+      },
+      {
+        "elapsed_seconds": 17.95383579999907,
+        "peak_rss_bytes": 524034048
+      },
+      {
+        "elapsed_seconds": 18.468289500000537,
+        "peak_rss_bytes": 531812352
+      },
+      {
+        "elapsed_seconds": 18.976206399995135,
+        "peak_rss_bytes": 532385792
+      },
+      {
+        "elapsed_seconds": 19.495918799999345,
+        "peak_rss_bytes": 536457216
+      },
+      {
+        "elapsed_seconds": 20.006586499999685,
+        "peak_rss_bytes": 540475392
+      },
+      {
+        "elapsed_seconds": 20.521039200000814,
+        "peak_rss_bytes": 542973952
+      },
+      {
+        "elapsed_seconds": 21.029963399996632,
+        "peak_rss_bytes": 554209280
+      },
+      {
+        "elapsed_seconds": 21.54424999999901,
+        "peak_rss_bytes": 560762880
+      },
+      {
+        "elapsed_seconds": 22.05827329999738,
+        "peak_rss_bytes": 567123968
+      },
+      {
+        "elapsed_seconds": 22.57252359999984,
+        "peak_rss_bytes": 570085376
+      },
+      {
+        "elapsed_seconds": 23.08092729999771,
+        "peak_rss_bytes": 574054400
+      },
+      {
+        "elapsed_seconds": 23.59534509999503,
+        "peak_rss_bytes": 591753216
+      },
+      {
+        "elapsed_seconds": 24.108269299998938,
+        "peak_rss_bytes": 595124224
+      },
+      {
+        "elapsed_seconds": 24.616796299997077,
+        "peak_rss_bytes": 599392256
+      },
+      {
+        "elapsed_seconds": 25.132232099997054,
+        "peak_rss_bytes": 599392256
+      },
+      {
+        "elapsed_seconds": 25.64344269999856,
+        "peak_rss_bytes": 599642112
+      },
+      {
+        "elapsed_seconds": 26.157421399999293,
+        "peak_rss_bytes": 604512256
+      },
+      {
+        "elapsed_seconds": 26.6658208000008,
+        "peak_rss_bytes": 612622336
+      },
+      {
+        "elapsed_seconds": 27.174052499998652,
+        "peak_rss_bytes": 614232064
+      },
+      {
+        "elapsed_seconds": 27.689805399997567,
+        "peak_rss_bytes": 621441024
+      },
+      {
+        "elapsed_seconds": 28.202579899996636,
+        "peak_rss_bytes": 629112832
+      },
+      {
+        "elapsed_seconds": 28.71664420000161,
+        "peak_rss_bytes": 631324672
+      },
+      {
+        "elapsed_seconds": 29.231350099995325,
+        "peak_rss_bytes": 648527872
+      },
+      {
+        "elapsed_seconds": 29.744789399999718,
+        "peak_rss_bytes": 660279296
+      },
+      {
+        "elapsed_seconds": 30.252599399995233,
+        "peak_rss_bytes": 670867456
+      },
+      {
+        "elapsed_seconds": 30.768015499998,
+        "peak_rss_bytes": 672067584
+      },
+      {
+        "elapsed_seconds": 31.276863699997193,
+        "peak_rss_bytes": 673742848
+      },
+      {
+        "elapsed_seconds": 31.790237199995317,
+        "peak_rss_bytes": 676847616
+      },
+      {
+        "elapsed_seconds": 32.303798000000825,
+        "peak_rss_bytes": 678793216
+      },
+      {
+        "elapsed_seconds": 32.818244800000684,
+        "peak_rss_bytes": 680439808
+      },
+      {
+        "elapsed_seconds": 33.32730779999838,
+        "peak_rss_bytes": 683122688
+      },
+      {
+        "elapsed_seconds": 33.84147980000125,
+        "peak_rss_bytes": 686137344
+      },
+      {
+        "elapsed_seconds": 34.349634300000616,
+        "peak_rss_bytes": 691470336
+      },
+      {
+        "elapsed_seconds": 34.86463119999826,
+        "peak_rss_bytes": 714989568
+      },
+      {
+        "elapsed_seconds": 35.37638299999526,
+        "peak_rss_bytes": 714989568
+      },
+      {
+        "elapsed_seconds": 35.885869699995965,
+        "peak_rss_bytes": 714989568
+      },
+      {
+        "elapsed_seconds": 36.40139449999697,
+        "peak_rss_bytes": 719081472
+      },
+      {
+        "elapsed_seconds": 36.9149952000007,
+        "peak_rss_bytes": 721002496
+      },
+      {
+        "elapsed_seconds": 37.430407300002116,
+        "peak_rss_bytes": 727171072
+      },
+      {
+        "elapsed_seconds": 37.93863229999988,
+        "peak_rss_bytes": 731844608
+      },
+      {
+        "elapsed_seconds": 38.45049579999613,
+        "peak_rss_bytes": 740888576
+      },
+      {
+        "elapsed_seconds": 38.95834969999851,
+        "peak_rss_bytes": 745222144
+      },
+      {
+        "elapsed_seconds": 39.465952699996706,
+        "peak_rss_bytes": 749162496
+      },
+      {
+        "elapsed_seconds": 39.978895200001716,
+        "peak_rss_bytes": 753676288
+      },
+      {
+        "elapsed_seconds": 40.48730319999595,
+        "peak_rss_bytes": 759427072
+      },
+      {
+        "elapsed_seconds": 40.99830829999701,
+        "peak_rss_bytes": 761528320
+      },
+      {
+        "elapsed_seconds": 41.50801259999571,
+        "peak_rss_bytes": 764137472
+      },
+      {
+        "elapsed_seconds": 42.0157990000007,
+        "peak_rss_bytes": 780197888
+      },
+      {
+        "elapsed_seconds": 42.52344379999704,
+        "peak_rss_bytes": 782446592
+      },
+      {
+        "elapsed_seconds": 43.03415759999916,
+        "peak_rss_bytes": 786903040
+      },
+      {
+        "elapsed_seconds": 43.54337369999848,
+        "peak_rss_bytes": 789790720
+      },
+      {
+        "elapsed_seconds": 44.05759070000204,
+        "peak_rss_bytes": 795463680
+      },
+      {
+        "elapsed_seconds": 44.57228739999846,
+        "peak_rss_bytes": 802893824
+      },
+      {
+        "elapsed_seconds": 45.086261799995555,
+        "peak_rss_bytes": 806518784
+      },
+      {
+        "elapsed_seconds": 45.596440399996936,
+        "peak_rss_bytes": 808247296
+      },
+      {
+        "elapsed_seconds": 46.110417199997755,
+        "peak_rss_bytes": 810479616
+      },
+      {
+        "elapsed_seconds": 46.62484019999829,
+        "peak_rss_bytes": 813588480
+      },
+      {
+        "elapsed_seconds": 47.1400896999985,
+        "peak_rss_bytes": 822878208
+      },
+      {
+        "elapsed_seconds": 47.647810800001025,
+        "peak_rss_bytes": 824516608
+      }
+    ],
+    "rss_measurement": "max(worker-reported peak RSS, parent-observed tree RSS at 0.5s intervals); not GPU/virtual memory",
+    "stdout": "",
+    "stderr": "Timeout (0:00:40)!\nThread 0x00000688 (most recent call first):\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\inference\\compiled\\subprocess\\__init__.py\", line 70 in _enqueue_output\n  File \"C:\\Program Files\\Python311\\Lib\\threading.py\", line 982 in run\n  File \"C:\\Program Files\\Python311\\Lib\\threading.py\", line 1045 in _bootstrap_inner\n  File \"C:\\Program Files\\Python311\\Lib\\threading.py\", line 1002 in _bootstrap\n\nThread 0x000027d4 (most recent call first):\n  File \"<frozen importlib._bootstrap_external>\", line 147 in _path_stat\n  File \"<frozen importlib._bootstrap_external>\", line 1612 in find_spec\n  File \"<frozen importlib._bootstrap_external>\", line 1476 in _get_spec\n  File \"<frozen importlib._bootstrap_external>\""
+  }
+}

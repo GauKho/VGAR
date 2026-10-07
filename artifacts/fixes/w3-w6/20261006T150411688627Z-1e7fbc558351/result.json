@@ -1,0 +1,112 @@
+{
+  "run_id": "20261006T150411688627Z-1e7fbc558351",
+  "kind": "milestone-5-cache-red",
+  "status": "FAIL",
+  "started_utc": "2026-10-06T15:04:11.688627+00:00",
+  "complete": true,
+  "python": "3.11.6 (tags/v3.11.6:8b6ee5b, Oct  2 2023, 14:57:12) [MSC v.1935 64 bit (AMD64)]",
+  "interpreter": "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe",
+  "platform": "Windows-10-10.0.26300-SP0",
+  "command_argv": [
+    "-c"
+  ],
+  "cwd": "D:\\Project\\CAPSTONES\\VGAR",
+  "command": "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe -m pytest -q -p no:cacheprovider --junitxml=D:\\Project\\CAPSTONES\\VGAR\\.m2-pytest-po7nv16a\\junit.xml tests/m2/test_retrieval_cache_integrity.py",
+  "argv": [
+    "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "--junitxml=D:\\Project\\CAPSTONES\\VGAR\\.m2-pytest-po7nv16a\\junit.xml",
+    "tests/m2/test_retrieval_cache_integrity.py"
+  ],
+  "exit_code": 1,
+  "duration_ms": 1000,
+  "stdout": "FFFFFFFFF.F                                                              [100%]\r\n================================== FAILURES ===================================\r\n______ test_cached_tree_checks_current_file_set_and_raw_bytes[same_size] ______\r\ntests\\m2\\test_retrieval_cache_integrity.py:38: in test_cached_tree_checks_current_file_set_and_raw_bytes\r\n    with pytest.raises(ValueError, match=\"integrity|hash|file set\"):\r\nE   Failed: DID NOT RAISE <class 'ValueError'>\r\n_________ test_cached_tree_checks_current_file_set_and_raw_bytes[add] _________\r\ntests\\m2\\test_retrieval_cache_integrity.py:38: in test_cached_tree_checks_current_file_set_and_raw_bytes\r\n    with pytest.raises(ValueError, match=\"integrity|hash|file set\"):\r\nE   Failed: DID NOT RAISE <class 'ValueError'>\r\n_______ test_cached_tree_checks_current_file_set_and_raw_bytes[delete] ________\r\ntests\\m2\\test_retrieval_cache_integrity.py:38: in test_cached_tree_checks_current_file_set_and_raw_bytes\r\n    with pytest.raises(ValueError, match=\"integrity|hash|file set\"):\r\nE   Failed: DID NOT RAISE <class 'ValueError'>\r\n_________ test_marker_is_not_enough_when_tree_has_no_valid_inventory __________\r\ntests\\m2\\test_retrieval_cache_integrity.py:48: in test_marker_is_not_enough_when_tree_has_no_valid_inventory\r\n    with pytest.raises(ValueError, match=\"integrity|hash\"):\r\nE   Failed: DID NOT RAISE <class 'ValueError'>\r\n_____ test_unowned_existing_tree_and_interrupted_partial_are_not_deleted ______\r\ntests\\m2\\test_retrieval_cache_integrity.py:61: in test_unowned_existing_tree_and_interrupted_partial_are_not_deleted\r\n    extract_python_tree(archive, \"o/r\", SHA, destination)\r\nsrc\\vgar\\evaluation\\retrieval\\graph_arm.py:75: in extract_python_tree\r\n    partial.rename(destination)\r\nC:\\Program Files\\Python311\\Lib\\pathlib.py:1175: in rename\r\n    os.rename(self, target)\r\nE   FileExistsError: [WinError 183] Cannot create a file when that file already exists: 'C:\\\\Users\\\\pc\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-pc\\\\pytest-453\\\\test_unowned_existing_tree_and0\\\\unowned.partial' -> 'C:\\\\Users\\\\pc\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-pc\\\\pytest-453\\\\test_unowned_existing_tree_and0\\\\unowned'\r\n_____________ test_graph_cache_pair_integrity_is_verified[graph] ______________\r\ntests\\m2\\test_retrieval_cache_integrity.py:97: in test_graph_cache_pair_integrity_is_verified\r\n    with pytest.raises(ValueError, match=\"cache|integrity|hash|pair\"):\r\nE   Failed: DID NOT RAISE <class 'ValueError'>\r\n______________ test_graph_cache_pair_integrity_is_verified[meta] ______________\r\ntests\\m2\\test_retrieval_cache_integrity.py:97: in test_graph_cache_pair_integrity_is_verified\r\n    with pytest.raises(ValueError, match=\"cache|integrity|hash|pair\"):\r\nE   Failed: DID NOT RAISE <class 'ValueError'>\r\n__________ test_graph_cache_pair_integrity_is_verified[missing_meta] __________\r\ntests\\m2\\test_retrieval_cache_integrity.py:97: in test_graph_cache_pair_integrity_is_verified\r\n    with pytest.raises(ValueError, match=\"cache|integrity|hash|pair\"):\r\nE   Failed: DID NOT RAISE <class 'ValueError'>\r\n_ test_graph_cache_implementation_identity_covers_resolver_schema_scope_and_parser _\r\ntests\\m2\\test_retrieval_cache_integrity.py:103: in test_graph_cache_implementation_identity_covers_resolver_schema_scope_and_parser\r\n    identity = meta[\"cache_identity\"]\r\n               ^^^^^^^^^^^^^^^^^^^^^^\r\nE   KeyError: 'cache_identity'\r\n__ test_fingerprint_includes_nested_tests_fixtures_and_config_not_data_cache __\r\ntests\\m2\\test_retrieval_cache_integrity.py:129: in test_fingerprint_includes_nested_tests_fixtures_and_config_not_data_cache\r\n    assert set(paths) <= set(before[\"files\"])\r\nE   AssertionError: assert {'config/retr...unit.py', ...} <= {'pyproject.t.../vgar/app.py'}\r\nE     \r\nE     Extra items in the left set:\r\nE     'tests/m2/test_nested.py'\r\nE     'tests/unit/test_unit.py'\r\nE     'config/retrieval.json'\r\nE     'tests/fixtures/gold.json'\r\nE     'uv.lock'\r\n- generated xml file: D:\\Project\\CAPSTONES\\VGAR\\.m2-pytest-po7nv16a\\junit.xml -\r\n=========================== short test summary info ===========================\r\nFAILED tests/m2/test_retrieval_cache_integrity.py::test_cached_tree_checks_current_file_set_and_raw_bytes[same_size]\r\nFAILED tests/m2/test_retrieval_cache_integrity.py::test_cached_tree_checks_current_file_set_and_raw_bytes[add]\r\nFAILED tests/m2/test_retrieval_cache_integrity.py::test_cached_tree_checks_current_file_set_and_raw_bytes[delete]\r\nFAILED tests/m2/test_retrieval_cache_integrity.py::test_marker_is_not_enough_when_tree_has_no_valid_inventory\r\nFAILED tests/m2/test_retrieval_cache_integrity.py::test_unowned_existing_tree_and_interrupted_partial_are_not_deleted\r\nFAILED tests/m2/test_retrieval_cache_integrity.py::test_graph_cache_pair_integrity_is_verified[graph]\r\nFAILED tests/m2/test_retrieval_cache_integrity.py::test_graph_cache_pair_integrity_is_verified[meta]\r\nFAILED tests/m2/test_retrieval_cache_integrity.py::test_graph_cache_pair_integrity_is_verified[missing_meta]\r\nFAILED tests/m2/test_retrieval_cache_integrity.py::test_graph_cache_implementation_identity_covers_resolver_schema_scope_and_parser\r\nFAILED tests/m2/test_retrieval_cache_integrity.py::test_fingerprint_includes_nested_tests_fixtures_and_config_not_data_cache\r\n10 failed, 1 passed in 0.50s\r\n",
+  "stderr": "",
+  "timeout_seconds": 240.0,
+  "cases": [
+    {
+      "name": "tests.m2.test_retrieval_cache_integrity::test_cached_tree_checks_current_file_set_and_raw_bytes[same_size]",
+      "status": "FAIL",
+      "duration_ms": 12,
+      "detail": "tests\\m2\\test_retrieval_cache_integrity.py:38: in test_cached_tree_checks_current_file_set_and_raw_bytes\n    with pytest.raises(ValueError, match=\"integrity|hash|file set\"):\nE   Failed: DID NOT RAISE <class 'ValueError'>"
+    },
+    {
+      "name": "tests.m2.test_retrieval_cache_integrity::test_cached_tree_checks_current_file_set_and_raw_bytes[add]",
+      "status": "FAIL",
+      "duration_ms": 5,
+      "detail": "tests\\m2\\test_retrieval_cache_integrity.py:38: in test_cached_tree_checks_current_file_set_and_raw_bytes\n    with pytest.raises(ValueError, match=\"integrity|hash|file set\"):\nE   Failed: DID NOT RAISE <class 'ValueError'>"
+    },
+    {
+      "name": "tests.m2.test_retrieval_cache_integrity::test_cached_tree_checks_current_file_set_and_raw_bytes[delete]",
+      "status": "FAIL",
+      "duration_ms": 5,
+      "detail": "tests\\m2\\test_retrieval_cache_integrity.py:38: in test_cached_tree_checks_current_file_set_and_raw_bytes\n    with pytest.raises(ValueError, match=\"integrity|hash|file set\"):\nE   Failed: DID NOT RAISE <class 'ValueError'>"
+    },
+    {
+      "name": "tests.m2.test_retrieval_cache_integrity::test_marker_is_not_enough_when_tree_has_no_valid_inventory",
+      "status": "FAIL",
+      "duration_ms": 6,
+      "detail": "tests\\m2\\test_retrieval_cache_integrity.py:48: in test_marker_is_not_enough_when_tree_has_no_valid_inventory\n    with pytest.raises(ValueError, match=\"integrity|hash\"):\nE   Failed: DID NOT RAISE <class 'ValueError'>"
+    },
+    {
+      "name": "tests.m2.test_retrieval_cache_integrity::test_unowned_existing_tree_and_interrupted_partial_are_not_deleted",
+      "status": "FAIL",
+      "duration_ms": 9,
+      "detail": "tests\\m2\\test_retrieval_cache_integrity.py:61: in test_unowned_existing_tree_and_interrupted_partial_are_not_deleted\n    extract_python_tree(archive, \"o/r\", SHA, destination)\nsrc\\vgar\\evaluation\\retrieval\\graph_arm.py:75: in extract_python_tree\n    partial.rename(destination)\nC:\\Program Files\\Python311\\Lib\\pathlib.py:1175: in rename\n    os.rename(self, target)\nE   FileExistsError: [WinError 183] Cannot create a file when that file already exists: 'C:\\\\Users\\\\pc\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-pc\\\\pytest-453\\\\test_unowned_existing_tree_and0\\\\unowned.partial' -> 'C:\\\\Users\\\\pc\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-pc\\\\pytest-453\\\\test_unowned_existing_tree_and0\\\\unowned'"
+    },
+    {
+      "name": "tests.m2.test_retrieval_cache_integrity::test_graph_cache_pair_integrity_is_verified[graph]",
+      "status": "FAIL",
+      "duration_ms": 216,
+      "detail": "tests\\m2\\test_retrieval_cache_integrity.py:97: in test_graph_cache_pair_integrity_is_verified\n    with pytest.raises(ValueError, match=\"cache|integrity|hash|pair\"):\nE   Failed: DID NOT RAISE <class 'ValueError'>"
+    },
+    {
+      "name": "tests.m2.test_retrieval_cache_integrity::test_graph_cache_pair_integrity_is_verified[meta]",
+      "status": "FAIL",
+      "duration_ms": 15,
+      "detail": "tests\\m2\\test_retrieval_cache_integrity.py:97: in test_graph_cache_pair_integrity_is_verified\n    with pytest.raises(ValueError, match=\"cache|integrity|hash|pair\"):\nE   Failed: DID NOT RAISE <class 'ValueError'>"
+    },
+    {
+      "name": "tests.m2.test_retrieval_cache_integrity::test_graph_cache_pair_integrity_is_verified[missing_meta]",
+      "status": "FAIL",
+      "duration_ms": 25,
+      "detail": "tests\\m2\\test_retrieval_cache_integrity.py:97: in test_graph_cache_pair_integrity_is_verified\n    with pytest.raises(ValueError, match=\"cache|integrity|hash|pair\"):\nE   Failed: DID NOT RAISE <class 'ValueError'>"
+    },
+    {
+      "name": "tests.m2.test_retrieval_cache_integrity::test_graph_cache_implementation_identity_covers_resolver_schema_scope_and_parser",
+      "status": "FAIL",
+      "duration_ms": 12,
+      "detail": "tests\\m2\\test_retrieval_cache_integrity.py:103: in test_graph_cache_implementation_identity_covers_resolver_schema_scope_and_parser\n    identity = meta[\"cache_identity\"]\n               ^^^^^^^^^^^^^^^^^^^^^^\nE   KeyError: 'cache_identity'"
+    },
+    {
+      "name": "tests.m2.test_retrieval_cache_integrity::test_graph_cache_reuse_has_validated_pair_and_unchanged_bytes",
+      "status": "PASS",
+      "duration_ms": 14,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_cache_integrity::test_fingerprint_includes_nested_tests_fixtures_and_config_not_data_cache",
+      "status": "FAIL",
+      "duration_ms": 8,
+      "detail": "tests\\m2\\test_retrieval_cache_integrity.py:129: in test_fingerprint_includes_nested_tests_fixtures_and_config_not_data_cache\n    assert set(paths) <= set(before[\"files\"])\nE   AssertionError: assert {'config/retr...unit.py', ...} <= {'pyproject.t.../vgar/app.py'}\nE     \nE     Extra items in the left set:\nE     'tests/m2/test_nested.py'\nE     'tests/unit/test_unit.py'\nE     'config/retrieval.json'\nE     'tests/fixtures/gold.json'\nE     'uv.lock'"
+    }
+  ],
+  "case_counts": {
+    "passed": 1,
+    "failed": 10,
+    "error": 0,
+    "skipped": 0
+  },
+  "reason": {
+    "code": "TEST_FAILED",
+    "message": "Pytest assertions failed"
+  },
+  "output_truncated": false,
+  "stdout_bytes": 5236,
+  "stderr_bytes": 0,
+  "ended_utc": "2026-10-06T15:04:12.742005+00:00"
+}

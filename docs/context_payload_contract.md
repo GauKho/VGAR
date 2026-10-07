@@ -72,3 +72,9 @@ Baseline retrieval/packing nội bộ M1 đã triển khai và kiểm thử ở 
 Official tokenizer/revision và 8000 snippet budget đã được duyệt/nghiệm thu
 standalone M1: [tokenizer acceptance](m1_tokenizer_acceptance.md). Dev evaluation,
 model/prompt runtime M3 và consumer integration còn riêng; D05/D09 trong decision log.
+
+## MCP integration ngày 06/10/2026
+
+graph_get_related_context(anchor_ids, budget_tokens, task_handle) trả frozen ContextPayload nguyên shape trong ToolResponse.data. Handle lấy từ graph_find_task_anchors, persist graph_version/issue/failing reports qua các session stateless. Người dùng đã duyệt input handle; owner sign-off M1/M3 vẫn cần nhóm, không thay bằng unit tests.
+
+Metadata có task_handle, overlay_id, counter_label, retrieval_diagnostics; không thêm fields vào ContextPayload. Legacy SQLite snapshot thiếu source spans phải ingest mới, không suy diễn range. Native snippets và evaluator header/max80lines là hai packing policies riêng; failing reports không phải proof tests đã chạy. Xem [ADR](adr/2026-10-06-stateless-task-handles-and-context-boundary.md) và [vận hành](m5_m6_retrieval_evaluation.md).

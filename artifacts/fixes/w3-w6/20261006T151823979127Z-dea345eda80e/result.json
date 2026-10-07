@@ -1,0 +1,154 @@
+{
+  "run_id": "20261006T151823979127Z-dea345eda80e",
+  "kind": "milestone-5-resume-red",
+  "status": "FAIL",
+  "started_utc": "2026-10-06T15:18:23.979127+00:00",
+  "complete": true,
+  "python": "3.11.6 (tags/v3.11.6:8b6ee5b, Oct  2 2023, 14:57:12) [MSC v.1935 64 bit (AMD64)]",
+  "interpreter": "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe",
+  "platform": "Windows-10-10.0.26300-SP0",
+  "command_argv": [
+    "-c"
+  ],
+  "cwd": "D:\\Project\\CAPSTONES\\VGAR",
+  "command": "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe -m pytest -q -p no:cacheprovider --junitxml=D:\\Project\\CAPSTONES\\VGAR\\.m2-pytest-xnqny08k\\junit.xml tests/m2/test_retrieval_lifecycle.py",
+  "argv": [
+    "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "--junitxml=D:\\Project\\CAPSTONES\\VGAR\\.m2-pytest-xnqny08k\\junit.xml",
+    "tests/m2/test_retrieval_lifecycle.py"
+  ],
+  "exit_code": 1,
+  "duration_ms": 8422,
+  "stdout": "..............F...                                                       [100%]\r\n================================== FAILURES ===================================\r\n_ test_actual_resume_forks_success_retries_failure_and_preserves_all_prior_files _\r\n\r\ntmp_path = WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-458/test_actual_resume_forks_succe0')\r\nmonkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000017EBD4751D0>\r\n\r\n    def test_actual_resume_forks_success_retries_failure_and_preserves_all_prior_files(tmp_path, monkeypatch):\r\n        manifest, tasks = fixture_manifest(tmp_path)\r\n        module = runner()\r\n        # A missing gold artifact is a genuine SCORE failure, not a fake summary.\r\n        bad_patch = tmp_path / tasks[1][\"gold_patch_path\"]\r\n        patch_bytes = bad_patch.read_bytes()\r\n        bad_patch.unlink()\r\n        args = [\"runner\", str(tmp_path), str(manifest), \"--allow-fallback-counter\", \"--offline\", \"--no-jedi\", \"--max-hops\", \"0\"]\r\n        monkeypatch.setattr(sys, \"argv\", args)\r\n        assert module.main() == 1\r\n        prior = next((tmp_path / \"results/retrieval\").iterdir())\r\n        before = {p.relative_to(prior).as_posix(): p.read_bytes() for p in prior.rglob(\"*\") if p.is_file()}\r\n        first = json.loads((prior / \"result.json\").read_text())\r\n>       assert [r[\"status\"] for r in first[\"task_results\"]] == [\"SUCCEEDED\", \"FAILED\"]\r\nE       AssertionError: assert [] == ['SUCCEEDED', 'FAILED']\r\nE         \r\nE         Right contains 2 more items, first extra item: 'SUCCEEDED'\r\nE         Use -v to get more diff\r\n\r\ntests\\m2\\test_retrieval_lifecycle.py:201: AssertionError\r\n---------------------------- Captured stdout call -----------------------------\r\nrun: C:\\Users\\pc\\AppData\\Local\\Temp\\pytest-of-pc\\pytest-458\\test_actual_resume_forks_succe0\\results\\retrieval\\20261006T151828806606Z-c2b2ff1007d6\r\nstatus: ERROR; exit: 1\r\n- generated xml file: D:\\Project\\CAPSTONES\\VGAR\\.m2-pytest-xnqny08k\\junit.xml -\r\n=========================== short test summary info ===========================\r\nFAILED tests/m2/test_retrieval_lifecycle.py::test_actual_resume_forks_success_retries_failure_and_preserves_all_prior_files\r\n1 failed, 17 passed in 7.72s\r\n",
+  "stderr": "",
+  "timeout_seconds": 180.0,
+  "cases": [
+    {
+      "name": "tests.m2.test_retrieval_lifecycle::test_invalid_worker_deadline_is_rejected[0]",
+      "status": "PASS",
+      "duration_ms": 151,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_lifecycle::test_invalid_worker_deadline_is_rejected[-1]",
+      "status": "PASS",
+      "duration_ms": 2,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_lifecycle::test_invalid_worker_deadline_is_rejected[nan]",
+      "status": "PASS",
+      "duration_ms": 2,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_lifecycle::test_invalid_worker_deadline_is_rejected[inf]",
+      "status": "PASS",
+      "duration_ms": 2,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_lifecycle::test_invalid_worker_deadline_is_rejected[True]",
+      "status": "PASS",
+      "duration_ms": 2,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_lifecycle::test_timeout_has_terminal_artifact_stage_output_and_kills_children",
+      "status": "PASS",
+      "duration_ms": 1553,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_lifecycle::test_worker_crash_without_json_is_not_success",
+      "status": "PASS",
+      "duration_ms": 69,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_lifecycle::test_memory_error_records_trace_stage_and_rss_in_actual_worker",
+      "status": "PASS",
+      "duration_ms": 223,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_lifecycle::test_interrupted_parent_kills_worker_and_finalizes_attempt",
+      "status": "PASS",
+      "duration_ms": 24,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_lifecycle::test_resume_validates_identity_and_copies_success_without_mutating_prior",
+      "status": "PASS",
+      "duration_ms": 13,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_lifecycle::test_runner_pending_before_setup_and_terminal_setup_error[invalid_limit]",
+      "status": "PASS",
+      "duration_ms": 114,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_lifecycle::test_runner_pending_before_setup_and_terminal_setup_error[duplicate]",
+      "status": "PASS",
+      "duration_ms": 16,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_lifecycle::test_runner_pending_before_setup_and_terminal_setup_error[missing_manifest]",
+      "status": "PASS",
+      "duration_ms": 14,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_lifecycle::test_runner_pending_before_setup_and_terminal_setup_error[keyboard_interrupt]",
+      "status": "PASS",
+      "duration_ms": 17,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_lifecycle::test_actual_resume_forks_success_retries_failure_and_preserves_all_prior_files",
+      "status": "FAIL",
+      "duration_ms": 2165,
+      "detail": "tmp_path = WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-458/test_actual_resume_forks_succe0')\nmonkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000017EBD4751D0>\n\n    def test_actual_resume_forks_success_retries_failure_and_preserves_all_prior_files(tmp_path, monkeypatch):\n        manifest, tasks = fixture_manifest(tmp_path)\n        module = runner()\n        # A missing gold artifact is a genuine SCORE failure, not a fake summary.\n        bad_patch = tmp_path / tasks[1][\"gold_patch_path\"]\n        patch_bytes = bad_patch.read_bytes()\n        bad_patch.unlink()\n        args = [\"runner\", str(tmp_path), str(manifest), \"--allow-fallback-counter\", \"--offline\", \"--no-jedi\", \"--max-hops\", \"0\"]\n        monkeypatch.setattr(sys, \"argv\", args)\n        assert module.main() == 1\n        prior = next((tmp_path / \"results/retrieval\").iterdir())\n        before = {p.relative_to(prior).as_posix(): p.read_bytes() for p in prior.rglob(\"*\") if p.is_file()}\n        first = json.loads((prior / \"result.json\").read_text())\n>       assert [r[\"status\"] for r in first[\"task_results\"]] == [\"SUCCEEDED\", \"FAILED\"]\nE       AssertionError: assert [] == ['SUCCEEDED', 'FAILED']\nE         \nE         Right contains 2 more items, first extra item: 'SUCCEEDED'\nE         Use -v to get more diff\n\ntests\\m2\\test_retrieval_lifecycle.py:201: AssertionError"
+    },
+    {
+      "name": "tests.m2.test_retrieval_lifecycle::test_actual_runner_resume_rejects_changed_bindings_with_terminal_evidence[budget]",
+      "status": "PASS",
+      "duration_ms": 1471,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_lifecycle::test_actual_runner_resume_rejects_changed_bindings_with_terminal_evidence[manifest]",
+      "status": "PASS",
+      "duration_ms": 837,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_lifecycle::test_actual_runner_resume_rejects_changed_bindings_with_terminal_evidence[source]",
+      "status": "PASS",
+      "duration_ms": 814,
+      "detail": null
+    }
+  ],
+  "case_counts": {
+    "passed": 17,
+    "failed": 1,
+    "error": 0,
+    "skipped": 0
+  },
+  "reason": {
+    "code": "TEST_FAILED",
+    "message": "Pytest assertions failed"
+  },
+  "output_truncated": false,
+  "stdout_bytes": 2201,
+  "stderr_bytes": 0,
+  "ended_utc": "2026-10-06T15:18:32.435840+00:00"
+}

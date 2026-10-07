@@ -28,7 +28,7 @@ import sys
 import tempfile
 import time
 import uuid
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from pathlib import Path
 from typing import Any
 
@@ -119,7 +119,8 @@ class ScriptedToolModel(BaseChatModel):
             return call("execution_run_pytest", {"repo_path": c.repo_path, "selector": c.selector,
                                                  "timeout_seconds": 60})
         final = tool_json(results[-1])
-        text = f"Pytest status from tool: {final.get('status')} (exit={final.get('exit_code')})."
+        final_data = final.get("data") or (final.get("error") or {}).get("details") or {}
+        text = f"Pytest status from tool: {final.get('status')} (exit={final_data.get('exit_code')})."
         return ChatResult(generations=[ChatGeneration(message=AIMessage(content=text))])
 
 
@@ -161,6 +162,8 @@ async def run(args: argparse.Namespace) -> None:
 
     source_hash = fingerprint_source(FAILING_REPO)
     with create_workspace(FAILING_REPO, work / "ws") as lease:
+        from vgar.config.settings import get_settings
+        sandboxed = replace(get_settings(), workspace_root=lease.path)
         print("\n== 2. Baseline (must FAIL before the agent acts)")
         baseline = run_tests(lease.path, (SELECTOR,), 60)
         check("baseline FAIL", baseline.status == "FAIL")
@@ -169,13 +172,13 @@ async def run(args: argparse.Namespace) -> None:
         if args.model == "hf":
             # Lazy import: vgar.agents.core pulls torch/transformers at import time.
             from vgar.agents.core import create_core_agent
-            agent = await create_core_agent()  # production path: HF model + MCP tools + system prompt
+            agent = await create_core_agent(sandboxed)  # production path with host-granted workspace
         else:
             # Same wiring as create_core_agent(), minus the HF model (no torch needed).
             prompt_file = ROOT / "src" / "vgar" / "agents" / "prompts" / "system.md"
             agent = create_agent(
                 model=ScriptedToolModel(cfg=ScriptConfig(repo_path=str(lease.path))),
-                tools=await create_mcp_client().get_tools(),
+                tools=await create_mcp_client(sandboxed).get_tools(),
                 system_prompt=prompt_file.read_text(encoding="utf-8"),
             )
         check("agent created", agent is not None)
@@ -210,6 +213,11 @@ async def run(args: argparse.Namespace) -> None:
         tool_msgs = [m for m in messages if isinstance(m, ToolMessage)]
         check("no tool returned error status", all(m.status != "error" for m in tool_msgs))
         check("every tool result is parseable JSON", all("_raw" not in tool_json(m) for m in tool_msgs))
+        check("every scripted tool envelope PASS", all(tool_json(m).get("status") == "PASS" for m in tool_msgs))
+        (work / "agent_messages.json").write_text(
+            json.dumps([message.model_dump(mode="json") for message in messages], indent=2, ensure_ascii=False), encoding="utf-8")
+        patch_tool = next(tool_json(message) for message in tool_msgs if message.name == "repository_apply_patch")
+        (work / "patch.diff").write_text(patch_tool["data"]["patch_diff"], encoding="utf-8")
         check("tool-call count within budget", len(names) <= args.max_tool_calls, f"{len(names)}/{args.max_tool_calls}")
 
         print("\n== 6. Independent verification (agent's claim is NOT trusted)")

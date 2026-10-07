@@ -1,0 +1,21 @@
+{
+  "phase": "BUILD_GRAPH",
+  "stages": [
+    {
+      "phase": "TOKENIZER",
+      "duration_seconds": 0.5668420000001788,
+      "peak_rss_bytes": 194306048
+    },
+    {
+      "phase": "LOAD_SOURCE",
+      "duration_seconds": 0.06778920000215294,
+      "peak_rss_bytes": 194306048
+    },
+    {
+      "phase": "EXTRACT_TREE",
+      "duration_seconds": 0.12415730000066105,
+      "peak_rss_bytes": 194306048
+    }
+  ],
+  "peak_rss_bytes": 194306048
+}

@@ -15,7 +15,7 @@ from typing import Any
 from vgar.contracts.context import ContextItem, ContextPayload, SourceRange
 from vgar.contracts.error import GraphError, InvalidLimitError, InvalidQueryError, NodeNotFoundError
 from vgar.contracts.schema import validate_graph_document
-from vgar.graph.builder import IGNORED_DIRECTORY_NAMES
+from vgar.source_scope import SourceScope
 from vgar.graph.task_overlay import TaskOverlay
 
 
@@ -86,6 +86,14 @@ class GraphContextRetriever:
         self.change_counts = dict(change_counts) if change_counts is not None else None
         self.history_label = history_label
         self.files = {node["path"]: node for node in self.nodes.values() if node["type"] == "File"}
+        scope = self.document.get("statistics", {}).get("source_scope")
+        try:
+            if scope is not None and (not isinstance(scope, dict) or not isinstance(scope.get("excluded_paths"), list)):
+                raise ValueError("excluded_paths must be a list")
+            self.source_scope = (SourceScope(excluded_paths=tuple(scope["excluded_paths"]))
+                                 if scope is not None else SourceScope.for_repository(self.root))
+        except (ValueError, KeyError, TypeError) as error:
+            raise GraphError("Invalid source scope in graph snapshot") from error
         self.adjacency: dict[str, list[tuple[str, float, str]]] = defaultdict(list)
         self.callers: dict[str, set[str]] = defaultdict(set)
         self._index_relations()
@@ -296,15 +304,25 @@ class GraphContextRetriever:
         return states, limited
 
     def _verify_snapshot(self) -> dict[str, bytes]:
-        actual = {path.relative_to(self.root).as_posix() for path in self.root.rglob("*.py")
-                  if not any(part in IGNORED_DIRECTORY_NAMES for part in path.parts)}
-        if actual != set(self.files):
+        inventory = self.document.get("statistics", {}).get("source_inventory")
+        if inventory is None:
+            inventory = {path: node.get("content_hash") for path, node in self.files.items()}
+        if not isinstance(inventory, dict) or any(
+            not isinstance(path, str) or not isinstance(digest, str) or not re.fullmatch(r"sha256:[0-9a-f]{64}", digest)
+            for path, digest in inventory.items()
+        ) or any(inventory.get(path) != node.get("content_hash") for path, node in self.files.items()):
+            raise GraphError("Invalid source inventory in graph snapshot; rebuild graph")
+        try:
+            actual = {path.relative_to(self.root).as_posix() for path in self.source_scope.python_files(self.root)}
+        except (OSError, ValueError) as error:
+            raise GraphError("Cannot discover graph source snapshot", details={"error": str(error)}) from error
+        if actual != set(inventory):
             raise GraphError("Source file set differs from graph snapshot; rebuild graph",
                              details={"reason": "source_snapshot_mismatch",
-                                      "added": sorted(actual - set(self.files)),
-                                      "missing": sorted(set(self.files) - actual)})
+                                      "added": sorted(actual - set(inventory)),
+                                      "missing": sorted(set(inventory) - actual)})
         sources = {}
-        for relative, node in sorted(self.files.items()):
+        for relative, digest in sorted(inventory.items()):
             path = PurePosixPath(relative)
             if path.is_absolute() or PureWindowsPath(relative).drive or ".." in path.parts or path.as_posix() != relative:
                 raise GraphError("Invalid repository-relative graph source path")
@@ -315,7 +333,7 @@ class GraphContextRetriever:
                 data = resolved.read_bytes()
             except OSError as error:
                 raise GraphError("Cannot read graph source; rebuild graph", details={"path": relative}) from error
-            if _hash(data) != node.get("content_hash"):
+            if _hash(data) != digest:
                 raise GraphError("Source content differs from graph snapshot; rebuild graph", details={"path": relative})
             sources[relative] = data
         return sources

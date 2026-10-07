@@ -1,0 +1,223 @@
+{
+  "run_id": "20261007T013142410367Z-8f6e1db171ea",
+  "kind": "milestone-8-final-doc-check",
+  "status": "PASS",
+  "started_utc": "2026-10-07T01:31:42.410367+00:00",
+  "complete": true,
+  "python": "3.11.6 (tags/v3.11.6:8b6ee5b, Oct  2 2023, 14:57:12) [MSC v.1935 64 bit (AMD64)]",
+  "interpreter": "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe",
+  "platform": "Windows-10-10.0.26300-SP0",
+  "command_argv": [
+    "C:\\Program Files\\Python311\\python.exe",
+    "-B",
+    "-c",
+    "import json,re,sys,subprocess\nfrom pathlib import Path\nfrom vgar.evaluation.retrieval.evidence import new_run,write_json,utc_now\nfiles=['PROGRESS.md','docs/BAO_CAO_TASK_CHUA_HOAN_THANH_W3_W6.md','docs/w5_w6_completion.md','docs/m5_m6_retrieval_evaluation.md','docs/superpowers/plans/2026-10-06-fix-vgar-integration-week-1-6.md']\nd,m=new_run(Path('artifacts/fixes/w3-w6'),'milestone-8-final-doc-check')\nm.update(command_argv=sys.orig_argv)\nlinks=[]\nfor name in files:\n    path=Path(name)\n    for target in re.findall(r'\\[[^\\]]*\\]\\(([^)]+)\\)',path.read_text(encoding='utf-8')):\n        target=target.strip().strip('<>')\n        if target.startswith(('http:','https:','#','mailto:')):\n            continue\n        target=target.split('#',1)[0]\n        links.append({'document':name,'target':target,'exists':(path.parent/target).exists()})\ngit=subprocess.run(['git','-c','safe.directory=D:/Project/CAPSTONES/VGAR','diff','--check'],capture_output=True,text=True,encoding='utf-8',errors='replace')\nbad=[row for row in links if not row['exists']]\nm.update(status='PASS' if not bad and git.returncode==0 else 'FAIL',complete=True,ended_utc=utc_now(),documents=files,links=links,missing_links=bad,diff_check={'exit_code':git.returncode,'stdout':git.stdout,'stderr':git.stderr})\nwrite_json(d/'result.json',m)\nprint(d)\nprint(json.dumps({'status':m['status'],'checked_links':len(links),'missing_links':bad,'diff_check_exit':git.returncode},ensure_ascii=False))\nraise SystemExit(0 if m['status']=='PASS' else 1)"
+  ],
+  "cwd": "D:\\Project\\CAPSTONES\\VGAR",
+  "ended_utc": "2026-10-07T01:31:42.679915+00:00",
+  "documents": [
+    "PROGRESS.md",
+    "docs/BAO_CAO_TASK_CHUA_HOAN_THANH_W3_W6.md",
+    "docs/w5_w6_completion.md",
+    "docs/m5_m6_retrieval_evaluation.md",
+    "docs/superpowers/plans/2026-10-06-fix-vgar-integration-week-1-6.md"
+  ],
+  "links": [
+    {
+      "document": "PROGRESS.md",
+      "target": "docs/reviews/2026-10-06-review-vgar-week-1-6.md",
+      "exists": true
+    },
+    {
+      "document": "PROGRESS.md",
+      "target": "docs/superpowers/plans/2026-10-06-fix-vgar-integration-week-1-6.md",
+      "exists": true
+    },
+    {
+      "document": "PROGRESS.md",
+      "target": "artifacts/reviews/2026-10-06-w1-w6",
+      "exists": true
+    },
+    {
+      "document": "PROGRESS.md",
+      "target": "docs/BAO_CAO_TASK_CHUA_HOAN_THANH_W3_W6.md",
+      "exists": true
+    },
+    {
+      "document": "docs/BAO_CAO_TASK_CHUA_HOAN_THANH_W3_W6.md",
+      "target": "../PROGRESS.md",
+      "exists": true
+    },
+    {
+      "document": "docs/BAO_CAO_TASK_CHUA_HOAN_THANH_W3_W6.md",
+      "target": "superpowers/plans/2026-10-06-fix-vgar-integration-week-1-6.md",
+      "exists": true
+    },
+    {
+      "document": "docs/BAO_CAO_TASK_CHUA_HOAN_THANH_W3_W6.md",
+      "target": "../artifacts/fixes/w3-w6/milestone-8-credential-final-recorder/20261007T012625128617Z-0a58010aea154438b18dba6077931c47.json",
+      "exists": true
+    },
+    {
+      "document": "docs/BAO_CAO_TASK_CHUA_HOAN_THANH_W3_W6.md",
+      "target": "../artifacts/fixes/w3-w6/20261007T012636266959Z-7ac7378bc98e/result.json",
+      "exists": true
+    },
+    {
+      "document": "docs/BAO_CAO_TASK_CHUA_HOAN_THANH_W3_W6.md",
+      "target": "../artifacts/m8-fixture-99543a81/",
+      "exists": true
+    },
+    {
+      "document": "docs/BAO_CAO_TASK_CHUA_HOAN_THANH_W3_W6.md",
+      "target": "../artifacts/m8-fixture-99543a81/compared/20261007T012637548656Z-15fbdea1ef97/REPORT.md",
+      "exists": true
+    },
+    {
+      "document": "docs/BAO_CAO_TASK_CHUA_HOAN_THANH_W3_W6.md",
+      "target": "../results/retrieval/20261006T155910874325Z-e34289af181b/result.json",
+      "exists": true
+    },
+    {
+      "document": "docs/BAO_CAO_TASK_CHUA_HOAN_THANH_W3_W6.md",
+      "target": "../artifacts/fixes/w3-w6/20261006T160056698401Z-9df672c32ba9/result.json",
+      "exists": true
+    },
+    {
+      "document": "docs/BAO_CAO_TASK_CHUA_HOAN_THANH_W3_W6.md",
+      "target": "../results/retrieval/20261006T160820338280Z-24c3cf0056d1/result.json",
+      "exists": true
+    },
+    {
+      "document": "docs/BAO_CAO_TASK_CHUA_HOAN_THANH_W3_W6.md",
+      "target": "../results/retrieval/20261006T162334561191Z-8d3c4f6a13e7/result.json",
+      "exists": true
+    },
+    {
+      "document": "docs/BAO_CAO_TASK_CHUA_HOAN_THANH_W3_W6.md",
+      "target": "../artifacts/fixes/w3-w6/20261007T012123887065Z-1f83886bd988/result.json",
+      "exists": true
+    },
+    {
+      "document": "docs/BAO_CAO_TASK_CHUA_HOAN_THANH_W3_W6.md",
+      "target": "../artifacts/fixes/w3-w6/20261007T012331157674Z-e681a29a0215/result.json",
+      "exists": true
+    },
+    {
+      "document": "docs/BAO_CAO_TASK_CHUA_HOAN_THANH_W3_W6.md",
+      "target": "../artifacts/fixes/w3-w6/20261007T012518923284Z-0305790e711a/result.json",
+      "exists": true
+    },
+    {
+      "document": "docs/BAO_CAO_TASK_CHUA_HOAN_THANH_W3_W6.md",
+      "target": "../artifacts/fixes/w3-w6/20261007T012531597287Z-42e1a0bf5de4/result.json",
+      "exists": true
+    },
+    {
+      "document": "docs/w5_w6_completion.md",
+      "target": "BAO_CAO_TASK_CHUA_HOAN_THANH_W3_W6.md",
+      "exists": true
+    },
+    {
+      "document": "docs/w5_w6_completion.md",
+      "target": "../artifacts/fixes/w3-w6/milestone-6-final-recorder/20261006T154059255443Z-54a8f6ac3e3a41308263d01880fd43f2.json",
+      "exists": true
+    },
+    {
+      "document": "docs/w5_w6_completion.md",
+      "target": "../artifacts/fixes/w3-w6/milestone-8-tree-recovery-recorder/20261006T160554839620Z-209a0f28af6049328d43ab81cf33a219.json",
+      "exists": true
+    },
+    {
+      "document": "docs/w5_w6_completion.md",
+      "target": "../PROGRESS.md",
+      "exists": true
+    },
+    {
+      "document": "docs/w5_w6_completion.md",
+      "target": "../artifacts/fixes/w3-w6/20261006T155804375314Z-70ff70a28f6c/result.json",
+      "exists": true
+    },
+    {
+      "document": "docs/w5_w6_completion.md",
+      "target": "../results/retrieval/20261006T155910874325Z-e34289af181b/result.json",
+      "exists": true
+    },
+    {
+      "document": "docs/w5_w6_completion.md",
+      "target": "../results/retrieval/20261006T160820338280Z-24c3cf0056d1/result.json",
+      "exists": true
+    },
+    {
+      "document": "docs/w5_w6_completion.md",
+      "target": "../results/retrieval/20261006T162334561191Z-8d3c4f6a13e7/result.json",
+      "exists": true
+    },
+    {
+      "document": "docs/w5_w6_completion.md",
+      "target": "../artifacts/fixes/w3-w6/milestone-8-credential-final-recorder/20261007T012625128617Z-0a58010aea154438b18dba6077931c47.json",
+      "exists": true
+    },
+    {
+      "document": "docs/w5_w6_completion.md",
+      "target": "../artifacts/fixes/w3-w6/20261007T012636266959Z-7ac7378bc98e/result.json",
+      "exists": true
+    },
+    {
+      "document": "docs/w5_w6_completion.md",
+      "target": "m5_m6_retrieval_evaluation.md",
+      "exists": true
+    },
+    {
+      "document": "docs/w5_w6_completion.md",
+      "target": "mcp_tool_contract.md",
+      "exists": true
+    },
+    {
+      "document": "docs/w5_w6_completion.md",
+      "target": "adr/2026-10-06-stateless-task-handles-and-context-boundary.md",
+      "exists": true
+    },
+    {
+      "document": "docs/m5_m6_retrieval_evaluation.md",
+      "target": "adr/2026-10-06-stateless-task-handles-and-context-boundary.md",
+      "exists": true
+    },
+    {
+      "document": "docs/m5_m6_retrieval_evaluation.md",
+      "target": "../PROGRESS.md",
+      "exists": true
+    },
+    {
+      "document": "docs/m5_m6_retrieval_evaluation.md",
+      "target": "w5_w6_completion.md",
+      "exists": true
+    },
+    {
+      "document": "docs/superpowers/plans/2026-10-06-fix-vgar-integration-week-1-6.md",
+      "target": "../../BAO_CAO_TASK_CHUA_HOAN_THANH_W3_W6.md",
+      "exists": true
+    },
+    {
+      "document": "docs/superpowers/plans/2026-10-06-fix-vgar-integration-week-1-6.md",
+      "target": "../../reviews/2026-10-06-review-vgar-week-1-6.md",
+      "exists": true
+    },
+    {
+      "document": "docs/superpowers/plans/2026-10-06-fix-vgar-integration-week-1-6.md",
+      "target": "../../../../New_task/project_plan_16_weeks.md",
+      "exists": true
+    },
+    {
+      "document": "docs/superpowers/plans/2026-10-06-fix-vgar-integration-week-1-6.md",
+      "target": "../../../../New_task/VGAR_MCP_Contract_Freeze_Plan_No_Schema_Versioning.md",
+      "exists": true
+    }
+  ],
+  "missing_links": [],
+  "diff_check": {
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": "warning: in the working copy of '.env.example', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of '.gitignore', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'README.md', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'docs/context_payload_contract.md', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'docs/mcp_tool_contract.md', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'docs/w3_w4_completion.md', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'scripts/accept_m1_tokenizer.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'scripts/compare_graph_vs_bm25.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'scripts/record_m2_test.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'scripts/run_graph_retrieval.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'scripts/smoke_w3_w4_agent.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'scripts/smoke_w3_w4_full.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'scripts/smoke_w3_w4_repair_loop.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'src/vgar/agents/nodes/prepare.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'src/vgar/cli.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'src/vgar/config/settings.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'src/vgar/evaluation/retrieval/compare.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'src/vgar/evaluation/retrieval/evidence.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'src/vgar/evaluation/retrieval/graph_arm.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'src/vgar/evaluation/retrieval/report.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'src/vgar/graph/builder.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'src/vgar/graph/demo_service.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'src/vgar/graph/factory.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'src/vgar/graph/port.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'src/vgar/graph/retrieval.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'src/vgar/graph/sqlite_service.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'src/vgar/graph/sqlite_store.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'src/vgar/mcp/registry.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'src/vgar/mcp/servers/execution_server.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'src/vgar/mcp/servers/graph_server.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'src/vgar/mcp/servers/repository_server.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'src/vgar/mcp/tooling.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'src/vgar/repair/evidence_writer.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'src/vgar/repair/test_runner.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'src/vgar/repair/workspace.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'tests/m2/test_graph_arm.py', LF will be replaced by CRLF the next time Git touches it\n"
+  }
+}

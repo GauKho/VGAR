@@ -1,0 +1,432 @@
+{
+  "run_id": "20261006T152006266515Z-89bee2a2e96e",
+  "kind": "milestone-5-lifecycle-green",
+  "status": "FAIL",
+  "started_utc": "2026-10-06T15:20:06.267521+00:00",
+  "complete": true,
+  "python": "3.11.6 (tags/v3.11.6:8b6ee5b, Oct  2 2023, 14:57:12) [MSC v.1935 64 bit (AMD64)]",
+  "interpreter": "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe",
+  "platform": "Windows-10-10.0.26300-SP0",
+  "command_argv": [
+    "-c"
+  ],
+  "cwd": "D:\\Project\\CAPSTONES\\VGAR",
+  "command": "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe -m pytest -q -p no:cacheprovider --junitxml=D:\\Project\\CAPSTONES\\VGAR\\.m2-pytest-q_r3dh2r\\junit.xml tests/m2/test_retrieval_lifecycle.py tests/m2/test_retrieval_compare_contract.py tests/m2/test_retrieval_cache_integrity.py",
+  "argv": [
+    "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "--junitxml=D:\\Project\\CAPSTONES\\VGAR\\.m2-pytest-q_r3dh2r\\junit.xml",
+    "tests/m2/test_retrieval_lifecycle.py",
+    "tests/m2/test_retrieval_compare_contract.py",
+    "tests/m2/test_retrieval_cache_integrity.py"
+  ],
+  "exit_code": 1,
+  "duration_ms": 12453,
+  "stdout": "......F.........................................................         [100%]\r\n================================== FAILURES ===================================\r\n_______ test_timeout_retains_parent_measured_peak_not_just_stage_start ________\r\n\r\ntmp_path = WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-460/test_timeout_retains_parent_me0')\r\n\r\n    def test_timeout_retains_parent_measured_peak_not_just_stage_start(tmp_path):\r\n        code = (\"import sys,time; from pathlib import Path; from vgar.evaluation.retrieval.evidence import write_json; \"\r\n                \"d=Path(sys.argv[2]); write_json(d/'telemetry.json', {'phase':'BUILD_GRAPH','stages':[],'peak_rss_bytes':1}); \"\r\n                \"blocks=bytearray(32*1024*1024); time.sleep(60)\")\r\n        result = lifecycle().run_worker({\"row\": {\"instance_id\": \"fixture\"}}, tmp_path / \"attempt\", 1.5,\r\n                                       worker_command=[sys.executable, \"-B\", \"-c\", code])\r\n        assert result[\"status\"] == \"ERROR\" and result[\"phase\"] == \"BUILD_GRAPH\"\r\n>       assert result[\"peak_rss_bytes\"] > 32 * 1024 * 1024 and result[\"rss_samples\"]\r\nE       assert (4325376 > ((32 * 1024) * 1024))\r\n\r\ntests\\m2\\test_retrieval_lifecycle.py:66: AssertionError\r\n- generated xml file: D:\\Project\\CAPSTONES\\VGAR\\.m2-pytest-q_r3dh2r\\junit.xml -\r\n=========================== short test summary info ===========================\r\nFAILED tests/m2/test_retrieval_lifecycle.py::test_timeout_retains_parent_measured_peak_not_just_stage_start\r\n1 failed, 63 passed in 11.66s\r\n",
+  "stderr": "",
+  "timeout_seconds": 180.0,
+  "cases": [
+    {
+      "name": "tests.m2.test_retrieval_lifecycle::test_invalid_worker_deadline_is_rejected[0]",
+      "status": "PASS",
+      "duration_ms": 173,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_lifecycle::test_invalid_worker_deadline_is_rejected[-1]",
+      "status": "PASS",
+      "duration_ms": 2,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_lifecycle::test_invalid_worker_deadline_is_rejected[nan]",
+      "status": "PASS",
+      "duration_ms": 2,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_lifecycle::test_invalid_worker_deadline_is_rejected[inf]",
+      "status": "PASS",
+      "duration_ms": 2,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_lifecycle::test_invalid_worker_deadline_is_rejected[True]",
+      "status": "PASS",
+      "duration_ms": 1,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_lifecycle::test_timeout_has_terminal_artifact_stage_output_and_kills_children",
+      "status": "PASS",
+      "duration_ms": 1533,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_lifecycle::test_timeout_retains_parent_measured_peak_not_just_stage_start",
+      "status": "FAIL",
+      "duration_ms": 1574,
+      "detail": "tmp_path = WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-460/test_timeout_retains_parent_me0')\n\n    def test_timeout_retains_parent_measured_peak_not_just_stage_start(tmp_path):\n        code = (\"import sys,time; from pathlib import Path; from vgar.evaluation.retrieval.evidence import write_json; \"\n                \"d=Path(sys.argv[2]); write_json(d/'telemetry.json', {'phase':'BUILD_GRAPH','stages':[],'peak_rss_bytes':1}); \"\n                \"blocks=bytearray(32*1024*1024); time.sleep(60)\")\n        result = lifecycle().run_worker({\"row\": {\"instance_id\": \"fixture\"}}, tmp_path / \"attempt\", 1.5,\n                                       worker_command=[sys.executable, \"-B\", \"-c\", code])\n        assert result[\"status\"] == \"ERROR\" and result[\"phase\"] == \"BUILD_GRAPH\"\n>       assert result[\"peak_rss_bytes\"] > 32 * 1024 * 1024 and result[\"rss_samples\"]\nE       assert (4325376 > ((32 * 1024) * 1024))\n\ntests\\m2\\test_retrieval_lifecycle.py:66: AssertionError"
+    },
+    {
+      "name": "tests.m2.test_retrieval_lifecycle::test_worker_crash_without_json_is_not_success",
+      "status": "PASS",
+      "duration_ms": 78,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_lifecycle::test_memory_error_records_trace_stage_and_rss_in_actual_worker",
+      "status": "PASS",
+      "duration_ms": 229,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_lifecycle::test_interrupted_parent_kills_worker_and_finalizes_attempt",
+      "status": "PASS",
+      "duration_ms": 27,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_lifecycle::test_resume_validates_identity_and_copies_success_without_mutating_prior",
+      "status": "PASS",
+      "duration_ms": 12,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_lifecycle::test_runner_pending_before_setup_and_terminal_setup_error[invalid_limit]",
+      "status": "PASS",
+      "duration_ms": 80,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_lifecycle::test_runner_pending_before_setup_and_terminal_setup_error[duplicate]",
+      "status": "PASS",
+      "duration_ms": 17,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_lifecycle::test_runner_pending_before_setup_and_terminal_setup_error[missing_manifest]",
+      "status": "PASS",
+      "duration_ms": 17,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_lifecycle::test_runner_pending_before_setup_and_terminal_setup_error[keyboard_interrupt]",
+      "status": "PASS",
+      "duration_ms": 17,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_lifecycle::test_actual_resume_forks_success_retries_failure_and_preserves_all_prior_files",
+      "status": "PASS",
+      "duration_ms": 2804,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_lifecycle::test_actual_runner_resume_rejects_changed_bindings_with_terminal_evidence[budget]",
+      "status": "PASS",
+      "duration_ms": 811,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_lifecycle::test_actual_runner_resume_rejects_changed_bindings_with_terminal_evidence[manifest]",
+      "status": "PASS",
+      "duration_ms": 743,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_lifecycle::test_actual_runner_resume_rejects_changed_bindings_with_terminal_evidence[source]",
+      "status": "PASS",
+      "duration_ms": 751,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_actual_graph_summary_without_arm_is_accepted",
+      "status": "PASS",
+      "duration_ms": 124,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_comparison_consumes_actual_runner_output",
+      "status": "PASS",
+      "duration_ms": 821,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_different_dataset_binding_is_rejected[dataset_id-other]",
+      "status": "PASS",
+      "duration_ms": 22,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_different_dataset_binding_is_rejected[dataset_revision-other]",
+      "status": "PASS",
+      "duration_ms": 25,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_different_task_binding_is_rejected[query_hash]",
+      "status": "PASS",
+      "duration_ms": 25,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_different_task_binding_is_rejected[corpus_hash]",
+      "status": "PASS",
+      "duration_ms": 20,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_different_task_binding_is_rejected[base_commit]",
+      "status": "PASS",
+      "duration_ms": 21,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_different_task_binding_is_rejected[patch_hash]",
+      "status": "PASS",
+      "duration_ms": 20,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_different_task_binding_is_rejected[repository]",
+      "status": "PASS",
+      "duration_ms": 19,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_different_task_binding_is_rejected[gold]",
+      "status": "PASS",
+      "duration_ms": 20,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_different_config_is_rejected[budget_tokens-201]",
+      "status": "PASS",
+      "duration_ms": 18,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_different_config_is_rejected[counter_label-other]",
+      "status": "PASS",
+      "duration_ms": 16,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_different_config_is_rejected[scoring_version-other]",
+      "status": "PASS",
+      "duration_ms": 16,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_different_config_is_rejected[snippet_policy-value3]",
+      "status": "PASS",
+      "duration_ms": 17,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_duplicate_task_ids_are_rejected[0]",
+      "status": "PASS",
+      "duration_ms": 17,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_duplicate_task_ids_are_rejected[1]",
+      "status": "PASS",
+      "duration_ms": 17,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_malformed_graph_run_is_rejected[kind]",
+      "status": "PASS",
+      "duration_ms": 16,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_malformed_graph_run_is_rejected[arms]",
+      "status": "PASS",
+      "duration_ms": 17,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_malformed_graph_run_is_rejected[missing_arm]",
+      "status": "PASS",
+      "duration_ms": 17,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_malformed_graph_run_is_rejected[artifact_hash]",
+      "status": "PASS",
+      "duration_ms": 16,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_malformed_graph_run_is_rejected[population]",
+      "status": "PASS",
+      "duration_ms": 35,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_no_paired_tasks_is_not_success",
+      "status": "PASS",
+      "duration_ms": 44,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_partial_comparison_reports_failures_and_metric_denominators",
+      "status": "PASS",
+      "duration_ms": 92,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_missing_or_inconsistent_artifact_metadata_is_rejected[missing_hash]",
+      "status": "PASS",
+      "duration_ms": 17,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_missing_or_inconsistent_artifact_metadata_is_rejected[artifact_id]",
+      "status": "PASS",
+      "duration_ms": 19,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_missing_or_inconsistent_artifact_metadata_is_rejected[artifact_status]",
+      "status": "PASS",
+      "duration_ms": 19,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_missing_or_inconsistent_artifact_metadata_is_rejected[missing_gold]",
+      "status": "PASS",
+      "duration_ms": 21,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_missing_or_inconsistent_artifact_metadata_is_rejected[missing_metrics]",
+      "status": "PASS",
+      "duration_ms": 18,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_cap_is_only_separate_rank_sensitivity",
+      "status": "PASS",
+      "duration_ms": 134,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_comparison_cli_defaults_to_full_rank",
+      "status": "PASS",
+      "duration_ms": 362,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_invalid_cap_is_rejected[0]",
+      "status": "PASS",
+      "duration_ms": 14,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_invalid_cap_is_rejected[-1]",
+      "status": "PASS",
+      "duration_ms": 13,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_invalid_cap_is_rejected[True]",
+      "status": "PASS",
+      "duration_ms": 14,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_cache_integrity::test_cached_tree_checks_current_file_set_and_raw_bytes[same_size]",
+      "status": "PASS",
+      "duration_ms": 10,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_cache_integrity::test_cached_tree_checks_current_file_set_and_raw_bytes[add]",
+      "status": "PASS",
+      "duration_ms": 10,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_cache_integrity::test_cached_tree_checks_current_file_set_and_raw_bytes[delete]",
+      "status": "PASS",
+      "duration_ms": 8,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_cache_integrity::test_marker_is_not_enough_when_tree_has_no_valid_inventory",
+      "status": "PASS",
+      "duration_ms": 9,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_cache_integrity::test_unowned_existing_tree_and_interrupted_partial_are_not_deleted",
+      "status": "PASS",
+      "duration_ms": 9,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_cache_integrity::test_graph_cache_pair_integrity_is_verified[graph]",
+      "status": "PASS",
+      "duration_ms": 136,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_cache_integrity::test_graph_cache_pair_integrity_is_verified[meta]",
+      "status": "PASS",
+      "duration_ms": 38,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_cache_integrity::test_graph_cache_pair_integrity_is_verified[missing_meta]",
+      "status": "PASS",
+      "duration_ms": 37,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_cache_integrity::test_graph_cache_implementation_identity_covers_resolver_schema_scope_and_parser",
+      "status": "PASS",
+      "duration_ms": 29,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_cache_integrity::test_graph_cache_reuse_has_validated_pair_and_unchanged_bytes",
+      "status": "PASS",
+      "duration_ms": 43,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_cache_integrity::test_graph_cache_accepts_relative_cli_root_and_tree",
+      "status": "PASS",
+      "duration_ms": 48,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_cache_integrity::test_fingerprint_includes_nested_tests_fixtures_and_config_not_data_cache",
+      "status": "PASS",
+      "duration_ms": 14,
+      "detail": null
+    }
+  ],
+  "case_counts": {
+    "passed": 63,
+    "failed": 1,
+    "error": 0,
+    "skipped": 0
+  },
+  "reason": {
+    "code": "TEST_FAILED",
+    "message": "Pytest assertions failed"
+  },
+  "output_truncated": false,
+  "stdout_bytes": 1535,
+  "stderr_bytes": 0,
+  "ended_utc": "2026-10-06T15:20:18.758563+00:00"
+}

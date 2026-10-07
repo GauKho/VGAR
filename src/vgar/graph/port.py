@@ -1,6 +1,10 @@
 from __future__ import annotations
 
 from typing import Protocol
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from vgar.graph.retrieval import RetrievalResult
 
 from vgar.contracts.graph import (
     GraphNodeRef,
@@ -16,6 +20,12 @@ class GraphService(Protocol):
 
     @property
     def backend_name(self) -> str:
+        ...
+
+    def find_task_anchors(self, issue_text: str, failing_tests: list[str] | None = None) -> dict:
+        ...
+
+    def get_related_context(self, anchor_ids: list[str], budget_tokens: int, task_handle: str) -> RetrievalResult:
         ...
 
     def search_symbols(

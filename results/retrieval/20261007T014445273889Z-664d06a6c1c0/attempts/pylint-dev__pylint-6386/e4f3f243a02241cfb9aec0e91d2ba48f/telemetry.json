@@ -1,0 +1,31 @@
+{
+  "phase": "WRITE",
+  "stages": [
+    {
+      "phase": "TOKENIZER",
+      "duration_seconds": 0.43030480000015814,
+      "peak_rss_bytes": 194224128
+    },
+    {
+      "phase": "LOAD_SOURCE",
+      "duration_seconds": 0.23457469999993918,
+      "peak_rss_bytes": 194224128
+    },
+    {
+      "phase": "EXTRACT_TREE",
+      "duration_seconds": 0.6880034999994677,
+      "peak_rss_bytes": 194224128
+    },
+    {
+      "phase": "BUILD_GRAPH",
+      "duration_seconds": 30.590086399999564,
+      "peak_rss_bytes": 194224128
+    },
+    {
+      "phase": "WRITE",
+      "duration_seconds": 0.0026570999980322085,
+      "peak_rss_bytes": 194224128
+    }
+  ],
+  "peak_rss_bytes": 194224128
+}

@@ -11,6 +11,10 @@ W3_W4_REQUIRED_GRAPH_TOOLS = {
     "graph_get_callees",
 }
 
+W5_W6_REQUIRED_GRAPH_TOOLS = W3_W4_REQUIRED_GRAPH_TOOLS | {
+    "graph_find_task_anchors", "graph_get_related_context",
+}
+
 
 def get_tool_names(
     tools: Iterable[BaseTool],

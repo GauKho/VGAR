@@ -1,0 +1,611 @@
+{
+  "instance_id": "t-2",
+  "repository": "o/r",
+  "base_commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "status": "SUCCEEDED",
+  "query_hash": "sha256:46ca4fa8ab74974c5bcf9d52318edda133f308961f1fbccd767aa954887cbd7d",
+  "patch_hash": "sha256:2f1dcfdab47a8bee03f64fa2c6a36d54cc48f8bf16c6fe92affee67924ab279f",
+  "corpus_hash": "sha256:da3e996176145363520f8ad8177c420b115a85ffeef1d4c68eb62244c77298f3",
+  "gold": {
+    "gold_files": [
+      "src/auth.py"
+    ],
+    "gold_functions": [
+      "src/auth.py::auth.login"
+    ],
+    "all_changed_source_files": [
+      "src/auth.py"
+    ],
+    "unretrievable_files": [],
+    "mapping_events": [
+      {
+        "path": "src/auth.py",
+        "side": "old",
+        "line": 2,
+        "function_id": "src/auth.py::auth.login",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "src/auth.py",
+        "side": "new",
+        "line": 2,
+        "function_id": "src/auth.py::auth.login",
+        "disposition": "mapped_function"
+      }
+    ],
+    "function_labels_complete": true,
+    "mapping_coverage": 1.0,
+    "file_retrievability_coverage": 1.0,
+    "label_semantics": "developer_changed_code_proxy_not_complete_relevance"
+  },
+  "arms": {
+    "graph": {
+      "rank_hash": "sha256:5148a19014cc5b4b602413eb2586200cbcc9c7f0b6ac71b1886013575ae2d784",
+      "ranking_total_count": 3,
+      "ranked": [
+        {
+          "rank": 1,
+          "item_id": "vgar:o__r:python:function:src/auth.py:auth.login",
+          "path": "src/auth.py",
+          "kind": "function",
+          "symbol": "auth.login",
+          "function_id": "src/auth.py::auth.login",
+          "score": 0.6589285714285714,
+          "lines": [
+            1,
+            2
+          ],
+          "snippet_sha256": "sha256:6122cc67d5b0a04d5eafd440e08d935e0be52c83ae75b98955f34f272c37509b"
+        },
+        {
+          "rank": 2,
+          "item_id": "vgar:o__r:python:module:src/auth.py:auth",
+          "path": "src/auth.py",
+          "kind": "module",
+          "symbol": "auth",
+          "function_id": null,
+          "score": 0.3375000000000001,
+          "lines": [
+            1,
+            3
+          ],
+          "snippet_sha256": "sha256:6122cc67d5b0a04d5eafd440e08d935e0be52c83ae75b98955f34f272c37509b"
+        },
+        {
+          "rank": 3,
+          "item_id": "vgar:o__r:python:file:src/auth.py",
+          "path": "src/auth.py",
+          "kind": "file",
+          "symbol": "src/auth.py",
+          "function_id": null,
+          "score": 0.27499999999999997,
+          "lines": [
+            1,
+            3
+          ],
+          "snippet_sha256": "sha256:6122cc67d5b0a04d5eafd440e08d935e0be52c83ae75b98955f34f272c37509b"
+        }
+      ],
+      "rank_order": [
+        "vgar:o__r:python:function:src/auth.py:auth.login",
+        "vgar:o__r:python:module:src/auth.py:auth",
+        "vgar:o__r:python:file:src/auth.py"
+      ],
+      "anchors": [
+        {
+          "node_id": "vgar:o__r:python:function:src/auth.py:auth.login",
+          "score": 0.6,
+          "symbol": "auth.login",
+          "type": "Function",
+          "path": "src/auth.py"
+        }
+      ],
+      "unmapped": [],
+      "excluded": [],
+      "diagnostics": {
+        "m1_native_total_tokens": 11,
+        "m1_native_items": 1,
+        "m1_native_truncated": false,
+        "traversal_limited": false,
+        "unavailable_features": [
+          "architecture_dependencies",
+          "recent_change_frequency",
+          "failing_test_proximity"
+        ],
+        "omissions": {
+          "overlapping_selected_range": 2
+        },
+        "retrieval_config": {
+          "max_hops": 2,
+          "max_candidates": 100,
+          "min_edge_confidence": 0.6,
+          "weights": {
+            "task_similarity": 0.2,
+            "graph_distance": 0.3,
+            "edge_confidence": 0.2,
+            "failing_test_proximity": 0.2,
+            "public_api_risk": 0.1,
+            "recent_change_frequency": 0.1
+          },
+          "profile": "semantic-context-v1",
+          "active_features": [
+            "task_similarity",
+            "graph_distance",
+            "edge_confidence",
+            "public_api_risk"
+          ],
+          "normalized_weights": {
+            "task_similarity": 0.25000000000000006,
+            "graph_distance": 0.375,
+            "edge_confidence": 0.25000000000000006,
+            "public_api_risk": 0.12500000000000003
+          },
+          "failing_test_traversal_limited": false,
+          "filtered_by_include": 0
+        }
+      },
+      "scoring": {
+        "instance_id": "t-2",
+        "arm": "graph",
+        "scoring_version": "retrieval-scoring-v1",
+        "rank_hash": "sha256:5148a19014cc5b4b602413eb2586200cbcc9c7f0b6ac71b1886013575ae2d784",
+        "rank": {
+          "metrics": {
+            "file_gold_count": 1,
+            "file_mrr": 1.0,
+            "file_recall@1": 1.0,
+            "file_all_gold@1": 1,
+            "file_recall@3": 1.0,
+            "file_all_gold@3": 1,
+            "file_recall@5": 1.0,
+            "file_all_gold@5": 1,
+            "file_recall@10": 1.0,
+            "file_all_gold@10": 1,
+            "file_recall@20": 1.0,
+            "file_all_gold@20": 1,
+            "function_gold_count": 1,
+            "function_mrr": 1.0,
+            "function_recall@1": 1.0,
+            "function_all_gold@1": 1,
+            "function_recall@3": 1.0,
+            "function_all_gold@3": 1,
+            "function_recall@5": 1.0,
+            "function_all_gold@5": 1,
+            "function_recall@10": 1.0,
+            "function_all_gold@10": 1,
+            "function_recall@20": 1.0,
+            "function_all_gold@20": 1
+          },
+          "reach": {
+            "file": 1.0,
+            "function": 1.0
+          },
+          "size": {
+            "items": 3,
+            "files": 1,
+            "functions": 1
+          }
+        },
+        "packed": {
+          "budget_tokens": 200,
+          "counter_label": "FALLBACK:utf8_bytes_ceil_div4",
+          "snippet_policy": {
+            "max_snippet_lines": 80,
+            "header": true,
+            "overlap": "skip_if_overlaps_different_group"
+          },
+          "metrics": {
+            "gold_file_in_context": 1.0,
+            "gold_function_in_context": 1.0,
+            "all_gold_files_in_context": 1,
+            "all_gold_functions_in_context": 1,
+            "total_tokens": 17,
+            "tokens_to_first_gold_file": 17,
+            "tokens_to_first_gold_function": 17,
+            "items_packed": 1,
+            "skipped": {
+              "token_budget": 0,
+              "overlap": 2
+            },
+            "truncated": false
+          }
+        },
+        "excluded_count": 0,
+        "unmapped": [],
+        "excluded_reasons": {}
+      },
+      "metrics": {
+        "file_gold_count": 1,
+        "file_mrr": 1.0,
+        "file_recall@1": 1.0,
+        "file_all_gold@1": 1,
+        "file_recall@3": 1.0,
+        "file_all_gold@3": 1,
+        "file_recall@5": 1.0,
+        "file_all_gold@5": 1,
+        "file_recall@10": 1.0,
+        "file_all_gold@10": 1,
+        "file_recall@20": 1.0,
+        "file_all_gold@20": 1,
+        "function_gold_count": 1,
+        "function_mrr": 1.0,
+        "function_recall@1": 1.0,
+        "function_all_gold@1": 1,
+        "function_recall@3": 1.0,
+        "function_all_gold@3": 1,
+        "function_recall@5": 1.0,
+        "function_all_gold@5": 1,
+        "function_recall@10": 1.0,
+        "function_all_gold@10": 1,
+        "function_recall@20": 1.0,
+        "function_all_gold@20": 1,
+        "file_reach": 1.0,
+        "function_reach": 1.0,
+        "rank_items": 3,
+        "packed_gold_file_in_context": 1.0,
+        "packed_gold_function_in_context": 1.0,
+        "packed_all_gold_files_in_context": 1,
+        "packed_all_gold_functions_in_context": 1,
+        "context_tokens": 17,
+        "packed_tokens_to_first_gold_file": 17,
+        "packed_tokens_to_first_gold_function": 17,
+        "packed_items_packed": 1,
+        "packed_skipped_token_budget": 0,
+        "packed_skipped_overlap": 2,
+        "packed_truncated": 0,
+        "unmapped_count": 0,
+        "excluded_count": 0,
+        "anchor_count": 1,
+        "no_anchors": 0,
+        "candidates_in": 3,
+        "retrieve_seconds": 0.010155600000871345,
+        "mapping_coverage": 1.0,
+        "file_retrievability_coverage": 1.0
+      }
+    },
+    "graph_f2p": {
+      "rank_hash": "sha256:5148a19014cc5b4b602413eb2586200cbcc9c7f0b6ac71b1886013575ae2d784",
+      "ranking_total_count": 3,
+      "ranked": [
+        {
+          "rank": 1,
+          "item_id": "vgar:o__r:python:function:src/auth.py:auth.login",
+          "path": "src/auth.py",
+          "kind": "function",
+          "symbol": "auth.login",
+          "function_id": "src/auth.py::auth.login",
+          "score": 0.6589285714285714,
+          "lines": [
+            1,
+            2
+          ],
+          "snippet_sha256": "sha256:6122cc67d5b0a04d5eafd440e08d935e0be52c83ae75b98955f34f272c37509b"
+        },
+        {
+          "rank": 2,
+          "item_id": "vgar:o__r:python:module:src/auth.py:auth",
+          "path": "src/auth.py",
+          "kind": "module",
+          "symbol": "auth",
+          "function_id": null,
+          "score": 0.3375000000000001,
+          "lines": [
+            1,
+            3
+          ],
+          "snippet_sha256": "sha256:6122cc67d5b0a04d5eafd440e08d935e0be52c83ae75b98955f34f272c37509b"
+        },
+        {
+          "rank": 3,
+          "item_id": "vgar:o__r:python:file:src/auth.py",
+          "path": "src/auth.py",
+          "kind": "file",
+          "symbol": "src/auth.py",
+          "function_id": null,
+          "score": 0.27499999999999997,
+          "lines": [
+            1,
+            3
+          ],
+          "snippet_sha256": "sha256:6122cc67d5b0a04d5eafd440e08d935e0be52c83ae75b98955f34f272c37509b"
+        }
+      ],
+      "rank_order": [
+        "vgar:o__r:python:function:src/auth.py:auth.login",
+        "vgar:o__r:python:module:src/auth.py:auth",
+        "vgar:o__r:python:file:src/auth.py"
+      ],
+      "anchors": [
+        {
+          "node_id": "vgar:o__r:python:function:src/auth.py:auth.login",
+          "score": 0.6,
+          "symbol": "auth.login",
+          "type": "Function",
+          "path": "src/auth.py"
+        }
+      ],
+      "unmapped": [],
+      "excluded": [],
+      "diagnostics": {
+        "m1_native_total_tokens": 11,
+        "m1_native_items": 1,
+        "m1_native_truncated": false,
+        "traversal_limited": false,
+        "unavailable_features": [
+          "architecture_dependencies",
+          "recent_change_frequency",
+          "failing_test_proximity"
+        ],
+        "omissions": {
+          "overlapping_selected_range": 2
+        },
+        "retrieval_config": {
+          "max_hops": 2,
+          "max_candidates": 100,
+          "min_edge_confidence": 0.6,
+          "weights": {
+            "task_similarity": 0.2,
+            "graph_distance": 0.3,
+            "edge_confidence": 0.2,
+            "failing_test_proximity": 0.2,
+            "public_api_risk": 0.1,
+            "recent_change_frequency": 0.1
+          },
+          "profile": "semantic-context-v1",
+          "active_features": [
+            "task_similarity",
+            "graph_distance",
+            "edge_confidence",
+            "public_api_risk"
+          ],
+          "normalized_weights": {
+            "task_similarity": 0.25000000000000006,
+            "graph_distance": 0.375,
+            "edge_confidence": 0.25000000000000006,
+            "public_api_risk": 0.12500000000000003
+          },
+          "failing_test_traversal_limited": false,
+          "filtered_by_include": 0
+        }
+      },
+      "scoring": {
+        "instance_id": "t-2",
+        "arm": "graph_f2p",
+        "scoring_version": "retrieval-scoring-v1",
+        "rank_hash": "sha256:5148a19014cc5b4b602413eb2586200cbcc9c7f0b6ac71b1886013575ae2d784",
+        "rank": {
+          "metrics": {
+            "file_gold_count": 1,
+            "file_mrr": 1.0,
+            "file_recall@1": 1.0,
+            "file_all_gold@1": 1,
+            "file_recall@3": 1.0,
+            "file_all_gold@3": 1,
+            "file_recall@5": 1.0,
+            "file_all_gold@5": 1,
+            "file_recall@10": 1.0,
+            "file_all_gold@10": 1,
+            "file_recall@20": 1.0,
+            "file_all_gold@20": 1,
+            "function_gold_count": 1,
+            "function_mrr": 1.0,
+            "function_recall@1": 1.0,
+            "function_all_gold@1": 1,
+            "function_recall@3": 1.0,
+            "function_all_gold@3": 1,
+            "function_recall@5": 1.0,
+            "function_all_gold@5": 1,
+            "function_recall@10": 1.0,
+            "function_all_gold@10": 1,
+            "function_recall@20": 1.0,
+            "function_all_gold@20": 1
+          },
+          "reach": {
+            "file": 1.0,
+            "function": 1.0
+          },
+          "size": {
+            "items": 3,
+            "files": 1,
+            "functions": 1
+          }
+        },
+        "packed": {
+          "budget_tokens": 200,
+          "counter_label": "FALLBACK:utf8_bytes_ceil_div4",
+          "snippet_policy": {
+            "max_snippet_lines": 80,
+            "header": true,
+            "overlap": "skip_if_overlaps_different_group"
+          },
+          "metrics": {
+            "gold_file_in_context": 1.0,
+            "gold_function_in_context": 1.0,
+            "all_gold_files_in_context": 1,
+            "all_gold_functions_in_context": 1,
+            "total_tokens": 17,
+            "tokens_to_first_gold_file": 17,
+            "tokens_to_first_gold_function": 17,
+            "items_packed": 1,
+            "skipped": {
+              "token_budget": 0,
+              "overlap": 2
+            },
+            "truncated": false
+          }
+        },
+        "excluded_count": 0,
+        "unmapped": [],
+        "excluded_reasons": {}
+      },
+      "metrics": {
+        "file_gold_count": 1,
+        "file_mrr": 1.0,
+        "file_recall@1": 1.0,
+        "file_all_gold@1": 1,
+        "file_recall@3": 1.0,
+        "file_all_gold@3": 1,
+        "file_recall@5": 1.0,
+        "file_all_gold@5": 1,
+        "file_recall@10": 1.0,
+        "file_all_gold@10": 1,
+        "file_recall@20": 1.0,
+        "file_all_gold@20": 1,
+        "function_gold_count": 1,
+        "function_mrr": 1.0,
+        "function_recall@1": 1.0,
+        "function_all_gold@1": 1,
+        "function_recall@3": 1.0,
+        "function_all_gold@3": 1,
+        "function_recall@5": 1.0,
+        "function_all_gold@5": 1,
+        "function_recall@10": 1.0,
+        "function_all_gold@10": 1,
+        "function_recall@20": 1.0,
+        "function_all_gold@20": 1,
+        "file_reach": 1.0,
+        "function_reach": 1.0,
+        "rank_items": 3,
+        "packed_gold_file_in_context": 1.0,
+        "packed_gold_function_in_context": 1.0,
+        "packed_all_gold_files_in_context": 1,
+        "packed_all_gold_functions_in_context": 1,
+        "context_tokens": 17,
+        "packed_tokens_to_first_gold_file": 17,
+        "packed_tokens_to_first_gold_function": 17,
+        "packed_items_packed": 1,
+        "packed_skipped_token_budget": 0,
+        "packed_skipped_overlap": 2,
+        "packed_truncated": 0,
+        "unmapped_count": 0,
+        "excluded_count": 0,
+        "anchor_count": 1,
+        "no_anchors": 0,
+        "candidates_in": 3,
+        "retrieve_seconds": 0.007011499998043291,
+        "mapping_coverage": 1.0,
+        "file_retrievability_coverage": 1.0
+      }
+    }
+  },
+  "graph": {
+    "build_seconds": 0.0015824000001884997,
+    "nodes": 4,
+    "edges": 3,
+    "graph_version": "sha256:7dc84e1570d64b4b323618a3fc46dbf4f4d199d097805e17d6eb085c4f91c8a9",
+    "use_jedi": false,
+    "builder_hash": "79d37531e460",
+    "skipped_failed_files": 0,
+    "cache_identity": {
+      "repository": "o/r",
+      "commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "tree_hash": "sha256:411e3cd8843148a580d42eb1deebd2c2f0e70b33a3c8600be1f3873164157e04",
+      "use_jedi": false,
+      "builder_hash": "79d37531e460",
+      "source_roots": [
+        "src"
+      ],
+      "source_scope": {
+        "excluded_paths": []
+      },
+      "implementation_hashes": {
+        "graph/builder.py": "sha256:79d37531e460cc5fd0c373143b0e7d91d00190856bf0f55cbe204e543dfe05b1",
+        "graph/jedi_resolver.py": "sha256:adefa9271aecc11b97f9d8366a3b5bde578d5c870d2481a0ebf066ca9cb59d37",
+        "contracts/schema.py": "sha256:f47965e26cde0edc1e5e1bee379aa04cd5eb5a26ecbe9ba63d6019aa96ff6a9a",
+        "source_scope.py": "sha256:fbfcb5238e42d7ff15475c2038f9af0d728961d32b3d935c689c11ec7ea831ab",
+        "evaluation/retrieval/graph_cache.py": "sha256:54fafe1241089222c2eb11f136ce66b1f60df310f12ef6617c5669708ea4ff7f"
+      },
+      "package_versions": {
+        "tree-sitter": "0.25.2",
+        "tree-sitter-python": "0.25.0",
+        "jedi": "0.20.0"
+      },
+      "python": "3.11"
+    },
+    "cache_key": "896194af685148f1f216d4c1d6c4c40823310e0cd0c3e88d8829269232f59f62",
+    "graph_path": "D:\\Project\\CAPSTONES\\VGAR\\artifacts\\m8-fixture-99543a81\\data\\graphs\\o__r-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa-896194af685148f1f216d4c1d6c4c40823310e0cd0c3e88d8829269232f59f62.json",
+    "graph_hash": "sha256:ceeafc6b6af3a6ec12ed69831948e5b9bb53b49864abb59b08b768c951c0147e",
+    "cached": false
+  },
+  "source_tree": {
+    "python_file_count": 1,
+    "tree_hash": "sha256:411e3cd8843148a580d42eb1deebd2c2f0e70b33a3c8600be1f3873164157e04",
+    "path": "D:\\Project\\CAPSTONES\\VGAR\\artifacts\\m8-fixture-99543a81\\data\\repositories\\trees\\o__r-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  "source_provenance": {
+    "source_backend": "github_codeload_commit_archive",
+    "snapshot_commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "commit_validation": "immutable_40_SHA_URL_and_archive_root; not_git_object_hash_validation",
+    "source_file_count": 1,
+    "source_bytes": 43,
+    "excluded_sources": [],
+    "url": "https://codeload.github.com/o/r/tar.gz/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "archive_hash": "sha256:21ccfaaa95678d2476b88eb6fdc55fe8d7e924cdaaf5012f953d0b76ddb343d7",
+    "base_commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "cache_path": "D:\\Project\\CAPSTONES\\VGAR\\artifacts\\m8-fixture-99543a81\\data\\repositories\\archives\\o__r-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.tar.gz"
+  },
+  "fail_to_pass_count": 0,
+  "inference": "NOT_RUN",
+  "phase": "WRITE",
+  "stages": [
+    {
+      "phase": "TOKENIZER",
+      "duration_seconds": 4.600000102072954e-05,
+      "peak_rss_bytes": 34394112
+    },
+    {
+      "phase": "LOAD_SOURCE",
+      "duration_seconds": 0.0011918999953195453,
+      "peak_rss_bytes": 34394112
+    },
+    {
+      "phase": "EXTRACT_TREE",
+      "duration_seconds": 0.0032741999966674484,
+      "peak_rss_bytes": 34394112
+    },
+    {
+      "phase": "BUILD_GRAPH",
+      "duration_seconds": 0.221230100003595,
+      "peak_rss_bytes": 41545728
+    },
+    {
+      "phase": "PREPARE_RETRIEVAL",
+      "duration_seconds": 0.0009591000052751042,
+      "peak_rss_bytes": 41545728
+    },
+    {
+      "phase": "GROUND",
+      "duration_seconds": 0.0005324999947333708,
+      "peak_rss_bytes": 41545728
+    },
+    {
+      "phase": "RETRIEVE",
+      "duration_seconds": 0.0020262000034563243,
+      "peak_rss_bytes": 41545728
+    },
+    {
+      "phase": "GROUND",
+      "duration_seconds": 0.0002108000044245273,
+      "peak_rss_bytes": 41545728
+    },
+    {
+      "phase": "RETRIEVE",
+      "duration_seconds": 0.0017213999963132665,
+      "peak_rss_bytes": 41545728
+    },
+    {
+      "phase": "SCORE",
+      "duration_seconds": 0.0012645000024349429,
+      "peak_rss_bytes": 41545728
+    },
+    {
+      "phase": "WRITE",
+      "duration_seconds": 0.002282300003571436,
+      "peak_rss_bytes": 41545728
+    }
+  ],
+  "peak_rss_bytes": 41545728,
+  "complete": true,
+  "ended_utc": "2026-10-07T01:26:37.286929+00:00",
+  "duration_seconds": 0.49918630000320263
+}

@@ -1,0 +1,35 @@
+{
+  "run_id": "20261006T152442633625Z-a4156bf69f08",
+  "kind": "milestone-4-stdio",
+  "status": "PASS",
+  "started_utc": "2026-10-06T15:24:42.633625+00:00",
+  "complete": true,
+  "python": "3.11.6 (tags/v3.11.6:8b6ee5b, Oct  2 2023, 14:57:12) [MSC v.1935 64 bit (AMD64)]",
+  "interpreter": "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe",
+  "platform": "Windows-10-10.0.26300-SP0",
+  "command_argv": [
+    "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\pytest\\__main__.py",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "--junitxml=D:\\Project\\CAPSTONES\\VGAR\\.m2-pytest-267wr39x\\junit.xml",
+    "tests"
+  ],
+  "cwd": "D:\\Project\\CAPSTONES\\VGAR",
+  "argv": [
+    "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe",
+    "-B",
+    "D:\\Project\\CAPSTONES\\VGAR\\scripts\\smoke_w3_w4_full.py",
+    "--keep"
+  ],
+  "timeout_seconds": 120,
+  "stdout": "\n== 1. M1 graph build -> SQLite\n  [PASS] graph has nodes - nodes=40\n  [PASS] graph has edges - edges=52\n  [PASS] graph has Function nodes\n  [PASS] graph has CONTAINS edges\n\n== 2. MCP client + tool discovery\n  [PASS] graph tools registered - graph_get_callees, graph_get_callers, graph_search_symbols\n  [PASS] tool repository_read_file registered\n  [PASS] tool repository_apply_patch registered\n  [PASS] tool execution_run_pytest registered\n\n== 3. Graph tools + resources via MCP\n  [PASS] search backend is sqlite\n  [PASS] search 'login' returns symbols\n  [PASS] callers response OK\n  [PASS] callees response OK\n     symbol=vgar:smoke/sample-repo:python:function:src/auth/service.py:auth.service.login callers=2 callees=0\n  [PASS] resource repo/summary matches DB\n  [WARN] resource node by real node_id - KNOWN GAP: vgar://graph/node/{id} failed (ExceptionGroup); graph_server must unquote node_id\n  [WARN] resource subgraph by real node_id - KNOWN GAP: vgar://graph/subgraph/{id} failed (ExceptionGroup); graph_server must unquote node_id\n\n== 4. M2 disposable workspace + baseline (expected FAIL)\n  [PASS] workspace outside source repo\n  [PASS] baseline pytest FAIL - exit=1\n  [PASS] baseline reason TEST_FAILED\n\n== 5. MCP apply_patch -> run_pytest (expected PASS)\n  [PASS] read_file returns content\n  [PASS] apply_patch PASS\n  [PASS] patch diff recorded\n  [PASS] stale old_text rejected\n  [PASS] path traversal rejected\n  [PASS] MCP run_pytest PASS - exit=0 None\n  [PASS] MCP pytest has full M2/JUnit evidence\n\n== 6. EvidenceBundle + source immutability\n  [PASS] independent verification PASS\n  [PASS] evidence complete\n  [PASS] evidence has bundle\n  [PASS] workspace hash changed (patch applied)\n  [PASS] source repo untouched\n  [PASS] workspace cleaned up\n\n== 7. MCP audit log\n  [PASS] audit has graph tool calls - ['apply_patch', 'get_callees', 'get_callers', 'read_file', 'run_pytest', 'search_symbols']\n  [PASS] audit has resource reads\n  [PASS] audit events carry backend\n\nW3-W4 FULL SMOKE PASS (32/32 checks, 2 known-gap warning(s), 25.6s)\nartifacts: D:\\Project\\CAPSTONES\\m2-temp\\vgar-smoke-full-oz0mizy_\n",
+  "stderr": "Processing request of type ListToolsRequest\nProcessing request of type ListToolsRequest\nProcessing request of type ListToolsRequest\nProcessing request of type CallToolRequest\nProcessing request of type ListToolsRequest\nProcessing request of type CallToolRequest\nProcessing request of type ListToolsRequest\nProcessing request of type CallToolRequest\nProcessing request of type ListToolsRequest\nProcessing request of type ReadResourceRequest\nProcessing request of type ReadResourceRequest\nProcessing request of type ReadResourceRequest\nProcessing request of type ListToolsRequest\nProcessing request of type ListToolsRequest\nProcessing request of type ListToolsRequest\nProcessing request of type CallToolRequest\nProcessing request of type ListToolsRequest\nProcessing request of type CallToolRequest\nProcessing request of type ListToolsRequest\nProcessing request of type CallToolRequest\nProcessing request of type ListToolsRequest\nProcessing request of type CallToolRequest\nProcessing request of type ListToolsRequest\nProcessing request of type CallToolRequest\nProcessing request of type ListToolsRequest\n",
+  "exit_code": 0,
+  "ended_utc": "2026-10-06T15:25:08.849120+00:00",
+  "duration_seconds": 26.21900000000096,
+  "source_hash_before": "51687413d97dd9ee9b44085c234dd52e9f15e2aa7ace02c357c75f73b348eec6",
+  "source_hash_after": "51687413d97dd9ee9b44085c234dd52e9f15e2aa7ace02c357c75f73b348eec6",
+  "inference": "NOT_RUN",
+  "transport_artifacts": "transport"
+}

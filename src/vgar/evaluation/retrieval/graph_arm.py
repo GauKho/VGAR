@@ -7,13 +7,14 @@ from __future__ import annotations
 
 import hashlib
 import json
-import shutil
+import os
 import tarfile
+import tempfile
 from pathlib import Path
 from typing import Any, Callable, Mapping
 
 from .chunks import normalize_path
-from .evidence import sha256
+from .evidence import sha256, write_json
 from .gold_labels import extract_gold
 from .scoring import CorpusIndex, flat_metrics, graph_rank, score_record
 
@@ -35,14 +36,15 @@ def extract_python_tree(archive_path, repo: str, commit: str, destination) -> di
     destination = Path(destination)
     marker = destination / TREE_MARKER
     if marker.exists():
-        meta = json.loads(marker.read_text(encoding="utf-8"))
+        meta = verify_python_tree(destination)
         if meta.get("commit") != commit or meta.get("repo") != repo:
             raise ValueError("Cached source tree belongs to a different repo/commit")
         return meta
-    partial = destination.with_name(destination.name + ".partial")
-    if partial.exists():
-        shutil.rmtree(partial)
-    partial.mkdir(parents=True)
+    if destination.exists() or destination.is_symlink():
+        raise ValueError("Refusing existing unowned source tree without a valid marker")
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    # Each attempt gets its own directory. Do not delete another interrupted attempt.
+    partial = Path(tempfile.mkdtemp(prefix=".vgar-tree-partial-", dir=destination.parent))
     prefix = repo.split("/")[-1] + "-" + commit + "/"
     files: dict[str, str] = {}
     skipped: list[dict[str, str]] = []
@@ -71,9 +73,49 @@ def extract_python_tree(archive_path, repo: str, commit: str, destination) -> di
         raise ValueError("Archive contains no Python files")
     meta = {"repo": repo, "commit": commit, "python_file_count": len(files), "skipped": skipped,
             "tree_hash": sha256(json.dumps(files, sort_keys=True))}
-    (partial / TREE_MARKER).write_text(json.dumps(meta, indent=2) + "\n", encoding="utf-8")
+    write_json(partial / TREE_MARKER, meta)
     partial.rename(destination)
     return meta
+
+
+def file_hash(path: Path) -> str:
+    digest = hashlib.sha256()
+    with Path(path).open("rb") as stream:
+        while block := stream.read(1024 * 1024):
+            digest.update(block)
+    return "sha256:" + digest.hexdigest()
+
+
+def verify_python_tree(destination: Path, meta: Mapping[str, Any] | None = None) -> dict[str, Any]:
+    """Check actual raw Python file hashes, including files the graph later skips.
+
+    Legacy markers already store a tree_hash of the path->hash map, so they can
+    be verified without rewriting them or trusting only repo/commit identifiers.
+    """
+    destination = Path(destination)
+    if (destination.is_symlink() or not destination.is_dir()
+            or getattr(destination.lstat(), "st_file_attributes", 0) & 0x400):
+        raise ValueError("Source tree integrity: missing or linked root")
+    if meta is None:
+        meta = json.loads((destination / TREE_MARKER).read_text(encoding="utf-8"))
+    files: dict[str, str] = {}
+    for directory, directories, names in os.walk(destination, followlinks=False):
+        for name in [*directories, *names]:
+            path = Path(directory) / name
+            if path.is_symlink() or getattr(path.lstat(), "st_file_attributes", 0) & 0x400:
+                raise ValueError("Source tree integrity: link or junction")
+        for name in sorted(names):
+            path = Path(directory) / name
+            relative = path.relative_to(destination).as_posix()
+            if relative == TREE_MARKER:
+                continue
+            if not relative.endswith(".py"):
+                raise ValueError("Source tree integrity: unexpected file set")
+            files[relative] = file_hash(path).removeprefix("sha256:")
+    digest = sha256(json.dumps(files, sort_keys=True))
+    if digest != meta.get("tree_hash") or len(files) != meta.get("python_file_count"):
+        raise ValueError("Source tree integrity hash/file set mismatch")
+    return dict(meta)
 
 
 def load_fail_to_pass(root, manifest: Mapping[str, Any]) -> dict[str, list[str]]:

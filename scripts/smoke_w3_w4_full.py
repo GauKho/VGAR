@@ -22,6 +22,7 @@ import sys
 import tempfile
 import time
 from pathlib import Path
+from dataclasses import replace
 from urllib.parse import quote
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -157,6 +158,9 @@ async def run(query: str, keep: bool, strict_resources: bool) -> None:
     stage("4. M2 disposable workspace + baseline (expected FAIL)")
     source_hash = fingerprint_source(FAILING_REPO)
     with create_workspace(FAILING_REPO, m2_temp) as lease:
+        from vgar.config.settings import get_settings
+        client = create_mcp_client(replace(get_settings(), workspace_root=lease.path))
+        by_name = {tool.name: tool for tool in await client.get_tools()}
         check("workspace outside source repo", FAILING_REPO.resolve() not in lease.path.parents)
         handle = begin_run(
             evidence_dir, task_id="smoke-w3w4-full", source_repo=FAILING_REPO,
@@ -172,14 +176,16 @@ async def run(query: str, keep: bool, strict_resources: bool) -> None:
         repo_arg = str(lease.path)
 
         read = await call("repository_read_file", {"repo_path": repo_arg, "path": "src/demo.py"})
-        check("read_file returns content", "return 0" in read["content"])
+        check("read_file returns content", read["status"] == "PASS" and "return 0" in read["data"]["content"])
 
         patch = await call("repository_apply_patch", {
             "repo_path": repo_arg, "path": "src/demo.py",
             "old_text": "return 0", "new_text": "return 42",
         })
         check("apply_patch PASS", patch["status"] == "PASS", patch.get("error", ""))
-        check("patch diff recorded", "+    return 42" in patch["patch_diff"])
+        check("patch diff recorded", "+    return 42" in patch["data"]["patch_diff"])
+        (work / "patch.diff").write_text(patch["data"]["patch_diff"], encoding="utf-8")
+        (work / "patch-tool-response.json").write_text(json.dumps(patch, indent=2, ensure_ascii=False), encoding="utf-8")
 
         retry = await call("repository_apply_patch", {
             "repo_path": repo_arg, "path": "src/demo.py",
@@ -202,7 +208,8 @@ async def run(query: str, keep: bool, strict_resources: bool) -> None:
             "repo_path": repo_arg, "selector": SELECTOR, "timeout_seconds": 60,
         })
         check("MCP run_pytest PASS", verify["status"] == "PASS",
-              f"exit={verify.get('exit_code')} {verify.get('error') or verify.get('stdout', '')[-300:]}")
+              f"exit={(verify.get('data') or {}).get('exit_code')} {verify.get('error')}")
+        check("MCP pytest has full M2/JUnit evidence", verify["data"]["test_result"]["case_counts"].get("passed", 0) > 0)
 
         # -------------------------------------------------------- [6] evidence
         stage("6. EvidenceBundle + source immutability")
@@ -234,7 +241,8 @@ async def run(query: str, keep: bool, strict_resources: bool) -> None:
     check("audit has graph tool calls",
           {"search_symbols", "get_callers", "get_callees"} <= tools_logged, str(sorted(tools_logged)))
     check("audit has resource reads", "vgar://repo/summary" in resources_logged)
-    check("audit events carry backend", all(e["payload"].get("backend") == "sqlite" for e in events))
+    expected_backends = {"graph": "sqlite", "repository": "filesystem", "execution": "pytest"}
+    check("audit events carry backend", all(e["payload"].get("backend") == expected_backends.get(e["payload"].get("server")) for e in events))
 
     passed = sum(1 for _, ok, _ in _results if ok)
     print(f"\nW3-W4 FULL SMOKE PASS ({passed}/{len(_results)} checks, {len(_warnings)} known-gap warning(s), {time.monotonic() - started:.1f}s)")

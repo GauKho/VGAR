@@ -1,0 +1,69 @@
+{
+  "root": "D:\\Project\\CAPSTONES\\VGAR\\artifacts\\m8-fixture-99543a81",
+  "row": {
+    "instance_id": "t-2",
+    "repo": "o/r",
+    "base_commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "problem_statement": "login user fails",
+    "split": "dev",
+    "gold_patch_path": "data/gold/patches/t-2.patch",
+    "patch_hash": "sha256:2f1dcfdab47a8bee03f64fa2c6a36d54cc48f8bf16c6fe92affee67924ab279f",
+    "query_hash": "sha256:46ca4fa8ab74974c5bcf9d52318edda133f308961f1fbccd767aa954887cbd7d"
+  },
+  "config": {
+    "manifest_hash": "sha256:9e2ae839c1d2b62fe4447ddd4a3b03b6e2c1d1f74ada9de51e510f201778a03c",
+    "budget_tokens": 200,
+    "scoring_version": "retrieval-scoring-v1",
+    "counter_label": "FALLBACK:utf8_bytes_ceil_div4",
+    "counter_is_fallback": true,
+    "snippet_policy": {
+      "max_snippet_lines": 80,
+      "header": true,
+      "overlap": "skip_if_overlaps_different_group"
+    },
+    "arms": {
+      "graph": {
+        "uses_fail_to_pass": false
+      },
+      "graph_f2p": {
+        "uses_fail_to_pass": true
+      }
+    },
+    "graph": {
+      "use_jedi": false,
+      "builder_hash": "79d37531e460",
+      "source_roots": [
+        "src"
+      ]
+    },
+    "retrieval": {
+      "max_hops": 2,
+      "max_candidates": 100,
+      "min_edge_confidence": 0.6,
+      "weights": {
+        "task_similarity": 0.2,
+        "graph_distance": 0.3,
+        "edge_confidence": 0.2,
+        "failing_test_proximity": 0.2,
+        "public_api_risk": 0.1,
+        "recent_change_frequency": 0.1
+      },
+      "include": "make_include(corpus): not Test and path in is_source corpus"
+    },
+    "limit": null,
+    "task_ids": [
+      "t-2"
+    ],
+    "execution": {
+      "task_timeout_seconds": 300,
+      "offline": true,
+      "rebuild_graphs": false,
+      "rebuild_trees": false
+    }
+  },
+  "failing_tests": [],
+  "offline": true,
+  "rebuild_graphs": false,
+  "rebuild_trees": false,
+  "tokenizer_manifest": null
+}

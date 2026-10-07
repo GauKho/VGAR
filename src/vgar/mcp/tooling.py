@@ -12,6 +12,7 @@ from vgar.mcp.schemas import (
     INTERNAL_ERROR,
     ToolMetadata,
     ToolResponse,
+    ToolError,
     error_from_exception,
 )
 
@@ -36,6 +37,8 @@ def run_tool(
     call: Callable[[], dict[str, Any]],
     audit_fields: dict[str, Any] | None = None,
     summarize: Callable[[dict[str, Any]], dict[str, Any]] | None = None,
+    verification: bool = False,
+    metadata_fields: Callable[[], dict[str, Any]] | None = None,
 ) -> dict[str, Any]:
     """Execute `call`, always return a ToolResponse dict, always write one audit line.
 
@@ -46,16 +49,33 @@ def run_tool(
     started = time.perf_counter()
     data: dict[str, Any] | None = None
     error = None
+    status = "PASS"
+    response_metadata = {}
     try:
         data = call()
-    except Exception as exc:  # noqa: BLE001 - boundary: nothing may escape raw
-        error = error_from_exception(exc)
-        extra = _error_audit_fields(exc, error.code)
-    else:
+        response_metadata = metadata_fields() if metadata_fields else {}
         extra = summarize(data) if summarize else {}
+        if verification:
+            status = data.get("status")
+            if status not in {"PASS", "FAIL", "ERROR", "NOT_RUN"}:
+                raise ValueError("Verification tool returned an invalid status")
+            reason = data.get("reason")
+            if status in {"FAIL", "ERROR"} and reason:
+                error = ToolError(code=reason["code"], message=reason["message"], details={})
+                extra["error_code"] = error.code
+            if status == "ERROR":
+                if error is None:
+                    raise ValueError("Verification ERROR requires a reason")
+                error.details = data
+                data = None
+    except Exception as exc:  # noqa: BLE001 - boundary: nothing may escape raw
+        data = None
+        status = "ERROR"
+        error = error_from_exception(exc)
+        response_metadata = {}
+        extra = _error_audit_fields(exc, error.code)
 
     duration_ms = _elapsed_ms(started)
-    status = "ERROR" if error else "PASS"
     audit.write(
         "tool_call",
         {
@@ -78,6 +98,7 @@ def run_tool(
             request_id=request_id,
             backend=backend,
             tool=tool,
+            **response_metadata,
         ),
     )
     return response.model_dump(mode="json")

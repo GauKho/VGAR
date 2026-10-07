@@ -8,6 +8,12 @@ logs/
 m2-temp/
 # M1: downloaded tokenizer assets; hashes/revisions live in acceptance manifest.
 artifacts/m1/tokenizers/
+# Runtime recovery trees retain archive bytes and must not be newline-converted by Git.
+data/repositories/trees/rebuilt/
+# Large generated caches remain local; existing tracked files are not removed.
+/data/graphs/
+/data/repositories/archives/
+/data/downloads/
 # M1: review/progress documents kept locally, excluded from the GitHub handoff.
 /docs/m1_contract_review_2026-10-03.md
 /docs/m1_tokenizer_acceptance_review_2026-10-03.md

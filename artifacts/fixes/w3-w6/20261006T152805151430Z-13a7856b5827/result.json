@@ -1,0 +1,169 @@
+{
+  "run_id": "20261006T152805151430Z-13a7856b5827",
+  "kind": "milestone-6-task-binding-interface-probe",
+  "status": "PASS",
+  "started_utc": "2026-10-06T15:28:05.151430+00:00",
+  "complete": true,
+  "python": "3.11.6 (tags/v3.11.6:8b6ee5b, Oct  2 2023, 14:57:12) [MSC v.1935 64 bit (AMD64)]",
+  "interpreter": "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe",
+  "platform": "Windows-10-10.0.26300-SP0",
+  "command_argv": [
+    "-c"
+  ],
+  "cwd": "D:\\Project\\CAPSTONES\\VGAR",
+  "ended_utc": "2026-10-06T15:28:05.167951+00:00",
+  "exit_code": 0,
+  "inference": "NOT_RUN",
+  "source_hash_before": "51687413d97dd9ee9b44085c234dd52e9f15e2aa7ace02c357c75f73b348eec6",
+  "source_hash_after": "51687413d97dd9ee9b44085c234dd52e9f15e2aa7ace02c357c75f73b348eec6",
+  "graph_version": "sha256:d81404fa1a8e7712ec9755e6b7b1ef924cbc44fe9f36c4d185bc83cb8e5411ff",
+  "task_A": {
+    "graph_version": "sha256:d81404fa1a8e7712ec9755e6b7b1ef924cbc44fe9f36c4d185bc83cb8e5411ff",
+    "overlay_id": "sha256:fed4696a2f2aadae2b9a118bd5d2b2d84fd08d1d56914a18901172d7a91c5c67",
+    "task_id": "task-A",
+    "nodes": [
+      {
+        "id": "vgar:fixture:issue:sha256:e078d77a88aa3d29c3070cbd9ba0b5560413ab40c53345040c6e964aadf6f6af",
+        "type": "Issue",
+        "repo_key": "fixture",
+        "name": "task-A",
+        "qualified_name": "task-A",
+        "path": null,
+        "language": null,
+        "range": null,
+        "graph_version": "sha256:d81404fa1a8e7712ec9755e6b7b1ef924cbc44fe9f36c4d185bc83cb8e5411ff",
+        "content_hash": "sha256:08560dda0bab6021b2fa541e507f9e1fae53069f4e109f232aa4c6390f09e4d8",
+        "properties": {
+          "task_id": "task-A",
+          "issue_text": "demo.answer returns a wrong value",
+          "failing_tests": [],
+          "overlay_id": "sha256:fed4696a2f2aadae2b9a118bd5d2b2d84fd08d1d56914a18901172d7a91c5c67"
+        }
+      }
+    ],
+    "edges": [
+      {
+        "id": "sha256:47a3137e2f9d14a737fb58ea98aacbfed165bfc7f7adbf43880f723f84e40f22",
+        "type": "MENTIONS",
+        "source_id": "vgar:fixture:issue:sha256:e078d77a88aa3d29c3070cbd9ba0b5560413ab40c53345040c6e964aadf6f6af",
+        "target_id": "vgar:fixture:python:function:src/demo.py:demo.answer",
+        "confidence": 0.8,
+        "resolution": "heuristic",
+        "graph_version": "sha256:d81404fa1a8e7712ec9755e6b7b1ef924cbc44fe9f36c4d185bc83cb8e5411ff",
+        "properties": {
+          "overlay_id": "sha256:fed4696a2f2aadae2b9a118bd5d2b2d84fd08d1d56914a18901172d7a91c5c67",
+          "has_ambiguous_evidence": false
+        },
+        "provenance": {
+          "source_tool": "vgar-m1-task-overlay",
+          "source_tool_version": "0.1.0",
+          "rule_id": "task.mentions.v1",
+          "source_revision": "read-only-probe",
+          "evidence": [
+            {
+              "kind": "symbol",
+              "matched_text": "demo.answer",
+              "source": "issue"
+            }
+          ]
+        }
+      }
+    ],
+    "grounding": {
+      "graph_version": "sha256:d81404fa1a8e7712ec9755e6b7b1ef924cbc44fe9f36c4d185bc83cb8e5411ff",
+      "anchors": [
+        {
+          "node_id": "vgar:fixture:python:function:src/demo.py:demo.answer",
+          "path": "src/demo.py",
+          "symbol": "demo.answer",
+          "score": 0.8,
+          "evidence": [
+            {
+              "kind": "symbol",
+              "matched_text": "demo.answer",
+              "source": "issue"
+            }
+          ]
+        }
+      ],
+      "ambiguous_matches": [],
+      "unmatched_locations": []
+    }
+  },
+  "task_B": {
+    "graph_version": "sha256:d81404fa1a8e7712ec9755e6b7b1ef924cbc44fe9f36c4d185bc83cb8e5411ff",
+    "overlay_id": "sha256:6aa8ac51190ec730d3ec24891d9ee05497eb6eac08cdc8f332d5fb6a16b96a5b",
+    "task_id": "task-B",
+    "nodes": [
+      {
+        "id": "vgar:fixture:issue:sha256:38a03540e8a7635f9589b695dba0af022d54666f10918f40859b1d0e3e15101e",
+        "type": "Issue",
+        "repo_key": "fixture",
+        "name": "task-B",
+        "qualified_name": "task-B",
+        "path": null,
+        "language": null,
+        "range": null,
+        "graph_version": "sha256:d81404fa1a8e7712ec9755e6b7b1ef924cbc44fe9f36c4d185bc83cb8e5411ff",
+        "content_hash": "sha256:a777a661615a71c95ae495daa39ee837f30111bc6207250768d5c20820f64917",
+        "properties": {
+          "task_id": "task-B",
+          "issue_text": "demo.answer should return a different number",
+          "failing_tests": [],
+          "overlay_id": "sha256:6aa8ac51190ec730d3ec24891d9ee05497eb6eac08cdc8f332d5fb6a16b96a5b"
+        }
+      }
+    ],
+    "edges": [
+      {
+        "id": "sha256:d130991733a34a127098c6ae17e1b97d50f04d109c08cdf020a4c1f1b8ca3d28",
+        "type": "MENTIONS",
+        "source_id": "vgar:fixture:issue:sha256:38a03540e8a7635f9589b695dba0af022d54666f10918f40859b1d0e3e15101e",
+        "target_id": "vgar:fixture:python:function:src/demo.py:demo.answer",
+        "confidence": 0.8,
+        "resolution": "heuristic",
+        "graph_version": "sha256:d81404fa1a8e7712ec9755e6b7b1ef924cbc44fe9f36c4d185bc83cb8e5411ff",
+        "properties": {
+          "overlay_id": "sha256:6aa8ac51190ec730d3ec24891d9ee05497eb6eac08cdc8f332d5fb6a16b96a5b",
+          "has_ambiguous_evidence": false
+        },
+        "provenance": {
+          "source_tool": "vgar-m1-task-overlay",
+          "source_tool_version": "0.1.0",
+          "rule_id": "task.mentions.v1",
+          "source_revision": "read-only-probe",
+          "evidence": [
+            {
+              "kind": "symbol",
+              "matched_text": "demo.answer",
+              "source": "issue"
+            }
+          ]
+        }
+      }
+    ],
+    "grounding": {
+      "graph_version": "sha256:d81404fa1a8e7712ec9755e6b7b1ef924cbc44fe9f36c4d185bc83cb8e5411ff",
+      "anchors": [
+        {
+          "node_id": "vgar:fixture:python:function:src/demo.py:demo.answer",
+          "path": "src/demo.py",
+          "symbol": "demo.answer",
+          "score": 0.8,
+          "evidence": [
+            {
+              "kind": "symbol",
+              "matched_text": "demo.answer",
+              "source": "issue"
+            }
+          ]
+        }
+      ],
+      "ambiguous_matches": [],
+      "unmatched_locations": []
+    }
+  },
+  "same_anchor_ids": true,
+  "different_task_overlays": true,
+  "interpretation": "Same repo anchor IDs cannot identify the issue/overlay for a stateless next tool call; this probe does not implement MCP retrieval."
+}

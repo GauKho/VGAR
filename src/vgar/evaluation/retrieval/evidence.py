@@ -31,14 +31,29 @@ def write_json(path, value):
             stream.write("\n")
             stream.flush()
             os.fsync(stream.fileno())
-        os.replace(temporary, path)
+        # Windows readers/antivirus can briefly deny delete sharing even for an
+        # atomic rename. Retry this specific error, never unlink the old artifact.
+        for attempt in range(20):
+            try:
+                os.replace(temporary, path)
+                break
+            except PermissionError:
+                if attempt == 19:
+                    raise
+                time.sleep(0.01)
     finally:
         temporary.unlink(missing_ok=True)
 
 
 def source_fingerprint(root):
-    root = Path(root)
-    paths = sorted([*root.glob("src/**/*.py"), *root.glob("scripts/*.py"), *root.glob("tests/*.py"), root / "pyproject.toml"])
+    root = Path(root).resolve()
+    from vgar.source_scope import SourceScope
+    paths = [root / name for name in ("pyproject.toml", "uv.lock", "requirements.txt", "requirements-dev.txt")]
+    for name in ("src", "scripts", "tests", "config", "configs"):
+        directory = root / name
+        if directory.is_dir():
+            paths.extend(path for _, path in SourceScope().files(directory))
+    paths = sorted(set(paths))
     values = {p.relative_to(root).as_posix(): sha256(p.read_bytes()) for p in paths if p.is_file()}
     return {"files": values, "digest": sha256(json.dumps(values, sort_keys=True))}
 

@@ -1,0 +1,17 @@
+{
+  "dataset_id": "fixture",
+  "dataset_revision": "fixture-revision",
+  "split": "dev",
+  "tasks": [
+    {
+      "instance_id": "t-2",
+      "repo": "o/r",
+      "base_commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "problem_statement": "login user fails",
+      "split": "dev",
+      "gold_patch_path": "data/gold/patches/t-2.patch",
+      "patch_hash": "sha256:2f1dcfdab47a8bee03f64fa2c6a36d54cc48f8bf16c6fe92affee67924ab279f",
+      "query_hash": "sha256:46ca4fa8ab74974c5bcf9d52318edda133f308961f1fbccd767aa954887cbd7d"
+    }
+  ]
+}

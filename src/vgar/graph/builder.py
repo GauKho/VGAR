@@ -2,8 +2,10 @@ from __future__ import annotations
 
 import ast
 import hashlib
+import json
 import symtable
 import time
+from collections import Counter
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
@@ -13,21 +15,7 @@ from tree_sitter import Language, Node, Parser
 
 from vgar.graph.jedi_resolver import JediResolution, JediSymbolResolver
 from vgar.contracts.schema import validate_graph_document
-
-
-IGNORED_DIRECTORY_NAMES = {
-    ".git",
-    ".hg",
-    ".mypy_cache",
-    ".pytest_cache",
-    ".tox",
-    ".venv",
-    ".venv-win",
-    "__pycache__",
-    "build",
-    "dist",
-    "node_modules",
-}
+from vgar.source_scope import IGNORED_DIRECTORY_NAMES, SourceScope
 
 
 @dataclass
@@ -40,6 +28,7 @@ class _ModuleState:
     imported_symbols: dict[str, tuple[str, str]] = field(default_factory=dict)
     imported_modules: dict[str, str] = field(default_factory=dict)
     import_records: list[tuple[str, str]] = field(default_factory=list)
+    ambiguous_names: set[str] = field(default_factory=set)
 
 
 @dataclass
@@ -61,6 +50,7 @@ class _ClassRecord:
     module_name: str
     class_name: str
     bases: list[str]
+    binding: _ModuleState
 
 
 class PythonGraphBuilder:
@@ -73,6 +63,7 @@ class PythonGraphBuilder:
         repository_revision: str,
         source_roots: tuple[str, ...] = ("src",),
         use_jedi: bool = True,
+        source_scope: SourceScope | None = None,
     ) -> None:
         if not repo_key.strip():
             raise ValueError("repo_key must not be empty")
@@ -83,6 +74,7 @@ class PythonGraphBuilder:
         self.repository_revision = repository_revision.strip()
         self.source_roots = source_roots
         self.use_jedi = use_jedi
+        self.source_scope = source_scope
         self.parser = Parser(Language(tree_sitter_python.language()))
         self.repository_root: Path | None = None
         self.jedi_resolver: JediSymbolResolver | None = None
@@ -97,6 +89,11 @@ class PythonGraphBuilder:
         self.classes: list[_ClassRecord] = []
         self.scope_tables: dict[str, symtable.SymbolTable] = {}
         self.scope_parents: dict[str, str] = {}
+        self.scope_locations: dict[tuple[str, int], symtable.SymbolTable] = {}
+        self.scope_nodes: dict[str, symtable.SymbolTable | None] = {}
+        self.scope_parent_ids: dict[str, str] = {}
+        self.source_inventory: dict[str, str] = {}
+        self.unresolved_bases: list[dict[str, str]] = []
         self.graph_version = ""
         self.skipped_overload_count: int = 0
         self.renamed_duplicate_count: int = 0
@@ -108,6 +105,7 @@ class PythonGraphBuilder:
         if not root.is_dir():
             raise ValueError(f"repository root does not exist: {root}")
         self.repository_root = root
+        self.source_scope = self.source_scope or SourceScope.for_repository(root)
         self.jedi_resolver = JediSymbolResolver(
             root,
             source_roots=self.source_roots,
@@ -158,12 +156,7 @@ class PythonGraphBuilder:
         return document
 
     def _discover_python_files(self, root: Path) -> list[Path]:
-        files = [
-            path
-            for path in root.rglob("*.py")
-            if not any(part in IGNORED_DIRECTORY_NAMES for part in path.parts)
-        ]
-        return sorted(files, key=lambda path: path.relative_to(root).as_posix())
+        return self.source_scope.python_files(root)
 
     def _calculate_graph_version(
         self,
@@ -176,12 +169,15 @@ class PythonGraphBuilder:
         digest.update(self.repository_revision.encode("utf-8"))
         digest.update(b"\0resolver:")
         digest.update(b"jedi" if self.use_jedi else b"tree-sitter-only")
-        digest.update(b"\0resolver-profile:lexical-v2")
+        digest.update(b"\0resolver-profile:transaction-bindings-v3")
+        digest.update(json.dumps(self.source_scope.metadata(), sort_keys=True).encode("utf-8"))
         for path in files:
             digest.update(b"\0")
             digest.update(path.relative_to(root).as_posix().encode("utf-8"))
             digest.update(b"\0")
-            digest.update(path.read_bytes())
+            source = path.read_bytes()
+            digest.update(source)
+            self.source_inventory[path.relative_to(root).as_posix()] = self._hash_bytes(source)
         return f"sha256:{digest.hexdigest()}"
 
     @staticmethod
@@ -189,7 +185,11 @@ class PythonGraphBuilder:
         """Check whether any decorator is a property-setter pattern like @x.setter."""
         for dec in decorators:
             stripped = dec.lstrip("@").strip()
-            if "." in stripped and not stripped.startswith("("):
+            try:
+                expression = ast.parse(stripped, mode="eval").body
+            except SyntaxError:
+                continue
+            if isinstance(expression, ast.Attribute) and expression.attr == "setter":
                 return True
         return False
 
@@ -208,12 +208,54 @@ class PythonGraphBuilder:
         file_path: Path,
         repository_id: str,
     ) -> None:
+        """Isolate the entire extraction, including scope indexing, as one transaction."""
+        relative_path = file_path.relative_to(root).as_posix()
+        module_name = self._module_name(relative_path)
+        previous_module = self.modules.get(module_name)
+        lengths = tuple(len(items) for items in (self.nodes, self.edges, self.calls, self.classes))
+        counters = (self.skipped_overload_count, self.renamed_duplicate_count)
+        scoped = lambda name: name == module_name or name.startswith(module_name + ".")
+        # Only this module's overwritten entries need a journal; no whole-graph deepcopy.
+        symbols = {k: v for k, v in self.symbols_by_qualified_name.items() if scoped(k)}
+        tables = {k: v for k, v in self.scope_tables.items() if scoped(k)}
+        parents = {k: v for k, v in self.scope_parents.items() if scoped(k)}
+        locations = {k: v for k, v in self.scope_locations.items() if scoped(k[0])}
+        try:
+            self._extract_file_contents(root, file_path, repository_id)
+        except Exception as exc:  # noqa: BLE001 - isolate file errors, never suppress process interrupts
+            removed = {n["id"] for n in self.nodes[lengths[0]:]}
+            for items, length in zip((self.nodes, self.edges, self.calls, self.classes), lengths):
+                del items[length:]
+            for node_id in removed:
+                self.nodes_by_id.pop(node_id, None)
+                self.scope_nodes.pop(node_id, None)
+                self.scope_parent_ids.pop(node_id, None)
+            for mapping, old in ((self.symbols_by_qualified_name, symbols),
+                                 (self.scope_tables, tables), (self.scope_parents, parents)):
+                for key in list(mapping):
+                    if scoped(key):
+                        del mapping[key]
+                mapping.update(old)
+            for key in list(self.scope_locations):
+                if scoped(key[0]):
+                    del self.scope_locations[key]
+            self.scope_locations.update(locations)
+            self.modules.pop(module_name, None)
+            if previous_module is not None:
+                self.modules[module_name] = previous_module
+            self.skipped_overload_count, self.renamed_duplicate_count = counters
+            self.skipped_failed_files.append({"path": relative_path, "error_type": type(exc).__name__, "error": str(exc)})
+
+    def _extract_file_contents(
+        self,
+        root: Path,
+        file_path: Path,
+        repository_id: str,
+    ) -> None:
         relative_path = file_path.relative_to(root).as_posix()
         source = file_path.read_bytes()
         tree = self.parser.parse(source)
         root_node = tree.root_node
-        # Snapshot before this file so rollback removes only this file's nodes.
-        nodes_before = len(self.nodes)
 
         file_id = f"vgar:{self.repo_key}:python:file:{relative_path}"
         file_range = self._range(root_node)
@@ -289,24 +331,11 @@ class PythonGraphBuilder:
         )
         self.modules[module_name] = module
         self._index_scopes(source, module)
-        try:
-            self._walk_scope(
-                root_node,
-                source,
-                module,
-                parent_id=module_id,
-                parent_type="Module",
-                parent_qualified_name=module_name,
-                owner_class_name=None,
-            )
-        except Exception as exc:  # noqa: BLE001 - isolate file errors
-            # Only roll back nodes added for this specific file, plus edges referencing them.
-            ids_to_remove = {n["id"] for n in self.nodes[nodes_before:] if n.get("path") == relative_path}
-            self.nodes = [n for n in self.nodes if n["id"] not in ids_to_remove]
-            self.nodes_by_id = {k: v for k, v in self.nodes_by_id.items() if k not in ids_to_remove}
-            self.edges = [e for e in self.edges if e["source_id"] not in ids_to_remove and e["target_id"] not in ids_to_remove]
-            self.modules.pop(module_name, None)
-            self.skipped_failed_files.append({"path": relative_path, "error_type": type(exc).__name__, "error": str(exc)})
+        self.scope_nodes[module_id] = self.scope_tables.get(module_name)
+        self._walk_scope(
+            root_node, source, module, parent_id=module_id, parent_type="Module",
+            parent_qualified_name=module_name, owner_class_name=None,
+        )
 
     def _walk_scope(
         self,
@@ -321,6 +350,8 @@ class PythonGraphBuilder:
     ) -> None:
         ordinal = 0
         body = scope_node.child_by_field_name("body") or scope_node
+        if scope_node.type in {"except_clause", "elif_clause", "else_clause", "finally_clause", "case_clause"}:
+            body = next((child for child in scope_node.named_children if child.type == "block"), body)
         for child in body.named_children:
             definition = child
             decorators: list[str] = []
@@ -362,6 +393,20 @@ class PythonGraphBuilder:
                     owner_class_name=class_name,
                 )
                 ordinal += 1
+                continue
+
+            # Compound statements do not introduce a Python lexical scope. Traverse
+            # their blocks/clauses, but never descend into a definition twice.
+            if definition.type in {"if_statement", "for_statement", "while_statement",
+                                   "try_statement", "with_statement", "match_statement",
+                                   "elif_clause", "else_clause", "except_clause",
+                                   "finally_clause", "case_clause", "block"}:
+                for branch in definition.named_children:
+                    if branch.type in {"block", "elif_clause", "else_clause", "except_clause",
+                                       "finally_clause", "case_clause"}:
+                        self._walk_scope(branch, source, module, parent_id=parent_id,
+                                         parent_type=parent_type, parent_qualified_name=parent_qualified_name,
+                                         owner_class_name=owner_class_name)
                 continue
 
             if definition.type == "function_definition":
@@ -467,13 +512,21 @@ class PythonGraphBuilder:
             raise ValueError("class definition has no name")
         name = self._text(name_node, source)
         qualified_name = f"{parent_qualified_name}.{name}"
-        node_id = f"vgar:{self.repo_key}:python:class:{module.path}:{qualified_name}"
+        node_id = self._definition_id("class", module.path, qualified_name, node)
+        # Python evaluates bases before binding the new class name. Preserve local
+        # definition IDs and imports from that point; imported modules may be built later.
+        binding = _ModuleState(module.module_name, module.module_id, module.path, module.is_package,
+                               definitions=dict(module.definitions),
+                               imported_symbols=dict(module.imported_symbols),
+                               imported_modules=dict(module.imported_modules))
         superclasses = node.child_by_field_name("superclasses")
-        bases = (
-            [self._text(child, source) for child in superclasses.named_children]
-            if superclasses is not None
-            else []
-        )
+        bases = ([self._text(child, source) for child in superclasses.named_children]
+                 if superclasses is not None else [])
+        if parent_qualified_name != module.module_name:
+            for base in bases:
+                local = self.symbols_by_qualified_name.get(f"{parent_qualified_name}.{base}")
+                if local is not None:
+                    binding.definitions[base] = local
         self._add_node(
             self._source_node(
                 node_id=node_id,
@@ -503,12 +556,14 @@ class PythonGraphBuilder:
         if self.nodes_by_id.get(parent_id, {}).get("type") == "Module":
             module.definitions[name] = node_id
         self.symbols_by_qualified_name[qualified_name] = node_id
+        self._bind_scope(node_id, parent_id, qualified_name, node)
         self.classes.append(
             _ClassRecord(
                 node_id=node_id,
                 module_name=module.module_name,
                 class_name=name,
                 bases=bases,
+                binding=binding,
             )
         )
         return node_id, name, qualified_name
@@ -540,7 +595,7 @@ class PythonGraphBuilder:
         suffix = ".setter" if self._is_setter_decorator(decorators) else ""
         if suffix:
             self.renamed_duplicate_count += 1
-        node_id = f"vgar:{self.repo_key}:python:{id_kind}:{module.path}:{qualified_name}{suffix}"
+        node_id = self._definition_id(id_kind, module.path, qualified_name + suffix, node)
 
         if node_type == "Test":
             properties: dict[str, Any] = {
@@ -596,7 +651,19 @@ class PythonGraphBuilder:
         if parent_type == "Module":
             module.definitions[name] = node_id
         self.symbols_by_qualified_name[qualified_name] = node_id
+        self._bind_scope(node_id, parent_id, qualified_name, node)
         return node_id, node_type, qualified_name
+
+    def _definition_id(self, kind: str, path: str, qualified_name: str, node: Node) -> str:
+        node_id = f"vgar:{self.repo_key}:python:{kind}:{path}:{qualified_name}"
+        if node_id in self.nodes_by_id:
+            self.renamed_duplicate_count += 1
+            node_id += f"@definition:{node.start_byte}:{node.end_byte}"
+        return node_id
+
+    def _bind_scope(self, node_id: str, parent_id: str, qualified_name: str, node: Node) -> None:
+        self.scope_nodes[node_id] = self.scope_locations.get((qualified_name, node.start_point.row + 1))
+        self.scope_parent_ids[node_id] = parent_id
 
     def _extract_import(
         self,
@@ -670,6 +737,11 @@ class PythonGraphBuilder:
                 level,
             )
             module.import_records.append((node_id, normalized_module))
+            # Imports assign the same module namespace as definitions; an earlier
+            # class/function must not override a later explicit import binding.
+            module.definitions.pop(local_name, None)
+            module.imported_symbols.pop(local_name, None)
+            module.imported_modules.pop(local_name, None)
             if imported_name is not None:
                 module.imported_symbols[local_name] = (
                     normalized_module,
@@ -782,19 +854,21 @@ class PythonGraphBuilder:
         for record in self.classes:
             if record.module_name not in self.modules:
                 continue
-            module = self.modules[record.module_name]
+            module = record.binding
             for position, base_expression in enumerate(record.bases, start=1):
-                target_id = self._resolve_symbol(
-                    module,
-                    base_expression,
-                    owner_class_name=None,
-                )
-                if target_id is None:
-                    continue
-                if target_id not in self.nodes_by_id:
-                    continue
-                target = self.nodes_by_id[target_id]
-                if target["type"] != "Class":
+                target_id = module.definitions.get(base_expression)
+                if target_id is None and base_expression in module.imported_symbols:
+                    imported_module, name = module.imported_symbols[base_expression]
+                    target_id = self.symbols_by_qualified_name.get(f"{imported_module}.{name}")
+                if target_id is None and "." in base_expression:
+                    head, name = base_expression.split(".", 1)
+                    imported_module = module.imported_modules.get(head)
+                    if imported_module:
+                        target_id = self.symbols_by_qualified_name.get(f"{imported_module}.{name}")
+                target = self.nodes_by_id.get(target_id)
+                if target is None or target["type"] != "Class" or target_id == record.node_id:
+                    self.unresolved_bases.append({"node_id": record.node_id, "base_expression": base_expression,
+                                                  "reason": "unbound_dynamic_or_ambiguous_base"})
                     continue
                 self._add_edge(
                     "INHERITS",
@@ -927,6 +1001,7 @@ class PythonGraphBuilder:
 
         def visit(table: symtable.SymbolTable, qualified_name: str) -> None:
             self.scope_tables[qualified_name] = table
+            self.scope_locations[(qualified_name, table.get_lineno())] = table
             for child in table.get_children():
                 if child.get_name() in {"lambda", "listcomp", "setcomp", "dictcomp", "genexpr"}:
                     continue
@@ -948,9 +1023,10 @@ class PythonGraphBuilder:
             return False, None
         if call.caller_id not in self.nodes_by_id:
             return False, None
-        scope_name = self.nodes_by_id[call.caller_id]["qualified_name"]
-        while scope_name != call.module_name:
-            table = self.scope_tables.get(scope_name)
+        scope_id = call.caller_id
+        while scope_id in self.nodes_by_id and self.nodes_by_id[scope_id]["type"] != "Module":
+            scope_name = self.nodes_by_id[scope_id]["qualified_name"]
+            table = self.scope_nodes.get(scope_id)
             if table is None:
                 return True, None
             # A method does not close over its class namespace.
@@ -963,7 +1039,7 @@ class PythonGraphBuilder:
                     if call.callee_text == name and symbol.is_namespace():
                         target = self.symbols_by_qualified_name.get(f"{scope_name}.{name}")
                     return True, target
-            scope_name = self.scope_parents.get(scope_name, call.module_name)
+            scope_id = self.scope_parent_ids.get(scope_id, "")
         return False, None
 
     def _resolve_call_with_jedi(self, call: _CallRecord) -> str | None:
@@ -1017,6 +1093,8 @@ class PythonGraphBuilder:
         *,
         owner_class_name: str | None,
     ) -> str | None:
+        if expression.split(".", 1)[0] in module.ambiguous_names:
+            return None
         if expression == "cls" and owner_class_name:
             return self.symbols_by_qualified_name.get(
                 f"{module.module_name}.{owner_class_name}"
@@ -1060,6 +1138,14 @@ class PythonGraphBuilder:
         ) or self.unique_symbols_by_name.get(expression)
 
     def _build_unique_symbol_index(self) -> None:
+        definitions = [node for node in self.nodes if node["type"] in {"Class", "Function", "Method", "Test"}]
+        counts = Counter(node["qualified_name"] for node in definitions)
+        for qualified_name, count in counts.items():
+            if count > 1:
+                self.symbols_by_qualified_name.pop(qualified_name, None)
+        for module in self.modules.values():
+            module.ambiguous_names = {name for name in module.definitions
+                                      if counts[f"{module.module_name}.{name}"] > 1}
         candidates: dict[str, list[str]] = {}
         modules_by_path = {module.path: module for module in self.modules.values()}
         for node in self.nodes:
@@ -1315,5 +1401,9 @@ class PythonGraphBuilder:
             "renamed_duplicate_count": self.renamed_duplicate_count,
             "failed_file_count": len(self.skipped_failed_files),
             "failed_files": self.skipped_failed_files,
+            "source_inventory": dict(self.source_inventory),
+            "source_scope": self.source_scope.metadata(),
+            "unresolved_base_count": len(self.unresolved_bases),
+            "unresolved_bases": list(self.unresolved_bases),
             "build_time_ms": round((time.perf_counter() - started_at) * 1000, 3),
         }

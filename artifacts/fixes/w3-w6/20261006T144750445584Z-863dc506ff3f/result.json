@@ -1,0 +1,130 @@
+{
+  "run_id": "20261006T144750445584Z-863dc506ff3f",
+  "kind": "milestone-4-boundary-red",
+  "status": "FAIL",
+  "started_utc": "2026-10-06T14:47:50.445584+00:00",
+  "complete": true,
+  "python": "3.11.6 (tags/v3.11.6:8b6ee5b, Oct  2 2023, 14:57:12) [MSC v.1935 64 bit (AMD64)]",
+  "interpreter": "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe",
+  "platform": "Windows-10-10.0.26300-SP0",
+  "command_argv": [
+    "-c"
+  ],
+  "cwd": "D:\\Project\\CAPSTONES\\VGAR",
+  "command": "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe -m pytest -q -p no:cacheprovider --junitxml=D:\\Project\\CAPSTONES\\VGAR\\.m2-pytest-kgm7z3v6\\junit.xml tests/test_mcp_workspace_guard.py",
+  "argv": [
+    "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "--junitxml=D:\\Project\\CAPSTONES\\VGAR\\.m2-pytest-kgm7z3v6\\junit.xml",
+    "tests/test_mcp_workspace_guard.py"
+  ],
+  "exit_code": 1,
+  "duration_ms": 5515,
+  "stdout": ".FFFFFFFFFFFsF                                                           [100%]\r\n================================== FAILURES ===================================\r\n__________ test_original_root_is_rejected_before_write_or_execution ___________\r\ntests\\test_mcp_workspace_guard.py:57: in test_original_root_is_rejected_before_write_or_execution\r\n    assert valid(response)[\"status\"] == \"ERROR\"\r\n           ^^^^^^^^^^^^^^^\r\ntests\\test_mcp_workspace_guard.py:32: in valid\r\n    ToolResponse.model_validate(response)\r\nE   pydantic_core._pydantic_core.ValidationError: 2 validation errors for ToolResponse\r\nE   status\r\nE     Input should be 'PASS', 'FAIL', 'ERROR' or 'NOT_RUN' [type=literal_error, input_value='OK', input_type=str]\r\nE       For further information visit https://errors.pydantic.dev/2.13/v/literal_error\r\nE   metadata\r\nE     Field required [type=missing, input_value={'status': 'OK', 'path': ...content': 'value = 0\\n'}, input_type=dict]\r\nE       For further information visit https://errors.pydantic.dev/2.13/v/missing\r\n____ test_unbound_health_is_available_but_file_and_execution_tools_denied _____\r\ntests\\test_mcp_workspace_guard.py:66: in test_unbound_health_is_available_but_file_and_execution_tools_denied\r\n    assert valid(server.health())[\"status\"] == \"PASS\"\r\n           ^^^^^^^^^^^^^^^^^^^^^^\r\ntests\\test_mcp_workspace_guard.py:32: in valid\r\n    ToolResponse.model_validate(response)\r\nE   pydantic_core._pydantic_core.ValidationError: 2 validation errors for ToolResponse\r\nE   status\r\nE     Input should be 'PASS', 'FAIL', 'ERROR' or 'NOT_RUN' [type=literal_error, input_value='OK', input_type=str]\r\nE       For further information visit https://errors.pydantic.dev/2.13/v/literal_error\r\nE   metadata\r\nE     Field required [type=missing, input_value={'status': 'OK', 'server'...'phase': 'W3-W4-repair'}, input_type=dict]\r\nE       For further information visit https://errors.pydantic.dev/2.13/v/missing\r\n________________________ test_stale_lease_fails_closed ________________________\r\ntests\\test_mcp_workspace_guard.py:76: in test_stale_lease_fails_closed\r\n    response = repository_server.read_file(str(root), \"app.py\")\r\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\nsrc\\vgar\\mcp\\servers\\repository_server.py:32: in read_file\r\n    root = _root(repo_path)\r\n           ^^^^^^^^^^^^^^^^\r\nsrc\\vgar\\mcp\\servers\\repository_server.py:19: in _root\r\n    root = Path(repo_path).resolve(strict=True)\r\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\nC:\\Program Files\\Python311\\Lib\\pathlib.py:993: in resolve\r\n    s = os.path.realpath(self, strict=strict)\r\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\n<frozen ntpath>:696: in realpath\r\n    ???\r\nE   FileNotFoundError: [WinError 2] The system cannot find the file specified: 'C:\\\\Users\\\\pc\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-pc\\\\pytest-449\\\\test_stale_lease_fails_closed0\\\\workspace'\r\n_______ test_path_and_test_selector_escape_rejected[../original/app.py] _______\r\ntests\\test_mcp_workspace_guard.py:84: in test_path_and_test_selector_escape_rejected\r\n    assert valid(repository_server.read_file(str(root), path))[\"status\"] == \"ERROR\"\r\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\nsrc\\vgar\\mcp\\servers\\repository_server.py:33: in read_file\r\n    relative = safe_relative_path(path)\r\n               ^^^^^^^^^^^^^^^^^^^^^^^^\r\nsrc\\vgar\\repair\\workspace.py:19: in safe_relative_path\r\n    raise ValueError(f\"Unsafe repository-relative path: {value}\")\r\nE   ValueError: Unsafe repository-relative path: ../original/app.py\r\n_________ test_path_and_test_selector_escape_rejected[C:/outside.py] __________\r\ntests\\test_mcp_workspace_guard.py:84: in test_path_and_test_selector_escape_rejected\r\n    assert valid(repository_server.read_file(str(root), path))[\"status\"] == \"ERROR\"\r\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\nsrc\\vgar\\mcp\\servers\\repository_server.py:33: in read_file\r\n    relative = safe_relative_path(path)\r\n               ^^^^^^^^^^^^^^^^^^^^^^^^\r\nsrc\\vgar\\repair\\workspace.py:19: in safe_relative_path\r\n    raise ValueError(f\"Unsafe repository-relative path: {value}\")\r\nE   ValueError: Unsafe repository-relative path: C:/outside.py\r\n__________ test_path_and_test_selector_escape_rejected[/outside.py] ___________\r\ntests\\test_mcp_workspace_guard.py:84: in test_path_and_test_selector_escape_rejected\r\n    assert valid(repository_server.read_file(str(root), path))[\"status\"] == \"ERROR\"\r\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\nsrc\\vgar\\mcp\\servers\\repository_server.py:33: in read_file\r\n    relative = safe_relative_path(path)\r\n               ^^^^^^^^^^^^^^^^^^^^^^^^\r\nsrc\\vgar\\repair\\workspace.py:19: in safe_relative_path\r\n    raise ValueError(f\"Unsafe repository-relative path: {value}\")\r\nE   ValueError: Unsafe repository-relative path: /outside.py\r\n________ test_leased_read_patch_and_failed_patch_have_consistent_audit ________\r\ntests\\test_mcp_workspace_guard.py:91: in test_leased_read_patch_and_failed_patch_have_consistent_audit\r\n    read = valid(repository_server.read_file(str(root), \"app.py\"))\r\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\ntests\\test_mcp_workspace_guard.py:32: in valid\r\n    ToolResponse.model_validate(response)\r\nE   pydantic_core._pydantic_core.ValidationError: 2 validation errors for ToolResponse\r\nE   status\r\nE     Input should be 'PASS', 'FAIL', 'ERROR' or 'NOT_RUN' [type=literal_error, input_value='OK', input_type=str]\r\nE       For further information visit https://errors.pydantic.dev/2.13/v/literal_error\r\nE   metadata\r\nE     Field required [type=missing, input_value={'status': 'OK', 'path': ...content': 'value = 0\\n'}, input_type=dict]\r\nE       For further information visit https://errors.pydantic.dev/2.13/v/missing\r\n__ test_execution_uses_shared_m2_runner_and_saves_full_evidence[PASS-0-None] __\r\ntests\\test_mcp_workspace_guard.py:121: in test_execution_uses_shared_m2_runner_and_saves_full_evidence\r\n    response = valid(execution_server.run_pytest(str(root), \"tests/test_app.py\", 10))\r\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\ntests\\test_mcp_workspace_guard.py:32: in valid\r\n    ToolResponse.model_validate(response)\r\nE   pydantic_core._pydantic_core.ValidationError: 1 validation error for ToolResponse\r\nE   metadata\r\nE     Field required [type=missing, input_value={'status': 'PASS', 'exit_... 0.01s\\n', 'stderr': ''}, input_type=dict]\r\nE       For further information visit https://errors.pydantic.dev/2.13/v/missing\r\n_ test_execution_uses_shared_m2_runner_and_saves_full_evidence[FAIL-1-TEST_FAILED] _\r\ntests\\test_mcp_workspace_guard.py:121: in test_execution_uses_shared_m2_runner_and_saves_full_evidence\r\n    response = valid(execution_server.run_pytest(str(root), \"tests/test_app.py\", 10))\r\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\ntests\\test_mcp_workspace_guard.py:32: in valid\r\n    ToolResponse.model_validate(response)\r\nE   pydantic_core._pydantic_core.ValidationError: 1 validation error for ToolResponse\r\nE   metadata\r\nE     Field required [type=missing, input_value={'status': 'PASS', 'exit_... 0.01s\\n', 'stderr': ''}, input_type=dict]\r\nE       For further information visit https://errors.pydantic.dev/2.13/v/missing\r\n_ test_execution_uses_shared_m2_runner_and_saves_full_evidence[ERROR-None-TEST_TIMEOUT] _\r\ntests\\test_mcp_workspace_guard.py:121: in test_execution_uses_shared_m2_runner_and_saves_full_evidence\r\n    response = valid(execution_server.run_pytest(str(root), \"tests/test_app.py\", 10))\r\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\ntests\\test_mcp_workspace_guard.py:32: in valid\r\n    ToolResponse.model_validate(response)\r\nE   pydantic_core._pydantic_core.ValidationError: 1 validation error for ToolResponse\r\nE   metadata\r\nE     Field required [type=missing, input_value={'status': 'PASS', 'exit_... 0.01s\\n', 'stderr': ''}, input_type=dict]\r\nE       For further information visit https://errors.pydantic.dev/2.13/v/missing\r\n_________________ test_real_execution_emits_junit_case_counts _________________\r\ntests\\test_mcp_workspace_guard.py:133: in test_real_execution_emits_junit_case_counts\r\n    response = valid(execution_server.run_pytest(str(root), \"tests\", 10))\r\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\ntests\\test_mcp_workspace_guard.py:32: in valid\r\n    ToolResponse.model_validate(response)\r\nE   pydantic_core._pydantic_core.ValidationError: 1 validation error for ToolResponse\r\nE   metadata\r\nE     Field required [type=missing, input_value={'status': 'PASS', 'exit_... 0.00s\\n', 'stderr': ''}, input_type=dict]\r\nE       For further information visit https://errors.pydantic.dev/2.13/v/missing\r\n_________________ test_workflow_binds_exact_created_workspace _________________\r\ntests\\test_mcp_workspace_guard.py:171: in test_workflow_binds_exact_created_workspace\r\n    assert not seen[0].exists()\r\nE   AssertionError: assert not True\r\nE    +  where True = exists()\r\nE    +    where exists = WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-449/test_workflow_binds_exact_crea0/workspace').exists\r\n- generated xml file: D:\\Project\\CAPSTONES\\VGAR\\.m2-pytest-kgm7z3v6\\junit.xml -\r\n=========================== short test summary info ===========================\r\nFAILED tests/test_mcp_workspace_guard.py::test_original_root_is_rejected_before_write_or_execution\r\nFAILED tests/test_mcp_workspace_guard.py::test_unbound_health_is_available_but_file_and_execution_tools_denied\r\nFAILED tests/test_mcp_workspace_guard.py::test_stale_lease_fails_closed - Fil...\r\nFAILED tests/test_mcp_workspace_guard.py::test_path_and_test_selector_escape_rejected[../original/app.py]\r\nFAILED tests/test_mcp_workspace_guard.py::test_path_and_test_selector_escape_rejected[C:/outside.py]\r\nFAILED tests/test_mcp_workspace_guard.py::test_path_and_test_selector_escape_rejected[/outside.py]\r\nFAILED tests/test_mcp_workspace_guard.py::test_leased_read_patch_and_failed_patch_have_consistent_audit\r\nFAILED tests/test_mcp_workspace_guard.py::test_execution_uses_shared_m2_runner_and_saves_full_evidence[PASS-0-None]\r\nFAILED tests/test_mcp_workspace_guard.py::test_execution_uses_shared_m2_runner_and_saves_full_evidence[FAIL-1-TEST_FAILED]\r\nFAILED tests/test_mcp_workspace_guard.py::test_execution_uses_shared_m2_runner_and_saves_full_evidence[ERROR-None-TEST_TIMEOUT]\r\nFAILED tests/test_mcp_workspace_guard.py::test_real_execution_emits_junit_case_counts\r\nFAILED tests/test_mcp_workspace_guard.py::test_workflow_binds_exact_created_workspace\r\n12 failed, 1 passed, 1 skipped in 4.60s\r\n",
+  "stderr": "",
+  "timeout_seconds": 240.0,
+  "cases": [
+    {
+      "name": "tests.test_mcp_workspace_guard::test_host_workspace_setting_is_forwarded_and_unbound_clears_inherited_permission",
+      "status": "PASS",
+      "duration_ms": 15,
+      "detail": null
+    },
+    {
+      "name": "tests.test_mcp_workspace_guard::test_original_root_is_rejected_before_write_or_execution",
+      "status": "FAIL",
+      "duration_ms": 397,
+      "detail": "tests\\test_mcp_workspace_guard.py:57: in test_original_root_is_rejected_before_write_or_execution\n    assert valid(response)[\"status\"] == \"ERROR\"\n           ^^^^^^^^^^^^^^^\ntests\\test_mcp_workspace_guard.py:32: in valid\n    ToolResponse.model_validate(response)\nE   pydantic_core._pydantic_core.ValidationError: 2 validation errors for ToolResponse\nE   status\nE     Input should be 'PASS', 'FAIL', 'ERROR' or 'NOT_RUN' [type=literal_error, input_value='OK', input_type=str]\nE       For further information visit https://errors.pydantic.dev/2.13/v/literal_error\nE   metadata\nE     Field required [type=missing, input_value={'status': 'OK', 'path': ...content': 'value = 0\\n'}, input_type=dict]\nE       For further information visit https://errors.pydantic.dev/2.13/v/missing"
+    },
+    {
+      "name": "tests.test_mcp_workspace_guard::test_unbound_health_is_available_but_file_and_execution_tools_denied",
+      "status": "FAIL",
+      "duration_ms": 5,
+      "detail": "tests\\test_mcp_workspace_guard.py:66: in test_unbound_health_is_available_but_file_and_execution_tools_denied\n    assert valid(server.health())[\"status\"] == \"PASS\"\n           ^^^^^^^^^^^^^^^^^^^^^^\ntests\\test_mcp_workspace_guard.py:32: in valid\n    ToolResponse.model_validate(response)\nE   pydantic_core._pydantic_core.ValidationError: 2 validation errors for ToolResponse\nE   status\nE     Input should be 'PASS', 'FAIL', 'ERROR' or 'NOT_RUN' [type=literal_error, input_value='OK', input_type=str]\nE       For further information visit https://errors.pydantic.dev/2.13/v/literal_error\nE   metadata\nE     Field required [type=missing, input_value={'status': 'OK', 'server'...'phase': 'W3-W4-repair'}, input_type=dict]\nE       For further information visit https://errors.pydantic.dev/2.13/v/missing"
+    },
+    {
+      "name": "tests.test_mcp_workspace_guard::test_stale_lease_fails_closed",
+      "status": "FAIL",
+      "duration_ms": 5,
+      "detail": "tests\\test_mcp_workspace_guard.py:76: in test_stale_lease_fails_closed\n    response = repository_server.read_file(str(root), \"app.py\")\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nsrc\\vgar\\mcp\\servers\\repository_server.py:32: in read_file\n    root = _root(repo_path)\n           ^^^^^^^^^^^^^^^^\nsrc\\vgar\\mcp\\servers\\repository_server.py:19: in _root\n    root = Path(repo_path).resolve(strict=True)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nC:\\Program Files\\Python311\\Lib\\pathlib.py:993: in resolve\n    s = os.path.realpath(self, strict=strict)\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n<frozen ntpath>:696: in realpath\n    ???\nE   FileNotFoundError: [WinError 2] The system cannot find the file specified: 'C:\\\\Users\\\\pc\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-pc\\\\pytest-449\\\\test_stale_lease_fails_closed0\\\\workspace'"
+    },
+    {
+      "name": "tests.test_mcp_workspace_guard::test_path_and_test_selector_escape_rejected[../original/app.py]",
+      "status": "FAIL",
+      "duration_ms": 6,
+      "detail": "tests\\test_mcp_workspace_guard.py:84: in test_path_and_test_selector_escape_rejected\n    assert valid(repository_server.read_file(str(root), path))[\"status\"] == \"ERROR\"\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nsrc\\vgar\\mcp\\servers\\repository_server.py:33: in read_file\n    relative = safe_relative_path(path)\n               ^^^^^^^^^^^^^^^^^^^^^^^^\nsrc\\vgar\\repair\\workspace.py:19: in safe_relative_path\n    raise ValueError(f\"Unsafe repository-relative path: {value}\")\nE   ValueError: Unsafe repository-relative path: ../original/app.py"
+    },
+    {
+      "name": "tests.test_mcp_workspace_guard::test_path_and_test_selector_escape_rejected[C:/outside.py]",
+      "status": "FAIL",
+      "duration_ms": 5,
+      "detail": "tests\\test_mcp_workspace_guard.py:84: in test_path_and_test_selector_escape_rejected\n    assert valid(repository_server.read_file(str(root), path))[\"status\"] == \"ERROR\"\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nsrc\\vgar\\mcp\\servers\\repository_server.py:33: in read_file\n    relative = safe_relative_path(path)\n               ^^^^^^^^^^^^^^^^^^^^^^^^\nsrc\\vgar\\repair\\workspace.py:19: in safe_relative_path\n    raise ValueError(f\"Unsafe repository-relative path: {value}\")\nE   ValueError: Unsafe repository-relative path: C:/outside.py"
+    },
+    {
+      "name": "tests.test_mcp_workspace_guard::test_path_and_test_selector_escape_rejected[/outside.py]",
+      "status": "FAIL",
+      "duration_ms": 5,
+      "detail": "tests\\test_mcp_workspace_guard.py:84: in test_path_and_test_selector_escape_rejected\n    assert valid(repository_server.read_file(str(root), path))[\"status\"] == \"ERROR\"\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nsrc\\vgar\\mcp\\servers\\repository_server.py:33: in read_file\n    relative = safe_relative_path(path)\n               ^^^^^^^^^^^^^^^^^^^^^^^^\nsrc\\vgar\\repair\\workspace.py:19: in safe_relative_path\n    raise ValueError(f\"Unsafe repository-relative path: {value}\")\nE   ValueError: Unsafe repository-relative path: /outside.py"
+    },
+    {
+      "name": "tests.test_mcp_workspace_guard::test_leased_read_patch_and_failed_patch_have_consistent_audit",
+      "status": "FAIL",
+      "duration_ms": 5,
+      "detail": "tests\\test_mcp_workspace_guard.py:91: in test_leased_read_patch_and_failed_patch_have_consistent_audit\n    read = valid(repository_server.read_file(str(root), \"app.py\"))\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\ntests\\test_mcp_workspace_guard.py:32: in valid\n    ToolResponse.model_validate(response)\nE   pydantic_core._pydantic_core.ValidationError: 2 validation errors for ToolResponse\nE   status\nE     Input should be 'PASS', 'FAIL', 'ERROR' or 'NOT_RUN' [type=literal_error, input_value='OK', input_type=str]\nE       For further information visit https://errors.pydantic.dev/2.13/v/literal_error\nE   metadata\nE     Field required [type=missing, input_value={'status': 'OK', 'path': ...content': 'value = 0\\n'}, input_type=dict]\nE       For further information visit https://errors.pydantic.dev/2.13/v/missing"
+    },
+    {
+      "name": "tests.test_mcp_workspace_guard::test_execution_uses_shared_m2_runner_and_saves_full_evidence[PASS-0-None]",
+      "status": "FAIL",
+      "duration_ms": 420,
+      "detail": "tests\\test_mcp_workspace_guard.py:121: in test_execution_uses_shared_m2_runner_and_saves_full_evidence\n    response = valid(execution_server.run_pytest(str(root), \"tests/test_app.py\", 10))\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\ntests\\test_mcp_workspace_guard.py:32: in valid\n    ToolResponse.model_validate(response)\nE   pydantic_core._pydantic_core.ValidationError: 1 validation error for ToolResponse\nE   metadata\nE     Field required [type=missing, input_value={'status': 'PASS', 'exit_... 0.01s\\n', 'stderr': ''}, input_type=dict]\nE       For further information visit https://errors.pydantic.dev/2.13/v/missing"
+    },
+    {
+      "name": "tests.test_mcp_workspace_guard::test_execution_uses_shared_m2_runner_and_saves_full_evidence[FAIL-1-TEST_FAILED]",
+      "status": "FAIL",
+      "duration_ms": 395,
+      "detail": "tests\\test_mcp_workspace_guard.py:121: in test_execution_uses_shared_m2_runner_and_saves_full_evidence\n    response = valid(execution_server.run_pytest(str(root), \"tests/test_app.py\", 10))\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\ntests\\test_mcp_workspace_guard.py:32: in valid\n    ToolResponse.model_validate(response)\nE   pydantic_core._pydantic_core.ValidationError: 1 validation error for ToolResponse\nE   metadata\nE     Field required [type=missing, input_value={'status': 'PASS', 'exit_... 0.01s\\n', 'stderr': ''}, input_type=dict]\nE       For further information visit https://errors.pydantic.dev/2.13/v/missing"
+    },
+    {
+      "name": "tests.test_mcp_workspace_guard::test_execution_uses_shared_m2_runner_and_saves_full_evidence[ERROR-None-TEST_TIMEOUT]",
+      "status": "FAIL",
+      "duration_ms": 409,
+      "detail": "tests\\test_mcp_workspace_guard.py:121: in test_execution_uses_shared_m2_runner_and_saves_full_evidence\n    response = valid(execution_server.run_pytest(str(root), \"tests/test_app.py\", 10))\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\ntests\\test_mcp_workspace_guard.py:32: in valid\n    ToolResponse.model_validate(response)\nE   pydantic_core._pydantic_core.ValidationError: 1 validation error for ToolResponse\nE   metadata\nE     Field required [type=missing, input_value={'status': 'PASS', 'exit_... 0.01s\\n', 'stderr': ''}, input_type=dict]\nE       For further information visit https://errors.pydantic.dev/2.13/v/missing"
+    },
+    {
+      "name": "tests.test_mcp_workspace_guard::test_real_execution_emits_junit_case_counts",
+      "status": "FAIL",
+      "duration_ms": 399,
+      "detail": "tests\\test_mcp_workspace_guard.py:133: in test_real_execution_emits_junit_case_counts\n    response = valid(execution_server.run_pytest(str(root), \"tests\", 10))\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\ntests\\test_mcp_workspace_guard.py:32: in valid\n    ToolResponse.model_validate(response)\nE   pydantic_core._pydantic_core.ValidationError: 1 validation error for ToolResponse\nE   metadata\nE     Field required [type=missing, input_value={'status': 'PASS', 'exit_... 0.00s\\n', 'stderr': ''}, input_type=dict]\nE       For further information visit https://errors.pydantic.dev/2.13/v/missing"
+    },
+    {
+      "name": "tests.test_mcp_workspace_guard::test_link_target_is_rejected_before_read_or_write",
+      "status": "NOT_RUN",
+      "duration_ms": 5,
+      "detail": "D:\\Project\\CAPSTONES\\VGAR\\tests\\test_mcp_workspace_guard.py:144: symlink creation unavailable"
+    },
+    {
+      "name": "tests.test_mcp_workspace_guard::test_workflow_binds_exact_created_workspace",
+      "status": "FAIL",
+      "duration_ms": 804,
+      "detail": "tests\\test_mcp_workspace_guard.py:171: in test_workflow_binds_exact_created_workspace\n    assert not seen[0].exists()\nE   AssertionError: assert not True\nE    +  where True = exists()\nE    +    where exists = WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-449/test_workflow_binds_exact_crea0/workspace').exists"
+    }
+  ],
+  "case_counts": {
+    "passed": 1,
+    "failed": 12,
+    "error": 0,
+    "skipped": 1
+  },
+  "reason": {
+    "code": "TEST_FAILED",
+    "message": "Pytest assertions failed"
+  },
+  "output_truncated": false,
+  "stdout_bytes": 10580,
+  "stderr_bytes": 0,
+  "ended_utc": "2026-10-06T14:47:56.007927+00:00"
+}

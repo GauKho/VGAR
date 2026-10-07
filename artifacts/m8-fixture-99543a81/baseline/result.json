@@ -1,0 +1,294 @@
+{
+  "run_id": "baseline",
+  "kind": "retrieval",
+  "complete": true,
+  "dataset_id": "fixture",
+  "dataset_revision": "fixture-revision",
+  "config": {
+    "manifest_hash": "sha256:9e2ae839c1d2b62fe4447ddd4a3b03b6e2c1d1f74ada9de51e510f201778a03c",
+    "budget_tokens": 200,
+    "scoring_version": "retrieval-scoring-v1",
+    "counter_label": "FALLBACK:utf8_bytes_ceil_div4",
+    "counter_is_fallback": true,
+    "snippet_policy": {
+      "max_snippet_lines": 80,
+      "header": true,
+      "overlap": "skip_if_overlaps_different_group"
+    },
+    "arms": {
+      "graph": {
+        "uses_fail_to_pass": false
+      },
+      "graph_f2p": {
+        "uses_fail_to_pass": true
+      }
+    },
+    "graph": {
+      "use_jedi": false,
+      "builder_hash": "79d37531e460",
+      "source_roots": [
+        "src"
+      ]
+    },
+    "retrieval": {
+      "max_hops": 2,
+      "max_candidates": 100,
+      "min_edge_confidence": 0.6,
+      "weights": {
+        "task_similarity": 0.2,
+        "graph_distance": 0.3,
+        "edge_confidence": 0.2,
+        "failing_test_proximity": 0.2,
+        "public_api_risk": 0.1,
+        "recent_change_frequency": 0.1
+      },
+      "include": "make_include(corpus): not Test and path in is_source corpus"
+    },
+    "limit": null,
+    "task_ids": [
+      "t-2"
+    ],
+    "execution": {
+      "task_timeout_seconds": 300,
+      "offline": true,
+      "rebuild_graphs": false,
+      "rebuild_trees": false
+    }
+  },
+  "task_results": [
+    {
+      "instance_id": "t-2",
+      "status": "SUCCEEDED",
+      "metrics": {
+        "file_gold_count": 1,
+        "file_mrr": 1.0,
+        "file_recall@1": 1.0,
+        "file_all_gold@1": 1,
+        "file_recall@3": 1.0,
+        "file_all_gold@3": 1,
+        "file_recall@5": 1.0,
+        "file_all_gold@5": 1,
+        "file_recall@10": 1.0,
+        "file_all_gold@10": 1,
+        "file_recall@20": 1.0,
+        "file_all_gold@20": 1,
+        "function_gold_count": 1,
+        "function_mrr": 1.0,
+        "function_recall@1": 1.0,
+        "function_all_gold@1": 1,
+        "function_recall@3": 1.0,
+        "function_all_gold@3": 1,
+        "function_recall@5": 1.0,
+        "function_all_gold@5": 1,
+        "function_recall@10": 1.0,
+        "function_all_gold@10": 1,
+        "function_recall@20": 1.0,
+        "function_all_gold@20": 1,
+        "file_reach": 1.0,
+        "function_reach": 1.0,
+        "rank_items": 1,
+        "packed_gold_file_in_context": 1.0,
+        "packed_gold_function_in_context": 1.0,
+        "packed_all_gold_files_in_context": 1,
+        "packed_all_gold_functions_in_context": 1,
+        "context_tokens": 17,
+        "packed_tokens_to_first_gold_file": 17,
+        "packed_tokens_to_first_gold_function": 17,
+        "packed_items_packed": 1,
+        "packed_skipped_token_budget": 0,
+        "packed_skipped_overlap": 0,
+        "packed_truncated": 0,
+        "unmapped_count": 0,
+        "excluded_count": 0,
+        "chunk_seconds": 0.00028960000054212287,
+        "rank_seconds": 0.00038889999996172264,
+        "mapping_coverage": 1.0,
+        "file_retrievability_coverage": 1.0
+      },
+      "artifact_hash": "sha256:705d2fb4238eaf55fcab7dd18d1e4099dbb2614f447ec808cd37133e36fc4732"
+    }
+  ],
+  "summary": {
+    "attempted_tasks": 1,
+    "completed_tasks": 1,
+    "failed_tasks": 0,
+    "metrics": {
+      "chunk_seconds": {
+        "mean": 0.00028960000054212287,
+        "eligible_tasks": 1
+      },
+      "context_tokens": {
+        "mean": 17,
+        "eligible_tasks": 1
+      },
+      "excluded_count": {
+        "mean": 0,
+        "eligible_tasks": 1
+      },
+      "file_all_gold@1": {
+        "mean": 1,
+        "eligible_tasks": 1
+      },
+      "file_all_gold@10": {
+        "mean": 1,
+        "eligible_tasks": 1
+      },
+      "file_all_gold@20": {
+        "mean": 1,
+        "eligible_tasks": 1
+      },
+      "file_all_gold@3": {
+        "mean": 1,
+        "eligible_tasks": 1
+      },
+      "file_all_gold@5": {
+        "mean": 1,
+        "eligible_tasks": 1
+      },
+      "file_gold_count": {
+        "mean": 1,
+        "eligible_tasks": 1
+      },
+      "file_mrr": {
+        "mean": 1.0,
+        "eligible_tasks": 1
+      },
+      "file_reach": {
+        "mean": 1.0,
+        "eligible_tasks": 1
+      },
+      "file_recall@1": {
+        "mean": 1.0,
+        "eligible_tasks": 1
+      },
+      "file_recall@10": {
+        "mean": 1.0,
+        "eligible_tasks": 1
+      },
+      "file_recall@20": {
+        "mean": 1.0,
+        "eligible_tasks": 1
+      },
+      "file_recall@3": {
+        "mean": 1.0,
+        "eligible_tasks": 1
+      },
+      "file_recall@5": {
+        "mean": 1.0,
+        "eligible_tasks": 1
+      },
+      "file_retrievability_coverage": {
+        "mean": 1.0,
+        "eligible_tasks": 1
+      },
+      "function_all_gold@1": {
+        "mean": 1,
+        "eligible_tasks": 1
+      },
+      "function_all_gold@10": {
+        "mean": 1,
+        "eligible_tasks": 1
+      },
+      "function_all_gold@20": {
+        "mean": 1,
+        "eligible_tasks": 1
+      },
+      "function_all_gold@3": {
+        "mean": 1,
+        "eligible_tasks": 1
+      },
+      "function_all_gold@5": {
+        "mean": 1,
+        "eligible_tasks": 1
+      },
+      "function_gold_count": {
+        "mean": 1,
+        "eligible_tasks": 1
+      },
+      "function_mrr": {
+        "mean": 1.0,
+        "eligible_tasks": 1
+      },
+      "function_reach": {
+        "mean": 1.0,
+        "eligible_tasks": 1
+      },
+      "function_recall@1": {
+        "mean": 1.0,
+        "eligible_tasks": 1
+      },
+      "function_recall@10": {
+        "mean": 1.0,
+        "eligible_tasks": 1
+      },
+      "function_recall@20": {
+        "mean": 1.0,
+        "eligible_tasks": 1
+      },
+      "function_recall@3": {
+        "mean": 1.0,
+        "eligible_tasks": 1
+      },
+      "function_recall@5": {
+        "mean": 1.0,
+        "eligible_tasks": 1
+      },
+      "mapping_coverage": {
+        "mean": 1.0,
+        "eligible_tasks": 1
+      },
+      "packed_all_gold_files_in_context": {
+        "mean": 1,
+        "eligible_tasks": 1
+      },
+      "packed_all_gold_functions_in_context": {
+        "mean": 1,
+        "eligible_tasks": 1
+      },
+      "packed_gold_file_in_context": {
+        "mean": 1.0,
+        "eligible_tasks": 1
+      },
+      "packed_gold_function_in_context": {
+        "mean": 1.0,
+        "eligible_tasks": 1
+      },
+      "packed_items_packed": {
+        "mean": 1,
+        "eligible_tasks": 1
+      },
+      "packed_skipped_overlap": {
+        "mean": 0,
+        "eligible_tasks": 1
+      },
+      "packed_skipped_token_budget": {
+        "mean": 0,
+        "eligible_tasks": 1
+      },
+      "packed_tokens_to_first_gold_file": {
+        "mean": 17,
+        "eligible_tasks": 1
+      },
+      "packed_tokens_to_first_gold_function": {
+        "mean": 17,
+        "eligible_tasks": 1
+      },
+      "packed_truncated": {
+        "mean": 0,
+        "eligible_tasks": 1
+      },
+      "rank_items": {
+        "mean": 1,
+        "eligible_tasks": 1
+      },
+      "rank_seconds": {
+        "mean": 0.00038889999996172264,
+        "eligible_tasks": 1
+      },
+      "unmapped_count": {
+        "mean": 0,
+        "eligible_tasks": 1
+      }
+    }
+  }
+}

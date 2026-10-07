@@ -1,0 +1,118 @@
+Timeout (0:00:40)!
+Thread 0x00003ca0 (most recent call first):
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\inference\compiled\subprocess\__init__.py", line 70 in _enqueue_output
+  File "C:\Program Files\Python311\Lib\threading.py", line 982 in run
+  File "C:\Program Files\Python311\Lib\threading.py", line 1045 in _bootstrap_inner
+  File "C:\Program Files\Python311\Lib\threading.py", line 1002 in _bootstrap
+
+Thread 0x00001d74 (most recent call first):
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\inference\references.py", line 174 in _check_fs
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\inference\references.py", line 309 in search_in_file_ios
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\inference\references.py", line 296 in get_module_contexts_containing_name
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\inference\dynamic_params.py", line 128 in _search_function_arguments
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\inference\utils.py", line 16 in wrapper
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\inference\cache.py", line 44 in wrapper
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\inference\dynamic_params.py", line 91 in dynamic_param_lookup
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\inference\dynamic_params.py", line 47 in wrapper
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\debug.py", line 81 in wrapper
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\inference\names.py", line 531 in infer
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\plugins\pytest.py", line 75 in wrapper
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\plugins\__init__.py", line 21 in wrapper
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\inference\context.py", line 78 in <genexpr>
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\inference\base_value.py", line 449 in from_sets
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\inference\context.py", line 78 in py__getattribute__
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\inference\syntax_tree.py", line 309 in infer_atom
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\inference\syntax_tree.py", line 187 in _infer_node
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\inference\syntax_tree.py", line 85 in wrapper
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\debug.py", line 81 in wrapper
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\inference\syntax_tree.py", line 177 in _infer_node_cached
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\inference\cache.py", line 44 in wrapper
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\inference\syntax_tree.py", line 172 in _infer_node_if_inferred
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\inference\syntax_tree.py", line 159 in infer_node
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\inference\context.py", line 232 in infer_node
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\inference\syntax_tree.py", line 200 in _infer_node
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\inference\syntax_tree.py", line 85 in wrapper
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\debug.py", line 81 in wrapper
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\inference\syntax_tree.py", line 177 in _infer_node_cached
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\inference\cache.py", line 44 in wrapper
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\inference\syntax_tree.py", line 172 in _infer_node_if_inferred
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\inference\syntax_tree.py", line 159 in infer_node
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\inference\context.py", line 232 in infer_node
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\inference\base_value.py", line 398 in infer
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\inference\syntax_tree.py", line 768 in tree_name_to_values
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\plugins\django.py", line 178 in wrapper
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\plugins\stdlib.py", line 945 in wrapper
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\plugins\__init__.py", line 21 in wrapper
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\inference\names.py", line 282 in infer
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\inference\context.py", line 78 in <genexpr>
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\inference\base_value.py", line 449 in from_sets
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\inference\context.py", line 78 in py__getattribute__
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\inference\syntax_tree.py", line 309 in infer_atom
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\inference\syntax_tree.py", line 187 in _infer_node
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\inference\syntax_tree.py", line 85 in wrapper
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\debug.py", line 81 in wrapper
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\inference\syntax_tree.py", line 177 in _infer_node_cached
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\inference\cache.py", line 44 in wrapper
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\inference\syntax_tree.py", line 172 in _infer_node_if_inferred
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\inference\syntax_tree.py", line 159 in infer_node
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\inference\context.py", line 232 in infer_node
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\inference\lazy_value.py", line 48 in infer
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\inference\param.py", line 28 in infer
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\inference\dynamic_params.py", line 95 in <genexpr>
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\inference\base_value.py", line 449 in from_sets
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\inference\dynamic_params.py", line 92 in dynamic_param_lookup
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\inference\dynamic_params.py", line 47 in wrapper
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\debug.py", line 81 in wrapper
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\inference\names.py", line 531 in infer
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\plugins\pytest.py", line 75 in wrapper
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\plugins\__init__.py", line 21 in wrapper
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\inference\context.py", line 78 in <genexpr>
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\inference\base_value.py", line 449 in from_sets
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\inference\context.py", line 78 in py__getattribute__
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\inference\syntax_tree.py", line 309 in infer_atom
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\inference\syntax_tree.py", line 187 in _infer_node
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\inference\syntax_tree.py", line 85 in wrapper
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\debug.py", line 81 in wrapper
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\inference\syntax_tree.py", line 177 in _infer_node_cached
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\inference\cache.py", line 44 in wrapper
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\inference\syntax_tree.py", line 172 in _infer_node_if_inferred
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\inference\syntax_tree.py", line 159 in infer_node
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\inference\context.py", line 232 in infer_node
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\inference\lazy_value.py", line 48 in infer
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\inference\param.py", line 28 in infer
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\inference\dynamic_params.py", line 95 in <genexpr>
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\inference\base_value.py", line 449 in from_sets
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\inference\dynamic_params.py", line 92 in dynamic_param_lookup
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\inference\dynamic_params.py", line 47 in wrapper
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\debug.py", line 81 in wrapper
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\inference\names.py", line 531 in infer
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\plugins\pytest.py", line 75 in wrapper
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\plugins\__init__.py", line 21 in wrapper
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\inference\context.py", line 78 in <genexpr>
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\inference\base_value.py", line 449 in from_sets
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\inference\context.py", line 78 in py__getattribute__
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\inference\syntax_tree.py", line 309 in infer_atom
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\inference\syntax_tree.py", line 187 in _infer_node
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\inference\syntax_tree.py", line 85 in wrapper
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\debug.py", line 81 in wrapper
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\inference\syntax_tree.py", line 177 in _infer_node_cached
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\inference\cache.py", line 44 in wrapper
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\inference\syntax_tree.py", line 172 in _infer_node_if_inferred
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\inference\syntax_tree.py", line 159 in infer_node
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\inference\context.py", line 232 in infer_node
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\inference\lazy_value.py", line 48 in infer
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\inference\arguments.py", line 95 in iterate_argument_clinic
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\plugins\stdlib.py", line 162 in wrapper
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\plugins\stdlib.py", line 137 in wrapper
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\plugins\__init__.py", line 21 in wrapper
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\inference\base_value.py", line 506 in <genexpr>
+  ...
+Timeout (0:00:40)!
+Thread 0x00003ca0 (most recent call first):
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\inference\compiled\subprocess\__init__.py", line 70 in _enqueue_output
+  File "C:\Program Files\Python311\Lib\threading.py", line 982 in run
+  File "C:\Program Files\Python311\Lib\threading.py", line 1045 in _bootstrap_inner
+  File "C:\Program Files\Python311\Lib\threading.py", line 1002 in _bootstrap
+
+Thread 0x00001d74 (most recent call first):
+  File "D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Lib\site-packages\jedi\inference\context.py", line 28 in tree_node

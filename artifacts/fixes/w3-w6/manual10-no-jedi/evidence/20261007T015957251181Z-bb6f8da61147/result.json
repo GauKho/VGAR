@@ -1,0 +1,30 @@
+{
+  "run_id": "20261007T015957251181Z-bb6f8da61147",
+  "kind": "manual-audit-input-checks",
+  "status": "ERROR",
+  "started_utc": "2026-10-07T01:59:57.251181+00:00",
+  "complete": true,
+  "python": "3.11.6 (tags/v3.11.6:8b6ee5b, Oct  2 2023, 14:57:12) [MSC v.1935 64 bit (AMD64)]",
+  "interpreter": "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe",
+  "platform": "Windows-10-10.0.26300-SP0",
+  "command_argv": [
+    "artifacts/fixes/w3-w6/manual10-no-jedi/collect_evidence.py",
+    "--graph-run",
+    "results/retrieval/20261007T014445273889Z-664d06a6c1c0",
+    "--bm25-run",
+    "results/retrieval/20261005T082810770056Z-7a3ad261d8e4"
+  ],
+  "cwd": "D:\\Project\\CAPSTONES\\VGAR",
+  "reviews": [],
+  "inference": "NOT_RUN",
+  "review_author": "Codex; manual interpretation in separate authored report",
+  "manual_review_completed": false,
+  "graph_run": "D:\\Project\\CAPSTONES\\VGAR\\results\\retrieval\\20261007T014445273889Z-664d06a6c1c0",
+  "bm25_run": "D:\\Project\\CAPSTONES\\VGAR\\results\\retrieval\\20261005T082810770056Z-7a3ad261d8e4",
+  "exit_code": 1,
+  "error_class": "KeyError",
+  "error": "'use_jedi'",
+  "traceback": "Traceback (most recent call last):\n  File \"D:\\Project\\CAPSTONES\\VGAR\\artifacts\\fixes\\w3-w6\\manual10-no-jedi\\collect_evidence.py\", line 41, in main\n    assert runs['graph']['config']['use_jedi'] is False\n           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^\nKeyError: 'use_jedi'\n",
+  "ended_utc": "2026-10-07T01:59:57.346383+00:00",
+  "duration_seconds": 0.03151400000206195
+}

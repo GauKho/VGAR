@@ -1,0 +1,46 @@
+{
+  "model_id": "Qwen/Qwen3-4B-Instruct-2507",
+  "revision": "cdbee75f17c01a7cc42f958dc650907174af0554",
+  "assets_directory": "../../m1/tokenizers/Qwen3-4B-Instruct-2507/cdbee75f17c01a7cc42f958dc650907174af0554",
+  "metadata_url": "https://huggingface.co/api/models/Qwen/Qwen3-4B-Instruct-2507/revision/cdbee75f17c01a7cc42f958dc650907174af0554?blobs=true",
+  "files": [
+    {
+      "name": "tokenizer.json",
+      "size": 11422654,
+      "sha256": "aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4",
+      "upstream_blob_id": "cd71f61a15a522601badb3dc960d800d9cb3766c",
+      "upstream_lfs": {
+        "sha256": "aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4",
+        "size": 11422654,
+        "pointerSize": 133
+      },
+      "source_url": "https://huggingface.co/Qwen/Qwen3-4B-Instruct-2507/resolve/cdbee75f17c01a7cc42f958dc650907174af0554/tokenizer.json"
+    },
+    {
+      "name": "tokenizer_config.json",
+      "size": 9377,
+      "sha256": "a62ff0a2472a0fa1b8eaabcb57c59b58afa42a22831dc141400b6e0cf2b65ce3",
+      "upstream_blob_id": "51c1be0d9192e7f6e6596de71d0f07d58fbc32ac",
+      "upstream_lfs": null,
+      "source_url": "https://huggingface.co/Qwen/Qwen3-4B-Instruct-2507/resolve/cdbee75f17c01a7cc42f958dc650907174af0554/tokenizer_config.json"
+    },
+    {
+      "name": "vocab.json",
+      "size": 2776833,
+      "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910",
+      "upstream_blob_id": "4783fe10ac3adce15ac8f358ef5462739852c569",
+      "upstream_lfs": null,
+      "source_url": "https://huggingface.co/Qwen/Qwen3-4B-Instruct-2507/resolve/cdbee75f17c01a7cc42f958dc650907174af0554/vocab.json"
+    },
+    {
+      "name": "merges.txt",
+      "size": 1671839,
+      "sha256": "599bab54075088774b1733fde865d5bd747cbcc7a547c5bc12610e874e26f5e3",
+      "upstream_blob_id": "20024bfe7c83998e9aeaf98a0cd6a2ce6306c2f0",
+      "upstream_lfs": null,
+      "source_url": "https://huggingface.co/Qwen/Qwen3-4B-Instruct-2507/resolve/cdbee75f17c01a7cc42f958dc650907174af0554/merges.txt"
+    }
+  ],
+  "weights_downloaded": false,
+  "counting_policy": "encode-each-snippet:add_special_tokens=false:sum-item-counts"
+}

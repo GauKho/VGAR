@@ -135,6 +135,20 @@ class SQLiteGraphStore:
                     ON edges(graph_version, source_id, type);
                 CREATE INDEX IF NOT EXISTS idx_edges_target_type
                     ON edges(graph_version, target_id, type);
+
+                CREATE TABLE IF NOT EXISTS node_source_metadata (
+                    graph_version TEXT NOT NULL,
+                    node_id TEXT NOT NULL,
+                    metadata_json TEXT NOT NULL,
+                    PRIMARY KEY (graph_version, node_id),
+                    FOREIGN KEY (graph_version, node_id) REFERENCES nodes(graph_version, id) ON DELETE CASCADE
+                );
+                CREATE TABLE IF NOT EXISTS task_contexts (
+                    task_handle TEXT PRIMARY KEY,
+                    graph_version TEXT NOT NULL,
+                    context_json TEXT NOT NULL,
+                    FOREIGN KEY (graph_version) REFERENCES graph_metadata(graph_version) ON DELETE CASCADE
+                );
                 """
             )
 
@@ -211,6 +225,13 @@ class SQLiteGraphStore:
                     ),
                 )
 
+                # Preserve original byte ranges/language; never synthesize offsets
+                # from line ranges when serving a persisted graph snapshot.
+                connection.execute(
+                    "INSERT INTO node_source_metadata VALUES (?, ?, ?)",
+                    (graph_version, node["id"], json.dumps({"language": node.get("language"), "range": node.get("range")}, ensure_ascii=False)),
+                )
+
             for edge in edges:
                 connection.execute(
                     """
@@ -249,6 +270,47 @@ class SQLiteGraphStore:
                 """,
                 (graph_version,),
             )
+
+    def get_graph_document(self) -> dict[str, Any]:
+        """Rehydrate the frozen M1 snapshot, including the original byte spans."""
+        version = self.resolve_graph_version()
+        with self._connect() as connection:
+            metadata = connection.execute("SELECT metadata_json FROM graph_metadata WHERE graph_version=?", (version,)).fetchone()
+            rows = connection.execute("SELECT n.*, s.metadata_json AS source_json FROM nodes n LEFT JOIN node_source_metadata s "
+                                      "ON s.graph_version=n.graph_version AND s.node_id=n.id WHERE n.graph_version=? ORDER BY n.rowid", (version,)).fetchall()
+            if any(row["source_json"] is None for row in rows):
+                raise GraphNotReadyError(version + ": legacy snapshot lacks source spans; ingest a new snapshot")
+            nodes = [{"id": row["id"], "type": row["type"], "repo_key": row["repo_key"], "name": row["name"],
+                      "qualified_name": row["qualified_name"], "path": row["path"], "content_hash": row["content_hash"],
+                      "properties": json.loads(row["properties_json"]), "graph_version": version, **json.loads(row["source_json"])} for row in rows]
+            edges = [{"id": row["id"], "type": row["type"], "source_id": row["source_id"], "target_id": row["target_id"],
+                      "confidence": row["confidence"], "resolution": row["resolution"], "graph_version": version,
+                      "provenance": json.loads(row["provenance_json"]), "properties": json.loads(row["properties_json"])}
+                     for row in connection.execute("SELECT * FROM edges WHERE graph_version=? ORDER BY rowid", (version,))]
+        document = {**json.loads(metadata["metadata_json"]), "nodes": nodes, "edges": edges}
+        validate_graph_document(document)
+        return document
+
+    def put_task_context(self, handle: str, context: dict[str, Any]) -> None:
+        self.initialize()
+        raw = json.dumps(context, sort_keys=True, ensure_ascii=False)
+        with self._connect() as connection:
+            existing = connection.execute("SELECT context_json FROM task_contexts WHERE task_handle=?", (handle,)).fetchone()
+            if existing is not None:
+                if existing["context_json"] != raw:
+                    raise InvalidQueryError("Task handle cannot be rebound to a different context")
+                return
+            if connection.execute("SELECT count(*) FROM task_contexts").fetchone()[0] >= 10000:
+                raise InvalidLimitError("Task registry capacity reached; use a new run database")
+            connection.execute("INSERT INTO task_contexts VALUES (?, ?, ?)", (handle, context["graph_version"], raw))
+
+    def get_task_context(self, handle: str) -> dict[str, Any]:
+        self.initialize()
+        with self._connect() as connection:
+            row = connection.execute("SELECT context_json FROM task_contexts WHERE task_handle=?", (handle,)).fetchone()
+        if row is None:
+            raise NodeNotFoundError(handle, entity="task_context")
+        return json.loads(row["context_json"])
 
     def search_symbols(self, query: str, limit: int) -> list[StoredSymbol]:
         normalized_query = query.strip()

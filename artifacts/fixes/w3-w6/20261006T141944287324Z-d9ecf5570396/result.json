@@ -1,0 +1,201 @@
+{
+  "run_id": "20261006T141944287324Z-d9ecf5570396",
+  "kind": "milestone-1-boundary-fixed-guards-red",
+  "status": "FAIL",
+  "started_utc": "2026-10-06T14:19:44.287324+00:00",
+  "complete": true,
+  "python": "3.11.6 (tags/v3.11.6:8b6ee5b, Oct  2 2023, 14:57:12) [MSC v.1935 64 bit (AMD64)]",
+  "interpreter": "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe",
+  "platform": "Windows-10-10.0.26300-SP0",
+  "command_argv": [
+    "-c"
+  ],
+  "cwd": "D:\\Project\\CAPSTONES\\VGAR",
+  "command": "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe -m pytest -q -p no:cacheprovider --junitxml=D:\\Project\\CAPSTONES\\VGAR\\.m2-pytest-tglyqcd8\\junit.xml tests/m2/test_retrieval_compare_contract.py",
+  "argv": [
+    "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "--junitxml=D:\\Project\\CAPSTONES\\VGAR\\.m2-pytest-tglyqcd8\\junit.xml",
+    "tests/m2/test_retrieval_compare_contract.py"
+  ],
+  "exit_code": 1,
+  "duration_ms": 4391,
+  "stdout": "F.F....FFF....FF....FFFFFF                                               [100%]\r\n================================== FAILURES ===================================\r\n______________ test_actual_graph_summary_without_arm_is_accepted ______________\r\ntests\\m2\\test_retrieval_compare_contract.py:83: in test_actual_graph_summary_without_arm_is_accepted\r\n    assert set(report[\"summaries\"]) == {\"bm25\", \"graph\", \"graph_f2p\"}\r\nE   AssertionError: assert {'bm25', 'bm2..., 'graph_f2p'} == {'bm25', 'graph', 'graph_f2p'}\r\nE     \r\nE     Extra items in the left set:\r\nE     'bm25_uncapped'\r\nE     Use -v to get more diff\r\n________ test_different_dataset_binding_is_rejected[dataset_id-other] _________\r\ntests\\m2\\test_retrieval_compare_contract.py:137: in test_different_dataset_binding_is_rejected\r\n    with pytest.raises(ValueError, match=\"dataset\"):\r\nE   Failed: DID NOT RAISE <class 'ValueError'>\r\n_____________ test_different_task_binding_is_rejected[patch_hash] _____________\r\ntests\\m2\\test_retrieval_compare_contract.py:147: in test_different_task_binding_is_rejected\r\n    with pytest.raises(ValueError, match=key):\r\nE   Failed: DID NOT RAISE <class 'ValueError'>\r\n_____________ test_different_task_binding_is_rejected[repository] _____________\r\ntests\\m2\\test_retrieval_compare_contract.py:147: in test_different_task_binding_is_rejected\r\n    with pytest.raises(ValueError, match=key):\r\nE   Failed: DID NOT RAISE <class 'ValueError'>\r\n________________ test_different_task_binding_is_rejected[gold] ________________\r\ntests\\m2\\test_retrieval_compare_contract.py:147: in test_different_task_binding_is_rejected\r\n    with pytest.raises(ValueError, match=key):\r\nE   Failed: DID NOT RAISE <class 'ValueError'>\r\n___________________ test_duplicate_task_ids_are_rejected[0] ___________________\r\ntests\\m2\\test_retrieval_compare_contract.py:164: in test_duplicate_task_ids_are_rejected\r\n    with pytest.raises(ValueError, match=\"[Dd]uplicate\"):\r\nE   Failed: DID NOT RAISE <class 'ValueError'>\r\n___________________ test_duplicate_task_ids_are_rejected[1] ___________________\r\ntests\\m2\\test_retrieval_compare_contract.py:164: in test_duplicate_task_ids_are_rejected\r\n    with pytest.raises(ValueError, match=\"[Dd]uplicate\"):\r\nE   Failed: DID NOT RAISE <class 'ValueError'>\r\n______________ test_malformed_graph_run_is_rejected[population] _______________\r\ntests\\m2\\test_retrieval_compare_contract.py:183: in test_malformed_graph_run_is_rejected\r\n    with pytest.raises(ValueError):\r\nE   Failed: DID NOT RAISE <class 'ValueError'>\r\n_____________________ test_no_paired_tasks_is_not_success _____________________\r\ntests\\m2\\test_retrieval_compare_contract.py:191: in test_no_paired_tasks_is_not_success\r\n    assert report[\"status\"] == \"NO_PAIRED_TASKS\" and report[\"exit_code\"] != 0\r\nE   AssertionError: assert ('NO_PAIRED_TASKS' == 'NO_PAIRED_TASKS'\r\nE     \r\nE       NO_PAIRED_TASKS and 0 != 0)\r\n_________________ test_cap_is_only_separate_rank_sensitivity __________________\r\ntests\\m2\\test_retrieval_compare_contract.py:200: in test_cap_is_only_separate_rank_sensitivity\r\n    sensitivity = report[\"rank_sensitivity\"]\r\n                  ^^^^^^^^^^^^^^^^^^^^^^^^^^\r\nE   KeyError: 'rank_sensitivity'\r\n_______________________ test_invalid_cap_is_rejected[0] _______________________\r\ntests\\m2\\test_retrieval_compare_contract.py:207: in test_invalid_cap_is_rejected\r\n    with pytest.raises(ValueError, match=\"cap\"):\r\nE   Failed: DID NOT RAISE <class 'ValueError'>\r\n______________________ test_invalid_cap_is_rejected[-1] _______________________\r\ntests\\m2\\test_retrieval_compare_contract.py:207: in test_invalid_cap_is_rejected\r\n    with pytest.raises(ValueError, match=\"cap\"):\r\nE   Failed: DID NOT RAISE <class 'ValueError'>\r\n_____________________ test_invalid_cap_is_rejected[True] ______________________\r\ntests\\m2\\test_retrieval_compare_contract.py:207: in test_invalid_cap_is_rejected\r\n    with pytest.raises(ValueError, match=\"cap\"):\r\nE   Failed: DID NOT RAISE <class 'ValueError'>\r\n- generated xml file: D:\\Project\\CAPSTONES\\VGAR\\.m2-pytest-tglyqcd8\\junit.xml -\r\n=========================== short test summary info ===========================\r\nFAILED tests/m2/test_retrieval_compare_contract.py::test_actual_graph_summary_without_arm_is_accepted\r\nFAILED tests/m2/test_retrieval_compare_contract.py::test_different_dataset_binding_is_rejected[dataset_id-other]\r\nFAILED tests/m2/test_retrieval_compare_contract.py::test_different_task_binding_is_rejected[patch_hash]\r\nFAILED tests/m2/test_retrieval_compare_contract.py::test_different_task_binding_is_rejected[repository]\r\nFAILED tests/m2/test_retrieval_compare_contract.py::test_different_task_binding_is_rejected[gold]\r\nFAILED tests/m2/test_retrieval_compare_contract.py::test_duplicate_task_ids_are_rejected[0]\r\nFAILED tests/m2/test_retrieval_compare_contract.py::test_duplicate_task_ids_are_rejected[1]\r\nFAILED tests/m2/test_retrieval_compare_contract.py::test_malformed_graph_run_is_rejected[population]\r\nFAILED tests/m2/test_retrieval_compare_contract.py::test_no_paired_tasks_is_not_success\r\nFAILED tests/m2/test_retrieval_compare_contract.py::test_cap_is_only_separate_rank_sensitivity\r\nFAILED tests/m2/test_retrieval_compare_contract.py::test_invalid_cap_is_rejected[0]\r\nFAILED tests/m2/test_retrieval_compare_contract.py::test_invalid_cap_is_rejected[-1]\r\nFAILED tests/m2/test_retrieval_compare_contract.py::test_invalid_cap_is_rejected[True]\r\n13 failed, 13 passed in 3.46s\r\n",
+  "stderr": "",
+  "timeout_seconds": 240.0,
+  "cases": [
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_actual_graph_summary_without_arm_is_accepted",
+      "status": "FAIL",
+      "duration_ms": 216,
+      "detail": "tests\\m2\\test_retrieval_compare_contract.py:83: in test_actual_graph_summary_without_arm_is_accepted\n    assert set(report[\"summaries\"]) == {\"bm25\", \"graph\", \"graph_f2p\"}\nE   AssertionError: assert {'bm25', 'bm2..., 'graph_f2p'} == {'bm25', 'graph', 'graph_f2p'}\nE     \nE     Extra items in the left set:\nE     'bm25_uncapped'\nE     Use -v to get more diff"
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_comparison_consumes_actual_runner_output",
+      "status": "PASS",
+      "duration_ms": 493,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_different_dataset_binding_is_rejected[dataset_id-other]",
+      "status": "FAIL",
+      "duration_ms": 172,
+      "detail": "tests\\m2\\test_retrieval_compare_contract.py:137: in test_different_dataset_binding_is_rejected\n    with pytest.raises(ValueError, match=\"dataset\"):\nE   Failed: DID NOT RAISE <class 'ValueError'>"
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_different_dataset_binding_is_rejected[dataset_revision-other]",
+      "status": "PASS",
+      "duration_ms": 26,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_different_task_binding_is_rejected[query_hash]",
+      "status": "PASS",
+      "duration_ms": 28,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_different_task_binding_is_rejected[corpus_hash]",
+      "status": "PASS",
+      "duration_ms": 30,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_different_task_binding_is_rejected[base_commit]",
+      "status": "PASS",
+      "duration_ms": 23,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_different_task_binding_is_rejected[patch_hash]",
+      "status": "FAIL",
+      "duration_ms": 167,
+      "detail": "tests\\m2\\test_retrieval_compare_contract.py:147: in test_different_task_binding_is_rejected\n    with pytest.raises(ValueError, match=key):\nE   Failed: DID NOT RAISE <class 'ValueError'>"
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_different_task_binding_is_rejected[repository]",
+      "status": "FAIL",
+      "duration_ms": 141,
+      "detail": "tests\\m2\\test_retrieval_compare_contract.py:147: in test_different_task_binding_is_rejected\n    with pytest.raises(ValueError, match=key):\nE   Failed: DID NOT RAISE <class 'ValueError'>"
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_different_task_binding_is_rejected[gold]",
+      "status": "FAIL",
+      "duration_ms": 154,
+      "detail": "tests\\m2\\test_retrieval_compare_contract.py:147: in test_different_task_binding_is_rejected\n    with pytest.raises(ValueError, match=key):\nE   Failed: DID NOT RAISE <class 'ValueError'>"
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_different_config_is_rejected[budget_tokens-201]",
+      "status": "PASS",
+      "duration_ms": 20,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_different_config_is_rejected[counter_label-other]",
+      "status": "PASS",
+      "duration_ms": 20,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_different_config_is_rejected[scoring_version-other]",
+      "status": "PASS",
+      "duration_ms": 95,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_different_config_is_rejected[snippet_policy-value3]",
+      "status": "PASS",
+      "duration_ms": 40,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_duplicate_task_ids_are_rejected[0]",
+      "status": "FAIL",
+      "duration_ms": 161,
+      "detail": "tests\\m2\\test_retrieval_compare_contract.py:164: in test_duplicate_task_ids_are_rejected\n    with pytest.raises(ValueError, match=\"[Dd]uplicate\"):\nE   Failed: DID NOT RAISE <class 'ValueError'>"
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_duplicate_task_ids_are_rejected[1]",
+      "status": "FAIL",
+      "duration_ms": 103,
+      "detail": "tests\\m2\\test_retrieval_compare_contract.py:164: in test_duplicate_task_ids_are_rejected\n    with pytest.raises(ValueError, match=\"[Dd]uplicate\"):\nE   Failed: DID NOT RAISE <class 'ValueError'>"
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_malformed_graph_run_is_rejected[kind]",
+      "status": "PASS",
+      "duration_ms": 18,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_malformed_graph_run_is_rejected[arms]",
+      "status": "PASS",
+      "duration_ms": 18,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_malformed_graph_run_is_rejected[missing_arm]",
+      "status": "PASS",
+      "duration_ms": 108,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_malformed_graph_run_is_rejected[artifact_hash]",
+      "status": "PASS",
+      "duration_ms": 42,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_malformed_graph_run_is_rejected[population]",
+      "status": "FAIL",
+      "duration_ms": 118,
+      "detail": "tests\\m2\\test_retrieval_compare_contract.py:183: in test_malformed_graph_run_is_rejected\n    with pytest.raises(ValueError):\nE   Failed: DID NOT RAISE <class 'ValueError'>"
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_no_paired_tasks_is_not_success",
+      "status": "FAIL",
+      "duration_ms": 38,
+      "detail": "tests\\m2\\test_retrieval_compare_contract.py:191: in test_no_paired_tasks_is_not_success\n    assert report[\"status\"] == \"NO_PAIRED_TASKS\" and report[\"exit_code\"] != 0\nE   AssertionError: assert ('NO_PAIRED_TASKS' == 'NO_PAIRED_TASKS'\nE     \nE       NO_PAIRED_TASKS and 0 != 0)"
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_cap_is_only_separate_rank_sensitivity",
+      "status": "FAIL",
+      "duration_ms": 211,
+      "detail": "tests\\m2\\test_retrieval_compare_contract.py:200: in test_cap_is_only_separate_rank_sensitivity\n    sensitivity = report[\"rank_sensitivity\"]\n                  ^^^^^^^^^^^^^^^^^^^^^^^^^^\nE   KeyError: 'rank_sensitivity'"
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_invalid_cap_is_rejected[0]",
+      "status": "FAIL",
+      "duration_ms": 212,
+      "detail": "tests\\m2\\test_retrieval_compare_contract.py:207: in test_invalid_cap_is_rejected\n    with pytest.raises(ValueError, match=\"cap\"):\nE   Failed: DID NOT RAISE <class 'ValueError'>"
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_invalid_cap_is_rejected[-1]",
+      "status": "FAIL",
+      "duration_ms": 188,
+      "detail": "tests\\m2\\test_retrieval_compare_contract.py:207: in test_invalid_cap_is_rejected\n    with pytest.raises(ValueError, match=\"cap\"):\nE   Failed: DID NOT RAISE <class 'ValueError'>"
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_invalid_cap_is_rejected[True]",
+      "status": "FAIL",
+      "duration_ms": 217,
+      "detail": "tests\\m2\\test_retrieval_compare_contract.py:207: in test_invalid_cap_is_rejected\n    with pytest.raises(ValueError, match=\"cap\"):\nE   Failed: DID NOT RAISE <class 'ValueError'>"
+    }
+  ],
+  "case_counts": {
+    "passed": 13,
+    "failed": 13,
+    "error": 0,
+    "skipped": 0
+  },
+  "reason": {
+    "code": "TEST_FAILED",
+    "message": "Pytest assertions failed"
+  },
+  "output_truncated": false,
+  "stdout_bytes": 5407,
+  "stderr_bytes": 0
+}

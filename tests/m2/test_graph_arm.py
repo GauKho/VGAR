@@ -121,7 +121,7 @@ def test_compare_runs_end_to_end_and_report(tmp_path):
     finish_run(bm_dir, "retrieval", [bm_row], "summary", aggregate_metrics([bm_row]) | {"completed_tasks": 1}, config)
     gr = run_task()
     write_json(gr_dir / "tasks" / "t-2.json", gr)
-    gr_row = {"instance_id": "t-2", "status": "SUCCEEDED", "arm": "graph",
+    gr_row = {"instance_id": "t-2", "status": "SUCCEEDED",
               "graph_build_seconds": 1.5, "artifact_hash": sha256((gr_dir / "tasks" / "t-2.json").read_bytes()),
               "arms": {a: {"metrics": {k: d["metrics"].get(k)} for k in ("file_recall@5", "function_recall@5")}
                        for a, d in gr["arms"].items()}}
@@ -129,7 +129,7 @@ def test_compare_runs_end_to_end_and_report(tmp_path):
 
     directory, report = compare_runs(bm_dir, gr_dir, tmp_path / "out")
     assert report["status"] == "COMPARED" and report["paired_tasks"] == 1
-    assert set(report["summaries"]) == {"bm25", "bm25_uncapped", "graph", "graph_f2p"}
+    assert set(report["summaries"]) == {"bm25", "graph", "graph_f2p"}
     assert report["graph_diagnostics"]["graph_f2p"]["no_anchor_tasks"] == 1
     text = write_report(bm_dir, comparison=directory, destination=directory / "REPORT.md").read_text(encoding="utf-8")
     assert "graph+F2P" in text and "Delta theo cặp task" in text and "Task cần kiểm tay" in text and "AWAITING_GRAPH" not in text

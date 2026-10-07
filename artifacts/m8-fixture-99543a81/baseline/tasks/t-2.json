@@ -1,0 +1,197 @@
+{
+  "instance_id": "t-2",
+  "repository": "o/r",
+  "base_commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "status": "SUCCEEDED",
+  "arm": "bm25",
+  "query": "login user fails",
+  "query_hash": "sha256:46ca4fa8ab74974c5bcf9d52318edda133f308961f1fbccd767aa954887cbd7d",
+  "patch_hash": "sha256:2f1dcfdab47a8bee03f64fa2c6a36d54cc48f8bf16c6fe92affee67924ab279f",
+  "corpus_hash": "sha256:da3e996176145363520f8ad8177c420b115a85ffeef1d4c68eb62244c77298f3",
+  "corpus_chunk_count": 1,
+  "parse_failures": [],
+  "gold": {
+    "gold_files": [
+      "src/auth.py"
+    ],
+    "gold_functions": [
+      "src/auth.py::auth.login"
+    ],
+    "all_changed_source_files": [
+      "src/auth.py"
+    ],
+    "unretrievable_files": [],
+    "mapping_events": [
+      {
+        "path": "src/auth.py",
+        "side": "old",
+        "line": 2,
+        "function_id": "src/auth.py::auth.login",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "src/auth.py",
+        "side": "new",
+        "line": 2,
+        "function_id": "src/auth.py::auth.login",
+        "disposition": "mapped_function"
+      }
+    ],
+    "function_labels_complete": true,
+    "mapping_coverage": 1.0,
+    "file_retrievability_coverage": 1.0,
+    "label_semantics": "developer_changed_code_proxy_not_complete_relevance"
+  },
+  "rank_hash": "sha256:04c5f199b697f0defdcf54d618d2bd39157961cb387a245976b7af3f2e79b16d",
+  "ranking_total_count": 1,
+  "ranked": [
+    {
+      "rank": 1,
+      "item_id": "src/auth.py::auth.login@1:2",
+      "path": "src/auth.py",
+      "kind": "function",
+      "symbol": "auth.login",
+      "function_id": "src/auth.py::auth.login",
+      "score": 0.7911256992423974,
+      "lines": [
+        1,
+        2
+      ],
+      "snippet_sha256": "sha256:6122cc67d5b0a04d5eafd440e08d935e0be52c83ae75b98955f34f272c37509b"
+    }
+  ],
+  "rank_order": [
+    "src/auth.py::auth.login@1:2"
+  ],
+  "scoring": {
+    "instance_id": "t-2",
+    "arm": "bm25",
+    "scoring_version": "retrieval-scoring-v1",
+    "rank_hash": "sha256:04c5f199b697f0defdcf54d618d2bd39157961cb387a245976b7af3f2e79b16d",
+    "rank": {
+      "metrics": {
+        "file_gold_count": 1,
+        "file_mrr": 1.0,
+        "file_recall@1": 1.0,
+        "file_all_gold@1": 1,
+        "file_recall@3": 1.0,
+        "file_all_gold@3": 1,
+        "file_recall@5": 1.0,
+        "file_all_gold@5": 1,
+        "file_recall@10": 1.0,
+        "file_all_gold@10": 1,
+        "file_recall@20": 1.0,
+        "file_all_gold@20": 1,
+        "function_gold_count": 1,
+        "function_mrr": 1.0,
+        "function_recall@1": 1.0,
+        "function_all_gold@1": 1,
+        "function_recall@3": 1.0,
+        "function_all_gold@3": 1,
+        "function_recall@5": 1.0,
+        "function_all_gold@5": 1,
+        "function_recall@10": 1.0,
+        "function_all_gold@10": 1,
+        "function_recall@20": 1.0,
+        "function_all_gold@20": 1
+      },
+      "reach": {
+        "file": 1.0,
+        "function": 1.0
+      },
+      "size": {
+        "items": 1,
+        "files": 1,
+        "functions": 1
+      }
+    },
+    "packed": {
+      "budget_tokens": 200,
+      "counter_label": "FALLBACK:utf8_bytes_ceil_div4",
+      "snippet_policy": {
+        "max_snippet_lines": 80,
+        "header": true,
+        "overlap": "skip_if_overlaps_different_group"
+      },
+      "metrics": {
+        "gold_file_in_context": 1.0,
+        "gold_function_in_context": 1.0,
+        "all_gold_files_in_context": 1,
+        "all_gold_functions_in_context": 1,
+        "total_tokens": 17,
+        "tokens_to_first_gold_file": 17,
+        "tokens_to_first_gold_function": 17,
+        "items_packed": 1,
+        "skipped": {
+          "token_budget": 0,
+          "overlap": 0
+        },
+        "truncated": false
+      }
+    },
+    "excluded_count": 0,
+    "unmapped": [],
+    "excluded_reasons": {}
+  },
+  "metrics": {
+    "file_gold_count": 1,
+    "file_mrr": 1.0,
+    "file_recall@1": 1.0,
+    "file_all_gold@1": 1,
+    "file_recall@3": 1.0,
+    "file_all_gold@3": 1,
+    "file_recall@5": 1.0,
+    "file_all_gold@5": 1,
+    "file_recall@10": 1.0,
+    "file_all_gold@10": 1,
+    "file_recall@20": 1.0,
+    "file_all_gold@20": 1,
+    "function_gold_count": 1,
+    "function_mrr": 1.0,
+    "function_recall@1": 1.0,
+    "function_all_gold@1": 1,
+    "function_recall@3": 1.0,
+    "function_all_gold@3": 1,
+    "function_recall@5": 1.0,
+    "function_all_gold@5": 1,
+    "function_recall@10": 1.0,
+    "function_all_gold@10": 1,
+    "function_recall@20": 1.0,
+    "function_all_gold@20": 1,
+    "file_reach": 1.0,
+    "function_reach": 1.0,
+    "rank_items": 1,
+    "packed_gold_file_in_context": 1.0,
+    "packed_gold_function_in_context": 1.0,
+    "packed_all_gold_files_in_context": 1,
+    "packed_all_gold_functions_in_context": 1,
+    "context_tokens": 17,
+    "packed_tokens_to_first_gold_file": 17,
+    "packed_tokens_to_first_gold_function": 17,
+    "packed_items_packed": 1,
+    "packed_skipped_token_budget": 0,
+    "packed_skipped_overlap": 0,
+    "packed_truncated": 0,
+    "unmapped_count": 0,
+    "excluded_count": 0,
+    "chunk_seconds": 0.00028960000054212287,
+    "rank_seconds": 0.00038889999996172264,
+    "mapping_coverage": 1.0,
+    "file_retrievability_coverage": 1.0
+  },
+  "candidate_map": [
+    {
+      "chunk_id": "src/auth.py::auth.login@1:2",
+      "parent_id": "src/auth.py::auth.login",
+      "path": "src/auth.py",
+      "symbol": "auth.login",
+      "kind": "function",
+      "start_line": 1,
+      "end_line": 2,
+      "parent_start_line": 1,
+      "parent_end_line": 2,
+      "source_hash": "sha256:6122cc67d5b0a04d5eafd440e08d935e0be52c83ae75b98955f34f272c37509b",
+      "snippet": "def login(user):\n    return user == \"root\"\n"
+    }
+  ]
+}

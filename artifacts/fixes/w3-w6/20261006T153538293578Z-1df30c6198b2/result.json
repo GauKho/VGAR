@@ -1,0 +1,329 @@
+{
+  "run_id": "20261006T153538293578Z-1df30c6198b2",
+  "kind": "milestone-6-retrieval-mcp-green",
+  "status": "PASS",
+  "started_utc": "2026-10-06T15:35:38.293578+00:00",
+  "complete": true,
+  "python": "3.11.6 (tags/v3.11.6:8b6ee5b, Oct  2 2023, 14:57:12) [MSC v.1935 64 bit (AMD64)]",
+  "interpreter": "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe",
+  "platform": "Windows-10-10.0.26300-SP0",
+  "command_argv": [
+    "-c"
+  ],
+  "cwd": "D:\\Project\\CAPSTONES\\VGAR",
+  "command": "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe -m pytest -q -p no:cacheprovider --junitxml=D:\\Project\\CAPSTONES\\VGAR\\.m2-pytest-69y2u9t7\\junit.xml tests/test_w5_w6_retrieval_mcp.py tests/test_mcp_tool_contract.py tests/test_sqlite_graph_service.py tests/test_settings.py tests/test_mcp_client.py",
+  "argv": [
+    "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "--junitxml=D:\\Project\\CAPSTONES\\VGAR\\.m2-pytest-69y2u9t7\\junit.xml",
+    "tests/test_w5_w6_retrieval_mcp.py",
+    "tests/test_mcp_tool_contract.py",
+    "tests/test_sqlite_graph_service.py",
+    "tests/test_settings.py",
+    "tests/test_mcp_client.py"
+  ],
+  "exit_code": 0,
+  "duration_ms": 3688,
+  "stdout": "...............................................                          [100%]\r\n- generated xml file: D:\\Project\\CAPSTONES\\VGAR\\.m2-pytest-69y2u9t7\\junit.xml -\r\n47 passed in 2.86s\r\n",
+  "stderr": "",
+  "timeout_seconds": 120.0,
+  "cases": [
+    {
+      "name": "tests.test_w5_w6_retrieval_mcp::test_relation_depth_is_not_echoed_without_real_traversal[0-get_callers]",
+      "status": "PASS",
+      "duration_ms": 43,
+      "detail": null
+    },
+    {
+      "name": "tests.test_w5_w6_retrieval_mcp::test_relation_depth_is_not_echoed_without_real_traversal[0-get_callees]",
+      "status": "PASS",
+      "duration_ms": 32,
+      "detail": null
+    },
+    {
+      "name": "tests.test_w5_w6_retrieval_mcp::test_relation_depth_is_not_echoed_without_real_traversal[2-get_callers]",
+      "status": "PASS",
+      "duration_ms": 32,
+      "detail": null
+    },
+    {
+      "name": "tests.test_w5_w6_retrieval_mcp::test_relation_depth_is_not_echoed_without_real_traversal[2-get_callees]",
+      "status": "PASS",
+      "duration_ms": 33,
+      "detail": null
+    },
+    {
+      "name": "tests.test_w5_w6_retrieval_mcp::test_relation_depth_is_not_echoed_without_real_traversal[-1-get_callers]",
+      "status": "PASS",
+      "duration_ms": 33,
+      "detail": null
+    },
+    {
+      "name": "tests.test_w5_w6_retrieval_mcp::test_relation_depth_is_not_echoed_without_real_traversal[-1-get_callees]",
+      "status": "PASS",
+      "duration_ms": 32,
+      "detail": null
+    },
+    {
+      "name": "tests.test_w5_w6_retrieval_mcp::test_relation_depth_is_not_echoed_without_real_traversal[True-get_callers]",
+      "status": "PASS",
+      "duration_ms": 33,
+      "detail": null
+    },
+    {
+      "name": "tests.test_w5_w6_retrieval_mcp::test_relation_depth_is_not_echoed_without_real_traversal[True-get_callees]",
+      "status": "PASS",
+      "duration_ms": 40,
+      "detail": null
+    },
+    {
+      "name": "tests.test_w5_w6_retrieval_mcp::test_resource_decodes_percent_encoded_real_graph_node[graph_node]",
+      "status": "PASS",
+      "duration_ms": 39,
+      "detail": null
+    },
+    {
+      "name": "tests.test_w5_w6_retrieval_mcp::test_resource_decodes_percent_encoded_real_graph_node[graph_subgraph]",
+      "status": "PASS",
+      "duration_ms": 40,
+      "detail": null
+    },
+    {
+      "name": "tests.test_w5_w6_retrieval_mcp::test_sqlite_roundtrip_preserves_full_snapshot_source_ranges_and_language",
+      "status": "PASS",
+      "duration_ms": 32,
+      "detail": null
+    },
+    {
+      "name": "tests.test_w5_w6_retrieval_mcp::test_task_handles_survive_service_recreation_and_do_not_mix_issues",
+      "status": "PASS",
+      "duration_ms": 73,
+      "detail": null
+    },
+    {
+      "name": "tests.test_w5_w6_retrieval_mcp::test_mcp_tools_return_frozen_context_and_task_diagnostics_in_metadata",
+      "status": "PASS",
+      "duration_ms": 52,
+      "detail": null
+    },
+    {
+      "name": "tests.test_w5_w6_retrieval_mcp::test_unknown_handle_bad_anchors_budget_and_stale_source_fail_closed",
+      "status": "PASS",
+      "duration_ms": 81,
+      "detail": null
+    },
+    {
+      "name": "tests.test_w5_w6_retrieval_mcp::test_handle_from_prior_graph_version_is_rejected_not_rebound",
+      "status": "PASS",
+      "duration_ms": 58,
+      "detail": null
+    },
+    {
+      "name": "tests.test_w5_w6_retrieval_mcp::test_no_anchor_is_empty_context_with_diagnostics_not_fake_match",
+      "status": "PASS",
+      "duration_ms": 43,
+      "detail": null
+    },
+    {
+      "name": "tests.test_w5_w6_retrieval_mcp::test_demo_backend_reports_retrieval_unavailable_not_fake_evidence",
+      "status": "PASS",
+      "duration_ms": 2,
+      "detail": null
+    },
+    {
+      "name": "tests.test_mcp_tool_contract::test_fixtures_are_valid_envelopes",
+      "status": "PASS",
+      "duration_ms": 1,
+      "detail": null
+    },
+    {
+      "name": "tests.test_mcp_tool_contract::test_success_matches_fixture_shape",
+      "status": "PASS",
+      "duration_ms": 4,
+      "detail": null
+    },
+    {
+      "name": "tests.test_mcp_tool_contract::test_error_matches_fixture_shape",
+      "status": "PASS",
+      "duration_ms": 4,
+      "detail": null
+    },
+    {
+      "name": "tests.test_mcp_tool_contract::test_relation_tools_pass_with_data[get_callers-callers]",
+      "status": "PASS",
+      "duration_ms": 5,
+      "detail": null
+    },
+    {
+      "name": "tests.test_mcp_tool_contract::test_relation_tools_pass_with_data[get_callees-callees]",
+      "status": "PASS",
+      "duration_ms": 6,
+      "detail": null
+    },
+    {
+      "name": "tests.test_mcp_tool_contract::test_unknown_symbol_is_node_not_found[get_callers]",
+      "status": "PASS",
+      "duration_ms": 4,
+      "detail": null
+    },
+    {
+      "name": "tests.test_mcp_tool_contract::test_unknown_symbol_is_node_not_found[get_callees]",
+      "status": "PASS",
+      "duration_ms": 4,
+      "detail": null
+    },
+    {
+      "name": "tests.test_mcp_tool_contract::test_empty_query_and_bad_limit_have_distinct_codes",
+      "status": "PASS",
+      "duration_ms": 3,
+      "detail": null
+    },
+    {
+      "name": "tests.test_mcp_tool_contract::test_unexpected_exception_is_internal_error_without_leak",
+      "status": "PASS",
+      "duration_ms": 3,
+      "detail": null
+    },
+    {
+      "name": "tests.test_mcp_tool_contract::test_every_call_is_audited_including_errors",
+      "status": "PASS",
+      "duration_ms": 5,
+      "detail": null
+    },
+    {
+      "name": "tests.test_mcp_tool_contract::test_request_ids_are_unique",
+      "status": "PASS",
+      "duration_ms": 9,
+      "detail": null
+    },
+    {
+      "name": "tests.test_mcp_tool_contract::test_resource_read_is_audited_and_errors_are_logged",
+      "status": "PASS",
+      "duration_ms": 6,
+      "detail": null
+    },
+    {
+      "name": "tests.test_mcp_tool_contract::test_demo_backend_uses_the_same_error_code",
+      "status": "PASS",
+      "duration_ms": 3,
+      "detail": null
+    },
+    {
+      "name": "tests.test_sqlite_graph_service.SQLiteGraphServiceContractTests::test_error_result_matches_frozen_json_fixture",
+      "status": "PASS",
+      "duration_ms": 34,
+      "detail": null
+    },
+    {
+      "name": "tests.test_sqlite_graph_service.SQLiteGraphServiceContractTests::test_get_callees_matches_m3_contract",
+      "status": "PASS",
+      "duration_ms": 38,
+      "detail": null
+    },
+    {
+      "name": "tests.test_sqlite_graph_service.SQLiteGraphServiceContractTests::test_get_callers_matches_m3_contract",
+      "status": "PASS",
+      "duration_ms": 36,
+      "detail": null
+    },
+    {
+      "name": "tests.test_sqlite_graph_service.SQLiteGraphServiceContractTests::test_get_importers_rejects_non_module",
+      "status": "PASS",
+      "duration_ms": 33,
+      "detail": null
+    },
+    {
+      "name": "tests.test_sqlite_graph_service.SQLiteGraphServiceContractTests::test_get_node_returns_range_and_properties",
+      "status": "PASS",
+      "duration_ms": 39,
+      "detail": null
+    },
+    {
+      "name": "tests.test_sqlite_graph_service.SQLiteGraphServiceContractTests::test_query_validation_has_stable_error_codes",
+      "status": "PASS",
+      "duration_ms": 33,
+      "detail": null
+    },
+    {
+      "name": "tests.test_sqlite_graph_service.SQLiteGraphServiceContractTests::test_relation_confidence_threshold_is_configurable_in_store",
+      "status": "PASS",
+      "duration_ms": 40,
+      "detail": null
+    },
+    {
+      "name": "tests.test_sqlite_graph_service.SQLiteGraphServiceContractTests::test_search_symbols_matches_m3_contract",
+      "status": "PASS",
+      "duration_ms": 46,
+      "detail": null
+    },
+    {
+      "name": "tests.test_sqlite_graph_service.SQLiteGraphServiceContractTests::test_success_results_match_frozen_json_fixtures",
+      "status": "PASS",
+      "duration_ms": 37,
+      "detail": null
+    },
+    {
+      "name": "tests.test_sqlite_graph_service.SQLiteGraphServiceContractTests::test_unknown_symbol_matches_demo_service_behavior",
+      "status": "PASS",
+      "duration_ms": 35,
+      "detail": null
+    },
+    {
+      "name": "tests.test_settings::test_defaults",
+      "status": "PASS",
+      "duration_ms": 3,
+      "detail": null
+    },
+    {
+      "name": "tests.test_settings::test_env_overrides_and_blank_means_default",
+      "status": "PASS",
+      "duration_ms": 3,
+      "detail": null
+    },
+    {
+      "name": "tests.test_settings::test_bad_number_names_the_variable",
+      "status": "PASS",
+      "duration_ms": 2,
+      "detail": null
+    },
+    {
+      "name": "tests.test_settings::test_factory_rejects_unsupported_before_importing_torch",
+      "status": "PASS",
+      "duration_ms": 3,
+      "detail": null
+    },
+    {
+      "name": "tests.test_settings::test_mcp_children_get_vgar_env_but_no_secrets",
+      "status": "PASS",
+      "duration_ms": 2,
+      "detail": null
+    },
+    {
+      "name": "tests.test_mcp_client::test_graph_search_uses_configured_graph_service",
+      "status": "PASS",
+      "duration_ms": 1,
+      "detail": null
+    },
+    {
+      "name": "tests.test_mcp_client::test_graph_relation_tools_return_stable_shape",
+      "status": "PASS",
+      "duration_ms": 1,
+      "detail": null
+    }
+  ],
+  "case_counts": {
+    "passed": 47,
+    "failed": 0,
+    "error": 0,
+    "skipped": 0
+  },
+  "reason": null,
+  "output_truncated": false,
+  "stdout_bytes": 182,
+  "stderr_bytes": 0,
+  "ended_utc": "2026-10-06T15:35:42.027547+00:00"
+}

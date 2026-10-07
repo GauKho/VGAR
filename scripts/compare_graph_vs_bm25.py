@@ -19,7 +19,8 @@ def main() -> int:
     parser.add_argument("root", type=Path)
     parser.add_argument("bm25_run", type=Path)
     parser.add_argument("graph_run", type=Path)
-    parser.add_argument("--bm25-cap", type=int, default=100, help="BM25 rank re-scored on its top-N chunks (Graph keeps <=100 nodes)")
+    parser.add_argument("--bm25-cap", type=int, default=None,
+                        help="Optional top-N rank-only sensitivity; primary BM25 always uses full ranking, context is not repacked")
     parser.add_argument("--seed", type=int, default=0, help="bootstrap seed for the 95%% CI")
     args = parser.parse_args()
     directory, report = compare_runs(args.bm25_run, args.graph_run, args.root / "results" / "retrieval", cap=args.bm25_cap, seed=args.seed)

@@ -1,0 +1,48 @@
+{
+  "run_id": "20261006T151949945828Z-fffbcc724563",
+  "kind": "milestone-5-lifecycle-green",
+  "status": "ERROR",
+  "started_utc": "2026-10-06T15:19:49.946838+00:00",
+  "complete": true,
+  "python": "3.11.6 (tags/v3.11.6:8b6ee5b, Oct  2 2023, 14:57:12) [MSC v.1935 64 bit (AMD64)]",
+  "interpreter": "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe",
+  "platform": "Windows-10-10.0.26300-SP0",
+  "command_argv": [
+    "-c"
+  ],
+  "cwd": "D:\\Project\\CAPSTONES\\VGAR",
+  "command": "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe -m pytest -q -p no:cacheprovider --junitxml=D:\\Project\\CAPSTONES\\VGAR\\.m2-pytest-y1td2k7w\\junit.xml tests/m2/test_retrieval_lifecycle.py tests/m2/test_retrieval_compare_contract.py tests/m2/test_retrieval_cache_integrity.py tests/m2/test_retrieval_dataset.py",
+  "argv": [
+    "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "--junitxml=D:\\Project\\CAPSTONES\\VGAR\\.m2-pytest-y1td2k7w\\junit.xml",
+    "tests/m2/test_retrieval_lifecycle.py",
+    "tests/m2/test_retrieval_compare_contract.py",
+    "tests/m2/test_retrieval_cache_integrity.py",
+    "tests/m2/test_retrieval_dataset.py"
+  ],
+  "exit_code": 4,
+  "duration_ms": 516,
+  "stdout": "\r\n- generated xml file: D:\\Project\\CAPSTONES\\VGAR\\.m2-pytest-y1td2k7w\\junit.xml -\r\nno tests ran in 0.03s\r\n",
+  "stderr": "ERROR: file or directory not found: tests/m2/test_retrieval_dataset.py\r\n\r\n",
+  "timeout_seconds": 180.0,
+  "cases": [],
+  "case_counts": {
+    "passed": 0,
+    "failed": 0,
+    "error": 0,
+    "skipped": 0
+  },
+  "reason": {
+    "code": "VERIFICATION_INCOMPLETE",
+    "message": "Pytest exited 4 before a valid result"
+  },
+  "output_truncated": false,
+  "stdout_bytes": 106,
+  "stderr_bytes": 74,
+  "ended_utc": "2026-10-06T15:19:50.516845+00:00"
+}

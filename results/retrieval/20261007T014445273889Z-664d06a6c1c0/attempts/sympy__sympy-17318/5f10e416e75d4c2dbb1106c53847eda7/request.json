@@ -1,0 +1,101 @@
+{
+  "root": "D:\\Project\\CAPSTONES\\VGAR",
+  "row": {
+    "instance_id": "sympy__sympy-17318",
+    "repo": "sympy/sympy",
+    "base_commit": "d4e0231b08147337745dcf601e62de7eefe2fb2d",
+    "problem_statement": "sqrtdenest raises IndexError\n```\r\n>>> sqrtdenest((3 - sqrt(2)*sqrt(4 + 3*I) + 3*I)/2)\r\nTraceback (most recent call last):\r\n  File \"<stdin>\", line 1, in <module>\r\n  File \"sympy\\simplify\\sqrtdenest.py\", line 132, in sqrtdenest\r\n    z = _sqrtdenest0(expr)\r\n  File \"sympy\\simplify\\sqrtdenest.py\", line 242, in _sqrtdenest0\r\n    return expr.func(*[_sqrtdenest0(a) for a in args])\r\n  File \"sympy\\simplify\\sqrtdenest.py\", line 242, in _sqrtdenest0\r\n    return expr.func(*[_sqrtdenest0(a) for a in args])\r\n  File \"sympy\\simplify\\sqrtdenest.py\", line 235, in _sqrtdenest0\r\n    return _sqrtdenest1(expr)\r\n  File \"sympy\\simplify\\sqrtdenest.py\", line 319, in _sqrtdenest1\r\n    val = _sqrt_match(a)\r\n  File \"sympy\\simplify\\sqrtdenest.py\", line 159, in _sqrt_match\r\n    r, b, a = split_surds(p)\r\n  File \"sympy\\simplify\\radsimp.py\", line 1032, in split_surds\r\n    g, b1, b2 = _split_gcd(*surds)\r\n  File \"sympy\\simplify\\radsimp.py\", line 1068, in _split_gcd\r\n    g = a[0]\r\nIndexError: tuple index out of range\r\n```\r\n\r\nIf an expression cannot be denested it should be returned unchanged.\nIndexError fixed for sqrtdenest.\nFixes #12420 \r\nNow if the expression can't be **denested**, it will be returned unchanged.\r\nOld Result:\r\n```\r\n>>> sqrtdenest((3 - sqrt(2)*sqrt(4 + 3*I) + 3*I)/2)\r\nTraceback (most recent call last):\r\n  File \"<stdin>\", line 1, in <module>\r\n  File \"sympy\\simplify\\sqrtdenest.py\", line 132, in sqrtdenest\r\n    z = _sqrtdenest0(expr)\r\n  File \"sympy\\simplify\\sqrtdenest.py\", line 242, in _sqrtdenest0\r\n    return expr.func(*[_sqrtdenest0(a) for a in args])\r\n  File \"sympy\\simplify\\sqrtdenest.py\", line 242, in _sqrtdenest0\r\n    return expr.func(*[_sqrtdenest0(a) for a in args])\r\n  File \"sympy\\simplify\\sqrtdenest.py\", line 235, in _sqrtdenest0\r\n    return _sqrtdenest1(expr)\r\n  File \"sympy\\simplify\\sqrtdenest.py\", line 319, in _sqrtdenest1\r\n    val = _sqrt_match(a)\r\n  File \"sympy\\simplify\\sqrtdenest.py\", line 159, in _sqrt_match\r\n    r, b, a = split_surds(p)\r\n  File \"sympy\\simplify\\radsimp.py\", line 1032, in split_surds\r\n    g, b1, b2 = _split_gcd(*surds)\r\n  File \"sympy\\simplify\\radsimp.py\", line 1068, in _split_gcd\r\n    g = a[0]\r\nIndexError: tuple index out of range\r\n\r\n```\r\nNew Result:\r\n\r\n```\r\nIn [9]: sqrtdenest((3 - sqrt(2)*sqrt(4 + 3*I) + 3*I)/2)\r\nOut[9]: 3/2 - sqrt(2)*sqrt(4 + 3*I)/2 + 3*I/2\r\n```\n",
+    "difficulty": "15 min - 1 hour",
+    "query_hash": "sha256:8a310f20c7a096a6254d15f08997beaed275576879e726690cc2a8de13e47e3c",
+    "patch_hash": "sha256:9b911775207c165c369d7fdd0af375428405d1adfed3849eccfe95a19c561219",
+    "gold_patch_path": "data/gold/patches/sympy__sympy-17318.patch",
+    "changed_source_files": [
+      "sympy/simplify/radsimp.py",
+      "sympy/simplify/sqrtdenest.py"
+    ],
+    "split": "dev",
+    "is_multi_file": true
+  },
+  "config": {
+    "manifest_hash": "sha256:33ddf233c44832c87abfeb7b62b1aef9fc1e4e8f89f67653fc5e7dc20cc86708",
+    "budget_tokens": 8000,
+    "scoring_version": "retrieval-scoring-v1",
+    "counter_label": "local-hf:Qwen/Qwen3-4B-Instruct-2507@cdbee75f17c01a7cc42f958dc650907174af0554:sha256=aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4:no-special-tokens",
+    "counter_is_fallback": false,
+    "snippet_policy": {
+      "max_snippet_lines": 80,
+      "header": true,
+      "overlap": "skip_if_overlaps_different_group"
+    },
+    "arms": {
+      "graph": {
+        "uses_fail_to_pass": false
+      },
+      "graph_f2p": {
+        "uses_fail_to_pass": true
+      }
+    },
+    "graph": {
+      "use_jedi": false,
+      "builder_hash": "79d37531e460",
+      "source_roots": [
+        "src"
+      ]
+    },
+    "retrieval": {
+      "max_hops": 2,
+      "max_candidates": 100,
+      "min_edge_confidence": 0.6,
+      "weights": {
+        "task_similarity": 0.2,
+        "graph_distance": 0.3,
+        "edge_confidence": 0.2,
+        "failing_test_proximity": 0.2,
+        "public_api_risk": 0.1,
+        "recent_change_frequency": 0.1
+      },
+      "include": "make_include(corpus): not Test and path in is_source corpus"
+    },
+    "limit": null,
+    "task_ids": [
+      "astropy__astropy-13398",
+      "django__django-11138",
+      "matplotlib__matplotlib-14623",
+      "pydata__xarray-3305",
+      "pylint-dev__pylint-4551",
+      "sphinx-doc__sphinx-10673",
+      "sympy__sympy-16597",
+      "astropy__astropy-8707",
+      "django__django-11734",
+      "pydata__xarray-3993",
+      "pylint-dev__pylint-4604",
+      "sphinx-doc__sphinx-8120",
+      "sympy__sympy-17318",
+      "django__django-11885",
+      "pydata__xarray-6992",
+      "pylint-dev__pylint-6386",
+      "sphinx-doc__sphinx-8548",
+      "sympy__sympy-20438",
+      "django__django-12155",
+      "django__django-12325",
+      "django__django-12741",
+      "django__django-13195",
+      "django__django-13212",
+      "django__django-13344",
+      "django__django-13512"
+    ],
+    "execution": {
+      "task_timeout_seconds": 300.0,
+      "offline": true,
+      "rebuild_graphs": false,
+      "rebuild_trees": true
+    }
+  },
+  "failing_tests": [
+    "test_issue_12420"
+  ],
+  "offline": true,
+  "rebuild_graphs": false,
+  "rebuild_trees": true,
+  "tokenizer_manifest": "D:\\Project\\CAPSTONES\\VGAR\\artifacts\\m1\\tokenizer-acceptance\\tokenizer_manifest.json"
+}

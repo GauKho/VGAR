@@ -1,0 +1,217 @@
+[
+  {
+    "id": "F01-producer-consumer-arms",
+    "completed": true,
+    "seconds": 0.0006972999981371686,
+    "detail": {
+      "issue_reproduced": true,
+      "source": "D:\\Project\\CAPSTONES\\VGAR\\results\\retrieval\\20261005T163220576118Z-66891db96f14\\result.json",
+      "run_complete": false,
+      "instance_id": "pydata__xarray-3993",
+      "summary_keys": [
+        "arms",
+        "artifact_hash",
+        "corpus_hash",
+        "duration_seconds",
+        "graph_build_seconds",
+        "graph_cached",
+        "graph_edges",
+        "graph_nodes",
+        "instance_id",
+        "query_hash",
+        "status"
+      ],
+      "arms_keys": [
+        "graph",
+        "graph_f2p"
+      ],
+      "error": "actual-producer-summary has no per-task arm data (field 'arm' missing from task results). This is a BM25-style run, not a graph run. Use scripts/run_graph_retrieval.py to produce the graph arm first, then pass its result dir as the second argument."
+    }
+  },
+  {
+    "id": "F02-mcp-tools",
+    "completed": true,
+    "seconds": 2.3739698999997927,
+    "detail": {
+      "tools": [
+        "get_callees",
+        "get_callers",
+        "search_symbols"
+      ],
+      "missing_w5_w6": [
+        "find_task_anchors",
+        "get_related_context"
+      ]
+    }
+  },
+  {
+    "id": "F03-rollback-vs-snapshot",
+    "completed": true,
+    "seconds": 0.04018569999971078,
+    "detail": {
+      "issue_reproduced": true,
+      "failed_files": [
+        {
+          "path": "src/pkg/bad.py",
+          "error_type": "RuntimeError",
+          "error": "synthetic extraction failure"
+        }
+      ],
+      "anchors": [
+        "vgar:audit:python:function:src/pkg/good.py:pkg.good.ok"
+      ],
+      "error_class": "GraphError",
+      "error": "Source file set differs from graph snapshot; rebuild graph",
+      "details": {
+        "reason": "source_snapshot_mismatch",
+        "added": [
+          "src/pkg/bad.py"
+        ],
+        "missing": []
+      },
+      "stale_symbols": {
+        "pkg.bad.bad": "vgar:audit:python:function:src/pkg/bad.py:pkg.bad.bad"
+      }
+    }
+  },
+  {
+    "id": "F04-F05-cache-scope",
+    "completed": true,
+    "seconds": 0.034662300000491086,
+    "detail": {
+      "graph_source_files": [
+        "data/repositories/trees/foreign/pkg/alien.py",
+        "src/pkg/live.py"
+      ],
+      "workspace_fingerprint_files": [
+        "data/repositories/trees/foreign/pkg/alien.py",
+        "results/retrieval/fake/large.json",
+        "src/pkg/live.py"
+      ]
+    }
+  },
+  {
+    "id": "F05-workspace-limit",
+    "completed": true,
+    "seconds": 0.003709699998580618,
+    "detail": {
+      "issue_reproduced": true,
+      "error": "Source size limit exceeded: D:\\Project\\CAPSTONES\\.audit-tmp\\vgar-review-w1-w6-20261006\\fixtures\\cache-limit\\data\\repositories\\archives\\cache.tar.gz",
+      "note": "Lowered limit on synthetic fixture; no large file allocated."
+    }
+  },
+  {
+    "id": "F06-duplicate-definitions",
+    "completed": true,
+    "seconds": 0.018079599998600315,
+    "detail": {
+      "m1_failed_files": [
+        {
+          "path": "src/pkg/mod.py",
+          "error_type": "ValueError",
+          "error": "duplicate node id while building graph: vgar:audit:python:function:src/pkg/mod.py:pkg.mod.choose"
+        }
+      ],
+      "m1_function_count": 0,
+      "m2_functions": {
+        "src/pkg/mod.py": [
+          {
+            "parent_id": "src/pkg/mod.py::pkg.mod.choose@definition:1:2",
+            "path": "src/pkg/mod.py",
+            "symbol": "pkg.mod.choose",
+            "kind": "function",
+            "start_line": 1,
+            "start_col": 0,
+            "end_line": 2,
+            "end_col": 12,
+            "definition_line": 1,
+            "depth": 0
+          },
+          {
+            "parent_id": "src/pkg/mod.py::pkg.mod.choose@definition:4:5",
+            "path": "src/pkg/mod.py",
+            "symbol": "pkg.mod.choose",
+            "kind": "function",
+            "start_line": 4,
+            "start_col": 0,
+            "end_line": 5,
+            "end_col": 12,
+            "definition_line": 4,
+            "depth": 0
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "F06-conditional-definitions",
+    "completed": true,
+    "seconds": 0.023826199998438824,
+    "detail": {
+      "m1_function_count": 0,
+      "m2_function_count": 2
+    }
+  },
+  {
+    "id": "F07-tree-integrity",
+    "completed": true,
+    "seconds": 0.045296699998289114,
+    "detail": {
+      "issue_reproduced": true,
+      "reported_tree_hash": "sha256:70825fba57e2f9b6109ea4129f1adc3c571a36720633294b93dfdb906bbc75c6",
+      "actual_content": "def f():\n    return 999\n",
+      "note": "Cache accepted modified tree with unchanged marker."
+    }
+  },
+  {
+    "id": "F08-cap-scoring",
+    "completed": true,
+    "seconds": 9.240000144927762e-05,
+    "detail": {
+      "metrics_after_cap1": {
+        "packed_gold_file_in_context": 1,
+        "packed_gold_function_in_context": 1,
+        "context_tokens": 30,
+        "file_gold_count": 1,
+        "file_mrr": 0,
+        "file_recall@1": 0.0,
+        "file_all_gold@1": 0,
+        "file_recall@3": 0.0,
+        "file_all_gold@3": 0,
+        "file_recall@5": 0.0,
+        "file_all_gold@5": 0,
+        "file_recall@10": 0.0,
+        "file_all_gold@10": 0,
+        "file_recall@20": 0.0,
+        "file_all_gold@20": 0,
+        "function_gold_count": 1,
+        "function_mrr": 0,
+        "function_recall@1": 0.0,
+        "function_all_gold@1": 0,
+        "function_recall@3": 0.0,
+        "function_all_gold@3": 0,
+        "function_recall@5": 0.0,
+        "function_all_gold@5": 0,
+        "function_recall@10": 0.0,
+        "function_all_gold@10": 0,
+        "function_recall@20": 0.0,
+        "function_all_gold@20": 0,
+        "file_reach": 0.0,
+        "function_reach": 0.0,
+        "rank_items": 1
+      },
+      "note": "Packed values remain from uncapped context; intentional implementation but mixed comparison populations."
+    }
+  },
+  {
+    "id": "F09-setter-rule",
+    "completed": true,
+    "seconds": 1.089999932446517e-05,
+    "detail": {
+      "@value.setter": true,
+      "@app.get('/users')": true,
+      "@pytest.mark.parametrize('x', [1])": true,
+      "@typing.overload": true
+    }
+  }
+]

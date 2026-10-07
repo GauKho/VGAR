@@ -1,0 +1,52 @@
+{
+  "run_id": "20261006T160221867986Z-c90fd5780d64",
+  "kind": "milestone-8-rebuild-tree-red",
+  "status": "FAIL",
+  "started_utc": "2026-10-06T16:02:21.867986+00:00",
+  "complete": true,
+  "python": "3.11.6 (tags/v3.11.6:8b6ee5b, Oct  2 2023, 14:57:12) [MSC v.1935 64 bit (AMD64)]",
+  "interpreter": "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe",
+  "platform": "Windows-10-10.0.26300-SP0",
+  "command_argv": [
+    "-c"
+  ],
+  "cwd": "D:\\Project\\CAPSTONES\\VGAR",
+  "command": "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe -m pytest -q -p no:cacheprovider --junitxml=D:\\Project\\CAPSTONES\\VGAR\\.m2-pytest-xhs4e1ow\\junit.xml tests/m2/test_retrieval_lifecycle.py::test_explicit_tree_rebuild_recovers_crlf_cache_without_mutating_legacy_tree",
+  "argv": [
+    "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "--junitxml=D:\\Project\\CAPSTONES\\VGAR\\.m2-pytest-xhs4e1ow\\junit.xml",
+    "tests/m2/test_retrieval_lifecycle.py::test_explicit_tree_rebuild_recovers_crlf_cache_without_mutating_legacy_tree"
+  ],
+  "exit_code": 1,
+  "duration_ms": 2516,
+  "stdout": "F                                                                        [100%]\r\n================================== FAILURES ===================================\r\n_ test_explicit_tree_rebuild_recovers_crlf_cache_without_mutating_legacy_tree _\r\ntests\\m2\\test_retrieval_lifecycle.py:247: in test_explicit_tree_rebuild_recovers_crlf_cache_without_mutating_legacy_tree\r\n    assert code == 0\r\nE   assert 2 == 0\r\n---------------------------- Captured stdout call -----------------------------\r\nrun: C:\\Users\\pc\\AppData\\Local\\Temp\\pytest-of-pc\\pytest-470\\test_explicit_tree_rebuild_rec0\\results\\retrieval\\20261006T160223215868Z-a1b9d90f2739\r\nWARNING: fallback bytes/4 is diagnostic, not official benchmark accounting\r\n[1/1] fixture-0: FAILED (0.6s)\r\nstatus: PARTIAL_FAILURE; exit: 1\r\n---------------------------- Captured stderr call -----------------------------\r\nusage: runner [-h] [--budget-tokens BUDGET_TOKENS] [--limit LIMIT] [--offline]\r\n              [--no-jedi] [--rebuild-graphs] [--max-hops MAX_HOPS]\r\n              [--max-candidates MAX_CANDIDATES] [--allow-heldout]\r\n              [--task-timeout-seconds TASK_TIMEOUT_SECONDS]\r\n              [--resume-run RESUME_RUN] [--task-id TASK_ID]\r\n              (--tokenizer-manifest TOKENIZER_MANIFEST | --allow-fallback-counter)\r\n              root manifest\r\nrunner: error: unrecognized arguments: --rebuild-trees\r\n- generated xml file: D:\\Project\\CAPSTONES\\VGAR\\.m2-pytest-xhs4e1ow\\junit.xml -\r\n=========================== short test summary info ===========================\r\nFAILED tests/m2/test_retrieval_lifecycle.py::test_explicit_tree_rebuild_recovers_crlf_cache_without_mutating_legacy_tree\r\n1 failed in 1.84s\r\n",
+  "stderr": "",
+  "timeout_seconds": 60.0,
+  "cases": [
+    {
+      "name": "tests.m2.test_retrieval_lifecycle::test_explicit_tree_rebuild_recovers_crlf_cache_without_mutating_legacy_tree",
+      "status": "FAIL",
+      "duration_ms": 1636,
+      "detail": "tests\\m2\\test_retrieval_lifecycle.py:247: in test_explicit_tree_rebuild_recovers_crlf_cache_without_mutating_legacy_tree\n    assert code == 0\nE   assert 2 == 0"
+    }
+  ],
+  "case_counts": {
+    "passed": 0,
+    "failed": 1,
+    "error": 0,
+    "skipped": 0
+  },
+  "reason": {
+    "code": "TEST_FAILED",
+    "message": "Pytest assertions failed"
+  },
+  "output_truncated": false,
+  "stdout_bytes": 1666,
+  "stderr_bytes": 0,
+  "ended_utc": "2026-10-06T16:02:24.422269+00:00"
+}

@@ -1,0 +1,2118 @@
+{
+  "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548",
+  "repo_key": "smoke/sample-repo",
+  "repository_revision": "smoke-rev",
+  "nodes": [
+    {
+      "id": "vgar:smoke/sample-repo:repository",
+      "type": "Repository",
+      "repo_key": "smoke/sample-repo",
+      "name": "sample_repo",
+      "qualified_name": "smoke/sample-repo",
+      "path": null,
+      "language": null,
+      "range": null,
+      "properties": {
+        "root_uri": "file:///D:/Project/CAPSTONES/VGAR/tests/fixtures/sample_repo",
+        "default_language": "python",
+        "repository_revision": "smoke-rev"
+      },
+      "content_hash": "sha256:5bd97161dd6a8e5456a9c4579c861641cc53d0cad60a8efdef03a406f98ebdf4",
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "vgar:smoke/sample-repo:python:file:src/auth/service.py",
+      "type": "File",
+      "repo_key": "smoke/sample-repo",
+      "name": "service.py",
+      "qualified_name": "src/auth/service.py",
+      "path": "src/auth/service.py",
+      "language": "python",
+      "range": {
+        "start_line": 1,
+        "start_col": 0,
+        "end_line": 3,
+        "end_col": 0,
+        "start_byte": 0,
+        "end_byte": 90
+      },
+      "properties": {
+        "extension": ".py",
+        "size_bytes": 90,
+        "parse_status": "parsed",
+        "is_test_file": false
+      },
+      "content_hash": "sha256:1dc9bcb1bb24734e340388158b1e1effd6611252b9024d1098e5b5e637a852b6",
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "vgar:smoke/sample-repo:python:module:src/auth/service.py:auth.service",
+      "type": "Module",
+      "repo_key": "smoke/sample-repo",
+      "name": "service",
+      "qualified_name": "auth.service",
+      "path": "src/auth/service.py",
+      "language": "python",
+      "range": {
+        "start_line": 1,
+        "start_col": 0,
+        "end_line": 3,
+        "end_col": 0,
+        "start_byte": 0,
+        "end_byte": 90
+      },
+      "properties": {
+        "module_name": "auth.service",
+        "is_package": false,
+        "is_external": false,
+        "resolution_status": "resolved"
+      },
+      "content_hash": "sha256:1dc9bcb1bb24734e340388158b1e1effd6611252b9024d1098e5b5e637a852b6",
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "vgar:smoke/sample-repo:python:function:src/auth/service.py:auth.service.login",
+      "type": "Function",
+      "repo_key": "smoke/sample-repo",
+      "name": "login",
+      "qualified_name": "auth.service.login",
+      "path": "src/auth/service.py",
+      "language": "python",
+      "range": {
+        "start_line": 1,
+        "start_col": 0,
+        "end_line": 2,
+        "end_col": 38,
+        "start_byte": 0,
+        "end_byte": 88
+      },
+      "properties": {
+        "signature": "def login(username: str, password: str) -> bool",
+        "parameters": [
+          "username",
+          "password"
+        ],
+        "return_annotation": "bool",
+        "decorators": [],
+        "is_async": false,
+        "visibility": "public"
+      },
+      "content_hash": "sha256:8847dd996b005eb2820d47c36abeb7906b339ef3c073f5677d7d359f54e87a36",
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "vgar:smoke/sample-repo:python:callsite:src/auth/service.py:auth.service.login:7d299049e372",
+      "type": "CallSite",
+      "repo_key": "smoke/sample-repo",
+      "name": "bool",
+      "qualified_name": "auth.service.login::<call:1>",
+      "path": "src/auth/service.py",
+      "language": "python",
+      "range": {
+        "start_line": 2,
+        "start_col": 11,
+        "end_line": 2,
+        "end_col": 38,
+        "start_byte": 61,
+        "end_byte": 88
+      },
+      "properties": {
+        "callee_text": "bool",
+        "argument_count": 1,
+        "dispatch_kind": "direct",
+        "resolution_status": "unresolved",
+        "candidate_count": 0
+      },
+      "content_hash": "sha256:952c7d9e8c0b74b363d7c6799ddd8847efe881ed5463a9382c908b024276cd1a",
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "vgar:smoke/sample-repo:python:file:src/relative_pkg/__init__.py",
+      "type": "File",
+      "repo_key": "smoke/sample-repo",
+      "name": "__init__.py",
+      "qualified_name": "src/relative_pkg/__init__.py",
+      "path": "src/relative_pkg/__init__.py",
+      "language": "python",
+      "range": {
+        "start_line": 1,
+        "start_col": 0,
+        "end_line": 2,
+        "end_col": 0,
+        "start_byte": 0,
+        "end_byte": 38
+      },
+      "properties": {
+        "extension": ".py",
+        "size_bytes": 38,
+        "parse_status": "parsed",
+        "is_test_file": false
+      },
+      "content_hash": "sha256:6974fbd775fd7153ea2db731451d553f434c15f6520a92885c5cc90fd7ff0d67",
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "vgar:smoke/sample-repo:python:module:src/relative_pkg/__init__.py:relative_pkg",
+      "type": "Module",
+      "repo_key": "smoke/sample-repo",
+      "name": "relative_pkg",
+      "qualified_name": "relative_pkg",
+      "path": "src/relative_pkg/__init__.py",
+      "language": "python",
+      "range": {
+        "start_line": 1,
+        "start_col": 0,
+        "end_line": 2,
+        "end_col": 0,
+        "start_byte": 0,
+        "end_byte": 38
+      },
+      "properties": {
+        "module_name": "relative_pkg",
+        "is_package": true,
+        "is_external": false,
+        "resolution_status": "resolved"
+      },
+      "content_hash": "sha256:6974fbd775fd7153ea2db731451d553f434c15f6520a92885c5cc90fd7ff0d67",
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "vgar:smoke/sample-repo:python:import:src/relative_pkg/__init__.py:1:0:155c861c26a7",
+      "type": "Import",
+      "repo_key": "smoke/sample-repo",
+      "name": "RelativeService",
+      "qualified_name": "relative_pkg::<import:RelativeService:155c861c26a7>",
+      "path": "src/relative_pkg/__init__.py",
+      "language": "python",
+      "range": {
+        "start_line": 1,
+        "start_col": 0,
+        "end_line": 1,
+        "end_col": 36,
+        "start_byte": 0,
+        "end_byte": 36
+      },
+      "properties": {
+        "raw_text": "from .service import RelativeService",
+        "imported_module": ".service",
+        "imported_name": "RelativeService",
+        "alias": null,
+        "level": 1,
+        "resolution_status": "resolved"
+      },
+      "content_hash": "sha256:7e27f367b9cc258627fc94806d8e1cad3fff376814890ca10e0a70b03f9aa8cb",
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "vgar:smoke/sample-repo:python:file:src/relative_pkg/base.py",
+      "type": "File",
+      "repo_key": "smoke/sample-repo",
+      "name": "base.py",
+      "qualified_name": "src/relative_pkg/base.py",
+      "path": "src/relative_pkg/base.py",
+      "language": "python",
+      "range": {
+        "start_line": 1,
+        "start_col": 0,
+        "end_line": 3,
+        "end_col": 0,
+        "start_byte": 0,
+        "end_byte": 31
+      },
+      "properties": {
+        "extension": ".py",
+        "size_bytes": 31,
+        "parse_status": "parsed",
+        "is_test_file": false
+      },
+      "content_hash": "sha256:0597545910aa6d03d703680916528665baf6c7037da5ae694b23c51268e17f6f",
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "vgar:smoke/sample-repo:python:module:src/relative_pkg/base.py:relative_pkg.base",
+      "type": "Module",
+      "repo_key": "smoke/sample-repo",
+      "name": "base",
+      "qualified_name": "relative_pkg.base",
+      "path": "src/relative_pkg/base.py",
+      "language": "python",
+      "range": {
+        "start_line": 1,
+        "start_col": 0,
+        "end_line": 3,
+        "end_col": 0,
+        "start_byte": 0,
+        "end_byte": 31
+      },
+      "properties": {
+        "module_name": "relative_pkg.base",
+        "is_package": false,
+        "is_external": false,
+        "resolution_status": "resolved"
+      },
+      "content_hash": "sha256:0597545910aa6d03d703680916528665baf6c7037da5ae694b23c51268e17f6f",
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "vgar:smoke/sample-repo:python:class:src/relative_pkg/base.py:relative_pkg.base.RelativeBase",
+      "type": "Class",
+      "repo_key": "smoke/sample-repo",
+      "name": "RelativeBase",
+      "qualified_name": "relative_pkg.base.RelativeBase",
+      "path": "src/relative_pkg/base.py",
+      "language": "python",
+      "range": {
+        "start_line": 1,
+        "start_col": 0,
+        "end_line": 2,
+        "end_col": 8,
+        "start_byte": 0,
+        "end_byte": 29
+      },
+      "properties": {
+        "bases": [],
+        "decorators": [],
+        "is_abstract": false,
+        "docstring_summary": null
+      },
+      "content_hash": "sha256:e5e837c7cc98191f2881528624fef50193e8cd77eb9061d2edff50ae4b1b88b5",
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "vgar:smoke/sample-repo:python:file:src/relative_pkg/service.py",
+      "type": "File",
+      "repo_key": "smoke/sample-repo",
+      "name": "service.py",
+      "qualified_name": "src/relative_pkg/service.py",
+      "path": "src/relative_pkg/service.py",
+      "language": "python",
+      "range": {
+        "start_line": 1,
+        "start_col": 0,
+        "end_line": 8,
+        "end_col": 0,
+        "start_byte": 0,
+        "end_byte": 157
+      },
+      "properties": {
+        "extension": ".py",
+        "size_bytes": 157,
+        "parse_status": "parsed",
+        "is_test_file": false
+      },
+      "content_hash": "sha256:2af092ed26cbbcf8c6a2015f2d83246e7c6ed4cdb662f776cf68fcacbe308b9f",
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "vgar:smoke/sample-repo:python:module:src/relative_pkg/service.py:relative_pkg.service",
+      "type": "Module",
+      "repo_key": "smoke/sample-repo",
+      "name": "service",
+      "qualified_name": "relative_pkg.service",
+      "path": "src/relative_pkg/service.py",
+      "language": "python",
+      "range": {
+        "start_line": 1,
+        "start_col": 0,
+        "end_line": 8,
+        "end_col": 0,
+        "start_byte": 0,
+        "end_byte": 157
+      },
+      "properties": {
+        "module_name": "relative_pkg.service",
+        "is_package": false,
+        "is_external": false,
+        "resolution_status": "resolved"
+      },
+      "content_hash": "sha256:2af092ed26cbbcf8c6a2015f2d83246e7c6ed4cdb662f776cf68fcacbe308b9f",
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "vgar:smoke/sample-repo:python:import:src/relative_pkg/service.py:1:0:8a1291372acc",
+      "type": "Import",
+      "repo_key": "smoke/sample-repo",
+      "name": "RelativeBase",
+      "qualified_name": "relative_pkg.service::<import:RelativeBase:8a1291372acc>",
+      "path": "src/relative_pkg/service.py",
+      "language": "python",
+      "range": {
+        "start_line": 1,
+        "start_col": 0,
+        "end_line": 1,
+        "end_col": 30,
+        "start_byte": 0,
+        "end_byte": 30
+      },
+      "properties": {
+        "raw_text": "from .base import RelativeBase",
+        "imported_module": ".base",
+        "imported_name": "RelativeBase",
+        "alias": null,
+        "level": 1,
+        "resolution_status": "resolved"
+      },
+      "content_hash": "sha256:66f72038789b2af6511063c0e305897a0745378410ec3c42a4a87efbd2573ffc",
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "vgar:smoke/sample-repo:python:class:src/relative_pkg/service.py:relative_pkg.service.RelativeService",
+      "type": "Class",
+      "repo_key": "smoke/sample-repo",
+      "name": "RelativeService",
+      "qualified_name": "relative_pkg.service.RelativeService",
+      "path": "src/relative_pkg/service.py",
+      "language": "python",
+      "range": {
+        "start_line": 4,
+        "start_col": 0,
+        "end_line": 7,
+        "end_col": 20,
+        "start_byte": 36,
+        "end_byte": 155
+      },
+      "properties": {
+        "bases": [
+          "RelativeBase"
+        ],
+        "decorators": [],
+        "is_abstract": false,
+        "docstring_summary": null
+      },
+      "content_hash": "sha256:7ee4cea060066e24537e595745e18c8b34792bddd05fda98c7cd30f4e6713a79",
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "vgar:smoke/sample-repo:python:method:src/relative_pkg/service.py:relative_pkg.service.RelativeService.create",
+      "type": "Method",
+      "repo_key": "smoke/sample-repo",
+      "name": "create",
+      "qualified_name": "relative_pkg.service.RelativeService.create",
+      "path": "src/relative_pkg/service.py",
+      "language": "python",
+      "range": {
+        "start_line": 6,
+        "start_col": 4,
+        "end_line": 7,
+        "end_col": 20,
+        "start_byte": 96,
+        "end_byte": 155
+      },
+      "properties": {
+        "signature": "def create(cls) -> \"RelativeService\"",
+        "parameters": [
+          "cls"
+        ],
+        "return_annotation": "\"RelativeService\"",
+        "decorators": [
+          "@classmethod"
+        ],
+        "is_async": false,
+        "visibility": "public",
+        "method_kind": "class",
+        "owner_class_id": "vgar:smoke/sample-repo:python:class:src/relative_pkg/service.py:relative_pkg.service.RelativeService"
+      },
+      "content_hash": "sha256:5fb056804939c20830d1f4b65f1df6a4a08c89a07bd20845f093f4d264aeeeb3",
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "vgar:smoke/sample-repo:python:callsite:src/relative_pkg/service.py:relative_pkg.service.RelativeService.create:e662ad1a0eac",
+      "type": "CallSite",
+      "repo_key": "smoke/sample-repo",
+      "name": "cls",
+      "qualified_name": "relative_pkg.service.RelativeService.create::<call:1>",
+      "path": "src/relative_pkg/service.py",
+      "language": "python",
+      "range": {
+        "start_line": 7,
+        "start_col": 15,
+        "end_line": 7,
+        "end_col": 20,
+        "start_byte": 150,
+        "end_byte": 155
+      },
+      "properties": {
+        "callee_text": "cls",
+        "argument_count": 0,
+        "dispatch_kind": "constructor",
+        "resolution_status": "resolved",
+        "candidate_count": 1
+      },
+      "content_hash": "sha256:f401e81004c7145376cfab923786eba07e567aa0e39c777fabf9e7131c977f51",
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "vgar:smoke/sample-repo:python:file:src/users/base.py",
+      "type": "File",
+      "repo_key": "smoke/sample-repo",
+      "name": "base.py",
+      "qualified_name": "src/users/base.py",
+      "path": "src/users/base.py",
+      "language": "python",
+      "range": {
+        "start_line": 1,
+        "start_col": 0,
+        "end_line": 3,
+        "end_col": 0,
+        "start_byte": 0,
+        "end_byte": 30
+      },
+      "properties": {
+        "extension": ".py",
+        "size_bytes": 30,
+        "parse_status": "parsed",
+        "is_test_file": false
+      },
+      "content_hash": "sha256:d8142b2fa57b168e54cfea8edde5750f8f407c1027bf3cc3c1c874c3799983ca",
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "vgar:smoke/sample-repo:python:module:src/users/base.py:users.base",
+      "type": "Module",
+      "repo_key": "smoke/sample-repo",
+      "name": "base",
+      "qualified_name": "users.base",
+      "path": "src/users/base.py",
+      "language": "python",
+      "range": {
+        "start_line": 1,
+        "start_col": 0,
+        "end_line": 3,
+        "end_col": 0,
+        "start_byte": 0,
+        "end_byte": 30
+      },
+      "properties": {
+        "module_name": "users.base",
+        "is_package": false,
+        "is_external": false,
+        "resolution_status": "resolved"
+      },
+      "content_hash": "sha256:d8142b2fa57b168e54cfea8edde5750f8f407c1027bf3cc3c1c874c3799983ca",
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "vgar:smoke/sample-repo:python:class:src/users/base.py:users.base.BaseService",
+      "type": "Class",
+      "repo_key": "smoke/sample-repo",
+      "name": "BaseService",
+      "qualified_name": "users.base.BaseService",
+      "path": "src/users/base.py",
+      "language": "python",
+      "range": {
+        "start_line": 1,
+        "start_col": 0,
+        "end_line": 2,
+        "end_col": 8,
+        "start_byte": 0,
+        "end_byte": 28
+      },
+      "properties": {
+        "bases": [],
+        "decorators": [],
+        "is_abstract": false,
+        "docstring_summary": null
+      },
+      "content_hash": "sha256:9d80a441184c2bfb967baba6864f56bdcc8024b8ff5c9d19f8598a75cbbe1109",
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "vgar:smoke/sample-repo:python:file:src/users/service.py",
+      "type": "File",
+      "repo_key": "smoke/sample-repo",
+      "name": "service.py",
+      "qualified_name": "src/users/service.py",
+      "path": "src/users/service.py",
+      "language": "python",
+      "range": {
+        "start_line": 1,
+        "start_col": 0,
+        "end_line": 14,
+        "end_col": 0,
+        "start_byte": 0,
+        "end_byte": 302
+      },
+      "properties": {
+        "extension": ".py",
+        "size_bytes": 302,
+        "parse_status": "parsed",
+        "is_test_file": false
+      },
+      "content_hash": "sha256:99d61c0a7d72d5e4d2e8339b99104095bec18d0095a8a6273d7cee40c3f6ad31",
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "vgar:smoke/sample-repo:python:module:src/users/service.py:users.service",
+      "type": "Module",
+      "repo_key": "smoke/sample-repo",
+      "name": "service",
+      "qualified_name": "users.service",
+      "path": "src/users/service.py",
+      "language": "python",
+      "range": {
+        "start_line": 1,
+        "start_col": 0,
+        "end_line": 14,
+        "end_col": 0,
+        "start_byte": 0,
+        "end_byte": 302
+      },
+      "properties": {
+        "module_name": "users.service",
+        "is_package": false,
+        "is_external": false,
+        "resolution_status": "resolved"
+      },
+      "content_hash": "sha256:99d61c0a7d72d5e4d2e8339b99104095bec18d0095a8a6273d7cee40c3f6ad31",
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "vgar:smoke/sample-repo:python:import:src/users/service.py:1:0:38619e88d4eb",
+      "type": "Import",
+      "repo_key": "smoke/sample-repo",
+      "name": "BaseService",
+      "qualified_name": "users.service::<import:BaseService:38619e88d4eb>",
+      "path": "src/users/service.py",
+      "language": "python",
+      "range": {
+        "start_line": 1,
+        "start_col": 0,
+        "end_line": 1,
+        "end_col": 34,
+        "start_byte": 0,
+        "end_byte": 34
+      },
+      "properties": {
+        "raw_text": "from users.base import BaseService",
+        "imported_module": "users.base",
+        "imported_name": "BaseService",
+        "alias": null,
+        "level": 0,
+        "resolution_status": "resolved"
+      },
+      "content_hash": "sha256:5e44b0338d3cef487b7cdad71ad944aaada52b77f4970ae2422c91511c5d091a",
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "vgar:smoke/sample-repo:python:class:src/users/service.py:users.service.UserService",
+      "type": "Class",
+      "repo_key": "smoke/sample-repo",
+      "name": "UserService",
+      "qualified_name": "users.service.UserService",
+      "path": "src/users/service.py",
+      "language": "python",
+      "range": {
+        "start_line": 4,
+        "start_col": 0,
+        "end_line": 9,
+        "end_col": 35,
+        "start_byte": 40,
+        "end_byte": 227
+      },
+      "properties": {
+        "bases": [
+          "BaseService"
+        ],
+        "decorators": [],
+        "is_abstract": false,
+        "docstring_summary": null
+      },
+      "content_hash": "sha256:0efb16e18cb227c592f0030d085ed9d7ee8f122b2a02d4c75bc48ae23ac90933",
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "vgar:smoke/sample-repo:python:method:src/users/service.py:users.service.UserService.normalize",
+      "type": "Method",
+      "repo_key": "smoke/sample-repo",
+      "name": "normalize",
+      "qualified_name": "users.service.UserService.normalize",
+      "path": "src/users/service.py",
+      "language": "python",
+      "range": {
+        "start_line": 5,
+        "start_col": 4,
+        "end_line": 6,
+        "end_col": 27,
+        "start_byte": 77,
+        "end_byte": 144
+      },
+      "properties": {
+        "signature": "def normalize(self, name: str) -> str",
+        "parameters": [
+          "self",
+          "name"
+        ],
+        "return_annotation": "str",
+        "decorators": [],
+        "is_async": false,
+        "visibility": "public",
+        "method_kind": "instance",
+        "owner_class_id": "vgar:smoke/sample-repo:python:class:src/users/service.py:users.service.UserService"
+      },
+      "content_hash": "sha256:325263a4e079b068e7e8d209bc276e6c34f3f6350b22957b273292a27f73c997",
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "vgar:smoke/sample-repo:python:callsite:src/users/service.py:users.service.UserService.normalize:2ab30f9c79d1",
+      "type": "CallSite",
+      "repo_key": "smoke/sample-repo",
+      "name": "name.strip",
+      "qualified_name": "users.service.UserService.normalize::<call:1>",
+      "path": "src/users/service.py",
+      "language": "python",
+      "range": {
+        "start_line": 6,
+        "start_col": 15,
+        "end_line": 6,
+        "end_col": 27,
+        "start_byte": 132,
+        "end_byte": 144
+      },
+      "properties": {
+        "callee_text": "name.strip",
+        "argument_count": 0,
+        "dispatch_kind": "attribute",
+        "resolution_status": "unresolved",
+        "candidate_count": 0
+      },
+      "content_hash": "sha256:e4ee4c2cedc31a3b9e016d3e8a7710cc7907b986d18c3c47b0db7b3ed122ba0e",
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "vgar:smoke/sample-repo:python:method:src/users/service.py:users.service.UserService.find_user",
+      "type": "Method",
+      "repo_key": "smoke/sample-repo",
+      "name": "find_user",
+      "qualified_name": "users.service.UserService.find_user",
+      "path": "src/users/service.py",
+      "language": "python",
+      "range": {
+        "start_line": 8,
+        "start_col": 4,
+        "end_line": 9,
+        "end_col": 35,
+        "start_byte": 152,
+        "end_byte": 227
+      },
+      "properties": {
+        "signature": "def find_user(self, name: str) -> str",
+        "parameters": [
+          "self",
+          "name"
+        ],
+        "return_annotation": "str",
+        "decorators": [],
+        "is_async": false,
+        "visibility": "public",
+        "method_kind": "instance",
+        "owner_class_id": "vgar:smoke/sample-repo:python:class:src/users/service.py:users.service.UserService"
+      },
+      "content_hash": "sha256:eebb80116aaf04a2aec18ebb20a267963fc53621528827ba1c20d8aea1e1d974",
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "vgar:smoke/sample-repo:python:callsite:src/users/service.py:users.service.UserService.find_user:095568945168",
+      "type": "CallSite",
+      "repo_key": "smoke/sample-repo",
+      "name": "self.normalize",
+      "qualified_name": "users.service.UserService.find_user::<call:1>",
+      "path": "src/users/service.py",
+      "language": "python",
+      "range": {
+        "start_line": 9,
+        "start_col": 15,
+        "end_line": 9,
+        "end_col": 35,
+        "start_byte": 207,
+        "end_byte": 227
+      },
+      "properties": {
+        "callee_text": "self.normalize",
+        "argument_count": 1,
+        "dispatch_kind": "attribute",
+        "resolution_status": "resolved",
+        "candidate_count": 1
+      },
+      "content_hash": "sha256:444b6052401772e0f1979a2aa14580154f86c8dad7ecb59149845e0bba839317",
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "vgar:smoke/sample-repo:python:function:src/users/service.py:users.service.create_user_service",
+      "type": "Function",
+      "repo_key": "smoke/sample-repo",
+      "name": "create_user_service",
+      "qualified_name": "users.service.create_user_service",
+      "path": "src/users/service.py",
+      "language": "python",
+      "range": {
+        "start_line": 12,
+        "start_col": 0,
+        "end_line": 13,
+        "end_col": 24,
+        "start_byte": 233,
+        "end_byte": 300
+      },
+      "properties": {
+        "signature": "def create_user_service() -> UserService",
+        "parameters": [],
+        "return_annotation": "UserService",
+        "decorators": [],
+        "is_async": false,
+        "visibility": "public"
+      },
+      "content_hash": "sha256:4aa764a8e2410ed8d1f532340de1109e3fe88ab00ec6e8e76c93d4bce9a665ac",
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "vgar:smoke/sample-repo:python:callsite:src/users/service.py:users.service.create_user_service:9cbce6b06b4e",
+      "type": "CallSite",
+      "repo_key": "smoke/sample-repo",
+      "name": "UserService",
+      "qualified_name": "users.service.create_user_service::<call:1>",
+      "path": "src/users/service.py",
+      "language": "python",
+      "range": {
+        "start_line": 13,
+        "start_col": 11,
+        "end_line": 13,
+        "end_col": 24,
+        "start_byte": 287,
+        "end_byte": 300
+      },
+      "properties": {
+        "callee_text": "UserService",
+        "argument_count": 0,
+        "dispatch_kind": "constructor",
+        "resolution_status": "resolved",
+        "candidate_count": 1
+      },
+      "content_hash": "sha256:d2f8bc37561750ac87a6d456152faf2662d237bcd5c1655891b5c5610495866a",
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "vgar:smoke/sample-repo:python:file:src/web/routes.py",
+      "type": "File",
+      "repo_key": "smoke/sample-repo",
+      "name": "routes.py",
+      "qualified_name": "src/web/routes.py",
+      "path": "src/web/routes.py",
+      "language": "python",
+      "range": {
+        "start_line": 1,
+        "start_col": 0,
+        "end_line": 6,
+        "end_col": 0,
+        "start_byte": 0,
+        "end_byte": 132
+      },
+      "properties": {
+        "extension": ".py",
+        "size_bytes": 132,
+        "parse_status": "parsed",
+        "is_test_file": false
+      },
+      "content_hash": "sha256:8d9db18f3d513939001a1820129cfb1d15d5bf47bbec7e29ab627462cf038c7f",
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "vgar:smoke/sample-repo:python:module:src/web/routes.py:web.routes",
+      "type": "Module",
+      "repo_key": "smoke/sample-repo",
+      "name": "routes",
+      "qualified_name": "web.routes",
+      "path": "src/web/routes.py",
+      "language": "python",
+      "range": {
+        "start_line": 1,
+        "start_col": 0,
+        "end_line": 6,
+        "end_col": 0,
+        "start_byte": 0,
+        "end_byte": 132
+      },
+      "properties": {
+        "module_name": "web.routes",
+        "is_package": false,
+        "is_external": false,
+        "resolution_status": "resolved"
+      },
+      "content_hash": "sha256:8d9db18f3d513939001a1820129cfb1d15d5bf47bbec7e29ab627462cf038c7f",
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "vgar:smoke/sample-repo:python:import:src/web/routes.py:1:0:810bf507f264",
+      "type": "Import",
+      "repo_key": "smoke/sample-repo",
+      "name": "login",
+      "qualified_name": "web.routes::<import:login:810bf507f264>",
+      "path": "src/web/routes.py",
+      "language": "python",
+      "range": {
+        "start_line": 1,
+        "start_col": 0,
+        "end_line": 1,
+        "end_col": 30,
+        "start_byte": 0,
+        "end_byte": 30
+      },
+      "properties": {
+        "raw_text": "from auth.service import login",
+        "imported_module": "auth.service",
+        "imported_name": "login",
+        "alias": null,
+        "level": 0,
+        "resolution_status": "resolved"
+      },
+      "content_hash": "sha256:2509ecc32e8883f4efee290b42b6254e916d3b3c847f3e56f973069e369577f7",
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "vgar:smoke/sample-repo:python:function:src/web/routes.py:web.routes.login_handler",
+      "type": "Function",
+      "repo_key": "smoke/sample-repo",
+      "name": "login_handler",
+      "qualified_name": "web.routes.login_handler",
+      "path": "src/web/routes.py",
+      "language": "python",
+      "range": {
+        "start_line": 4,
+        "start_col": 0,
+        "end_line": 5,
+        "end_col": 36,
+        "start_byte": 36,
+        "end_byte": 130
+      },
+      "properties": {
+        "signature": "def login_handler(username: str, password: str) -> bool",
+        "parameters": [
+          "username",
+          "password"
+        ],
+        "return_annotation": "bool",
+        "decorators": [],
+        "is_async": false,
+        "visibility": "public"
+      },
+      "content_hash": "sha256:aa4d50bef6022a7f251a7c49dc7a4cbd45d78c5290965c39671f987d1513213f",
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "vgar:smoke/sample-repo:python:callsite:src/web/routes.py:web.routes.login_handler:d874806cb6e8",
+      "type": "CallSite",
+      "repo_key": "smoke/sample-repo",
+      "name": "login",
+      "qualified_name": "web.routes.login_handler::<call:1>",
+      "path": "src/web/routes.py",
+      "language": "python",
+      "range": {
+        "start_line": 5,
+        "start_col": 11,
+        "end_line": 5,
+        "end_col": 36,
+        "start_byte": 105,
+        "end_byte": 130
+      },
+      "properties": {
+        "callee_text": "login",
+        "argument_count": 2,
+        "dispatch_kind": "direct",
+        "resolution_status": "resolved",
+        "candidate_count": 1
+      },
+      "content_hash": "sha256:5fcddad3bc1df05a57785acbcceacc4a72061f5fca27dfd2cf97d600414e9c6d",
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "vgar:smoke/sample-repo:python:file:tests/test_auth.py",
+      "type": "File",
+      "repo_key": "smoke/sample-repo",
+      "name": "test_auth.py",
+      "qualified_name": "tests/test_auth.py",
+      "path": "tests/test_auth.py",
+      "language": "python",
+      "range": {
+        "start_line": 1,
+        "start_col": 0,
+        "end_line": 6,
+        "end_col": 0,
+        "start_byte": 0,
+        "end_byte": 100
+      },
+      "properties": {
+        "extension": ".py",
+        "size_bytes": 100,
+        "parse_status": "parsed",
+        "is_test_file": true
+      },
+      "content_hash": "sha256:6fb28d9f9f0918d21716e2a550aaa417869409ce938daea975ca6993a46d1417",
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "vgar:smoke/sample-repo:python:module:tests/test_auth.py:tests.test_auth",
+      "type": "Module",
+      "repo_key": "smoke/sample-repo",
+      "name": "test_auth",
+      "qualified_name": "tests.test_auth",
+      "path": "tests/test_auth.py",
+      "language": "python",
+      "range": {
+        "start_line": 1,
+        "start_col": 0,
+        "end_line": 6,
+        "end_col": 0,
+        "start_byte": 0,
+        "end_byte": 100
+      },
+      "properties": {
+        "module_name": "tests.test_auth",
+        "is_package": false,
+        "is_external": false,
+        "resolution_status": "resolved"
+      },
+      "content_hash": "sha256:6fb28d9f9f0918d21716e2a550aaa417869409ce938daea975ca6993a46d1417",
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "vgar:smoke/sample-repo:python:import:tests/test_auth.py:1:0:20bcd98bef94",
+      "type": "Import",
+      "repo_key": "smoke/sample-repo",
+      "name": "login",
+      "qualified_name": "tests.test_auth::<import:login:20bcd98bef94>",
+      "path": "tests/test_auth.py",
+      "language": "python",
+      "range": {
+        "start_line": 1,
+        "start_col": 0,
+        "end_line": 1,
+        "end_col": 30,
+        "start_byte": 0,
+        "end_byte": 30
+      },
+      "properties": {
+        "raw_text": "from auth.service import login",
+        "imported_module": "auth.service",
+        "imported_name": "login",
+        "alias": null,
+        "level": 0,
+        "resolution_status": "resolved"
+      },
+      "content_hash": "sha256:2509ecc32e8883f4efee290b42b6254e916d3b3c847f3e56f973069e369577f7",
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "vgar:smoke/sample-repo:python:test:tests/test_auth.py:tests.test_auth.test_login",
+      "type": "Test",
+      "repo_key": "smoke/sample-repo",
+      "name": "test_login",
+      "qualified_name": "tests.test_auth.test_login",
+      "path": "tests/test_auth.py",
+      "language": "python",
+      "range": {
+        "start_line": 4,
+        "start_col": 0,
+        "end_line": 5,
+        "end_col": 35,
+        "start_byte": 36,
+        "end_byte": 98
+      },
+      "properties": {
+        "framework": "pytest",
+        "test_kind": "function",
+        "markers": [],
+        "test_command_hint": "pytest tests/test_auth.py::test_login"
+      },
+      "content_hash": "sha256:2bbe665564c87b7013e5c67df0ea815247dd445b2549ea08df2f793aa6f6e966",
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "vgar:smoke/sample-repo:python:callsite:tests/test_auth.py:tests.test_auth.test_login:f8473e657414",
+      "type": "CallSite",
+      "repo_key": "smoke/sample-repo",
+      "name": "login",
+      "qualified_name": "tests.test_auth.test_login::<call:1>",
+      "path": "tests/test_auth.py",
+      "language": "python",
+      "range": {
+        "start_line": 5,
+        "start_col": 11,
+        "end_line": 5,
+        "end_col": 35,
+        "start_byte": 74,
+        "end_byte": 98
+      },
+      "properties": {
+        "callee_text": "login",
+        "argument_count": 2,
+        "dispatch_kind": "direct",
+        "resolution_status": "resolved",
+        "candidate_count": 1
+      },
+      "content_hash": "sha256:7a4722a3f3a3f72b152355e5c029f7d93ab2bb79f8f3bbef228deee1edbbac25",
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    }
+  ],
+  "edges": [
+    {
+      "id": "sha256:d9f6e5253f93a311b0935ff09b5d74c6b3de8489b3f5f49977da99c9850a81f0",
+      "type": "CONTAINS",
+      "source_id": "vgar:smoke/sample-repo:repository",
+      "target_id": "vgar:smoke/sample-repo:python:file:src/auth/service.py",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "repository.file.v1",
+        "source_revision": "smoke-rev",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 0
+      },
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "sha256:3a673daac957340b65dcfc4f3be155aefd6b8483c2e43093825c13489582bf5a",
+      "type": "CONTAINS",
+      "source_id": "vgar:smoke/sample-repo:python:file:src/auth/service.py",
+      "target_id": "vgar:smoke/sample-repo:python:module:src/auth/service.py:auth.service",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.file.module.v1",
+        "source_revision": "smoke-rev",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 0
+      },
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "sha256:4625ab312fc5ca1acda9c9b1a814f292f7f6e6ea8d4565f2c0f412b80814bee8",
+      "type": "CONTAINS",
+      "source_id": "vgar:smoke/sample-repo:python:module:src/auth/service.py:auth.service",
+      "target_id": "vgar:smoke/sample-repo:python:function:src/auth/service.py:auth.service.login",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.scope.function.v1",
+        "source_revision": "smoke-rev",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 0
+      },
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "sha256:46817aa824e12a980a2b709520a9c3e26da07753f2b8d19baa64825127c97a9f",
+      "type": "CONTAINS",
+      "source_id": "vgar:smoke/sample-repo:python:function:src/auth/service.py:auth.service.login",
+      "target_id": "vgar:smoke/sample-repo:python:callsite:src/auth/service.py:auth.service.login:7d299049e372",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.function.callsite.v1",
+        "source_revision": "smoke-rev",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 0
+      },
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "sha256:78889a44d85f9990621260f44090d9760e1a93d75f2f9e29699f7dab8b5c5e28",
+      "type": "CONTAINS",
+      "source_id": "vgar:smoke/sample-repo:repository",
+      "target_id": "vgar:smoke/sample-repo:python:file:src/relative_pkg/__init__.py",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "repository.file.v1",
+        "source_revision": "smoke-rev",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 1
+      },
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "sha256:5ddb801155993357fe9647054956e69c2a03f33db2e073d6fc64651e79140596",
+      "type": "CONTAINS",
+      "source_id": "vgar:smoke/sample-repo:python:file:src/relative_pkg/__init__.py",
+      "target_id": "vgar:smoke/sample-repo:python:module:src/relative_pkg/__init__.py:relative_pkg",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.file.module.v1",
+        "source_revision": "smoke-rev",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 0
+      },
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "sha256:da1e9c0fda87a23285a06841b826b6597a8c9fe1a4992e7b20b43bcae4c503ea",
+      "type": "CONTAINS",
+      "source_id": "vgar:smoke/sample-repo:python:module:src/relative_pkg/__init__.py:relative_pkg",
+      "target_id": "vgar:smoke/sample-repo:python:import:src/relative_pkg/__init__.py:1:0:155c861c26a7",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.module.import.v1",
+        "source_revision": "smoke-rev",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 0
+      },
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "sha256:0b299a65a31734a307694954aedea65b73e57bef2994065d137cda14269e84e0",
+      "type": "CONTAINS",
+      "source_id": "vgar:smoke/sample-repo:repository",
+      "target_id": "vgar:smoke/sample-repo:python:file:src/relative_pkg/base.py",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "repository.file.v1",
+        "source_revision": "smoke-rev",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 2
+      },
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "sha256:832e144b1fef75b27fc2d8a79c96c2391d0f8423c19cc107986277e7dc67e91b",
+      "type": "CONTAINS",
+      "source_id": "vgar:smoke/sample-repo:python:file:src/relative_pkg/base.py",
+      "target_id": "vgar:smoke/sample-repo:python:module:src/relative_pkg/base.py:relative_pkg.base",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.file.module.v1",
+        "source_revision": "smoke-rev",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 0
+      },
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "sha256:f1d7eb93fee761c442f3174e79a4cb2c1e30e42ec26b45856dcad0cafbb26b1c",
+      "type": "CONTAINS",
+      "source_id": "vgar:smoke/sample-repo:python:module:src/relative_pkg/base.py:relative_pkg.base",
+      "target_id": "vgar:smoke/sample-repo:python:class:src/relative_pkg/base.py:relative_pkg.base.RelativeBase",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.scope.class.v1",
+        "source_revision": "smoke-rev",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 0
+      },
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "sha256:2b11bd7380e76c5508a6e8fcc485557f24a997e7987b435aa8cb079abb7f8682",
+      "type": "CONTAINS",
+      "source_id": "vgar:smoke/sample-repo:repository",
+      "target_id": "vgar:smoke/sample-repo:python:file:src/relative_pkg/service.py",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "repository.file.v1",
+        "source_revision": "smoke-rev",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 3
+      },
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "sha256:0fd30329c25678164d2899043f44e2ba2f33307c7dacf3353b9ab01923be325a",
+      "type": "CONTAINS",
+      "source_id": "vgar:smoke/sample-repo:python:file:src/relative_pkg/service.py",
+      "target_id": "vgar:smoke/sample-repo:python:module:src/relative_pkg/service.py:relative_pkg.service",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.file.module.v1",
+        "source_revision": "smoke-rev",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 0
+      },
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "sha256:2f813be4377e251cd3ac0a3379223576500637129e8d298cdfc6d90336e91e5c",
+      "type": "CONTAINS",
+      "source_id": "vgar:smoke/sample-repo:python:module:src/relative_pkg/service.py:relative_pkg.service",
+      "target_id": "vgar:smoke/sample-repo:python:import:src/relative_pkg/service.py:1:0:8a1291372acc",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.module.import.v1",
+        "source_revision": "smoke-rev",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 0
+      },
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "sha256:b9252440cce01d0703eca6cc9017d3f221a4493167000296330f1f9b782037de",
+      "type": "CONTAINS",
+      "source_id": "vgar:smoke/sample-repo:python:module:src/relative_pkg/service.py:relative_pkg.service",
+      "target_id": "vgar:smoke/sample-repo:python:class:src/relative_pkg/service.py:relative_pkg.service.RelativeService",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.scope.class.v1",
+        "source_revision": "smoke-rev",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 1
+      },
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "sha256:10aaeb0ecd0d9a9ebd09a1102ea2915a71a848c16b44b4d8e7fe10bc2c3b686a",
+      "type": "CONTAINS",
+      "source_id": "vgar:smoke/sample-repo:python:class:src/relative_pkg/service.py:relative_pkg.service.RelativeService",
+      "target_id": "vgar:smoke/sample-repo:python:method:src/relative_pkg/service.py:relative_pkg.service.RelativeService.create",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.scope.function.v1",
+        "source_revision": "smoke-rev",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 0
+      },
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "sha256:3a9062e6b499b7149e4b70e23bf2cd8325647f62bdb2564095a453fca01b9695",
+      "type": "CONTAINS",
+      "source_id": "vgar:smoke/sample-repo:python:method:src/relative_pkg/service.py:relative_pkg.service.RelativeService.create",
+      "target_id": "vgar:smoke/sample-repo:python:callsite:src/relative_pkg/service.py:relative_pkg.service.RelativeService.create:e662ad1a0eac",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.method.callsite.v1",
+        "source_revision": "smoke-rev",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 0
+      },
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "sha256:29fb2fb2c56c0c6b4d85fd2ff8c6e2dfa044eaa8391a7a99f115a7c67c14aa5e",
+      "type": "CONTAINS",
+      "source_id": "vgar:smoke/sample-repo:repository",
+      "target_id": "vgar:smoke/sample-repo:python:file:src/users/base.py",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "repository.file.v1",
+        "source_revision": "smoke-rev",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 4
+      },
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "sha256:64dd74ec355bbf228ccbae7e6d7026ef668c0ba117c2ea91f308bc2c1d8d4679",
+      "type": "CONTAINS",
+      "source_id": "vgar:smoke/sample-repo:python:file:src/users/base.py",
+      "target_id": "vgar:smoke/sample-repo:python:module:src/users/base.py:users.base",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.file.module.v1",
+        "source_revision": "smoke-rev",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 0
+      },
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "sha256:360b67dd19b5df5907dcc7a4f6b153fd8040ff5eda60c29ca562ab9fdd845754",
+      "type": "CONTAINS",
+      "source_id": "vgar:smoke/sample-repo:python:module:src/users/base.py:users.base",
+      "target_id": "vgar:smoke/sample-repo:python:class:src/users/base.py:users.base.BaseService",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.scope.class.v1",
+        "source_revision": "smoke-rev",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 0
+      },
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "sha256:6afa2c80a9fab945274d2010e339ae0273fe0dae4f2492d674c12f5d72b43696",
+      "type": "CONTAINS",
+      "source_id": "vgar:smoke/sample-repo:repository",
+      "target_id": "vgar:smoke/sample-repo:python:file:src/users/service.py",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "repository.file.v1",
+        "source_revision": "smoke-rev",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 5
+      },
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "sha256:daa778c6b64f0c9b096eddbc7761dd7eb7e5695c9cd8648d27e466418d8c8822",
+      "type": "CONTAINS",
+      "source_id": "vgar:smoke/sample-repo:python:file:src/users/service.py",
+      "target_id": "vgar:smoke/sample-repo:python:module:src/users/service.py:users.service",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.file.module.v1",
+        "source_revision": "smoke-rev",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 0
+      },
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "sha256:0543788c20ef8081370ea8655429465e408fb00377700d8d5978a884c1b4bd5d",
+      "type": "CONTAINS",
+      "source_id": "vgar:smoke/sample-repo:python:module:src/users/service.py:users.service",
+      "target_id": "vgar:smoke/sample-repo:python:import:src/users/service.py:1:0:38619e88d4eb",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.module.import.v1",
+        "source_revision": "smoke-rev",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 0
+      },
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "sha256:89a64db6c81c0a756d600dd32f7fa0c4dd9b24c88330ae5c2017a9054c60c751",
+      "type": "CONTAINS",
+      "source_id": "vgar:smoke/sample-repo:python:module:src/users/service.py:users.service",
+      "target_id": "vgar:smoke/sample-repo:python:class:src/users/service.py:users.service.UserService",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.scope.class.v1",
+        "source_revision": "smoke-rev",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 1
+      },
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "sha256:9463a8e03f9cff59959aa3008b941e9741b4e27e26651497a000af370c966e82",
+      "type": "CONTAINS",
+      "source_id": "vgar:smoke/sample-repo:python:class:src/users/service.py:users.service.UserService",
+      "target_id": "vgar:smoke/sample-repo:python:method:src/users/service.py:users.service.UserService.normalize",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.scope.function.v1",
+        "source_revision": "smoke-rev",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 0
+      },
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "sha256:70076add5740852ba145f9ae6cdcea72cc1eb699f6e2741f4f73e61e64510878",
+      "type": "CONTAINS",
+      "source_id": "vgar:smoke/sample-repo:python:method:src/users/service.py:users.service.UserService.normalize",
+      "target_id": "vgar:smoke/sample-repo:python:callsite:src/users/service.py:users.service.UserService.normalize:2ab30f9c79d1",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.method.callsite.v1",
+        "source_revision": "smoke-rev",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 0
+      },
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "sha256:699d7a32d6c806da1f69e60d160724c293f83c585201486228f484b7e0c471a7",
+      "type": "CONTAINS",
+      "source_id": "vgar:smoke/sample-repo:python:class:src/users/service.py:users.service.UserService",
+      "target_id": "vgar:smoke/sample-repo:python:method:src/users/service.py:users.service.UserService.find_user",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.scope.function.v1",
+        "source_revision": "smoke-rev",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 1
+      },
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "sha256:12207cce79eec8c2bef1cd43f65b9965402b1c69bdaf3e90c50ec9d79c6f93b4",
+      "type": "CONTAINS",
+      "source_id": "vgar:smoke/sample-repo:python:method:src/users/service.py:users.service.UserService.find_user",
+      "target_id": "vgar:smoke/sample-repo:python:callsite:src/users/service.py:users.service.UserService.find_user:095568945168",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.method.callsite.v1",
+        "source_revision": "smoke-rev",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 0
+      },
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "sha256:30be87a890925488393b76fe38bd74011967974cb4d43699896099c42b0b8508",
+      "type": "CONTAINS",
+      "source_id": "vgar:smoke/sample-repo:python:module:src/users/service.py:users.service",
+      "target_id": "vgar:smoke/sample-repo:python:function:src/users/service.py:users.service.create_user_service",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.scope.function.v1",
+        "source_revision": "smoke-rev",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 2
+      },
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "sha256:17af3308be2ea8734414e108186969629445d960b2761f13adb8444cf70c51f8",
+      "type": "CONTAINS",
+      "source_id": "vgar:smoke/sample-repo:python:function:src/users/service.py:users.service.create_user_service",
+      "target_id": "vgar:smoke/sample-repo:python:callsite:src/users/service.py:users.service.create_user_service:9cbce6b06b4e",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.function.callsite.v1",
+        "source_revision": "smoke-rev",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 0
+      },
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "sha256:f97df8992a7e2002434b596c5e95c295dc94c05de4551b9639e11b5850d63230",
+      "type": "CONTAINS",
+      "source_id": "vgar:smoke/sample-repo:repository",
+      "target_id": "vgar:smoke/sample-repo:python:file:src/web/routes.py",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "repository.file.v1",
+        "source_revision": "smoke-rev",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 6
+      },
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "sha256:a786e97a474c97a11e3213f6b0c6d0cdd7f73e75ac10b7e18e633a942a62a04d",
+      "type": "CONTAINS",
+      "source_id": "vgar:smoke/sample-repo:python:file:src/web/routes.py",
+      "target_id": "vgar:smoke/sample-repo:python:module:src/web/routes.py:web.routes",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.file.module.v1",
+        "source_revision": "smoke-rev",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 0
+      },
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "sha256:36f9b65de400c2681ad94aa38e5aa1a98904e50baba5cb59f4704dc3ed45124a",
+      "type": "CONTAINS",
+      "source_id": "vgar:smoke/sample-repo:python:module:src/web/routes.py:web.routes",
+      "target_id": "vgar:smoke/sample-repo:python:import:src/web/routes.py:1:0:810bf507f264",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.module.import.v1",
+        "source_revision": "smoke-rev",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 0
+      },
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "sha256:64afcdd1300bc61b4c24a7da01fc3879025c3157877ddace2ceadb40ff03063d",
+      "type": "CONTAINS",
+      "source_id": "vgar:smoke/sample-repo:python:module:src/web/routes.py:web.routes",
+      "target_id": "vgar:smoke/sample-repo:python:function:src/web/routes.py:web.routes.login_handler",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.scope.function.v1",
+        "source_revision": "smoke-rev",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 1
+      },
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "sha256:2f716e67d4be8af30a3c92a650e3391fe490245508c558ec455b7ec74c859571",
+      "type": "CONTAINS",
+      "source_id": "vgar:smoke/sample-repo:python:function:src/web/routes.py:web.routes.login_handler",
+      "target_id": "vgar:smoke/sample-repo:python:callsite:src/web/routes.py:web.routes.login_handler:d874806cb6e8",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.function.callsite.v1",
+        "source_revision": "smoke-rev",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 0
+      },
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "sha256:b3298b4a7e0de71162c1147f2fb99702debfbb5303eb2d7b2f723f5311e74e6e",
+      "type": "CONTAINS",
+      "source_id": "vgar:smoke/sample-repo:repository",
+      "target_id": "vgar:smoke/sample-repo:python:file:tests/test_auth.py",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "repository.file.v1",
+        "source_revision": "smoke-rev",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 7
+      },
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "sha256:6d16531c9ca40a7b8d4ae4cec7869445a5b2b1d1365ca5f844aea6f072ce06fb",
+      "type": "CONTAINS",
+      "source_id": "vgar:smoke/sample-repo:python:file:tests/test_auth.py",
+      "target_id": "vgar:smoke/sample-repo:python:module:tests/test_auth.py:tests.test_auth",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.file.module.v1",
+        "source_revision": "smoke-rev",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 0
+      },
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "sha256:080354bd0366666177d9d71fe84e355dba06bd8249bde1c8adc2aa81b6f9b32b",
+      "type": "CONTAINS",
+      "source_id": "vgar:smoke/sample-repo:python:module:tests/test_auth.py:tests.test_auth",
+      "target_id": "vgar:smoke/sample-repo:python:import:tests/test_auth.py:1:0:20bcd98bef94",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.module.import.v1",
+        "source_revision": "smoke-rev",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 0
+      },
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "sha256:2156929f3ca3ee5a1ef55f971e59fd5baa3bbf70330308eed32968c6e7cd780c",
+      "type": "CONTAINS",
+      "source_id": "vgar:smoke/sample-repo:python:module:tests/test_auth.py:tests.test_auth",
+      "target_id": "vgar:smoke/sample-repo:python:test:tests/test_auth.py:tests.test_auth.test_login",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.scope.function.v1",
+        "source_revision": "smoke-rev",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 1
+      },
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "sha256:28d0dfaae16c3bd1ac7405214a47af7cf8e29f5453056395ba1092e17574e5a0",
+      "type": "CONTAINS",
+      "source_id": "vgar:smoke/sample-repo:python:test:tests/test_auth.py:tests.test_auth.test_login",
+      "target_id": "vgar:smoke/sample-repo:python:callsite:tests/test_auth.py:tests.test_auth.test_login:f8473e657414",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.test.callsite.v1",
+        "source_revision": "smoke-rev",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 0
+      },
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "sha256:f6c20d458c8bf08aad740f5e446d9ebfffbbe59b3db7e80efa2c04bfd9e5078f",
+      "type": "IMPORTS",
+      "source_id": "vgar:smoke/sample-repo:python:import:src/relative_pkg/__init__.py:1:0:155c861c26a7",
+      "target_id": "vgar:smoke/sample-repo:python:module:src/relative_pkg/service.py:relative_pkg.service",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.import.resolve.v1",
+        "source_revision": "smoke-rev",
+        "evidence": []
+      },
+      "properties": {
+        "imported_name": "RelativeService",
+        "alias": null,
+        "is_wildcard": false
+      },
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "sha256:4216939d311c16e0f55e3fb6d7efdf4d5bbd50b3280d9348c7eb2b66c6c7d19d",
+      "type": "IMPORTS",
+      "source_id": "vgar:smoke/sample-repo:python:import:src/relative_pkg/service.py:1:0:8a1291372acc",
+      "target_id": "vgar:smoke/sample-repo:python:module:src/relative_pkg/base.py:relative_pkg.base",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.import.resolve.v1",
+        "source_revision": "smoke-rev",
+        "evidence": []
+      },
+      "properties": {
+        "imported_name": "RelativeBase",
+        "alias": null,
+        "is_wildcard": false
+      },
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "sha256:e6e9f83046128846fbc545ba9d81d8a5b965488f633c30e07d09fd8bea9d3438",
+      "type": "IMPORTS",
+      "source_id": "vgar:smoke/sample-repo:python:import:src/users/service.py:1:0:38619e88d4eb",
+      "target_id": "vgar:smoke/sample-repo:python:module:src/users/base.py:users.base",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.import.resolve.v1",
+        "source_revision": "smoke-rev",
+        "evidence": []
+      },
+      "properties": {
+        "imported_name": "BaseService",
+        "alias": null,
+        "is_wildcard": false
+      },
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "sha256:f6858a8e57c2c64169dc1a2343a5bd684892879f4bbb50b579ea9891319644a1",
+      "type": "IMPORTS",
+      "source_id": "vgar:smoke/sample-repo:python:import:src/web/routes.py:1:0:810bf507f264",
+      "target_id": "vgar:smoke/sample-repo:python:module:src/auth/service.py:auth.service",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.import.resolve.v1",
+        "source_revision": "smoke-rev",
+        "evidence": []
+      },
+      "properties": {
+        "imported_name": "login",
+        "alias": null,
+        "is_wildcard": false
+      },
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "sha256:0e253a80defb6fcc80fa1506851957a648f80e88a2396fc5df0094e0222a95b8",
+      "type": "IMPORTS",
+      "source_id": "vgar:smoke/sample-repo:python:import:tests/test_auth.py:1:0:20bcd98bef94",
+      "target_id": "vgar:smoke/sample-repo:python:module:src/auth/service.py:auth.service",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.import.resolve.v1",
+        "source_revision": "smoke-rev",
+        "evidence": []
+      },
+      "properties": {
+        "imported_name": "login",
+        "alias": null,
+        "is_wildcard": false
+      },
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "sha256:c2cc6ac2b9c6f0b0dab4d68cf24b892655d62d9e537a3eab24ad35898746b9f1",
+      "type": "INHERITS",
+      "source_id": "vgar:smoke/sample-repo:python:class:src/relative_pkg/service.py:relative_pkg.service.RelativeService",
+      "target_id": "vgar:smoke/sample-repo:python:class:src/relative_pkg/base.py:relative_pkg.base.RelativeBase",
+      "confidence": 0.9,
+      "resolution": "analyzer",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.inheritance.resolve.v1",
+        "source_revision": "smoke-rev",
+        "evidence": []
+      },
+      "properties": {
+        "base_expression": "RelativeBase",
+        "mro_position": 1
+      },
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "sha256:6e037c18c79f92cd2978b1f0ef64f11d493f8cfd0dbfda0c53d1a25d127911de",
+      "type": "INHERITS",
+      "source_id": "vgar:smoke/sample-repo:python:class:src/users/service.py:users.service.UserService",
+      "target_id": "vgar:smoke/sample-repo:python:class:src/users/base.py:users.base.BaseService",
+      "confidence": 0.9,
+      "resolution": "analyzer",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.inheritance.resolve.v1",
+        "source_revision": "smoke-rev",
+        "evidence": []
+      },
+      "properties": {
+        "base_expression": "BaseService",
+        "mro_position": 1
+      },
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "sha256:6af362dcff81457b8e8479024ce15f207929f3960fe853198d83be478cdf6784",
+      "type": "CALLS",
+      "source_id": "vgar:smoke/sample-repo:python:callsite:src/relative_pkg/service.py:relative_pkg.service.RelativeService.create:e662ad1a0eac",
+      "target_id": "vgar:smoke/sample-repo:python:class:src/relative_pkg/service.py:relative_pkg.service.RelativeService",
+      "confidence": 0.95,
+      "resolution": "analyzer",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.call.resolve.v1",
+        "source_revision": "smoke-rev",
+        "evidence": []
+      },
+      "properties": {
+        "binding_kind": "constructor",
+        "argument_match": null,
+        "candidate_rank": 1,
+        "confidence_reason": "Unique deterministic symbol match"
+      },
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "sha256:9b95ba3c4ec0d3fc94be1a91d0b19ff1d585df26aad224f8ff78347e7fb19156",
+      "type": "CALLS",
+      "source_id": "vgar:smoke/sample-repo:python:callsite:src/users/service.py:users.service.UserService.find_user:095568945168",
+      "target_id": "vgar:smoke/sample-repo:python:method:src/users/service.py:users.service.UserService.normalize",
+      "confidence": 0.8,
+      "resolution": "analyzer",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.call.resolve.v1",
+        "source_revision": "smoke-rev",
+        "evidence": []
+      },
+      "properties": {
+        "binding_kind": "self_method",
+        "argument_match": null,
+        "candidate_rank": 1,
+        "confidence_reason": "Unique deterministic symbol match"
+      },
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "sha256:e6496ff7c2c088d1a70d6c0d60bbc527b69c699bcc44f847af9fbe402acb6785",
+      "type": "CALLS",
+      "source_id": "vgar:smoke/sample-repo:python:callsite:src/users/service.py:users.service.create_user_service:9cbce6b06b4e",
+      "target_id": "vgar:smoke/sample-repo:python:class:src/users/service.py:users.service.UserService",
+      "confidence": 0.95,
+      "resolution": "analyzer",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.call.resolve.v1",
+        "source_revision": "smoke-rev",
+        "evidence": []
+      },
+      "properties": {
+        "binding_kind": "constructor",
+        "argument_match": null,
+        "candidate_rank": 1,
+        "confidence_reason": "Unique deterministic symbol match"
+      },
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "sha256:32d52784a8cf9483b1876f4241b8483d622945154934e76badc9afea448d348d",
+      "type": "CALLS",
+      "source_id": "vgar:smoke/sample-repo:python:callsite:src/web/routes.py:web.routes.login_handler:d874806cb6e8",
+      "target_id": "vgar:smoke/sample-repo:python:function:src/auth/service.py:auth.service.login",
+      "confidence": 0.95,
+      "resolution": "analyzer",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.call.resolve.v1",
+        "source_revision": "smoke-rev",
+        "evidence": []
+      },
+      "properties": {
+        "binding_kind": "imported_symbol",
+        "argument_match": null,
+        "candidate_rank": 1,
+        "confidence_reason": "Unique deterministic symbol match"
+      },
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "sha256:93e9e34974a120179673b781303d986802419f54430d276c1a2ef67be5fa9acd",
+      "type": "CALLS",
+      "source_id": "vgar:smoke/sample-repo:python:callsite:tests/test_auth.py:tests.test_auth.test_login:f8473e657414",
+      "target_id": "vgar:smoke/sample-repo:python:function:src/auth/service.py:auth.service.login",
+      "confidence": 0.95,
+      "resolution": "analyzer",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.call.resolve.v1",
+        "source_revision": "smoke-rev",
+        "evidence": []
+      },
+      "properties": {
+        "binding_kind": "imported_symbol",
+        "argument_match": null,
+        "candidate_rank": 1,
+        "confidence_reason": "Unique deterministic symbol match"
+      },
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    },
+    {
+      "id": "sha256:7b168bdd967b4c7b201ade4422789dfcbce7daff77b6aa82e536260bf977b439",
+      "type": "TESTS",
+      "source_id": "vgar:smoke/sample-repo:python:test:tests/test_auth.py:tests.test_auth.test_login",
+      "target_id": "vgar:smoke/sample-repo:python:function:src/auth/service.py:auth.service.login",
+      "confidence": 0.95,
+      "resolution": "analyzer",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.test.direct_call.v1",
+        "source_revision": "smoke-rev",
+        "evidence": []
+      },
+      "properties": {
+        "link_method": "direct_call",
+        "coverage_count": null
+      },
+      "graph_version": "sha256:45444a607e1cdb9284f6643ce7b5565c8344f2fad374d581e561cfd105c15548"
+    }
+  ],
+  "statistics": {
+    "node_count": 40,
+    "edge_count": 52,
+    "node_counts_by_type": {
+      "Repository": 1,
+      "File": 8,
+      "Module": 8,
+      "Function": 3,
+      "CallSite": 7,
+      "Import": 5,
+      "Class": 4,
+      "Method": 3,
+      "Test": 1
+    },
+    "edge_counts_by_type": {
+      "CONTAINS": 39,
+      "IMPORTS": 5,
+      "INHERITS": 2,
+      "CALLS": 5,
+      "TESTS": 1
+    },
+    "callsite_count": 7,
+    "unresolved_call_count": 2,
+    "unresolved_call_rate": 0.2857142857142857,
+    "partial_file_count": 0,
+    "skipped_overload_count": 0,
+    "renamed_duplicate_count": 0,
+    "failed_file_count": 0,
+    "failed_files": [],
+    "source_inventory": {
+      "src/auth/service.py": "sha256:1dc9bcb1bb24734e340388158b1e1effd6611252b9024d1098e5b5e637a852b6",
+      "src/relative_pkg/__init__.py": "sha256:6974fbd775fd7153ea2db731451d553f434c15f6520a92885c5cc90fd7ff0d67",
+      "src/relative_pkg/base.py": "sha256:0597545910aa6d03d703680916528665baf6c7037da5ae694b23c51268e17f6f",
+      "src/relative_pkg/service.py": "sha256:2af092ed26cbbcf8c6a2015f2d83246e7c6ed4cdb662f776cf68fcacbe308b9f",
+      "src/users/base.py": "sha256:d8142b2fa57b168e54cfea8edde5750f8f407c1027bf3cc3c1c874c3799983ca",
+      "src/users/service.py": "sha256:99d61c0a7d72d5e4d2e8339b99104095bec18d0095a8a6273d7cee40c3f6ad31",
+      "src/web/routes.py": "sha256:8d9db18f3d513939001a1820129cfb1d15d5bf47bbec7e29ab627462cf038c7f",
+      "tests/test_auth.py": "sha256:6fb28d9f9f0918d21716e2a550aaa417869409ce938daea975ca6993a46d1417"
+    },
+    "source_scope": {
+      "excluded_paths": []
+    },
+    "unresolved_base_count": 0,
+    "unresolved_bases": [],
+    "build_time_ms": 549.684
+  }
+}

@@ -79,6 +79,9 @@ class GraphSettings:
     backend: str = "demo"  # demo | sqlite
     database: Path | None = None
     version: str | None = None
+    source_root: Path | None = None
+    tokenizer_manifest: Path | None = None
+    allow_fallback_counter: bool = False
 
 
 @dataclass(frozen=True)
@@ -87,6 +90,7 @@ class Settings:
     agent: AgentSettings = field(default_factory=AgentSettings)
     graph: GraphSettings = field(default_factory=GraphSettings)
     audit_log: Path = PROJECT_ROOT / "logs" / "mcp_audit.jsonl"
+    workspace_root: Path | None = None
 
     def to_env(self) -> dict[str, str]:
         """Variables the MCP servers read (graph/factory.py, graph_server.py)."""
@@ -96,13 +100,20 @@ class Settings:
             "VGAR_GRAPH_BACKEND": self.graph.backend,
             "VGAR_GRAPH_DATABASE": str(self.graph.database or ""),
             "VGAR_GRAPH_VERSION": self.graph.version or "",
+            "VGAR_GRAPH_SOURCE_ROOT": str(self.graph.source_root or ""),
+            "VGAR_TOKENIZER_MANIFEST": str(self.graph.tokenizer_manifest or ""),
+            "VGAR_ALLOW_FALLBACK_COUNTER": "1" if self.graph.allow_fallback_counter else "0",
             "VGAR_MCP_AUDIT_LOG": str(self.audit_log),
+            "VGAR_WORKSPACE_ROOT": str(self.workspace_root or ""),
             "PYTHONPATH": pythonpath,
         }
 
 
 def _build() -> Settings:
     database = _raw("VGAR_GRAPH_DATABASE")
+    workspace = _raw("VGAR_WORKSPACE_ROOT")
+    source_root = _raw("VGAR_GRAPH_SOURCE_ROOT")
+    tokenizer = _raw("VGAR_TOKENIZER_MANIFEST")
     return Settings(
         model=ModelSettings(
             provider=_str("VGAR_MODEL_PROVIDER", "huggingface").lower(),
@@ -122,8 +133,12 @@ def _build() -> Settings:
             backend=_str("VGAR_GRAPH_BACKEND", "demo").lower(),
             database=_path("VGAR_GRAPH_DATABASE", database) if database else None,
             version=_raw("VGAR_GRAPH_VERSION"),
+            source_root=_path("VGAR_GRAPH_SOURCE_ROOT", source_root) if source_root else None,
+            tokenizer_manifest=_path("VGAR_TOKENIZER_MANIFEST", tokenizer) if tokenizer else None,
+            allow_fallback_counter=_str("VGAR_ALLOW_FALLBACK_COUNTER", "0") == "1",
         ),
         audit_log=_path("VGAR_MCP_AUDIT_LOG", "logs/mcp_audit.jsonl"),
+        workspace_root=_path("VGAR_WORKSPACE_ROOT", workspace) if workspace else None,
     )
 
 

@@ -1,0 +1,27 @@
+{
+  "run_id": "20261006T161431668678Z-4771a85e480a",
+  "kind": "milestone-7-final-doc-consistency",
+  "status": "PASS",
+  "started_utc": "2026-10-06T16:14:31.668678+00:00",
+  "complete": true,
+  "python": "3.11.6 (tags/v3.11.6:8b6ee5b, Oct  2 2023, 14:57:12) [MSC v.1935 64 bit (AMD64)]",
+  "interpreter": "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe",
+  "platform": "Windows-10-10.0.26300-SP0",
+  "command_argv": [
+    "-c"
+  ],
+  "cwd": "D:\\Project\\CAPSTONES\\VGAR",
+  "ended_utc": "2026-10-06T16:14:32.144510+00:00",
+  "checked_files": [
+    "README.md",
+    "docs\\mcp_tool_contract.md",
+    "docs\\m5_m6_retrieval_evaluation.md",
+    "docs\\w5_w6_completion.md",
+    "docs\\w3_w4_completion.md",
+    "docs\\context_payload_contract.md",
+    "docs\\adr\\2026-10-06-stateless-task-handles-and-context-boundary.md"
+  ],
+  "local_links_checked": 22,
+  "missing_links": [],
+  "cli_evidence": "D:\\Project\\CAPSTONES\\VGAR\\artifacts\\fixes\\w3-w6\\20261006T161431668678Z-4771a85e480a\\cli-help\\20261006T161431717711Z-3451d565cff0\\result.json"
+}

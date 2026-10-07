@@ -1,0 +1,52 @@
+{
+  "run_id": "20261006T151023816632Z-9f12f4b6d0fa",
+  "kind": "milestone-5-relative-cache-red",
+  "status": "FAIL",
+  "started_utc": "2026-10-06T15:10:23.817534+00:00",
+  "complete": true,
+  "python": "3.11.6 (tags/v3.11.6:8b6ee5b, Oct  2 2023, 14:57:12) [MSC v.1935 64 bit (AMD64)]",
+  "interpreter": "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe",
+  "platform": "Windows-10-10.0.26300-SP0",
+  "command_argv": [
+    "-c"
+  ],
+  "cwd": "D:\\Project\\CAPSTONES\\VGAR",
+  "command": "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe -m pytest -q -p no:cacheprovider --junitxml=D:\\Project\\CAPSTONES\\VGAR\\.m2-pytest-1w5ctm5s\\junit.xml tests/m2/test_retrieval_cache_integrity.py::test_graph_cache_accepts_relative_cli_root_and_tree",
+  "argv": [
+    "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "--junitxml=D:\\Project\\CAPSTONES\\VGAR\\.m2-pytest-1w5ctm5s\\junit.xml",
+    "tests/m2/test_retrieval_cache_integrity.py::test_graph_cache_accepts_relative_cli_root_and_tree"
+  ],
+  "exit_code": 1,
+  "duration_ms": 921,
+  "stdout": "F                                                                        [100%]\r\n================================== FAILURES ===================================\r\n_____________ test_graph_cache_accepts_relative_cli_root_and_tree _____________\r\n\r\ntmp_path = WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-455/test_graph_cache_accepts_relat0')\r\nmonkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000025C5DD56350>\r\n\r\n    def test_graph_cache_accepts_relative_cli_root_and_tree(tmp_path, monkeypatch):\r\n        _, tree = tree_fixture(tmp_path)\r\n        monkeypatch.chdir(tmp_path)\r\n        module = runner()\r\n        row = {\"repo\": \"o/r\", \"base_commit\": SHA}\r\n>       built, _ = module.load_or_build_graph(Path(\".\"), row, Path(\"tree\"), use_jedi=False, rebuild=False, builder_hash=\"relative\")\r\n                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\n\r\nD:\\Project\\CAPSTONES\\VGAR\\tests\\m2\\test_retrieval_cache_integrity.py:124: \r\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\r\nD:\\Project\\CAPSTONES\\VGAR\\src\\vgar\\evaluation\\retrieval\\graph_cache.py:62: in load_or_build_graph\r\n    _validate_pair(document, meta, row, tree)\r\nD:\\Project\\CAPSTONES\\VGAR\\src\\vgar\\evaluation\\retrieval\\graph_cache.py:77: in _validate_pair\r\n    inventory = {path.relative_to(tree).as_posix(): file_hash(path) for path in scope.python_files(tree)}\r\n                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\nD:\\Project\\CAPSTONES\\VGAR\\src\\vgar\\evaluation\\retrieval\\graph_cache.py:77: in <dictcomp>\r\n    inventory = {path.relative_to(tree).as_posix(): file_hash(path) for path in scope.python_files(tree)}\r\n                 ^^^^^^^^^^^^^^^^^^^^^^\r\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\r\n\r\nself = WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-455/test_graph_cache_accepts_relat0/tree/src/app.py')\r\nother = (WindowsPath('tree'),)\r\nparts = ['C:\\\\', 'Users', 'pc', 'AppData', 'Local', 'Temp', ...], drv = 'C:'\r\nroot = '\\\\'\r\n\r\n    def relative_to(self, *other):\r\n        \"\"\"Return the relative path to another path identified by the passed\r\n        arguments.  If the operation is not possible (because this is not\r\n        a subpath of the other path), raise ValueError.\r\n        \"\"\"\r\n        # For the purpose of this method, drive and root are considered\r\n        # separate parts, i.e.:\r\n        #   Path('c:/').relative_to('c:')  gives Path('/')\r\n        #   Path('c:/').relative_to('/')   raise ValueError\r\n        if not other:\r\n            raise TypeError(\"need at least one argument\")\r\n        parts = self._parts\r\n        drv = self._drv\r\n        root = self._root\r\n        if root:\r\n            abs_parts = [drv, root] + parts[1:]\r\n        else:\r\n            abs_parts = parts\r\n        to_drv, to_root, to_parts = self._parse_args(other)\r\n        if to_root:\r\n            to_abs_parts = [to_drv, to_root] + to_parts[1:]\r\n        else:\r\n            to_abs_parts = to_parts\r\n        n = len(to_abs_parts)\r\n        cf = self._flavour.casefold_parts\r\n        if (root or drv) if n == 0 else cf(abs_parts[:n]) != cf(to_abs_parts):\r\n            formatted = self._format_parsed_parts(to_drv, to_root, to_parts)\r\n>           raise ValueError(\"{!r} is not in the subpath of {!r}\"\r\n                    \" OR one path is relative and the other is absolute.\"\r\n                             .format(str(self), str(formatted)))\r\nE           ValueError: 'C:\\\\Users\\\\pc\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-pc\\\\pytest-455\\\\test_graph_cache_accepts_relat0\\\\tree\\\\src\\\\app.py' is not in the subpath of 'tree' OR one path is relative and the other is absolute.\r\n\r\nC:\\Program Files\\Python311\\Lib\\pathlib.py:730: ValueError\r\n- generated xml file: D:\\Project\\CAPSTONES\\VGAR\\.m2-pytest-1w5ctm5s\\junit.xml -\r\n=========================== short test summary info ===========================\r\nFAILED tests/m2/test_retrieval_cache_integrity.py::test_graph_cache_accepts_relative_cli_root_and_tree\r\n1 failed in 0.39s\r\n",
+  "stderr": "",
+  "timeout_seconds": 120.0,
+  "cases": [
+    {
+      "name": "tests.m2.test_retrieval_cache_integrity::test_graph_cache_accepts_relative_cli_root_and_tree",
+      "status": "FAIL",
+      "duration_ms": 216,
+      "detail": "tmp_path = WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-455/test_graph_cache_accepts_relat0')\nmonkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000025C5DD56350>\n\n    def test_graph_cache_accepts_relative_cli_root_and_tree(tmp_path, monkeypatch):\n        _, tree = tree_fixture(tmp_path)\n        monkeypatch.chdir(tmp_path)\n        module = runner()\n        row = {\"repo\": \"o/r\", \"base_commit\": SHA}\n>       built, _ = module.load_or_build_graph(Path(\".\"), row, Path(\"tree\"), use_jedi=False, rebuild=False, builder_hash=\"relative\")\n                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\nD:\\Project\\CAPSTONES\\VGAR\\tests\\m2\\test_retrieval_cache_integrity.py:124: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\nD:\\Project\\CAPSTONES\\VGAR\\src\\vgar\\evaluation\\retrieval\\graph_cache.py:62: in load_or_build_graph\n    _validate_pair(document, meta, row, tree)\nD:\\Project\\CAPSTONES\\VGAR\\src\\vgar\\evaluation\\retrieval\\graph_cache.py:77: in _validate_pair\n    inventory = {path.relative_to(tree).as_posix(): file_hash(path) for path in scope.python_files(tree)}\n                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nD:\\Project\\CAPSTONES\\VGAR\\src\\vgar\\evaluation\\retrieval\\graph_cache.py:77: in <dictcomp>\n    inventory = {path.relative_to(tree).as_posix(): file_hash(path) for path in scope.python_files(tree)}\n                 ^^^^^^^^^^^^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n\nself = WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-455/test_graph_cache_accepts_relat0/tree/src/app.py')\nother = (WindowsPath('tree'),)\nparts = ['C:\\\\', 'Users', 'pc', 'AppData', 'Local', 'Temp', ...], drv = 'C:'\nroot = '\\\\'\n\n    def relative_to(self, *other):\n        \"\"\"Return the relative path to another path identified by the passed\n        arguments.  If the operation is not possible (because this is not\n        a subpath of the other path), raise ValueError.\n        \"\"\"\n        # For the purpose of this method, drive and root are considered\n        # separate parts, i.e.:\n        #   Path('c:/').relative_to('c:')  gives Path('/')\n        #   Path('c:/').relative_to('/')   raise ValueError\n        if not other:\n            raise TypeError(\"need at least one argument\")\n        parts = self._parts\n        drv = self._drv\n        root = self._root\n        if root:\n            abs_parts = [drv, root] + parts[1:]\n        else:\n            abs_parts = parts\n        to_drv, to_root, to_parts = self._parse_args(other)\n        if to_root:\n            to_abs_parts = [to_drv, to_root] + to_parts[1:]\n        else:\n            to_abs_parts = to_parts\n        n = len(to_abs_parts)\n        cf = self._flavour.casefold_parts\n        if (root or drv) if n == 0 else cf(abs_parts[:n]) != cf(to_abs_parts):\n            formatted = self._format_parsed_parts(to_drv, to_root, to_parts)\n>           raise ValueError(\"{!r} is not in the subpath of {!r}\"\n                    \" OR one path is relative and the other is absolute.\"\n                             .format(str(self), str(formatted)))\nE           ValueError: 'C:\\\\Users\\\\pc\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-pc\\\\pytest-455\\\\test_graph_cache_accepts_relat0\\\\tree\\\\src\\\\app.py' is not in the subpath of 'tree' OR one path is relative and the other is absolute.\n\nC:\\Program Files\\Python311\\Lib\\pathlib.py:730: ValueError"
+    }
+  ],
+  "case_counts": {
+    "passed": 0,
+    "failed": 1,
+    "error": 0,
+    "skipped": 0
+  },
+  "reason": {
+    "code": "TEST_FAILED",
+    "message": "Pytest assertions failed"
+  },
+  "output_truncated": false,
+  "stdout_bytes": 4099,
+  "stderr_bytes": 0,
+  "ended_utc": "2026-10-06T15:10:24.779831+00:00"
+}

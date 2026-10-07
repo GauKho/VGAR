@@ -1,0 +1,38 @@
+{
+  "build_seconds": 0.0015824000001884997,
+  "nodes": 4,
+  "edges": 3,
+  "graph_version": "sha256:7dc84e1570d64b4b323618a3fc46dbf4f4d199d097805e17d6eb085c4f91c8a9",
+  "use_jedi": false,
+  "builder_hash": "79d37531e460",
+  "skipped_failed_files": 0,
+  "cache_identity": {
+    "repository": "o/r",
+    "commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "tree_hash": "sha256:411e3cd8843148a580d42eb1deebd2c2f0e70b33a3c8600be1f3873164157e04",
+    "use_jedi": false,
+    "builder_hash": "79d37531e460",
+    "source_roots": [
+      "src"
+    ],
+    "source_scope": {
+      "excluded_paths": []
+    },
+    "implementation_hashes": {
+      "graph/builder.py": "sha256:79d37531e460cc5fd0c373143b0e7d91d00190856bf0f55cbe204e543dfe05b1",
+      "graph/jedi_resolver.py": "sha256:adefa9271aecc11b97f9d8366a3b5bde578d5c870d2481a0ebf066ca9cb59d37",
+      "contracts/schema.py": "sha256:f47965e26cde0edc1e5e1bee379aa04cd5eb5a26ecbe9ba63d6019aa96ff6a9a",
+      "source_scope.py": "sha256:fbfcb5238e42d7ff15475c2038f9af0d728961d32b3d935c689c11ec7ea831ab",
+      "evaluation/retrieval/graph_cache.py": "sha256:54fafe1241089222c2eb11f136ce66b1f60df310f12ef6617c5669708ea4ff7f"
+    },
+    "package_versions": {
+      "tree-sitter": "0.25.2",
+      "tree-sitter-python": "0.25.0",
+      "jedi": "0.20.0"
+    },
+    "python": "3.11"
+  },
+  "cache_key": "896194af685148f1f216d4c1d6c4c40823310e0cd0c3e88d8829269232f59f62",
+  "graph_path": "D:\\Project\\CAPSTONES\\VGAR\\artifacts\\m8-fixture-99543a81\\data\\graphs\\o__r-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa-896194af685148f1f216d4c1d6c4c40823310e0cd0c3e88d8829269232f59f62.json",
+  "graph_hash": "sha256:ceeafc6b6af3a6ec12ed69831948e5b9bb53b49864abb59b08b768c951c0147e"
+}

@@ -41,6 +41,10 @@ def sandbox(repo: Path, settings: Settings, keep: bool = False):
         print(f"[index] {nodes} nodes -> {work / 'graph.db'}")
         sandboxed = replace(settings, graph=replace(settings.graph, backend="sqlite", database=work / "graph.db"))
         with create_workspace(repo, work / "ws") as lease:
+            sandboxed = replace(
+                sandboxed, graph=replace(sandboxed.graph, source_root=lease.path, version=None),
+                workspace_root=lease.path,
+            )
             print(f"[workspace] {lease.path}")
             yield sandboxed, lease
     finally:

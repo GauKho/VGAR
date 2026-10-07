@@ -1,0 +1,167 @@
+{
+  "run_id": "20261006T153732776224Z-92ffd7d1ebcc",
+  "kind": "milestone-6-transport-green",
+  "status": "FAIL",
+  "started_utc": "2026-10-06T15:37:32.777224+00:00",
+  "complete": true,
+  "python": "3.11.6 (tags/v3.11.6:8b6ee5b, Oct  2 2023, 14:57:12) [MSC v.1935 64 bit (AMD64)]",
+  "interpreter": "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe",
+  "platform": "Windows-10-10.0.26300-SP0",
+  "command_argv": [
+    "-c"
+  ],
+  "cwd": "D:\\Project\\CAPSTONES\\VGAR",
+  "command": "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe -m pytest -q -p no:cacheprovider --junitxml=D:\\Project\\CAPSTONES\\VGAR\\.m2-pytest-h3w75c8o\\junit.xml tests/test_w5_w6_retrieval_mcp.py tests/test_mcp_stdio_smoke.py",
+  "argv": [
+    "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "--junitxml=D:\\Project\\CAPSTONES\\VGAR\\.m2-pytest-h3w75c8o\\junit.xml",
+    "tests/test_w5_w6_retrieval_mcp.py",
+    "tests/test_mcp_stdio_smoke.py"
+  ],
+  "exit_code": 1,
+  "duration_ms": 51422,
+  "stdout": ".................F..                                                     [100%]\r\n================================== FAILURES ===================================\r\n___________ test_real_stateless_stdio_and_langchain_context_display ___________\r\n\r\ntmp_path = WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-467/test_real_stateless_stdio_and_0')\r\n\r\n    def test_real_stateless_stdio_and_langchain_context_display(tmp_path):\r\n        from vgar.evaluation.retrieval.evidence import new_run, write_json, utc_now\r\n        root = Path(__file__).resolve().parents[1]\r\n        directory, record = new_run(root / \"artifacts/fixes/w3-w6\", \"milestone-6-stdio-wrapper\")\r\n        argv = [sys.executable, \"-B\", str(root / \"scripts/smoke_w5_w6.py\"), \"--allow-fallback-counter\",\r\n                \"--output-root\", str(directory / \"transport\")]\r\n        environment = dict(os.environ, PYTHONUTF8=\"1\", PYTHONDONTWRITEBYTECODE=\"1\")\r\n        completed = subprocess.run(argv, cwd=root, env=environment, capture_output=True, text=True, encoding=\"utf-8\", timeout=110)\r\n        record.update(command_argv=argv, stdout=completed.stdout, stderr=completed.stderr,\r\n                      exit_code=completed.returncode, status=\"PASS\" if completed.returncode == 0 else \"ERROR\",\r\n                      complete=True, ended_utc=utc_now(), inference=\"NOT_RUN\")\r\n        write_json(directory / \"result.json\", record)\r\n>       assert completed.returncode == 0, f\"{directory}: {completed.stdout}\\n{completed.stderr}\"\r\nE       AssertionError: D:\\Project\\CAPSTONES\\VGAR\\artifacts\\fixes\\w3-w6\\20261006T153735529552Z-b0b56d6e933b: run: D:\\Project\\CAPSTONES\\VGAR\\artifacts\\fixes\\w3-w6\\20261006T153735529552Z-b0b56d6e933b\\transport\\20261006T153737310097Z-74b058ba4963\r\nE         W5-W6 MCP CONTEXT ERROR\r\nE         \r\nE         \r\nE       assert 1 == 0\r\nE        +  where 1 = CompletedProcess(args=['D:\\\\Project\\\\CAPSTONES\\\\vgar_mcp_mvp\\\\.venv\\\\Scripts\\\\python.exe', '-B', 'D:\\\\Project\\\\CAPSTON...1006T153735529552Z-b0b56d6e933b\\\\transport\\\\20261006T153737310097Z-74b058ba4963\\nW5-W6 MCP CONTEXT ERROR\\n', stderr='').returncode\r\n\r\ntests\\test_w5_w6_retrieval_mcp.py:138: AssertionError\r\n- generated xml file: D:\\Project\\CAPSTONES\\VGAR\\.m2-pytest-h3w75c8o\\junit.xml -\r\n=========================== short test summary info ===========================\r\nFAILED tests/test_w5_w6_retrieval_mcp.py::test_real_stateless_stdio_and_langchain_context_display\r\n1 failed, 19 passed in 50.52s\r\n",
+  "stderr": "",
+  "timeout_seconds": 180.0,
+  "cases": [
+    {
+      "name": "tests.test_w5_w6_retrieval_mcp::test_relation_depth_is_not_echoed_without_real_traversal[0-get_callers]",
+      "status": "PASS",
+      "duration_ms": 41,
+      "detail": null
+    },
+    {
+      "name": "tests.test_w5_w6_retrieval_mcp::test_relation_depth_is_not_echoed_without_real_traversal[0-get_callees]",
+      "status": "PASS",
+      "duration_ms": 33,
+      "detail": null
+    },
+    {
+      "name": "tests.test_w5_w6_retrieval_mcp::test_relation_depth_is_not_echoed_without_real_traversal[2-get_callers]",
+      "status": "PASS",
+      "duration_ms": 34,
+      "detail": null
+    },
+    {
+      "name": "tests.test_w5_w6_retrieval_mcp::test_relation_depth_is_not_echoed_without_real_traversal[2-get_callees]",
+      "status": "PASS",
+      "duration_ms": 38,
+      "detail": null
+    },
+    {
+      "name": "tests.test_w5_w6_retrieval_mcp::test_relation_depth_is_not_echoed_without_real_traversal[-1-get_callers]",
+      "status": "PASS",
+      "duration_ms": 34,
+      "detail": null
+    },
+    {
+      "name": "tests.test_w5_w6_retrieval_mcp::test_relation_depth_is_not_echoed_without_real_traversal[-1-get_callees]",
+      "status": "PASS",
+      "duration_ms": 33,
+      "detail": null
+    },
+    {
+      "name": "tests.test_w5_w6_retrieval_mcp::test_relation_depth_is_not_echoed_without_real_traversal[True-get_callers]",
+      "status": "PASS",
+      "duration_ms": 35,
+      "detail": null
+    },
+    {
+      "name": "tests.test_w5_w6_retrieval_mcp::test_relation_depth_is_not_echoed_without_real_traversal[True-get_callees]",
+      "status": "PASS",
+      "duration_ms": 35,
+      "detail": null
+    },
+    {
+      "name": "tests.test_w5_w6_retrieval_mcp::test_resource_decodes_percent_encoded_real_graph_node[graph_node]",
+      "status": "PASS",
+      "duration_ms": 36,
+      "detail": null
+    },
+    {
+      "name": "tests.test_w5_w6_retrieval_mcp::test_resource_decodes_percent_encoded_real_graph_node[graph_subgraph]",
+      "status": "PASS",
+      "duration_ms": 43,
+      "detail": null
+    },
+    {
+      "name": "tests.test_w5_w6_retrieval_mcp::test_sqlite_roundtrip_preserves_full_snapshot_source_ranges_and_language",
+      "status": "PASS",
+      "duration_ms": 34,
+      "detail": null
+    },
+    {
+      "name": "tests.test_w5_w6_retrieval_mcp::test_task_handles_survive_service_recreation_and_do_not_mix_issues",
+      "status": "PASS",
+      "duration_ms": 70,
+      "detail": null
+    },
+    {
+      "name": "tests.test_w5_w6_retrieval_mcp::test_mcp_tools_return_frozen_context_and_task_diagnostics_in_metadata",
+      "status": "PASS",
+      "duration_ms": 48,
+      "detail": null
+    },
+    {
+      "name": "tests.test_w5_w6_retrieval_mcp::test_unknown_handle_bad_anchors_budget_and_stale_source_fail_closed",
+      "status": "PASS",
+      "duration_ms": 49,
+      "detail": null
+    },
+    {
+      "name": "tests.test_w5_w6_retrieval_mcp::test_handle_from_prior_graph_version_is_rejected_not_rebound",
+      "status": "PASS",
+      "duration_ms": 50,
+      "detail": null
+    },
+    {
+      "name": "tests.test_w5_w6_retrieval_mcp::test_no_anchor_is_empty_context_with_diagnostics_not_fake_match",
+      "status": "PASS",
+      "duration_ms": 48,
+      "detail": null
+    },
+    {
+      "name": "tests.test_w5_w6_retrieval_mcp::test_demo_backend_reports_retrieval_unavailable_not_fake_evidence",
+      "status": "PASS",
+      "duration_ms": 3,
+      "detail": null
+    },
+    {
+      "name": "tests.test_w5_w6_retrieval_mcp::test_real_stateless_stdio_and_langchain_context_display",
+      "status": "FAIL",
+      "duration_ms": 2181,
+      "detail": "tmp_path = WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-467/test_real_stateless_stdio_and_0')\n\n    def test_real_stateless_stdio_and_langchain_context_display(tmp_path):\n        from vgar.evaluation.retrieval.evidence import new_run, write_json, utc_now\n        root = Path(__file__).resolve().parents[1]\n        directory, record = new_run(root / \"artifacts/fixes/w3-w6\", \"milestone-6-stdio-wrapper\")\n        argv = [sys.executable, \"-B\", str(root / \"scripts/smoke_w5_w6.py\"), \"--allow-fallback-counter\",\n                \"--output-root\", str(directory / \"transport\")]\n        environment = dict(os.environ, PYTHONUTF8=\"1\", PYTHONDONTWRITEBYTECODE=\"1\")\n        completed = subprocess.run(argv, cwd=root, env=environment, capture_output=True, text=True, encoding=\"utf-8\", timeout=110)\n        record.update(command_argv=argv, stdout=completed.stdout, stderr=completed.stderr,\n                      exit_code=completed.returncode, status=\"PASS\" if completed.returncode == 0 else \"ERROR\",\n                      complete=True, ended_utc=utc_now(), inference=\"NOT_RUN\")\n        write_json(directory / \"result.json\", record)\n>       assert completed.returncode == 0, f\"{directory}: {completed.stdout}\\n{completed.stderr}\"\nE       AssertionError: D:\\Project\\CAPSTONES\\VGAR\\artifacts\\fixes\\w3-w6\\20261006T153735529552Z-b0b56d6e933b: run: D:\\Project\\CAPSTONES\\VGAR\\artifacts\\fixes\\w3-w6\\20261006T153735529552Z-b0b56d6e933b\\transport\\20261006T153737310097Z-74b058ba4963\nE         W5-W6 MCP CONTEXT ERROR\nE         \nE         \nE       assert 1 == 0\nE        +  where 1 = CompletedProcess(args=['D:\\\\Project\\\\CAPSTONES\\\\vgar_mcp_mvp\\\\.venv\\\\Scripts\\\\python.exe', '-B', 'D:\\\\Project\\\\CAPSTON...1006T153735529552Z-b0b56d6e933b\\\\transport\\\\20261006T153737310097Z-74b058ba4963\\nW5-W6 MCP CONTEXT ERROR\\n', stderr='').returncode\n\ntests\\test_w5_w6_retrieval_mcp.py:138: AssertionError"
+    },
+    {
+      "name": "tests.test_mcp_stdio_smoke::test_real_stdio_smoke_saves_transcript_audit_patch_and_m2_evidence[smoke_w3_w4_full.py-args0-W3-W4 FULL SMOKE PASS]",
+      "status": "PASS",
+      "duration_ms": 28798,
+      "detail": null
+    },
+    {
+      "name": "tests.test_mcp_stdio_smoke::test_real_stdio_smoke_saves_transcript_audit_patch_and_m2_evidence[smoke_w3_w4_agent.py-args1-W3-W4 AGENT SMOKE PASS]",
+      "status": "PASS",
+      "duration_ms": 17026,
+      "detail": null
+    }
+  ],
+  "case_counts": {
+    "passed": 19,
+    "failed": 1,
+    "error": 0,
+    "skipped": 0
+  },
+  "reason": {
+    "code": "TEST_FAILED",
+    "message": "Pytest assertions failed"
+  },
+  "output_truncated": false,
+  "stdout_bytes": 2446,
+  "stderr_bytes": 0,
+  "ended_utc": "2026-10-06T15:38:24.250923+00:00"
+}

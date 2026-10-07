@@ -1,0 +1,136 @@
+{
+  "run_id": "20261006T155551538800Z-9e8bbd1525a5",
+  "kind": "milestone-6-stdio-context",
+  "status": "ERROR",
+  "started_utc": "2026-10-06T15:55:51.538800+00:00",
+  "complete": true,
+  "python": "3.11.6 (tags/v3.11.6:8b6ee5b, Oct  2 2023, 14:57:12) [MSC v.1935 64 bit (AMD64)]",
+  "interpreter": "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe",
+  "platform": "Windows-10-10.0.26300-SP0",
+  "command_argv": [
+    "scripts/smoke_w5_w6.py",
+    "--tokenizer-manifest",
+    "artifacts/m1/tokenizer-acceptance/tokenizer_manifest.json"
+  ],
+  "cwd": "D:\\Project\\CAPSTONES\\VGAR",
+  "tool_names": [
+    "graph_find_task_anchors",
+    "graph_get_callees",
+    "graph_get_callers",
+    "graph_get_related_context",
+    "graph_search_symbols"
+  ],
+  "calls": [
+    {
+      "tool": "graph_find_task_anchors",
+      "arguments": {
+        "issue_text": "demo.answer returns a wrong value"
+      },
+      "response": {
+        "status": "PASS",
+        "data": {
+          "task_handle": "vgar-task:f0e1d0ec7d6bee9a2e01572b6fbe137e328f6a5e2dcf363fba9bc94121e00fb6",
+          "graph_version": "sha256:2e30ab2f266d2422baafa2967bc9b989203dd274acc4a243a13fe05b7e9bb24a",
+          "anchor_ids": [
+            "vgar:smoke/w6:python:function:src/demo.py:demo.answer"
+          ],
+          "anchors": [
+            {
+              "node_id": "vgar:smoke/w6:python:function:src/demo.py:demo.answer",
+              "path": "src/demo.py",
+              "symbol": "demo.answer",
+              "score": 0.8,
+              "evidence": [
+                {
+                  "kind": "symbol",
+                  "matched_text": "demo.answer",
+                  "source": "issue"
+                }
+              ]
+            }
+          ],
+          "ambiguous_matches": [],
+          "unmatched_locations": []
+        },
+        "error": null,
+        "metadata": {
+          "duration_ms": 17,
+          "request_id": "15b2ef78b0ac416c9dba664e7c1e0874",
+          "backend": "sqlite",
+          "tool": "find_task_anchors"
+        }
+      }
+    },
+    {
+      "tool": "graph_find_task_anchors",
+      "arguments": {
+        "issue_text": "demo.answer should return a different number"
+      },
+      "response": {
+        "status": "PASS",
+        "data": {
+          "task_handle": "vgar-task:cda0787e3454c6c65883b4a517b3713d1c84f2da6095fc2ebb51e742d484d3be",
+          "graph_version": "sha256:2e30ab2f266d2422baafa2967bc9b989203dd274acc4a243a13fe05b7e9bb24a",
+          "anchor_ids": [
+            "vgar:smoke/w6:python:function:src/demo.py:demo.answer"
+          ],
+          "anchors": [
+            {
+              "node_id": "vgar:smoke/w6:python:function:src/demo.py:demo.answer",
+              "path": "src/demo.py",
+              "symbol": "demo.answer",
+              "score": 0.8,
+              "evidence": [
+                {
+                  "kind": "symbol",
+                  "matched_text": "demo.answer",
+                  "source": "issue"
+                }
+              ]
+            }
+          ],
+          "ambiguous_matches": [],
+          "unmatched_locations": []
+        },
+        "error": null,
+        "metadata": {
+          "duration_ms": 19,
+          "request_id": "6932f4ce7f764d48af226eb114ff7ff7",
+          "backend": "sqlite",
+          "tool": "find_task_anchors"
+        }
+      }
+    },
+    {
+      "tool": "graph_get_related_context",
+      "arguments": {
+        "anchor_ids": [
+          "vgar:smoke/w6:python:function:src/demo.py:demo.answer"
+        ],
+        "budget_tokens": 8000,
+        "task_handle": "vgar-task:f0e1d0ec7d6bee9a2e01572b6fbe137e328f6a5e2dcf363fba9bc94121e00fb6"
+      },
+      "response": {
+        "status": "ERROR",
+        "data": null,
+        "error": {
+          "code": "INTERNAL_ERROR",
+          "message": "Unexpected server error: FileNotFoundError",
+          "details": {}
+        },
+        "metadata": {
+          "duration_ms": 30,
+          "request_id": "cc6348e34efd4e5ca03b7a8d6becc164",
+          "backend": "sqlite",
+          "tool": "get_related_context"
+        }
+      }
+    }
+  ],
+  "exit_code": 1,
+  "error_class": "AssertionError",
+  "error": "graph_get_related_context: expected PASS, got {'status': 'ERROR', 'data': None, 'error': {'code': 'INTERNAL_ERROR', 'message': 'Unexpected server error: FileNotFoundError', 'details': {}}, 'metadata': {'duration_ms': 30, 'request_id': 'cc6348e34efd4e5ca03b7a8d6becc164', 'backend': 'sqlite', 'tool': 'get_related_context'}}",
+  "traceback": "Traceback (most recent call last):\n  File \"D:\\Project\\CAPSTONES\\VGAR\\scripts\\smoke_w5_w6.py\", line 99, in main\n    asyncio.run(asyncio.wait_for(run(directory, record,\n  File \"C:\\Program Files\\Python311\\Lib\\asyncio\\runners.py\", line 190, in run\n    return runner.run(main)\n           ^^^^^^^^^^^^^^^^\n  File \"C:\\Program Files\\Python311\\Lib\\asyncio\\runners.py\", line 118, in run\n    return self._loop.run_until_complete(task)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Program Files\\Python311\\Lib\\asyncio\\base_events.py\", line 653, in run_until_complete\n    return future.result()\n           ^^^^^^^^^^^^^^^\n  File \"C:\\Program Files\\Python311\\Lib\\asyncio\\tasks.py\", line 489, in wait_for\n    return fut.result()\n           ^^^^^^^^^^^^\n  File \"D:\\Project\\CAPSTONES\\VGAR\\scripts\\smoke_w5_w6.py\", line 65, in run\n    response = await call(\"graph_get_related_context\", {\"anchor_ids\": found[\"anchor_ids\"],\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\Project\\CAPSTONES\\VGAR\\scripts\\smoke_w5_w6.py\", line 56, in call\n    raise AssertionError(f\"{name}: expected {expected}, got {response}\")\nAssertionError: graph_get_related_context: expected PASS, got {'status': 'ERROR', 'data': None, 'error': {'code': 'INTERNAL_ERROR', 'message': 'Unexpected server error: FileNotFoundError', 'details': {}}, 'metadata': {'duration_ms': 30, 'request_id': 'cc6348e34efd4e5ca03b7a8d6becc164', 'backend': 'sqlite', 'tool': 'get_related_context'}}\n",
+  "ended_utc": "2026-10-06T15:55:58.927723+00:00",
+  "duration_seconds": 7.372312400002556
+}

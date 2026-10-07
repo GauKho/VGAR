@@ -1,0 +1,3682 @@
+{
+  "instance_id": "django__django-13344",
+  "repository": "django/django",
+  "base_commit": "e39e727ded673e74016b5d3658d23cbe20234d11",
+  "status": "SUCCEEDED",
+  "query_hash": "sha256:fa0d64caaae3c17b9e52c447593c2c8ac3354046b1df2ceb293645b293b06090",
+  "patch_hash": "sha256:cd4ce142ef39fd702719df87d61b4d6c21d40a39985baf48a469c3fa9248459a",
+  "corpus_hash": "sha256:85278e404591a3f57c954155c26077bb37a2339e6caac44c6550dd5d0e98daa6",
+  "gold": {
+    "gold_files": [
+      "django/contrib/sessions/middleware.py",
+      "django/middleware/cache.py",
+      "django/middleware/security.py"
+    ],
+    "gold_functions": [
+      "django/contrib/sessions/middleware.py::django.contrib.sessions.middleware.SessionMiddleware.__init__",
+      "django/middleware/cache.py::django.middleware.cache.CacheMiddleware.__init__",
+      "django/middleware/cache.py::django.middleware.cache.FetchFromCacheMiddleware.__init__",
+      "django/middleware/cache.py::django.middleware.cache.UpdateCacheMiddleware.__init__",
+      "django/middleware/security.py::django.middleware.security.SecurityMiddleware.__init__"
+    ],
+    "all_changed_source_files": [
+      "django/contrib/sessions/middleware.py",
+      "django/middleware/cache.py",
+      "django/middleware/security.py"
+    ],
+    "unretrievable_files": [],
+    "mapping_events": [
+      {
+        "path": "django/contrib/sessions/middleware.py",
+        "side": "old",
+        "line": 16,
+        "function_id": "django/contrib/sessions/middleware.py::django.contrib.sessions.middleware.SessionMiddleware.__init__",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "django/contrib/sessions/middleware.py",
+        "side": "old",
+        "line": 17,
+        "function_id": "django/contrib/sessions/middleware.py::django.contrib.sessions.middleware.SessionMiddleware.__init__",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "django/contrib/sessions/middleware.py",
+        "side": "old",
+        "line": 18,
+        "function_id": "django/contrib/sessions/middleware.py::django.contrib.sessions.middleware.SessionMiddleware.__init__",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "django/contrib/sessions/middleware.py",
+        "side": "new",
+        "line": 16,
+        "function_id": "django/contrib/sessions/middleware.py::django.contrib.sessions.middleware.SessionMiddleware.__init__",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "django/middleware/cache.py",
+        "side": "old",
+        "line": 67,
+        "function_id": "django/middleware/cache.py::django.middleware.cache.UpdateCacheMiddleware.__init__",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "django/middleware/cache.py",
+        "side": "old",
+        "line": 73,
+        "function_id": "django/middleware/cache.py::django.middleware.cache.UpdateCacheMiddleware.__init__",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "django/middleware/cache.py",
+        "side": "new",
+        "line": 67,
+        "function_id": "django/middleware/cache.py::django.middleware.cache.UpdateCacheMiddleware.__init__",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "django/middleware/cache.py",
+        "side": "old",
+        "line": 131,
+        "function_id": "django/middleware/cache.py::django.middleware.cache.FetchFromCacheMiddleware.__init__",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "django/middleware/cache.py",
+        "side": "old",
+        "line": 135,
+        "function_id": "django/middleware/cache.py::django.middleware.cache.FetchFromCacheMiddleware.__init__",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "django/middleware/cache.py",
+        "side": "new",
+        "line": 130,
+        "function_id": "django/middleware/cache.py::django.middleware.cache.FetchFromCacheMiddleware.__init__",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "django/middleware/cache.py",
+        "side": "old",
+        "line": 176,
+        "function_id": "django/middleware/cache.py::django.middleware.cache.CacheMiddleware.__init__",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "django/middleware/cache.py",
+        "side": "old",
+        "line": 177,
+        "function_id": "django/middleware/cache.py::django.middleware.cache.CacheMiddleware.__init__",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "django/middleware/cache.py",
+        "side": "new",
+        "line": 174,
+        "function_id": "django/middleware/cache.py::django.middleware.cache.CacheMiddleware.__init__",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "django/middleware/cache.py",
+        "side": "old",
+        "line": 188,
+        "function_id": "django/middleware/cache.py::django.middleware.cache.CacheMiddleware.__init__",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "django/middleware/cache.py",
+        "side": "old",
+        "line": 189,
+        "function_id": "django/middleware/cache.py::django.middleware.cache.CacheMiddleware.__init__",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "django/middleware/cache.py",
+        "side": "old",
+        "line": 190,
+        "function_id": "django/middleware/cache.py::django.middleware.cache.CacheMiddleware.__init__",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "django/middleware/cache.py",
+        "side": "old",
+        "line": 196,
+        "function_id": "django/middleware/cache.py::django.middleware.cache.CacheMiddleware.__init__",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "django/middleware/cache.py",
+        "side": "old",
+        "line": 197,
+        "function_id": "django/middleware/cache.py::django.middleware.cache.CacheMiddleware.__init__",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "django/middleware/cache.py",
+        "side": "old",
+        "line": 199,
+        "function_id": "django/middleware/cache.py::django.middleware.cache.CacheMiddleware.__init__",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "django/middleware/cache.py",
+        "side": "old",
+        "line": 200,
+        "function_id": "django/middleware/cache.py::django.middleware.cache.CacheMiddleware.__init__",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "django/middleware/cache.py",
+        "side": "old",
+        "line": 201,
+        "function_id": "django/middleware/cache.py::django.middleware.cache.CacheMiddleware.__init__",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "django/middleware/cache.py",
+        "side": "old",
+        "line": 203,
+        "function_id": "django/middleware/cache.py::django.middleware.cache.CacheMiddleware.__init__",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "django/middleware/cache.py",
+        "side": "new",
+        "line": 184,
+        "function_id": "django/middleware/cache.py::django.middleware.cache.CacheMiddleware.__init__",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "django/middleware/cache.py",
+        "side": "new",
+        "line": 186,
+        "function_id": "django/middleware/cache.py::django.middleware.cache.CacheMiddleware.__init__",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "django/middleware/cache.py",
+        "side": "new",
+        "line": 191,
+        "function_id": "django/middleware/cache.py::django.middleware.cache.CacheMiddleware.__init__",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "django/middleware/cache.py",
+        "side": "new",
+        "line": 192,
+        "function_id": "django/middleware/cache.py::django.middleware.cache.CacheMiddleware.__init__",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "django/middleware/cache.py",
+        "side": "new",
+        "line": 194,
+        "function_id": "django/middleware/cache.py::django.middleware.cache.CacheMiddleware.__init__",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "django/middleware/cache.py",
+        "side": "new",
+        "line": 196,
+        "function_id": "django/middleware/cache.py::django.middleware.cache.CacheMiddleware.__init__",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "django/middleware/cache.py",
+        "side": "new",
+        "line": 197,
+        "function_id": "django/middleware/cache.py::django.middleware.cache.CacheMiddleware.__init__",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "django/middleware/security.py",
+        "side": "old",
+        "line": 12,
+        "function_id": "django/middleware/security.py::django.middleware.security.SecurityMiddleware.__init__",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "django/middleware/security.py",
+        "side": "new",
+        "line": 12,
+        "function_id": "django/middleware/security.py::django.middleware.security.SecurityMiddleware.__init__",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "django/middleware/security.py",
+        "side": "old",
+        "line": 22,
+        "function_id": "django/middleware/security.py::django.middleware.security.SecurityMiddleware.__init__",
+        "disposition": "mapped_function"
+      }
+    ],
+    "function_labels_complete": true,
+    "mapping_coverage": 1.0,
+    "file_retrievability_coverage": 1.0,
+    "label_semantics": "developer_changed_code_proxy_not_complete_relevance"
+  },
+  "arms": {
+    "graph": {
+      "rank_hash": "sha256:fe0736df49e4d7086b21b8e5f8e70a4f69816899222a6d79b5084ee702b354d6",
+      "ranking_total_count": 60,
+      "ranked": [
+        {
+          "rank": 1,
+          "item_id": "vgar:django__django:python:function:django/template/defaultfilters.py:django.template.defaultfilters.title",
+          "path": "django/template/defaultfilters.py",
+          "kind": "function",
+          "symbol": "django.template.defaultfilters.title",
+          "function_id": "django/template/defaultfilters.py::django.template.defaultfilters.title",
+          "score": 0.6441789215686275,
+          "lines": [
+            242,
+            245
+          ],
+          "snippet_sha256": "sha256:c63ee8347d1229f5bc38fe4f47486fa285bf548e63d3180d36b6bf96ab90a8e3"
+        },
+        {
+          "rank": 2,
+          "item_id": "vgar:django__django:python:function:django/template/defaultfilters.py:django.template.defaultfilters.first",
+          "path": "django/template/defaultfilters.py",
+          "kind": "function",
+          "symbol": "django.template.defaultfilters.first",
+          "function_id": "django/template/defaultfilters.py::django.template.defaultfilters.first",
+          "score": 0.6191789215686275,
+          "lines": [
+            517,
+            522
+          ],
+          "snippet_sha256": "sha256:d62d5ee5ee9e76ce0512b9313e1e4fcbc97e021a855e1c93218da11df52c90d4"
+        },
+        {
+          "rank": 3,
+          "item_id": "vgar:django__django:python:method:django/utils/dateformat.py:django.utils.dateformat.TimeFormat.a",
+          "path": "django/utils/dateformat.py",
+          "kind": "method",
+          "symbol": "django.utils.dateformat.TimeFormat.a",
+          "function_id": "django/utils/dateformat.py::django.utils.dateformat.TimeFormat.a",
+          "score": 0.6058859223300972,
+          "lines": [
+            62,
+            66
+          ],
+          "snippet_sha256": "sha256:aa201b08c8daaba292b96952ca22a6ac52c38c8bb27dbd5ba11a9eecdc79c707"
+        },
+        {
+          "rank": 4,
+          "item_id": "vgar:django__django:python:method:django/http/request.py:django.http.request.HttpRequest.headers",
+          "path": "django/http/request.py",
+          "kind": "method",
+          "symbol": "django.http.request.HttpRequest.headers",
+          "function_id": "django/http/request.py::django.http.request.HttpRequest.headers",
+          "score": 0.6051767676767676,
+          "lines": [
+            75,
+            76
+          ],
+          "snippet_sha256": "sha256:a69b5c739db713cc45debef88ebce049bb6cfb293fde110db310aa5a5c7121d8"
+        },
+        {
+          "rank": 5,
+          "item_id": "vgar:django__django:python:method:django/contrib/gis/geos/geometry.py:django.contrib.gis.geos.geometry.LinearGeometryMixin.project",
+          "path": "django/contrib/gis/geos/geometry.py",
+          "kind": "method",
+          "symbol": "django.contrib.gis.geos.geometry.LinearGeometryMixin.project",
+          "function_id": "django/contrib/gis/geos/geometry.py::django.contrib.gis.geos.geometry.LinearGeometryMixin.project",
+          "score": 0.6017857142857144,
+          "lines": [
+            651,
+            655
+          ],
+          "snippet_sha256": "sha256:ab54541a7211f23b06a467241022649cec9b214c537d95f0b56242b43774750b"
+        },
+        {
+          "rank": 6,
+          "item_id": "vgar:django__django:python:method:django/middleware/http.py:django.middleware.http.ConditionalGetMiddleware.process_response",
+          "path": "django/middleware/http.py",
+          "kind": "method",
+          "symbol": "django.middleware.http.ConditionalGetMiddleware.process_response",
+          "function_id": "django/middleware/http.py::django.middleware.http.ConditionalGetMiddleware.process_response",
+          "score": 0.6009615384615385,
+          "lines": [
+            14,
+            36
+          ],
+          "snippet_sha256": "sha256:37a47715669ef112fea327fc5cf6500d96fa7b1c5c21b2084a45bdc8eb07a0a4"
+        },
+        {
+          "rank": 7,
+          "item_id": "vgar:django__django:python:method:django/utils/dateformat.py:django.utils.dateformat.TimeFormat.s",
+          "path": "django/utils/dateformat.py",
+          "kind": "method",
+          "symbol": "django.utils.dateformat.TimeFormat.s",
+          "function_id": "django/utils/dateformat.py::django.utils.dateformat.TimeFormat.s",
+          "score": 0.5996359223300971,
+          "lines": [
+            154,
+            156
+          ],
+          "snippet_sha256": "sha256:8a81d5c096af59a13189ef8f063550939db841fddcfa5a09eac7fad940f56b59"
+        },
+        {
+          "rank": 8,
+          "item_id": "vgar:django__django:python:function:django/utils/decorators.py:django.utils.decorators._update_method_wrapper.dummy",
+          "path": "django/utils/decorators.py",
+          "kind": "function",
+          "symbol": "django.utils.decorators._update_method_wrapper.dummy",
+          "function_id": "django/utils/decorators.py::django.utils.decorators._update_method_wrapper.dummy",
+          "score": 0.599404761904762,
+          "lines": [
+            17,
+            18
+          ],
+          "snippet_sha256": "sha256:52b81a976d5de96233d42fddd2095ed8897de625a3c424e4e9bfb20148e9a305"
+        },
+        {
+          "rank": 9,
+          "item_id": "vgar:django__django:python:method:django/contrib/gis/gdal/geomtype.py:django.contrib.gis.gdal.geomtype.OGRGeomType.django",
+          "path": "django/contrib/gis/gdal/geomtype.py",
+          "kind": "method",
+          "symbol": "django.contrib.gis.gdal.geomtype.OGRGeomType.django",
+          "function_id": "django/contrib/gis/gdal/geomtype.py::django.contrib.gis.gdal.geomtype.OGRGeomType.django",
+          "score": 0.5970238095238095,
+          "lines": [
+            78,
+            87
+          ],
+          "snippet_sha256": "sha256:7cff4b21568af087336b13b5f2df2b1b8e86c0940bd298dbbacb52cad8c08878"
+        },
+        {
+          "rank": 10,
+          "item_id": "vgar:django__django:python:method:django/middleware/clickjacking.py:django.middleware.clickjacking.XFrameOptionsMiddleware.process_response",
+          "path": "django/middleware/clickjacking.py",
+          "kind": "method",
+          "symbol": "django.middleware.clickjacking.XFrameOptionsMiddleware.process_response",
+          "function_id": "django/middleware/clickjacking.py::django.middleware.clickjacking.XFrameOptionsMiddleware.process_response",
+          "score": 0.5931603773584906,
+          "lines": [
+            24,
+            35
+          ],
+          "snippet_sha256": "sha256:7bc9dc0495e266c43f8b43f8e0dea39c1e638bfa4c888bb34516cf45c7a06b1c"
+        },
+        {
+          "rank": 11,
+          "item_id": "vgar:django__django:python:method:django/db/models/manager.py:django.db.models.manager.BaseManager.all",
+          "path": "django/db/models/manager.py",
+          "kind": "method",
+          "symbol": "django.db.models.manager.BaseManager.all",
+          "function_id": "django/db/models/manager.py::django.db.models.manager.BaseManager.all",
+          "score": 0.5919117647058824,
+          "lines": [
+            149,
+            156
+          ],
+          "snippet_sha256": "sha256:89414df57dcbcacdf3901a764ff65ff2be35b6bfa7e07031a70de6d1d4ecf804"
+        },
+        {
+          "rank": 12,
+          "item_id": "vgar:django__django:python:class:django/core/handlers/asgi.py:django.core.handlers.asgi.ASGIRequest",
+          "path": "django/core/handlers/asgi.py",
+          "kind": "class",
+          "symbol": "django.core.handlers.asgi.ASGIRequest",
+          "function_id": null,
+          "score": 0.5901515151515152,
+          "lines": [
+            22,
+            123
+          ],
+          "snippet_sha256": "sha256:a1bfbaf8d87cafac99eb8c1798ebe81d0b2db69cb26a322425cba392c7508098"
+        },
+        {
+          "rank": 13,
+          "item_id": "vgar:django__django:python:method:django/middleware/gzip.py:django.middleware.gzip.GZipMiddleware.process_response",
+          "path": "django/middleware/gzip.py",
+          "kind": "method",
+          "symbol": "django.middleware.gzip.GZipMiddleware.process_response",
+          "function_id": "django/middleware/gzip.py::django.middleware.gzip.GZipMiddleware.process_response",
+          "score": 0.5882009345794393,
+          "lines": [
+            15,
+            51
+          ],
+          "snippet_sha256": "sha256:31d240700d549996978c56f0b25b44766240e840f59baaf3cbb773c9f604302d"
+        },
+        {
+          "rank": 14,
+          "item_id": "vgar:django__django:python:method:django/contrib/redirects/middleware.py:django.contrib.redirects.middleware.RedirectFallbackMiddleware.process_response",
+          "path": "django/contrib/redirects/middleware.py",
+          "kind": "method",
+          "symbol": "django.contrib.redirects.middleware.RedirectFallbackMiddleware.process_response",
+          "function_id": "django/contrib/redirects/middleware.py::django.contrib.redirects.middleware.RedirectFallbackMiddleware.process_response",
+          "score": 0.5854357798165138,
+          "lines": [
+            23,
+            50
+          ],
+          "snippet_sha256": "sha256:2364d61711bfe3b618370a2cd5bd1a38fe74e54c43fc36a3eaef309ccaa28400"
+        },
+        {
+          "rank": 15,
+          "item_id": "vgar:django__django:python:method:django/middleware/security.py:django.middleware.security.SecurityMiddleware.process_response",
+          "path": "django/middleware/security.py",
+          "kind": "method",
+          "symbol": "django.middleware.security.SecurityMiddleware.process_response",
+          "function_id": "django/middleware/security.py::django.middleware.security.SecurityMiddleware.process_response",
+          "score": 0.5852272727272728,
+          "lines": [
+            34,
+            58
+          ],
+          "snippet_sha256": "sha256:822493f38b587a581c88351a615127cffcd468975d76a9d816f4a25a61fcf12e"
+        },
+        {
+          "rank": 16,
+          "item_id": "vgar:django__django:python:class:django/http/response.py:django.http.response.HttpResponse",
+          "path": "django/http/response.py",
+          "kind": "class",
+          "symbol": "django.http.response.HttpResponse",
+          "function_id": null,
+          "score": 0.5851010101010101,
+          "lines": [
+            286,
+            349
+          ],
+          "snippet_sha256": "sha256:4d9fa7136eb4d417b372e08d1abd387876bf90e3c224351baec31b8d049792bd"
+        },
+        {
+          "rank": 17,
+          "item_id": "vgar:django__django:python:class:django/middleware/security.py:django.middleware.security.SecurityMiddleware",
+          "path": "django/middleware/security.py",
+          "kind": "class",
+          "symbol": "django.middleware.security.SecurityMiddleware",
+          "function_id": null,
+          "score": 0.5851010101010101,
+          "lines": [
+            8,
+            58
+          ],
+          "snippet_sha256": "sha256:c3b49cb241f360767fd364d7c124774ccbd526b82312cca920fded7780e907b9"
+        },
+        {
+          "rank": 18,
+          "item_id": "vgar:django__django:python:method:django/middleware/common.py:django.middleware.common.CommonMiddleware.process_response",
+          "path": "django/middleware/common.py",
+          "kind": "method",
+          "symbol": "django.middleware.common.CommonMiddleware.process_response",
+          "function_id": "django/middleware/common.py::django.middleware.common.CommonMiddleware.process_response",
+          "score": 0.5825000000000001,
+          "lines": [
+            99,
+            115
+          ],
+          "snippet_sha256": "sha256:d1c8a0a8c8becc3209d4eed67ad9bdac3c339176af6c5e31f61a9ed1bbd0e02d"
+        },
+        {
+          "rank": 19,
+          "item_id": "vgar:django__django:python:method:django/middleware/locale.py:django.middleware.locale.LocaleMiddleware.process_response",
+          "path": "django/middleware/locale.py",
+          "kind": "method",
+          "symbol": "django.middleware.locale.LocaleMiddleware.process_response",
+          "function_id": "django/middleware/locale.py::django.middleware.locale.LocaleMiddleware.process_response",
+          "score": 0.5825000000000001,
+          "lines": [
+            28,
+            61
+          ],
+          "snippet_sha256": "sha256:23c95f321cd22f1ac4ca03269a56a36aeaf786bc999eb82ecf5e3d44e3bbae10"
+        },
+        {
+          "rank": 20,
+          "item_id": "vgar:django__django:python:method:django/middleware/cache.py:django.middleware.cache.UpdateCacheMiddleware.process_response",
+          "path": "django/middleware/cache.py",
+          "kind": "method",
+          "symbol": "django.middleware.cache.UpdateCacheMiddleware.process_response",
+          "function_id": "django/middleware/cache.py::django.middleware.cache.UpdateCacheMiddleware.process_response",
+          "score": 0.5823019801980199,
+          "lines": [
+            78,
+            117
+          ],
+          "snippet_sha256": "sha256:842089577a7da356ba2733c16b622b28cb5f5e2c8156fff1d20d9b60d5690519"
+        },
+        {
+          "rank": 21,
+          "item_id": "vgar:django__django:python:method:django/middleware/csrf.py:django.middleware.csrf.CsrfViewMiddleware.process_response",
+          "path": "django/middleware/csrf.py",
+          "kind": "method",
+          "symbol": "django.middleware.csrf.CsrfViewMiddleware.process_response",
+          "function_id": "django/middleware/csrf.py::django.middleware.csrf.CsrfViewMiddleware.process_response",
+          "score": 0.5823019801980199,
+          "lines": [
+            317,
+            329
+          ],
+          "snippet_sha256": "sha256:774cc6326c6c9d6f12ca47784047d0550330dd8aaaab0b56e31d79ee09bb2678"
+        },
+        {
+          "rank": 22,
+          "item_id": "vgar:django__django:python:method:django/contrib/messages/middleware.py:django.contrib.messages.middleware.MessageMiddleware.process_response",
+          "path": "django/contrib/messages/middleware.py",
+          "kind": "method",
+          "symbol": "django.contrib.messages.middleware.MessageMiddleware.process_response",
+          "function_id": "django/contrib/messages/middleware.py::django.contrib.messages.middleware.MessageMiddleware.process_response",
+          "score": 0.5821078431372549,
+          "lines": [
+            14,
+            26
+          ],
+          "snippet_sha256": "sha256:643bb30dfdf9f73dc93ea46b54a64bb4c883ad0428b7925b8801bd1d58017e1f"
+        },
+        {
+          "rank": 23,
+          "item_id": "vgar:django__django:python:method:django/contrib/sessions/middleware.py:django.contrib.sessions.middleware.SessionMiddleware.process_response",
+          "path": "django/contrib/sessions/middleware.py",
+          "kind": "method",
+          "symbol": "django.contrib.sessions.middleware.SessionMiddleware.process_response",
+          "function_id": "django/contrib/sessions/middleware.py::django.contrib.sessions.middleware.SessionMiddleware.process_response",
+          "score": 0.5821078431372549,
+          "lines": [
+            26,
+            79
+          ],
+          "snippet_sha256": "sha256:66aee140144b670d8693bd2ae435976902590cf9a3301cc8cd6bd339f5fe6231"
+        },
+        {
+          "rank": 24,
+          "item_id": "vgar:django__django:python:method:django/contrib/flatpages/middleware.py:django.contrib.flatpages.middleware.FlatpageFallbackMiddleware.process_response",
+          "path": "django/contrib/flatpages/middleware.py",
+          "kind": "method",
+          "symbol": "django.contrib.flatpages.middleware.FlatpageFallbackMiddleware.process_response",
+          "function_id": "django/contrib/flatpages/middleware.py::django.contrib.flatpages.middleware.FlatpageFallbackMiddleware.process_response",
+          "score": 0.5819174757281553,
+          "lines": [
+            8,
+            20
+          ],
+          "snippet_sha256": "sha256:41eee898e7e80500d0b1b981d1623d1c6f71a269e62676178938c8c528603d09"
+        },
+        {
+          "rank": 25,
+          "item_id": "vgar:django__django:python:method:django/middleware/common.py:django.middleware.common.BrokenLinkEmailsMiddleware.process_response",
+          "path": "django/middleware/common.py",
+          "kind": "method",
+          "symbol": "django.middleware.common.BrokenLinkEmailsMiddleware.process_response",
+          "function_id": "django/middleware/common.py::django.middleware.common.BrokenLinkEmailsMiddleware.process_response",
+          "score": 0.5819174757281553,
+          "lines": [
+            120,
+            139
+          ],
+          "snippet_sha256": "sha256:bbccce618c3f6a3beb5dfd8c000c9a08cea99760b8edc08e8f3b03065ec655ab"
+        },
+        {
+          "rank": 26,
+          "item_id": "vgar:django__django:python:method:django/contrib/admin/tests.py:django.contrib.admin.tests.CSPMiddleware.process_response",
+          "path": "django/contrib/admin/tests.py",
+          "kind": "method",
+          "symbol": "django.contrib.admin.tests.CSPMiddleware.process_response",
+          "function_id": "django/contrib/admin/tests.py::django.contrib.admin.tests.CSPMiddleware.process_response",
+          "score": 0.5794902912621359,
+          "lines": [
+            12,
+            14
+          ],
+          "snippet_sha256": "sha256:88e63d0a4efa0c9ae8a527b57f3274ada080393e987f481b19a5044ae0e1fa51"
+        },
+        {
+          "rank": 27,
+          "item_id": "vgar:django__django:python:method:django/core/cache/__init__.py:django.core.cache.CacheHandler.all",
+          "path": "django/core/cache/__init__.py",
+          "kind": "method",
+          "symbol": "django.core.cache.CacheHandler.all",
+          "function_id": "django/core/cache/__init__.py::django.core.cache.CacheHandler.all",
+          "score": 0.5772058823529412,
+          "lines": [
+            83,
+            84
+          ],
+          "snippet_sha256": "sha256:dd319a358ed3dffcd8a859a51987e3f859e74a215235d75815f07590b8e5c60a"
+        },
+        {
+          "rank": 28,
+          "item_id": "vgar:django__django:python:method:django/db/models/query.py:django.db.models.query.QuerySet.all",
+          "path": "django/db/models/query.py",
+          "kind": "method",
+          "symbol": "django.db.models.query.QuerySet.all",
+          "function_id": "django/db/models/query.py::django.db.models.query.QuerySet.all",
+          "score": 0.5772058823529412,
+          "lines": [
+            918,
+            923
+          ],
+          "snippet_sha256": "sha256:b57c8737cacf04eed848a80d83101e0efd1568ebfe9e6bae5630fd0fcc23a837"
+        },
+        {
+          "rank": 29,
+          "item_id": "vgar:django__django:python:method:django/db/models/query.py:django.db.models.query.QuerySet.first",
+          "path": "django/db/models/query.py",
+          "kind": "method",
+          "symbol": "django.db.models.query.QuerySet.first",
+          "function_id": "django/db/models/query.py::django.db.models.query.QuerySet.first",
+          "score": 0.5772058823529412,
+          "lines": [
+            664,
+            667
+          ],
+          "snippet_sha256": "sha256:ae24b1c87eacdb6a25d34c177f5a5ebcd98a19e8b1a6d27ea35562052a9ec143"
+        },
+        {
+          "rank": 30,
+          "item_id": "vgar:django__django:python:method:django/db/models/query.py:django.db.models.query.QuerySet.using",
+          "path": "django/db/models/query.py",
+          "kind": "method",
+          "symbol": "django.db.models.query.QuerySet.using",
+          "function_id": "django/db/models/query.py::django.db.models.query.QuerySet.using",
+          "score": 0.5770631067961165,
+          "lines": [
+            1205,
+            1209
+          ],
+          "snippet_sha256": "sha256:1c809c9d68984faf651447c70470cd3b4684b84d7e01579221f50436812fdbbc"
+        },
+        {
+          "rank": 31,
+          "item_id": "vgar:django__django:python:method:django/db/models/query.py:django.db.models.query.RawQuerySet.using",
+          "path": "django/db/models/query.py",
+          "kind": "method",
+          "symbol": "django.db.models.query.RawQuerySet.using",
+          "function_id": "django/db/models/query.py::django.db.models.query.RawQuerySet.using",
+          "score": 0.576923076923077,
+          "lines": [
+            1514,
+            1521
+          ],
+          "snippet_sha256": "sha256:6955d91847aade9e28e4cf99154eeac4804ed39a4259a326336c1f87f13f825a"
+        },
+        {
+          "rank": 32,
+          "item_id": "vgar:django__django:python:method:django/utils/archive.py:django.utils.archive.Archive.list",
+          "path": "django/utils/archive.py",
+          "kind": "method",
+          "symbol": "django.utils.archive.Archive.list",
+          "function_id": "django/utils/archive.py::django.utils.archive.Archive.list",
+          "score": 0.5748762376237625,
+          "lines": [
+            89,
+            90
+          ],
+          "snippet_sha256": "sha256:e7321433af5584c5d7ec6c1dc0a4e1363489dd15c83de889f1b405afbf06d1a8"
+        },
+        {
+          "rank": 33,
+          "item_id": "vgar:django__django:python:method:django/utils/archive.py:django.utils.archive.BaseArchive.list",
+          "path": "django/utils/archive.py",
+          "kind": "method",
+          "symbol": "django.utils.archive.BaseArchive.list",
+          "function_id": "django/utils/archive.py::django.utils.archive.BaseArchive.list",
+          "score": 0.5747549019607844,
+          "lines": [
+            139,
+            140
+          ],
+          "snippet_sha256": "sha256:7e1d204f890fe882c4087b2164f65edb3dac8f474a6073ecfcfd368c31e66176"
+        },
+        {
+          "rank": 34,
+          "item_id": "vgar:django__django:python:method:django/db/utils.py:django.db.utils.ConnectionHandler.all",
+          "path": "django/db/utils.py",
+          "kind": "method",
+          "symbol": "django.db.utils.ConnectionHandler.all",
+          "function_id": "django/db/utils.py::django.db.utils.ConnectionHandler.all",
+          "score": 0.5746359223300972,
+          "lines": [
+            228,
+            229
+          ],
+          "snippet_sha256": "sha256:dd5d07401a3e10f2dd3c04ad383d336590f966a244f325673c877e7da29bc3c3"
+        },
+        {
+          "rank": 35,
+          "item_id": "vgar:django__django:python:method:django/template/utils.py:django.template.utils.EngineHandler.all",
+          "path": "django/template/utils.py",
+          "kind": "method",
+          "symbol": "django.template.utils.EngineHandler.all",
+          "function_id": "django/template/utils.py::django.template.utils.EngineHandler.all",
+          "score": 0.5746359223300972,
+          "lines": [
+            89,
+            90
+          ],
+          "snippet_sha256": "sha256:dd5d07401a3e10f2dd3c04ad383d336590f966a244f325673c877e7da29bc3c3"
+        },
+        {
+          "rank": 36,
+          "item_id": "vgar:django__django:python:method:django/utils/archive.py:django.utils.archive.TarArchive.list",
+          "path": "django/utils/archive.py",
+          "kind": "method",
+          "symbol": "django.utils.archive.TarArchive.list",
+          "function_id": "django/utils/archive.py::django.utils.archive.TarArchive.list",
+          "score": 0.5745192307692308,
+          "lines": [
+            148,
+            149
+          ],
+          "snippet_sha256": "sha256:6f3fbc037b0e185e90fada550732bc21851ba20071dba1922ab3c7d37755136e"
+        },
+        {
+          "rank": 37,
+          "item_id": "vgar:django__django:python:method:django/utils/archive.py:django.utils.archive.ZipArchive.list",
+          "path": "django/utils/archive.py",
+          "kind": "method",
+          "symbol": "django.utils.archive.ZipArchive.list",
+          "function_id": "django/utils/archive.py::django.utils.archive.ZipArchive.list",
+          "score": 0.5745192307692308,
+          "lines": [
+            190,
+            191
+          ],
+          "snippet_sha256": "sha256:762d8a6ebddb176c7e2be6e5081b80875639a7b1c7f23319eb6ce28607c1020d"
+        },
+        {
+          "rank": 38,
+          "item_id": "vgar:django__django:python:method:django/contrib/staticfiles/finders.py:django.contrib.staticfiles.finders.BaseFinder.list",
+          "path": "django/contrib/staticfiles/finders.py",
+          "kind": "method",
+          "symbol": "django.contrib.staticfiles.finders.BaseFinder.list",
+          "function_id": "django/contrib/staticfiles/finders.py::django.contrib.staticfiles.finders.BaseFinder.list",
+          "score": 0.5742924528301887,
+          "lines": [
+            39,
+            44
+          ],
+          "snippet_sha256": "sha256:39ee67d2bfd862054778abef4be2997ed988cb02d6cc2e1086e70b3a10ac4a59"
+        },
+        {
+          "rank": 39,
+          "item_id": "vgar:django__django:python:method:django/contrib/staticfiles/finders.py:django.contrib.staticfiles.finders.AppDirectoriesFinder.list",
+          "path": "django/contrib/staticfiles/finders.py",
+          "kind": "method",
+          "symbol": "django.contrib.staticfiles.finders.AppDirectoriesFinder.list",
+          "function_id": "django/contrib/staticfiles/finders.py::django.contrib.staticfiles.finders.AppDirectoriesFinder.list",
+          "score": 0.5741822429906542,
+          "lines": [
+            160,
+            167
+          ],
+          "snippet_sha256": "sha256:77c06a3192fc2108880a94edafcd4e0b25287b96baeba42358b9481a5266622e"
+        },
+        {
+          "rank": 40,
+          "item_id": "vgar:django__django:python:method:django/contrib/staticfiles/finders.py:django.contrib.staticfiles.finders.BaseStorageFinder.list",
+          "path": "django/contrib/staticfiles/finders.py",
+          "kind": "method",
+          "symbol": "django.contrib.staticfiles.finders.BaseStorageFinder.list",
+          "function_id": "django/contrib/staticfiles/finders.py::django.contrib.staticfiles.finders.BaseStorageFinder.list",
+          "score": 0.5741822429906542,
+          "lines": [
+            235,
+            240
+          ],
+          "snippet_sha256": "sha256:942e618882d7e1e5f6c3673e09c3686176826f59affd1b2699b71a1b48018fd7"
+        },
+        {
+          "rank": 41,
+          "item_id": "vgar:django__django:python:method:django/contrib/staticfiles/finders.py:django.contrib.staticfiles.finders.FileSystemFinder.list",
+          "path": "django/contrib/staticfiles/finders.py",
+          "kind": "method",
+          "symbol": "django.contrib.staticfiles.finders.FileSystemFinder.list",
+          "function_id": "django/contrib/staticfiles/finders.py::django.contrib.staticfiles.finders.FileSystemFinder.list",
+          "score": 0.5741822429906542,
+          "lines": [
+            124,
+            131
+          ],
+          "snippet_sha256": "sha256:e6f9503fbb18ec57d5fd37de29c957c6c6dddfd133584ba9b6a4b49725c3952c"
+        },
+        {
+          "rank": 42,
+          "item_id": "vgar:django__django:python:function:django/template/context_processors.py:django.template.context_processors.request",
+          "path": "django/template/context_processors.py",
+          "kind": "function",
+          "symbol": "django.template.context_processors.request",
+          "function_id": "django/template/context_processors.py::django.template.context_processors.request",
+          "score": 0.5723039215686275,
+          "lines": [
+            81,
+            82
+          ],
+          "snippet_sha256": "sha256:c3526d61f0df625d57b19af47bef28bca08443c1905c512b492dee07e63326ed"
+        },
+        {
+          "rank": 43,
+          "item_id": "vgar:django__django:python:class:django/utils/deprecation.py:django.utils.deprecation.MiddlewareMixin",
+          "path": "django/utils/deprecation.py",
+          "kind": "class",
+          "symbol": "django.utils.deprecation.MiddlewareMixin",
+          "function_id": null,
+          "score": 0.5349009900990099,
+          "lines": [
+            88,
+            147
+          ],
+          "snippet_sha256": "sha256:dd9918acd2e3cb20feee7364a2589232dcc7188e15187e41db80ea6960cf6ad2"
+        },
+        {
+          "rank": 44,
+          "item_id": "vgar:django__django:python:method:django/core/handlers/asgi.py:django.core.handlers.asgi.ASGIRequest.COOKIES",
+          "path": "django/core/handlers/asgi.py",
+          "kind": "method",
+          "symbol": "django.core.handlers.asgi.ASGIRequest.COOKIES",
+          "function_id": "django/core/handlers/asgi.py::django.core.handlers.asgi.ASGIRequest.COOKIES",
+          "score": 0.47000000000000003,
+          "lines": [
+            122,
+            123
+          ],
+          "snippet_sha256": "sha256:4682c34a016fba03e30cc7ea4fee73b85ccad4669d520f9b3f2693d9a441a384"
+        },
+        {
+          "rank": 45,
+          "item_id": "vgar:django__django:python:method:django/core/handlers/asgi.py:django.core.handlers.asgi.ASGIRequest.GET",
+          "path": "django/core/handlers/asgi.py",
+          "kind": "method",
+          "symbol": "django.core.handlers.asgi.ASGIRequest.GET",
+          "function_id": "django/core/handlers/asgi.py::django.core.handlers.asgi.ASGIRequest.GET",
+          "score": 0.47000000000000003,
+          "lines": [
+            99,
+            100
+          ],
+          "snippet_sha256": "sha256:fcc883a7c2ba3f2b6593e2eadb9dc7ce9b2fafdba2961348995f2fb576df67be"
+        },
+        {
+          "rank": 46,
+          "item_id": "vgar:django__django:python:method:django/core/handlers/asgi.py:django.core.handlers.asgi.ASGIRequest._set_post",
+          "path": "django/core/handlers/asgi.py",
+          "kind": "method",
+          "symbol": "django.core.handlers.asgi.ASGIRequest._set_post",
+          "function_id": "django/core/handlers/asgi.py::django.core.handlers.asgi.ASGIRequest._set_post",
+          "score": 0.41000000000000003,
+          "lines": [
+            110,
+            111
+          ],
+          "snippet_sha256": "sha256:fc7c4e29369a1f99edcdcc1498abb283ccc7646a14f339304588e9b714d4cf35"
+        },
+        {
+          "rank": 47,
+          "item_id": "vgar:django__django:python:method:django/core/handlers/asgi.py:django.core.handlers.asgi.ASGIRequest._get_files",
+          "path": "django/core/handlers/asgi.py",
+          "kind": "method",
+          "symbol": "django.core.handlers.asgi.ASGIRequest._get_files",
+          "function_id": "django/core/handlers/asgi.py::django.core.handlers.asgi.ASGIRequest._get_files",
+          "score": 0.40730198019801983,
+          "lines": [
+            113,
+            116
+          ],
+          "snippet_sha256": "sha256:fc5c804772592542ebc0bdf9f2bd010b86f0117bad1b1e2803628ba803164d76"
+        },
+        {
+          "rank": 48,
+          "item_id": "vgar:django__django:python:method:django/core/handlers/asgi.py:django.core.handlers.asgi.ASGIRequest._get_post",
+          "path": "django/core/handlers/asgi.py",
+          "kind": "method",
+          "symbol": "django.core.handlers.asgi.ASGIRequest._get_post",
+          "function_id": "django/core/handlers/asgi.py::django.core.handlers.asgi.ASGIRequest._get_post",
+          "score": 0.40730198019801983,
+          "lines": [
+            105,
+            108
+          ],
+          "snippet_sha256": "sha256:90ded38f98f280705c8d9edd1678a55fb5f685cc8560ed2d086fcee5c3fa8961"
+        },
+        {
+          "rank": 49,
+          "item_id": "vgar:django__django:python:method:django/core/handlers/asgi.py:django.core.handlers.asgi.ASGIRequest._get_scheme",
+          "path": "django/core/handlers/asgi.py",
+          "kind": "method",
+          "symbol": "django.core.handlers.asgi.ASGIRequest._get_scheme",
+          "function_id": "django/core/handlers/asgi.py::django.core.handlers.asgi.ASGIRequest._get_scheme",
+          "score": 0.40730198019801983,
+          "lines": [
+            102,
+            103
+          ],
+          "snippet_sha256": "sha256:9efacaa8f0e46fecbb5020efdbdc1a82e6491a4d32596dd51f64982be5befd45"
+        },
+        {
+          "rank": 50,
+          "item_id": "vgar:django__django:python:method:django/core/handlers/asgi.py:django.core.handlers.asgi.ASGIRequest.__init__",
+          "path": "django/core/handlers/asgi.py",
+          "kind": "method",
+          "symbol": "django.core.handlers.asgi.ASGIRequest.__init__",
+          "function_id": "django/core/handlers/asgi.py::django.core.handlers.asgi.ASGIRequest.__init__",
+          "score": 0.4069174757281554,
+          "lines": [
+            31,
+            96
+          ],
+          "snippet_sha256": "sha256:be831a2422af11d22e89e0edb0c7c93e4b2b31e9dc7ebb53aa1ceed2959e857c"
+        },
+        {
+          "rank": 51,
+          "item_id": "vgar:django__django:python:module:django/core/handlers/asgi.py:django.core.handlers.asgi",
+          "path": "django/core/handlers/asgi.py",
+          "kind": "module",
+          "symbol": "django.core.handlers.asgi",
+          "function_id": null,
+          "score": 0.40012626262626266,
+          "lines": [
+            1,
+            288
+          ],
+          "snippet_sha256": "sha256:4bb4938be778ffeda7a7f8ea8dd659a58b94ff67a7adf3e71824d9bec4ee61da"
+        },
+        {
+          "rank": 52,
+          "item_id": "vgar:django__django:python:class:django/http/response.py:django.http.response.HttpResponseBadRequest",
+          "path": "django/http/response.py",
+          "kind": "class",
+          "symbol": "django.http.response.HttpResponseBadRequest",
+          "function_id": null,
+          "score": 0.40000000000000013,
+          "lines": [
+            503,
+            504
+          ],
+          "snippet_sha256": "sha256:3e1b8331e83b527be2281be3fe99122fa92f3b67252810a7e8d51bf120bc31cb"
+        },
+        {
+          "rank": 53,
+          "item_id": "vgar:django__django:python:class:django/http/response.py:django.http.response.HttpResponseServerError",
+          "path": "django/http/response.py",
+          "kind": "class",
+          "symbol": "django.http.response.HttpResponseServerError",
+          "function_id": null,
+          "score": 0.40000000000000013,
+          "lines": [
+            535,
+            536
+          ],
+          "snippet_sha256": "sha256:9daa957454fb889822ef868a92e4500403f04b780fac2454a90757e262aba18c"
+        },
+        {
+          "rank": 54,
+          "item_id": "vgar:django__django:python:class:django/http/response.py:django.http.response.HttpResponseBase",
+          "path": "django/http/response.py",
+          "kind": "class",
+          "symbol": "django.http.response.HttpResponseBase",
+          "function_id": null,
+          "score": 0.39750000000000013,
+          "lines": [
+            29,
+            283
+          ],
+          "snippet_sha256": "sha256:4408d414c29a16662214c237cb1a7bce4a41f321d5cfc7e07c396fd7834ecb3a"
+        },
+        {
+          "rank": 55,
+          "item_id": "vgar:django__django:python:class:django/http/response.py:django.http.response.HttpResponseForbidden",
+          "path": "django/http/response.py",
+          "kind": "class",
+          "symbol": "django.http.response.HttpResponseForbidden",
+          "function_id": null,
+          "score": 0.39750000000000013,
+          "lines": [
+            511,
+            512
+          ],
+          "snippet_sha256": "sha256:1f9602c6485549fa522c64b88adf046d8337b6a56c76d1d1e54ca758fbf8407b"
+        },
+        {
+          "rank": 56,
+          "item_id": "vgar:django__django:python:class:django/http/response.py:django.http.response.HttpResponseGone",
+          "path": "django/http/response.py",
+          "kind": "class",
+          "symbol": "django.http.response.HttpResponseGone",
+          "function_id": null,
+          "score": 0.39750000000000013,
+          "lines": [
+            531,
+            532
+          ],
+          "snippet_sha256": "sha256:549a5b5e754484a58223641f60975483766e9ce27f5c9643a39fee156cfae06a"
+        },
+        {
+          "rank": 57,
+          "item_id": "vgar:django__django:python:class:django/http/response.py:django.http.response.HttpResponseNotAllowed",
+          "path": "django/http/response.py",
+          "kind": "class",
+          "symbol": "django.http.response.HttpResponseNotAllowed",
+          "function_id": null,
+          "score": 0.39740099009901003,
+          "lines": [
+            515,
+            528
+          ],
+          "snippet_sha256": "sha256:a30d67bad21b50aef9a976b3d403e7c41caa6989574c744dd82afdaf7bfda36e"
+        },
+        {
+          "rank": 58,
+          "item_id": "vgar:django__django:python:class:django/http/response.py:django.http.response.HttpResponseNotFound",
+          "path": "django/http/response.py",
+          "kind": "class",
+          "symbol": "django.http.response.HttpResponseNotFound",
+          "function_id": null,
+          "score": 0.39740099009901003,
+          "lines": [
+            507,
+            508
+          ],
+          "snippet_sha256": "sha256:525a9353e1ff25026e0dc07c3d091be88cd9bfb2cb664bb551ac162f8a5312f8"
+        },
+        {
+          "rank": 59,
+          "item_id": "vgar:django__django:python:class:django/http/response.py:django.http.response.HttpResponseNotModified",
+          "path": "django/http/response.py",
+          "kind": "class",
+          "symbol": "django.http.response.HttpResponseNotModified",
+          "function_id": null,
+          "score": 0.39740099009901003,
+          "lines": [
+            489,
+            500
+          ],
+          "snippet_sha256": "sha256:4be13915b23a2d12c61703b050f7a646890f20a3cde23c05544230de1626ed77"
+        },
+        {
+          "rank": 60,
+          "item_id": "vgar:django__django:python:class:django/http/response.py:django.http.response.HttpResponseRedirectBase",
+          "path": "django/http/response.py",
+          "kind": "class",
+          "symbol": "django.http.response.HttpResponseRedirectBase",
+          "function_id": null,
+          "score": 0.39740099009901003,
+          "lines": [
+            460,
+            478
+          ],
+          "snippet_sha256": "sha256:4dd82faa9c37ca23de96ba22fcfe0241805f80f7748bf33fd45beec9ffbf32d1"
+        }
+      ],
+      "rank_order": [
+        "vgar:django__django:python:function:django/template/defaultfilters.py:django.template.defaultfilters.title",
+        "vgar:django__django:python:function:django/template/defaultfilters.py:django.template.defaultfilters.first",
+        "vgar:django__django:python:method:django/utils/dateformat.py:django.utils.dateformat.TimeFormat.a",
+        "vgar:django__django:python:method:django/http/request.py:django.http.request.HttpRequest.headers",
+        "vgar:django__django:python:method:django/contrib/gis/geos/geometry.py:django.contrib.gis.geos.geometry.LinearGeometryMixin.project",
+        "vgar:django__django:python:method:django/middleware/http.py:django.middleware.http.ConditionalGetMiddleware.process_response",
+        "vgar:django__django:python:method:django/utils/dateformat.py:django.utils.dateformat.TimeFormat.s",
+        "vgar:django__django:python:function:django/utils/decorators.py:django.utils.decorators._update_method_wrapper.dummy",
+        "vgar:django__django:python:method:django/contrib/gis/gdal/geomtype.py:django.contrib.gis.gdal.geomtype.OGRGeomType.django",
+        "vgar:django__django:python:method:django/middleware/clickjacking.py:django.middleware.clickjacking.XFrameOptionsMiddleware.process_response",
+        "vgar:django__django:python:method:django/db/models/manager.py:django.db.models.manager.BaseManager.all",
+        "vgar:django__django:python:class:django/core/handlers/asgi.py:django.core.handlers.asgi.ASGIRequest",
+        "vgar:django__django:python:method:django/middleware/gzip.py:django.middleware.gzip.GZipMiddleware.process_response",
+        "vgar:django__django:python:method:django/contrib/redirects/middleware.py:django.contrib.redirects.middleware.RedirectFallbackMiddleware.process_response",
+        "vgar:django__django:python:method:django/middleware/security.py:django.middleware.security.SecurityMiddleware.process_response",
+        "vgar:django__django:python:class:django/http/response.py:django.http.response.HttpResponse",
+        "vgar:django__django:python:class:django/middleware/security.py:django.middleware.security.SecurityMiddleware",
+        "vgar:django__django:python:method:django/middleware/common.py:django.middleware.common.CommonMiddleware.process_response",
+        "vgar:django__django:python:method:django/middleware/locale.py:django.middleware.locale.LocaleMiddleware.process_response",
+        "vgar:django__django:python:method:django/middleware/cache.py:django.middleware.cache.UpdateCacheMiddleware.process_response",
+        "vgar:django__django:python:method:django/middleware/csrf.py:django.middleware.csrf.CsrfViewMiddleware.process_response",
+        "vgar:django__django:python:method:django/contrib/messages/middleware.py:django.contrib.messages.middleware.MessageMiddleware.process_response",
+        "vgar:django__django:python:method:django/contrib/sessions/middleware.py:django.contrib.sessions.middleware.SessionMiddleware.process_response",
+        "vgar:django__django:python:method:django/contrib/flatpages/middleware.py:django.contrib.flatpages.middleware.FlatpageFallbackMiddleware.process_response",
+        "vgar:django__django:python:method:django/middleware/common.py:django.middleware.common.BrokenLinkEmailsMiddleware.process_response",
+        "vgar:django__django:python:method:django/contrib/admin/tests.py:django.contrib.admin.tests.CSPMiddleware.process_response",
+        "vgar:django__django:python:method:django/core/cache/__init__.py:django.core.cache.CacheHandler.all",
+        "vgar:django__django:python:method:django/db/models/query.py:django.db.models.query.QuerySet.all",
+        "vgar:django__django:python:method:django/db/models/query.py:django.db.models.query.QuerySet.first",
+        "vgar:django__django:python:method:django/db/models/query.py:django.db.models.query.QuerySet.using",
+        "vgar:django__django:python:method:django/db/models/query.py:django.db.models.query.RawQuerySet.using",
+        "vgar:django__django:python:method:django/utils/archive.py:django.utils.archive.Archive.list",
+        "vgar:django__django:python:method:django/utils/archive.py:django.utils.archive.BaseArchive.list",
+        "vgar:django__django:python:method:django/db/utils.py:django.db.utils.ConnectionHandler.all",
+        "vgar:django__django:python:method:django/template/utils.py:django.template.utils.EngineHandler.all",
+        "vgar:django__django:python:method:django/utils/archive.py:django.utils.archive.TarArchive.list",
+        "vgar:django__django:python:method:django/utils/archive.py:django.utils.archive.ZipArchive.list",
+        "vgar:django__django:python:method:django/contrib/staticfiles/finders.py:django.contrib.staticfiles.finders.BaseFinder.list",
+        "vgar:django__django:python:method:django/contrib/staticfiles/finders.py:django.contrib.staticfiles.finders.AppDirectoriesFinder.list",
+        "vgar:django__django:python:method:django/contrib/staticfiles/finders.py:django.contrib.staticfiles.finders.BaseStorageFinder.list",
+        "vgar:django__django:python:method:django/contrib/staticfiles/finders.py:django.contrib.staticfiles.finders.FileSystemFinder.list",
+        "vgar:django__django:python:function:django/template/context_processors.py:django.template.context_processors.request",
+        "vgar:django__django:python:class:django/utils/deprecation.py:django.utils.deprecation.MiddlewareMixin",
+        "vgar:django__django:python:method:django/core/handlers/asgi.py:django.core.handlers.asgi.ASGIRequest.COOKIES",
+        "vgar:django__django:python:method:django/core/handlers/asgi.py:django.core.handlers.asgi.ASGIRequest.GET",
+        "vgar:django__django:python:method:django/core/handlers/asgi.py:django.core.handlers.asgi.ASGIRequest._set_post",
+        "vgar:django__django:python:method:django/core/handlers/asgi.py:django.core.handlers.asgi.ASGIRequest._get_files",
+        "vgar:django__django:python:method:django/core/handlers/asgi.py:django.core.handlers.asgi.ASGIRequest._get_post",
+        "vgar:django__django:python:method:django/core/handlers/asgi.py:django.core.handlers.asgi.ASGIRequest._get_scheme",
+        "vgar:django__django:python:method:django/core/handlers/asgi.py:django.core.handlers.asgi.ASGIRequest.__init__",
+        "vgar:django__django:python:module:django/core/handlers/asgi.py:django.core.handlers.asgi",
+        "vgar:django__django:python:class:django/http/response.py:django.http.response.HttpResponseBadRequest",
+        "vgar:django__django:python:class:django/http/response.py:django.http.response.HttpResponseServerError",
+        "vgar:django__django:python:class:django/http/response.py:django.http.response.HttpResponseBase",
+        "vgar:django__django:python:class:django/http/response.py:django.http.response.HttpResponseForbidden",
+        "vgar:django__django:python:class:django/http/response.py:django.http.response.HttpResponseGone",
+        "vgar:django__django:python:class:django/http/response.py:django.http.response.HttpResponseNotAllowed",
+        "vgar:django__django:python:class:django/http/response.py:django.http.response.HttpResponseNotFound",
+        "vgar:django__django:python:class:django/http/response.py:django.http.response.HttpResponseNotModified",
+        "vgar:django__django:python:class:django/http/response.py:django.http.response.HttpResponseRedirectBase"
+      ],
+      "anchors": [
+        {
+          "node_id": "vgar:django__django:python:class:django/core/handlers/asgi.py:django.core.handlers.asgi.ASGIRequest",
+          "score": 0.8,
+          "symbol": "django.core.handlers.asgi.ASGIRequest",
+          "type": "Class",
+          "path": "django/core/handlers/asgi.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:class:django/http/response.py:django.http.response.HttpResponse",
+          "score": 0.8,
+          "symbol": "django.http.response.HttpResponse",
+          "type": "Class",
+          "path": "django/http/response.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:class:django/middleware/security.py:django.middleware.security.SecurityMiddleware",
+          "score": 0.8,
+          "symbol": "django.middleware.security.SecurityMiddleware",
+          "type": "Class",
+          "path": "django/middleware/security.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/contrib/gis/gdal/geomtype.py:django.contrib.gis.gdal.geomtype.OGRGeomType.django",
+          "score": 0.6,
+          "symbol": "django.contrib.gis.gdal.geomtype.OGRGeomType.django",
+          "type": "Method",
+          "path": "django/contrib/gis/gdal/geomtype.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/contrib/gis/geos/geometry.py:django.contrib.gis.geos.geometry.LinearGeometryMixin.project",
+          "score": 0.6,
+          "symbol": "django.contrib.gis.geos.geometry.LinearGeometryMixin.project",
+          "type": "Method",
+          "path": "django/contrib/gis/geos/geometry.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/http/request.py:django.http.request.HttpRequest.headers",
+          "score": 0.6,
+          "symbol": "django.http.request.HttpRequest.headers",
+          "type": "Method",
+          "path": "django/http/request.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:function:django/template/defaultfilters.py:django.template.defaultfilters.title",
+          "score": 0.6,
+          "symbol": "django.template.defaultfilters.title",
+          "type": "Function",
+          "path": "django/template/defaultfilters.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/utils/dateformat.py:django.utils.dateformat.TimeFormat.s",
+          "score": 0.6,
+          "symbol": "django.utils.dateformat.TimeFormat.s",
+          "type": "Method",
+          "path": "django/utils/dateformat.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:function:django/utils/decorators.py:django.utils.decorators._update_method_wrapper.dummy",
+          "score": 0.6,
+          "symbol": "django.utils.decorators._update_method_wrapper.dummy",
+          "type": "Function",
+          "path": "django/utils/decorators.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:class:django/utils/deprecation.py:django.utils.deprecation.MiddlewareMixin",
+          "score": 0.6,
+          "symbol": "django.utils.deprecation.MiddlewareMixin",
+          "type": "Class",
+          "path": "django/utils/deprecation.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/middleware/test_security.py:tests.middleware.test_security.SecurityMiddlewareTest.response",
+          "score": 0.6,
+          "symbol": "tests.middleware.test_security.SecurityMiddlewareTest.response",
+          "type": "Method",
+          "path": "tests/middleware/test_security.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:class:tests/model_enums/tests.py:tests.model_enums.tests.Set",
+          "score": 0.6,
+          "symbol": "tests.model_enums.tests.Set",
+          "type": "Class",
+          "path": "tests/model_enums/tests.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/contrib/admin/tests.py:django.contrib.admin.tests.CSPMiddleware.process_response",
+          "score": 0.5,
+          "symbol": "django.contrib.admin.tests.CSPMiddleware.process_response",
+          "type": "Method",
+          "path": "django/contrib/admin/tests.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/contrib/flatpages/middleware.py:django.contrib.flatpages.middleware.FlatpageFallbackMiddleware.process_response",
+          "score": 0.5,
+          "symbol": "django.contrib.flatpages.middleware.FlatpageFallbackMiddleware.process_response",
+          "type": "Method",
+          "path": "django/contrib/flatpages/middleware.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/contrib/messages/middleware.py:django.contrib.messages.middleware.MessageMiddleware.process_response",
+          "score": 0.5,
+          "symbol": "django.contrib.messages.middleware.MessageMiddleware.process_response",
+          "type": "Method",
+          "path": "django/contrib/messages/middleware.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/contrib/redirects/middleware.py:django.contrib.redirects.middleware.RedirectFallbackMiddleware.process_response",
+          "score": 0.5,
+          "symbol": "django.contrib.redirects.middleware.RedirectFallbackMiddleware.process_response",
+          "type": "Method",
+          "path": "django/contrib/redirects/middleware.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/contrib/sessions/middleware.py:django.contrib.sessions.middleware.SessionMiddleware.process_response",
+          "score": 0.5,
+          "symbol": "django.contrib.sessions.middleware.SessionMiddleware.process_response",
+          "type": "Method",
+          "path": "django/contrib/sessions/middleware.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/contrib/staticfiles/finders.py:django.contrib.staticfiles.finders.AppDirectoriesFinder.list",
+          "score": 0.5,
+          "symbol": "django.contrib.staticfiles.finders.AppDirectoriesFinder.list",
+          "type": "Method",
+          "path": "django/contrib/staticfiles/finders.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/contrib/staticfiles/finders.py:django.contrib.staticfiles.finders.BaseFinder.list",
+          "score": 0.5,
+          "symbol": "django.contrib.staticfiles.finders.BaseFinder.list",
+          "type": "Method",
+          "path": "django/contrib/staticfiles/finders.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/contrib/staticfiles/finders.py:django.contrib.staticfiles.finders.BaseStorageFinder.list",
+          "score": 0.5,
+          "symbol": "django.contrib.staticfiles.finders.BaseStorageFinder.list",
+          "type": "Method",
+          "path": "django/contrib/staticfiles/finders.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/contrib/staticfiles/finders.py:django.contrib.staticfiles.finders.FileSystemFinder.list",
+          "score": 0.5,
+          "symbol": "django.contrib.staticfiles.finders.FileSystemFinder.list",
+          "type": "Method",
+          "path": "django/contrib/staticfiles/finders.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/core/cache/__init__.py:django.core.cache.CacheHandler.all",
+          "score": 0.5,
+          "symbol": "django.core.cache.CacheHandler.all",
+          "type": "Method",
+          "path": "django/core/cache/__init__.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/db/models/manager.py:django.db.models.manager.BaseManager.all",
+          "score": 0.5,
+          "symbol": "django.db.models.manager.BaseManager.all",
+          "type": "Method",
+          "path": "django/db/models/manager.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/db/models/query.py:django.db.models.query.QuerySet.all",
+          "score": 0.5,
+          "symbol": "django.db.models.query.QuerySet.all",
+          "type": "Method",
+          "path": "django/db/models/query.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/db/models/query.py:django.db.models.query.QuerySet.first",
+          "score": 0.5,
+          "symbol": "django.db.models.query.QuerySet.first",
+          "type": "Method",
+          "path": "django/db/models/query.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/db/models/query.py:django.db.models.query.QuerySet.using",
+          "score": 0.5,
+          "symbol": "django.db.models.query.QuerySet.using",
+          "type": "Method",
+          "path": "django/db/models/query.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/db/models/query.py:django.db.models.query.RawQuerySet.using",
+          "score": 0.5,
+          "symbol": "django.db.models.query.RawQuerySet.using",
+          "type": "Method",
+          "path": "django/db/models/query.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/db/utils.py:django.db.utils.ConnectionHandler.all",
+          "score": 0.5,
+          "symbol": "django.db.utils.ConnectionHandler.all",
+          "type": "Method",
+          "path": "django/db/utils.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/middleware/cache.py:django.middleware.cache.UpdateCacheMiddleware.process_response",
+          "score": 0.5,
+          "symbol": "django.middleware.cache.UpdateCacheMiddleware.process_response",
+          "type": "Method",
+          "path": "django/middleware/cache.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/middleware/clickjacking.py:django.middleware.clickjacking.XFrameOptionsMiddleware.process_response",
+          "score": 0.5,
+          "symbol": "django.middleware.clickjacking.XFrameOptionsMiddleware.process_response",
+          "type": "Method",
+          "path": "django/middleware/clickjacking.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/middleware/common.py:django.middleware.common.BrokenLinkEmailsMiddleware.process_response",
+          "score": 0.5,
+          "symbol": "django.middleware.common.BrokenLinkEmailsMiddleware.process_response",
+          "type": "Method",
+          "path": "django/middleware/common.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/middleware/common.py:django.middleware.common.CommonMiddleware.process_response",
+          "score": 0.5,
+          "symbol": "django.middleware.common.CommonMiddleware.process_response",
+          "type": "Method",
+          "path": "django/middleware/common.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/middleware/csrf.py:django.middleware.csrf.CsrfViewMiddleware.process_response",
+          "score": 0.5,
+          "symbol": "django.middleware.csrf.CsrfViewMiddleware.process_response",
+          "type": "Method",
+          "path": "django/middleware/csrf.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/middleware/gzip.py:django.middleware.gzip.GZipMiddleware.process_response",
+          "score": 0.5,
+          "symbol": "django.middleware.gzip.GZipMiddleware.process_response",
+          "type": "Method",
+          "path": "django/middleware/gzip.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/middleware/http.py:django.middleware.http.ConditionalGetMiddleware.process_response",
+          "score": 0.5,
+          "symbol": "django.middleware.http.ConditionalGetMiddleware.process_response",
+          "type": "Method",
+          "path": "django/middleware/http.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/middleware/locale.py:django.middleware.locale.LocaleMiddleware.process_response",
+          "score": 0.5,
+          "symbol": "django.middleware.locale.LocaleMiddleware.process_response",
+          "type": "Method",
+          "path": "django/middleware/locale.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/middleware/security.py:django.middleware.security.SecurityMiddleware.process_response",
+          "score": 0.5,
+          "symbol": "django.middleware.security.SecurityMiddleware.process_response",
+          "type": "Method",
+          "path": "django/middleware/security.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:function:django/template/context_processors.py:django.template.context_processors.request",
+          "score": 0.5,
+          "symbol": "django.template.context_processors.request",
+          "type": "Function",
+          "path": "django/template/context_processors.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:function:django/template/defaultfilters.py:django.template.defaultfilters.first",
+          "score": 0.5,
+          "symbol": "django.template.defaultfilters.first",
+          "type": "Function",
+          "path": "django/template/defaultfilters.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/template/utils.py:django.template.utils.EngineHandler.all",
+          "score": 0.5,
+          "symbol": "django.template.utils.EngineHandler.all",
+          "type": "Method",
+          "path": "django/template/utils.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/test/client.py:django.test.client.AsyncClient.request",
+          "score": 0.5,
+          "symbol": "django.test.client.AsyncClient.request",
+          "type": "Method",
+          "path": "django/test/client.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/test/client.py:django.test.client.AsyncRequestFactory.request",
+          "score": 0.5,
+          "symbol": "django.test.client.AsyncRequestFactory.request",
+          "type": "Method",
+          "path": "django/test/client.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/test/client.py:django.test.client.Client.request",
+          "score": 0.5,
+          "symbol": "django.test.client.Client.request",
+          "type": "Method",
+          "path": "django/test/client.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/test/client.py:django.test.client.RequestFactory.request",
+          "score": 0.5,
+          "symbol": "django.test.client.RequestFactory.request",
+          "type": "Method",
+          "path": "django/test/client.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/utils/archive.py:django.utils.archive.Archive.list",
+          "score": 0.5,
+          "symbol": "django.utils.archive.Archive.list",
+          "type": "Method",
+          "path": "django/utils/archive.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/utils/archive.py:django.utils.archive.BaseArchive.list",
+          "score": 0.5,
+          "symbol": "django.utils.archive.BaseArchive.list",
+          "type": "Method",
+          "path": "django/utils/archive.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/utils/archive.py:django.utils.archive.TarArchive.list",
+          "score": 0.5,
+          "symbol": "django.utils.archive.TarArchive.list",
+          "type": "Method",
+          "path": "django/utils/archive.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/utils/archive.py:django.utils.archive.ZipArchive.list",
+          "score": 0.5,
+          "symbol": "django.utils.archive.ZipArchive.list",
+          "type": "Method",
+          "path": "django/utils/archive.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/utils/dateformat.py:django.utils.dateformat.TimeFormat.a",
+          "score": 0.5,
+          "symbol": "django.utils.dateformat.TimeFormat.a",
+          "type": "Method",
+          "path": "django/utils/dateformat.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:function:tests/admin_checks/tests.py:tests.admin_checks.tests.SystemChecksTestCase.test_readonly_dynamic_attribute_on_modeladmin.SongAdmin.__getattr__.method",
+          "score": 0.5,
+          "symbol": "tests.admin_checks.tests.SystemChecksTestCase.test_readonly_dynamic_attribute_on_modeladmin.SongAdmin.__getattr__.method",
+          "type": "Function",
+          "path": "tests/admin_checks/tests.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:file:tests/admin_scripts/custom_templates/project_template/project_name/settings.py",
+          "score": 0.5,
+          "symbol": "tests/admin_scripts/custom_templates/project_template/project_name/settings.py",
+          "type": "File",
+          "path": "tests/admin_scripts/custom_templates/project_template/project_name/settings.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:file:tests/auth_tests/settings.py",
+          "score": 0.5,
+          "symbol": "tests/auth_tests/settings.py",
+          "type": "File",
+          "path": "tests/auth_tests/settings.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/decorators/tests.py:tests.decorators.tests.MethodDecoratorTests.test_argumented.Test.method",
+          "score": 0.5,
+          "symbol": "tests.decorators.tests.MethodDecoratorTests.test_argumented.Test.method",
+          "type": "Method",
+          "path": "tests/decorators/tests.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/decorators/tests.py:tests.decorators.tests.MethodDecoratorTests.test_bad_iterable.TestIterable.method",
+          "score": 0.5,
+          "symbol": "tests.decorators.tests.MethodDecoratorTests.test_bad_iterable.TestIterable.method",
+          "type": "Method",
+          "path": "tests/decorators/tests.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/decorators/tests.py:tests.decorators.tests.MethodDecoratorTests.test_class_decoration.Test.method",
+          "score": 0.5,
+          "symbol": "tests.decorators.tests.MethodDecoratorTests.test_class_decoration.Test.method",
+          "type": "Method",
+          "path": "tests/decorators/tests.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/decorators/tests.py:tests.decorators.tests.MethodDecoratorTests.test_descriptors.Test.method",
+          "score": 0.5,
+          "symbol": "tests.decorators.tests.MethodDecoratorTests.test_descriptors.Test.method",
+          "type": "Method",
+          "path": "tests/decorators/tests.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/decorators/tests.py:tests.decorators.tests.MethodDecoratorTests.test_new_attribute.MyClass.method",
+          "score": 0.5,
+          "symbol": "tests.decorators.tests.MethodDecoratorTests.test_new_attribute.MyClass.method",
+          "type": "Method",
+          "path": "tests/decorators/tests.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/decorators/tests.py:tests.decorators.tests.MethodDecoratorTests.test_preserve_attributes.TestFunctionIterable.method",
+          "score": 0.5,
+          "symbol": "tests.decorators.tests.MethodDecoratorTests.test_preserve_attributes.TestFunctionIterable.method",
+          "type": "Method",
+          "path": "tests/decorators/tests.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/decorators/tests.py:tests.decorators.tests.MethodDecoratorTests.test_preserve_attributes.TestMethodAndClass.method",
+          "score": 0.5,
+          "symbol": "tests.decorators.tests.MethodDecoratorTests.test_preserve_attributes.TestMethodAndClass.method",
+          "type": "Method",
+          "path": "tests/decorators/tests.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/decorators/tests.py:tests.decorators.tests.MethodDecoratorTests.test_preserve_attributes.TestMethodIterable.method",
+          "score": 0.5,
+          "symbol": "tests.decorators.tests.MethodDecoratorTests.test_preserve_attributes.TestMethodIterable.method",
+          "type": "Method",
+          "path": "tests/decorators/tests.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/decorators/tests.py:tests.decorators.tests.MethodDecoratorTests.test_preserve_attributes.TestPlain.method",
+          "score": 0.5,
+          "symbol": "tests.decorators.tests.MethodDecoratorTests.test_preserve_attributes.TestPlain.method",
+          "type": "Method",
+          "path": "tests/decorators/tests.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/decorators/tests.py:tests.decorators.tests.MethodDecoratorTests.test_tuple_of_decorators.TestFirst.method",
+          "score": 0.5,
+          "symbol": "tests.decorators.tests.MethodDecoratorTests.test_tuple_of_decorators.TestFirst.method",
+          "type": "Method",
+          "path": "tests/decorators/tests.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/decorators/tests.py:tests.decorators.tests.MethodDecoratorTests.test_tuple_of_decorators.TestSecond.method",
+          "score": 0.5,
+          "symbol": "tests.decorators.tests.MethodDecoratorTests.test_tuple_of_decorators.TestSecond.method",
+          "type": "Method",
+          "path": "tests/decorators/tests.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/deprecation/test_middleware_mixin.py:tests.deprecation.test_middleware_mixin.MiddlewareMixinTests.test_sync_to_async_uses_base_thread_and_connection.SimpleMiddleWare.process_response",
+          "score": 0.5,
+          "symbol": "tests.deprecation.test_middleware_mixin.MiddlewareMixinTests.test_sync_to_async_uses_base_thread_and_connection.SimpleMiddleWare.process_response",
+          "type": "Method",
+          "path": "tests/deprecation/test_middleware_mixin.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/dispatch/tests.py:tests.dispatch.tests.Callable.a",
+          "score": 0.5,
+          "symbol": "tests.dispatch.tests.Callable.a",
+          "type": "Method",
+          "path": "tests/dispatch/tests.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:file:tests/flatpages_tests/settings.py",
+          "score": 0.5,
+          "symbol": "tests/flatpages_tests/settings.py",
+          "type": "File",
+          "path": "tests/flatpages_tests/settings.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:file:tests/i18n/sampleproject/sampleproject/settings.py",
+          "score": 0.5,
+          "symbol": "tests/i18n/sampleproject/sampleproject/settings.py",
+          "type": "File",
+          "path": "tests/i18n/sampleproject/sampleproject/settings.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/middleware/test_security.py:tests.middleware.test_security.SecurityMiddlewareTest.middleware",
+          "score": 0.5,
+          "symbol": "tests.middleware.test_security.SecurityMiddlewareTest.middleware",
+          "type": "Method",
+          "path": "tests/middleware/test_security.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/middleware/test_security.py:tests.middleware.test_security.SecurityMiddlewareTest.process_response",
+          "score": 0.5,
+          "symbol": "tests.middleware.test_security.SecurityMiddlewareTest.process_response",
+          "type": "Method",
+          "path": "tests/middleware/test_security.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:function:tests/middleware_exceptions/middleware.py:tests.middleware_exceptions.middleware.async_payment_middleware.middleware",
+          "score": 0.5,
+          "symbol": "tests.middleware_exceptions.middleware.async_payment_middleware.middleware",
+          "type": "Function",
+          "path": "tests/middleware_exceptions/middleware.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:function:tests/model_inheritance/tests.py:tests.model_inheritance.tests.ModelInheritanceTests.test_create_child_no_update.a",
+          "score": 0.5,
+          "symbol": "tests.model_inheritance.tests.ModelInheritanceTests.test_create_child_no_update.a",
+          "type": "Function",
+          "path": "tests/model_inheritance/tests.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:file:tests/staticfiles_tests/settings.py",
+          "score": 0.5,
+          "symbol": "tests/staticfiles_tests/settings.py",
+          "type": "File",
+          "path": "tests/staticfiles_tests/settings.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:function:tests/template_tests/syntax_tests/test_setup.py:tests.template_tests.syntax_tests.test_setup.SetupTests.test_setup.method",
+          "score": 0.5,
+          "symbol": "tests.template_tests.syntax_tests.test_setup.SetupTests.test_setup.method",
+          "type": "Function",
+          "path": "tests/template_tests/syntax_tests/test_setup.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:function:tests/template_tests/test_response.py:tests.template_tests.test_response.custom_urlconf_middleware.middleware",
+          "score": 0.5,
+          "symbol": "tests.template_tests.test_response.custom_urlconf_middleware.middleware",
+          "type": "Function",
+          "path": "tests/template_tests/test_response.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/template_tests/utils.py:tests.template_tests.utils.OtherClass.method",
+          "score": 0.5,
+          "symbol": "tests.template_tests.utils.OtherClass.method",
+          "type": "Method",
+          "path": "tests/template_tests/utils.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/template_tests/utils.py:tests.template_tests.utils.SomeClass.method",
+          "score": 0.5,
+          "symbol": "tests.template_tests.utils.SomeClass.method",
+          "type": "Method",
+          "path": "tests/template_tests/utils.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/urlpatterns_reverse/middleware.py:tests.urlpatterns_reverse.middleware.ReverseInnerInResponseMiddleware.process_response",
+          "score": 0.5,
+          "symbol": "tests.urlpatterns_reverse.middleware.ReverseInnerInResponseMiddleware.process_response",
+          "type": "Method",
+          "path": "tests/urlpatterns_reverse/middleware.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/urlpatterns_reverse/middleware.py:tests.urlpatterns_reverse.middleware.ReverseOuterInResponseMiddleware.process_response",
+          "score": 0.5,
+          "symbol": "tests.urlpatterns_reverse.middleware.ReverseOuterInResponseMiddleware.process_response",
+          "type": "Method",
+          "path": "tests/urlpatterns_reverse/middleware.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/utils_tests/test_decorators.py:tests.utils_tests.test_decorators.FullMiddleware.process_response",
+          "score": 0.5,
+          "symbol": "tests.utils_tests.test_decorators.FullMiddleware.process_response",
+          "type": "Method",
+          "path": "tests/utils_tests/test_decorators.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/utils_tests/test_functional.py:tests.utils_tests.test_functional.FunctionalTests.test_cached_property_reuse_different_names.ReusedCachedProperty.a",
+          "score": 0.5,
+          "symbol": "tests.utils_tests.test_functional.FunctionalTests.test_cached_property_reuse_different_names.ReusedCachedProperty.a",
+          "type": "Method",
+          "path": "tests/utils_tests/test_functional.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/utils_tests/test_functional.py:tests.utils_tests.test_functional.FunctionalTests.test_lazy_base_class_override.Base.method",
+          "score": 0.5,
+          "symbol": "tests.utils_tests.test_functional.FunctionalTests.test_lazy_base_class_override.Base.method",
+          "type": "Method",
+          "path": "tests/utils_tests/test_functional.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/utils_tests/test_functional.py:tests.utils_tests.test_functional.FunctionalTests.test_lazy_base_class_override.Klazz.method",
+          "score": 0.5,
+          "symbol": "tests.utils_tests.test_functional.FunctionalTests.test_lazy_base_class_override.Klazz.method",
+          "type": "Method",
+          "path": "tests/utils_tests/test_functional.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/view_tests/views.py:tests.view_tests.views.Klass.method",
+          "score": 0.5,
+          "symbol": "tests.view_tests.views.Klass.method",
+          "type": "Method",
+          "path": "tests/view_tests/views.py"
+        }
+      ],
+      "unmapped": [],
+      "excluded": [],
+      "diagnostics": {
+        "m1_native_total_tokens": 7963,
+        "m1_native_items": 49,
+        "m1_native_truncated": true,
+        "traversal_limited": true,
+        "unavailable_features": [
+          "architecture_dependencies",
+          "recent_change_frequency",
+          "failing_test_proximity"
+        ],
+        "omissions": {
+          "overlapping_selected_range": 9,
+          "token_budget": 2
+        },
+        "retrieval_config": {
+          "max_hops": 2,
+          "max_candidates": 100,
+          "min_edge_confidence": 0.6,
+          "weights": {
+            "task_similarity": 0.2,
+            "graph_distance": 0.3,
+            "edge_confidence": 0.2,
+            "failing_test_proximity": 0.2,
+            "public_api_risk": 0.1,
+            "recent_change_frequency": 0.1
+          },
+          "profile": "semantic-context-v1",
+          "active_features": [
+            "task_similarity",
+            "graph_distance",
+            "edge_confidence",
+            "public_api_risk"
+          ],
+          "normalized_weights": {
+            "task_similarity": 0.25000000000000006,
+            "graph_distance": 0.375,
+            "edge_confidence": 0.25000000000000006,
+            "public_api_risk": 0.12500000000000003
+          },
+          "failing_test_traversal_limited": false,
+          "filtered_by_include": 340
+        }
+      },
+      "scoring": {
+        "instance_id": "django__django-13344",
+        "arm": "graph",
+        "scoring_version": "retrieval-scoring-v1",
+        "rank_hash": "sha256:fe0736df49e4d7086b21b8e5f8e70a4f69816899222a6d79b5084ee702b354d6",
+        "rank": {
+          "metrics": {
+            "file_gold_count": 3,
+            "file_mrr": 0.07692307692307693,
+            "file_recall@1": 0.0,
+            "file_all_gold@1": 0,
+            "file_recall@3": 0.0,
+            "file_all_gold@3": 0,
+            "file_recall@5": 0.0,
+            "file_all_gold@5": 0,
+            "file_recall@10": 0.0,
+            "file_all_gold@10": 0,
+            "file_recall@20": 1.0,
+            "file_all_gold@20": 1,
+            "function_gold_count": 5,
+            "function_mrr": 0,
+            "function_recall@1": 0.0,
+            "function_all_gold@1": 0,
+            "function_recall@3": 0.0,
+            "function_all_gold@3": 0,
+            "function_recall@5": 0.0,
+            "function_all_gold@5": 0,
+            "function_recall@10": 0.0,
+            "function_all_gold@10": 0,
+            "function_recall@20": 0.0,
+            "function_all_gold@20": 0
+          },
+          "reach": {
+            "file": 1.0,
+            "function": 0.0
+          },
+          "size": {
+            "items": 60,
+            "files": 30,
+            "functions": 46
+          }
+        },
+        "packed": {
+          "budget_tokens": 8000,
+          "counter_label": "local-hf:Qwen/Qwen3-4B-Instruct-2507@cdbee75f17c01a7cc42f958dc650907174af0554:sha256=aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4:no-special-tokens",
+          "snippet_policy": {
+            "max_snippet_lines": 80,
+            "header": true,
+            "overlap": "skip_if_overlaps_different_group"
+          },
+          "metrics": {
+            "gold_file_in_context": 1.0,
+            "gold_function_in_context": 0.0,
+            "all_gold_files_in_context": 1,
+            "all_gold_functions_in_context": 0,
+            "total_tokens": 7356,
+            "tokens_to_first_gold_file": 2422,
+            "tokens_to_first_gold_function": null,
+            "items_packed": 51,
+            "skipped": {
+              "token_budget": 0,
+              "overlap": 9
+            },
+            "truncated": false
+          }
+        },
+        "excluded_count": 0,
+        "unmapped": [],
+        "excluded_reasons": {}
+      },
+      "metrics": {
+        "file_gold_count": 3,
+        "file_mrr": 0.07692307692307693,
+        "file_recall@1": 0.0,
+        "file_all_gold@1": 0,
+        "file_recall@3": 0.0,
+        "file_all_gold@3": 0,
+        "file_recall@5": 0.0,
+        "file_all_gold@5": 0,
+        "file_recall@10": 0.0,
+        "file_all_gold@10": 0,
+        "file_recall@20": 1.0,
+        "file_all_gold@20": 1,
+        "function_gold_count": 5,
+        "function_mrr": 0,
+        "function_recall@1": 0.0,
+        "function_all_gold@1": 0,
+        "function_recall@3": 0.0,
+        "function_all_gold@3": 0,
+        "function_recall@5": 0.0,
+        "function_all_gold@5": 0,
+        "function_recall@10": 0.0,
+        "function_all_gold@10": 0,
+        "function_recall@20": 0.0,
+        "function_all_gold@20": 0,
+        "file_reach": 1.0,
+        "function_reach": 0.0,
+        "rank_items": 60,
+        "packed_gold_file_in_context": 1.0,
+        "packed_gold_function_in_context": 0.0,
+        "packed_all_gold_files_in_context": 1,
+        "packed_all_gold_functions_in_context": 0,
+        "context_tokens": 7356,
+        "packed_tokens_to_first_gold_file": 2422,
+        "packed_tokens_to_first_gold_function": null,
+        "packed_items_packed": 51,
+        "packed_skipped_token_budget": 0,
+        "packed_skipped_overlap": 9,
+        "packed_truncated": 0,
+        "unmapped_count": 0,
+        "excluded_count": 0,
+        "anchor_count": 83,
+        "no_anchors": 0,
+        "candidates_in": 60,
+        "retrieve_seconds": 10.397763600005419,
+        "mapping_coverage": 1.0,
+        "file_retrievability_coverage": 1.0
+      }
+    },
+    "graph_f2p": {
+      "rank_hash": "sha256:fa47cf676bf103c6c717d53689c773394a9beced6a81728b23b0ec9b397ad9ac",
+      "ranking_total_count": 59,
+      "ranked": [
+        {
+          "rank": 1,
+          "item_id": "vgar:django__django:python:method:django/middleware/common.py:django.middleware.common.CommonMiddleware.process_response",
+          "path": "django/middleware/common.py",
+          "kind": "method",
+          "symbol": "django.middleware.common.CommonMiddleware.process_response",
+          "function_id": "django/middleware/common.py::django.middleware.common.CommonMiddleware.process_response",
+          "score": 0.5326666666666668,
+          "lines": [
+            99,
+            115
+          ],
+          "snippet_sha256": "sha256:d1c8a0a8c8becc3209d4eed67ad9bdac3c339176af6c5e31f61a9ed1bbd0e02d"
+        },
+        {
+          "rank": 2,
+          "item_id": "vgar:django__django:python:function:django/template/defaultfilters.py:django.template.defaultfilters.title",
+          "path": "django/template/defaultfilters.py",
+          "kind": "function",
+          "symbol": "django.template.defaultfilters.title",
+          "function_id": "django/template/defaultfilters.py::django.template.defaultfilters.title",
+          "score": 0.5153431372549021,
+          "lines": [
+            242,
+            245
+          ],
+          "snippet_sha256": "sha256:c63ee8347d1229f5bc38fe4f47486fa285bf548e63d3180d36b6bf96ab90a8e3"
+        },
+        {
+          "rank": 3,
+          "item_id": "vgar:django__django:python:function:django/template/defaultfilters.py:django.template.defaultfilters.first",
+          "path": "django/template/defaultfilters.py",
+          "kind": "function",
+          "symbol": "django.template.defaultfilters.first",
+          "function_id": "django/template/defaultfilters.py::django.template.defaultfilters.first",
+          "score": 0.49534313725490203,
+          "lines": [
+            517,
+            522
+          ],
+          "snippet_sha256": "sha256:d62d5ee5ee9e76ce0512b9313e1e4fcbc97e021a855e1c93218da11df52c90d4"
+        },
+        {
+          "rank": 4,
+          "item_id": "vgar:django__django:python:class:django/utils/deprecation.py:django.utils.deprecation.MiddlewareMixin",
+          "path": "django/utils/deprecation.py",
+          "kind": "class",
+          "symbol": "django.utils.deprecation.MiddlewareMixin",
+          "function_id": null,
+          "score": 0.4945874587458746,
+          "lines": [
+            88,
+            147
+          ],
+          "snippet_sha256": "sha256:dd9918acd2e3cb20feee7364a2589232dcc7188e15187e41db80ea6960cf6ad2"
+        },
+        {
+          "rank": 5,
+          "item_id": "vgar:django__django:python:method:django/utils/dateformat.py:django.utils.dateformat.TimeFormat.a",
+          "path": "django/utils/dateformat.py",
+          "kind": "method",
+          "symbol": "django.utils.dateformat.TimeFormat.a",
+          "function_id": "django/utils/dateformat.py::django.utils.dateformat.TimeFormat.a",
+          "score": 0.48470873786407775,
+          "lines": [
+            62,
+            66
+          ],
+          "snippet_sha256": "sha256:aa201b08c8daaba292b96952ca22a6ac52c38c8bb27dbd5ba11a9eecdc79c707"
+        },
+        {
+          "rank": 6,
+          "item_id": "vgar:django__django:python:method:django/http/request.py:django.http.request.HttpRequest.headers",
+          "path": "django/http/request.py",
+          "kind": "method",
+          "symbol": "django.http.request.HttpRequest.headers",
+          "function_id": "django/http/request.py::django.http.request.HttpRequest.headers",
+          "score": 0.48414141414141415,
+          "lines": [
+            75,
+            76
+          ],
+          "snippet_sha256": "sha256:a69b5c739db713cc45debef88ebce049bb6cfb293fde110db310aa5a5c7121d8"
+        },
+        {
+          "rank": 7,
+          "item_id": "vgar:django__django:python:method:django/contrib/gis/geos/geometry.py:django.contrib.gis.geos.geometry.LinearGeometryMixin.project",
+          "path": "django/contrib/gis/geos/geometry.py",
+          "kind": "method",
+          "symbol": "django.contrib.gis.geos.geometry.LinearGeometryMixin.project",
+          "function_id": "django/contrib/gis/geos/geometry.py::django.contrib.gis.geos.geometry.LinearGeometryMixin.project",
+          "score": 0.4814285714285715,
+          "lines": [
+            651,
+            655
+          ],
+          "snippet_sha256": "sha256:ab54541a7211f23b06a467241022649cec9b214c537d95f0b56242b43774750b"
+        },
+        {
+          "rank": 8,
+          "item_id": "vgar:django__django:python:method:django/middleware/http.py:django.middleware.http.ConditionalGetMiddleware.process_response",
+          "path": "django/middleware/http.py",
+          "kind": "method",
+          "symbol": "django.middleware.http.ConditionalGetMiddleware.process_response",
+          "function_id": "django/middleware/http.py::django.middleware.http.ConditionalGetMiddleware.process_response",
+          "score": 0.48076923076923084,
+          "lines": [
+            14,
+            36
+          ],
+          "snippet_sha256": "sha256:37a47715669ef112fea327fc5cf6500d96fa7b1c5c21b2084a45bdc8eb07a0a4"
+        },
+        {
+          "rank": 9,
+          "item_id": "vgar:django__django:python:method:django/utils/dateformat.py:django.utils.dateformat.TimeFormat.s",
+          "path": "django/utils/dateformat.py",
+          "kind": "method",
+          "symbol": "django.utils.dateformat.TimeFormat.s",
+          "function_id": "django/utils/dateformat.py::django.utils.dateformat.TimeFormat.s",
+          "score": 0.4797087378640777,
+          "lines": [
+            154,
+            156
+          ],
+          "snippet_sha256": "sha256:8a81d5c096af59a13189ef8f063550939db841fddcfa5a09eac7fad940f56b59"
+        },
+        {
+          "rank": 10,
+          "item_id": "vgar:django__django:python:function:django/utils/decorators.py:django.utils.decorators._update_method_wrapper.dummy",
+          "path": "django/utils/decorators.py",
+          "kind": "function",
+          "symbol": "django.utils.decorators._update_method_wrapper.dummy",
+          "function_id": "django/utils/decorators.py::django.utils.decorators._update_method_wrapper.dummy",
+          "score": 0.4795238095238096,
+          "lines": [
+            17,
+            18
+          ],
+          "snippet_sha256": "sha256:52b81a976d5de96233d42fddd2095ed8897de625a3c424e4e9bfb20148e9a305"
+        },
+        {
+          "rank": 11,
+          "item_id": "vgar:django__django:python:method:django/contrib/gis/gdal/geomtype.py:django.contrib.gis.gdal.geomtype.OGRGeomType.django",
+          "path": "django/contrib/gis/gdal/geomtype.py",
+          "kind": "method",
+          "symbol": "django.contrib.gis.gdal.geomtype.OGRGeomType.django",
+          "function_id": "django/contrib/gis/gdal/geomtype.py::django.contrib.gis.gdal.geomtype.OGRGeomType.django",
+          "score": 0.47761904761904767,
+          "lines": [
+            78,
+            87
+          ],
+          "snippet_sha256": "sha256:7cff4b21568af087336b13b5f2df2b1b8e86c0940bd298dbbacb52cad8c08878"
+        },
+        {
+          "rank": 12,
+          "item_id": "vgar:django__django:python:method:django/middleware/clickjacking.py:django.middleware.clickjacking.XFrameOptionsMiddleware.process_response",
+          "path": "django/middleware/clickjacking.py",
+          "kind": "method",
+          "symbol": "django.middleware.clickjacking.XFrameOptionsMiddleware.process_response",
+          "function_id": "django/middleware/clickjacking.py::django.middleware.clickjacking.XFrameOptionsMiddleware.process_response",
+          "score": 0.4745283018867925,
+          "lines": [
+            24,
+            35
+          ],
+          "snippet_sha256": "sha256:7bc9dc0495e266c43f8b43f8e0dea39c1e638bfa4c888bb34516cf45c7a06b1c"
+        },
+        {
+          "rank": 13,
+          "item_id": "vgar:django__django:python:method:django/db/models/manager.py:django.db.models.manager.BaseManager.all",
+          "path": "django/db/models/manager.py",
+          "kind": "method",
+          "symbol": "django.db.models.manager.BaseManager.all",
+          "function_id": "django/db/models/manager.py::django.db.models.manager.BaseManager.all",
+          "score": 0.47352941176470587,
+          "lines": [
+            149,
+            156
+          ],
+          "snippet_sha256": "sha256:89414df57dcbcacdf3901a764ff65ff2be35b6bfa7e07031a70de6d1d4ecf804"
+        },
+        {
+          "rank": 14,
+          "item_id": "vgar:django__django:python:class:django/core/handlers/asgi.py:django.core.handlers.asgi.ASGIRequest",
+          "path": "django/core/handlers/asgi.py",
+          "kind": "class",
+          "symbol": "django.core.handlers.asgi.ASGIRequest",
+          "function_id": null,
+          "score": 0.4721212121212122,
+          "lines": [
+            22,
+            123
+          ],
+          "snippet_sha256": "sha256:a1bfbaf8d87cafac99eb8c1798ebe81d0b2db69cb26a322425cba392c7508098"
+        },
+        {
+          "rank": 15,
+          "item_id": "vgar:django__django:python:method:django/middleware/gzip.py:django.middleware.gzip.GZipMiddleware.process_response",
+          "path": "django/middleware/gzip.py",
+          "kind": "method",
+          "symbol": "django.middleware.gzip.GZipMiddleware.process_response",
+          "function_id": "django/middleware/gzip.py::django.middleware.gzip.GZipMiddleware.process_response",
+          "score": 0.4705607476635515,
+          "lines": [
+            15,
+            51
+          ],
+          "snippet_sha256": "sha256:31d240700d549996978c56f0b25b44766240e840f59baaf3cbb773c9f604302d"
+        },
+        {
+          "rank": 16,
+          "item_id": "vgar:django__django:python:method:django/contrib/redirects/middleware.py:django.contrib.redirects.middleware.RedirectFallbackMiddleware.process_response",
+          "path": "django/contrib/redirects/middleware.py",
+          "kind": "method",
+          "symbol": "django.contrib.redirects.middleware.RedirectFallbackMiddleware.process_response",
+          "function_id": "django/contrib/redirects/middleware.py::django.contrib.redirects.middleware.RedirectFallbackMiddleware.process_response",
+          "score": 0.4683486238532111,
+          "lines": [
+            23,
+            50
+          ],
+          "snippet_sha256": "sha256:2364d61711bfe3b618370a2cd5bd1a38fe74e54c43fc36a3eaef309ccaa28400"
+        },
+        {
+          "rank": 17,
+          "item_id": "vgar:django__django:python:method:django/middleware/security.py:django.middleware.security.SecurityMiddleware.process_response",
+          "path": "django/middleware/security.py",
+          "kind": "method",
+          "symbol": "django.middleware.security.SecurityMiddleware.process_response",
+          "function_id": "django/middleware/security.py::django.middleware.security.SecurityMiddleware.process_response",
+          "score": 0.46818181818181825,
+          "lines": [
+            34,
+            58
+          ],
+          "snippet_sha256": "sha256:822493f38b587a581c88351a615127cffcd468975d76a9d816f4a25a61fcf12e"
+        },
+        {
+          "rank": 18,
+          "item_id": "vgar:django__django:python:class:django/http/response.py:django.http.response.HttpResponse",
+          "path": "django/http/response.py",
+          "kind": "class",
+          "symbol": "django.http.response.HttpResponse",
+          "function_id": null,
+          "score": 0.46808080808080815,
+          "lines": [
+            286,
+            349
+          ],
+          "snippet_sha256": "sha256:4d9fa7136eb4d417b372e08d1abd387876bf90e3c224351baec31b8d049792bd"
+        },
+        {
+          "rank": 19,
+          "item_id": "vgar:django__django:python:class:django/middleware/security.py:django.middleware.security.SecurityMiddleware",
+          "path": "django/middleware/security.py",
+          "kind": "class",
+          "symbol": "django.middleware.security.SecurityMiddleware",
+          "function_id": null,
+          "score": 0.46808080808080815,
+          "lines": [
+            8,
+            58
+          ],
+          "snippet_sha256": "sha256:c3b49cb241f360767fd364d7c124774ccbd526b82312cca920fded7780e907b9"
+        },
+        {
+          "rank": 20,
+          "item_id": "vgar:django__django:python:method:django/middleware/locale.py:django.middleware.locale.LocaleMiddleware.process_response",
+          "path": "django/middleware/locale.py",
+          "kind": "method",
+          "symbol": "django.middleware.locale.LocaleMiddleware.process_response",
+          "function_id": "django/middleware/locale.py::django.middleware.locale.LocaleMiddleware.process_response",
+          "score": 0.4660000000000001,
+          "lines": [
+            28,
+            61
+          ],
+          "snippet_sha256": "sha256:23c95f321cd22f1ac4ca03269a56a36aeaf786bc999eb82ecf5e3d44e3bbae10"
+        },
+        {
+          "rank": 21,
+          "item_id": "vgar:django__django:python:method:django/middleware/cache.py:django.middleware.cache.UpdateCacheMiddleware.process_response",
+          "path": "django/middleware/cache.py",
+          "kind": "method",
+          "symbol": "django.middleware.cache.UpdateCacheMiddleware.process_response",
+          "function_id": "django/middleware/cache.py::django.middleware.cache.UpdateCacheMiddleware.process_response",
+          "score": 0.4658415841584159,
+          "lines": [
+            78,
+            117
+          ],
+          "snippet_sha256": "sha256:842089577a7da356ba2733c16b622b28cb5f5e2c8156fff1d20d9b60d5690519"
+        },
+        {
+          "rank": 22,
+          "item_id": "vgar:django__django:python:method:django/middleware/csrf.py:django.middleware.csrf.CsrfViewMiddleware.process_response",
+          "path": "django/middleware/csrf.py",
+          "kind": "method",
+          "symbol": "django.middleware.csrf.CsrfViewMiddleware.process_response",
+          "function_id": "django/middleware/csrf.py::django.middleware.csrf.CsrfViewMiddleware.process_response",
+          "score": 0.4658415841584159,
+          "lines": [
+            317,
+            329
+          ],
+          "snippet_sha256": "sha256:774cc6326c6c9d6f12ca47784047d0550330dd8aaaab0b56e31d79ee09bb2678"
+        },
+        {
+          "rank": 23,
+          "item_id": "vgar:django__django:python:method:django/contrib/messages/middleware.py:django.contrib.messages.middleware.MessageMiddleware.process_response",
+          "path": "django/contrib/messages/middleware.py",
+          "kind": "method",
+          "symbol": "django.contrib.messages.middleware.MessageMiddleware.process_response",
+          "function_id": "django/contrib/messages/middleware.py::django.contrib.messages.middleware.MessageMiddleware.process_response",
+          "score": 0.46568627450980393,
+          "lines": [
+            14,
+            26
+          ],
+          "snippet_sha256": "sha256:643bb30dfdf9f73dc93ea46b54a64bb4c883ad0428b7925b8801bd1d58017e1f"
+        },
+        {
+          "rank": 24,
+          "item_id": "vgar:django__django:python:method:django/contrib/sessions/middleware.py:django.contrib.sessions.middleware.SessionMiddleware.process_response",
+          "path": "django/contrib/sessions/middleware.py",
+          "kind": "method",
+          "symbol": "django.contrib.sessions.middleware.SessionMiddleware.process_response",
+          "function_id": "django/contrib/sessions/middleware.py::django.contrib.sessions.middleware.SessionMiddleware.process_response",
+          "score": 0.46568627450980393,
+          "lines": [
+            26,
+            79
+          ],
+          "snippet_sha256": "sha256:66aee140144b670d8693bd2ae435976902590cf9a3301cc8cd6bd339f5fe6231"
+        },
+        {
+          "rank": 25,
+          "item_id": "vgar:django__django:python:method:django/contrib/flatpages/middleware.py:django.contrib.flatpages.middleware.FlatpageFallbackMiddleware.process_response",
+          "path": "django/contrib/flatpages/middleware.py",
+          "kind": "method",
+          "symbol": "django.contrib.flatpages.middleware.FlatpageFallbackMiddleware.process_response",
+          "function_id": "django/contrib/flatpages/middleware.py::django.contrib.flatpages.middleware.FlatpageFallbackMiddleware.process_response",
+          "score": 0.46553398058252426,
+          "lines": [
+            8,
+            20
+          ],
+          "snippet_sha256": "sha256:41eee898e7e80500d0b1b981d1623d1c6f71a269e62676178938c8c528603d09"
+        },
+        {
+          "rank": 26,
+          "item_id": "vgar:django__django:python:method:django/middleware/common.py:django.middleware.common.BrokenLinkEmailsMiddleware.process_response",
+          "path": "django/middleware/common.py",
+          "kind": "method",
+          "symbol": "django.middleware.common.BrokenLinkEmailsMiddleware.process_response",
+          "function_id": "django/middleware/common.py::django.middleware.common.BrokenLinkEmailsMiddleware.process_response",
+          "score": 0.46553398058252426,
+          "lines": [
+            120,
+            139
+          ],
+          "snippet_sha256": "sha256:bbccce618c3f6a3beb5dfd8c000c9a08cea99760b8edc08e8f3b03065ec655ab"
+        },
+        {
+          "rank": 27,
+          "item_id": "vgar:django__django:python:method:django/contrib/admin/tests.py:django.contrib.admin.tests.CSPMiddleware.process_response",
+          "path": "django/contrib/admin/tests.py",
+          "kind": "method",
+          "symbol": "django.contrib.admin.tests.CSPMiddleware.process_response",
+          "function_id": "django/contrib/admin/tests.py::django.contrib.admin.tests.CSPMiddleware.process_response",
+          "score": 0.46359223300970875,
+          "lines": [
+            12,
+            14
+          ],
+          "snippet_sha256": "sha256:88e63d0a4efa0c9ae8a527b57f3274ada080393e987f481b19a5044ae0e1fa51"
+        },
+        {
+          "rank": 28,
+          "item_id": "vgar:django__django:python:method:django/core/cache/__init__.py:django.core.cache.CacheHandler.all",
+          "path": "django/core/cache/__init__.py",
+          "kind": "method",
+          "symbol": "django.core.cache.CacheHandler.all",
+          "function_id": "django/core/cache/__init__.py::django.core.cache.CacheHandler.all",
+          "score": 0.46176470588235297,
+          "lines": [
+            83,
+            84
+          ],
+          "snippet_sha256": "sha256:dd319a358ed3dffcd8a859a51987e3f859e74a215235d75815f07590b8e5c60a"
+        },
+        {
+          "rank": 29,
+          "item_id": "vgar:django__django:python:method:django/db/models/query.py:django.db.models.query.QuerySet.all",
+          "path": "django/db/models/query.py",
+          "kind": "method",
+          "symbol": "django.db.models.query.QuerySet.all",
+          "function_id": "django/db/models/query.py::django.db.models.query.QuerySet.all",
+          "score": 0.46176470588235297,
+          "lines": [
+            918,
+            923
+          ],
+          "snippet_sha256": "sha256:b57c8737cacf04eed848a80d83101e0efd1568ebfe9e6bae5630fd0fcc23a837"
+        },
+        {
+          "rank": 30,
+          "item_id": "vgar:django__django:python:method:django/db/models/query.py:django.db.models.query.QuerySet.first",
+          "path": "django/db/models/query.py",
+          "kind": "method",
+          "symbol": "django.db.models.query.QuerySet.first",
+          "function_id": "django/db/models/query.py::django.db.models.query.QuerySet.first",
+          "score": 0.46176470588235297,
+          "lines": [
+            664,
+            667
+          ],
+          "snippet_sha256": "sha256:ae24b1c87eacdb6a25d34c177f5a5ebcd98a19e8b1a6d27ea35562052a9ec143"
+        },
+        {
+          "rank": 31,
+          "item_id": "vgar:django__django:python:method:django/db/models/query.py:django.db.models.query.QuerySet.using",
+          "path": "django/db/models/query.py",
+          "kind": "method",
+          "symbol": "django.db.models.query.QuerySet.using",
+          "function_id": "django/db/models/query.py::django.db.models.query.QuerySet.using",
+          "score": 0.46165048543689324,
+          "lines": [
+            1205,
+            1209
+          ],
+          "snippet_sha256": "sha256:1c809c9d68984faf651447c70470cd3b4684b84d7e01579221f50436812fdbbc"
+        },
+        {
+          "rank": 32,
+          "item_id": "vgar:django__django:python:method:django/db/models/query.py:django.db.models.query.RawQuerySet.using",
+          "path": "django/db/models/query.py",
+          "kind": "method",
+          "symbol": "django.db.models.query.RawQuerySet.using",
+          "function_id": "django/db/models/query.py::django.db.models.query.RawQuerySet.using",
+          "score": 0.46153846153846156,
+          "lines": [
+            1514,
+            1521
+          ],
+          "snippet_sha256": "sha256:6955d91847aade9e28e4cf99154eeac4804ed39a4259a326336c1f87f13f825a"
+        },
+        {
+          "rank": 33,
+          "item_id": "vgar:django__django:python:method:django/utils/archive.py:django.utils.archive.Archive.list",
+          "path": "django/utils/archive.py",
+          "kind": "method",
+          "symbol": "django.utils.archive.Archive.list",
+          "function_id": "django/utils/archive.py::django.utils.archive.Archive.list",
+          "score": 0.45990099009901,
+          "lines": [
+            89,
+            90
+          ],
+          "snippet_sha256": "sha256:e7321433af5584c5d7ec6c1dc0a4e1363489dd15c83de889f1b405afbf06d1a8"
+        },
+        {
+          "rank": 34,
+          "item_id": "vgar:django__django:python:method:django/utils/archive.py:django.utils.archive.BaseArchive.list",
+          "path": "django/utils/archive.py",
+          "kind": "method",
+          "symbol": "django.utils.archive.BaseArchive.list",
+          "function_id": "django/utils/archive.py::django.utils.archive.BaseArchive.list",
+          "score": 0.4598039215686275,
+          "lines": [
+            139,
+            140
+          ],
+          "snippet_sha256": "sha256:7e1d204f890fe882c4087b2164f65edb3dac8f474a6073ecfcfd368c31e66176"
+        },
+        {
+          "rank": 35,
+          "item_id": "vgar:django__django:python:method:django/db/utils.py:django.db.utils.ConnectionHandler.all",
+          "path": "django/db/utils.py",
+          "kind": "method",
+          "symbol": "django.db.utils.ConnectionHandler.all",
+          "function_id": "django/db/utils.py::django.db.utils.ConnectionHandler.all",
+          "score": 0.45970873786407773,
+          "lines": [
+            228,
+            229
+          ],
+          "snippet_sha256": "sha256:dd5d07401a3e10f2dd3c04ad383d336590f966a244f325673c877e7da29bc3c3"
+        },
+        {
+          "rank": 36,
+          "item_id": "vgar:django__django:python:method:django/template/utils.py:django.template.utils.EngineHandler.all",
+          "path": "django/template/utils.py",
+          "kind": "method",
+          "symbol": "django.template.utils.EngineHandler.all",
+          "function_id": "django/template/utils.py::django.template.utils.EngineHandler.all",
+          "score": 0.45970873786407773,
+          "lines": [
+            89,
+            90
+          ],
+          "snippet_sha256": "sha256:dd5d07401a3e10f2dd3c04ad383d336590f966a244f325673c877e7da29bc3c3"
+        },
+        {
+          "rank": 37,
+          "item_id": "vgar:django__django:python:method:django/utils/archive.py:django.utils.archive.TarArchive.list",
+          "path": "django/utils/archive.py",
+          "kind": "method",
+          "symbol": "django.utils.archive.TarArchive.list",
+          "function_id": "django/utils/archive.py::django.utils.archive.TarArchive.list",
+          "score": 0.45961538461538465,
+          "lines": [
+            148,
+            149
+          ],
+          "snippet_sha256": "sha256:6f3fbc037b0e185e90fada550732bc21851ba20071dba1922ab3c7d37755136e"
+        },
+        {
+          "rank": 38,
+          "item_id": "vgar:django__django:python:method:django/utils/archive.py:django.utils.archive.ZipArchive.list",
+          "path": "django/utils/archive.py",
+          "kind": "method",
+          "symbol": "django.utils.archive.ZipArchive.list",
+          "function_id": "django/utils/archive.py::django.utils.archive.ZipArchive.list",
+          "score": 0.45961538461538465,
+          "lines": [
+            190,
+            191
+          ],
+          "snippet_sha256": "sha256:762d8a6ebddb176c7e2be6e5081b80875639a7b1c7f23319eb6ce28607c1020d"
+        },
+        {
+          "rank": 39,
+          "item_id": "vgar:django__django:python:method:django/contrib/staticfiles/finders.py:django.contrib.staticfiles.finders.BaseFinder.list",
+          "path": "django/contrib/staticfiles/finders.py",
+          "kind": "method",
+          "symbol": "django.contrib.staticfiles.finders.BaseFinder.list",
+          "function_id": "django/contrib/staticfiles/finders.py::django.contrib.staticfiles.finders.BaseFinder.list",
+          "score": 0.459433962264151,
+          "lines": [
+            39,
+            44
+          ],
+          "snippet_sha256": "sha256:39ee67d2bfd862054778abef4be2997ed988cb02d6cc2e1086e70b3a10ac4a59"
+        },
+        {
+          "rank": 40,
+          "item_id": "vgar:django__django:python:method:django/contrib/staticfiles/finders.py:django.contrib.staticfiles.finders.AppDirectoriesFinder.list",
+          "path": "django/contrib/staticfiles/finders.py",
+          "kind": "method",
+          "symbol": "django.contrib.staticfiles.finders.AppDirectoriesFinder.list",
+          "function_id": "django/contrib/staticfiles/finders.py::django.contrib.staticfiles.finders.AppDirectoriesFinder.list",
+          "score": 0.45934579439252343,
+          "lines": [
+            160,
+            167
+          ],
+          "snippet_sha256": "sha256:77c06a3192fc2108880a94edafcd4e0b25287b96baeba42358b9481a5266622e"
+        },
+        {
+          "rank": 41,
+          "item_id": "vgar:django__django:python:method:django/contrib/staticfiles/finders.py:django.contrib.staticfiles.finders.BaseStorageFinder.list",
+          "path": "django/contrib/staticfiles/finders.py",
+          "kind": "method",
+          "symbol": "django.contrib.staticfiles.finders.BaseStorageFinder.list",
+          "function_id": "django/contrib/staticfiles/finders.py::django.contrib.staticfiles.finders.BaseStorageFinder.list",
+          "score": 0.45934579439252343,
+          "lines": [
+            235,
+            240
+          ],
+          "snippet_sha256": "sha256:942e618882d7e1e5f6c3673e09c3686176826f59affd1b2699b71a1b48018fd7"
+        },
+        {
+          "rank": 42,
+          "item_id": "vgar:django__django:python:method:django/contrib/staticfiles/finders.py:django.contrib.staticfiles.finders.FileSystemFinder.list",
+          "path": "django/contrib/staticfiles/finders.py",
+          "kind": "method",
+          "symbol": "django.contrib.staticfiles.finders.FileSystemFinder.list",
+          "function_id": "django/contrib/staticfiles/finders.py::django.contrib.staticfiles.finders.FileSystemFinder.list",
+          "score": 0.45934579439252343,
+          "lines": [
+            124,
+            131
+          ],
+          "snippet_sha256": "sha256:e6f9503fbb18ec57d5fd37de29c957c6c6dddfd133584ba9b6a4b49725c3952c"
+        },
+        {
+          "rank": 43,
+          "item_id": "vgar:django__django:python:function:django/template/context_processors.py:django.template.context_processors.request",
+          "path": "django/template/context_processors.py",
+          "kind": "function",
+          "symbol": "django.template.context_processors.request",
+          "function_id": "django/template/context_processors.py::django.template.context_processors.request",
+          "score": 0.457843137254902,
+          "lines": [
+            81,
+            82
+          ],
+          "snippet_sha256": "sha256:c3526d61f0df625d57b19af47bef28bca08443c1905c512b492dee07e63326ed"
+        },
+        {
+          "rank": 44,
+          "item_id": "vgar:django__django:python:method:django/core/handlers/asgi.py:django.core.handlers.asgi.ASGIRequest.COOKIES",
+          "path": "django/core/handlers/asgi.py",
+          "kind": "method",
+          "symbol": "django.core.handlers.asgi.ASGIRequest.COOKIES",
+          "function_id": "django/core/handlers/asgi.py::django.core.handlers.asgi.ASGIRequest.COOKIES",
+          "score": 0.37600000000000006,
+          "lines": [
+            122,
+            123
+          ],
+          "snippet_sha256": "sha256:4682c34a016fba03e30cc7ea4fee73b85ccad4669d520f9b3f2693d9a441a384"
+        },
+        {
+          "rank": 45,
+          "item_id": "vgar:django__django:python:method:django/core/handlers/asgi.py:django.core.handlers.asgi.ASGIRequest.GET",
+          "path": "django/core/handlers/asgi.py",
+          "kind": "method",
+          "symbol": "django.core.handlers.asgi.ASGIRequest.GET",
+          "function_id": "django/core/handlers/asgi.py::django.core.handlers.asgi.ASGIRequest.GET",
+          "score": 0.37600000000000006,
+          "lines": [
+            99,
+            100
+          ],
+          "snippet_sha256": "sha256:fcc883a7c2ba3f2b6593e2eadb9dc7ce9b2fafdba2961348995f2fb576df67be"
+        },
+        {
+          "rank": 46,
+          "item_id": "vgar:django__django:python:method:django/core/handlers/asgi.py:django.core.handlers.asgi.ASGIRequest._set_post",
+          "path": "django/core/handlers/asgi.py",
+          "kind": "method",
+          "symbol": "django.core.handlers.asgi.ASGIRequest._set_post",
+          "function_id": "django/core/handlers/asgi.py::django.core.handlers.asgi.ASGIRequest._set_post",
+          "score": 0.32800000000000007,
+          "lines": [
+            110,
+            111
+          ],
+          "snippet_sha256": "sha256:fc7c4e29369a1f99edcdcc1498abb283ccc7646a14f339304588e9b714d4cf35"
+        },
+        {
+          "rank": 47,
+          "item_id": "vgar:django__django:python:method:django/core/handlers/asgi.py:django.core.handlers.asgi.ASGIRequest._get_files",
+          "path": "django/core/handlers/asgi.py",
+          "kind": "method",
+          "symbol": "django.core.handlers.asgi.ASGIRequest._get_files",
+          "function_id": "django/core/handlers/asgi.py::django.core.handlers.asgi.ASGIRequest._get_files",
+          "score": 0.3258415841584159,
+          "lines": [
+            113,
+            116
+          ],
+          "snippet_sha256": "sha256:fc5c804772592542ebc0bdf9f2bd010b86f0117bad1b1e2803628ba803164d76"
+        },
+        {
+          "rank": 48,
+          "item_id": "vgar:django__django:python:method:django/core/handlers/asgi.py:django.core.handlers.asgi.ASGIRequest._get_post",
+          "path": "django/core/handlers/asgi.py",
+          "kind": "method",
+          "symbol": "django.core.handlers.asgi.ASGIRequest._get_post",
+          "function_id": "django/core/handlers/asgi.py::django.core.handlers.asgi.ASGIRequest._get_post",
+          "score": 0.3258415841584159,
+          "lines": [
+            105,
+            108
+          ],
+          "snippet_sha256": "sha256:90ded38f98f280705c8d9edd1678a55fb5f685cc8560ed2d086fcee5c3fa8961"
+        },
+        {
+          "rank": 49,
+          "item_id": "vgar:django__django:python:method:django/core/handlers/asgi.py:django.core.handlers.asgi.ASGIRequest._get_scheme",
+          "path": "django/core/handlers/asgi.py",
+          "kind": "method",
+          "symbol": "django.core.handlers.asgi.ASGIRequest._get_scheme",
+          "function_id": "django/core/handlers/asgi.py::django.core.handlers.asgi.ASGIRequest._get_scheme",
+          "score": 0.3258415841584159,
+          "lines": [
+            102,
+            103
+          ],
+          "snippet_sha256": "sha256:9efacaa8f0e46fecbb5020efdbdc1a82e6491a4d32596dd51f64982be5befd45"
+        },
+        {
+          "rank": 50,
+          "item_id": "vgar:django__django:python:method:django/core/handlers/asgi.py:django.core.handlers.asgi.ASGIRequest.__init__",
+          "path": "django/core/handlers/asgi.py",
+          "kind": "method",
+          "symbol": "django.core.handlers.asgi.ASGIRequest.__init__",
+          "function_id": "django/core/handlers/asgi.py::django.core.handlers.asgi.ASGIRequest.__init__",
+          "score": 0.32553398058252436,
+          "lines": [
+            31,
+            96
+          ],
+          "snippet_sha256": "sha256:be831a2422af11d22e89e0edb0c7c93e4b2b31e9dc7ebb53aa1ceed2959e857c"
+        },
+        {
+          "rank": 51,
+          "item_id": "vgar:django__django:python:module:django/core/handlers/asgi.py:django.core.handlers.asgi",
+          "path": "django/core/handlers/asgi.py",
+          "kind": "module",
+          "symbol": "django.core.handlers.asgi",
+          "function_id": null,
+          "score": 0.32010101010101016,
+          "lines": [
+            1,
+            288
+          ],
+          "snippet_sha256": "sha256:4bb4938be778ffeda7a7f8ea8dd659a58b94ff67a7adf3e71824d9bec4ee61da"
+        },
+        {
+          "rank": 52,
+          "item_id": "vgar:django__django:python:class:django/http/response.py:django.http.response.HttpResponseBadRequest",
+          "path": "django/http/response.py",
+          "kind": "class",
+          "symbol": "django.http.response.HttpResponseBadRequest",
+          "function_id": null,
+          "score": 0.3200000000000001,
+          "lines": [
+            503,
+            504
+          ],
+          "snippet_sha256": "sha256:3e1b8331e83b527be2281be3fe99122fa92f3b67252810a7e8d51bf120bc31cb"
+        },
+        {
+          "rank": 53,
+          "item_id": "vgar:django__django:python:class:django/http/response.py:django.http.response.HttpResponseBase",
+          "path": "django/http/response.py",
+          "kind": "class",
+          "symbol": "django.http.response.HttpResponseBase",
+          "function_id": null,
+          "score": 0.3180000000000001,
+          "lines": [
+            29,
+            283
+          ],
+          "snippet_sha256": "sha256:4408d414c29a16662214c237cb1a7bce4a41f321d5cfc7e07c396fd7834ecb3a"
+        },
+        {
+          "rank": 54,
+          "item_id": "vgar:django__django:python:class:django/http/response.py:django.http.response.HttpResponseForbidden",
+          "path": "django/http/response.py",
+          "kind": "class",
+          "symbol": "django.http.response.HttpResponseForbidden",
+          "function_id": null,
+          "score": 0.3180000000000001,
+          "lines": [
+            511,
+            512
+          ],
+          "snippet_sha256": "sha256:1f9602c6485549fa522c64b88adf046d8337b6a56c76d1d1e54ca758fbf8407b"
+        },
+        {
+          "rank": 55,
+          "item_id": "vgar:django__django:python:class:django/http/response.py:django.http.response.HttpResponseGone",
+          "path": "django/http/response.py",
+          "kind": "class",
+          "symbol": "django.http.response.HttpResponseGone",
+          "function_id": null,
+          "score": 0.3180000000000001,
+          "lines": [
+            531,
+            532
+          ],
+          "snippet_sha256": "sha256:549a5b5e754484a58223641f60975483766e9ce27f5c9643a39fee156cfae06a"
+        },
+        {
+          "rank": 56,
+          "item_id": "vgar:django__django:python:class:django/http/response.py:django.http.response.HttpResponseNotAllowed",
+          "path": "django/http/response.py",
+          "kind": "class",
+          "symbol": "django.http.response.HttpResponseNotAllowed",
+          "function_id": null,
+          "score": 0.31792079207920804,
+          "lines": [
+            515,
+            528
+          ],
+          "snippet_sha256": "sha256:a30d67bad21b50aef9a976b3d403e7c41caa6989574c744dd82afdaf7bfda36e"
+        },
+        {
+          "rank": 57,
+          "item_id": "vgar:django__django:python:class:django/http/response.py:django.http.response.HttpResponseNotFound",
+          "path": "django/http/response.py",
+          "kind": "class",
+          "symbol": "django.http.response.HttpResponseNotFound",
+          "function_id": null,
+          "score": 0.31792079207920804,
+          "lines": [
+            507,
+            508
+          ],
+          "snippet_sha256": "sha256:525a9353e1ff25026e0dc07c3d091be88cd9bfb2cb664bb551ac162f8a5312f8"
+        },
+        {
+          "rank": 58,
+          "item_id": "vgar:django__django:python:class:django/http/response.py:django.http.response.HttpResponseNotModified",
+          "path": "django/http/response.py",
+          "kind": "class",
+          "symbol": "django.http.response.HttpResponseNotModified",
+          "function_id": null,
+          "score": 0.31792079207920804,
+          "lines": [
+            489,
+            500
+          ],
+          "snippet_sha256": "sha256:4be13915b23a2d12c61703b050f7a646890f20a3cde23c05544230de1626ed77"
+        },
+        {
+          "rank": 59,
+          "item_id": "vgar:django__django:python:class:django/http/response.py:django.http.response.HttpResponseRedirectBase",
+          "path": "django/http/response.py",
+          "kind": "class",
+          "symbol": "django.http.response.HttpResponseRedirectBase",
+          "function_id": null,
+          "score": 0.31792079207920804,
+          "lines": [
+            460,
+            478
+          ],
+          "snippet_sha256": "sha256:4dd82faa9c37ca23de96ba22fcfe0241805f80f7748bf33fd45beec9ffbf32d1"
+        }
+      ],
+      "rank_order": [
+        "vgar:django__django:python:method:django/middleware/common.py:django.middleware.common.CommonMiddleware.process_response",
+        "vgar:django__django:python:function:django/template/defaultfilters.py:django.template.defaultfilters.title",
+        "vgar:django__django:python:function:django/template/defaultfilters.py:django.template.defaultfilters.first",
+        "vgar:django__django:python:class:django/utils/deprecation.py:django.utils.deprecation.MiddlewareMixin",
+        "vgar:django__django:python:method:django/utils/dateformat.py:django.utils.dateformat.TimeFormat.a",
+        "vgar:django__django:python:method:django/http/request.py:django.http.request.HttpRequest.headers",
+        "vgar:django__django:python:method:django/contrib/gis/geos/geometry.py:django.contrib.gis.geos.geometry.LinearGeometryMixin.project",
+        "vgar:django__django:python:method:django/middleware/http.py:django.middleware.http.ConditionalGetMiddleware.process_response",
+        "vgar:django__django:python:method:django/utils/dateformat.py:django.utils.dateformat.TimeFormat.s",
+        "vgar:django__django:python:function:django/utils/decorators.py:django.utils.decorators._update_method_wrapper.dummy",
+        "vgar:django__django:python:method:django/contrib/gis/gdal/geomtype.py:django.contrib.gis.gdal.geomtype.OGRGeomType.django",
+        "vgar:django__django:python:method:django/middleware/clickjacking.py:django.middleware.clickjacking.XFrameOptionsMiddleware.process_response",
+        "vgar:django__django:python:method:django/db/models/manager.py:django.db.models.manager.BaseManager.all",
+        "vgar:django__django:python:class:django/core/handlers/asgi.py:django.core.handlers.asgi.ASGIRequest",
+        "vgar:django__django:python:method:django/middleware/gzip.py:django.middleware.gzip.GZipMiddleware.process_response",
+        "vgar:django__django:python:method:django/contrib/redirects/middleware.py:django.contrib.redirects.middleware.RedirectFallbackMiddleware.process_response",
+        "vgar:django__django:python:method:django/middleware/security.py:django.middleware.security.SecurityMiddleware.process_response",
+        "vgar:django__django:python:class:django/http/response.py:django.http.response.HttpResponse",
+        "vgar:django__django:python:class:django/middleware/security.py:django.middleware.security.SecurityMiddleware",
+        "vgar:django__django:python:method:django/middleware/locale.py:django.middleware.locale.LocaleMiddleware.process_response",
+        "vgar:django__django:python:method:django/middleware/cache.py:django.middleware.cache.UpdateCacheMiddleware.process_response",
+        "vgar:django__django:python:method:django/middleware/csrf.py:django.middleware.csrf.CsrfViewMiddleware.process_response",
+        "vgar:django__django:python:method:django/contrib/messages/middleware.py:django.contrib.messages.middleware.MessageMiddleware.process_response",
+        "vgar:django__django:python:method:django/contrib/sessions/middleware.py:django.contrib.sessions.middleware.SessionMiddleware.process_response",
+        "vgar:django__django:python:method:django/contrib/flatpages/middleware.py:django.contrib.flatpages.middleware.FlatpageFallbackMiddleware.process_response",
+        "vgar:django__django:python:method:django/middleware/common.py:django.middleware.common.BrokenLinkEmailsMiddleware.process_response",
+        "vgar:django__django:python:method:django/contrib/admin/tests.py:django.contrib.admin.tests.CSPMiddleware.process_response",
+        "vgar:django__django:python:method:django/core/cache/__init__.py:django.core.cache.CacheHandler.all",
+        "vgar:django__django:python:method:django/db/models/query.py:django.db.models.query.QuerySet.all",
+        "vgar:django__django:python:method:django/db/models/query.py:django.db.models.query.QuerySet.first",
+        "vgar:django__django:python:method:django/db/models/query.py:django.db.models.query.QuerySet.using",
+        "vgar:django__django:python:method:django/db/models/query.py:django.db.models.query.RawQuerySet.using",
+        "vgar:django__django:python:method:django/utils/archive.py:django.utils.archive.Archive.list",
+        "vgar:django__django:python:method:django/utils/archive.py:django.utils.archive.BaseArchive.list",
+        "vgar:django__django:python:method:django/db/utils.py:django.db.utils.ConnectionHandler.all",
+        "vgar:django__django:python:method:django/template/utils.py:django.template.utils.EngineHandler.all",
+        "vgar:django__django:python:method:django/utils/archive.py:django.utils.archive.TarArchive.list",
+        "vgar:django__django:python:method:django/utils/archive.py:django.utils.archive.ZipArchive.list",
+        "vgar:django__django:python:method:django/contrib/staticfiles/finders.py:django.contrib.staticfiles.finders.BaseFinder.list",
+        "vgar:django__django:python:method:django/contrib/staticfiles/finders.py:django.contrib.staticfiles.finders.AppDirectoriesFinder.list",
+        "vgar:django__django:python:method:django/contrib/staticfiles/finders.py:django.contrib.staticfiles.finders.BaseStorageFinder.list",
+        "vgar:django__django:python:method:django/contrib/staticfiles/finders.py:django.contrib.staticfiles.finders.FileSystemFinder.list",
+        "vgar:django__django:python:function:django/template/context_processors.py:django.template.context_processors.request",
+        "vgar:django__django:python:method:django/core/handlers/asgi.py:django.core.handlers.asgi.ASGIRequest.COOKIES",
+        "vgar:django__django:python:method:django/core/handlers/asgi.py:django.core.handlers.asgi.ASGIRequest.GET",
+        "vgar:django__django:python:method:django/core/handlers/asgi.py:django.core.handlers.asgi.ASGIRequest._set_post",
+        "vgar:django__django:python:method:django/core/handlers/asgi.py:django.core.handlers.asgi.ASGIRequest._get_files",
+        "vgar:django__django:python:method:django/core/handlers/asgi.py:django.core.handlers.asgi.ASGIRequest._get_post",
+        "vgar:django__django:python:method:django/core/handlers/asgi.py:django.core.handlers.asgi.ASGIRequest._get_scheme",
+        "vgar:django__django:python:method:django/core/handlers/asgi.py:django.core.handlers.asgi.ASGIRequest.__init__",
+        "vgar:django__django:python:module:django/core/handlers/asgi.py:django.core.handlers.asgi",
+        "vgar:django__django:python:class:django/http/response.py:django.http.response.HttpResponseBadRequest",
+        "vgar:django__django:python:class:django/http/response.py:django.http.response.HttpResponseBase",
+        "vgar:django__django:python:class:django/http/response.py:django.http.response.HttpResponseForbidden",
+        "vgar:django__django:python:class:django/http/response.py:django.http.response.HttpResponseGone",
+        "vgar:django__django:python:class:django/http/response.py:django.http.response.HttpResponseNotAllowed",
+        "vgar:django__django:python:class:django/http/response.py:django.http.response.HttpResponseNotFound",
+        "vgar:django__django:python:class:django/http/response.py:django.http.response.HttpResponseNotModified",
+        "vgar:django__django:python:class:django/http/response.py:django.http.response.HttpResponseRedirectBase"
+      ],
+      "anchors": [
+        {
+          "node_id": "vgar:django__django:python:class:django/core/handlers/asgi.py:django.core.handlers.asgi.ASGIRequest",
+          "score": 0.8,
+          "symbol": "django.core.handlers.asgi.ASGIRequest",
+          "type": "Class",
+          "path": "django/core/handlers/asgi.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:class:django/http/response.py:django.http.response.HttpResponse",
+          "score": 0.8,
+          "symbol": "django.http.response.HttpResponse",
+          "type": "Class",
+          "path": "django/http/response.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:class:django/middleware/security.py:django.middleware.security.SecurityMiddleware",
+          "score": 0.8,
+          "symbol": "django.middleware.security.SecurityMiddleware",
+          "type": "Class",
+          "path": "django/middleware/security.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/contrib/gis/gdal/geomtype.py:django.contrib.gis.gdal.geomtype.OGRGeomType.django",
+          "score": 0.6,
+          "symbol": "django.contrib.gis.gdal.geomtype.OGRGeomType.django",
+          "type": "Method",
+          "path": "django/contrib/gis/gdal/geomtype.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/contrib/gis/geos/geometry.py:django.contrib.gis.geos.geometry.LinearGeometryMixin.project",
+          "score": 0.6,
+          "symbol": "django.contrib.gis.geos.geometry.LinearGeometryMixin.project",
+          "type": "Method",
+          "path": "django/contrib/gis/geos/geometry.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/http/request.py:django.http.request.HttpRequest.headers",
+          "score": 0.6,
+          "symbol": "django.http.request.HttpRequest.headers",
+          "type": "Method",
+          "path": "django/http/request.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:function:django/template/defaultfilters.py:django.template.defaultfilters.title",
+          "score": 0.6,
+          "symbol": "django.template.defaultfilters.title",
+          "type": "Function",
+          "path": "django/template/defaultfilters.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/utils/dateformat.py:django.utils.dateformat.TimeFormat.s",
+          "score": 0.6,
+          "symbol": "django.utils.dateformat.TimeFormat.s",
+          "type": "Method",
+          "path": "django/utils/dateformat.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:function:django/utils/decorators.py:django.utils.decorators._update_method_wrapper.dummy",
+          "score": 0.6,
+          "symbol": "django.utils.decorators._update_method_wrapper.dummy",
+          "type": "Function",
+          "path": "django/utils/decorators.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:class:django/utils/deprecation.py:django.utils.deprecation.MiddlewareMixin",
+          "score": 0.6,
+          "symbol": "django.utils.deprecation.MiddlewareMixin",
+          "type": "Class",
+          "path": "django/utils/deprecation.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:test:tests/deprecation/test_middleware_mixin.py:tests.deprecation.test_middleware_mixin.MiddlewareMixinTests.test_deprecation",
+          "score": 0.6,
+          "symbol": "tests.deprecation.test_middleware_mixin.MiddlewareMixinTests.test_deprecation",
+          "type": "Test",
+          "path": "tests/deprecation/test_middleware_mixin.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/middleware/test_security.py:tests.middleware.test_security.SecurityMiddlewareTest.response",
+          "score": 0.6,
+          "symbol": "tests.middleware.test_security.SecurityMiddlewareTest.response",
+          "type": "Method",
+          "path": "tests/middleware/test_security.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:class:tests/model_enums/tests.py:tests.model_enums.tests.Set",
+          "score": 0.6,
+          "symbol": "tests.model_enums.tests.Set",
+          "type": "Class",
+          "path": "tests/model_enums/tests.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/contrib/admin/tests.py:django.contrib.admin.tests.CSPMiddleware.process_response",
+          "score": 0.5,
+          "symbol": "django.contrib.admin.tests.CSPMiddleware.process_response",
+          "type": "Method",
+          "path": "django/contrib/admin/tests.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/contrib/flatpages/middleware.py:django.contrib.flatpages.middleware.FlatpageFallbackMiddleware.process_response",
+          "score": 0.5,
+          "symbol": "django.contrib.flatpages.middleware.FlatpageFallbackMiddleware.process_response",
+          "type": "Method",
+          "path": "django/contrib/flatpages/middleware.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/contrib/messages/middleware.py:django.contrib.messages.middleware.MessageMiddleware.process_response",
+          "score": 0.5,
+          "symbol": "django.contrib.messages.middleware.MessageMiddleware.process_response",
+          "type": "Method",
+          "path": "django/contrib/messages/middleware.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/contrib/redirects/middleware.py:django.contrib.redirects.middleware.RedirectFallbackMiddleware.process_response",
+          "score": 0.5,
+          "symbol": "django.contrib.redirects.middleware.RedirectFallbackMiddleware.process_response",
+          "type": "Method",
+          "path": "django/contrib/redirects/middleware.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/contrib/sessions/middleware.py:django.contrib.sessions.middleware.SessionMiddleware.process_response",
+          "score": 0.5,
+          "symbol": "django.contrib.sessions.middleware.SessionMiddleware.process_response",
+          "type": "Method",
+          "path": "django/contrib/sessions/middleware.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/contrib/staticfiles/finders.py:django.contrib.staticfiles.finders.AppDirectoriesFinder.list",
+          "score": 0.5,
+          "symbol": "django.contrib.staticfiles.finders.AppDirectoriesFinder.list",
+          "type": "Method",
+          "path": "django/contrib/staticfiles/finders.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/contrib/staticfiles/finders.py:django.contrib.staticfiles.finders.BaseFinder.list",
+          "score": 0.5,
+          "symbol": "django.contrib.staticfiles.finders.BaseFinder.list",
+          "type": "Method",
+          "path": "django/contrib/staticfiles/finders.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/contrib/staticfiles/finders.py:django.contrib.staticfiles.finders.BaseStorageFinder.list",
+          "score": 0.5,
+          "symbol": "django.contrib.staticfiles.finders.BaseStorageFinder.list",
+          "type": "Method",
+          "path": "django/contrib/staticfiles/finders.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/contrib/staticfiles/finders.py:django.contrib.staticfiles.finders.FileSystemFinder.list",
+          "score": 0.5,
+          "symbol": "django.contrib.staticfiles.finders.FileSystemFinder.list",
+          "type": "Method",
+          "path": "django/contrib/staticfiles/finders.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/core/cache/__init__.py:django.core.cache.CacheHandler.all",
+          "score": 0.5,
+          "symbol": "django.core.cache.CacheHandler.all",
+          "type": "Method",
+          "path": "django/core/cache/__init__.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/db/models/manager.py:django.db.models.manager.BaseManager.all",
+          "score": 0.5,
+          "symbol": "django.db.models.manager.BaseManager.all",
+          "type": "Method",
+          "path": "django/db/models/manager.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/db/models/query.py:django.db.models.query.QuerySet.all",
+          "score": 0.5,
+          "symbol": "django.db.models.query.QuerySet.all",
+          "type": "Method",
+          "path": "django/db/models/query.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/db/models/query.py:django.db.models.query.QuerySet.first",
+          "score": 0.5,
+          "symbol": "django.db.models.query.QuerySet.first",
+          "type": "Method",
+          "path": "django/db/models/query.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/db/models/query.py:django.db.models.query.QuerySet.using",
+          "score": 0.5,
+          "symbol": "django.db.models.query.QuerySet.using",
+          "type": "Method",
+          "path": "django/db/models/query.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/db/models/query.py:django.db.models.query.RawQuerySet.using",
+          "score": 0.5,
+          "symbol": "django.db.models.query.RawQuerySet.using",
+          "type": "Method",
+          "path": "django/db/models/query.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/db/utils.py:django.db.utils.ConnectionHandler.all",
+          "score": 0.5,
+          "symbol": "django.db.utils.ConnectionHandler.all",
+          "type": "Method",
+          "path": "django/db/utils.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/middleware/cache.py:django.middleware.cache.UpdateCacheMiddleware.process_response",
+          "score": 0.5,
+          "symbol": "django.middleware.cache.UpdateCacheMiddleware.process_response",
+          "type": "Method",
+          "path": "django/middleware/cache.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/middleware/clickjacking.py:django.middleware.clickjacking.XFrameOptionsMiddleware.process_response",
+          "score": 0.5,
+          "symbol": "django.middleware.clickjacking.XFrameOptionsMiddleware.process_response",
+          "type": "Method",
+          "path": "django/middleware/clickjacking.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/middleware/common.py:django.middleware.common.BrokenLinkEmailsMiddleware.process_response",
+          "score": 0.5,
+          "symbol": "django.middleware.common.BrokenLinkEmailsMiddleware.process_response",
+          "type": "Method",
+          "path": "django/middleware/common.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/middleware/common.py:django.middleware.common.CommonMiddleware.process_response",
+          "score": 0.5,
+          "symbol": "django.middleware.common.CommonMiddleware.process_response",
+          "type": "Method",
+          "path": "django/middleware/common.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/middleware/csrf.py:django.middleware.csrf.CsrfViewMiddleware.process_response",
+          "score": 0.5,
+          "symbol": "django.middleware.csrf.CsrfViewMiddleware.process_response",
+          "type": "Method",
+          "path": "django/middleware/csrf.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/middleware/gzip.py:django.middleware.gzip.GZipMiddleware.process_response",
+          "score": 0.5,
+          "symbol": "django.middleware.gzip.GZipMiddleware.process_response",
+          "type": "Method",
+          "path": "django/middleware/gzip.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/middleware/http.py:django.middleware.http.ConditionalGetMiddleware.process_response",
+          "score": 0.5,
+          "symbol": "django.middleware.http.ConditionalGetMiddleware.process_response",
+          "type": "Method",
+          "path": "django/middleware/http.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/middleware/locale.py:django.middleware.locale.LocaleMiddleware.process_response",
+          "score": 0.5,
+          "symbol": "django.middleware.locale.LocaleMiddleware.process_response",
+          "type": "Method",
+          "path": "django/middleware/locale.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/middleware/security.py:django.middleware.security.SecurityMiddleware.process_response",
+          "score": 0.5,
+          "symbol": "django.middleware.security.SecurityMiddleware.process_response",
+          "type": "Method",
+          "path": "django/middleware/security.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:function:django/template/context_processors.py:django.template.context_processors.request",
+          "score": 0.5,
+          "symbol": "django.template.context_processors.request",
+          "type": "Function",
+          "path": "django/template/context_processors.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:function:django/template/defaultfilters.py:django.template.defaultfilters.first",
+          "score": 0.5,
+          "symbol": "django.template.defaultfilters.first",
+          "type": "Function",
+          "path": "django/template/defaultfilters.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/template/utils.py:django.template.utils.EngineHandler.all",
+          "score": 0.5,
+          "symbol": "django.template.utils.EngineHandler.all",
+          "type": "Method",
+          "path": "django/template/utils.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/test/client.py:django.test.client.AsyncClient.request",
+          "score": 0.5,
+          "symbol": "django.test.client.AsyncClient.request",
+          "type": "Method",
+          "path": "django/test/client.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/test/client.py:django.test.client.AsyncRequestFactory.request",
+          "score": 0.5,
+          "symbol": "django.test.client.AsyncRequestFactory.request",
+          "type": "Method",
+          "path": "django/test/client.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/test/client.py:django.test.client.Client.request",
+          "score": 0.5,
+          "symbol": "django.test.client.Client.request",
+          "type": "Method",
+          "path": "django/test/client.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/test/client.py:django.test.client.RequestFactory.request",
+          "score": 0.5,
+          "symbol": "django.test.client.RequestFactory.request",
+          "type": "Method",
+          "path": "django/test/client.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/utils/archive.py:django.utils.archive.Archive.list",
+          "score": 0.5,
+          "symbol": "django.utils.archive.Archive.list",
+          "type": "Method",
+          "path": "django/utils/archive.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/utils/archive.py:django.utils.archive.BaseArchive.list",
+          "score": 0.5,
+          "symbol": "django.utils.archive.BaseArchive.list",
+          "type": "Method",
+          "path": "django/utils/archive.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/utils/archive.py:django.utils.archive.TarArchive.list",
+          "score": 0.5,
+          "symbol": "django.utils.archive.TarArchive.list",
+          "type": "Method",
+          "path": "django/utils/archive.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/utils/archive.py:django.utils.archive.ZipArchive.list",
+          "score": 0.5,
+          "symbol": "django.utils.archive.ZipArchive.list",
+          "type": "Method",
+          "path": "django/utils/archive.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/utils/dateformat.py:django.utils.dateformat.TimeFormat.a",
+          "score": 0.5,
+          "symbol": "django.utils.dateformat.TimeFormat.a",
+          "type": "Method",
+          "path": "django/utils/dateformat.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:function:tests/admin_checks/tests.py:tests.admin_checks.tests.SystemChecksTestCase.test_readonly_dynamic_attribute_on_modeladmin.SongAdmin.__getattr__.method",
+          "score": 0.5,
+          "symbol": "tests.admin_checks.tests.SystemChecksTestCase.test_readonly_dynamic_attribute_on_modeladmin.SongAdmin.__getattr__.method",
+          "type": "Function",
+          "path": "tests/admin_checks/tests.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:file:tests/admin_scripts/custom_templates/project_template/project_name/settings.py",
+          "score": 0.5,
+          "symbol": "tests/admin_scripts/custom_templates/project_template/project_name/settings.py",
+          "type": "File",
+          "path": "tests/admin_scripts/custom_templates/project_template/project_name/settings.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:file:tests/auth_tests/settings.py",
+          "score": 0.5,
+          "symbol": "tests/auth_tests/settings.py",
+          "type": "File",
+          "path": "tests/auth_tests/settings.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/decorators/tests.py:tests.decorators.tests.MethodDecoratorTests.test_argumented.Test.method",
+          "score": 0.5,
+          "symbol": "tests.decorators.tests.MethodDecoratorTests.test_argumented.Test.method",
+          "type": "Method",
+          "path": "tests/decorators/tests.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/decorators/tests.py:tests.decorators.tests.MethodDecoratorTests.test_bad_iterable.TestIterable.method",
+          "score": 0.5,
+          "symbol": "tests.decorators.tests.MethodDecoratorTests.test_bad_iterable.TestIterable.method",
+          "type": "Method",
+          "path": "tests/decorators/tests.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/decorators/tests.py:tests.decorators.tests.MethodDecoratorTests.test_class_decoration.Test.method",
+          "score": 0.5,
+          "symbol": "tests.decorators.tests.MethodDecoratorTests.test_class_decoration.Test.method",
+          "type": "Method",
+          "path": "tests/decorators/tests.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/decorators/tests.py:tests.decorators.tests.MethodDecoratorTests.test_descriptors.Test.method",
+          "score": 0.5,
+          "symbol": "tests.decorators.tests.MethodDecoratorTests.test_descriptors.Test.method",
+          "type": "Method",
+          "path": "tests/decorators/tests.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/decorators/tests.py:tests.decorators.tests.MethodDecoratorTests.test_new_attribute.MyClass.method",
+          "score": 0.5,
+          "symbol": "tests.decorators.tests.MethodDecoratorTests.test_new_attribute.MyClass.method",
+          "type": "Method",
+          "path": "tests/decorators/tests.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/decorators/tests.py:tests.decorators.tests.MethodDecoratorTests.test_preserve_attributes.TestFunctionIterable.method",
+          "score": 0.5,
+          "symbol": "tests.decorators.tests.MethodDecoratorTests.test_preserve_attributes.TestFunctionIterable.method",
+          "type": "Method",
+          "path": "tests/decorators/tests.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/decorators/tests.py:tests.decorators.tests.MethodDecoratorTests.test_preserve_attributes.TestMethodAndClass.method",
+          "score": 0.5,
+          "symbol": "tests.decorators.tests.MethodDecoratorTests.test_preserve_attributes.TestMethodAndClass.method",
+          "type": "Method",
+          "path": "tests/decorators/tests.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/decorators/tests.py:tests.decorators.tests.MethodDecoratorTests.test_preserve_attributes.TestMethodIterable.method",
+          "score": 0.5,
+          "symbol": "tests.decorators.tests.MethodDecoratorTests.test_preserve_attributes.TestMethodIterable.method",
+          "type": "Method",
+          "path": "tests/decorators/tests.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/decorators/tests.py:tests.decorators.tests.MethodDecoratorTests.test_preserve_attributes.TestPlain.method",
+          "score": 0.5,
+          "symbol": "tests.decorators.tests.MethodDecoratorTests.test_preserve_attributes.TestPlain.method",
+          "type": "Method",
+          "path": "tests/decorators/tests.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/decorators/tests.py:tests.decorators.tests.MethodDecoratorTests.test_tuple_of_decorators.TestFirst.method",
+          "score": 0.5,
+          "symbol": "tests.decorators.tests.MethodDecoratorTests.test_tuple_of_decorators.TestFirst.method",
+          "type": "Method",
+          "path": "tests/decorators/tests.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/decorators/tests.py:tests.decorators.tests.MethodDecoratorTests.test_tuple_of_decorators.TestSecond.method",
+          "score": 0.5,
+          "symbol": "tests.decorators.tests.MethodDecoratorTests.test_tuple_of_decorators.TestSecond.method",
+          "type": "Method",
+          "path": "tests/decorators/tests.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/deprecation/test_middleware_mixin.py:tests.deprecation.test_middleware_mixin.MiddlewareMixinTests.test_sync_to_async_uses_base_thread_and_connection.SimpleMiddleWare.process_response",
+          "score": 0.5,
+          "symbol": "tests.deprecation.test_middleware_mixin.MiddlewareMixinTests.test_sync_to_async_uses_base_thread_and_connection.SimpleMiddleWare.process_response",
+          "type": "Method",
+          "path": "tests/deprecation/test_middleware_mixin.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/dispatch/tests.py:tests.dispatch.tests.Callable.a",
+          "score": 0.5,
+          "symbol": "tests.dispatch.tests.Callable.a",
+          "type": "Method",
+          "path": "tests/dispatch/tests.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:file:tests/flatpages_tests/settings.py",
+          "score": 0.5,
+          "symbol": "tests/flatpages_tests/settings.py",
+          "type": "File",
+          "path": "tests/flatpages_tests/settings.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:file:tests/i18n/sampleproject/sampleproject/settings.py",
+          "score": 0.5,
+          "symbol": "tests/i18n/sampleproject/sampleproject/settings.py",
+          "type": "File",
+          "path": "tests/i18n/sampleproject/sampleproject/settings.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/middleware/test_security.py:tests.middleware.test_security.SecurityMiddlewareTest.middleware",
+          "score": 0.5,
+          "symbol": "tests.middleware.test_security.SecurityMiddlewareTest.middleware",
+          "type": "Method",
+          "path": "tests/middleware/test_security.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/middleware/test_security.py:tests.middleware.test_security.SecurityMiddlewareTest.process_response",
+          "score": 0.5,
+          "symbol": "tests.middleware.test_security.SecurityMiddlewareTest.process_response",
+          "type": "Method",
+          "path": "tests/middleware/test_security.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:function:tests/middleware_exceptions/middleware.py:tests.middleware_exceptions.middleware.async_payment_middleware.middleware",
+          "score": 0.5,
+          "symbol": "tests.middleware_exceptions.middleware.async_payment_middleware.middleware",
+          "type": "Function",
+          "path": "tests/middleware_exceptions/middleware.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:function:tests/model_inheritance/tests.py:tests.model_inheritance.tests.ModelInheritanceTests.test_create_child_no_update.a",
+          "score": 0.5,
+          "symbol": "tests.model_inheritance.tests.ModelInheritanceTests.test_create_child_no_update.a",
+          "type": "Function",
+          "path": "tests/model_inheritance/tests.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:file:tests/staticfiles_tests/settings.py",
+          "score": 0.5,
+          "symbol": "tests/staticfiles_tests/settings.py",
+          "type": "File",
+          "path": "tests/staticfiles_tests/settings.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:function:tests/template_tests/syntax_tests/test_setup.py:tests.template_tests.syntax_tests.test_setup.SetupTests.test_setup.method",
+          "score": 0.5,
+          "symbol": "tests.template_tests.syntax_tests.test_setup.SetupTests.test_setup.method",
+          "type": "Function",
+          "path": "tests/template_tests/syntax_tests/test_setup.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:function:tests/template_tests/test_response.py:tests.template_tests.test_response.custom_urlconf_middleware.middleware",
+          "score": 0.5,
+          "symbol": "tests.template_tests.test_response.custom_urlconf_middleware.middleware",
+          "type": "Function",
+          "path": "tests/template_tests/test_response.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/template_tests/utils.py:tests.template_tests.utils.OtherClass.method",
+          "score": 0.5,
+          "symbol": "tests.template_tests.utils.OtherClass.method",
+          "type": "Method",
+          "path": "tests/template_tests/utils.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/template_tests/utils.py:tests.template_tests.utils.SomeClass.method",
+          "score": 0.5,
+          "symbol": "tests.template_tests.utils.SomeClass.method",
+          "type": "Method",
+          "path": "tests/template_tests/utils.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/urlpatterns_reverse/middleware.py:tests.urlpatterns_reverse.middleware.ReverseInnerInResponseMiddleware.process_response",
+          "score": 0.5,
+          "symbol": "tests.urlpatterns_reverse.middleware.ReverseInnerInResponseMiddleware.process_response",
+          "type": "Method",
+          "path": "tests/urlpatterns_reverse/middleware.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/urlpatterns_reverse/middleware.py:tests.urlpatterns_reverse.middleware.ReverseOuterInResponseMiddleware.process_response",
+          "score": 0.5,
+          "symbol": "tests.urlpatterns_reverse.middleware.ReverseOuterInResponseMiddleware.process_response",
+          "type": "Method",
+          "path": "tests/urlpatterns_reverse/middleware.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/utils_tests/test_decorators.py:tests.utils_tests.test_decorators.FullMiddleware.process_response",
+          "score": 0.5,
+          "symbol": "tests.utils_tests.test_decorators.FullMiddleware.process_response",
+          "type": "Method",
+          "path": "tests/utils_tests/test_decorators.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/utils_tests/test_functional.py:tests.utils_tests.test_functional.FunctionalTests.test_cached_property_reuse_different_names.ReusedCachedProperty.a",
+          "score": 0.5,
+          "symbol": "tests.utils_tests.test_functional.FunctionalTests.test_cached_property_reuse_different_names.ReusedCachedProperty.a",
+          "type": "Method",
+          "path": "tests/utils_tests/test_functional.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/utils_tests/test_functional.py:tests.utils_tests.test_functional.FunctionalTests.test_lazy_base_class_override.Base.method",
+          "score": 0.5,
+          "symbol": "tests.utils_tests.test_functional.FunctionalTests.test_lazy_base_class_override.Base.method",
+          "type": "Method",
+          "path": "tests/utils_tests/test_functional.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/utils_tests/test_functional.py:tests.utils_tests.test_functional.FunctionalTests.test_lazy_base_class_override.Klazz.method",
+          "score": 0.5,
+          "symbol": "tests.utils_tests.test_functional.FunctionalTests.test_lazy_base_class_override.Klazz.method",
+          "type": "Method",
+          "path": "tests/utils_tests/test_functional.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/view_tests/views.py:tests.view_tests.views.Klass.method",
+          "score": 0.5,
+          "symbol": "tests.view_tests.views.Klass.method",
+          "type": "Method",
+          "path": "tests/view_tests/views.py"
+        }
+      ],
+      "unmapped": [],
+      "excluded": [],
+      "diagnostics": {
+        "m1_native_total_tokens": 7949,
+        "m1_native_items": 48,
+        "m1_native_truncated": true,
+        "traversal_limited": true,
+        "unavailable_features": [
+          "architecture_dependencies",
+          "recent_change_frequency"
+        ],
+        "omissions": {
+          "overlapping_selected_range": 9,
+          "token_budget": 2
+        },
+        "retrieval_config": {
+          "max_hops": 2,
+          "max_candidates": 100,
+          "min_edge_confidence": 0.6,
+          "weights": {
+            "task_similarity": 0.2,
+            "graph_distance": 0.3,
+            "edge_confidence": 0.2,
+            "failing_test_proximity": 0.2,
+            "public_api_risk": 0.1,
+            "recent_change_frequency": 0.1
+          },
+          "profile": "semantic-context-v1",
+          "active_features": [
+            "task_similarity",
+            "graph_distance",
+            "edge_confidence",
+            "failing_test_proximity",
+            "public_api_risk"
+          ],
+          "normalized_weights": {
+            "task_similarity": 0.20000000000000004,
+            "graph_distance": 0.30000000000000004,
+            "edge_confidence": 0.20000000000000004,
+            "failing_test_proximity": 0.20000000000000004,
+            "public_api_risk": 0.10000000000000002
+          },
+          "failing_test_traversal_limited": false,
+          "filtered_by_include": 341
+        }
+      },
+      "scoring": {
+        "instance_id": "django__django-13344",
+        "arm": "graph_f2p",
+        "scoring_version": "retrieval-scoring-v1",
+        "rank_hash": "sha256:fa47cf676bf103c6c717d53689c773394a9beced6a81728b23b0ec9b397ad9ac",
+        "rank": {
+          "metrics": {
+            "file_gold_count": 3,
+            "file_mrr": 0.06666666666666667,
+            "file_recall@1": 0.0,
+            "file_all_gold@1": 0,
+            "file_recall@3": 0.0,
+            "file_all_gold@3": 0,
+            "file_recall@5": 0.0,
+            "file_all_gold@5": 0,
+            "file_recall@10": 0.0,
+            "file_all_gold@10": 0,
+            "file_recall@20": 0.6666666666666666,
+            "file_all_gold@20": 0,
+            "function_gold_count": 5,
+            "function_mrr": 0,
+            "function_recall@1": 0.0,
+            "function_all_gold@1": 0,
+            "function_recall@3": 0.0,
+            "function_all_gold@3": 0,
+            "function_recall@5": 0.0,
+            "function_all_gold@5": 0,
+            "function_recall@10": 0.0,
+            "function_all_gold@10": 0,
+            "function_recall@20": 0.0,
+            "function_all_gold@20": 0
+          },
+          "reach": {
+            "file": 1.0,
+            "function": 0.0
+          },
+          "size": {
+            "items": 59,
+            "files": 30,
+            "functions": 46
+          }
+        },
+        "packed": {
+          "budget_tokens": 8000,
+          "counter_label": "local-hf:Qwen/Qwen3-4B-Instruct-2507@cdbee75f17c01a7cc42f958dc650907174af0554:sha256=aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4:no-special-tokens",
+          "snippet_policy": {
+            "max_snippet_lines": 80,
+            "header": true,
+            "overlap": "skip_if_overlaps_different_group"
+          },
+          "metrics": {
+            "gold_file_in_context": 1.0,
+            "gold_function_in_context": 0.0,
+            "all_gold_files_in_context": 1,
+            "all_gold_functions_in_context": 0,
+            "total_tokens": 7329,
+            "tokens_to_first_gold_file": 3068,
+            "tokens_to_first_gold_function": null,
+            "items_packed": 50,
+            "skipped": {
+              "token_budget": 0,
+              "overlap": 9
+            },
+            "truncated": false
+          }
+        },
+        "excluded_count": 0,
+        "unmapped": [],
+        "excluded_reasons": {}
+      },
+      "metrics": {
+        "file_gold_count": 3,
+        "file_mrr": 0.06666666666666667,
+        "file_recall@1": 0.0,
+        "file_all_gold@1": 0,
+        "file_recall@3": 0.0,
+        "file_all_gold@3": 0,
+        "file_recall@5": 0.0,
+        "file_all_gold@5": 0,
+        "file_recall@10": 0.0,
+        "file_all_gold@10": 0,
+        "file_recall@20": 0.6666666666666666,
+        "file_all_gold@20": 0,
+        "function_gold_count": 5,
+        "function_mrr": 0,
+        "function_recall@1": 0.0,
+        "function_all_gold@1": 0,
+        "function_recall@3": 0.0,
+        "function_all_gold@3": 0,
+        "function_recall@5": 0.0,
+        "function_all_gold@5": 0,
+        "function_recall@10": 0.0,
+        "function_all_gold@10": 0,
+        "function_recall@20": 0.0,
+        "function_all_gold@20": 0,
+        "file_reach": 1.0,
+        "function_reach": 0.0,
+        "rank_items": 59,
+        "packed_gold_file_in_context": 1.0,
+        "packed_gold_function_in_context": 0.0,
+        "packed_all_gold_files_in_context": 1,
+        "packed_all_gold_functions_in_context": 0,
+        "context_tokens": 7329,
+        "packed_tokens_to_first_gold_file": 3068,
+        "packed_tokens_to_first_gold_function": null,
+        "packed_items_packed": 50,
+        "packed_skipped_token_budget": 0,
+        "packed_skipped_overlap": 9,
+        "packed_truncated": 0,
+        "unmapped_count": 0,
+        "excluded_count": 0,
+        "anchor_count": 84,
+        "no_anchors": 0,
+        "candidates_in": 59,
+        "retrieve_seconds": 8.448375399995712,
+        "mapping_coverage": 1.0,
+        "file_retrievability_coverage": 1.0
+      }
+    }
+  },
+  "graph": {
+    "build_seconds": 75.29528269999719,
+    "nodes": 184967,
+    "edges": 237094,
+    "graph_version": "sha256:a36cff125691586d89633a8d2cddd903c35cad35ef7055413caf5d3968fc4b85",
+    "use_jedi": false,
+    "builder_hash": "79d37531e460",
+    "skipped_failed_files": 0,
+    "cache_identity": {
+      "repository": "django/django",
+      "commit": "e39e727ded673e74016b5d3658d23cbe20234d11",
+      "tree_hash": "sha256:43bca02016ac611fd93282e3d30abd9a6901123106182b6c80817b3ecfeecbde",
+      "use_jedi": false,
+      "builder_hash": "79d37531e460",
+      "source_roots": [
+        "src"
+      ],
+      "source_scope": {
+        "excluded_paths": []
+      },
+      "implementation_hashes": {
+        "graph/builder.py": "sha256:79d37531e460cc5fd0c373143b0e7d91d00190856bf0f55cbe204e543dfe05b1",
+        "graph/jedi_resolver.py": "sha256:adefa9271aecc11b97f9d8366a3b5bde578d5c870d2481a0ebf066ca9cb59d37",
+        "contracts/schema.py": "sha256:f47965e26cde0edc1e5e1bee379aa04cd5eb5a26ecbe9ba63d6019aa96ff6a9a",
+        "source_scope.py": "sha256:fbfcb5238e42d7ff15475c2038f9af0d728961d32b3d935c689c11ec7ea831ab",
+        "evaluation/retrieval/graph_cache.py": "sha256:54fafe1241089222c2eb11f136ce66b1f60df310f12ef6617c5669708ea4ff7f"
+      },
+      "package_versions": {
+        "tree-sitter": "0.25.2",
+        "tree-sitter-python": "0.25.0",
+        "jedi": "0.20.0"
+      },
+      "python": "3.11"
+    },
+    "cache_key": "a521a5bc38ae46fb98e4a8ac846b3ea7909f6888e7599bfab61790a00df5b72b",
+    "graph_path": "D:\\Project\\CAPSTONES\\VGAR\\data\\graphs\\django__django-e39e727ded673e74016b5d3658d23cbe20234d11-a521a5bc38ae46fb98e4a8ac846b3ea7909f6888e7599bfab61790a00df5b72b.json",
+    "graph_hash": "sha256:adb5779462d41e0e2478eea51ab7f5fba0d504f95625f8cd45da54ee498f73fd",
+    "cached": false
+  },
+  "source_tree": {
+    "python_file_count": 2673,
+    "tree_hash": "sha256:43bca02016ac611fd93282e3d30abd9a6901123106182b6c80817b3ecfeecbde",
+    "path": "D:\\Project\\CAPSTONES\\VGAR\\data\\repositories\\trees\\rebuilt\\f7e33001554c"
+  },
+  "source_provenance": {
+    "source_backend": "github_codeload_commit_archive",
+    "snapshot_commit": "e39e727ded673e74016b5d3658d23cbe20234d11",
+    "commit_validation": "immutable_40_SHA_URL_and_archive_root; not_git_object_hash_validation",
+    "source_file_count": 849,
+    "source_bytes": 4679090,
+    "excluded_sources": [],
+    "url": "https://codeload.github.com/django/django/tar.gz/e39e727ded673e74016b5d3658d23cbe20234d11",
+    "archive_hash": "sha256:e5abee1b7fa0160dfe6e77566184bcc8cb540056300acf93398c8d9d927a904d",
+    "base_commit": "e39e727ded673e74016b5d3658d23cbe20234d11",
+    "cache_path": "D:\\Project\\CAPSTONES\\VGAR\\data\\repositories\\archives\\django__django-e39e727ded673e74016b5d3658d23cbe20234d11.tar.gz"
+  },
+  "fail_to_pass_count": 2,
+  "inference": "NOT_RUN",
+  "phase": "WRITE",
+  "stages": [
+    {
+      "phase": "TOKENIZER",
+      "duration_seconds": 0.47943080000550253,
+      "peak_rss_bytes": 193802240
+    },
+    {
+      "phase": "LOAD_SOURCE",
+      "duration_seconds": 0.6302656999978353,
+      "peak_rss_bytes": 193802240
+    },
+    {
+      "phase": "EXTRACT_TREE",
+      "duration_seconds": 1.6810594999988098,
+      "peak_rss_bytes": 193802240
+    },
+    {
+      "phase": "BUILD_GRAPH",
+      "duration_seconds": 118.72845090000192,
+      "peak_rss_bytes": 773537792
+    },
+    {
+      "phase": "PREPARE_RETRIEVAL",
+      "duration_seconds": 28.45772620000207,
+      "peak_rss_bytes": 1517547520
+    },
+    {
+      "phase": "GROUND",
+      "duration_seconds": 6.319333899999037,
+      "peak_rss_bytes": 1517547520
+    },
+    {
+      "phase": "RETRIEVE",
+      "duration_seconds": 4.048606299998937,
+      "peak_rss_bytes": 1517547520
+    },
+    {
+      "phase": "GROUND",
+      "duration_seconds": 4.61708820000058,
+      "peak_rss_bytes": 1517547520
+    },
+    {
+      "phase": "RETRIEVE",
+      "duration_seconds": 3.825874100002693,
+      "peak_rss_bytes": 1517547520
+    },
+    {
+      "phase": "SCORE",
+      "duration_seconds": 0.08088329999736743,
+      "peak_rss_bytes": 1517547520
+    },
+    {
+      "phase": "WRITE",
+      "duration_seconds": 0.008198299998184666,
+      "peak_rss_bytes": 1517547520
+    }
+  ],
+  "peak_rss_bytes": 1517547520,
+  "complete": true,
+  "ended_utc": "2026-10-07T02:27:38.035856+00:00",
+  "duration_seconds": 169.74388850000105
+}

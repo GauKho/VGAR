@@ -14,7 +14,8 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
 from vgar.contracts.context import ContextPayload
-from vgar.graph.builder import IGNORED_DIRECTORY_NAMES, PythonGraphBuilder
+from vgar.graph.builder import PythonGraphBuilder
+from vgar.source_scope import SourceScope
 from vgar.graph.retrieval import GraphContextRetriever, RetrievalConfig
 from vgar.graph.task_overlay import TaskOverlayBuilder
 from vgar.graph.token_counter import LocalTokenizerCounter
@@ -27,8 +28,7 @@ def write(path: Path, data: dict) -> None:
 
 def source_hashes(root: Path) -> dict:
     return {path.relative_to(root).as_posix(): hashlib.sha256(path.read_bytes()).hexdigest()
-            for path in root.rglob("*.py")
-            if not any(part in IGNORED_DIRECTORY_NAMES for part in path.relative_to(root).parts)}
+            for path in SourceScope.for_repository(root).python_files(root)}
 
 
 def main() -> None:

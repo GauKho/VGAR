@@ -1,0 +1,392 @@
+{
+  "run_id": "20261007T012531597287Z-42e1a0bf5de4",
+  "kind": "milestone-8-credential-and-fixture-green",
+  "status": "PASS",
+  "started_utc": "2026-10-07T01:25:31.597287+00:00",
+  "complete": true,
+  "python": "3.11.6 (tags/v3.11.6:8b6ee5b, Oct  2 2023, 14:57:12) [MSC v.1935 64 bit (AMD64)]",
+  "interpreter": "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe",
+  "platform": "Windows-10-10.0.26300-SP0",
+  "command_argv": [
+    "-c"
+  ],
+  "cwd": "D:\\Project\\CAPSTONES\\VGAR",
+  "command": "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe -m pytest -q -p no:cacheprovider --junitxml=D:\\Project\\CAPSTONES\\VGAR\\.m2-pytest-nvqpu8yg\\junit.xml tests/m2/test_retrieval_lifecycle.py tests/m2/test_retrieval_compare_contract.py",
+  "argv": [
+    "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "--junitxml=D:\\Project\\CAPSTONES\\VGAR\\.m2-pytest-nvqpu8yg\\junit.xml",
+    "tests/m2/test_retrieval_lifecycle.py",
+    "tests/m2/test_retrieval_compare_contract.py"
+  ],
+  "exit_code": 0,
+  "duration_ms": 17328,
+  "stdout": "..........................................................               [100%]\r\n- generated xml file: D:\\Project\\CAPSTONES\\VGAR\\.m2-pytest-nvqpu8yg\\junit.xml -\r\n58 passed in 16.32s\r\n",
+  "stderr": "",
+  "timeout_seconds": 120.0,
+  "cases": [
+    {
+      "name": "tests.m2.test_retrieval_lifecycle::test_invalid_worker_deadline_is_rejected[0]",
+      "status": "PASS",
+      "duration_ms": 121,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_lifecycle::test_invalid_worker_deadline_is_rejected[-1]",
+      "status": "PASS",
+      "duration_ms": 2,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_lifecycle::test_invalid_worker_deadline_is_rejected[nan]",
+      "status": "PASS",
+      "duration_ms": 2,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_lifecycle::test_invalid_worker_deadline_is_rejected[inf]",
+      "status": "PASS",
+      "duration_ms": 2,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_lifecycle::test_invalid_worker_deadline_is_rejected[True]",
+      "status": "PASS",
+      "duration_ms": 2,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_lifecycle::test_timeout_has_terminal_artifact_stage_output_and_kills_children",
+      "status": "PASS",
+      "duration_ms": 1563,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_lifecycle::test_timeout_retains_parent_measured_peak_not_just_stage_start",
+      "status": "PASS",
+      "duration_ms": 1569,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_lifecycle::test_worker_crash_without_json_is_not_success",
+      "status": "PASS",
+      "duration_ms": 83,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_lifecycle::test_public_retrieval_worker_does_not_inherit_credentials",
+      "status": "PASS",
+      "duration_ms": 191,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_lifecycle::test_memory_error_records_trace_stage_and_rss_in_actual_worker",
+      "status": "PASS",
+      "duration_ms": 230,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_lifecycle::test_interrupted_parent_kills_worker_and_finalizes_attempt",
+      "status": "PASS",
+      "duration_ms": 39,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_lifecycle::test_resume_validates_identity_and_copies_success_without_mutating_prior",
+      "status": "PASS",
+      "duration_ms": 18,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_lifecycle::test_runner_pending_before_setup_and_terminal_setup_error[invalid_limit]",
+      "status": "PASS",
+      "duration_ms": 151,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_lifecycle::test_runner_pending_before_setup_and_terminal_setup_error[duplicate]",
+      "status": "PASS",
+      "duration_ms": 19,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_lifecycle::test_runner_pending_before_setup_and_terminal_setup_error[missing_manifest]",
+      "status": "PASS",
+      "duration_ms": 16,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_lifecycle::test_runner_pending_before_setup_and_terminal_setup_error[keyboard_interrupt]",
+      "status": "PASS",
+      "duration_ms": 18,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_lifecycle::test_actual_resume_forks_success_retries_failure_and_preserves_all_prior_files",
+      "status": "PASS",
+      "duration_ms": 3495,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_lifecycle::test_explicit_tree_rebuild_recovers_crlf_cache_without_mutating_legacy_tree",
+      "status": "PASS",
+      "duration_ms": 1546,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_lifecycle::test_actual_runner_resume_rejects_changed_bindings_with_terminal_evidence[budget]",
+      "status": "PASS",
+      "duration_ms": 1085,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_lifecycle::test_actual_runner_resume_rejects_changed_bindings_with_terminal_evidence[manifest]",
+      "status": "PASS",
+      "duration_ms": 934,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_lifecycle::test_actual_runner_resume_rejects_changed_bindings_with_terminal_evidence[source]",
+      "status": "PASS",
+      "duration_ms": 999,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_lifecycle::test_task_selector_restricts_population_and_rejects_unknown_id",
+      "status": "PASS",
+      "duration_ms": 961,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_lifecycle::test_tokenizer_setup_error_still_has_terminal_pending_evidence",
+      "status": "PASS",
+      "duration_ms": 48,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_lifecycle::test_atomic_evidence_write_retries_transient_windows_read_lock",
+      "status": "PASS",
+      "duration_ms": 32,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_lifecycle::test_atomic_write_permanent_lock_fails_without_overwriting_prior",
+      "status": "PASS",
+      "duration_ms": 215,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_actual_graph_summary_without_arm_is_accepted",
+      "status": "PASS",
+      "duration_ms": 140,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_comparison_consumes_actual_runner_output",
+      "status": "PASS",
+      "duration_ms": 921,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_different_dataset_binding_is_rejected[dataset_id-other]",
+      "status": "PASS",
+      "duration_ms": 20,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_different_dataset_binding_is_rejected[dataset_revision-other]",
+      "status": "PASS",
+      "duration_ms": 24,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_different_task_binding_is_rejected[query_hash]",
+      "status": "PASS",
+      "duration_ms": 34,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_different_task_binding_is_rejected[corpus_hash]",
+      "status": "PASS",
+      "duration_ms": 29,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_different_task_binding_is_rejected[base_commit]",
+      "status": "PASS",
+      "duration_ms": 30,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_different_task_binding_is_rejected[patch_hash]",
+      "status": "PASS",
+      "duration_ms": 31,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_different_task_binding_is_rejected[repository]",
+      "status": "PASS",
+      "duration_ms": 21,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_different_task_binding_is_rejected[gold]",
+      "status": "PASS",
+      "duration_ms": 21,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_different_config_is_rejected[budget_tokens-201]",
+      "status": "PASS",
+      "duration_ms": 18,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_different_config_is_rejected[counter_label-other]",
+      "status": "PASS",
+      "duration_ms": 23,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_different_config_is_rejected[scoring_version-other]",
+      "status": "PASS",
+      "duration_ms": 34,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_different_config_is_rejected[snippet_policy-value3]",
+      "status": "PASS",
+      "duration_ms": 34,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_duplicate_task_ids_are_rejected[0]",
+      "status": "PASS",
+      "duration_ms": 34,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_duplicate_task_ids_are_rejected[1]",
+      "status": "PASS",
+      "duration_ms": 33,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_malformed_graph_run_is_rejected[kind]",
+      "status": "PASS",
+      "duration_ms": 37,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_malformed_graph_run_is_rejected[arms]",
+      "status": "PASS",
+      "duration_ms": 35,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_malformed_graph_run_is_rejected[missing_arm]",
+      "status": "PASS",
+      "duration_ms": 30,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_malformed_graph_run_is_rejected[artifact_hash]",
+      "status": "PASS",
+      "duration_ms": 24,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_malformed_graph_run_is_rejected[population]",
+      "status": "PASS",
+      "duration_ms": 20,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_no_paired_tasks_is_not_success",
+      "status": "PASS",
+      "duration_ms": 55,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_partial_comparison_reports_failures_and_metric_denominators",
+      "status": "PASS",
+      "duration_ms": 114,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_missing_or_inconsistent_artifact_metadata_is_rejected[missing_hash]",
+      "status": "PASS",
+      "duration_ms": 22,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_missing_or_inconsistent_artifact_metadata_is_rejected[artifact_id]",
+      "status": "PASS",
+      "duration_ms": 41,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_missing_or_inconsistent_artifact_metadata_is_rejected[artifact_status]",
+      "status": "PASS",
+      "duration_ms": 37,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_missing_or_inconsistent_artifact_metadata_is_rejected[missing_gold]",
+      "status": "PASS",
+      "duration_ms": 101,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_missing_or_inconsistent_artifact_metadata_is_rejected[missing_metrics]",
+      "status": "PASS",
+      "duration_ms": 35,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_cap_is_only_separate_rank_sensitivity",
+      "status": "PASS",
+      "duration_ms": 186,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_comparison_cli_defaults_to_full_rank",
+      "status": "PASS",
+      "duration_ms": 487,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_invalid_cap_is_rejected[0]",
+      "status": "PASS",
+      "duration_ms": 29,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_invalid_cap_is_rejected[-1]",
+      "status": "PASS",
+      "duration_ms": 29,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_retrieval_compare_contract::test_invalid_cap_is_rejected[True]",
+      "status": "PASS",
+      "duration_ms": 24,
+      "detail": null
+    }
+  ],
+  "case_counts": {
+    "passed": 58,
+    "failed": 0,
+    "error": 0,
+    "skipped": 0
+  },
+  "reason": null,
+  "output_truncated": false,
+  "stdout_bytes": 183,
+  "stderr_bytes": 0,
+  "ended_utc": "2026-10-07T01:25:48.974257+00:00"
+}

@@ -1,0 +1,16 @@
+{
+  "checked_at_utc": "2026-10-06T14:10:43.3493004Z",
+  "scope": "integration weeks 3-6; research weeks 1-2 excluded",
+  "checks": "UTF-8/local Markdown links and SHA256 comparison against suite-invocation source inventory",
+  "documents_checked": [
+    "VGAR/PROGRESS.md",
+    "VGAR/docs/reviews/2026-10-06-review-vgar-week-1-6.md",
+    "VGAR/docs/superpowers/plans/2026-10-06-fix-vgar-integration-week-1-6.md"
+  ],
+  "local_links_checked": 28,
+  "source_files_checked": 166,
+  "code_unchanged": true,
+  "changed_files": [],
+  "status": "PASS",
+  "note": "Documentation-only scope adjustment. No pytest rerun and no implementation of the fix plan. Existing audit evidence retained."
+}

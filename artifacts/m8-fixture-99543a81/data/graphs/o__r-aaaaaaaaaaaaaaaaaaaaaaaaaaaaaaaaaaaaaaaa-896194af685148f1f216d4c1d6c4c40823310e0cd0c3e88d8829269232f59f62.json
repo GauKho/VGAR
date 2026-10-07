@@ -1,0 +1,192 @@
+{
+  "graph_version": "sha256:7dc84e1570d64b4b323618a3fc46dbf4f4d199d097805e17d6eb085c4f91c8a9",
+  "repo_key": "o__r",
+  "repository_revision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "nodes": [
+    {
+      "id": "vgar:o__r:repository",
+      "type": "Repository",
+      "repo_key": "o__r",
+      "name": "o__r-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "qualified_name": "o__r",
+      "path": null,
+      "language": null,
+      "range": null,
+      "properties": {
+        "root_uri": "file:///D:/Project/CAPSTONES/VGAR/artifacts/m8-fixture-99543a81/data/repositories/trees/o__r-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "default_language": "python",
+        "repository_revision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      "content_hash": "sha256:e33cdf9c7f7120b98e8c78408953e07f2ecd183006b5606df349b4c212acf43e",
+      "graph_version": "sha256:7dc84e1570d64b4b323618a3fc46dbf4f4d199d097805e17d6eb085c4f91c8a9"
+    },
+    {
+      "id": "vgar:o__r:python:file:src/auth.py",
+      "type": "File",
+      "repo_key": "o__r",
+      "name": "auth.py",
+      "qualified_name": "src/auth.py",
+      "path": "src/auth.py",
+      "language": "python",
+      "range": {
+        "start_line": 1,
+        "start_col": 0,
+        "end_line": 3,
+        "end_col": 0,
+        "start_byte": 0,
+        "end_byte": 43
+      },
+      "properties": {
+        "extension": ".py",
+        "size_bytes": 43,
+        "parse_status": "parsed",
+        "is_test_file": false
+      },
+      "content_hash": "sha256:6122cc67d5b0a04d5eafd440e08d935e0be52c83ae75b98955f34f272c37509b",
+      "graph_version": "sha256:7dc84e1570d64b4b323618a3fc46dbf4f4d199d097805e17d6eb085c4f91c8a9"
+    },
+    {
+      "id": "vgar:o__r:python:module:src/auth.py:auth",
+      "type": "Module",
+      "repo_key": "o__r",
+      "name": "auth",
+      "qualified_name": "auth",
+      "path": "src/auth.py",
+      "language": "python",
+      "range": {
+        "start_line": 1,
+        "start_col": 0,
+        "end_line": 3,
+        "end_col": 0,
+        "start_byte": 0,
+        "end_byte": 43
+      },
+      "properties": {
+        "module_name": "auth",
+        "is_package": false,
+        "is_external": false,
+        "resolution_status": "resolved"
+      },
+      "content_hash": "sha256:6122cc67d5b0a04d5eafd440e08d935e0be52c83ae75b98955f34f272c37509b",
+      "graph_version": "sha256:7dc84e1570d64b4b323618a3fc46dbf4f4d199d097805e17d6eb085c4f91c8a9"
+    },
+    {
+      "id": "vgar:o__r:python:function:src/auth.py:auth.login",
+      "type": "Function",
+      "repo_key": "o__r",
+      "name": "login",
+      "qualified_name": "auth.login",
+      "path": "src/auth.py",
+      "language": "python",
+      "range": {
+        "start_line": 1,
+        "start_col": 0,
+        "end_line": 2,
+        "end_col": 25,
+        "start_byte": 0,
+        "end_byte": 42
+      },
+      "properties": {
+        "signature": "def login(user)",
+        "parameters": [
+          "user"
+        ],
+        "return_annotation": null,
+        "decorators": [],
+        "is_async": false,
+        "visibility": "public"
+      },
+      "content_hash": "sha256:2f268e11f3c7ae39dcc3696c079b9a986bcd5148558a3dc9594c537ab4760698",
+      "graph_version": "sha256:7dc84e1570d64b4b323618a3fc46dbf4f4d199d097805e17d6eb085c4f91c8a9"
+    }
+  ],
+  "edges": [
+    {
+      "id": "sha256:9646b4b6f1fa716d22a0b082b8b2cbd594a91ddda917ff7f3fb48eda9a70466d",
+      "type": "CONTAINS",
+      "source_id": "vgar:o__r:repository",
+      "target_id": "vgar:o__r:python:file:src/auth.py",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "repository.file.v1",
+        "source_revision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 0
+      },
+      "graph_version": "sha256:7dc84e1570d64b4b323618a3fc46dbf4f4d199d097805e17d6eb085c4f91c8a9"
+    },
+    {
+      "id": "sha256:3312fe1c54222f08a593fe9d6b781b4d0b82f24ae82ed201bb5797aff6154773",
+      "type": "CONTAINS",
+      "source_id": "vgar:o__r:python:file:src/auth.py",
+      "target_id": "vgar:o__r:python:module:src/auth.py:auth",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.file.module.v1",
+        "source_revision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 0
+      },
+      "graph_version": "sha256:7dc84e1570d64b4b323618a3fc46dbf4f4d199d097805e17d6eb085c4f91c8a9"
+    },
+    {
+      "id": "sha256:a41650a8ce1f647a73565e4aee2830c10f5481c6956b71ccfc34d1d4b9ec6e55",
+      "type": "CONTAINS",
+      "source_id": "vgar:o__r:python:module:src/auth.py:auth",
+      "target_id": "vgar:o__r:python:function:src/auth.py:auth.login",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.scope.function.v1",
+        "source_revision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 0
+      },
+      "graph_version": "sha256:7dc84e1570d64b4b323618a3fc46dbf4f4d199d097805e17d6eb085c4f91c8a9"
+    }
+  ],
+  "statistics": {
+    "node_count": 4,
+    "edge_count": 3,
+    "node_counts_by_type": {
+      "Repository": 1,
+      "File": 1,
+      "Module": 1,
+      "Function": 1
+    },
+    "edge_counts_by_type": {
+      "CONTAINS": 3
+    },
+    "callsite_count": 0,
+    "unresolved_call_count": 0,
+    "unresolved_call_rate": 0.0,
+    "partial_file_count": 0,
+    "skipped_overload_count": 0,
+    "renamed_duplicate_count": 0,
+    "failed_file_count": 0,
+    "failed_files": [],
+    "source_inventory": {
+      "src/auth.py": "sha256:6122cc67d5b0a04d5eafd440e08d935e0be52c83ae75b98955f34f272c37509b"
+    },
+    "source_scope": {
+      "excluded_paths": []
+    },
+    "unresolved_base_count": 0,
+    "unresolved_bases": [],
+    "build_time_ms": 1.468
+  }
+}

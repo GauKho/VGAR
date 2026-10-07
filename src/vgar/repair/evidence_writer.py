@@ -86,3 +86,15 @@ def finish_run(handle: RunHandle, result: TestRunResult, *, source_hash_after: s
         record["evidence_bundle"] = bundle.model_dump(mode="json")
     _atomic_json(handle.path, record)
     return handle.path
+
+
+def update_pending(handle: RunHandle, **metadata: Any) -> None:
+    """Update preflight provenance without changing identity or finalizing evidence."""
+    allowed = {"source_hash_before", "source_scope", "phase", "preflight_before", "preflight_after", "pytest_result"}
+    if set(metadata) - allowed:
+        raise ValueError("Unsupported pending metadata field")
+    record = json.loads(handle.path.read_text(encoding="utf-8"))
+    if record.get("run_id") != handle.run_id or record.get("complete"):
+        raise ValueError("Evidence handle mismatch or record already finalized")
+    record.update(metadata)
+    _atomic_json(handle.path, record)

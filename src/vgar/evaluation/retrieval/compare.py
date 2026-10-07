@@ -2,13 +2,14 @@
 
 Fairness rules enforced (comparison refuses to run otherwise): same dataset revision, budget, counter, scoring version,
 snippet policy; per task same query_hash and corpus_hash; neither run uses the bytes/4 fallback counter.
-Graph keeps at most ``max_candidates`` (100) ranked nodes while BM25 ranks every chunk, so the PRIMARY BM25 column is
-re-scored on its top-``cap`` chunks (``bm25``); the untouched full ranking stays as ``bm25_uncapped`` for reference.
+The primary BM25 column uses its full saved ranking. An optional cap produces
+rank-only sensitivity results, never a new packed-context measurement.
 """
 from __future__ import annotations
 
 import json
 import random
+import re
 import statistics
 import time
 from pathlib import Path
@@ -22,6 +23,9 @@ DELTA_METRICS = ("file_recall@3", "file_recall@5", "file_recall@10", "function_r
                  "packed_gold_function_in_context", "context_tokens")
 SAME_CONFIG = ("budget_tokens", "counter_label", "scoring_version", "snippet_policy")
 GRAPH_ARMS = ("graph", "graph_f2p")
+RANK_METRICS = ("file_recall@3", "file_recall@5", "file_recall@10", "function_recall@3",
+                "function_recall@5", "function_recall@10", "file_mrr", "function_mrr",
+                "file_reach", "function_reach", "rank_items")
 
 
 def _load(path: Path) -> dict[str, Any]:
@@ -33,34 +37,53 @@ def _load(path: Path) -> dict[str, Any]:
 
 def _validate_graph_run(record: dict[str, Any], run_label: str) -> None:
     """Graph runs produced by run_graph_retrieval.py carry per-task arm data."""
-    tasks = [t for t in record.get("task_results", []) if t.get("status") == "SUCCEEDED"]
-    if not tasks:
-        raise ValueError(f"{run_label}: no succeeded tasks found")
-    arms = {t.get("arm") for t in tasks} - {None}
-    if not arms:
-        # No arm field at all -> this run has no per-task arm metadata.
-        raise ValueError(
-            f"{run_label} has no per-task arm data (field 'arm' missing from task results). "
-            "This is a BM25-style run, not a graph run. "
-            "Use scripts/run_graph_retrieval.py to produce the graph arm first, "
-            "then pass its result dir as the second argument."
-        )
-    if arms == {"bm25"}:
-        raise ValueError(
-            f"{run_label} is a BM25 run (arm=bm25), not a graph run. "
-            "Use scripts/run_graph_retrieval.py to produce the graph arm first, "
-            "then pass its result dir as the second argument."
-        )
-    unknown = arms - set(GRAPH_ARMS)
-    if unknown:
-        raise ValueError(f"{run_label}: unexpected arm(s) {unknown}; expected {GRAPH_ARMS}")
+    if record.get("kind") != "retrieval_graph":
+        raise ValueError(f"{run_label}: expected a retrieval_graph run, not a BM25 run")
+    for task in record.get("task_results", []):
+        if task.get("status") != "SUCCEEDED":
+            continue
+        arms = task.get("arms")
+        if not isinstance(arms, dict) or set(arms) != set(GRAPH_ARMS):
+            raise ValueError(f"{run_label}: {task.get('instance_id')}: arms must contain {GRAPH_ARMS}")
+        if not all(isinstance(data, dict) for data in arms.values()):
+            raise ValueError(f"{run_label}: malformed per-task arms")
 
 
 def _task(run: Path, summary: dict[str, Any]) -> dict[str, Any]:
-    data = (run / "tasks" / f"{summary['instance_id']}.json").read_bytes()
-    if summary.get("artifact_hash") and summary["artifact_hash"] != sha256(data):
+    try:
+        data = (run / "tasks" / f"{summary['instance_id']}.json").read_bytes()
+    except OSError as exc:
+        raise ValueError(f"Missing task artifact: {summary['instance_id']}") from exc
+    if not summary.get("artifact_hash") or summary["artifact_hash"] != sha256(data):
         raise ValueError(f"Artifact hash mismatch: {summary['instance_id']}")
-    return json.loads(data)
+    task = json.loads(data)
+    if not isinstance(task, dict) or task.get("instance_id") != summary["instance_id"] or task.get("status") != summary["status"]:
+        raise ValueError(f"Artifact instance_id/status mismatch: {summary['instance_id']}")
+    return task
+
+
+def _index_tasks(record: dict, label: str) -> dict[str, dict]:
+    tasks = record.get("task_results")
+    if not isinstance(tasks, list):
+        raise ValueError(f"{label}: missing task_results")
+    out = {}
+    for task in tasks:
+        if not isinstance(task, dict) or not isinstance(task.get("instance_id"), str) or not re.fullmatch(r"[A-Za-z0-9_-]+", task["instance_id"]):
+            raise ValueError(f"{label}: invalid instance_id")
+        if task["instance_id"] in out:
+            raise ValueError(f"{label}: Duplicate instance_id: {task['instance_id']}")
+        if task.get("status") not in {"SUCCEEDED", "FAILED", "ERROR", "NOT_RUN"}:
+            raise ValueError(f"{label}: invalid task status")
+        out[task["instance_id"]] = task
+    return out
+
+
+def _coverage(tasks: dict[str, dict]) -> dict[str, Any]:
+    counts = {status: sum(t["status"] == status for t in tasks.values())
+              for status in ("SUCCEEDED", "FAILED", "ERROR", "NOT_RUN")}
+    return {"attempted_tasks": len(tasks), "completed_tasks": counts["SUCCEEDED"],
+            "failed_tasks": counts["FAILED"] + counts["ERROR"], "not_run_tasks": counts["NOT_RUN"],
+            "status_counts": counts}
 
 
 def cap_bm25(task: dict[str, Any], cap: int) -> dict[str, Any]:
@@ -104,34 +127,50 @@ def paired_stats(base: dict[str, dict], other: dict[str, dict], seed: int = 0) -
     return out
 
 
-def compare_runs(bm25_run, graph_run, results_root, cap: int = 100, seed: int = 0, allow_fallback: bool = False):
+def compare_runs(bm25_run, graph_run, results_root, cap: int | None = None, seed: int = 0, allow_fallback: bool = False):
+    if cap is not None and (isinstance(cap, bool) or not isinstance(cap, int) or cap < 1):
+        raise ValueError("cap must be a positive integer or None")
     bm25_run, graph_run = Path(bm25_run), Path(graph_run)
     bm, gr = _load(bm25_run), _load(graph_run)
-    if bm["dataset_revision"] != gr["dataset_revision"]:
-        raise ValueError("Different dataset revisions")
+    if bm.get("kind") != "retrieval":
+        raise ValueError("bm25_run: expected a retrieval run")
+    for key in ("dataset_id", "dataset_revision"):
+        if not bm.get(key) or bm[key] != gr.get(key):
+            raise ValueError(f"Different or missing {key}")
     for key in SAME_CONFIG:
-        if bm["config"][key] != gr["config"][key]:
-            raise ValueError(f"Config mismatch on {key}: {bm['config'][key]!r} vs {gr['config'][key]!r}")
+        if key not in bm.get("config", {}) or key not in gr.get("config", {}) or bm["config"][key] != gr["config"][key]:
+            raise ValueError(f"Config mismatch or missing field: {key}")
     if (bm["config"].get("counter_is_fallback") or gr["config"].get("counter_is_fallback")) and not allow_fallback:
         raise ValueError("A run used the bytes/4 fallback counter; not valid for the official comparison")
+    bm_summaries = _index_tasks(bm, "bm25_run")
+    graph_summaries = _index_tasks(gr, "graph_run")
+    if set(bm_summaries) != set(graph_summaries):
+        raise ValueError("Different task populations; compare runs for the same task subset")
     _validate_graph_run(gr, "graph_run")
-    graph_summaries = {s["instance_id"]: s for s in gr["task_results"]}
-    per_task: dict[str, dict[str, dict]] = {a: {} for a in ("bm25", "bm25_uncapped", *GRAPH_ARMS)}
+    per_task: dict[str, dict[str, dict]] = {a: {} for a in ("bm25", *GRAPH_ARMS)}
+    capped_metrics: dict[str, dict] = {}
     info: dict[str, dict] = {}
     skipped = []
     for summary in bm["task_results"]:
         iid = summary["instance_id"]
         other = graph_summaries.get(iid)
         if summary["status"] != "SUCCEEDED" or other is None or other["status"] != "SUCCEEDED":
-            skipped.append({"instance_id": iid, "reason": "not_succeeded_in_both_runs"})
+            skipped.append({"instance_id": iid, "reason": "not_succeeded_in_both_runs",
+                            "bm25_status": summary["status"], "graph_status": other["status"] if other else "MISSING"})
             continue
         b, g = _task(bm25_run, summary), _task(graph_run, other)
-        for key in ("query_hash", "corpus_hash", "base_commit"):
-            if b[key] != g[key]:
-                raise ValueError(f"{iid}: {key} differs between runs")
-        per_task["bm25"][iid] = cap_bm25(b, cap)
-        per_task["bm25_uncapped"][iid] = b["metrics"]
+        for key in ("query_hash", "corpus_hash", "base_commit", "repository", "patch_hash", "gold"):
+            if key not in b or key not in g or b[key] != g[key]:
+                raise ValueError(f"{iid}: {key} differs or is missing between runs")
+        if not isinstance(b.get("metrics"), dict) or not isinstance(g.get("arms"), dict) or set(g["arms"]) != set(GRAPH_ARMS):
+            raise ValueError(f"{iid}: missing metrics or graph arms in task artifact")
+        per_task["bm25"][iid] = b["metrics"]
+        if cap is not None:
+            rescored = cap_bm25(b, cap)
+            capped_metrics[iid] = {key: rescored[key] for key in RANK_METRICS if key in rescored}
         for arm in GRAPH_ARMS:
+            if not isinstance(g["arms"][arm], dict) or not isinstance(g["arms"][arm].get("metrics"), dict):
+                raise ValueError(f"{iid}: {arm} missing metrics")
             per_task[arm][iid] = g["arms"][arm]["metrics"]
         info[iid] = {"repository": b["repository"], "graph_build_seconds": other["graph_build_seconds"],
                      "anchors": {arm: [a["symbol"] for a in g["arms"][arm]["anchors"]][:8] for arm in GRAPH_ARMS}}
@@ -160,15 +199,25 @@ def compare_runs(bm25_run, graph_run, results_root, cap: int = 100, seed: int = 
         inspection[arm] = {"graph_loses": [{"instance_id": i, "delta": d, "anchors": info[i]["anchors"][arm]} for d, i in scored[:3] if d < 0],
                            "graph_wins": [{"instance_id": i, "delta": d, "anchors": info[i]["anchors"][arm]} for d, i in scored[::-1][:3] if d > 0]}
     directory, report = new_run(Path(results_root), "graph_vs_bm25")
+    status = "NO_PAIRED_TASKS" if not ids else ("COMPARED_PARTIAL" if skipped else "COMPARED")
+    sensitivity = None if cap is None else {
+        "cap": cap, "packed_context_recomputed": False,
+        "summary": aggregate_metrics([{"status": "SUCCEEDED", "metrics": capped_metrics[i]} for i in ids]),
+        "paired": {arm: paired_stats(capped_metrics, per_task[arm], seed) for arm in GRAPH_ARMS},
+    }
     report.update(source=source_fingerprint(Path(__file__).resolve().parents[4]),
                   bm25_run=str(bm25_run.resolve()), graph_run=str(graph_run.resolve()),
                   bm25_run_hash=sha256((bm25_run / "result.json").read_bytes()), graph_run_hash=sha256((graph_run / "result.json").read_bytes()),
-                  status="COMPARED" if ids else "NO_PAIRED_TASKS", paired_tasks=len(ids), eligible_bm25_tasks=bm["summary"]["completed_tasks"],
+                  status=status, paired_tasks=len(ids), eligible_bm25_tasks=_coverage(bm_summaries)["completed_tasks"],
+                  coverage={"bm25": _coverage(bm_summaries), "graph": _coverage(graph_summaries)},
+                  comparison_semantics="bm25_full_rank_primary_v1", rank_sensitivity=sensitivity,
+                  graph_max_candidates=gr["config"].get("retrieval", {}).get("max_candidates"),
+                  arm_information={"graph": "issue-only", "graph_f2p": "oracle-assisted FAIL_TO_PASS benchmark metadata"},
                   scoring_version=bm["config"]["scoring_version"], bm25_cap=cap, bootstrap_seed=seed, skipped=skipped,
                   summaries=summaries, paired=paired, by_repo=repo_rows, graph_diagnostics=diagnostics, inspection=inspection,
                   per_task={arm: {i: {m: per_task[arm][i].get(m) for m in ("file_recall@5", "function_recall@5", "function_mrr",
                                                                               "packed_gold_function_in_context")} for i in ids}
                             for arm in per_task},
-                  complete=True, exit_code=0, stdout="", stderr="")
+                  complete=True, exit_code=0 if status == "COMPARED" else 1, stdout="", stderr="")
     write_json(directory / "result.json", report)
     return directory, report

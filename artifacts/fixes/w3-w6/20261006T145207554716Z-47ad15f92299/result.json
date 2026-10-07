@@ -1,0 +1,342 @@
+{
+  "run_id": "20261006T145207554716Z-47ad15f92299",
+  "kind": "milestone-4-targeted",
+  "status": "PASS",
+  "started_utc": "2026-10-06T14:52:07.555714+00:00",
+  "complete": true,
+  "python": "3.11.6 (tags/v3.11.6:8b6ee5b, Oct  2 2023, 14:57:12) [MSC v.1935 64 bit (AMD64)]",
+  "interpreter": "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe",
+  "platform": "Windows-10-10.0.26300-SP0",
+  "command_argv": [
+    "-c"
+  ],
+  "cwd": "D:\\Project\\CAPSTONES\\VGAR",
+  "command": "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe -m pytest -q -p no:cacheprovider --junitxml=D:\\Project\\CAPSTONES\\VGAR\\.m2-pytest-fjojdbvy\\junit.xml tests/test_mcp_workspace_guard.py tests/test_mcp_tool_contract.py tests/test_settings.py tests/test_mcp_result_parser.py tests/unit/test_workflow.py tests/m2/test_test_runner.py",
+  "argv": [
+    "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "--junitxml=D:\\Project\\CAPSTONES\\VGAR\\.m2-pytest-fjojdbvy\\junit.xml",
+    "tests/test_mcp_workspace_guard.py",
+    "tests/test_mcp_tool_contract.py",
+    "tests/test_settings.py",
+    "tests/test_mcp_result_parser.py",
+    "tests/unit/test_workflow.py",
+    "tests/m2/test_test_runner.py"
+  ],
+  "exit_code": 0,
+  "duration_ms": 15000,
+  "stdout": "............s....................................                        [100%]\r\n- generated xml file: D:\\Project\\CAPSTONES\\VGAR\\.m2-pytest-fjojdbvy\\junit.xml -\r\n48 passed, 1 skipped in 13.96s\r\n",
+  "stderr": "",
+  "timeout_seconds": 240.0,
+  "cases": [
+    {
+      "name": "tests.test_mcp_workspace_guard::test_host_workspace_setting_is_forwarded_and_unbound_clears_inherited_permission",
+      "status": "PASS",
+      "duration_ms": 15,
+      "detail": null
+    },
+    {
+      "name": "tests.test_mcp_workspace_guard::test_original_root_is_rejected_before_write_or_execution",
+      "status": "PASS",
+      "duration_ms": 7,
+      "detail": null
+    },
+    {
+      "name": "tests.test_mcp_workspace_guard::test_unbound_health_is_available_but_file_and_execution_tools_denied",
+      "status": "PASS",
+      "duration_ms": 6,
+      "detail": null
+    },
+    {
+      "name": "tests.test_mcp_workspace_guard::test_stale_lease_fails_closed",
+      "status": "PASS",
+      "duration_ms": 6,
+      "detail": null
+    },
+    {
+      "name": "tests.test_mcp_workspace_guard::test_path_and_test_selector_escape_rejected[../original/app.py]",
+      "status": "PASS",
+      "duration_ms": 6,
+      "detail": null
+    },
+    {
+      "name": "tests.test_mcp_workspace_guard::test_path_and_test_selector_escape_rejected[C:/outside.py]",
+      "status": "PASS",
+      "duration_ms": 7,
+      "detail": null
+    },
+    {
+      "name": "tests.test_mcp_workspace_guard::test_path_and_test_selector_escape_rejected[/outside.py]",
+      "status": "PASS",
+      "duration_ms": 7,
+      "detail": null
+    },
+    {
+      "name": "tests.test_mcp_workspace_guard::test_leased_read_patch_and_failed_patch_have_consistent_audit",
+      "status": "PASS",
+      "duration_ms": 28,
+      "detail": null
+    },
+    {
+      "name": "tests.test_mcp_workspace_guard::test_execution_uses_shared_m2_runner_and_saves_full_evidence[PASS-0-None]",
+      "status": "PASS",
+      "duration_ms": 18,
+      "detail": null
+    },
+    {
+      "name": "tests.test_mcp_workspace_guard::test_execution_uses_shared_m2_runner_and_saves_full_evidence[FAIL-1-TEST_FAILED]",
+      "status": "PASS",
+      "duration_ms": 18,
+      "detail": null
+    },
+    {
+      "name": "tests.test_mcp_workspace_guard::test_execution_uses_shared_m2_runner_and_saves_full_evidence[ERROR-None-TEST_TIMEOUT]",
+      "status": "PASS",
+      "duration_ms": 19,
+      "detail": null
+    },
+    {
+      "name": "tests.test_mcp_workspace_guard::test_real_execution_emits_junit_case_counts",
+      "status": "PASS",
+      "duration_ms": 490,
+      "detail": null
+    },
+    {
+      "name": "tests.test_mcp_workspace_guard::test_link_target_is_rejected_before_read_or_write",
+      "status": "NOT_RUN",
+      "duration_ms": 7,
+      "detail": "D:\\Project\\CAPSTONES\\VGAR\\tests\\test_mcp_workspace_guard.py:144: symlink creation unavailable"
+    },
+    {
+      "name": "tests.test_mcp_workspace_guard::test_workflow_binds_exact_created_workspace",
+      "status": "PASS",
+      "duration_ms": 2533,
+      "detail": null
+    },
+    {
+      "name": "tests.test_mcp_tool_contract::test_fixtures_are_valid_envelopes",
+      "status": "PASS",
+      "duration_ms": 4,
+      "detail": null
+    },
+    {
+      "name": "tests.test_mcp_tool_contract::test_success_matches_fixture_shape",
+      "status": "PASS",
+      "duration_ms": 16,
+      "detail": null
+    },
+    {
+      "name": "tests.test_mcp_tool_contract::test_error_matches_fixture_shape",
+      "status": "PASS",
+      "duration_ms": 7,
+      "detail": null
+    },
+    {
+      "name": "tests.test_mcp_tool_contract::test_relation_tools_pass_with_data[get_callers-callers]",
+      "status": "PASS",
+      "duration_ms": 10,
+      "detail": null
+    },
+    {
+      "name": "tests.test_mcp_tool_contract::test_relation_tools_pass_with_data[get_callees-callees]",
+      "status": "PASS",
+      "duration_ms": 7,
+      "detail": null
+    },
+    {
+      "name": "tests.test_mcp_tool_contract::test_unknown_symbol_is_node_not_found[get_callers]",
+      "status": "PASS",
+      "duration_ms": 6,
+      "detail": null
+    },
+    {
+      "name": "tests.test_mcp_tool_contract::test_unknown_symbol_is_node_not_found[get_callees]",
+      "status": "PASS",
+      "duration_ms": 5,
+      "detail": null
+    },
+    {
+      "name": "tests.test_mcp_tool_contract::test_empty_query_and_bad_limit_have_distinct_codes",
+      "status": "PASS",
+      "duration_ms": 3,
+      "detail": null
+    },
+    {
+      "name": "tests.test_mcp_tool_contract::test_unexpected_exception_is_internal_error_without_leak",
+      "status": "PASS",
+      "duration_ms": 3,
+      "detail": null
+    },
+    {
+      "name": "tests.test_mcp_tool_contract::test_every_call_is_audited_including_errors",
+      "status": "PASS",
+      "duration_ms": 5,
+      "detail": null
+    },
+    {
+      "name": "tests.test_mcp_tool_contract::test_request_ids_are_unique",
+      "status": "PASS",
+      "duration_ms": 9,
+      "detail": null
+    },
+    {
+      "name": "tests.test_mcp_tool_contract::test_resource_read_is_audited_and_errors_are_logged",
+      "status": "PASS",
+      "duration_ms": 5,
+      "detail": null
+    },
+    {
+      "name": "tests.test_mcp_tool_contract::test_demo_backend_uses_the_same_error_code",
+      "status": "PASS",
+      "duration_ms": 3,
+      "detail": null
+    },
+    {
+      "name": "tests.test_settings::test_defaults",
+      "status": "PASS",
+      "duration_ms": 2,
+      "detail": null
+    },
+    {
+      "name": "tests.test_settings::test_env_overrides_and_blank_means_default",
+      "status": "PASS",
+      "duration_ms": 2,
+      "detail": null
+    },
+    {
+      "name": "tests.test_settings::test_bad_number_names_the_variable",
+      "status": "PASS",
+      "duration_ms": 2,
+      "detail": null
+    },
+    {
+      "name": "tests.test_settings::test_factory_rejects_unsupported_before_importing_torch",
+      "status": "PASS",
+      "duration_ms": 2,
+      "detail": null
+    },
+    {
+      "name": "tests.test_settings::test_mcp_children_get_vgar_env_but_no_secrets",
+      "status": "PASS",
+      "duration_ms": 2,
+      "detail": null
+    },
+    {
+      "name": "tests.test_mcp_result_parser::test_parse_dict_passthrough",
+      "status": "PASS",
+      "duration_ms": 0,
+      "detail": null
+    },
+    {
+      "name": "tests.test_mcp_result_parser::test_parse_raw_json_string",
+      "status": "PASS",
+      "duration_ms": 0,
+      "detail": null
+    },
+    {
+      "name": "tests.test_mcp_result_parser::test_parse_langchain_content_block_list",
+      "status": "PASS",
+      "duration_ms": 0,
+      "detail": null
+    },
+    {
+      "name": "tests.test_mcp_result_parser::test_parse_textcontent_like_object",
+      "status": "PASS",
+      "duration_ms": 0,
+      "detail": null
+    },
+    {
+      "name": "tests.test_mcp_result_parser::test_reject_unsupported_result",
+      "status": "PASS",
+      "duration_ms": 0,
+      "detail": null
+    },
+    {
+      "name": "tests.unit.test_workflow::test_retry_then_pass_and_source_untouched",
+      "status": "PASS",
+      "duration_ms": 1078,
+      "detail": null
+    },
+    {
+      "name": "tests.unit.test_workflow::test_gives_up_after_max_iterations",
+      "status": "PASS",
+      "duration_ms": 1222,
+      "detail": null
+    },
+    {
+      "name": "tests.unit.test_workflow::test_agent_error_is_not_retried",
+      "status": "PASS",
+      "duration_ms": 105,
+      "detail": null
+    },
+    {
+      "name": "tests.unit.test_workflow::test_requires_selectors",
+      "status": "PASS",
+      "duration_ms": 17,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_test_runner::test_pass_records_case_and_stdout",
+      "status": "PASS",
+      "duration_ms": 581,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_test_runner::test_assertion_failure_is_fail_not_error",
+      "status": "PASS",
+      "duration_ms": 580,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_test_runner::test_invalid_selector_rejected_without_running",
+      "status": "PASS",
+      "duration_ms": 6,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_test_runner::test_timeout_is_error",
+      "status": "PASS",
+      "duration_ms": 537,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_test_runner::test_missing_pytest_target_is_error",
+      "status": "PASS",
+      "duration_ms": 533,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_test_runner::test_launch_failure_is_error",
+      "status": "PASS",
+      "duration_ms": 11,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_test_runner::test_timeout_kills_spawned_child",
+      "status": "PASS",
+      "duration_ms": 3037,
+      "detail": null
+    },
+    {
+      "name": "tests.m2.test_test_runner::test_output_limit_is_error_even_for_fast_process",
+      "status": "PASS",
+      "duration_ms": 1032,
+      "detail": null
+    }
+  ],
+  "case_counts": {
+    "passed": 48,
+    "failed": 0,
+    "error": 0,
+    "skipped": 1
+  },
+  "reason": null,
+  "output_truncated": false,
+  "stdout_bytes": 194,
+  "stderr_bytes": 0,
+  "ended_utc": "2026-10-06T14:52:22.597056+00:00"
+}

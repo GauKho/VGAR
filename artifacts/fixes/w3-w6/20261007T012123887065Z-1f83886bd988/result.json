@@ -1,0 +1,732 @@
+{
+  "run_id": "20261007T012123887065Z-1f83886bd988",
+  "kind": "milestone-8-jedi-stack-diagnostic",
+  "status": "ERROR",
+  "started_utc": "2026-10-07T01:21:23.887065+00:00",
+  "complete": true,
+  "python": "3.11.6 (tags/v3.11.6:8b6ee5b, Oct  2 2023, 14:57:12) [MSC v.1935 64 bit (AMD64)]",
+  "interpreter": "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe",
+  "platform": "Windows-10-10.0.26300-SP0",
+  "command_argv": [
+    "-c"
+  ],
+  "cwd": "D:\\Project\\CAPSTONES\\VGAR",
+  "ended_utc": "2026-10-07T01:22:49.057800+00:00",
+  "diagnostic_only": true,
+  "primary_protocol_unchanged": true,
+  "attempt": {
+    "instance_id": "pydata__xarray-3993",
+    "status": "ERROR",
+    "complete": true,
+    "command_argv": [
+      "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe",
+      "-B",
+      "-c",
+      "import faulthandler; faulthandler.dump_traceback_later(40, repeat=True); from vgar.evaluation.retrieval.worker import main; raise SystemExit(main())",
+      "D:\\Project\\CAPSTONES\\VGAR\\artifacts\\fixes\\w3-w6\\20261007T012123887065Z-1f83886bd988\\attempt\\request.json",
+      "D:\\Project\\CAPSTONES\\VGAR\\artifacts\\fixes\\w3-w6\\20261007T012123887065Z-1f83886bd988\\attempt"
+    ],
+    "cwd": "D:\\Project\\CAPSTONES\\VGAR",
+    "interpreter": "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe",
+    "timeout_seconds": 85,
+    "started_utc": "2026-10-07T01:21:23.980385+00:00",
+    "phase": "BUILD_GRAPH",
+    "peak_rss_bytes": 956284928,
+    "stages": [
+      {
+        "phase": "TOKENIZER",
+        "duration_seconds": 0.5668420000001788,
+        "peak_rss_bytes": 194306048
+      },
+      {
+        "phase": "LOAD_SOURCE",
+        "duration_seconds": 0.06778920000215294,
+        "peak_rss_bytes": 194306048
+      },
+      {
+        "phase": "EXTRACT_TREE",
+        "duration_seconds": 0.12415730000066105,
+        "peak_rss_bytes": 194306048
+      }
+    ],
+    "error_class": "TimeoutError",
+    "error": "Retrieval task exceeded its deadline",
+    "traceback": "Traceback (most recent call last):\n  File \"D:\\Project\\CAPSTONES\\VGAR\\src\\vgar\\evaluation\\retrieval\\lifecycle.py\", line 119, in run_worker\n    raise TimeoutError(\"Retrieval task exceeded its deadline\")\nTimeoutError: Retrieval task exceeded its deadline\n",
+    "worker_exit_code": 1,
+    "ended_utc": "2026-10-07T01:22:49.030591+00:00",
+    "duration_seconds": 85.0454974000022,
+    "rss_samples": [
+      {
+        "elapsed_seconds": 0.012036300002364442,
+        "peak_rss_bytes": 3534848
+      },
+      {
+        "elapsed_seconds": 0.5264429000017117,
+        "peak_rss_bytes": 51744768
+      },
+      {
+        "elapsed_seconds": 1.0502989000015077,
+        "peak_rss_bytes": 124633088
+      },
+      {
+        "elapsed_seconds": 1.557198000002245,
+        "peak_rss_bytes": 80760832
+      },
+      {
+        "elapsed_seconds": 2.0952496000027168,
+        "peak_rss_bytes": 80769024
+      },
+      {
+        "elapsed_seconds": 2.603695100006007,
+        "peak_rss_bytes": 80773120
+      },
+      {
+        "elapsed_seconds": 3.1118709000002127,
+        "peak_rss_bytes": 80785408
+      },
+      {
+        "elapsed_seconds": 3.6210547000009683,
+        "peak_rss_bytes": 80826368
+      },
+      {
+        "elapsed_seconds": 4.129457800001546,
+        "peak_rss_bytes": 102658048
+      },
+      {
+        "elapsed_seconds": 4.638058100004855,
+        "peak_rss_bytes": 124981248
+      },
+      {
+        "elapsed_seconds": 5.147496800003864,
+        "peak_rss_bytes": 139939840
+      },
+      {
+        "elapsed_seconds": 5.658315800006676,
+        "peak_rss_bytes": 154640384
+      },
+      {
+        "elapsed_seconds": 6.166692700004205,
+        "peak_rss_bytes": 183508992
+      },
+      {
+        "elapsed_seconds": 6.676767299999483,
+        "peak_rss_bytes": 196202496
+      },
+      {
+        "elapsed_seconds": 7.1874750000060885,
+        "peak_rss_bytes": 206594048
+      },
+      {
+        "elapsed_seconds": 7.696916200002306,
+        "peak_rss_bytes": 236171264
+      },
+      {
+        "elapsed_seconds": 8.206225699999777,
+        "peak_rss_bytes": 272949248
+      },
+      {
+        "elapsed_seconds": 8.715569600004528,
+        "peak_rss_bytes": 299274240
+      },
+      {
+        "elapsed_seconds": 9.229000800005451,
+        "peak_rss_bytes": 331706368
+      },
+      {
+        "elapsed_seconds": 9.735621500003617,
+        "peak_rss_bytes": 339468288
+      },
+      {
+        "elapsed_seconds": 10.243401100000483,
+        "peak_rss_bytes": 348766208
+      },
+      {
+        "elapsed_seconds": 10.751886700003524,
+        "peak_rss_bytes": 349487104
+      },
+      {
+        "elapsed_seconds": 11.26153780000459,
+        "peak_rss_bytes": 350621696
+      },
+      {
+        "elapsed_seconds": 11.774383300005866,
+        "peak_rss_bytes": 357625856
+      },
+      {
+        "elapsed_seconds": 12.283890400001837,
+        "peak_rss_bytes": 358559744
+      },
+      {
+        "elapsed_seconds": 12.793037600000389,
+        "peak_rss_bytes": 370159616
+      },
+      {
+        "elapsed_seconds": 13.3023100000064,
+        "peak_rss_bytes": 390381568
+      },
+      {
+        "elapsed_seconds": 13.811449200002244,
+        "peak_rss_bytes": 390426624
+      },
+      {
+        "elapsed_seconds": 14.319914600004267,
+        "peak_rss_bytes": 391569408
+      },
+      {
+        "elapsed_seconds": 14.830152900001849,
+        "peak_rss_bytes": 394072064
+      },
+      {
+        "elapsed_seconds": 15.33860149999964,
+        "peak_rss_bytes": 395763712
+      },
+      {
+        "elapsed_seconds": 15.854411500004062,
+        "peak_rss_bytes": 398110720
+      },
+      {
+        "elapsed_seconds": 16.363422100002936,
+        "peak_rss_bytes": 401588224
+      },
+      {
+        "elapsed_seconds": 16.873404700003448,
+        "peak_rss_bytes": 447807488
+      },
+      {
+        "elapsed_seconds": 17.41405669999949,
+        "peak_rss_bytes": 473419776
+      },
+      {
+        "elapsed_seconds": 17.92275490000611,
+        "peak_rss_bytes": 480661504
+      },
+      {
+        "elapsed_seconds": 18.43203980000544,
+        "peak_rss_bytes": 481587200
+      },
+      {
+        "elapsed_seconds": 18.940135400000145,
+        "peak_rss_bytes": 483885056
+      },
+      {
+        "elapsed_seconds": 19.44985500000621,
+        "peak_rss_bytes": 492138496
+      },
+      {
+        "elapsed_seconds": 19.957923100002517,
+        "peak_rss_bytes": 493539328
+      },
+      {
+        "elapsed_seconds": 20.465313700005936,
+        "peak_rss_bytes": 520474624
+      },
+      {
+        "elapsed_seconds": 20.9739275000029,
+        "peak_rss_bytes": 530321408
+      },
+      {
+        "elapsed_seconds": 21.482593300002918,
+        "peak_rss_bytes": 531218432
+      },
+      {
+        "elapsed_seconds": 21.99212420000549,
+        "peak_rss_bytes": 533209088
+      },
+      {
+        "elapsed_seconds": 22.50106170000072,
+        "peak_rss_bytes": 540385280
+      },
+      {
+        "elapsed_seconds": 23.009068400002434,
+        "peak_rss_bytes": 540385280
+      },
+      {
+        "elapsed_seconds": 23.518297900001926,
+        "peak_rss_bytes": 544391168
+      },
+      {
+        "elapsed_seconds": 24.028695300003164,
+        "peak_rss_bytes": 557920256
+      },
+      {
+        "elapsed_seconds": 24.53584260000207,
+        "peak_rss_bytes": 568143872
+      },
+      {
+        "elapsed_seconds": 25.042891100005363,
+        "peak_rss_bytes": 571625472
+      },
+      {
+        "elapsed_seconds": 25.552036300003238,
+        "peak_rss_bytes": 575238144
+      },
+      {
+        "elapsed_seconds": 26.059070000002976,
+        "peak_rss_bytes": 579903488
+      },
+      {
+        "elapsed_seconds": 26.567829300001904,
+        "peak_rss_bytes": 579903488
+      },
+      {
+        "elapsed_seconds": 27.07649030000175,
+        "peak_rss_bytes": 581271552
+      },
+      {
+        "elapsed_seconds": 27.583960300005856,
+        "peak_rss_bytes": 586682368
+      },
+      {
+        "elapsed_seconds": 28.093107500004407,
+        "peak_rss_bytes": 595775488
+      },
+      {
+        "elapsed_seconds": 28.601404100001673,
+        "peak_rss_bytes": 599367680
+      },
+      {
+        "elapsed_seconds": 29.112713900001836,
+        "peak_rss_bytes": 601546752
+      },
+      {
+        "elapsed_seconds": 29.633085400004347,
+        "peak_rss_bytes": 608964608
+      },
+      {
+        "elapsed_seconds": 30.141128800001752,
+        "peak_rss_bytes": 612298752
+      },
+      {
+        "elapsed_seconds": 30.64891770000395,
+        "peak_rss_bytes": 640282624
+      },
+      {
+        "elapsed_seconds": 31.157906400003412,
+        "peak_rss_bytes": 640847872
+      },
+      {
+        "elapsed_seconds": 31.668852900002094,
+        "peak_rss_bytes": 643026944
+      },
+      {
+        "elapsed_seconds": 32.185585800005356,
+        "peak_rss_bytes": 647290880
+      },
+      {
+        "elapsed_seconds": 32.698838900003466,
+        "peak_rss_bytes": 650170368
+      },
+      {
+        "elapsed_seconds": 33.209333500002685,
+        "peak_rss_bytes": 652152832
+      },
+      {
+        "elapsed_seconds": 33.71821900000214,
+        "peak_rss_bytes": 653656064
+      },
+      {
+        "elapsed_seconds": 34.228183100000024,
+        "peak_rss_bytes": 656683008
+      },
+      {
+        "elapsed_seconds": 34.74126330000581,
+        "peak_rss_bytes": 660430848
+      },
+      {
+        "elapsed_seconds": 35.25591180000629,
+        "peak_rss_bytes": 660430848
+      },
+      {
+        "elapsed_seconds": 35.76821200000268,
+        "peak_rss_bytes": 665092096
+      },
+      {
+        "elapsed_seconds": 36.277397400001064,
+        "peak_rss_bytes": 688631808
+      },
+      {
+        "elapsed_seconds": 36.786613000003854,
+        "peak_rss_bytes": 689844224
+      },
+      {
+        "elapsed_seconds": 37.295698200003244,
+        "peak_rss_bytes": 690491392
+      },
+      {
+        "elapsed_seconds": 37.80431430000317,
+        "peak_rss_bytes": 690622464
+      },
+      {
+        "elapsed_seconds": 38.31159180000395,
+        "peak_rss_bytes": 692416512
+      },
+      {
+        "elapsed_seconds": 38.81975280000188,
+        "peak_rss_bytes": 692727808
+      },
+      {
+        "elapsed_seconds": 39.3284488000063,
+        "peak_rss_bytes": 694079488
+      },
+      {
+        "elapsed_seconds": 39.83629660000588,
+        "peak_rss_bytes": 695992320
+      },
+      {
+        "elapsed_seconds": 40.35087290000229,
+        "peak_rss_bytes": 703315968
+      },
+      {
+        "elapsed_seconds": 40.859337500005495,
+        "peak_rss_bytes": 705646592
+      },
+      {
+        "elapsed_seconds": 41.36982859999989,
+        "peak_rss_bytes": 708784128
+      },
+      {
+        "elapsed_seconds": 41.87800630000129,
+        "peak_rss_bytes": 711536640
+      },
+      {
+        "elapsed_seconds": 42.39300660000299,
+        "peak_rss_bytes": 713388032
+      },
+      {
+        "elapsed_seconds": 42.90304500000639,
+        "peak_rss_bytes": 717094912
+      },
+      {
+        "elapsed_seconds": 43.41726030000427,
+        "peak_rss_bytes": 721235968
+      },
+      {
+        "elapsed_seconds": 43.929738700004236,
+        "peak_rss_bytes": 723906560
+      },
+      {
+        "elapsed_seconds": 44.444911200000206,
+        "peak_rss_bytes": 729784320
+      },
+      {
+        "elapsed_seconds": 44.958850600000005,
+        "peak_rss_bytes": 732483584
+      },
+      {
+        "elapsed_seconds": 45.47001140000066,
+        "peak_rss_bytes": 734457856
+      },
+      {
+        "elapsed_seconds": 45.98393300000316,
+        "peak_rss_bytes": 739684352
+      },
+      {
+        "elapsed_seconds": 46.492462900001556,
+        "peak_rss_bytes": 740179968
+      },
+      {
+        "elapsed_seconds": 47.01016200000595,
+        "peak_rss_bytes": 741859328
+      },
+      {
+        "elapsed_seconds": 47.52438439999969,
+        "peak_rss_bytes": 741859328
+      },
+      {
+        "elapsed_seconds": 48.04009040000528,
+        "peak_rss_bytes": 741859328
+      },
+      {
+        "elapsed_seconds": 48.55478030000086,
+        "peak_rss_bytes": 744640512
+      },
+      {
+        "elapsed_seconds": 49.068914200004656,
+        "peak_rss_bytes": 755335168
+      },
+      {
+        "elapsed_seconds": 49.57913510000071,
+        "peak_rss_bytes": 757141504
+      },
+      {
+        "elapsed_seconds": 50.08794680000574,
+        "peak_rss_bytes": 757383168
+      },
+      {
+        "elapsed_seconds": 50.59519640000508,
+        "peak_rss_bytes": 759214080
+      },
+      {
+        "elapsed_seconds": 51.105407100003504,
+        "peak_rss_bytes": 762884096
+      },
+      {
+        "elapsed_seconds": 51.61962690000655,
+        "peak_rss_bytes": 764067840
+      },
+      {
+        "elapsed_seconds": 52.13496060000034,
+        "peak_rss_bytes": 768122880
+      },
+      {
+        "elapsed_seconds": 52.64944749999995,
+        "peak_rss_bytes": 772059136
+      },
+      {
+        "elapsed_seconds": 53.16269650000322,
+        "peak_rss_bytes": 773750784
+      },
+      {
+        "elapsed_seconds": 53.67211270000553,
+        "peak_rss_bytes": 780824576
+      },
+      {
+        "elapsed_seconds": 54.18305099999998,
+        "peak_rss_bytes": 783081472
+      },
+      {
+        "elapsed_seconds": 54.690145800006576,
+        "peak_rss_bytes": 783667200
+      },
+      {
+        "elapsed_seconds": 55.20212850000098,
+        "peak_rss_bytes": 789880832
+      },
+      {
+        "elapsed_seconds": 55.72136049999972,
+        "peak_rss_bytes": 800546816
+      },
+      {
+        "elapsed_seconds": 56.23195080000005,
+        "peak_rss_bytes": 801861632
+      },
+      {
+        "elapsed_seconds": 56.74667330000375,
+        "peak_rss_bytes": 805609472
+      },
+      {
+        "elapsed_seconds": 57.254057700003614,
+        "peak_rss_bytes": 806232064
+      },
+      {
+        "elapsed_seconds": 57.76293060000171,
+        "peak_rss_bytes": 807153664
+      },
+      {
+        "elapsed_seconds": 58.278454000006604,
+        "peak_rss_bytes": 810573824
+      },
+      {
+        "elapsed_seconds": 58.78643050000392,
+        "peak_rss_bytes": 816087040
+      },
+      {
+        "elapsed_seconds": 59.29652050000004,
+        "peak_rss_bytes": 828604416
+      },
+      {
+        "elapsed_seconds": 59.811245900003996,
+        "peak_rss_bytes": 830894080
+      },
+      {
+        "elapsed_seconds": 60.32050910000544,
+        "peak_rss_bytes": 831672320
+      },
+      {
+        "elapsed_seconds": 60.833690500003286,
+        "peak_rss_bytes": 834637824
+      },
+      {
+        "elapsed_seconds": 61.348551700000826,
+        "peak_rss_bytes": 836362240
+      },
+      {
+        "elapsed_seconds": 61.85904550000123,
+        "peak_rss_bytes": 839897088
+      },
+      {
+        "elapsed_seconds": 62.37667640000291,
+        "peak_rss_bytes": 839897088
+      },
+      {
+        "elapsed_seconds": 62.88788100000238,
+        "peak_rss_bytes": 839897088
+      },
+      {
+        "elapsed_seconds": 63.40435600000637,
+        "peak_rss_bytes": 839897088
+      },
+      {
+        "elapsed_seconds": 63.91506400000071,
+        "peak_rss_bytes": 842616832
+      },
+      {
+        "elapsed_seconds": 64.42380060000141,
+        "peak_rss_bytes": 848908288
+      },
+      {
+        "elapsed_seconds": 64.93772060000629,
+        "peak_rss_bytes": 873963520
+      },
+      {
+        "elapsed_seconds": 65.44878040000185,
+        "peak_rss_bytes": 875810816
+      },
+      {
+        "elapsed_seconds": 65.957150000002,
+        "peak_rss_bytes": 875991040
+      },
+      {
+        "elapsed_seconds": 66.47226610000507,
+        "peak_rss_bytes": 876044288
+      },
+      {
+        "elapsed_seconds": 66.98763110000436,
+        "peak_rss_bytes": 876290048
+      },
+      {
+        "elapsed_seconds": 67.49967980000656,
+        "peak_rss_bytes": 877375488
+      },
+      {
+        "elapsed_seconds": 68.00822049999988,
+        "peak_rss_bytes": 877350912
+      },
+      {
+        "elapsed_seconds": 68.5163720000055,
+        "peak_rss_bytes": 880517120
+      },
+      {
+        "elapsed_seconds": 69.02401040000404,
+        "peak_rss_bytes": 880807936
+      },
+      {
+        "elapsed_seconds": 69.53134410000348,
+        "peak_rss_bytes": 880881664
+      },
+      {
+        "elapsed_seconds": 70.03825670000515,
+        "peak_rss_bytes": 881344512
+      },
+      {
+        "elapsed_seconds": 70.54588320000039,
+        "peak_rss_bytes": 881446912
+      },
+      {
+        "elapsed_seconds": 71.05588140000327,
+        "peak_rss_bytes": 881565696
+      },
+      {
+        "elapsed_seconds": 71.57084160000522,
+        "peak_rss_bytes": 883781632
+      },
+      {
+        "elapsed_seconds": 72.07948880000185,
+        "peak_rss_bytes": 884834304
+      },
+      {
+        "elapsed_seconds": 72.58804580000287,
+        "peak_rss_bytes": 886050816
+      },
+      {
+        "elapsed_seconds": 73.09643640000286,
+        "peak_rss_bytes": 888778752
+      },
+      {
+        "elapsed_seconds": 73.6070633000054,
+        "peak_rss_bytes": 895528960
+      },
+      {
+        "elapsed_seconds": 74.12521380000544,
+        "peak_rss_bytes": 898166784
+      },
+      {
+        "elapsed_seconds": 74.6372479000056,
+        "peak_rss_bytes": 900096000
+      },
+      {
+        "elapsed_seconds": 75.14993540000432,
+        "peak_rss_bytes": 901861376
+      },
+      {
+        "elapsed_seconds": 75.66475890000584,
+        "peak_rss_bytes": 904613888
+      },
+      {
+        "elapsed_seconds": 76.173366300005,
+        "peak_rss_bytes": 910475264
+      },
+      {
+        "elapsed_seconds": 76.68575560000318,
+        "peak_rss_bytes": 912605184
+      },
+      {
+        "elapsed_seconds": 77.19637260000309,
+        "peak_rss_bytes": 917598208
+      },
+      {
+        "elapsed_seconds": 77.71293990000413,
+        "peak_rss_bytes": 922923008
+      },
+      {
+        "elapsed_seconds": 78.22301290000178,
+        "peak_rss_bytes": 928423936
+      },
+      {
+        "elapsed_seconds": 78.73255340000469,
+        "peak_rss_bytes": 931164160
+      },
+      {
+        "elapsed_seconds": 79.24572540000372,
+        "peak_rss_bytes": 932335616
+      },
+      {
+        "elapsed_seconds": 79.7598655000038,
+        "peak_rss_bytes": 935825408
+      },
+      {
+        "elapsed_seconds": 80.26799400000164,
+        "peak_rss_bytes": 939257856
+      },
+      {
+        "elapsed_seconds": 80.77667650000512,
+        "peak_rss_bytes": 943104000
+      },
+      {
+        "elapsed_seconds": 81.29151770000317,
+        "peak_rss_bytes": 943783936
+      },
+      {
+        "elapsed_seconds": 81.79917740000383,
+        "peak_rss_bytes": 945111040
+      },
+      {
+        "elapsed_seconds": 82.30882770000608,
+        "peak_rss_bytes": 948441088
+      },
+      {
+        "elapsed_seconds": 82.82396860000154,
+        "peak_rss_bytes": 951136256
+      },
+      {
+        "elapsed_seconds": 83.33854000000429,
+        "peak_rss_bytes": 956284928
+      },
+      {
+        "elapsed_seconds": 83.85494630000176,
+        "peak_rss_bytes": 956284928
+      },
+      {
+        "elapsed_seconds": 84.36786490000668,
+        "peak_rss_bytes": 956284928
+      },
+      {
+        "elapsed_seconds": 84.87868259999959,
+        "peak_rss_bytes": 956284928
+      }
+    ],
+    "rss_measurement": "max(worker-reported peak RSS, parent-observed tree RSS at 0.5s intervals); not GPU/virtual memory",
+    "stdout": "",
+    "stderr": "Timeout (0:00:40)!\nThread 0x00003ca0 (most recent call first):\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\inference\\compiled\\subprocess\\__init__.py\", line 70 in _enqueue_output\n  File \"C:\\Program Files\\Python311\\Lib\\threading.py\", line 982 in run\n  File \"C:\\Program Files\\Python311\\Lib\\threading.py\", line 1045 in _bootstrap_inner\n  File \"C:\\Program Files\\Python311\\Lib\\threading.py\", line 1002 in _bootstrap\n\nThread 0x00001d74 (most recent call first):\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\inference\\references.py\", line 174 in _check_fs\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\inference\\references.py\", line 309 in search_in_file_ios\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\inference\\references.py\", line 296 in get_module_contexts_containing_name\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\inference\\dynamic_params.py\", line 128 in _search_function_arguments\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\inference\\utils.py\", line 16 in wrapper\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\inference\\cache.py\", line 44 in wrapper\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\inference\\dynamic_params.py\", line 91 in dynamic_param_lookup\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\inference\\dynamic_params.py\", line 47 in wrapper\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\debug.py\", line 81 in wrapper\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\inference\\names.py\", line 531 in infer\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\plugins\\pytest.py\", line 75 in wrapper\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\plugins\\__init__.py\", line 21 in wrapper\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\inference\\context.py\", line 78 in <genexpr>\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\inference\\base_value.py\", line 449 in from_sets\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\inference\\context.py\", line 78 in py__getattribute__\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\inference\\syntax_tree.py\", line 309 in infer_atom\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\inference\\syntax_tree.py\", line 187 in _infer_node\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\inference\\syntax_tree.py\", line 85 in wrapper\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\debug.py\", line 81 in wrapper\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\inference\\syntax_tree.py\", line 177 in _infer_node_cached\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\inference\\cache.py\", line 44 in wrapper\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\inference\\syntax_tree.py\", line 172 in _infer_node_if_inferred\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\inference\\syntax_tree.py\", line 159 in infer_node\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\inference\\context.py\", line 232 in infer_node\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\inference\\syntax_tree.py\", line 200 in _infer_node\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\inference\\syntax_tree.py\", line 85 in wrapper\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\debug.py\", line 81 in wrapper\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\inference\\syntax_tree.py\", line 177 in _infer_node_cached\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\inference\\cache.py\", line 44 in wrapper\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\inference\\syntax_tree.py\", line 172 in _infer_node_if_inferred\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\inference\\syntax_tree.py\", line 159 in infer_node\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\inference\\context.py\", line 232 in infer_node\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\inference\\base_value.py\", line 398 in infer\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\inference\\syntax_tree.py\", line 768 in tree_name_to_values\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\plugins\\django.py\", line 178 in wrapper\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\plugins\\stdlib.py\", line 945 in wrapper\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\plugins\\__init__.py\", line 21 in wrapper\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\inference\\names.py\", line 282 in infer\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\inference\\context.py\", line 78 in <genexpr>\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\inference\\base_value.py\", line 449 in from_sets\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\inference\\context.py\", line 78 in py__getattribute__\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\inference\\syntax_tree.py\", line 309 in infer_atom\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\inference\\syntax_tree.py\", line 187 in _infer_node\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\inference\\syntax_tree.py\", line 85 in wrapper\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\debug.py\", line 81 in wrapper\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\inference\\syntax_tree.py\", line 177 in _infer_node_cached\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\inference\\cache.py\", line 44 in wrapper\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\inference\\syntax_tree.py\", line 172 in _infer_node_if_inferred\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\inference\\syntax_tree.py\", line 159 in infer_node\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\inference\\context.py\", line 232 in infer_node\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\inference\\lazy_value.py\", line 48 in infer\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\inference\\param.py\", line 28 in infer\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\inference\\dynamic_params.py\", line 95 in <genexpr>\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\inference\\base_value.py\", line 449 in from_sets\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\inference\\dynamic_params.py\", line 92 in dynamic_param_lookup\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\inference\\dynamic_params.py\", line 47 in wrapper\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\debug.py\", line 81 in wrapper\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\inference\\names.py\", line 531 in infer\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\plugins\\pytest.py\", line 75 in wrapper\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\plugins\\__init__.py\", line 21 in wrapper\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\inference\\context.py\", line 78 in <genexpr>\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\inference\\base_value.py\", line 449 in from_sets\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\inference\\context.py\", line 78 in py__getattribute__\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\inference\\syntax_tree.py\", line 309 in infer_atom\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\inference\\syntax_tree.py\", line 187 in _infer_node\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\inference\\syntax_tree.py\", line 85 in wrapper\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\debug.py\", line 81 in wrapper\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\inference\\syntax_tree.py\", line 177 in _infer_node_cached\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\inference\\cache.py\", line 44 in wrapper\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\inference\\syntax_tree.py\", line 172 in _infer_node_if_inferred\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\inference\\syntax_tree.py\", line 159 in infer_node\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\inference\\context.py\", line 232 in infer_node\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\inference\\lazy_value.py\", line 48 in infer\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\inference\\param.py\", line 28 in infer\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\inference\\dynamic_params.py\", line 95 in <genexpr>\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\inference\\base_value.py\", line 449 in from_sets\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\inference\\dynamic_params.py\", line 92 in dynamic_param_lookup\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\inference\\dynamic_params.py\", line 47 in wrapper\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\debug.py\", line 81 in wrapper\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\inference\\names.py\", line 531 in infer\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\plugins\\pytest.py\", line 75 in wrapper\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\plugins\\__init__.py\", line 21 in wrapper\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\inference\\context.py\", line 78 in <genexpr>\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\inference\\base_value.py\", line 449 in from_sets\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\inference\\context.py\", line 78 in py__getattribute__\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\inference\\syntax_tree.py\", line 309 in infer_atom\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\inference\\syntax_tree.py\", line 187 in _infer_node\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\inference\\syntax_tree.py\", line 85 in wrapper\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\debug.py\", line 81 in wrapper\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\inference\\syntax_tree.py\", line 177 in _infer_node_cached\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\inference\\cache.py\", line 44 in wrapper\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\inference\\syntax_tree.py\", line 172 in _infer_node_if_inferred\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\inference\\syntax_tree.py\", line 159 in infer_node\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\inference\\context.py\", line 232 in infer_node\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\inference\\lazy_value.py\", line 48 in infer\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\inference\\arguments.py\", line 95 in iterate_argument_clinic\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\plugins\\stdlib.py\", line 162 in wrapper\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\plugins\\stdlib.py\", line 137 in wrapper\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\plugins\\__init__.py\", line 21 in wrapper\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\inference\\base_value.py\", line 506 in <genexpr>\n  ...\nTimeout (0:00:40)!\nThread 0x00003ca0 (most recent call first):\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\inference\\compiled\\subprocess\\__init__.py\", line 70 in _enqueue_output\n  File \"C:\\Program Files\\Python311\\Lib\\threading.py\", line 982 in run\n  File \"C:\\Program Files\\Python311\\Lib\\threading.py\", line 1045 in _bootstrap_inner\n  File \"C:\\Program Files\\Python311\\Lib\\threading.py\", line 1002 in _bootstrap\n\nThread 0x00001d74 (most recent call first):\n  File \"D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Lib\\site-packages\\jedi\\inference\\context.py\", line 28 in tree_node\n"
+  }
+}

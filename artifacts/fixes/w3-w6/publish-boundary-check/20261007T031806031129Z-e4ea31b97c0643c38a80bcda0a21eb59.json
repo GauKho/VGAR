@@ -1,0 +1,453 @@
+{
+  "run_id": "e4ea31b97c0643c38a80bcda0a21eb59",
+  "task_id": "publish-w3-w6-boundary-check",
+  "started_utc": "2026-10-07T03:18:06.034128+00:00",
+  "ended_utc": "2026-10-07T03:18:26.756640+00:00",
+  "source_repo": "D:\\Project\\CAPSTONES\\VGAR",
+  "source_hash_before": "57a3c7a751e4d8d712358308d8c1f12abb1b33052339bce69384addd5753356b",
+  "source_hash_after": "57a3c7a751e4d8d712358308d8c1f12abb1b33052339bce69384addd5753356b",
+  "worktree_id": "development-test",
+  "cwd": "D:\\Project\\CAPSTONES\\VGAR",
+  "argv": [
+    "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "--junitxml=D:\\Project\\CAPSTONES\\VGAR\\.m2-pytest-ojh_ii83\\junit.xml",
+    "tests/test_host_retrieval_binding.py",
+    "tests/test_w5_w6_retrieval_mcp.py"
+  ],
+  "timeout_seconds": 120.0,
+  "python_executable": "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe",
+  "python_version": "3.11.6",
+  "pytest_version": "8.4.2",
+  "environment": {
+    "PYTHONPATH": "D:\\Project\\CAPSTONES\\VGAR\\src;D:\\Project\\CAPSTONES\\VGAR",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTEST_DISABLE_PLUGIN_AUTOLOAD": "1"
+  },
+  "status": "PASS",
+  "complete": true,
+  "test_result": {
+    "status": "PASS",
+    "command": "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe -m pytest -q -p no:cacheprovider --junitxml=D:\\Project\\CAPSTONES\\VGAR\\.m2-pytest-ojh_ii83\\junit.xml tests/test_host_retrieval_binding.py tests/test_w5_w6_retrieval_mcp.py",
+    "argv": [
+      "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe",
+      "-m",
+      "pytest",
+      "-q",
+      "-p",
+      "no:cacheprovider",
+      "--junitxml=D:\\Project\\CAPSTONES\\VGAR\\.m2-pytest-ojh_ii83\\junit.xml",
+      "tests/test_host_retrieval_binding.py",
+      "tests/test_w5_w6_retrieval_mcp.py"
+    ],
+    "exit_code": 0,
+    "duration_ms": 19891,
+    "stdout": "........................                                                 [100%]\r\n- generated xml file: D:\\Project\\CAPSTONES\\VGAR\\.m2-pytest-ojh_ii83\\junit.xml -\r\n24 passed in 18.69s\r\n",
+    "stderr": "",
+    "timeout_seconds": 120.0,
+    "cases": [
+      {
+        "name": "tests.test_host_retrieval_binding::test_host_created_snapshot_retrieves_its_own_source[False-cli]",
+        "status": "PASS",
+        "duration_ms": 73,
+        "detail": null
+      },
+      {
+        "name": "tests.test_host_retrieval_binding::test_host_created_snapshot_retrieves_its_own_source[False-workflow]",
+        "status": "PASS",
+        "duration_ms": 59,
+        "detail": null
+      },
+      {
+        "name": "tests.test_host_retrieval_binding::test_host_created_snapshot_retrieves_its_own_source[True-cli]",
+        "status": "PASS",
+        "duration_ms": 64,
+        "detail": null
+      },
+      {
+        "name": "tests.test_host_retrieval_binding::test_host_created_snapshot_retrieves_its_own_source[True-workflow]",
+        "status": "PASS",
+        "duration_ms": 71,
+        "detail": null
+      },
+      {
+        "name": "tests.test_w5_w6_retrieval_mcp::test_relation_depth_is_not_echoed_without_real_traversal[0-get_callers]",
+        "status": "PASS",
+        "duration_ms": 54,
+        "detail": null
+      },
+      {
+        "name": "tests.test_w5_w6_retrieval_mcp::test_relation_depth_is_not_echoed_without_real_traversal[0-get_callees]",
+        "status": "PASS",
+        "duration_ms": 51,
+        "detail": null
+      },
+      {
+        "name": "tests.test_w5_w6_retrieval_mcp::test_relation_depth_is_not_echoed_without_real_traversal[2-get_callers]",
+        "status": "PASS",
+        "duration_ms": 45,
+        "detail": null
+      },
+      {
+        "name": "tests.test_w5_w6_retrieval_mcp::test_relation_depth_is_not_echoed_without_real_traversal[2-get_callees]",
+        "status": "PASS",
+        "duration_ms": 42,
+        "detail": null
+      },
+      {
+        "name": "tests.test_w5_w6_retrieval_mcp::test_relation_depth_is_not_echoed_without_real_traversal[-1-get_callers]",
+        "status": "PASS",
+        "duration_ms": 39,
+        "detail": null
+      },
+      {
+        "name": "tests.test_w5_w6_retrieval_mcp::test_relation_depth_is_not_echoed_without_real_traversal[-1-get_callees]",
+        "status": "PASS",
+        "duration_ms": 40,
+        "detail": null
+      },
+      {
+        "name": "tests.test_w5_w6_retrieval_mcp::test_relation_depth_is_not_echoed_without_real_traversal[True-get_callers]",
+        "status": "PASS",
+        "duration_ms": 35,
+        "detail": null
+      },
+      {
+        "name": "tests.test_w5_w6_retrieval_mcp::test_relation_depth_is_not_echoed_without_real_traversal[True-get_callees]",
+        "status": "PASS",
+        "duration_ms": 39,
+        "detail": null
+      },
+      {
+        "name": "tests.test_w5_w6_retrieval_mcp::test_resource_decodes_percent_encoded_real_graph_node[graph_node]",
+        "status": "PASS",
+        "duration_ms": 38,
+        "detail": null
+      },
+      {
+        "name": "tests.test_w5_w6_retrieval_mcp::test_resource_decodes_percent_encoded_real_graph_node[graph_subgraph]",
+        "status": "PASS",
+        "duration_ms": 43,
+        "detail": null
+      },
+      {
+        "name": "tests.test_w5_w6_retrieval_mcp::test_sqlite_roundtrip_preserves_full_snapshot_source_ranges_and_language",
+        "status": "PASS",
+        "duration_ms": 52,
+        "detail": null
+      },
+      {
+        "name": "tests.test_w5_w6_retrieval_mcp::test_task_handles_survive_service_recreation_and_do_not_mix_issues",
+        "status": "PASS",
+        "duration_ms": 96,
+        "detail": null
+      },
+      {
+        "name": "tests.test_w5_w6_retrieval_mcp::test_mcp_tools_return_frozen_context_and_task_diagnostics_in_metadata",
+        "status": "PASS",
+        "duration_ms": 84,
+        "detail": null
+      },
+      {
+        "name": "tests.test_w5_w6_retrieval_mcp::test_unknown_handle_bad_anchors_budget_and_stale_source_fail_closed",
+        "status": "PASS",
+        "duration_ms": 76,
+        "detail": null
+      },
+      {
+        "name": "tests.test_w5_w6_retrieval_mcp::test_handle_from_prior_graph_version_is_rejected_not_rebound",
+        "status": "PASS",
+        "duration_ms": 67,
+        "detail": null
+      },
+      {
+        "name": "tests.test_w5_w6_retrieval_mcp::test_no_anchor_is_empty_context_with_diagnostics_not_fake_match",
+        "status": "PASS",
+        "duration_ms": 116,
+        "detail": null
+      },
+      {
+        "name": "tests.test_w5_w6_retrieval_mcp::test_persisted_task_context_tamper_is_rejected[issue_text]",
+        "status": "PASS",
+        "duration_ms": 64,
+        "detail": null
+      },
+      {
+        "name": "tests.test_w5_w6_retrieval_mcp::test_persisted_task_context_tamper_is_rejected[anchor_ids]",
+        "status": "PASS",
+        "duration_ms": 66,
+        "detail": null
+      },
+      {
+        "name": "tests.test_w5_w6_retrieval_mcp::test_demo_backend_reports_retrieval_unavailable_not_fake_evidence",
+        "status": "PASS",
+        "duration_ms": 4,
+        "detail": null
+      },
+      {
+        "name": "tests.test_w5_w6_retrieval_mcp::test_real_stateless_stdio_and_langchain_context_display",
+        "status": "PASS",
+        "duration_ms": 15374,
+        "detail": null
+      }
+    ],
+    "case_counts": {
+      "passed": 24,
+      "failed": 0,
+      "error": 0,
+      "skipped": 0
+    },
+    "reason": null,
+    "complete": true,
+    "output_truncated": false,
+    "stdout_bytes": 183,
+    "stderr_bytes": 0
+  },
+  "phase": "DONE",
+  "source_scope": {
+    "excluded_paths": [
+      "artifacts",
+      "data/downloads",
+      "data/gold",
+      "data/graphs",
+      "data/repositories",
+      "generated",
+      "logs",
+      "results"
+    ]
+  },
+  "preflight_before": {
+    "fingerprint": "57a3c7a751e4d8d712358308d8c1f12abb1b33052339bce69384addd5753356b",
+    "scope": {
+      "excluded_paths": [
+        "artifacts",
+        "data/downloads",
+        "data/gold",
+        "data/graphs",
+        "data/repositories",
+        "generated",
+        "logs",
+        "results"
+      ]
+    },
+    "duration_seconds": 0.375,
+    "argv": [
+      "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe",
+      "-B",
+      "-m",
+      "vgar.repair.source_preflight",
+      "D:\\Project\\CAPSTONES\\VGAR"
+    ],
+    "stdout": "{\"fingerprint\": \"57a3c7a751e4d8d712358308d8c1f12abb1b33052339bce69384addd5753356b\", \"scope\": {\"excluded_paths\": [\"artifacts\", \"data/downloads\", \"data/gold\", \"data/graphs\", \"data/repositories\", \"generated\", \"logs\", \"results\"]}}\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  "pytest_result": {
+    "status": "PASS",
+    "command": "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe -m pytest -q -p no:cacheprovider --junitxml=D:\\Project\\CAPSTONES\\VGAR\\.m2-pytest-ojh_ii83\\junit.xml tests/test_host_retrieval_binding.py tests/test_w5_w6_retrieval_mcp.py",
+    "argv": [
+      "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe",
+      "-m",
+      "pytest",
+      "-q",
+      "-p",
+      "no:cacheprovider",
+      "--junitxml=D:\\Project\\CAPSTONES\\VGAR\\.m2-pytest-ojh_ii83\\junit.xml",
+      "tests/test_host_retrieval_binding.py",
+      "tests/test_w5_w6_retrieval_mcp.py"
+    ],
+    "exit_code": 0,
+    "duration_ms": 19891,
+    "stdout": "........................                                                 [100%]\r\n- generated xml file: D:\\Project\\CAPSTONES\\VGAR\\.m2-pytest-ojh_ii83\\junit.xml -\r\n24 passed in 18.69s\r\n",
+    "stderr": "",
+    "timeout_seconds": 120.0,
+    "cases": [
+      {
+        "name": "tests.test_host_retrieval_binding::test_host_created_snapshot_retrieves_its_own_source[False-cli]",
+        "status": "PASS",
+        "duration_ms": 73,
+        "detail": null
+      },
+      {
+        "name": "tests.test_host_retrieval_binding::test_host_created_snapshot_retrieves_its_own_source[False-workflow]",
+        "status": "PASS",
+        "duration_ms": 59,
+        "detail": null
+      },
+      {
+        "name": "tests.test_host_retrieval_binding::test_host_created_snapshot_retrieves_its_own_source[True-cli]",
+        "status": "PASS",
+        "duration_ms": 64,
+        "detail": null
+      },
+      {
+        "name": "tests.test_host_retrieval_binding::test_host_created_snapshot_retrieves_its_own_source[True-workflow]",
+        "status": "PASS",
+        "duration_ms": 71,
+        "detail": null
+      },
+      {
+        "name": "tests.test_w5_w6_retrieval_mcp::test_relation_depth_is_not_echoed_without_real_traversal[0-get_callers]",
+        "status": "PASS",
+        "duration_ms": 54,
+        "detail": null
+      },
+      {
+        "name": "tests.test_w5_w6_retrieval_mcp::test_relation_depth_is_not_echoed_without_real_traversal[0-get_callees]",
+        "status": "PASS",
+        "duration_ms": 51,
+        "detail": null
+      },
+      {
+        "name": "tests.test_w5_w6_retrieval_mcp::test_relation_depth_is_not_echoed_without_real_traversal[2-get_callers]",
+        "status": "PASS",
+        "duration_ms": 45,
+        "detail": null
+      },
+      {
+        "name": "tests.test_w5_w6_retrieval_mcp::test_relation_depth_is_not_echoed_without_real_traversal[2-get_callees]",
+        "status": "PASS",
+        "duration_ms": 42,
+        "detail": null
+      },
+      {
+        "name": "tests.test_w5_w6_retrieval_mcp::test_relation_depth_is_not_echoed_without_real_traversal[-1-get_callers]",
+        "status": "PASS",
+        "duration_ms": 39,
+        "detail": null
+      },
+      {
+        "name": "tests.test_w5_w6_retrieval_mcp::test_relation_depth_is_not_echoed_without_real_traversal[-1-get_callees]",
+        "status": "PASS",
+        "duration_ms": 40,
+        "detail": null
+      },
+      {
+        "name": "tests.test_w5_w6_retrieval_mcp::test_relation_depth_is_not_echoed_without_real_traversal[True-get_callers]",
+        "status": "PASS",
+        "duration_ms": 35,
+        "detail": null
+      },
+      {
+        "name": "tests.test_w5_w6_retrieval_mcp::test_relation_depth_is_not_echoed_without_real_traversal[True-get_callees]",
+        "status": "PASS",
+        "duration_ms": 39,
+        "detail": null
+      },
+      {
+        "name": "tests.test_w5_w6_retrieval_mcp::test_resource_decodes_percent_encoded_real_graph_node[graph_node]",
+        "status": "PASS",
+        "duration_ms": 38,
+        "detail": null
+      },
+      {
+        "name": "tests.test_w5_w6_retrieval_mcp::test_resource_decodes_percent_encoded_real_graph_node[graph_subgraph]",
+        "status": "PASS",
+        "duration_ms": 43,
+        "detail": null
+      },
+      {
+        "name": "tests.test_w5_w6_retrieval_mcp::test_sqlite_roundtrip_preserves_full_snapshot_source_ranges_and_language",
+        "status": "PASS",
+        "duration_ms": 52,
+        "detail": null
+      },
+      {
+        "name": "tests.test_w5_w6_retrieval_mcp::test_task_handles_survive_service_recreation_and_do_not_mix_issues",
+        "status": "PASS",
+        "duration_ms": 96,
+        "detail": null
+      },
+      {
+        "name": "tests.test_w5_w6_retrieval_mcp::test_mcp_tools_return_frozen_context_and_task_diagnostics_in_metadata",
+        "status": "PASS",
+        "duration_ms": 84,
+        "detail": null
+      },
+      {
+        "name": "tests.test_w5_w6_retrieval_mcp::test_unknown_handle_bad_anchors_budget_and_stale_source_fail_closed",
+        "status": "PASS",
+        "duration_ms": 76,
+        "detail": null
+      },
+      {
+        "name": "tests.test_w5_w6_retrieval_mcp::test_handle_from_prior_graph_version_is_rejected_not_rebound",
+        "status": "PASS",
+        "duration_ms": 67,
+        "detail": null
+      },
+      {
+        "name": "tests.test_w5_w6_retrieval_mcp::test_no_anchor_is_empty_context_with_diagnostics_not_fake_match",
+        "status": "PASS",
+        "duration_ms": 116,
+        "detail": null
+      },
+      {
+        "name": "tests.test_w5_w6_retrieval_mcp::test_persisted_task_context_tamper_is_rejected[issue_text]",
+        "status": "PASS",
+        "duration_ms": 64,
+        "detail": null
+      },
+      {
+        "name": "tests.test_w5_w6_retrieval_mcp::test_persisted_task_context_tamper_is_rejected[anchor_ids]",
+        "status": "PASS",
+        "duration_ms": 66,
+        "detail": null
+      },
+      {
+        "name": "tests.test_w5_w6_retrieval_mcp::test_demo_backend_reports_retrieval_unavailable_not_fake_evidence",
+        "status": "PASS",
+        "duration_ms": 4,
+        "detail": null
+      },
+      {
+        "name": "tests.test_w5_w6_retrieval_mcp::test_real_stateless_stdio_and_langchain_context_display",
+        "status": "PASS",
+        "duration_ms": 15374,
+        "detail": null
+      }
+    ],
+    "case_counts": {
+      "passed": 24,
+      "failed": 0,
+      "error": 0,
+      "skipped": 0
+    },
+    "reason": null,
+    "complete": true,
+    "output_truncated": false,
+    "stdout_bytes": 183,
+    "stderr_bytes": 0
+  },
+  "preflight_after": {
+    "fingerprint": "57a3c7a751e4d8d712358308d8c1f12abb1b33052339bce69384addd5753356b",
+    "scope": {
+      "excluded_paths": [
+        "artifacts",
+        "data/downloads",
+        "data/gold",
+        "data/graphs",
+        "data/repositories",
+        "generated",
+        "logs",
+        "results"
+      ]
+    },
+    "duration_seconds": 0.34299999999348074,
+    "argv": [
+      "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe",
+      "-B",
+      "-m",
+      "vgar.repair.source_preflight",
+      "D:\\Project\\CAPSTONES\\VGAR"
+    ],
+    "stdout": "{\"fingerprint\": \"57a3c7a751e4d8d712358308d8c1f12abb1b33052339bce69384addd5753356b\", \"scope\": {\"excluded_paths\": [\"artifacts\", \"data/downloads\", \"data/gold\", \"data/graphs\", \"data/repositories\", \"generated\", \"logs\", \"results\"]}}\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  "command": "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe -m pytest -q -p no:cacheprovider --junitxml=D:\\Project\\CAPSTONES\\VGAR\\.m2-pytest-ojh_ii83\\junit.xml tests/test_host_retrieval_binding.py tests/test_w5_w6_retrieval_mcp.py"
+}

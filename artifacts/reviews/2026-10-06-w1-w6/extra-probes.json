@@ -1,0 +1,31 @@
+[
+  {
+    "id": "F10-shadowed-inheritance",
+    "issue_reproduced": true,
+    "error_class": "GraphValidationError",
+    "error": "Invalid graph document:\n- edges[8] must not be a self-loop",
+    "traceback": "Traceback (most recent call last):\n  File \"D:\\Project\\CAPSTONES\\.audit-tmp\\vgar-review-w1-w6-20261006\\audit_checks.py\", line 208, in extra\n    doc = PythonGraphBuilder(repo_key=\"audit\", repository_revision=\"fixture\", use_jedi=False).build(root)\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\Project\\CAPSTONES\\VGAR\\src\\vgar\\graph\\builder.py\", line 157, in build\n    validate_graph_document(document)\n  File \"D:\\Project\\CAPSTONES\\VGAR\\src\\vgar\\contracts\\schema.py\", line 264, in validate_graph_document\n    raise GraphValidationError(errors)\nvgar.contracts.schema.GraphValidationError: Invalid graph document:\n- edges[8] must not be a self-loop\n"
+  },
+  {
+    "id": "F11-mcp-write-root",
+    "issue_reproduced": true,
+    "note": "Only synthetic original changed, not any user repository; supplied arbitrary root was accepted.",
+    "response": {
+      "status": "PASS",
+      "path": "src/a.py",
+      "patch_diff": "--- src/a.py\n+++ src/a.py\n@@ -1 +1 @@\n-value = 1\n+value = 2\n",
+      "changed_files": [
+        "src/a.py"
+      ]
+    },
+    "matches_common_envelope": false,
+    "envelope_error": "1 validation error for ToolResponse\nmetadata\n  Field required [type=missing, input_value={'status': 'PASS', 'path'...ed_files': ['src/a.py']}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.13/v/missing"
+  },
+  {
+    "id": "F12-fingerprint-coverage",
+    "test_m2_included": false,
+    "unit_workflow_included": false,
+    "file_count": 115,
+    "digest": "sha256:c7bc1e9de7974319b476d1de6b2163c9d1cab923aefd32025b6261f41ff19945"
+  }
+]

@@ -28,7 +28,11 @@ def prepare_workspace(state: VGARState, runtime: Runtime) -> dict:
     lease = create_workspace(repo, work / "ws")
 
     base = runtime.base_settings()
-    runtime.sandboxed = replace(base, graph=replace(base.graph, backend="sqlite", database=db))
+    runtime.sandboxed = replace(
+        base, graph=replace(base.graph, backend="sqlite", database=db,
+                            source_root=lease.path, version=None),
+        workspace_root=lease.path,
+    )
 
     return {
         "graph_db": str(db),

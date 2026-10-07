@@ -7,6 +7,7 @@ from vgar.graph.demo_service import DemoGraphService
 from vgar.graph.port import GraphService
 from vgar.graph.sqlite_service import SQLiteGraphService
 from vgar.graph.sqlite_store import SQLiteGraphStore
+from vgar.config.settings import get_settings
 
 
 def create_graph_service() -> GraphService:
@@ -30,7 +31,10 @@ def create_graph_service() -> GraphService:
             graph_version=graph_version,
         )
         store.resolve_graph_version()
-        return SQLiteGraphService(store)
+        settings = get_settings().graph
+        return SQLiteGraphService(store, source_root=settings.source_root,
+                                  tokenizer_manifest=settings.tokenizer_manifest,
+                                  allow_fallback_counter=settings.allow_fallback_counter)
 
     raise RuntimeError(
         f"Unsupported VGAR_GRAPH_BACKEND: {backend!r}; "

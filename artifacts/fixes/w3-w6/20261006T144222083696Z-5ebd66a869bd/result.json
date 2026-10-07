@@ -1,0 +1,64 @@
+{
+  "run_id": "20261006T144222083696Z-5ebd66a869bd",
+  "kind": "milestone-3-scope-metadata-red",
+  "status": "FAIL",
+  "started_utc": "2026-10-06T14:42:22.085202+00:00",
+  "complete": true,
+  "python": "3.11.6 (tags/v3.11.6:8b6ee5b, Oct  2 2023, 14:57:12) [MSC v.1935 64 bit (AMD64)]",
+  "interpreter": "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe",
+  "platform": "Windows-10-10.0.26300-SP0",
+  "command_argv": [
+    "-c"
+  ],
+  "cwd": "D:\\Project\\CAPSTONES\\VGAR",
+  "command": "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe -m pytest -q -p no:cacheprovider --junitxml=D:\\Project\\CAPSTONES\\VGAR\\.m2-pytest-3vs_5219\\junit.xml tests/test_source_scope.py::test_malformed_snapshot_scope_rejected",
+  "argv": [
+    "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "--junitxml=D:\\Project\\CAPSTONES\\VGAR\\.m2-pytest-3vs_5219\\junit.xml",
+    "tests/test_source_scope.py::test_malformed_snapshot_scope_rejected"
+  ],
+  "exit_code": 1,
+  "duration_ms": 1109,
+  "stdout": "F..                                                                      [100%]\r\n================================== FAILURES ===================================\r\n______________ test_malformed_snapshot_scope_rejected[metadata0] ______________\r\ntests\\test_source_scope.py:190: in test_malformed_snapshot_scope_rejected\r\n    with pytest.raises(GraphError):\r\nE   Failed: DID NOT RAISE <class 'vgar.contracts.error.GraphError'>\r\n- generated xml file: D:\\Project\\CAPSTONES\\VGAR\\.m2-pytest-3vs_5219\\junit.xml -\r\n=========================== short test summary info ===========================\r\nFAILED tests/test_source_scope.py::test_malformed_snapshot_scope_rejected[metadata0]\r\n1 failed, 2 passed in 0.50s\r\n",
+  "stderr": "",
+  "timeout_seconds": 240.0,
+  "cases": [
+    {
+      "name": "tests.test_source_scope::test_malformed_snapshot_scope_rejected[metadata0]",
+      "status": "FAIL",
+      "duration_ms": 9,
+      "detail": "tests\\test_source_scope.py:190: in test_malformed_snapshot_scope_rejected\n    with pytest.raises(GraphError):\nE   Failed: DID NOT RAISE <class 'vgar.contracts.error.GraphError'>"
+    },
+    {
+      "name": "tests.test_source_scope::test_malformed_snapshot_scope_rejected[metadata1]",
+      "status": "PASS",
+      "duration_ms": 4,
+      "detail": null
+    },
+    {
+      "name": "tests.test_source_scope::test_malformed_snapshot_scope_rejected[metadata2]",
+      "status": "PASS",
+      "duration_ms": 4,
+      "detail": null
+    }
+  ],
+  "case_counts": {
+    "passed": 2,
+    "failed": 1,
+    "error": 0,
+    "skipped": 0
+  },
+  "reason": {
+    "code": "TEST_FAILED",
+    "message": "Pytest assertions failed"
+  },
+  "output_truncated": false,
+  "stdout_bytes": 701,
+  "stderr_bytes": 0,
+  "ended_utc": "2026-10-06T14:42:23.255658+00:00"
+}
