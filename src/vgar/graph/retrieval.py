@@ -66,9 +66,12 @@ class GraphContextRetriever:
         count_tokens: Callable[[str], int], counter_label: str,
         config: RetrievalConfig | None = None,
         change_counts: Mapping[str, float] | None = None, history_label: str | None = None,
+        _take_ownership: bool = False,
     ) -> None:
         validate_graph_document(document)
-        self.document = copy.deepcopy(document)
+        # Only the isolated evaluation worker may transfer its fresh snapshot.
+        # Public/service callers retain defensive isolation by default.
+        self.document = document if _take_ownership else copy.deepcopy(document)
         self.nodes = {node["id"]: node for node in self.document["nodes"]}
         self.root = Path(repository_root).resolve()
         if not self.root.is_dir():

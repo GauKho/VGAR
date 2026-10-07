@@ -1,0 +1,3536 @@
+{
+  "instance_id": "pylint-dev__pylint-6386",
+  "repository": "pylint-dev/pylint",
+  "base_commit": "754b487f4d892e3d4872b6fc7468a71db4e31c13",
+  "status": "SUCCEEDED",
+  "query_hash": "sha256:5a767dafdd95cd6eef40ba263e539f02b0f86d745a804a7bc792d1a8c8b59a41",
+  "patch_hash": "sha256:9f82c0b5df51c65fbbe78c3f24bda13c07571ab541c2e50d0ee15a9aabbeef45",
+  "corpus_hash": "sha256:2859eb63ae3d4a90940f2fa205921531db2c4044bae1a10cae1abb70e2d511e5",
+  "gold": {
+    "gold_files": [
+      "pylint/config/argument.py",
+      "pylint/config/arguments_manager.py",
+      "pylint/config/utils.py",
+      "pylint/lint/base_options.py"
+    ],
+    "gold_functions": [
+      "pylint/config/argument.py::pylint.config.argument._CallableArgument.__init__",
+      "pylint/config/arguments_manager.py::pylint.config.arguments_manager._ArgumentsManager._add_parser_option",
+      "pylint/config/utils.py::pylint.config.utils._convert_option_to_argument",
+      "pylint/config/utils.py::pylint.config.utils._preprocess_options",
+      "pylint/lint/base_options.py::pylint.lint.base_options._make_run_options"
+    ],
+    "all_changed_source_files": [
+      "pylint/config/argument.py",
+      "pylint/config/arguments_manager.py",
+      "pylint/config/utils.py",
+      "pylint/lint/base_options.py"
+    ],
+    "unretrievable_files": [],
+    "mapping_events": [
+      {
+        "path": "pylint/config/argument.py",
+        "side": "new",
+        "line": 460,
+        "function_id": "pylint/config/argument.py::pylint.config.argument._CallableArgument.__init__",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "pylint/config/argument.py",
+        "side": "new",
+        "line": 471,
+        "function_id": "pylint/config/argument.py::pylint.config.argument._CallableArgument.__init__",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "pylint/config/argument.py",
+        "side": "new",
+        "line": 472,
+        "function_id": "pylint/config/argument.py::pylint.config.argument._CallableArgument.__init__",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "pylint/config/argument.py",
+        "side": "new",
+        "line": 473,
+        "function_id": "pylint/config/argument.py::pylint.config.argument._CallableArgument.__init__",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "pylint/config/argument.py",
+        "side": "new",
+        "line": 474,
+        "function_id": "pylint/config/argument.py::pylint.config.argument._CallableArgument.__init__",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "pylint/config/argument.py",
+        "side": "new",
+        "line": 475,
+        "function_id": "pylint/config/argument.py::pylint.config.argument._CallableArgument.__init__",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "pylint/config/argument.py",
+        "side": "new",
+        "line": 476,
+        "function_id": "pylint/config/argument.py::pylint.config.argument._CallableArgument.__init__",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "pylint/config/argument.py",
+        "side": "new",
+        "line": 477,
+        "function_id": "pylint/config/argument.py::pylint.config.argument._CallableArgument.__init__",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "pylint/config/arguments_manager.py",
+        "side": "new",
+        "line": 221,
+        "function_id": "pylint/config/arguments_manager.py::pylint.config.arguments_manager._ArgumentsManager._add_parser_option",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "pylint/config/utils.py",
+        "side": "new",
+        "line": 74,
+        "function_id": "pylint/config/utils.py::pylint.config.utils._convert_option_to_argument",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "pylint/config/utils.py",
+        "side": "new",
+        "line": 211,
+        "function_id": null,
+        "disposition": "module_edit"
+      },
+      {
+        "path": "pylint/config/utils.py",
+        "side": "old",
+        "line": 221,
+        "function_id": "pylint/config/utils.py::pylint.config.utils._preprocess_options",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "pylint/config/utils.py",
+        "side": "new",
+        "line": 223,
+        "function_id": "pylint/config/utils.py::pylint.config.utils._preprocess_options",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "pylint/lint/base_options.py",
+        "side": "new",
+        "line": 547,
+        "function_id": "pylint/lint/base_options.py::pylint.lint.base_options._make_run_options",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "pylint/lint/base_options.py",
+        "side": "new",
+        "line": 558,
+        "function_id": "pylint/lint/base_options.py::pylint.lint.base_options._make_run_options",
+        "disposition": "mapped_function"
+      }
+    ],
+    "function_labels_complete": true,
+    "mapping_coverage": 1.0,
+    "file_retrievability_coverage": 1.0,
+    "label_semantics": "developer_changed_code_proxy_not_complete_relevance"
+  },
+  "arms": {
+    "graph": {
+      "rank_hash": "sha256:0d2c70f4c5fd4d0b07f00819ed3267b15e3ddce5c656d40107e1902690c56549",
+      "ranking_total_count": 91,
+      "ranked": [
+        {
+          "rank": 1,
+          "item_id": "vgar:pylint-dev__pylint:python:function:pylint/checkers/similar.py:pylint.checkers.similar.usage",
+          "path": "pylint/checkers/similar.py",
+          "kind": "function",
+          "symbol": "pylint.checkers.similar.usage",
+          "function_id": "pylint/checkers/similar.py::pylint.checkers.similar.usage",
+          "score": 0.6372685185185186,
+          "lines": [
+            865,
+            873
+          ],
+          "snippet_sha256": "sha256:406f589c2ca93f152be47c9a485257a76e52e5dd18f77c116f4091b650f19182"
+        },
+        {
+          "rank": 2,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/checkers/unicode.py:pylint.checkers.unicode._BadChar.description",
+          "path": "pylint/checkers/unicode.py",
+          "kind": "method",
+          "symbol": "pylint.checkers.unicode._BadChar.description",
+          "function_id": "pylint/checkers/unicode.py::pylint.checkers.unicode._BadChar.description",
+          "score": 0.6004310344827587,
+          "lines": [
+            67,
+            72
+          ],
+          "snippet_sha256": "sha256:1422cbe986e0f76bbaa7d5c6936a712faf6fb9bc6e2bc1d4c31dbbb07f8beeed"
+        },
+        {
+          "rank": 3,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/config/option_manager_mixin.py:pylint.config.option_manager_mixin.OptionsManagerMixIn.help",
+          "path": "pylint/config/option_manager_mixin.py",
+          "kind": "method",
+          "symbol": "pylint.config.option_manager_mixin.OptionsManagerMixIn.help",
+          "function_id": "pylint/config/option_manager_mixin.py::pylint.config.option_manager_mixin.OptionsManagerMixIn.help",
+          "score": 0.5836864406779662,
+          "lines": [
+            342,
+            346
+          ],
+          "snippet_sha256": "sha256:63ec8b0f981725f67374087be99aeb66aeb610965084dd3b7820c7b1e9023318"
+        },
+        {
+          "rank": 4,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.help",
+          "path": "pylint/config/arguments_manager.py",
+          "kind": "method",
+          "symbol": "pylint.config.arguments_manager._ArgumentsManager.help",
+          "function_id": "pylint/config/arguments_manager.py::pylint.config.arguments_manager._ArgumentsManager.help",
+          "score": 0.5750000000000001,
+          "lines": [
+            619,
+            627
+          ],
+          "snippet_sha256": "sha256:9e1d79485b27c8230a3912c97912125cb01b15c1d86f947bab9bedcd64ae4bf3"
+        },
+        {
+          "rank": 5,
+          "item_id": "vgar:pylint-dev__pylint:python:class:pylint/checkers/similar.py:pylint.checkers.similar.Similar",
+          "path": "pylint/checkers/similar.py",
+          "kind": "class",
+          "symbol": "pylint.checkers.similar.Similar",
+          "function_id": null,
+          "score": 0.539423076923077,
+          "lines": [
+            335,
+            557
+          ],
+          "snippet_sha256": "sha256:ece4150c30cbac973a846cd2e36642fb0bbbfb5fe4cb6ebb3f4634b1ea56d890"
+        },
+        {
+          "rank": 6,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/checkers/similar.py:pylint.checkers.similar.Similar.get_map_data",
+          "path": "pylint/checkers/similar.py",
+          "kind": "method",
+          "symbol": "pylint.checkers.similar.Similar.get_map_data",
+          "function_id": "pylint/checkers/similar.py::pylint.checkers.similar.Similar.get_map_data",
+          "score": 0.44440789473684217,
+          "lines": [
+            544,
+            550
+          ],
+          "snippet_sha256": "sha256:573583f3aa51b94d8caf5bb3bfd7a03813f30edece029f0ff4cff1eb320edea8"
+        },
+        {
+          "rank": 7,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/checkers/similar.py:pylint.checkers.similar.Similar.combine_mapreduce_data",
+          "path": "pylint/checkers/similar.py",
+          "kind": "method",
+          "symbol": "pylint.checkers.similar.Similar.combine_mapreduce_data",
+          "function_id": "pylint/checkers/similar.py::pylint.checkers.similar.Similar.combine_mapreduce_data",
+          "score": 0.44396186440677965,
+          "lines": [
+            552,
+            557
+          ],
+          "snippet_sha256": "sha256:c5864a8a96c5d31ac328a06d800c2639d088e14c313b0d207d8bfcb4bc79fff5"
+        },
+        {
+          "rank": 8,
+          "item_id": "vgar:pylint-dev__pylint:python:function:pylint/checkers/similar.py:pylint.checkers.similar.Run",
+          "path": "pylint/checkers/similar.py",
+          "kind": "function",
+          "symbol": "pylint.checkers.similar.Run",
+          "function_id": "pylint/checkers/similar.py::pylint.checkers.similar.Run",
+          "score": 0.4133928571428571,
+          "lines": [
+            876,
+            918
+          ],
+          "snippet_sha256": "sha256:386b9722d576ce24c0dc7c093d2011db0fd57ad02a90031485f5bbbaec960cd1"
+        },
+        {
+          "rank": 9,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/checkers/similar.py:pylint.checkers.similar.Similar.run",
+          "path": "pylint/checkers/similar.py",
+          "kind": "method",
+          "symbol": "pylint.checkers.similar.Similar.run",
+          "function_id": "pylint/checkers/similar.py::pylint.checkers.similar.Similar.run",
+          "score": 0.4133928571428571,
+          "lines": [
+            392,
+            396
+          ],
+          "snippet_sha256": "sha256:c54423d1c2226cf5c78f07b855cf661418454cfecf80cdc3e41bce0ed0e73652"
+        },
+        {
+          "rank": 10,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/checkers/similar.py:pylint.checkers.similar.Similar.append_stream",
+          "path": "pylint/checkers/similar.py",
+          "kind": "method",
+          "symbol": "pylint.checkers.similar.Similar.append_stream",
+          "function_id": "pylint/checkers/similar.py::pylint.checkers.similar.Similar.append_stream",
+          "score": 0.41229508196721315,
+          "lines": [
+            359,
+            390
+          ],
+          "snippet_sha256": "sha256:87b269dcae021579afe35a4043df6e718f9b1ce6614388691f53ff72e8c66737"
+        },
+        {
+          "rank": 11,
+          "item_id": "vgar:pylint-dev__pylint:python:function:pylint/checkers/similar.py:pylint.checkers.similar.remove_successives",
+          "path": "pylint/checkers/similar.py",
+          "kind": "function",
+          "symbol": "pylint.checkers.similar.remove_successives",
+          "function_id": "pylint/checkers/similar.py::pylint.checkers.similar.remove_successives",
+          "score": 0.38924180327868857,
+          "lines": [
+            248,
+            288
+          ],
+          "snippet_sha256": "sha256:bcd6b83e1a583914cf8a01dae23ad068ed1e112650c96b5f473cf7146c0a4819"
+        },
+        {
+          "rank": 12,
+          "item_id": "vgar:pylint-dev__pylint:python:function:pylint/checkers/similar.py:pylint.checkers.similar.hash_lineset",
+          "path": "pylint/checkers/similar.py",
+          "kind": "function",
+          "symbol": "pylint.checkers.similar.hash_lineset",
+          "function_id": "pylint/checkers/similar.py::pylint.checkers.similar.hash_lineset",
+          "score": 0.38798076923076924,
+          "lines": [
+            205,
+            245
+          ],
+          "snippet_sha256": "sha256:71d2935d3e66fc12cf2e3b7da4f45d54c419b4dbcfe50d50ee0374e630d66bb6"
+        },
+        {
+          "rank": 13,
+          "item_id": "vgar:pylint-dev__pylint:python:function:pylint/checkers/similar.py:pylint.checkers.similar.filter_noncode_lines",
+          "path": "pylint/checkers/similar.py",
+          "kind": "function",
+          "symbol": "pylint.checkers.similar.filter_noncode_lines",
+          "function_id": "pylint/checkers/similar.py::pylint.checkers.similar.filter_noncode_lines",
+          "score": 0.38046875,
+          "lines": [
+            291,
+            322
+          ],
+          "snippet_sha256": "sha256:d2fd9138e177e748486dbf5095001cbe66ed2f4166059c1bde9134b1613baa6d"
+        },
+        {
+          "rank": 14,
+          "item_id": "vgar:pylint-dev__pylint:python:function:pylint/checkers/similar.py:pylint.checkers.similar.stripped_lines",
+          "path": "pylint/checkers/similar.py",
+          "kind": "function",
+          "symbol": "pylint.checkers.similar.stripped_lines",
+          "function_id": "pylint/checkers/similar.py::pylint.checkers.similar.stripped_lines",
+          "score": 0.3801136363636364,
+          "lines": [
+            560,
+            652
+          ],
+          "snippet_sha256": "sha256:24a0c3dd982c6c6bc926b29fca887a9285629780b3edccca7efde21a6a0a3e84"
+        },
+        {
+          "rank": 15,
+          "item_id": "vgar:pylint-dev__pylint:python:function:pylint/utils/utils.py:pylint.utils.utils.decoding_stream",
+          "path": "pylint/utils/utils.py",
+          "kind": "function",
+          "symbol": "pylint.utils.utils.decoding_stream",
+          "function_id": "pylint/utils/utils.py::pylint.utils.utils.decoding_stream",
+          "score": 0.37644230769230774,
+          "lines": [
+            164,
+            173
+          ],
+          "snippet_sha256": "sha256:34bf1298d15c308583a10bc5588245174568266f6b91a32b7cc710d19129de83"
+        },
+        {
+          "rank": 16,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/config/option_manager_mixin.py:pylint.config.option_manager_mixin.OptionsManagerMixIn.add_optik_option",
+          "path": "pylint/config/option_manager_mixin.py",
+          "kind": "method",
+          "symbol": "pylint.config.option_manager_mixin.OptionsManagerMixIn.add_optik_option",
+          "function_id": "pylint/config/option_manager_mixin.py::pylint.config.option_manager_mixin.OptionsManagerMixIn.add_optik_option",
+          "score": 0.3697916666666667,
+          "lines": [
+            141,
+            145
+          ],
+          "snippet_sha256": "sha256:f40d7edb96624a7879d84b21baf36b0ffdb864250aaddd8ef7326ea495d29fdc"
+        },
+        {
+          "rank": 17,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.set_option",
+          "path": "pylint/config/arguments_manager.py",
+          "kind": "method",
+          "symbol": "pylint.config.arguments_manager._ArgumentsManager.set_option",
+          "function_id": "pylint/config/arguments_manager.py::pylint.config.arguments_manager._ArgumentsManager.set_option",
+          "score": 0.36955128205128207,
+          "lines": [
+            728,
+            753
+          ],
+          "snippet_sha256": "sha256:a55538f81ec4e01998ce56e079c65031931f0a2a1ac7e0ac55bcf0534e8279c3"
+        },
+        {
+          "rank": 18,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.add_optik_option",
+          "path": "pylint/config/arguments_manager.py",
+          "kind": "method",
+          "symbol": "pylint.config.arguments_manager._ArgumentsManager.add_optik_option",
+          "function_id": "pylint/config/arguments_manager.py::pylint.config.arguments_manager._ArgumentsManager.add_optik_option",
+          "score": 0.3647300469483568,
+          "lines": [
+            357,
+            375
+          ],
+          "snippet_sha256": "sha256:20e28d728c94ebb651cdab5aee3547a890720ebd37053151fa5ba2ca7963b3d9"
+        },
+        {
+          "rank": 19,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.global_set_option",
+          "path": "pylint/config/arguments_manager.py",
+          "kind": "method",
+          "symbol": "pylint.config.arguments_manager._ArgumentsManager.global_set_option",
+          "function_id": "pylint/config/arguments_manager.py::pylint.config.arguments_manager._ArgumentsManager.global_set_option",
+          "score": 0.35913461538461544,
+          "lines": [
+            647,
+            655
+          ],
+          "snippet_sha256": "sha256:3361a55ce7c0d2d3385986fd0e8ff36267bbb62efb0883d1abf2902f8991364b"
+        },
+        {
+          "rank": 20,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.add_option_group",
+          "path": "pylint/config/arguments_manager.py",
+          "kind": "method",
+          "symbol": "pylint.config.arguments_manager._ArgumentsManager.add_option_group",
+          "function_id": "pylint/config/arguments_manager.py::pylint.config.arguments_manager._ArgumentsManager.add_option_group",
+          "score": 0.3584558823529412,
+          "lines": [
+            320,
+            355
+          ],
+          "snippet_sha256": "sha256:98c8b2a66d7d8b6c185887a82db47e9e1d705e9833aeba02689a22da9cd4c552"
+        },
+        {
+          "rank": 21,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.reset_parsers",
+          "path": "pylint/config/arguments_manager.py",
+          "kind": "method",
+          "symbol": "pylint.config.arguments_manager._ArgumentsManager.reset_parsers",
+          "function_id": "pylint/config/arguments_manager.py::pylint.config.arguments_manager._ArgumentsManager.reset_parsers",
+          "score": 0.3556547619047619,
+          "lines": [
+            264,
+            278
+          ],
+          "snippet_sha256": "sha256:78b5c14c93fd025f1e7dc23747cccf56a61bd13561571591dc68e8d0b065c375"
+        },
+        {
+          "rank": 22,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.optik_option",
+          "path": "pylint/config/arguments_manager.py",
+          "kind": "method",
+          "symbol": "pylint.config.arguments_manager._ArgumentsManager.optik_option",
+          "function_id": "pylint/config/arguments_manager.py::pylint.config.arguments_manager._ArgumentsManager.optik_option",
+          "score": 0.3549440298507463,
+          "lines": [
+            377,
+            413
+          ],
+          "snippet_sha256": "sha256:2bfb5d52a75e219a2eadcc34a3d9b016df941867957f1061af33359833a737cd"
+        },
+        {
+          "rank": 23,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/checkers/similar.py:pylint.checkers.similar.Similar._compute_sims",
+          "path": "pylint/checkers/similar.py",
+          "kind": "method",
+          "symbol": "pylint.checkers.similar.Similar._compute_sims",
+          "function_id": "pylint/checkers/similar.py::pylint.checkers.similar.Similar._compute_sims",
+          "score": 0.3533730158730159,
+          "lines": [
+            398,
+            435
+          ],
+          "snippet_sha256": "sha256:3da5414eadb54a0886f8be5af85de5f4d00a2519f836b22eb3adb81d5d3efda2"
+        },
+        {
+          "rank": 24,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/checkers/similar.py:pylint.checkers.similar.Similar._display_sims",
+          "path": "pylint/checkers/similar.py",
+          "kind": "method",
+          "symbol": "pylint.checkers.similar.Similar._display_sims",
+          "function_id": "pylint/checkers/similar.py::pylint.checkers.similar.Similar._display_sims",
+          "score": 0.35288461538461535,
+          "lines": [
+            437,
+            442
+          ],
+          "snippet_sha256": "sha256:7238f3ff27995691ab4f3efe4804c77cdce19f6b6edb2385e4534295fd5105a8"
+        },
+        {
+          "rank": 25,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/checkers/similar.py:pylint.checkers.similar.Similar._get_similarity_report",
+          "path": "pylint/checkers/similar.py",
+          "kind": "method",
+          "symbol": "pylint.checkers.similar.Similar._get_similarity_report",
+          "function_id": "pylint/checkers/similar.py::pylint.checkers.similar.Similar._get_similarity_report",
+          "score": 0.35265151515151516,
+          "lines": [
+            444,
+            462
+          ],
+          "snippet_sha256": "sha256:d5480bdf894fedd67f444f47a48649cb81ea87fcb673c8e1149e90ee90200e8c"
+        },
+        {
+          "rank": 26,
+          "item_id": "vgar:pylint-dev__pylint:python:module:pylint/checkers/similar.py:pylint.checkers.similar",
+          "path": "pylint/checkers/similar.py",
+          "kind": "module",
+          "symbol": "pylint.checkers.similar",
+          "function_id": null,
+          "score": 0.35192307692307695,
+          "lines": [
+            1,
+            923
+          ],
+          "snippet_sha256": "sha256:406fece1f61a073319b541ee7af7dc546fd7bdf6f984c75dd9dd9d6284a9bc62"
+        },
+        {
+          "rank": 27,
+          "item_id": "vgar:pylint-dev__pylint:python:class:pylint/checkers/similar.py:pylint.checkers.similar.SimilarChecker",
+          "path": "pylint/checkers/similar.py",
+          "kind": "class",
+          "symbol": "pylint.checkers.similar.SimilarChecker",
+          "function_id": null,
+          "score": 0.3516509433962265,
+          "lines": [
+            730,
+            858
+          ],
+          "snippet_sha256": "sha256:ddc4697f78e2b4e4fff66a658b4fb2cf1354efda8c3b6d8c78bfe2a2e4ad40cb"
+        },
+        {
+          "rank": 28,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.load_configuration_from_config",
+          "path": "pylint/config/arguments_manager.py",
+          "kind": "method",
+          "symbol": "pylint.config.arguments_manager._ArgumentsManager.load_configuration_from_config",
+          "function_id": "pylint/config/arguments_manager.py::pylint.config.arguments_manager._ArgumentsManager.load_configuration_from_config",
+          "score": 0.3513257575757576,
+          "lines": [
+            585,
+            595
+          ],
+          "snippet_sha256": "sha256:edc16941beef9299b4d7192516650a49158c78d7c8519e4ef258720078910763"
+        },
+        {
+          "rank": 29,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/checkers/similar.py:pylint.checkers.similar.SimilarChecker.close",
+          "path": "pylint/checkers/similar.py",
+          "kind": "method",
+          "symbol": "pylint.checkers.similar.SimilarChecker.close",
+          "function_id": "pylint/checkers/similar.py::pylint.checkers.similar.SimilarChecker.close",
+          "score": 0.3508928571428572,
+          "lines": [
+            828,
+            847
+          ],
+          "snippet_sha256": "sha256:4eacdcfa14afe37ebd2bd7cf2b0e790e3e27cdec63686be0e5ea109be09a4c19"
+        },
+        {
+          "rank": 30,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/checkers/similar.py:pylint.checkers.similar.SimilarChecker.open",
+          "path": "pylint/checkers/similar.py",
+          "kind": "method",
+          "symbol": "pylint.checkers.similar.SimilarChecker.open",
+          "function_id": "pylint/checkers/similar.py::pylint.checkers.similar.SimilarChecker.open",
+          "score": 0.3508928571428572,
+          "lines": [
+            805,
+            808
+          ],
+          "snippet_sha256": "sha256:7310e8e386105c3ddbfa3cca19c17ddc512b591b7f5e634f7a0f6ab0becac531"
+        },
+        {
+          "rank": 31,
+          "item_id": "vgar:pylint-dev__pylint:python:function:pylint/checkers/similar.py:pylint.checkers.similar.register",
+          "path": "pylint/checkers/similar.py",
+          "kind": "function",
+          "symbol": "pylint.checkers.similar.register",
+          "function_id": "pylint/checkers/similar.py::pylint.checkers.similar.register",
+          "score": 0.3508928571428572,
+          "lines": [
+            861,
+            862
+          ],
+          "snippet_sha256": "sha256:49eca55fcc35b6f61b09f8402ce44c1d1d8b0f253bc6f4daaa8435d330bef36e"
+        },
+        {
+          "rank": 32,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/checkers/similar.py:pylint.checkers.similar.Similar.__init__",
+          "path": "pylint/checkers/similar.py",
+          "kind": "method",
+          "symbol": "pylint.checkers.similar.Similar.__init__",
+          "function_id": "pylint/checkers/similar.py::pylint.checkers.similar.Similar.__init__",
+          "score": 0.35048701298701307,
+          "lines": [
+            338,
+            357
+          ],
+          "snippet_sha256": "sha256:0431bb6a8719f52f6b3900d4b55428bb411d868a64fb78e0df880ac4c59f041a"
+        },
+        {
+          "rank": 33,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/checkers/similar.py:pylint.checkers.similar.SimilarChecker.get_map_data",
+          "path": "pylint/checkers/similar.py",
+          "kind": "method",
+          "symbol": "pylint.checkers.similar.SimilarChecker.get_map_data",
+          "function_id": "pylint/checkers/similar.py::pylint.checkers.similar.SimilarChecker.get_map_data",
+          "score": 0.35043103448275864,
+          "lines": [
+            849,
+            851
+          ],
+          "snippet_sha256": "sha256:acfd7eb28035e5457b77967640356bf8e5552395b3ce43556dc03afb7eb41be1"
+        },
+        {
+          "rank": 34,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/checkers/similar.py:pylint.checkers.similar.Similar._iter_sims",
+          "path": "pylint/checkers/similar.py",
+          "kind": "method",
+          "symbol": "pylint.checkers.similar.Similar._iter_sims",
+          "function_id": "pylint/checkers/similar.py::pylint.checkers.similar.Similar._iter_sims",
+          "score": 0.35021186440677965,
+          "lines": [
+            536,
+            542
+          ],
+          "snippet_sha256": "sha256:b3e85515bc4ea7645fdd070448336ccb3857c01486f05bb7f29f0431e6a6cfc9"
+        },
+        {
+          "rank": 35,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/checkers/similar.py:pylint.checkers.similar.SimilarChecker.reduce_map_data",
+          "path": "pylint/checkers/similar.py",
+          "kind": "method",
+          "symbol": "pylint.checkers.similar.SimilarChecker.reduce_map_data",
+          "function_id": "pylint/checkers/similar.py::pylint.checkers.similar.SimilarChecker.reduce_map_data",
+          "score": 0.35021186440677965,
+          "lines": [
+            853,
+            858
+          ],
+          "snippet_sha256": "sha256:8bb5d15f217477a7a4702c151b75ec9e529646f9fdda19860fec85f0d5b20ff6"
+        },
+        {
+          "rank": 36,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/checkers/similar.py:pylint.checkers.similar.SimilarChecker.process_module",
+          "path": "pylint/checkers/similar.py",
+          "kind": "method",
+          "symbol": "pylint.checkers.similar.SimilarChecker.process_module",
+          "function_id": "pylint/checkers/similar.py::pylint.checkers.similar.SimilarChecker.process_module",
+          "score": 0.35,
+          "lines": [
+            810,
+            826
+          ],
+          "snippet_sha256": "sha256:9b9ac397ad25015bd79b80555092d3bcac1eaa0854560a2d74b51f2277268eaa"
+        },
+        {
+          "rank": 37,
+          "item_id": "vgar:pylint-dev__pylint:python:function:pylint/checkers/similar.py:pylint.checkers.similar.report_similarities",
+          "path": "pylint/checkers/similar.py",
+          "kind": "function",
+          "symbol": "pylint.checkers.similar.report_similarities",
+          "function_id": "pylint/checkers/similar.py::pylint.checkers.similar.report_similarities",
+          "score": 0.35,
+          "lines": [
+            718,
+            726
+          ],
+          "snippet_sha256": "sha256:7e2dafa3f69b6c8b64a91ac7c1ebc5364735fa15e810e0fd2a2a2dbd344087b1"
+        },
+        {
+          "rank": 38,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/checkers/similar.py:pylint.checkers.similar.Similar._find_common",
+          "path": "pylint/checkers/similar.py",
+          "kind": "method",
+          "symbol": "pylint.checkers.similar.Similar._find_common",
+          "function_id": "pylint/checkers/similar.py::pylint.checkers.similar.Similar._find_common",
+          "score": 0.34940476190476194,
+          "lines": [
+            464,
+            534
+          ],
+          "snippet_sha256": "sha256:063eaf4bda446c3057f80078f3690dd63f71cd80007b48d25c0d99a75ac0fec4"
+        },
+        {
+          "rank": 39,
+          "item_id": "vgar:pylint-dev__pylint:python:class:pylint/checkers/unicode.py:pylint.checkers.unicode._BadChar",
+          "path": "pylint/checkers/unicode.py",
+          "kind": "class",
+          "symbol": "pylint.checkers.unicode._BadChar",
+          "function_id": null,
+          "score": 0.34659090909090906,
+          "lines": [
+            58,
+            76
+          ],
+          "snippet_sha256": "sha256:550db5bb45b56589ea23ae4643ae8975bb899d8ac063d932f1aade9f90ed7a40"
+        },
+        {
+          "rank": 40,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/checkers/unicode.py:pylint.checkers.unicode._BadChar.human_code",
+          "path": "pylint/checkers/unicode.py",
+          "kind": "method",
+          "symbol": "pylint.checkers.unicode._BadChar.human_code",
+          "function_id": "pylint/checkers/unicode.py::pylint.checkers.unicode._BadChar.human_code",
+          "score": 0.3458333333333334,
+          "lines": [
+            74,
+            76
+          ],
+          "snippet_sha256": "sha256:bee7b1f7b01d565c40637faf5330652f899a01cb5cb224594ff4306d539393d2"
+        },
+        {
+          "rank": 41,
+          "item_id": "vgar:pylint-dev__pylint:python:class:pylint/config/option_manager_mixin.py:pylint.config.option_manager_mixin.OptionsManagerMixIn",
+          "path": "pylint/config/option_manager_mixin.py",
+          "kind": "class",
+          "symbol": "pylint.config.option_manager_mixin.OptionsManagerMixIn",
+          "function_id": null,
+          "score": 0.3303571428571429,
+          "lines": [
+            63,
+            346
+          ],
+          "snippet_sha256": "sha256:d74c4290b6dcfd41275ec161df9ba68daa74f67b8904e029829b1efef2f2b826"
+        },
+        {
+          "rank": 42,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.options_providers.setter",
+          "path": "pylint/config/arguments_manager.py",
+          "kind": "method",
+          "symbol": "pylint.config.arguments_manager._ArgumentsManager.options_providers",
+          "function_id": "pylint/config/arguments_manager.py::pylint.config.arguments_manager._ArgumentsManager.options_providers@definition:117:123",
+          "score": 0.32916666666666666,
+          "lines": [
+            118,
+            123
+          ],
+          "snippet_sha256": "sha256:0a4629816579afa2700e908df5f452efa8dd54420d6d7f034f20d887a6cd9aa8"
+        },
+        {
+          "rank": 43,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.cb_set_provider_option",
+          "path": "pylint/config/arguments_manager.py",
+          "kind": "method",
+          "symbol": "pylint.config.arguments_manager._ArgumentsManager.cb_set_provider_option",
+          "function_id": "pylint/config/arguments_manager.py::pylint.config.arguments_manager._ArgumentsManager.cb_set_provider_option",
+          "score": 0.32812500000000006,
+          "lines": [
+            629,
+            645
+          ],
+          "snippet_sha256": "sha256:737a3b71a32582302ee9eea61104c5c621f0d949c5f1ae186711a1e639c6d809"
+        },
+        {
+          "rank": 44,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.config.setter",
+          "path": "pylint/config/arguments_manager.py",
+          "kind": "method",
+          "symbol": "pylint.config.arguments_manager._ArgumentsManager.config",
+          "function_id": "pylint/config/arguments_manager.py::pylint.config.arguments_manager._ArgumentsManager.config@definition:104:106",
+          "score": 0.3252118644067797,
+          "lines": [
+            105,
+            106
+          ],
+          "snippet_sha256": "sha256:ec43768f14f661296f632af3e0518aba693b1bbb391b649bf8489ca2d234e57c"
+        },
+        {
+          "rank": 45,
+          "item_id": "vgar:pylint-dev__pylint:python:function:pylint/config/option_manager_mixin.py:pylint.config.option_manager_mixin._patch_optparse",
+          "path": "pylint/config/option_manager_mixin.py",
+          "kind": "function",
+          "symbol": "pylint.config.option_manager_mixin._patch_optparse",
+          "function_id": "pylint/config/option_manager_mixin.py::pylint.config.option_manager_mixin._patch_optparse",
+          "score": 0.32479508196721313,
+          "lines": [
+            53,
+            60
+          ],
+          "snippet_sha256": "sha256:72c451396070240b8495409c13afa76b31974b7dfd930edc477f86f06812455f"
+        },
+        {
+          "rank": 46,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.options_providers",
+          "path": "pylint/config/arguments_manager.py",
+          "kind": "method",
+          "symbol": "pylint.config.arguments_manager._ArgumentsManager.options_providers",
+          "function_id": "pylint/config/arguments_manager.py::pylint.config.arguments_manager._ArgumentsManager.options_providers@definition:108:115",
+          "score": 0.32403846153846155,
+          "lines": [
+            109,
+            115
+          ],
+          "snippet_sha256": "sha256:f67590c304554596b09b99b613c4b46d877ee36d1c383c1a66b59cb57c414d21"
+        },
+        {
+          "rank": 47,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.read_config_file",
+          "path": "pylint/config/arguments_manager.py",
+          "kind": "method",
+          "symbol": "pylint.config.arguments_manager._ArgumentsManager.read_config_file",
+          "function_id": "pylint/config/arguments_manager.py::pylint.config.arguments_manager._ArgumentsManager.read_config_file",
+          "score": 0.32403846153846155,
+          "lines": [
+            484,
+            523
+          ],
+          "snippet_sha256": "sha256:f096d6cdded6506ced96f982618964bca7303ebbb9ab25c7ba2970c922802048"
+        },
+        {
+          "rank": 48,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.load_command_line_configuration",
+          "path": "pylint/config/arguments_manager.py",
+          "kind": "method",
+          "symbol": "pylint.config.arguments_manager._ArgumentsManager.load_command_line_configuration",
+          "function_id": "pylint/config/arguments_manager.py::pylint.config.arguments_manager._ArgumentsManager.load_command_line_configuration",
+          "score": 0.3238636363636364,
+          "lines": [
+            597,
+            617
+          ],
+          "snippet_sha256": "sha256:0403c72325dde47875e38ef7dba8e958bc228212ff5507c13c4c7f81a91d43b8"
+        },
+        {
+          "rank": 49,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.register_options_provider",
+          "path": "pylint/config/arguments_manager.py",
+          "kind": "method",
+          "symbol": "pylint.config.arguments_manager._ArgumentsManager.register_options_provider",
+          "function_id": "pylint/config/arguments_manager.py::pylint.config.arguments_manager._ArgumentsManager.register_options_provider",
+          "score": 0.3238636363636364,
+          "lines": [
+            280,
+            318
+          ],
+          "snippet_sha256": "sha256:97b1862302b65d46c86a2cd4cd0282a76136fd16660687d973d7c40a7c0e774e"
+        },
+        {
+          "rank": 50,
+          "item_id": "vgar:pylint-dev__pylint:python:class:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager",
+          "path": "pylint/config/arguments_manager.py",
+          "kind": "class",
+          "symbol": "pylint.config.arguments_manager._ArgumentsManager",
+          "function_id": null,
+          "score": 0.3217592592592593,
+          "lines": [
+            60,
+            753
+          ],
+          "snippet_sha256": "sha256:59dbd0724bf216356e4d3118b4a0fc83b6c2f755a78647143cd9c34801cd201e"
+        },
+        {
+          "rank": 51,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.config",
+          "path": "pylint/config/arguments_manager.py",
+          "kind": "method",
+          "symbol": "pylint.config.arguments_manager._ArgumentsManager.config",
+          "function_id": "pylint/config/arguments_manager.py::pylint.config.arguments_manager._ArgumentsManager.config@definition:99:102",
+          "score": 0.32112068965517243,
+          "lines": [
+            100,
+            102
+          ],
+          "snippet_sha256": "sha256:f17286c9894ffa98bc81d9cfe84914436e06669559bf628e93f30712e1cad25f"
+        },
+        {
+          "rank": 52,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.load_config_file",
+          "path": "pylint/config/arguments_manager.py",
+          "kind": "method",
+          "symbol": "pylint.config.arguments_manager._ArgumentsManager.load_config_file",
+          "function_id": "pylint/config/arguments_manager.py::pylint.config.arguments_manager._ArgumentsManager.load_config_file",
+          "score": 0.3205645161290323,
+          "lines": [
+            559,
+            573
+          ],
+          "snippet_sha256": "sha256:5cef3196a79bf1882091a0deb1667a12c72d62ba89328f01934684c30dedd582"
+        },
+        {
+          "rank": 53,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.load_provider_defaults",
+          "path": "pylint/config/arguments_manager.py",
+          "kind": "method",
+          "symbol": "pylint.config.arguments_manager._ArgumentsManager.load_provider_defaults",
+          "function_id": "pylint/config/arguments_manager.py::pylint.config.arguments_manager._ArgumentsManager.load_provider_defaults",
+          "score": 0.3204365079365079,
+          "lines": [
+            472,
+            482
+          ],
+          "snippet_sha256": "sha256:0464b1f78bc61e781ca0547e1e6d1b39530eafe36fa116c8a6bf4d5ca72807fa"
+        },
+        {
+          "rank": 54,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.load_configuration",
+          "path": "pylint/config/arguments_manager.py",
+          "kind": "method",
+          "symbol": "pylint.config.arguments_manager._ArgumentsManager.load_configuration",
+          "function_id": "pylint/config/arguments_manager.py::pylint.config.arguments_manager._ArgumentsManager.load_configuration",
+          "score": 0.3203125,
+          "lines": [
+            575,
+            583
+          ],
+          "snippet_sha256": "sha256:534a7e9083fee6dcc27789517ee34a2b1d4428b6a44c6fdce26aeaca9436a30b"
+        },
+        {
+          "rank": 55,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.generate_config",
+          "path": "pylint/config/arguments_manager.py",
+          "kind": "method",
+          "symbol": "pylint.config.arguments_manager._ArgumentsManager.generate_config",
+          "function_id": "pylint/config/arguments_manager.py::pylint.config.arguments_manager._ArgumentsManager.generate_config",
+          "score": 0.3199626865671642,
+          "lines": [
+            415,
+            470
+          ],
+          "snippet_sha256": "sha256:34f63db948c1983ee604739085c691501f17011ebc87c25e2048652db1f9b516"
+        },
+        {
+          "rank": 56,
+          "item_id": "vgar:pylint-dev__pylint:python:class:pylint/message/message.py:pylint.message.message.Message",
+          "path": "pylint/message/message.py",
+          "kind": "class",
+          "symbol": "pylint.message.message.Message",
+          "function_id": null,
+          "score": 0.2897058823529412,
+          "lines": [
+            16,
+            79
+          ],
+          "snippet_sha256": "sha256:44dc21b141e77f96230923efc87f3e228eede05b402db212bd8c7dcfaa216276"
+        },
+        {
+          "rank": 57,
+          "item_id": "vgar:pylint-dev__pylint:python:file:pylint/checkers/similar.py",
+          "path": "pylint/checkers/similar.py",
+          "kind": "file",
+          "symbol": "pylint/checkers/similar.py",
+          "function_id": null,
+          "score": 0.28942307692307695,
+          "lines": [
+            1,
+            923
+          ],
+          "snippet_sha256": "sha256:406fece1f61a073319b541ee7af7dc546fd7bdf6f984c75dd9dd9d6284a9bc62"
+        },
+        {
+          "rank": 58,
+          "item_id": "vgar:pylint-dev__pylint:python:module:pylint/message/__init__.py:pylint.message",
+          "path": "pylint/message/__init__.py",
+          "kind": "module",
+          "symbol": "pylint.message",
+          "function_id": null,
+          "score": 0.28942307692307695,
+          "lines": [
+            1,
+            18
+          ],
+          "snippet_sha256": "sha256:3ab880927c2677eccfd57c6d68065d92cd6b531c085d32e3603f99eb84891ec5"
+        },
+        {
+          "rank": 59,
+          "item_id": "vgar:pylint-dev__pylint:python:class:pylint/checkers/similar.py:pylint.checkers.similar.Commonality",
+          "path": "pylint/checkers/similar.py",
+          "kind": "class",
+          "symbol": "pylint.checkers.similar.Commonality",
+          "function_id": null,
+          "score": 0.2891509433962264,
+          "lines": [
+            325,
+            332
+          ],
+          "snippet_sha256": "sha256:1bdf3e7b4a4624e893f25821f702c6662b8954c1cfe9f362122e6845168177ff"
+        },
+        {
+          "rank": 60,
+          "item_id": "vgar:pylint-dev__pylint:python:module:pylint/testutils/output_line.py:pylint.testutils.output_line",
+          "path": "pylint/testutils/output_line.py",
+          "kind": "module",
+          "symbol": "pylint.testutils.output_line",
+          "function_id": null,
+          "score": 0.2891509433962264,
+          "lines": [
+            1,
+            197
+          ],
+          "snippet_sha256": "sha256:bb2fec0599898f335cfa7c1a0a4b5ed4107845348ebdc976b135bc5d6e8b75de"
+        },
+        {
+          "rank": 61,
+          "item_id": "vgar:pylint-dev__pylint:python:class:pylint/checkers/similar.py:pylint.checkers.similar.LineSet",
+          "path": "pylint/checkers/similar.py",
+          "kind": "class",
+          "symbol": "pylint.checkers.similar.LineSet",
+          "function_id": null,
+          "score": 0.2888888888888889,
+          "lines": [
+            656,
+            704
+          ],
+          "snippet_sha256": "sha256:54dcd7fbd113e5bb7f9a18d38bb5649c63d4dd7347d612fdaf9e169bf70cb202"
+        },
+        {
+          "rank": 62,
+          "item_id": "vgar:pylint-dev__pylint:python:class:pylint/checkers/similar.py:pylint.checkers.similar.LineSpecifs",
+          "path": "pylint/checkers/similar.py",
+          "kind": "class",
+          "symbol": "pylint.checkers.similar.LineSpecifs",
+          "function_id": null,
+          "score": 0.2888888888888889,
+          "lines": [
+            71,
+            73
+          ],
+          "snippet_sha256": "sha256:1d1bc8b53c24e82cb4a25f42598ecd832a102b53a9a9d20b6206fd229c078156"
+        },
+        {
+          "rank": 63,
+          "item_id": "vgar:pylint-dev__pylint:python:class:pylint/checkers/similar.py:pylint.checkers.similar.LinesChunk",
+          "path": "pylint/checkers/similar.py",
+          "kind": "class",
+          "symbol": "pylint.checkers.similar.LinesChunk",
+          "function_id": null,
+          "score": 0.2888888888888889,
+          "lines": [
+            110,
+            142
+          ],
+          "snippet_sha256": "sha256:e8b2785d9dd032d594f3e6b64a311263c48924ae2b2aa2da509f80cc6b43ed33"
+        },
+        {
+          "rank": 64,
+          "item_id": "vgar:pylint-dev__pylint:python:class:pylint/typing.py:pylint.typing.MessageLocationTuple",
+          "path": "pylint/typing.py",
+          "kind": "class",
+          "symbol": "pylint.typing.MessageLocationTuple",
+          "function_id": null,
+          "score": 0.2888888888888889,
+          "lines": [
+            68,
+            78
+          ],
+          "snippet_sha256": "sha256:54712127f9491a336f54d061dbd99e3e2c2ad98b171895d7a149dbaeb0519e97"
+        },
+        {
+          "rank": 65,
+          "item_id": "vgar:pylint-dev__pylint:python:class:pylint/checkers/similar.py:pylint.checkers.similar.SuccessiveLinesLimits",
+          "path": "pylint/checkers/similar.py",
+          "kind": "class",
+          "symbol": "pylint.checkers.similar.SuccessiveLinesLimits",
+          "function_id": null,
+          "score": 0.28863636363636364,
+          "lines": [
+            145,
+            170
+          ],
+          "snippet_sha256": "sha256:1572ade9c06c58862eb32c56cca9a24a995e1f2cb02588f9cc43f4879a110caa"
+        },
+        {
+          "rank": 66,
+          "item_id": "vgar:pylint-dev__pylint:python:class:pylint/checkers/similar.py:pylint.checkers.similar.CplSuccessiveLinesLimits",
+          "path": "pylint/checkers/similar.py",
+          "kind": "class",
+          "symbol": "pylint.checkers.similar.CplSuccessiveLinesLimits",
+          "function_id": null,
+          "score": 0.2883928571428572,
+          "lines": [
+            87,
+            102
+          ],
+          "snippet_sha256": "sha256:7661b612726436fbd17d9ec6489ee7a9b1aded7859d6400e7256d479614838d9"
+        },
+        {
+          "rank": 67,
+          "item_id": "vgar:pylint-dev__pylint:python:class:pylint/checkers/similar.py:pylint.checkers.similar.LineSetStartCouple",
+          "path": "pylint/checkers/similar.py",
+          "kind": "class",
+          "symbol": "pylint.checkers.similar.LineSetStartCouple",
+          "function_id": null,
+          "score": 0.2883928571428572,
+          "lines": [
+            173,
+            199
+          ],
+          "snippet_sha256": "sha256:1727f508d149f04ddc9dcfdf6f87c308f2bfc4dd03bee298d99d21502b0813eb"
+        },
+        {
+          "rank": 68,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/checkers/similar.py:pylint.checkers.similar.SimilarChecker.__init__",
+          "path": "pylint/checkers/similar.py",
+          "kind": "method",
+          "symbol": "pylint.checkers.similar.SimilarChecker.__init__",
+          "function_id": "pylint/checkers/similar.py::pylint.checkers.similar.SimilarChecker.__init__",
+          "score": 0.28793103448275864,
+          "lines": [
+            794,
+            803
+          ],
+          "snippet_sha256": "sha256:73dc37e3a3d139d1ab8807451515781a1be394954dd51af3c546d91f0cd2e558"
+        },
+        {
+          "rank": 69,
+          "item_id": "vgar:pylint-dev__pylint:python:module:pylint/constants.py:pylint.constants",
+          "path": "pylint/constants.py",
+          "kind": "module",
+          "symbol": "pylint.constants",
+          "function_id": null,
+          "score": 0.28461538461538466,
+          "lines": [
+            1,
+            210
+          ],
+          "snippet_sha256": "sha256:95e77f10e76fcf6db61eb36116d74c19cd08fdc4c0a49e347dbd5c656416b047"
+        },
+        {
+          "rank": 70,
+          "item_id": "vgar:pylint-dev__pylint:python:module:pylint/interfaces.py:pylint.interfaces",
+          "path": "pylint/interfaces.py",
+          "kind": "module",
+          "symbol": "pylint.interfaces",
+          "function_id": null,
+          "score": 0.28461538461538466,
+          "lines": [
+            1,
+            112
+          ],
+          "snippet_sha256": "sha256:d70f58763fb3cd6e3f50d2c318f100964fa964673ece1ee192c9fed964e9a9f3"
+        },
+        {
+          "rank": 71,
+          "item_id": "vgar:pylint-dev__pylint:python:module:pylint/typing.py:pylint.typing",
+          "path": "pylint/typing.py",
+          "kind": "module",
+          "symbol": "pylint.typing",
+          "function_id": null,
+          "score": 0.28461538461538466,
+          "lines": [
+            1,
+            120
+          ],
+          "snippet_sha256": "sha256:0edbb9509cb2366d33c6d7a50109acdd81342ed9a9e78a5cd8e7e9a789ca82c6"
+        },
+        {
+          "rank": 72,
+          "item_id": "vgar:pylint-dev__pylint:python:module:pylint/checkers/__init__.py:pylint.checkers",
+          "path": "pylint/checkers/__init__.py",
+          "kind": "module",
+          "symbol": "pylint.checkers",
+          "function_id": null,
+          "score": 0.2844339622641509,
+          "lines": [
+            1,
+            140
+          ],
+          "snippet_sha256": "sha256:207e74fced04ff40367eeb50d57fedd45825039b4043c2aacffc1aa405df66be"
+        },
+        {
+          "rank": 73,
+          "item_id": "vgar:pylint-dev__pylint:python:module:pylint/checkers/unicode.py:pylint.checkers.unicode",
+          "path": "pylint/checkers/unicode.py",
+          "kind": "module",
+          "symbol": "pylint.checkers.unicode",
+          "function_id": null,
+          "score": 0.2844339622641509,
+          "lines": [
+            1,
+            540
+          ],
+          "snippet_sha256": "sha256:7b1760c231905b299bcad4de06989d0564322ddd5d90bc3534b8c70f9971e3ec"
+        },
+        {
+          "rank": 74,
+          "item_id": "vgar:pylint-dev__pylint:python:module:pylint/lint/__init__.py:pylint.lint",
+          "path": "pylint/lint/__init__.py",
+          "kind": "module",
+          "symbol": "pylint.lint",
+          "function_id": null,
+          "score": 0.2844339622641509,
+          "lines": [
+            1,
+            44
+          ],
+          "snippet_sha256": "sha256:a11956d78cf0bb03be6b49d0d87511e2dda912b8d15cecdffe7f6ff000779379"
+        },
+        {
+          "rank": 75,
+          "item_id": "vgar:pylint-dev__pylint:python:module:pylint/utils/__init__.py:pylint.utils",
+          "path": "pylint/utils/__init__.py",
+          "kind": "module",
+          "symbol": "pylint.utils",
+          "function_id": null,
+          "score": 0.2844339622641509,
+          "lines": [
+            1,
+            56
+          ],
+          "snippet_sha256": "sha256:71f5316d9e71e077a4a4db20e074f97aeb26f76a31c3bc487e3fe754923ec06b"
+        },
+        {
+          "rank": 76,
+          "item_id": "vgar:pylint-dev__pylint:python:module:pylint/reporters/ureports/nodes.py:pylint.reporters.ureports.nodes",
+          "path": "pylint/reporters/ureports/nodes.py",
+          "kind": "module",
+          "symbol": "pylint.reporters.ureports.nodes",
+          "function_id": null,
+          "score": 0.28425925925925927,
+          "lines": [
+            1,
+            191
+          ],
+          "snippet_sha256": "sha256:bb4319ba878eb6dba28eea151810fb13b4459980981272245d82f0b4dccd72b7"
+        },
+        {
+          "rank": 77,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/config/option_manager_mixin.py:pylint.config.option_manager_mixin.OptionsManagerMixIn.__init__",
+          "path": "pylint/config/option_manager_mixin.py",
+          "kind": "method",
+          "symbol": "pylint.config.option_manager_mixin.OptionsManagerMixIn.__init__",
+          "function_id": "pylint/config/option_manager_mixin.py::pylint.config.option_manager_mixin.OptionsManagerMixIn.__init__",
+          "score": 0.2692307692307693,
+          "lines": [
+            66,
+            81
+          ],
+          "snippet_sha256": "sha256:67f54c055abfb75bf3e938cceaaa44701a7b8d28c69dbd1fed70297e70aaaabf"
+        },
+        {
+          "rank": 78,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.__init__",
+          "path": "pylint/config/arguments_manager.py",
+          "kind": "method",
+          "symbol": "pylint.config.arguments_manager._ArgumentsManager.__init__",
+          "function_id": "pylint/config/arguments_manager.py::pylint.config.arguments_manager._ArgumentsManager.__init__",
+          "score": 0.26666666666666666,
+          "lines": [
+            63,
+            97
+          ],
+          "snippet_sha256": "sha256:482870a8f16d38a726c91edff453e4eb4d1fc77253e894a11993405deea19a18"
+        },
+        {
+          "rank": 79,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager._add_parser_option",
+          "path": "pylint/config/arguments_manager.py",
+          "kind": "method",
+          "symbol": "pylint.config.arguments_manager._ArgumentsManager._add_parser_option",
+          "function_id": "pylint/config/arguments_manager.py::pylint.config.arguments_manager._ArgumentsManager._add_parser_option",
+          "score": 0.26639344262295084,
+          "lines": [
+            159,
+            234
+          ],
+          "snippet_sha256": "sha256:1f17b74e199d6158ea84019293a5fa5b4069051e812e234f908cdff35a973fce"
+        },
+        {
+          "rank": 80,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager._add_arguments_to_parser",
+          "path": "pylint/config/arguments_manager.py",
+          "kind": "method",
+          "symbol": "pylint.config.arguments_manager._ArgumentsManager._add_arguments_to_parser",
+          "function_id": "pylint/config/arguments_manager.py::pylint.config.arguments_manager._ArgumentsManager._add_arguments_to_parser",
+          "score": 0.2661290322580645,
+          "lines": [
+            142,
+            156
+          ],
+          "snippet_sha256": "sha256:b57437df32e3ddb393be8c71cf4b7dc0290717038b983986293a7c99da92f09d"
+        },
+        {
+          "rank": 81,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/config/option_manager_mixin.py:pylint.config.option_manager_mixin.OptionsManagerMixIn._parse_toml",
+          "path": "pylint/config/option_manager_mixin.py",
+          "kind": "method",
+          "symbol": "pylint.config.option_manager_mixin.OptionsManagerMixIn._parse_toml",
+          "function_id": "pylint/config/option_manager_mixin.py::pylint.config.option_manager_mixin.OptionsManagerMixIn._parse_toml",
+          "score": 0.2653846153846154,
+          "lines": [
+            271,
+            301
+          ],
+          "snippet_sha256": "sha256:af154972164bcf23f865905f59271319b28f1c710f3746d2aafd018b385cbe19"
+        },
+        {
+          "rank": 82,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager._register_options_provider",
+          "path": "pylint/config/arguments_manager.py",
+          "kind": "method",
+          "symbol": "pylint.config.arguments_manager._ArgumentsManager._register_options_provider",
+          "function_id": "pylint/config/arguments_manager.py::pylint.config.arguments_manager._ArgumentsManager._register_options_provider",
+          "score": 0.2627118644067797,
+          "lines": [
+            125,
+            140
+          ],
+          "snippet_sha256": "sha256:5b71ee82d50192008c44b89852dfa655d3b49b5fe01210acb416b2e68d8318d4"
+        },
+        {
+          "rank": 83,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager._load_default_argument_values",
+          "path": "pylint/config/arguments_manager.py",
+          "kind": "method",
+          "symbol": "pylint.config.arguments_manager._ArgumentsManager._load_default_argument_values",
+          "function_id": "pylint/config/arguments_manager.py::pylint.config.arguments_manager._ArgumentsManager._load_default_argument_values",
+          "score": 0.2625,
+          "lines": [
+            236,
+            238
+          ],
+          "snippet_sha256": "sha256:e7a4c0dd226879eb24a2f89c3508f580707e93e51572a879b51ae7ade0ce1c60"
+        },
+        {
+          "rank": 84,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager._parse_command_line_configuration",
+          "path": "pylint/config/arguments_manager.py",
+          "kind": "method",
+          "symbol": "pylint.config.arguments_manager._ArgumentsManager._parse_command_line_configuration",
+          "function_id": "pylint/config/arguments_manager.py::pylint.config.arguments_manager._ArgumentsManager._parse_command_line_configuration",
+          "score": 0.2619047619047619,
+          "lines": [
+            252,
+            262
+          ],
+          "snippet_sha256": "sha256:1df953ddcca1ec490b00e4afecda8b12cb096e53b910b6ef415ca87808f531b5"
+        },
+        {
+          "rank": 85,
+          "item_id": "vgar:pylint-dev__pylint:python:module:pylint/config/arguments_manager.py:pylint.config.arguments_manager",
+          "path": "pylint/config/arguments_manager.py",
+          "kind": "module",
+          "symbol": "pylint.config.arguments_manager",
+          "function_id": null,
+          "score": 0.2592592592592593,
+          "lines": [
+            1,
+            754
+          ],
+          "snippet_sha256": "sha256:d2a785b375088a4157f12cce619a3893784a861489105f0bbf2d6277444aba25"
+        },
+        {
+          "rank": 86,
+          "item_id": "vgar:pylint-dev__pylint:python:class:pylint/lint/pylinter.py:pylint.lint.pylinter.PyLinter",
+          "path": "pylint/lint/pylinter.py",
+          "kind": "class",
+          "symbol": "pylint.lint.pylinter.PyLinter",
+          "function_id": null,
+          "score": 0.2592592592592593,
+          "lines": [
+            191,
+            1477
+          ],
+          "snippet_sha256": "sha256:c33468359b743421be488af39ecac41e2e0939462c25f6e65601a98346189e35"
+        },
+        {
+          "rank": 87,
+          "item_id": "vgar:pylint-dev__pylint:python:class:pylint/pyreverse/main.py:pylint.pyreverse.main.Run",
+          "path": "pylint/pyreverse/main.py",
+          "kind": "class",
+          "symbol": "pylint.pyreverse.main.Run",
+          "function_id": null,
+          "score": 0.2592592592592593,
+          "lines": [
+            205,
+            243
+          ],
+          "snippet_sha256": "sha256:ab8ef173d6c6847485ee4e728f90e4b1ce804751782f602ed125bc2573e6c02b"
+        },
+        {
+          "rank": 88,
+          "item_id": "vgar:pylint-dev__pylint:python:class:pylint/config/configuration_mixin.py:pylint.config.configuration_mixin.ConfigurationMixIn",
+          "path": "pylint/config/configuration_mixin.py",
+          "kind": "class",
+          "symbol": "pylint.config.configuration_mixin.ConfigurationMixIn",
+          "function_id": null,
+          "score": 0.25892857142857145,
+          "lines": [
+            11,
+            35
+          ],
+          "snippet_sha256": "sha256:690a46281749b6c57cacbab75a484333b56974086b3cc895df20859ba33475bf"
+        },
+        {
+          "rank": 89,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager._generate_config_file",
+          "path": "pylint/config/arguments_manager.py",
+          "kind": "method",
+          "symbol": "pylint.config.arguments_manager._ArgumentsManager._generate_config_file",
+          "function_id": "pylint/config/arguments_manager.py::pylint.config.arguments_manager._ArgumentsManager._generate_config_file",
+          "score": 0.2584745762711865,
+          "lines": [
+            657,
+            726
+          ],
+          "snippet_sha256": "sha256:c59c454434cd9a36caa7969d3cbcdfd22e566aca98b2d0ab8b34c1413810f65f"
+        },
+        {
+          "rank": 90,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager._parse_configuration_file",
+          "path": "pylint/config/arguments_manager.py",
+          "kind": "method",
+          "symbol": "pylint.config.arguments_manager._ArgumentsManager._parse_configuration_file",
+          "function_id": "pylint/config/arguments_manager.py::pylint.config.arguments_manager._ArgumentsManager._parse_configuration_file",
+          "score": 0.2580645161290323,
+          "lines": [
+            240,
+            250
+          ],
+          "snippet_sha256": "sha256:2c40a4d51206f4cb3a54446c243cb8cbfb32dc2ce9013563660b0b4f8da2f4ae"
+        },
+        {
+          "rank": 91,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager._parse_toml",
+          "path": "pylint/config/arguments_manager.py",
+          "kind": "method",
+          "symbol": "pylint.config.arguments_manager._ArgumentsManager._parse_toml",
+          "function_id": "pylint/config/arguments_manager.py::pylint.config.arguments_manager._ArgumentsManager._parse_toml",
+          "score": 0.25769230769230766,
+          "lines": [
+            526,
+            557
+          ],
+          "snippet_sha256": "sha256:49042377f614c3042a6a8088b08db22f2aa3b672a9186b36e296f6a2ce3471c4"
+        }
+      ],
+      "rank_order": [
+        "vgar:pylint-dev__pylint:python:function:pylint/checkers/similar.py:pylint.checkers.similar.usage",
+        "vgar:pylint-dev__pylint:python:method:pylint/checkers/unicode.py:pylint.checkers.unicode._BadChar.description",
+        "vgar:pylint-dev__pylint:python:method:pylint/config/option_manager_mixin.py:pylint.config.option_manager_mixin.OptionsManagerMixIn.help",
+        "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.help",
+        "vgar:pylint-dev__pylint:python:class:pylint/checkers/similar.py:pylint.checkers.similar.Similar",
+        "vgar:pylint-dev__pylint:python:method:pylint/checkers/similar.py:pylint.checkers.similar.Similar.get_map_data",
+        "vgar:pylint-dev__pylint:python:method:pylint/checkers/similar.py:pylint.checkers.similar.Similar.combine_mapreduce_data",
+        "vgar:pylint-dev__pylint:python:function:pylint/checkers/similar.py:pylint.checkers.similar.Run",
+        "vgar:pylint-dev__pylint:python:method:pylint/checkers/similar.py:pylint.checkers.similar.Similar.run",
+        "vgar:pylint-dev__pylint:python:method:pylint/checkers/similar.py:pylint.checkers.similar.Similar.append_stream",
+        "vgar:pylint-dev__pylint:python:function:pylint/checkers/similar.py:pylint.checkers.similar.remove_successives",
+        "vgar:pylint-dev__pylint:python:function:pylint/checkers/similar.py:pylint.checkers.similar.hash_lineset",
+        "vgar:pylint-dev__pylint:python:function:pylint/checkers/similar.py:pylint.checkers.similar.filter_noncode_lines",
+        "vgar:pylint-dev__pylint:python:function:pylint/checkers/similar.py:pylint.checkers.similar.stripped_lines",
+        "vgar:pylint-dev__pylint:python:function:pylint/utils/utils.py:pylint.utils.utils.decoding_stream",
+        "vgar:pylint-dev__pylint:python:method:pylint/config/option_manager_mixin.py:pylint.config.option_manager_mixin.OptionsManagerMixIn.add_optik_option",
+        "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.set_option",
+        "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.add_optik_option",
+        "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.global_set_option",
+        "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.add_option_group",
+        "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.reset_parsers",
+        "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.optik_option",
+        "vgar:pylint-dev__pylint:python:method:pylint/checkers/similar.py:pylint.checkers.similar.Similar._compute_sims",
+        "vgar:pylint-dev__pylint:python:method:pylint/checkers/similar.py:pylint.checkers.similar.Similar._display_sims",
+        "vgar:pylint-dev__pylint:python:method:pylint/checkers/similar.py:pylint.checkers.similar.Similar._get_similarity_report",
+        "vgar:pylint-dev__pylint:python:module:pylint/checkers/similar.py:pylint.checkers.similar",
+        "vgar:pylint-dev__pylint:python:class:pylint/checkers/similar.py:pylint.checkers.similar.SimilarChecker",
+        "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.load_configuration_from_config",
+        "vgar:pylint-dev__pylint:python:method:pylint/checkers/similar.py:pylint.checkers.similar.SimilarChecker.close",
+        "vgar:pylint-dev__pylint:python:method:pylint/checkers/similar.py:pylint.checkers.similar.SimilarChecker.open",
+        "vgar:pylint-dev__pylint:python:function:pylint/checkers/similar.py:pylint.checkers.similar.register",
+        "vgar:pylint-dev__pylint:python:method:pylint/checkers/similar.py:pylint.checkers.similar.Similar.__init__",
+        "vgar:pylint-dev__pylint:python:method:pylint/checkers/similar.py:pylint.checkers.similar.SimilarChecker.get_map_data",
+        "vgar:pylint-dev__pylint:python:method:pylint/checkers/similar.py:pylint.checkers.similar.Similar._iter_sims",
+        "vgar:pylint-dev__pylint:python:method:pylint/checkers/similar.py:pylint.checkers.similar.SimilarChecker.reduce_map_data",
+        "vgar:pylint-dev__pylint:python:method:pylint/checkers/similar.py:pylint.checkers.similar.SimilarChecker.process_module",
+        "vgar:pylint-dev__pylint:python:function:pylint/checkers/similar.py:pylint.checkers.similar.report_similarities",
+        "vgar:pylint-dev__pylint:python:method:pylint/checkers/similar.py:pylint.checkers.similar.Similar._find_common",
+        "vgar:pylint-dev__pylint:python:class:pylint/checkers/unicode.py:pylint.checkers.unicode._BadChar",
+        "vgar:pylint-dev__pylint:python:method:pylint/checkers/unicode.py:pylint.checkers.unicode._BadChar.human_code",
+        "vgar:pylint-dev__pylint:python:class:pylint/config/option_manager_mixin.py:pylint.config.option_manager_mixin.OptionsManagerMixIn",
+        "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.options_providers.setter",
+        "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.cb_set_provider_option",
+        "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.config.setter",
+        "vgar:pylint-dev__pylint:python:function:pylint/config/option_manager_mixin.py:pylint.config.option_manager_mixin._patch_optparse",
+        "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.options_providers",
+        "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.read_config_file",
+        "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.load_command_line_configuration",
+        "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.register_options_provider",
+        "vgar:pylint-dev__pylint:python:class:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager",
+        "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.config",
+        "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.load_config_file",
+        "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.load_provider_defaults",
+        "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.load_configuration",
+        "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.generate_config",
+        "vgar:pylint-dev__pylint:python:class:pylint/message/message.py:pylint.message.message.Message",
+        "vgar:pylint-dev__pylint:python:file:pylint/checkers/similar.py",
+        "vgar:pylint-dev__pylint:python:module:pylint/message/__init__.py:pylint.message",
+        "vgar:pylint-dev__pylint:python:class:pylint/checkers/similar.py:pylint.checkers.similar.Commonality",
+        "vgar:pylint-dev__pylint:python:module:pylint/testutils/output_line.py:pylint.testutils.output_line",
+        "vgar:pylint-dev__pylint:python:class:pylint/checkers/similar.py:pylint.checkers.similar.LineSet",
+        "vgar:pylint-dev__pylint:python:class:pylint/checkers/similar.py:pylint.checkers.similar.LineSpecifs",
+        "vgar:pylint-dev__pylint:python:class:pylint/checkers/similar.py:pylint.checkers.similar.LinesChunk",
+        "vgar:pylint-dev__pylint:python:class:pylint/typing.py:pylint.typing.MessageLocationTuple",
+        "vgar:pylint-dev__pylint:python:class:pylint/checkers/similar.py:pylint.checkers.similar.SuccessiveLinesLimits",
+        "vgar:pylint-dev__pylint:python:class:pylint/checkers/similar.py:pylint.checkers.similar.CplSuccessiveLinesLimits",
+        "vgar:pylint-dev__pylint:python:class:pylint/checkers/similar.py:pylint.checkers.similar.LineSetStartCouple",
+        "vgar:pylint-dev__pylint:python:method:pylint/checkers/similar.py:pylint.checkers.similar.SimilarChecker.__init__",
+        "vgar:pylint-dev__pylint:python:module:pylint/constants.py:pylint.constants",
+        "vgar:pylint-dev__pylint:python:module:pylint/interfaces.py:pylint.interfaces",
+        "vgar:pylint-dev__pylint:python:module:pylint/typing.py:pylint.typing",
+        "vgar:pylint-dev__pylint:python:module:pylint/checkers/__init__.py:pylint.checkers",
+        "vgar:pylint-dev__pylint:python:module:pylint/checkers/unicode.py:pylint.checkers.unicode",
+        "vgar:pylint-dev__pylint:python:module:pylint/lint/__init__.py:pylint.lint",
+        "vgar:pylint-dev__pylint:python:module:pylint/utils/__init__.py:pylint.utils",
+        "vgar:pylint-dev__pylint:python:module:pylint/reporters/ureports/nodes.py:pylint.reporters.ureports.nodes",
+        "vgar:pylint-dev__pylint:python:method:pylint/config/option_manager_mixin.py:pylint.config.option_manager_mixin.OptionsManagerMixIn.__init__",
+        "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.__init__",
+        "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager._add_parser_option",
+        "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager._add_arguments_to_parser",
+        "vgar:pylint-dev__pylint:python:method:pylint/config/option_manager_mixin.py:pylint.config.option_manager_mixin.OptionsManagerMixIn._parse_toml",
+        "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager._register_options_provider",
+        "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager._load_default_argument_values",
+        "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager._parse_command_line_configuration",
+        "vgar:pylint-dev__pylint:python:module:pylint/config/arguments_manager.py:pylint.config.arguments_manager",
+        "vgar:pylint-dev__pylint:python:class:pylint/lint/pylinter.py:pylint.lint.pylinter.PyLinter",
+        "vgar:pylint-dev__pylint:python:class:pylint/pyreverse/main.py:pylint.pyreverse.main.Run",
+        "vgar:pylint-dev__pylint:python:class:pylint/config/configuration_mixin.py:pylint.config.configuration_mixin.ConfigurationMixIn",
+        "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager._generate_config_file",
+        "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager._parse_configuration_file",
+        "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager._parse_toml"
+      ],
+      "anchors": [
+        {
+          "node_id": "vgar:pylint-dev__pylint:python:class:pylint/checkers/similar.py:pylint.checkers.similar.Similar",
+          "score": 0.6,
+          "symbol": "pylint.checkers.similar.Similar",
+          "type": "Class",
+          "path": "pylint/checkers/similar.py"
+        },
+        {
+          "node_id": "vgar:pylint-dev__pylint:python:function:pylint/checkers/similar.py:pylint.checkers.similar.usage",
+          "score": 0.6,
+          "symbol": "pylint.checkers.similar.usage",
+          "type": "Function",
+          "path": "pylint/checkers/similar.py"
+        },
+        {
+          "node_id": "vgar:pylint-dev__pylint:python:method:pylint/checkers/unicode.py:pylint.checkers.unicode._BadChar.description",
+          "score": 0.6,
+          "symbol": "pylint.checkers.unicode._BadChar.description",
+          "type": "Method",
+          "path": "pylint/checkers/unicode.py"
+        },
+        {
+          "node_id": "vgar:pylint-dev__pylint:python:function:tests/testutils/test_output_line.py:tests.testutils.test_output_line.message",
+          "score": 0.6,
+          "symbol": "tests.testutils.test_output_line.message",
+          "type": "Function",
+          "path": "tests/testutils/test_output_line.py"
+        },
+        {
+          "node_id": "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.help",
+          "score": 0.5,
+          "symbol": "pylint.config.arguments_manager._ArgumentsManager.help",
+          "type": "Method",
+          "path": "pylint/config/arguments_manager.py"
+        },
+        {
+          "node_id": "vgar:pylint-dev__pylint:python:method:pylint/config/option_manager_mixin.py:pylint.config.option_manager_mixin.OptionsManagerMixIn.help",
+          "score": 0.5,
+          "symbol": "pylint.config.option_manager_mixin.OptionsManagerMixIn.help",
+          "type": "Method",
+          "path": "pylint/config/option_manager_mixin.py"
+        },
+        {
+          "node_id": "vgar:pylint-dev__pylint:python:method:tests/functional/c/cached_property.py:tests.functional.c.cached_property.Child.value",
+          "score": 0.5,
+          "symbol": "tests.functional.c.cached_property.Child.value",
+          "type": "Method",
+          "path": "tests/functional/c/cached_property.py"
+        },
+        {
+          "node_id": "vgar:pylint-dev__pylint:python:method:tests/functional/c/cached_property.py:tests.functional.c.cached_property.Parent.value",
+          "score": 0.5,
+          "symbol": "tests.functional.c.cached_property.Parent.value",
+          "type": "Method",
+          "path": "tests/functional/c/cached_property.py"
+        },
+        {
+          "node_id": "vgar:pylint-dev__pylint:python:function:tests/functional/ext/consider_ternary_expression/consider_ternary_expression.py:tests.functional.ext.consider_ternary_expression.consider_ternary_expression.a",
+          "score": 0.5,
+          "symbol": "tests.functional.ext.consider_ternary_expression.consider_ternary_expression.a",
+          "type": "Function",
+          "path": "tests/functional/ext/consider_ternary_expression/consider_ternary_expression.py"
+        },
+        {
+          "node_id": "vgar:pylint-dev__pylint:python:function:tests/functional/i/invalid/invalid_name.py:tests.functional.i.invalid.invalid_name.a",
+          "score": 0.5,
+          "symbol": "tests.functional.i.invalid.invalid_name.a",
+          "type": "Function",
+          "path": "tests/functional/i/invalid/invalid_name.py"
+        },
+        {
+          "node_id": "vgar:pylint-dev__pylint:python:method:tests/functional/m/method_hidden.py:tests.functional.m.method_hidden.One.one",
+          "score": 0.5,
+          "symbol": "tests.functional.m.method_hidden.One.one",
+          "type": "Method",
+          "path": "tests/functional/m/method_hidden.py"
+        },
+        {
+          "node_id": "vgar:pylint-dev__pylint:python:method:tests/functional/m/method_hidden.py:tests.functional.m.method_hidden.Two.one",
+          "score": 0.5,
+          "symbol": "tests.functional.m.method_hidden.Two.one",
+          "type": "Method",
+          "path": "tests/functional/m/method_hidden.py"
+        },
+        {
+          "node_id": "vgar:pylint-dev__pylint:python:method:tests/functional/n/not_callable.py:tests.functional.n.not_callable.ClassWithProperty.value",
+          "score": 0.5,
+          "symbol": "tests.functional.n.not_callable.ClassWithProperty.value",
+          "type": "Method",
+          "path": "tests/functional/n/not_callable.py"
+        },
+        {
+          "node_id": "vgar:pylint-dev__pylint:python:method:tests/functional/u/unused/unused_private_member.py:tests.functional.u.unused.unused_private_member.TypeSelfCallInMethod.a",
+          "score": 0.5,
+          "symbol": "tests.functional.u.unused.unused_private_member.TypeSelfCallInMethod.a",
+          "type": "Method",
+          "path": "tests/functional/u/unused/unused_private_member.py"
+        }
+      ],
+      "unmapped": [],
+      "excluded": [],
+      "diagnostics": {
+        "m1_native_total_tokens": 7998,
+        "m1_native_items": 31,
+        "m1_native_truncated": true,
+        "traversal_limited": true,
+        "unavailable_features": [
+          "architecture_dependencies",
+          "recent_change_frequency",
+          "failing_test_proximity"
+        ],
+        "omissions": {
+          "overlapping_selected_range": 23,
+          "token_budget": 37
+        },
+        "retrieval_config": {
+          "max_hops": 2,
+          "max_candidates": 100,
+          "min_edge_confidence": 0.6,
+          "weights": {
+            "task_similarity": 0.2,
+            "graph_distance": 0.3,
+            "edge_confidence": 0.2,
+            "failing_test_proximity": 0.2,
+            "public_api_risk": 0.1,
+            "recent_change_frequency": 0.1
+          },
+          "profile": "semantic-context-v1",
+          "active_features": [
+            "task_similarity",
+            "graph_distance",
+            "edge_confidence",
+            "public_api_risk"
+          ],
+          "normalized_weights": {
+            "task_similarity": 0.25000000000000006,
+            "graph_distance": 0.375,
+            "edge_confidence": 0.25000000000000006,
+            "public_api_risk": 0.12500000000000003
+          },
+          "failing_test_traversal_limited": false,
+          "filtered_by_include": 44
+        }
+      },
+      "scoring": {
+        "instance_id": "pylint-dev__pylint-6386",
+        "arm": "graph",
+        "scoring_version": "retrieval-scoring-v1",
+        "rank_hash": "sha256:0d2c70f4c5fd4d0b07f00819ed3267b15e3ddce5c656d40107e1902690c56549",
+        "rank": {
+          "metrics": {
+            "file_gold_count": 4,
+            "file_mrr": 0.25,
+            "file_recall@1": 0.0,
+            "file_all_gold@1": 0,
+            "file_recall@3": 0.0,
+            "file_all_gold@3": 0,
+            "file_recall@5": 0.25,
+            "file_all_gold@5": 0,
+            "file_recall@10": 0.25,
+            "file_all_gold@10": 0,
+            "file_recall@20": 0.25,
+            "file_all_gold@20": 0,
+            "function_gold_count": 5,
+            "function_mrr": 0.018867924528301886,
+            "function_recall@1": 0.0,
+            "function_all_gold@1": 0,
+            "function_recall@3": 0.0,
+            "function_all_gold@3": 0,
+            "function_recall@5": 0.0,
+            "function_all_gold@5": 0,
+            "function_recall@10": 0.0,
+            "function_all_gold@10": 0,
+            "function_recall@20": 0.0,
+            "function_all_gold@20": 0
+          },
+          "reach": {
+            "file": 0.25,
+            "function": 0.2
+          },
+          "size": {
+            "items": 91,
+            "files": 18,
+            "functions": 61
+          }
+        },
+        "packed": {
+          "budget_tokens": 8000,
+          "counter_label": "local-hf:Qwen/Qwen3-4B-Instruct-2507@cdbee75f17c01a7cc42f958dc650907174af0554:sha256=aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4:no-special-tokens",
+          "snippet_policy": {
+            "max_snippet_lines": 80,
+            "header": true,
+            "overlap": "skip_if_overlaps_different_group"
+          },
+          "metrics": {
+            "gold_file_in_context": 0.25,
+            "gold_function_in_context": 0.0,
+            "all_gold_files_in_context": 0,
+            "all_gold_functions_in_context": 0,
+            "total_tokens": 7948,
+            "tokens_to_first_gold_file": 334,
+            "tokens_to_first_gold_function": null,
+            "items_packed": 38,
+            "skipped": {
+              "token_budget": 30,
+              "overlap": 23
+            },
+            "truncated": true
+          }
+        },
+        "excluded_count": 0,
+        "unmapped": [],
+        "excluded_reasons": {}
+      },
+      "metrics": {
+        "file_gold_count": 4,
+        "file_mrr": 0.25,
+        "file_recall@1": 0.0,
+        "file_all_gold@1": 0,
+        "file_recall@3": 0.0,
+        "file_all_gold@3": 0,
+        "file_recall@5": 0.25,
+        "file_all_gold@5": 0,
+        "file_recall@10": 0.25,
+        "file_all_gold@10": 0,
+        "file_recall@20": 0.25,
+        "file_all_gold@20": 0,
+        "function_gold_count": 5,
+        "function_mrr": 0.018867924528301886,
+        "function_recall@1": 0.0,
+        "function_all_gold@1": 0,
+        "function_recall@3": 0.0,
+        "function_all_gold@3": 0,
+        "function_recall@5": 0.0,
+        "function_all_gold@5": 0,
+        "function_recall@10": 0.0,
+        "function_all_gold@10": 0,
+        "function_recall@20": 0.0,
+        "function_all_gold@20": 0,
+        "file_reach": 0.25,
+        "function_reach": 0.2,
+        "rank_items": 91,
+        "packed_gold_file_in_context": 0.25,
+        "packed_gold_function_in_context": 0.0,
+        "packed_all_gold_files_in_context": 0,
+        "packed_all_gold_functions_in_context": 0,
+        "context_tokens": 7948,
+        "packed_tokens_to_first_gold_file": 334,
+        "packed_tokens_to_first_gold_function": null,
+        "packed_items_packed": 38,
+        "packed_skipped_token_budget": 30,
+        "packed_skipped_overlap": 23,
+        "packed_truncated": 1,
+        "unmapped_count": 0,
+        "excluded_count": 0,
+        "anchor_count": 14,
+        "no_anchors": 0,
+        "candidates_in": 91,
+        "retrieve_seconds": 4.216124400001718,
+        "mapping_coverage": 1.0,
+        "file_retrievability_coverage": 1.0
+      }
+    },
+    "graph_f2p": {
+      "rank_hash": "sha256:0d2c70f4c5fd4d0b07f00819ed3267b15e3ddce5c656d40107e1902690c56549",
+      "ranking_total_count": 91,
+      "ranked": [
+        {
+          "rank": 1,
+          "item_id": "vgar:pylint-dev__pylint:python:function:pylint/checkers/similar.py:pylint.checkers.similar.usage",
+          "path": "pylint/checkers/similar.py",
+          "kind": "function",
+          "symbol": "pylint.checkers.similar.usage",
+          "function_id": "pylint/checkers/similar.py::pylint.checkers.similar.usage",
+          "score": 0.6372685185185186,
+          "lines": [
+            865,
+            873
+          ],
+          "snippet_sha256": "sha256:406f589c2ca93f152be47c9a485257a76e52e5dd18f77c116f4091b650f19182"
+        },
+        {
+          "rank": 2,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/checkers/unicode.py:pylint.checkers.unicode._BadChar.description",
+          "path": "pylint/checkers/unicode.py",
+          "kind": "method",
+          "symbol": "pylint.checkers.unicode._BadChar.description",
+          "function_id": "pylint/checkers/unicode.py::pylint.checkers.unicode._BadChar.description",
+          "score": 0.6004310344827587,
+          "lines": [
+            67,
+            72
+          ],
+          "snippet_sha256": "sha256:1422cbe986e0f76bbaa7d5c6936a712faf6fb9bc6e2bc1d4c31dbbb07f8beeed"
+        },
+        {
+          "rank": 3,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/config/option_manager_mixin.py:pylint.config.option_manager_mixin.OptionsManagerMixIn.help",
+          "path": "pylint/config/option_manager_mixin.py",
+          "kind": "method",
+          "symbol": "pylint.config.option_manager_mixin.OptionsManagerMixIn.help",
+          "function_id": "pylint/config/option_manager_mixin.py::pylint.config.option_manager_mixin.OptionsManagerMixIn.help",
+          "score": 0.5836864406779662,
+          "lines": [
+            342,
+            346
+          ],
+          "snippet_sha256": "sha256:63ec8b0f981725f67374087be99aeb66aeb610965084dd3b7820c7b1e9023318"
+        },
+        {
+          "rank": 4,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.help",
+          "path": "pylint/config/arguments_manager.py",
+          "kind": "method",
+          "symbol": "pylint.config.arguments_manager._ArgumentsManager.help",
+          "function_id": "pylint/config/arguments_manager.py::pylint.config.arguments_manager._ArgumentsManager.help",
+          "score": 0.5750000000000001,
+          "lines": [
+            619,
+            627
+          ],
+          "snippet_sha256": "sha256:9e1d79485b27c8230a3912c97912125cb01b15c1d86f947bab9bedcd64ae4bf3"
+        },
+        {
+          "rank": 5,
+          "item_id": "vgar:pylint-dev__pylint:python:class:pylint/checkers/similar.py:pylint.checkers.similar.Similar",
+          "path": "pylint/checkers/similar.py",
+          "kind": "class",
+          "symbol": "pylint.checkers.similar.Similar",
+          "function_id": null,
+          "score": 0.539423076923077,
+          "lines": [
+            335,
+            557
+          ],
+          "snippet_sha256": "sha256:ece4150c30cbac973a846cd2e36642fb0bbbfb5fe4cb6ebb3f4634b1ea56d890"
+        },
+        {
+          "rank": 6,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/checkers/similar.py:pylint.checkers.similar.Similar.get_map_data",
+          "path": "pylint/checkers/similar.py",
+          "kind": "method",
+          "symbol": "pylint.checkers.similar.Similar.get_map_data",
+          "function_id": "pylint/checkers/similar.py::pylint.checkers.similar.Similar.get_map_data",
+          "score": 0.44440789473684217,
+          "lines": [
+            544,
+            550
+          ],
+          "snippet_sha256": "sha256:573583f3aa51b94d8caf5bb3bfd7a03813f30edece029f0ff4cff1eb320edea8"
+        },
+        {
+          "rank": 7,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/checkers/similar.py:pylint.checkers.similar.Similar.combine_mapreduce_data",
+          "path": "pylint/checkers/similar.py",
+          "kind": "method",
+          "symbol": "pylint.checkers.similar.Similar.combine_mapreduce_data",
+          "function_id": "pylint/checkers/similar.py::pylint.checkers.similar.Similar.combine_mapreduce_data",
+          "score": 0.44396186440677965,
+          "lines": [
+            552,
+            557
+          ],
+          "snippet_sha256": "sha256:c5864a8a96c5d31ac328a06d800c2639d088e14c313b0d207d8bfcb4bc79fff5"
+        },
+        {
+          "rank": 8,
+          "item_id": "vgar:pylint-dev__pylint:python:function:pylint/checkers/similar.py:pylint.checkers.similar.Run",
+          "path": "pylint/checkers/similar.py",
+          "kind": "function",
+          "symbol": "pylint.checkers.similar.Run",
+          "function_id": "pylint/checkers/similar.py::pylint.checkers.similar.Run",
+          "score": 0.4133928571428571,
+          "lines": [
+            876,
+            918
+          ],
+          "snippet_sha256": "sha256:386b9722d576ce24c0dc7c093d2011db0fd57ad02a90031485f5bbbaec960cd1"
+        },
+        {
+          "rank": 9,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/checkers/similar.py:pylint.checkers.similar.Similar.run",
+          "path": "pylint/checkers/similar.py",
+          "kind": "method",
+          "symbol": "pylint.checkers.similar.Similar.run",
+          "function_id": "pylint/checkers/similar.py::pylint.checkers.similar.Similar.run",
+          "score": 0.4133928571428571,
+          "lines": [
+            392,
+            396
+          ],
+          "snippet_sha256": "sha256:c54423d1c2226cf5c78f07b855cf661418454cfecf80cdc3e41bce0ed0e73652"
+        },
+        {
+          "rank": 10,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/checkers/similar.py:pylint.checkers.similar.Similar.append_stream",
+          "path": "pylint/checkers/similar.py",
+          "kind": "method",
+          "symbol": "pylint.checkers.similar.Similar.append_stream",
+          "function_id": "pylint/checkers/similar.py::pylint.checkers.similar.Similar.append_stream",
+          "score": 0.41229508196721315,
+          "lines": [
+            359,
+            390
+          ],
+          "snippet_sha256": "sha256:87b269dcae021579afe35a4043df6e718f9b1ce6614388691f53ff72e8c66737"
+        },
+        {
+          "rank": 11,
+          "item_id": "vgar:pylint-dev__pylint:python:function:pylint/checkers/similar.py:pylint.checkers.similar.remove_successives",
+          "path": "pylint/checkers/similar.py",
+          "kind": "function",
+          "symbol": "pylint.checkers.similar.remove_successives",
+          "function_id": "pylint/checkers/similar.py::pylint.checkers.similar.remove_successives",
+          "score": 0.38924180327868857,
+          "lines": [
+            248,
+            288
+          ],
+          "snippet_sha256": "sha256:bcd6b83e1a583914cf8a01dae23ad068ed1e112650c96b5f473cf7146c0a4819"
+        },
+        {
+          "rank": 12,
+          "item_id": "vgar:pylint-dev__pylint:python:function:pylint/checkers/similar.py:pylint.checkers.similar.hash_lineset",
+          "path": "pylint/checkers/similar.py",
+          "kind": "function",
+          "symbol": "pylint.checkers.similar.hash_lineset",
+          "function_id": "pylint/checkers/similar.py::pylint.checkers.similar.hash_lineset",
+          "score": 0.38798076923076924,
+          "lines": [
+            205,
+            245
+          ],
+          "snippet_sha256": "sha256:71d2935d3e66fc12cf2e3b7da4f45d54c419b4dbcfe50d50ee0374e630d66bb6"
+        },
+        {
+          "rank": 13,
+          "item_id": "vgar:pylint-dev__pylint:python:function:pylint/checkers/similar.py:pylint.checkers.similar.filter_noncode_lines",
+          "path": "pylint/checkers/similar.py",
+          "kind": "function",
+          "symbol": "pylint.checkers.similar.filter_noncode_lines",
+          "function_id": "pylint/checkers/similar.py::pylint.checkers.similar.filter_noncode_lines",
+          "score": 0.38046875,
+          "lines": [
+            291,
+            322
+          ],
+          "snippet_sha256": "sha256:d2fd9138e177e748486dbf5095001cbe66ed2f4166059c1bde9134b1613baa6d"
+        },
+        {
+          "rank": 14,
+          "item_id": "vgar:pylint-dev__pylint:python:function:pylint/checkers/similar.py:pylint.checkers.similar.stripped_lines",
+          "path": "pylint/checkers/similar.py",
+          "kind": "function",
+          "symbol": "pylint.checkers.similar.stripped_lines",
+          "function_id": "pylint/checkers/similar.py::pylint.checkers.similar.stripped_lines",
+          "score": 0.3801136363636364,
+          "lines": [
+            560,
+            652
+          ],
+          "snippet_sha256": "sha256:24a0c3dd982c6c6bc926b29fca887a9285629780b3edccca7efde21a6a0a3e84"
+        },
+        {
+          "rank": 15,
+          "item_id": "vgar:pylint-dev__pylint:python:function:pylint/utils/utils.py:pylint.utils.utils.decoding_stream",
+          "path": "pylint/utils/utils.py",
+          "kind": "function",
+          "symbol": "pylint.utils.utils.decoding_stream",
+          "function_id": "pylint/utils/utils.py::pylint.utils.utils.decoding_stream",
+          "score": 0.37644230769230774,
+          "lines": [
+            164,
+            173
+          ],
+          "snippet_sha256": "sha256:34bf1298d15c308583a10bc5588245174568266f6b91a32b7cc710d19129de83"
+        },
+        {
+          "rank": 16,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/config/option_manager_mixin.py:pylint.config.option_manager_mixin.OptionsManagerMixIn.add_optik_option",
+          "path": "pylint/config/option_manager_mixin.py",
+          "kind": "method",
+          "symbol": "pylint.config.option_manager_mixin.OptionsManagerMixIn.add_optik_option",
+          "function_id": "pylint/config/option_manager_mixin.py::pylint.config.option_manager_mixin.OptionsManagerMixIn.add_optik_option",
+          "score": 0.3697916666666667,
+          "lines": [
+            141,
+            145
+          ],
+          "snippet_sha256": "sha256:f40d7edb96624a7879d84b21baf36b0ffdb864250aaddd8ef7326ea495d29fdc"
+        },
+        {
+          "rank": 17,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.set_option",
+          "path": "pylint/config/arguments_manager.py",
+          "kind": "method",
+          "symbol": "pylint.config.arguments_manager._ArgumentsManager.set_option",
+          "function_id": "pylint/config/arguments_manager.py::pylint.config.arguments_manager._ArgumentsManager.set_option",
+          "score": 0.36955128205128207,
+          "lines": [
+            728,
+            753
+          ],
+          "snippet_sha256": "sha256:a55538f81ec4e01998ce56e079c65031931f0a2a1ac7e0ac55bcf0534e8279c3"
+        },
+        {
+          "rank": 18,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.add_optik_option",
+          "path": "pylint/config/arguments_manager.py",
+          "kind": "method",
+          "symbol": "pylint.config.arguments_manager._ArgumentsManager.add_optik_option",
+          "function_id": "pylint/config/arguments_manager.py::pylint.config.arguments_manager._ArgumentsManager.add_optik_option",
+          "score": 0.3647300469483568,
+          "lines": [
+            357,
+            375
+          ],
+          "snippet_sha256": "sha256:20e28d728c94ebb651cdab5aee3547a890720ebd37053151fa5ba2ca7963b3d9"
+        },
+        {
+          "rank": 19,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.global_set_option",
+          "path": "pylint/config/arguments_manager.py",
+          "kind": "method",
+          "symbol": "pylint.config.arguments_manager._ArgumentsManager.global_set_option",
+          "function_id": "pylint/config/arguments_manager.py::pylint.config.arguments_manager._ArgumentsManager.global_set_option",
+          "score": 0.35913461538461544,
+          "lines": [
+            647,
+            655
+          ],
+          "snippet_sha256": "sha256:3361a55ce7c0d2d3385986fd0e8ff36267bbb62efb0883d1abf2902f8991364b"
+        },
+        {
+          "rank": 20,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.add_option_group",
+          "path": "pylint/config/arguments_manager.py",
+          "kind": "method",
+          "symbol": "pylint.config.arguments_manager._ArgumentsManager.add_option_group",
+          "function_id": "pylint/config/arguments_manager.py::pylint.config.arguments_manager._ArgumentsManager.add_option_group",
+          "score": 0.3584558823529412,
+          "lines": [
+            320,
+            355
+          ],
+          "snippet_sha256": "sha256:98c8b2a66d7d8b6c185887a82db47e9e1d705e9833aeba02689a22da9cd4c552"
+        },
+        {
+          "rank": 21,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.reset_parsers",
+          "path": "pylint/config/arguments_manager.py",
+          "kind": "method",
+          "symbol": "pylint.config.arguments_manager._ArgumentsManager.reset_parsers",
+          "function_id": "pylint/config/arguments_manager.py::pylint.config.arguments_manager._ArgumentsManager.reset_parsers",
+          "score": 0.3556547619047619,
+          "lines": [
+            264,
+            278
+          ],
+          "snippet_sha256": "sha256:78b5c14c93fd025f1e7dc23747cccf56a61bd13561571591dc68e8d0b065c375"
+        },
+        {
+          "rank": 22,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.optik_option",
+          "path": "pylint/config/arguments_manager.py",
+          "kind": "method",
+          "symbol": "pylint.config.arguments_manager._ArgumentsManager.optik_option",
+          "function_id": "pylint/config/arguments_manager.py::pylint.config.arguments_manager._ArgumentsManager.optik_option",
+          "score": 0.3549440298507463,
+          "lines": [
+            377,
+            413
+          ],
+          "snippet_sha256": "sha256:2bfb5d52a75e219a2eadcc34a3d9b016df941867957f1061af33359833a737cd"
+        },
+        {
+          "rank": 23,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/checkers/similar.py:pylint.checkers.similar.Similar._compute_sims",
+          "path": "pylint/checkers/similar.py",
+          "kind": "method",
+          "symbol": "pylint.checkers.similar.Similar._compute_sims",
+          "function_id": "pylint/checkers/similar.py::pylint.checkers.similar.Similar._compute_sims",
+          "score": 0.3533730158730159,
+          "lines": [
+            398,
+            435
+          ],
+          "snippet_sha256": "sha256:3da5414eadb54a0886f8be5af85de5f4d00a2519f836b22eb3adb81d5d3efda2"
+        },
+        {
+          "rank": 24,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/checkers/similar.py:pylint.checkers.similar.Similar._display_sims",
+          "path": "pylint/checkers/similar.py",
+          "kind": "method",
+          "symbol": "pylint.checkers.similar.Similar._display_sims",
+          "function_id": "pylint/checkers/similar.py::pylint.checkers.similar.Similar._display_sims",
+          "score": 0.35288461538461535,
+          "lines": [
+            437,
+            442
+          ],
+          "snippet_sha256": "sha256:7238f3ff27995691ab4f3efe4804c77cdce19f6b6edb2385e4534295fd5105a8"
+        },
+        {
+          "rank": 25,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/checkers/similar.py:pylint.checkers.similar.Similar._get_similarity_report",
+          "path": "pylint/checkers/similar.py",
+          "kind": "method",
+          "symbol": "pylint.checkers.similar.Similar._get_similarity_report",
+          "function_id": "pylint/checkers/similar.py::pylint.checkers.similar.Similar._get_similarity_report",
+          "score": 0.35265151515151516,
+          "lines": [
+            444,
+            462
+          ],
+          "snippet_sha256": "sha256:d5480bdf894fedd67f444f47a48649cb81ea87fcb673c8e1149e90ee90200e8c"
+        },
+        {
+          "rank": 26,
+          "item_id": "vgar:pylint-dev__pylint:python:module:pylint/checkers/similar.py:pylint.checkers.similar",
+          "path": "pylint/checkers/similar.py",
+          "kind": "module",
+          "symbol": "pylint.checkers.similar",
+          "function_id": null,
+          "score": 0.35192307692307695,
+          "lines": [
+            1,
+            923
+          ],
+          "snippet_sha256": "sha256:406fece1f61a073319b541ee7af7dc546fd7bdf6f984c75dd9dd9d6284a9bc62"
+        },
+        {
+          "rank": 27,
+          "item_id": "vgar:pylint-dev__pylint:python:class:pylint/checkers/similar.py:pylint.checkers.similar.SimilarChecker",
+          "path": "pylint/checkers/similar.py",
+          "kind": "class",
+          "symbol": "pylint.checkers.similar.SimilarChecker",
+          "function_id": null,
+          "score": 0.3516509433962265,
+          "lines": [
+            730,
+            858
+          ],
+          "snippet_sha256": "sha256:ddc4697f78e2b4e4fff66a658b4fb2cf1354efda8c3b6d8c78bfe2a2e4ad40cb"
+        },
+        {
+          "rank": 28,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.load_configuration_from_config",
+          "path": "pylint/config/arguments_manager.py",
+          "kind": "method",
+          "symbol": "pylint.config.arguments_manager._ArgumentsManager.load_configuration_from_config",
+          "function_id": "pylint/config/arguments_manager.py::pylint.config.arguments_manager._ArgumentsManager.load_configuration_from_config",
+          "score": 0.3513257575757576,
+          "lines": [
+            585,
+            595
+          ],
+          "snippet_sha256": "sha256:edc16941beef9299b4d7192516650a49158c78d7c8519e4ef258720078910763"
+        },
+        {
+          "rank": 29,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/checkers/similar.py:pylint.checkers.similar.SimilarChecker.close",
+          "path": "pylint/checkers/similar.py",
+          "kind": "method",
+          "symbol": "pylint.checkers.similar.SimilarChecker.close",
+          "function_id": "pylint/checkers/similar.py::pylint.checkers.similar.SimilarChecker.close",
+          "score": 0.3508928571428572,
+          "lines": [
+            828,
+            847
+          ],
+          "snippet_sha256": "sha256:4eacdcfa14afe37ebd2bd7cf2b0e790e3e27cdec63686be0e5ea109be09a4c19"
+        },
+        {
+          "rank": 30,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/checkers/similar.py:pylint.checkers.similar.SimilarChecker.open",
+          "path": "pylint/checkers/similar.py",
+          "kind": "method",
+          "symbol": "pylint.checkers.similar.SimilarChecker.open",
+          "function_id": "pylint/checkers/similar.py::pylint.checkers.similar.SimilarChecker.open",
+          "score": 0.3508928571428572,
+          "lines": [
+            805,
+            808
+          ],
+          "snippet_sha256": "sha256:7310e8e386105c3ddbfa3cca19c17ddc512b591b7f5e634f7a0f6ab0becac531"
+        },
+        {
+          "rank": 31,
+          "item_id": "vgar:pylint-dev__pylint:python:function:pylint/checkers/similar.py:pylint.checkers.similar.register",
+          "path": "pylint/checkers/similar.py",
+          "kind": "function",
+          "symbol": "pylint.checkers.similar.register",
+          "function_id": "pylint/checkers/similar.py::pylint.checkers.similar.register",
+          "score": 0.3508928571428572,
+          "lines": [
+            861,
+            862
+          ],
+          "snippet_sha256": "sha256:49eca55fcc35b6f61b09f8402ce44c1d1d8b0f253bc6f4daaa8435d330bef36e"
+        },
+        {
+          "rank": 32,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/checkers/similar.py:pylint.checkers.similar.Similar.__init__",
+          "path": "pylint/checkers/similar.py",
+          "kind": "method",
+          "symbol": "pylint.checkers.similar.Similar.__init__",
+          "function_id": "pylint/checkers/similar.py::pylint.checkers.similar.Similar.__init__",
+          "score": 0.35048701298701307,
+          "lines": [
+            338,
+            357
+          ],
+          "snippet_sha256": "sha256:0431bb6a8719f52f6b3900d4b55428bb411d868a64fb78e0df880ac4c59f041a"
+        },
+        {
+          "rank": 33,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/checkers/similar.py:pylint.checkers.similar.SimilarChecker.get_map_data",
+          "path": "pylint/checkers/similar.py",
+          "kind": "method",
+          "symbol": "pylint.checkers.similar.SimilarChecker.get_map_data",
+          "function_id": "pylint/checkers/similar.py::pylint.checkers.similar.SimilarChecker.get_map_data",
+          "score": 0.35043103448275864,
+          "lines": [
+            849,
+            851
+          ],
+          "snippet_sha256": "sha256:acfd7eb28035e5457b77967640356bf8e5552395b3ce43556dc03afb7eb41be1"
+        },
+        {
+          "rank": 34,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/checkers/similar.py:pylint.checkers.similar.Similar._iter_sims",
+          "path": "pylint/checkers/similar.py",
+          "kind": "method",
+          "symbol": "pylint.checkers.similar.Similar._iter_sims",
+          "function_id": "pylint/checkers/similar.py::pylint.checkers.similar.Similar._iter_sims",
+          "score": 0.35021186440677965,
+          "lines": [
+            536,
+            542
+          ],
+          "snippet_sha256": "sha256:b3e85515bc4ea7645fdd070448336ccb3857c01486f05bb7f29f0431e6a6cfc9"
+        },
+        {
+          "rank": 35,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/checkers/similar.py:pylint.checkers.similar.SimilarChecker.reduce_map_data",
+          "path": "pylint/checkers/similar.py",
+          "kind": "method",
+          "symbol": "pylint.checkers.similar.SimilarChecker.reduce_map_data",
+          "function_id": "pylint/checkers/similar.py::pylint.checkers.similar.SimilarChecker.reduce_map_data",
+          "score": 0.35021186440677965,
+          "lines": [
+            853,
+            858
+          ],
+          "snippet_sha256": "sha256:8bb5d15f217477a7a4702c151b75ec9e529646f9fdda19860fec85f0d5b20ff6"
+        },
+        {
+          "rank": 36,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/checkers/similar.py:pylint.checkers.similar.SimilarChecker.process_module",
+          "path": "pylint/checkers/similar.py",
+          "kind": "method",
+          "symbol": "pylint.checkers.similar.SimilarChecker.process_module",
+          "function_id": "pylint/checkers/similar.py::pylint.checkers.similar.SimilarChecker.process_module",
+          "score": 0.35,
+          "lines": [
+            810,
+            826
+          ],
+          "snippet_sha256": "sha256:9b9ac397ad25015bd79b80555092d3bcac1eaa0854560a2d74b51f2277268eaa"
+        },
+        {
+          "rank": 37,
+          "item_id": "vgar:pylint-dev__pylint:python:function:pylint/checkers/similar.py:pylint.checkers.similar.report_similarities",
+          "path": "pylint/checkers/similar.py",
+          "kind": "function",
+          "symbol": "pylint.checkers.similar.report_similarities",
+          "function_id": "pylint/checkers/similar.py::pylint.checkers.similar.report_similarities",
+          "score": 0.35,
+          "lines": [
+            718,
+            726
+          ],
+          "snippet_sha256": "sha256:7e2dafa3f69b6c8b64a91ac7c1ebc5364735fa15e810e0fd2a2a2dbd344087b1"
+        },
+        {
+          "rank": 38,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/checkers/similar.py:pylint.checkers.similar.Similar._find_common",
+          "path": "pylint/checkers/similar.py",
+          "kind": "method",
+          "symbol": "pylint.checkers.similar.Similar._find_common",
+          "function_id": "pylint/checkers/similar.py::pylint.checkers.similar.Similar._find_common",
+          "score": 0.34940476190476194,
+          "lines": [
+            464,
+            534
+          ],
+          "snippet_sha256": "sha256:063eaf4bda446c3057f80078f3690dd63f71cd80007b48d25c0d99a75ac0fec4"
+        },
+        {
+          "rank": 39,
+          "item_id": "vgar:pylint-dev__pylint:python:class:pylint/checkers/unicode.py:pylint.checkers.unicode._BadChar",
+          "path": "pylint/checkers/unicode.py",
+          "kind": "class",
+          "symbol": "pylint.checkers.unicode._BadChar",
+          "function_id": null,
+          "score": 0.34659090909090906,
+          "lines": [
+            58,
+            76
+          ],
+          "snippet_sha256": "sha256:550db5bb45b56589ea23ae4643ae8975bb899d8ac063d932f1aade9f90ed7a40"
+        },
+        {
+          "rank": 40,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/checkers/unicode.py:pylint.checkers.unicode._BadChar.human_code",
+          "path": "pylint/checkers/unicode.py",
+          "kind": "method",
+          "symbol": "pylint.checkers.unicode._BadChar.human_code",
+          "function_id": "pylint/checkers/unicode.py::pylint.checkers.unicode._BadChar.human_code",
+          "score": 0.3458333333333334,
+          "lines": [
+            74,
+            76
+          ],
+          "snippet_sha256": "sha256:bee7b1f7b01d565c40637faf5330652f899a01cb5cb224594ff4306d539393d2"
+        },
+        {
+          "rank": 41,
+          "item_id": "vgar:pylint-dev__pylint:python:class:pylint/config/option_manager_mixin.py:pylint.config.option_manager_mixin.OptionsManagerMixIn",
+          "path": "pylint/config/option_manager_mixin.py",
+          "kind": "class",
+          "symbol": "pylint.config.option_manager_mixin.OptionsManagerMixIn",
+          "function_id": null,
+          "score": 0.3303571428571429,
+          "lines": [
+            63,
+            346
+          ],
+          "snippet_sha256": "sha256:d74c4290b6dcfd41275ec161df9ba68daa74f67b8904e029829b1efef2f2b826"
+        },
+        {
+          "rank": 42,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.options_providers.setter",
+          "path": "pylint/config/arguments_manager.py",
+          "kind": "method",
+          "symbol": "pylint.config.arguments_manager._ArgumentsManager.options_providers",
+          "function_id": "pylint/config/arguments_manager.py::pylint.config.arguments_manager._ArgumentsManager.options_providers@definition:117:123",
+          "score": 0.32916666666666666,
+          "lines": [
+            118,
+            123
+          ],
+          "snippet_sha256": "sha256:0a4629816579afa2700e908df5f452efa8dd54420d6d7f034f20d887a6cd9aa8"
+        },
+        {
+          "rank": 43,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.cb_set_provider_option",
+          "path": "pylint/config/arguments_manager.py",
+          "kind": "method",
+          "symbol": "pylint.config.arguments_manager._ArgumentsManager.cb_set_provider_option",
+          "function_id": "pylint/config/arguments_manager.py::pylint.config.arguments_manager._ArgumentsManager.cb_set_provider_option",
+          "score": 0.32812500000000006,
+          "lines": [
+            629,
+            645
+          ],
+          "snippet_sha256": "sha256:737a3b71a32582302ee9eea61104c5c621f0d949c5f1ae186711a1e639c6d809"
+        },
+        {
+          "rank": 44,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.config.setter",
+          "path": "pylint/config/arguments_manager.py",
+          "kind": "method",
+          "symbol": "pylint.config.arguments_manager._ArgumentsManager.config",
+          "function_id": "pylint/config/arguments_manager.py::pylint.config.arguments_manager._ArgumentsManager.config@definition:104:106",
+          "score": 0.3252118644067797,
+          "lines": [
+            105,
+            106
+          ],
+          "snippet_sha256": "sha256:ec43768f14f661296f632af3e0518aba693b1bbb391b649bf8489ca2d234e57c"
+        },
+        {
+          "rank": 45,
+          "item_id": "vgar:pylint-dev__pylint:python:function:pylint/config/option_manager_mixin.py:pylint.config.option_manager_mixin._patch_optparse",
+          "path": "pylint/config/option_manager_mixin.py",
+          "kind": "function",
+          "symbol": "pylint.config.option_manager_mixin._patch_optparse",
+          "function_id": "pylint/config/option_manager_mixin.py::pylint.config.option_manager_mixin._patch_optparse",
+          "score": 0.32479508196721313,
+          "lines": [
+            53,
+            60
+          ],
+          "snippet_sha256": "sha256:72c451396070240b8495409c13afa76b31974b7dfd930edc477f86f06812455f"
+        },
+        {
+          "rank": 46,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.options_providers",
+          "path": "pylint/config/arguments_manager.py",
+          "kind": "method",
+          "symbol": "pylint.config.arguments_manager._ArgumentsManager.options_providers",
+          "function_id": "pylint/config/arguments_manager.py::pylint.config.arguments_manager._ArgumentsManager.options_providers@definition:108:115",
+          "score": 0.32403846153846155,
+          "lines": [
+            109,
+            115
+          ],
+          "snippet_sha256": "sha256:f67590c304554596b09b99b613c4b46d877ee36d1c383c1a66b59cb57c414d21"
+        },
+        {
+          "rank": 47,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.read_config_file",
+          "path": "pylint/config/arguments_manager.py",
+          "kind": "method",
+          "symbol": "pylint.config.arguments_manager._ArgumentsManager.read_config_file",
+          "function_id": "pylint/config/arguments_manager.py::pylint.config.arguments_manager._ArgumentsManager.read_config_file",
+          "score": 0.32403846153846155,
+          "lines": [
+            484,
+            523
+          ],
+          "snippet_sha256": "sha256:f096d6cdded6506ced96f982618964bca7303ebbb9ab25c7ba2970c922802048"
+        },
+        {
+          "rank": 48,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.load_command_line_configuration",
+          "path": "pylint/config/arguments_manager.py",
+          "kind": "method",
+          "symbol": "pylint.config.arguments_manager._ArgumentsManager.load_command_line_configuration",
+          "function_id": "pylint/config/arguments_manager.py::pylint.config.arguments_manager._ArgumentsManager.load_command_line_configuration",
+          "score": 0.3238636363636364,
+          "lines": [
+            597,
+            617
+          ],
+          "snippet_sha256": "sha256:0403c72325dde47875e38ef7dba8e958bc228212ff5507c13c4c7f81a91d43b8"
+        },
+        {
+          "rank": 49,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.register_options_provider",
+          "path": "pylint/config/arguments_manager.py",
+          "kind": "method",
+          "symbol": "pylint.config.arguments_manager._ArgumentsManager.register_options_provider",
+          "function_id": "pylint/config/arguments_manager.py::pylint.config.arguments_manager._ArgumentsManager.register_options_provider",
+          "score": 0.3238636363636364,
+          "lines": [
+            280,
+            318
+          ],
+          "snippet_sha256": "sha256:97b1862302b65d46c86a2cd4cd0282a76136fd16660687d973d7c40a7c0e774e"
+        },
+        {
+          "rank": 50,
+          "item_id": "vgar:pylint-dev__pylint:python:class:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager",
+          "path": "pylint/config/arguments_manager.py",
+          "kind": "class",
+          "symbol": "pylint.config.arguments_manager._ArgumentsManager",
+          "function_id": null,
+          "score": 0.3217592592592593,
+          "lines": [
+            60,
+            753
+          ],
+          "snippet_sha256": "sha256:59dbd0724bf216356e4d3118b4a0fc83b6c2f755a78647143cd9c34801cd201e"
+        },
+        {
+          "rank": 51,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.config",
+          "path": "pylint/config/arguments_manager.py",
+          "kind": "method",
+          "symbol": "pylint.config.arguments_manager._ArgumentsManager.config",
+          "function_id": "pylint/config/arguments_manager.py::pylint.config.arguments_manager._ArgumentsManager.config@definition:99:102",
+          "score": 0.32112068965517243,
+          "lines": [
+            100,
+            102
+          ],
+          "snippet_sha256": "sha256:f17286c9894ffa98bc81d9cfe84914436e06669559bf628e93f30712e1cad25f"
+        },
+        {
+          "rank": 52,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.load_config_file",
+          "path": "pylint/config/arguments_manager.py",
+          "kind": "method",
+          "symbol": "pylint.config.arguments_manager._ArgumentsManager.load_config_file",
+          "function_id": "pylint/config/arguments_manager.py::pylint.config.arguments_manager._ArgumentsManager.load_config_file",
+          "score": 0.3205645161290323,
+          "lines": [
+            559,
+            573
+          ],
+          "snippet_sha256": "sha256:5cef3196a79bf1882091a0deb1667a12c72d62ba89328f01934684c30dedd582"
+        },
+        {
+          "rank": 53,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.load_provider_defaults",
+          "path": "pylint/config/arguments_manager.py",
+          "kind": "method",
+          "symbol": "pylint.config.arguments_manager._ArgumentsManager.load_provider_defaults",
+          "function_id": "pylint/config/arguments_manager.py::pylint.config.arguments_manager._ArgumentsManager.load_provider_defaults",
+          "score": 0.3204365079365079,
+          "lines": [
+            472,
+            482
+          ],
+          "snippet_sha256": "sha256:0464b1f78bc61e781ca0547e1e6d1b39530eafe36fa116c8a6bf4d5ca72807fa"
+        },
+        {
+          "rank": 54,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.load_configuration",
+          "path": "pylint/config/arguments_manager.py",
+          "kind": "method",
+          "symbol": "pylint.config.arguments_manager._ArgumentsManager.load_configuration",
+          "function_id": "pylint/config/arguments_manager.py::pylint.config.arguments_manager._ArgumentsManager.load_configuration",
+          "score": 0.3203125,
+          "lines": [
+            575,
+            583
+          ],
+          "snippet_sha256": "sha256:534a7e9083fee6dcc27789517ee34a2b1d4428b6a44c6fdce26aeaca9436a30b"
+        },
+        {
+          "rank": 55,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.generate_config",
+          "path": "pylint/config/arguments_manager.py",
+          "kind": "method",
+          "symbol": "pylint.config.arguments_manager._ArgumentsManager.generate_config",
+          "function_id": "pylint/config/arguments_manager.py::pylint.config.arguments_manager._ArgumentsManager.generate_config",
+          "score": 0.3199626865671642,
+          "lines": [
+            415,
+            470
+          ],
+          "snippet_sha256": "sha256:34f63db948c1983ee604739085c691501f17011ebc87c25e2048652db1f9b516"
+        },
+        {
+          "rank": 56,
+          "item_id": "vgar:pylint-dev__pylint:python:class:pylint/message/message.py:pylint.message.message.Message",
+          "path": "pylint/message/message.py",
+          "kind": "class",
+          "symbol": "pylint.message.message.Message",
+          "function_id": null,
+          "score": 0.2897058823529412,
+          "lines": [
+            16,
+            79
+          ],
+          "snippet_sha256": "sha256:44dc21b141e77f96230923efc87f3e228eede05b402db212bd8c7dcfaa216276"
+        },
+        {
+          "rank": 57,
+          "item_id": "vgar:pylint-dev__pylint:python:file:pylint/checkers/similar.py",
+          "path": "pylint/checkers/similar.py",
+          "kind": "file",
+          "symbol": "pylint/checkers/similar.py",
+          "function_id": null,
+          "score": 0.28942307692307695,
+          "lines": [
+            1,
+            923
+          ],
+          "snippet_sha256": "sha256:406fece1f61a073319b541ee7af7dc546fd7bdf6f984c75dd9dd9d6284a9bc62"
+        },
+        {
+          "rank": 58,
+          "item_id": "vgar:pylint-dev__pylint:python:module:pylint/message/__init__.py:pylint.message",
+          "path": "pylint/message/__init__.py",
+          "kind": "module",
+          "symbol": "pylint.message",
+          "function_id": null,
+          "score": 0.28942307692307695,
+          "lines": [
+            1,
+            18
+          ],
+          "snippet_sha256": "sha256:3ab880927c2677eccfd57c6d68065d92cd6b531c085d32e3603f99eb84891ec5"
+        },
+        {
+          "rank": 59,
+          "item_id": "vgar:pylint-dev__pylint:python:class:pylint/checkers/similar.py:pylint.checkers.similar.Commonality",
+          "path": "pylint/checkers/similar.py",
+          "kind": "class",
+          "symbol": "pylint.checkers.similar.Commonality",
+          "function_id": null,
+          "score": 0.2891509433962264,
+          "lines": [
+            325,
+            332
+          ],
+          "snippet_sha256": "sha256:1bdf3e7b4a4624e893f25821f702c6662b8954c1cfe9f362122e6845168177ff"
+        },
+        {
+          "rank": 60,
+          "item_id": "vgar:pylint-dev__pylint:python:module:pylint/testutils/output_line.py:pylint.testutils.output_line",
+          "path": "pylint/testutils/output_line.py",
+          "kind": "module",
+          "symbol": "pylint.testutils.output_line",
+          "function_id": null,
+          "score": 0.2891509433962264,
+          "lines": [
+            1,
+            197
+          ],
+          "snippet_sha256": "sha256:bb2fec0599898f335cfa7c1a0a4b5ed4107845348ebdc976b135bc5d6e8b75de"
+        },
+        {
+          "rank": 61,
+          "item_id": "vgar:pylint-dev__pylint:python:class:pylint/checkers/similar.py:pylint.checkers.similar.LineSet",
+          "path": "pylint/checkers/similar.py",
+          "kind": "class",
+          "symbol": "pylint.checkers.similar.LineSet",
+          "function_id": null,
+          "score": 0.2888888888888889,
+          "lines": [
+            656,
+            704
+          ],
+          "snippet_sha256": "sha256:54dcd7fbd113e5bb7f9a18d38bb5649c63d4dd7347d612fdaf9e169bf70cb202"
+        },
+        {
+          "rank": 62,
+          "item_id": "vgar:pylint-dev__pylint:python:class:pylint/checkers/similar.py:pylint.checkers.similar.LineSpecifs",
+          "path": "pylint/checkers/similar.py",
+          "kind": "class",
+          "symbol": "pylint.checkers.similar.LineSpecifs",
+          "function_id": null,
+          "score": 0.2888888888888889,
+          "lines": [
+            71,
+            73
+          ],
+          "snippet_sha256": "sha256:1d1bc8b53c24e82cb4a25f42598ecd832a102b53a9a9d20b6206fd229c078156"
+        },
+        {
+          "rank": 63,
+          "item_id": "vgar:pylint-dev__pylint:python:class:pylint/checkers/similar.py:pylint.checkers.similar.LinesChunk",
+          "path": "pylint/checkers/similar.py",
+          "kind": "class",
+          "symbol": "pylint.checkers.similar.LinesChunk",
+          "function_id": null,
+          "score": 0.2888888888888889,
+          "lines": [
+            110,
+            142
+          ],
+          "snippet_sha256": "sha256:e8b2785d9dd032d594f3e6b64a311263c48924ae2b2aa2da509f80cc6b43ed33"
+        },
+        {
+          "rank": 64,
+          "item_id": "vgar:pylint-dev__pylint:python:class:pylint/typing.py:pylint.typing.MessageLocationTuple",
+          "path": "pylint/typing.py",
+          "kind": "class",
+          "symbol": "pylint.typing.MessageLocationTuple",
+          "function_id": null,
+          "score": 0.2888888888888889,
+          "lines": [
+            68,
+            78
+          ],
+          "snippet_sha256": "sha256:54712127f9491a336f54d061dbd99e3e2c2ad98b171895d7a149dbaeb0519e97"
+        },
+        {
+          "rank": 65,
+          "item_id": "vgar:pylint-dev__pylint:python:class:pylint/checkers/similar.py:pylint.checkers.similar.SuccessiveLinesLimits",
+          "path": "pylint/checkers/similar.py",
+          "kind": "class",
+          "symbol": "pylint.checkers.similar.SuccessiveLinesLimits",
+          "function_id": null,
+          "score": 0.28863636363636364,
+          "lines": [
+            145,
+            170
+          ],
+          "snippet_sha256": "sha256:1572ade9c06c58862eb32c56cca9a24a995e1f2cb02588f9cc43f4879a110caa"
+        },
+        {
+          "rank": 66,
+          "item_id": "vgar:pylint-dev__pylint:python:class:pylint/checkers/similar.py:pylint.checkers.similar.CplSuccessiveLinesLimits",
+          "path": "pylint/checkers/similar.py",
+          "kind": "class",
+          "symbol": "pylint.checkers.similar.CplSuccessiveLinesLimits",
+          "function_id": null,
+          "score": 0.2883928571428572,
+          "lines": [
+            87,
+            102
+          ],
+          "snippet_sha256": "sha256:7661b612726436fbd17d9ec6489ee7a9b1aded7859d6400e7256d479614838d9"
+        },
+        {
+          "rank": 67,
+          "item_id": "vgar:pylint-dev__pylint:python:class:pylint/checkers/similar.py:pylint.checkers.similar.LineSetStartCouple",
+          "path": "pylint/checkers/similar.py",
+          "kind": "class",
+          "symbol": "pylint.checkers.similar.LineSetStartCouple",
+          "function_id": null,
+          "score": 0.2883928571428572,
+          "lines": [
+            173,
+            199
+          ],
+          "snippet_sha256": "sha256:1727f508d149f04ddc9dcfdf6f87c308f2bfc4dd03bee298d99d21502b0813eb"
+        },
+        {
+          "rank": 68,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/checkers/similar.py:pylint.checkers.similar.SimilarChecker.__init__",
+          "path": "pylint/checkers/similar.py",
+          "kind": "method",
+          "symbol": "pylint.checkers.similar.SimilarChecker.__init__",
+          "function_id": "pylint/checkers/similar.py::pylint.checkers.similar.SimilarChecker.__init__",
+          "score": 0.28793103448275864,
+          "lines": [
+            794,
+            803
+          ],
+          "snippet_sha256": "sha256:73dc37e3a3d139d1ab8807451515781a1be394954dd51af3c546d91f0cd2e558"
+        },
+        {
+          "rank": 69,
+          "item_id": "vgar:pylint-dev__pylint:python:module:pylint/constants.py:pylint.constants",
+          "path": "pylint/constants.py",
+          "kind": "module",
+          "symbol": "pylint.constants",
+          "function_id": null,
+          "score": 0.28461538461538466,
+          "lines": [
+            1,
+            210
+          ],
+          "snippet_sha256": "sha256:95e77f10e76fcf6db61eb36116d74c19cd08fdc4c0a49e347dbd5c656416b047"
+        },
+        {
+          "rank": 70,
+          "item_id": "vgar:pylint-dev__pylint:python:module:pylint/interfaces.py:pylint.interfaces",
+          "path": "pylint/interfaces.py",
+          "kind": "module",
+          "symbol": "pylint.interfaces",
+          "function_id": null,
+          "score": 0.28461538461538466,
+          "lines": [
+            1,
+            112
+          ],
+          "snippet_sha256": "sha256:d70f58763fb3cd6e3f50d2c318f100964fa964673ece1ee192c9fed964e9a9f3"
+        },
+        {
+          "rank": 71,
+          "item_id": "vgar:pylint-dev__pylint:python:module:pylint/typing.py:pylint.typing",
+          "path": "pylint/typing.py",
+          "kind": "module",
+          "symbol": "pylint.typing",
+          "function_id": null,
+          "score": 0.28461538461538466,
+          "lines": [
+            1,
+            120
+          ],
+          "snippet_sha256": "sha256:0edbb9509cb2366d33c6d7a50109acdd81342ed9a9e78a5cd8e7e9a789ca82c6"
+        },
+        {
+          "rank": 72,
+          "item_id": "vgar:pylint-dev__pylint:python:module:pylint/checkers/__init__.py:pylint.checkers",
+          "path": "pylint/checkers/__init__.py",
+          "kind": "module",
+          "symbol": "pylint.checkers",
+          "function_id": null,
+          "score": 0.2844339622641509,
+          "lines": [
+            1,
+            140
+          ],
+          "snippet_sha256": "sha256:207e74fced04ff40367eeb50d57fedd45825039b4043c2aacffc1aa405df66be"
+        },
+        {
+          "rank": 73,
+          "item_id": "vgar:pylint-dev__pylint:python:module:pylint/checkers/unicode.py:pylint.checkers.unicode",
+          "path": "pylint/checkers/unicode.py",
+          "kind": "module",
+          "symbol": "pylint.checkers.unicode",
+          "function_id": null,
+          "score": 0.2844339622641509,
+          "lines": [
+            1,
+            540
+          ],
+          "snippet_sha256": "sha256:7b1760c231905b299bcad4de06989d0564322ddd5d90bc3534b8c70f9971e3ec"
+        },
+        {
+          "rank": 74,
+          "item_id": "vgar:pylint-dev__pylint:python:module:pylint/lint/__init__.py:pylint.lint",
+          "path": "pylint/lint/__init__.py",
+          "kind": "module",
+          "symbol": "pylint.lint",
+          "function_id": null,
+          "score": 0.2844339622641509,
+          "lines": [
+            1,
+            44
+          ],
+          "snippet_sha256": "sha256:a11956d78cf0bb03be6b49d0d87511e2dda912b8d15cecdffe7f6ff000779379"
+        },
+        {
+          "rank": 75,
+          "item_id": "vgar:pylint-dev__pylint:python:module:pylint/utils/__init__.py:pylint.utils",
+          "path": "pylint/utils/__init__.py",
+          "kind": "module",
+          "symbol": "pylint.utils",
+          "function_id": null,
+          "score": 0.2844339622641509,
+          "lines": [
+            1,
+            56
+          ],
+          "snippet_sha256": "sha256:71f5316d9e71e077a4a4db20e074f97aeb26f76a31c3bc487e3fe754923ec06b"
+        },
+        {
+          "rank": 76,
+          "item_id": "vgar:pylint-dev__pylint:python:module:pylint/reporters/ureports/nodes.py:pylint.reporters.ureports.nodes",
+          "path": "pylint/reporters/ureports/nodes.py",
+          "kind": "module",
+          "symbol": "pylint.reporters.ureports.nodes",
+          "function_id": null,
+          "score": 0.28425925925925927,
+          "lines": [
+            1,
+            191
+          ],
+          "snippet_sha256": "sha256:bb4319ba878eb6dba28eea151810fb13b4459980981272245d82f0b4dccd72b7"
+        },
+        {
+          "rank": 77,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/config/option_manager_mixin.py:pylint.config.option_manager_mixin.OptionsManagerMixIn.__init__",
+          "path": "pylint/config/option_manager_mixin.py",
+          "kind": "method",
+          "symbol": "pylint.config.option_manager_mixin.OptionsManagerMixIn.__init__",
+          "function_id": "pylint/config/option_manager_mixin.py::pylint.config.option_manager_mixin.OptionsManagerMixIn.__init__",
+          "score": 0.2692307692307693,
+          "lines": [
+            66,
+            81
+          ],
+          "snippet_sha256": "sha256:67f54c055abfb75bf3e938cceaaa44701a7b8d28c69dbd1fed70297e70aaaabf"
+        },
+        {
+          "rank": 78,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.__init__",
+          "path": "pylint/config/arguments_manager.py",
+          "kind": "method",
+          "symbol": "pylint.config.arguments_manager._ArgumentsManager.__init__",
+          "function_id": "pylint/config/arguments_manager.py::pylint.config.arguments_manager._ArgumentsManager.__init__",
+          "score": 0.26666666666666666,
+          "lines": [
+            63,
+            97
+          ],
+          "snippet_sha256": "sha256:482870a8f16d38a726c91edff453e4eb4d1fc77253e894a11993405deea19a18"
+        },
+        {
+          "rank": 79,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager._add_parser_option",
+          "path": "pylint/config/arguments_manager.py",
+          "kind": "method",
+          "symbol": "pylint.config.arguments_manager._ArgumentsManager._add_parser_option",
+          "function_id": "pylint/config/arguments_manager.py::pylint.config.arguments_manager._ArgumentsManager._add_parser_option",
+          "score": 0.26639344262295084,
+          "lines": [
+            159,
+            234
+          ],
+          "snippet_sha256": "sha256:1f17b74e199d6158ea84019293a5fa5b4069051e812e234f908cdff35a973fce"
+        },
+        {
+          "rank": 80,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager._add_arguments_to_parser",
+          "path": "pylint/config/arguments_manager.py",
+          "kind": "method",
+          "symbol": "pylint.config.arguments_manager._ArgumentsManager._add_arguments_to_parser",
+          "function_id": "pylint/config/arguments_manager.py::pylint.config.arguments_manager._ArgumentsManager._add_arguments_to_parser",
+          "score": 0.2661290322580645,
+          "lines": [
+            142,
+            156
+          ],
+          "snippet_sha256": "sha256:b57437df32e3ddb393be8c71cf4b7dc0290717038b983986293a7c99da92f09d"
+        },
+        {
+          "rank": 81,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/config/option_manager_mixin.py:pylint.config.option_manager_mixin.OptionsManagerMixIn._parse_toml",
+          "path": "pylint/config/option_manager_mixin.py",
+          "kind": "method",
+          "symbol": "pylint.config.option_manager_mixin.OptionsManagerMixIn._parse_toml",
+          "function_id": "pylint/config/option_manager_mixin.py::pylint.config.option_manager_mixin.OptionsManagerMixIn._parse_toml",
+          "score": 0.2653846153846154,
+          "lines": [
+            271,
+            301
+          ],
+          "snippet_sha256": "sha256:af154972164bcf23f865905f59271319b28f1c710f3746d2aafd018b385cbe19"
+        },
+        {
+          "rank": 82,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager._register_options_provider",
+          "path": "pylint/config/arguments_manager.py",
+          "kind": "method",
+          "symbol": "pylint.config.arguments_manager._ArgumentsManager._register_options_provider",
+          "function_id": "pylint/config/arguments_manager.py::pylint.config.arguments_manager._ArgumentsManager._register_options_provider",
+          "score": 0.2627118644067797,
+          "lines": [
+            125,
+            140
+          ],
+          "snippet_sha256": "sha256:5b71ee82d50192008c44b89852dfa655d3b49b5fe01210acb416b2e68d8318d4"
+        },
+        {
+          "rank": 83,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager._load_default_argument_values",
+          "path": "pylint/config/arguments_manager.py",
+          "kind": "method",
+          "symbol": "pylint.config.arguments_manager._ArgumentsManager._load_default_argument_values",
+          "function_id": "pylint/config/arguments_manager.py::pylint.config.arguments_manager._ArgumentsManager._load_default_argument_values",
+          "score": 0.2625,
+          "lines": [
+            236,
+            238
+          ],
+          "snippet_sha256": "sha256:e7a4c0dd226879eb24a2f89c3508f580707e93e51572a879b51ae7ade0ce1c60"
+        },
+        {
+          "rank": 84,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager._parse_command_line_configuration",
+          "path": "pylint/config/arguments_manager.py",
+          "kind": "method",
+          "symbol": "pylint.config.arguments_manager._ArgumentsManager._parse_command_line_configuration",
+          "function_id": "pylint/config/arguments_manager.py::pylint.config.arguments_manager._ArgumentsManager._parse_command_line_configuration",
+          "score": 0.2619047619047619,
+          "lines": [
+            252,
+            262
+          ],
+          "snippet_sha256": "sha256:1df953ddcca1ec490b00e4afecda8b12cb096e53b910b6ef415ca87808f531b5"
+        },
+        {
+          "rank": 85,
+          "item_id": "vgar:pylint-dev__pylint:python:module:pylint/config/arguments_manager.py:pylint.config.arguments_manager",
+          "path": "pylint/config/arguments_manager.py",
+          "kind": "module",
+          "symbol": "pylint.config.arguments_manager",
+          "function_id": null,
+          "score": 0.2592592592592593,
+          "lines": [
+            1,
+            754
+          ],
+          "snippet_sha256": "sha256:d2a785b375088a4157f12cce619a3893784a861489105f0bbf2d6277444aba25"
+        },
+        {
+          "rank": 86,
+          "item_id": "vgar:pylint-dev__pylint:python:class:pylint/lint/pylinter.py:pylint.lint.pylinter.PyLinter",
+          "path": "pylint/lint/pylinter.py",
+          "kind": "class",
+          "symbol": "pylint.lint.pylinter.PyLinter",
+          "function_id": null,
+          "score": 0.2592592592592593,
+          "lines": [
+            191,
+            1477
+          ],
+          "snippet_sha256": "sha256:c33468359b743421be488af39ecac41e2e0939462c25f6e65601a98346189e35"
+        },
+        {
+          "rank": 87,
+          "item_id": "vgar:pylint-dev__pylint:python:class:pylint/pyreverse/main.py:pylint.pyreverse.main.Run",
+          "path": "pylint/pyreverse/main.py",
+          "kind": "class",
+          "symbol": "pylint.pyreverse.main.Run",
+          "function_id": null,
+          "score": 0.2592592592592593,
+          "lines": [
+            205,
+            243
+          ],
+          "snippet_sha256": "sha256:ab8ef173d6c6847485ee4e728f90e4b1ce804751782f602ed125bc2573e6c02b"
+        },
+        {
+          "rank": 88,
+          "item_id": "vgar:pylint-dev__pylint:python:class:pylint/config/configuration_mixin.py:pylint.config.configuration_mixin.ConfigurationMixIn",
+          "path": "pylint/config/configuration_mixin.py",
+          "kind": "class",
+          "symbol": "pylint.config.configuration_mixin.ConfigurationMixIn",
+          "function_id": null,
+          "score": 0.25892857142857145,
+          "lines": [
+            11,
+            35
+          ],
+          "snippet_sha256": "sha256:690a46281749b6c57cacbab75a484333b56974086b3cc895df20859ba33475bf"
+        },
+        {
+          "rank": 89,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager._generate_config_file",
+          "path": "pylint/config/arguments_manager.py",
+          "kind": "method",
+          "symbol": "pylint.config.arguments_manager._ArgumentsManager._generate_config_file",
+          "function_id": "pylint/config/arguments_manager.py::pylint.config.arguments_manager._ArgumentsManager._generate_config_file",
+          "score": 0.2584745762711865,
+          "lines": [
+            657,
+            726
+          ],
+          "snippet_sha256": "sha256:c59c454434cd9a36caa7969d3cbcdfd22e566aca98b2d0ab8b34c1413810f65f"
+        },
+        {
+          "rank": 90,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager._parse_configuration_file",
+          "path": "pylint/config/arguments_manager.py",
+          "kind": "method",
+          "symbol": "pylint.config.arguments_manager._ArgumentsManager._parse_configuration_file",
+          "function_id": "pylint/config/arguments_manager.py::pylint.config.arguments_manager._ArgumentsManager._parse_configuration_file",
+          "score": 0.2580645161290323,
+          "lines": [
+            240,
+            250
+          ],
+          "snippet_sha256": "sha256:2c40a4d51206f4cb3a54446c243cb8cbfb32dc2ce9013563660b0b4f8da2f4ae"
+        },
+        {
+          "rank": 91,
+          "item_id": "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager._parse_toml",
+          "path": "pylint/config/arguments_manager.py",
+          "kind": "method",
+          "symbol": "pylint.config.arguments_manager._ArgumentsManager._parse_toml",
+          "function_id": "pylint/config/arguments_manager.py::pylint.config.arguments_manager._ArgumentsManager._parse_toml",
+          "score": 0.25769230769230766,
+          "lines": [
+            526,
+            557
+          ],
+          "snippet_sha256": "sha256:49042377f614c3042a6a8088b08db22f2aa3b672a9186b36e296f6a2ce3471c4"
+        }
+      ],
+      "rank_order": [
+        "vgar:pylint-dev__pylint:python:function:pylint/checkers/similar.py:pylint.checkers.similar.usage",
+        "vgar:pylint-dev__pylint:python:method:pylint/checkers/unicode.py:pylint.checkers.unicode._BadChar.description",
+        "vgar:pylint-dev__pylint:python:method:pylint/config/option_manager_mixin.py:pylint.config.option_manager_mixin.OptionsManagerMixIn.help",
+        "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.help",
+        "vgar:pylint-dev__pylint:python:class:pylint/checkers/similar.py:pylint.checkers.similar.Similar",
+        "vgar:pylint-dev__pylint:python:method:pylint/checkers/similar.py:pylint.checkers.similar.Similar.get_map_data",
+        "vgar:pylint-dev__pylint:python:method:pylint/checkers/similar.py:pylint.checkers.similar.Similar.combine_mapreduce_data",
+        "vgar:pylint-dev__pylint:python:function:pylint/checkers/similar.py:pylint.checkers.similar.Run",
+        "vgar:pylint-dev__pylint:python:method:pylint/checkers/similar.py:pylint.checkers.similar.Similar.run",
+        "vgar:pylint-dev__pylint:python:method:pylint/checkers/similar.py:pylint.checkers.similar.Similar.append_stream",
+        "vgar:pylint-dev__pylint:python:function:pylint/checkers/similar.py:pylint.checkers.similar.remove_successives",
+        "vgar:pylint-dev__pylint:python:function:pylint/checkers/similar.py:pylint.checkers.similar.hash_lineset",
+        "vgar:pylint-dev__pylint:python:function:pylint/checkers/similar.py:pylint.checkers.similar.filter_noncode_lines",
+        "vgar:pylint-dev__pylint:python:function:pylint/checkers/similar.py:pylint.checkers.similar.stripped_lines",
+        "vgar:pylint-dev__pylint:python:function:pylint/utils/utils.py:pylint.utils.utils.decoding_stream",
+        "vgar:pylint-dev__pylint:python:method:pylint/config/option_manager_mixin.py:pylint.config.option_manager_mixin.OptionsManagerMixIn.add_optik_option",
+        "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.set_option",
+        "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.add_optik_option",
+        "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.global_set_option",
+        "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.add_option_group",
+        "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.reset_parsers",
+        "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.optik_option",
+        "vgar:pylint-dev__pylint:python:method:pylint/checkers/similar.py:pylint.checkers.similar.Similar._compute_sims",
+        "vgar:pylint-dev__pylint:python:method:pylint/checkers/similar.py:pylint.checkers.similar.Similar._display_sims",
+        "vgar:pylint-dev__pylint:python:method:pylint/checkers/similar.py:pylint.checkers.similar.Similar._get_similarity_report",
+        "vgar:pylint-dev__pylint:python:module:pylint/checkers/similar.py:pylint.checkers.similar",
+        "vgar:pylint-dev__pylint:python:class:pylint/checkers/similar.py:pylint.checkers.similar.SimilarChecker",
+        "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.load_configuration_from_config",
+        "vgar:pylint-dev__pylint:python:method:pylint/checkers/similar.py:pylint.checkers.similar.SimilarChecker.close",
+        "vgar:pylint-dev__pylint:python:method:pylint/checkers/similar.py:pylint.checkers.similar.SimilarChecker.open",
+        "vgar:pylint-dev__pylint:python:function:pylint/checkers/similar.py:pylint.checkers.similar.register",
+        "vgar:pylint-dev__pylint:python:method:pylint/checkers/similar.py:pylint.checkers.similar.Similar.__init__",
+        "vgar:pylint-dev__pylint:python:method:pylint/checkers/similar.py:pylint.checkers.similar.SimilarChecker.get_map_data",
+        "vgar:pylint-dev__pylint:python:method:pylint/checkers/similar.py:pylint.checkers.similar.Similar._iter_sims",
+        "vgar:pylint-dev__pylint:python:method:pylint/checkers/similar.py:pylint.checkers.similar.SimilarChecker.reduce_map_data",
+        "vgar:pylint-dev__pylint:python:method:pylint/checkers/similar.py:pylint.checkers.similar.SimilarChecker.process_module",
+        "vgar:pylint-dev__pylint:python:function:pylint/checkers/similar.py:pylint.checkers.similar.report_similarities",
+        "vgar:pylint-dev__pylint:python:method:pylint/checkers/similar.py:pylint.checkers.similar.Similar._find_common",
+        "vgar:pylint-dev__pylint:python:class:pylint/checkers/unicode.py:pylint.checkers.unicode._BadChar",
+        "vgar:pylint-dev__pylint:python:method:pylint/checkers/unicode.py:pylint.checkers.unicode._BadChar.human_code",
+        "vgar:pylint-dev__pylint:python:class:pylint/config/option_manager_mixin.py:pylint.config.option_manager_mixin.OptionsManagerMixIn",
+        "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.options_providers.setter",
+        "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.cb_set_provider_option",
+        "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.config.setter",
+        "vgar:pylint-dev__pylint:python:function:pylint/config/option_manager_mixin.py:pylint.config.option_manager_mixin._patch_optparse",
+        "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.options_providers",
+        "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.read_config_file",
+        "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.load_command_line_configuration",
+        "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.register_options_provider",
+        "vgar:pylint-dev__pylint:python:class:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager",
+        "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.config",
+        "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.load_config_file",
+        "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.load_provider_defaults",
+        "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.load_configuration",
+        "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.generate_config",
+        "vgar:pylint-dev__pylint:python:class:pylint/message/message.py:pylint.message.message.Message",
+        "vgar:pylint-dev__pylint:python:file:pylint/checkers/similar.py",
+        "vgar:pylint-dev__pylint:python:module:pylint/message/__init__.py:pylint.message",
+        "vgar:pylint-dev__pylint:python:class:pylint/checkers/similar.py:pylint.checkers.similar.Commonality",
+        "vgar:pylint-dev__pylint:python:module:pylint/testutils/output_line.py:pylint.testutils.output_line",
+        "vgar:pylint-dev__pylint:python:class:pylint/checkers/similar.py:pylint.checkers.similar.LineSet",
+        "vgar:pylint-dev__pylint:python:class:pylint/checkers/similar.py:pylint.checkers.similar.LineSpecifs",
+        "vgar:pylint-dev__pylint:python:class:pylint/checkers/similar.py:pylint.checkers.similar.LinesChunk",
+        "vgar:pylint-dev__pylint:python:class:pylint/typing.py:pylint.typing.MessageLocationTuple",
+        "vgar:pylint-dev__pylint:python:class:pylint/checkers/similar.py:pylint.checkers.similar.SuccessiveLinesLimits",
+        "vgar:pylint-dev__pylint:python:class:pylint/checkers/similar.py:pylint.checkers.similar.CplSuccessiveLinesLimits",
+        "vgar:pylint-dev__pylint:python:class:pylint/checkers/similar.py:pylint.checkers.similar.LineSetStartCouple",
+        "vgar:pylint-dev__pylint:python:method:pylint/checkers/similar.py:pylint.checkers.similar.SimilarChecker.__init__",
+        "vgar:pylint-dev__pylint:python:module:pylint/constants.py:pylint.constants",
+        "vgar:pylint-dev__pylint:python:module:pylint/interfaces.py:pylint.interfaces",
+        "vgar:pylint-dev__pylint:python:module:pylint/typing.py:pylint.typing",
+        "vgar:pylint-dev__pylint:python:module:pylint/checkers/__init__.py:pylint.checkers",
+        "vgar:pylint-dev__pylint:python:module:pylint/checkers/unicode.py:pylint.checkers.unicode",
+        "vgar:pylint-dev__pylint:python:module:pylint/lint/__init__.py:pylint.lint",
+        "vgar:pylint-dev__pylint:python:module:pylint/utils/__init__.py:pylint.utils",
+        "vgar:pylint-dev__pylint:python:module:pylint/reporters/ureports/nodes.py:pylint.reporters.ureports.nodes",
+        "vgar:pylint-dev__pylint:python:method:pylint/config/option_manager_mixin.py:pylint.config.option_manager_mixin.OptionsManagerMixIn.__init__",
+        "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.__init__",
+        "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager._add_parser_option",
+        "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager._add_arguments_to_parser",
+        "vgar:pylint-dev__pylint:python:method:pylint/config/option_manager_mixin.py:pylint.config.option_manager_mixin.OptionsManagerMixIn._parse_toml",
+        "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager._register_options_provider",
+        "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager._load_default_argument_values",
+        "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager._parse_command_line_configuration",
+        "vgar:pylint-dev__pylint:python:module:pylint/config/arguments_manager.py:pylint.config.arguments_manager",
+        "vgar:pylint-dev__pylint:python:class:pylint/lint/pylinter.py:pylint.lint.pylinter.PyLinter",
+        "vgar:pylint-dev__pylint:python:class:pylint/pyreverse/main.py:pylint.pyreverse.main.Run",
+        "vgar:pylint-dev__pylint:python:class:pylint/config/configuration_mixin.py:pylint.config.configuration_mixin.ConfigurationMixIn",
+        "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager._generate_config_file",
+        "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager._parse_configuration_file",
+        "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager._parse_toml"
+      ],
+      "anchors": [
+        {
+          "node_id": "vgar:pylint-dev__pylint:python:class:pylint/checkers/similar.py:pylint.checkers.similar.Similar",
+          "score": 0.6,
+          "symbol": "pylint.checkers.similar.Similar",
+          "type": "Class",
+          "path": "pylint/checkers/similar.py"
+        },
+        {
+          "node_id": "vgar:pylint-dev__pylint:python:function:pylint/checkers/similar.py:pylint.checkers.similar.usage",
+          "score": 0.6,
+          "symbol": "pylint.checkers.similar.usage",
+          "type": "Function",
+          "path": "pylint/checkers/similar.py"
+        },
+        {
+          "node_id": "vgar:pylint-dev__pylint:python:method:pylint/checkers/unicode.py:pylint.checkers.unicode._BadChar.description",
+          "score": 0.6,
+          "symbol": "pylint.checkers.unicode._BadChar.description",
+          "type": "Method",
+          "path": "pylint/checkers/unicode.py"
+        },
+        {
+          "node_id": "vgar:pylint-dev__pylint:python:function:tests/testutils/test_output_line.py:tests.testutils.test_output_line.message",
+          "score": 0.6,
+          "symbol": "tests.testutils.test_output_line.message",
+          "type": "Function",
+          "path": "tests/testutils/test_output_line.py"
+        },
+        {
+          "node_id": "vgar:pylint-dev__pylint:python:method:pylint/config/arguments_manager.py:pylint.config.arguments_manager._ArgumentsManager.help",
+          "score": 0.5,
+          "symbol": "pylint.config.arguments_manager._ArgumentsManager.help",
+          "type": "Method",
+          "path": "pylint/config/arguments_manager.py"
+        },
+        {
+          "node_id": "vgar:pylint-dev__pylint:python:method:pylint/config/option_manager_mixin.py:pylint.config.option_manager_mixin.OptionsManagerMixIn.help",
+          "score": 0.5,
+          "symbol": "pylint.config.option_manager_mixin.OptionsManagerMixIn.help",
+          "type": "Method",
+          "path": "pylint/config/option_manager_mixin.py"
+        },
+        {
+          "node_id": "vgar:pylint-dev__pylint:python:method:tests/functional/c/cached_property.py:tests.functional.c.cached_property.Child.value",
+          "score": 0.5,
+          "symbol": "tests.functional.c.cached_property.Child.value",
+          "type": "Method",
+          "path": "tests/functional/c/cached_property.py"
+        },
+        {
+          "node_id": "vgar:pylint-dev__pylint:python:method:tests/functional/c/cached_property.py:tests.functional.c.cached_property.Parent.value",
+          "score": 0.5,
+          "symbol": "tests.functional.c.cached_property.Parent.value",
+          "type": "Method",
+          "path": "tests/functional/c/cached_property.py"
+        },
+        {
+          "node_id": "vgar:pylint-dev__pylint:python:function:tests/functional/ext/consider_ternary_expression/consider_ternary_expression.py:tests.functional.ext.consider_ternary_expression.consider_ternary_expression.a",
+          "score": 0.5,
+          "symbol": "tests.functional.ext.consider_ternary_expression.consider_ternary_expression.a",
+          "type": "Function",
+          "path": "tests/functional/ext/consider_ternary_expression/consider_ternary_expression.py"
+        },
+        {
+          "node_id": "vgar:pylint-dev__pylint:python:function:tests/functional/i/invalid/invalid_name.py:tests.functional.i.invalid.invalid_name.a",
+          "score": 0.5,
+          "symbol": "tests.functional.i.invalid.invalid_name.a",
+          "type": "Function",
+          "path": "tests/functional/i/invalid/invalid_name.py"
+        },
+        {
+          "node_id": "vgar:pylint-dev__pylint:python:method:tests/functional/m/method_hidden.py:tests.functional.m.method_hidden.One.one",
+          "score": 0.5,
+          "symbol": "tests.functional.m.method_hidden.One.one",
+          "type": "Method",
+          "path": "tests/functional/m/method_hidden.py"
+        },
+        {
+          "node_id": "vgar:pylint-dev__pylint:python:method:tests/functional/m/method_hidden.py:tests.functional.m.method_hidden.Two.one",
+          "score": 0.5,
+          "symbol": "tests.functional.m.method_hidden.Two.one",
+          "type": "Method",
+          "path": "tests/functional/m/method_hidden.py"
+        },
+        {
+          "node_id": "vgar:pylint-dev__pylint:python:method:tests/functional/n/not_callable.py:tests.functional.n.not_callable.ClassWithProperty.value",
+          "score": 0.5,
+          "symbol": "tests.functional.n.not_callable.ClassWithProperty.value",
+          "type": "Method",
+          "path": "tests/functional/n/not_callable.py"
+        },
+        {
+          "node_id": "vgar:pylint-dev__pylint:python:method:tests/functional/u/unused/unused_private_member.py:tests.functional.u.unused.unused_private_member.TypeSelfCallInMethod.a",
+          "score": 0.5,
+          "symbol": "tests.functional.u.unused.unused_private_member.TypeSelfCallInMethod.a",
+          "type": "Method",
+          "path": "tests/functional/u/unused/unused_private_member.py"
+        }
+      ],
+      "unmapped": [],
+      "excluded": [],
+      "diagnostics": {
+        "m1_native_total_tokens": 7998,
+        "m1_native_items": 31,
+        "m1_native_truncated": true,
+        "traversal_limited": true,
+        "unavailable_features": [
+          "architecture_dependencies",
+          "recent_change_frequency",
+          "failing_test_proximity"
+        ],
+        "omissions": {
+          "overlapping_selected_range": 23,
+          "token_budget": 37
+        },
+        "retrieval_config": {
+          "max_hops": 2,
+          "max_candidates": 100,
+          "min_edge_confidence": 0.6,
+          "weights": {
+            "task_similarity": 0.2,
+            "graph_distance": 0.3,
+            "edge_confidence": 0.2,
+            "failing_test_proximity": 0.2,
+            "public_api_risk": 0.1,
+            "recent_change_frequency": 0.1
+          },
+          "profile": "semantic-context-v1",
+          "active_features": [
+            "task_similarity",
+            "graph_distance",
+            "edge_confidence",
+            "public_api_risk"
+          ],
+          "normalized_weights": {
+            "task_similarity": 0.25000000000000006,
+            "graph_distance": 0.375,
+            "edge_confidence": 0.25000000000000006,
+            "public_api_risk": 0.12500000000000003
+          },
+          "failing_test_traversal_limited": false,
+          "filtered_by_include": 44
+        }
+      },
+      "scoring": {
+        "instance_id": "pylint-dev__pylint-6386",
+        "arm": "graph_f2p",
+        "scoring_version": "retrieval-scoring-v1",
+        "rank_hash": "sha256:0d2c70f4c5fd4d0b07f00819ed3267b15e3ddce5c656d40107e1902690c56549",
+        "rank": {
+          "metrics": {
+            "file_gold_count": 4,
+            "file_mrr": 0.25,
+            "file_recall@1": 0.0,
+            "file_all_gold@1": 0,
+            "file_recall@3": 0.0,
+            "file_all_gold@3": 0,
+            "file_recall@5": 0.25,
+            "file_all_gold@5": 0,
+            "file_recall@10": 0.25,
+            "file_all_gold@10": 0,
+            "file_recall@20": 0.25,
+            "file_all_gold@20": 0,
+            "function_gold_count": 5,
+            "function_mrr": 0.018867924528301886,
+            "function_recall@1": 0.0,
+            "function_all_gold@1": 0,
+            "function_recall@3": 0.0,
+            "function_all_gold@3": 0,
+            "function_recall@5": 0.0,
+            "function_all_gold@5": 0,
+            "function_recall@10": 0.0,
+            "function_all_gold@10": 0,
+            "function_recall@20": 0.0,
+            "function_all_gold@20": 0
+          },
+          "reach": {
+            "file": 0.25,
+            "function": 0.2
+          },
+          "size": {
+            "items": 91,
+            "files": 18,
+            "functions": 61
+          }
+        },
+        "packed": {
+          "budget_tokens": 8000,
+          "counter_label": "local-hf:Qwen/Qwen3-4B-Instruct-2507@cdbee75f17c01a7cc42f958dc650907174af0554:sha256=aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4:no-special-tokens",
+          "snippet_policy": {
+            "max_snippet_lines": 80,
+            "header": true,
+            "overlap": "skip_if_overlaps_different_group"
+          },
+          "metrics": {
+            "gold_file_in_context": 0.25,
+            "gold_function_in_context": 0.0,
+            "all_gold_files_in_context": 0,
+            "all_gold_functions_in_context": 0,
+            "total_tokens": 7948,
+            "tokens_to_first_gold_file": 334,
+            "tokens_to_first_gold_function": null,
+            "items_packed": 38,
+            "skipped": {
+              "token_budget": 30,
+              "overlap": 23
+            },
+            "truncated": true
+          }
+        },
+        "excluded_count": 0,
+        "unmapped": [],
+        "excluded_reasons": {}
+      },
+      "metrics": {
+        "file_gold_count": 4,
+        "file_mrr": 0.25,
+        "file_recall@1": 0.0,
+        "file_all_gold@1": 0,
+        "file_recall@3": 0.0,
+        "file_all_gold@3": 0,
+        "file_recall@5": 0.25,
+        "file_all_gold@5": 0,
+        "file_recall@10": 0.25,
+        "file_all_gold@10": 0,
+        "file_recall@20": 0.25,
+        "file_all_gold@20": 0,
+        "function_gold_count": 5,
+        "function_mrr": 0.018867924528301886,
+        "function_recall@1": 0.0,
+        "function_all_gold@1": 0,
+        "function_recall@3": 0.0,
+        "function_all_gold@3": 0,
+        "function_recall@5": 0.0,
+        "function_all_gold@5": 0,
+        "function_recall@10": 0.0,
+        "function_all_gold@10": 0,
+        "function_recall@20": 0.0,
+        "function_all_gold@20": 0,
+        "file_reach": 0.25,
+        "function_reach": 0.2,
+        "rank_items": 91,
+        "packed_gold_file_in_context": 0.25,
+        "packed_gold_function_in_context": 0.0,
+        "packed_all_gold_files_in_context": 0,
+        "packed_all_gold_functions_in_context": 0,
+        "context_tokens": 7948,
+        "packed_tokens_to_first_gold_file": 334,
+        "packed_tokens_to_first_gold_function": null,
+        "packed_items_packed": 38,
+        "packed_skipped_token_budget": 30,
+        "packed_skipped_overlap": 23,
+        "packed_truncated": 1,
+        "unmapped_count": 0,
+        "excluded_count": 0,
+        "anchor_count": 14,
+        "no_anchors": 0,
+        "candidates_in": 91,
+        "retrieve_seconds": 4.099156800002675,
+        "mapping_coverage": 1.0,
+        "file_retrievability_coverage": 1.0
+      }
+    }
+  },
+  "graph": {
+    "build_seconds": 14.800948699994478,
+    "nodes": 28050,
+    "edges": 34811,
+    "graph_version": "sha256:250efa94b86a097ced60e241f9c711bd630a3d5e944ddce4055ebca711d20266",
+    "use_jedi": false,
+    "builder_hash": "62bb14a051c1",
+    "skipped_failed_files": 0,
+    "cache_identity": {
+      "repository": "pylint-dev/pylint",
+      "commit": "754b487f4d892e3d4872b6fc7468a71db4e31c13",
+      "tree_hash": "sha256:4041446d296dba7028ee988daea5d24cc90dd6790bc9a663d84161335cf452fd",
+      "use_jedi": false,
+      "builder_hash": "62bb14a051c1",
+      "source_roots": [
+        "src"
+      ],
+      "source_scope": {
+        "excluded_paths": []
+      },
+      "implementation_hashes": {
+        "graph/builder.py": "sha256:62bb14a051c139d13477548457249f1fc05616a787a35843a85b55f6775a3770",
+        "graph/jedi_resolver.py": "sha256:adefa9271aecc11b97f9d8366a3b5bde578d5c870d2481a0ebf066ca9cb59d37",
+        "contracts/schema.py": "sha256:f47965e26cde0edc1e5e1bee379aa04cd5eb5a26ecbe9ba63d6019aa96ff6a9a",
+        "source_scope.py": "sha256:fbfcb5238e42d7ff15475c2038f9af0d728961d32b3d935c689c11ec7ea831ab",
+        "evaluation/retrieval/graph_cache.py": "sha256:54fafe1241089222c2eb11f136ce66b1f60df310f12ef6617c5669708ea4ff7f"
+      },
+      "package_versions": {
+        "tree-sitter": "0.25.2",
+        "tree-sitter-python": "0.25.0",
+        "jedi": "0.20.0"
+      },
+      "python": "3.11"
+    },
+    "cache_key": "56a4180295c9cd8a9be96473f06dff6389bbc23562902e5bbea7e3406477c06c",
+    "graph_path": "D:\\Project\\CAPSTONES\\VGAR\\data\\graphs\\pylint-dev__pylint-754b487f4d892e3d4872b6fc7468a71db4e31c13-56a4180295c9cd8a9be96473f06dff6389bbc23562902e5bbea7e3406477c06c.json",
+    "graph_hash": "sha256:9af933c5ee47ffcc801781d302ed98ef1d0ced437c2386bff393aac9b29f6f1c",
+    "cached": false
+  },
+  "source_tree": {
+    "python_file_count": 1386,
+    "tree_hash": "sha256:4041446d296dba7028ee988daea5d24cc90dd6790bc9a663d84161335cf452fd",
+    "path": "D:\\Project\\CAPSTONES\\VGAR\\data\\repositories\\trees\\rebuilt\\87684bd87b1d"
+  },
+  "source_provenance": {
+    "source_backend": "github_codeload_commit_archive",
+    "snapshot_commit": "754b487f4d892e3d4872b6fc7468a71db4e31c13",
+    "commit_validation": "immutable_40_SHA_URL_and_archive_root; not_git_object_hash_validation",
+    "source_file_count": 164,
+    "source_bytes": 1529376,
+    "excluded_sources": [],
+    "url": "https://codeload.github.com/pylint-dev/pylint/tar.gz/754b487f4d892e3d4872b6fc7468a71db4e31c13",
+    "archive_hash": "sha256:5c416b43742e77732517d75128836ecdac2d7e3e9301f8727b32f1823b0d9945",
+    "base_commit": "754b487f4d892e3d4872b6fc7468a71db4e31c13",
+    "cache_path": "D:\\Project\\CAPSTONES\\VGAR\\data\\repositories\\archives\\pylint-dev__pylint-754b487f4d892e3d4872b6fc7468a71db4e31c13.tar.gz"
+  },
+  "fail_to_pass_count": 1,
+  "inference": "NOT_RUN",
+  "phase": "WRITE",
+  "stages": [
+    {
+      "phase": "TOKENIZER",
+      "duration_seconds": 0.4367303999897558,
+      "peak_rss_bytes": 194142208
+    },
+    {
+      "phase": "LOAD_SOURCE",
+      "duration_seconds": 0.13860310000018217,
+      "peak_rss_bytes": 194142208
+    },
+    {
+      "phase": "EXTRACT_TREE",
+      "duration_seconds": 0.9628021999960765,
+      "peak_rss_bytes": 194142208
+    },
+    {
+      "phase": "BUILD_GRAPH",
+      "duration_seconds": 27.312076599991997,
+      "peak_rss_bytes": 194142208
+    },
+    {
+      "phase": "PREPARE_RETRIEVAL",
+      "duration_seconds": 4.942099799998687,
+      "peak_rss_bytes": 299106304
+    },
+    {
+      "phase": "GROUND",
+      "duration_seconds": 0.797787800009246,
+      "peak_rss_bytes": 299106304
+    },
+    {
+      "phase": "RETRIEVE",
+      "duration_seconds": 3.4032293999916874,
+      "peak_rss_bytes": 299106304
+    },
+    {
+      "phase": "GROUND",
+      "duration_seconds": 0.7496581999876071,
+      "peak_rss_bytes": 299106304
+    },
+    {
+      "phase": "RETRIEVE",
+      "duration_seconds": 3.3325045999954455,
+      "peak_rss_bytes": 299106304
+    },
+    {
+      "phase": "SCORE",
+      "duration_seconds": 0.3228053000057116,
+      "peak_rss_bytes": 299106304
+    },
+    {
+      "phase": "WRITE",
+      "duration_seconds": 0.015788399992743507,
+      "peak_rss_bytes": 299106304
+    }
+  ],
+  "peak_rss_bytes": 299106304,
+  "complete": true,
+  "ended_utc": "2026-10-07T11:12:05.191996+00:00",
+  "duration_seconds": 42.85219109999889
+}

@@ -1,0 +1,131 @@
+{
+  "run_id": "20261007T110725575408Z-85308523429d",
+  "kind": "pending-root-cause",
+  "status": "PASS",
+  "started_utc": "2026-10-07T11:07:25.576412+00:00",
+  "complete": true,
+  "python": "3.11.6 (tags/v3.11.6:8b6ee5b, Oct  2 2023, 14:57:12) [MSC v.1935 64 bit (AMD64)]",
+  "interpreter": "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe",
+  "platform": "Windows-10-10.0.26300-SP0",
+  "command_argv": [
+    "artifacts/fixes/w3-w6/reopened/diagnose_pending.py",
+    "pylint-dev__pylint-6386"
+  ],
+  "cwd": "D:\\Project\\CAPSTONES\\VGAR",
+  "task_id": "pylint-dev__pylint-6386",
+  "prior_run": "D:\\Project\\CAPSTONES\\VGAR\\results\\retrieval\\20261007T014445273889Z-664d06a6c1c0",
+  "tree": "D:\\Project\\CAPSTONES\\VGAR\\data\\repositories\\trees\\rebuilt\\f821b6682e84",
+  "tree_verified": {
+    "repo": "pylint-dev/pylint",
+    "commit": "754b487f4d892e3d4872b6fc7468a71db4e31c13",
+    "python_file_count": 1386,
+    "skipped": [],
+    "tree_hash": "sha256:4041446d296dba7028ee988daea5d24cc90dd6790bc9a663d84161335cf452fd"
+  },
+  "observed_error": {
+    "class": "GraphValidationError",
+    "message": "Invalid graph document:\n- duplicate edge id: sha256:8ebedb794e2918e78ab0c78081a7c418e1c244d9dda54940e642110a39465fe7",
+    "traceback": "Traceback (most recent call last):\n  File \"D:\\Project\\CAPSTONES\\VGAR\\artifacts\\fixes\\w3-w6\\reopened\\diagnose_pending.py\", line 49, in main\n    builder.build(tree)\n  File \"D:\\Project\\CAPSTONES\\VGAR\\src\\vgar\\graph\\builder.py\", line 155, in build\n    validate_graph_document(document)\n  File \"D:\\Project\\CAPSTONES\\VGAR\\src\\vgar\\contracts\\schema.py\", line 264, in validate_graph_document\n    raise GraphValidationError(errors)\nvgar.contracts.schema.GraphValidationError: Invalid graph document:\n- duplicate edge id: sha256:8ebedb794e2918e78ab0c78081a7c418e1c244d9dda54940e642110a39465fe7\n"
+  },
+  "duplicates": [
+    {
+      "edges": [
+        {
+          "id": "sha256:8ebedb794e2918e78ab0c78081a7c418e1c244d9dda54940e642110a39465fe7",
+          "type": "INHERITS",
+          "source_id": "vgar:pylint-dev__pylint:python:class:doc/data/messages/d/duplicate-bases/bad.py:doc.data.messages.d.duplicate-bases.bad.Cat",
+          "target_id": "vgar:pylint-dev__pylint:python:class:doc/data/messages/d/duplicate-bases/bad.py:doc.data.messages.d.duplicate-bases.bad.Animal",
+          "confidence": 0.9,
+          "resolution": "analyzer",
+          "provenance": {
+            "source_tool": "vgar-python-graph-builder",
+            "source_tool_version": "0.1.0",
+            "rule_id": "python.inheritance.resolve.v1",
+            "source_revision": "754b487f4d892e3d4872b6fc7468a71db4e31c13",
+            "evidence": []
+          },
+          "properties": {
+            "base_expression": "Animal",
+            "mro_position": 1
+          },
+          "graph_version": "sha256:250efa94b86a097ced60e241f9c711bd630a3d5e944ddce4055ebca711d20266"
+        },
+        {
+          "id": "sha256:8ebedb794e2918e78ab0c78081a7c418e1c244d9dda54940e642110a39465fe7",
+          "type": "INHERITS",
+          "source_id": "vgar:pylint-dev__pylint:python:class:doc/data/messages/d/duplicate-bases/bad.py:doc.data.messages.d.duplicate-bases.bad.Cat",
+          "target_id": "vgar:pylint-dev__pylint:python:class:doc/data/messages/d/duplicate-bases/bad.py:doc.data.messages.d.duplicate-bases.bad.Animal",
+          "confidence": 0.9,
+          "resolution": "analyzer",
+          "provenance": {
+            "source_tool": "vgar-python-graph-builder",
+            "source_tool_version": "0.1.0",
+            "rule_id": "python.inheritance.resolve.v1",
+            "source_revision": "754b487f4d892e3d4872b6fc7468a71db4e31c13",
+            "evidence": []
+          },
+          "properties": {
+            "base_expression": "Animal",
+            "mro_position": 2
+          },
+          "graph_version": "sha256:250efa94b86a097ced60e241f9c711bd630a3d5e944ddce4055ebca711d20266"
+        }
+      ],
+      "source": {
+        "id": "vgar:pylint-dev__pylint:python:class:doc/data/messages/d/duplicate-bases/bad.py:doc.data.messages.d.duplicate-bases.bad.Cat",
+        "type": "Class",
+        "repo_key": "pylint-dev__pylint",
+        "name": "Cat",
+        "qualified_name": "doc.data.messages.d.duplicate-bases.bad.Cat",
+        "path": "doc/data/messages/d/duplicate-bases/bad.py",
+        "language": "python",
+        "range": {
+          "start_line": 5,
+          "start_col": 0,
+          "end_line": 6,
+          "end_col": 8,
+          "start_byte": 25,
+          "end_byte": 81
+        },
+        "properties": {
+          "bases": [
+            "Animal",
+            "Animal"
+          ],
+          "decorators": [],
+          "is_abstract": false,
+          "docstring_summary": null
+        },
+        "content_hash": "sha256:e9a2cb9a94e47c33fac71a8e5ca03532a938ffe07304de47d3a975778a343023",
+        "graph_version": "sha256:250efa94b86a097ced60e241f9c711bd630a3d5e944ddce4055ebca711d20266"
+      },
+      "target": {
+        "id": "vgar:pylint-dev__pylint:python:class:doc/data/messages/d/duplicate-bases/bad.py:doc.data.messages.d.duplicate-bases.bad.Animal",
+        "type": "Class",
+        "repo_key": "pylint-dev__pylint",
+        "name": "Animal",
+        "qualified_name": "doc.data.messages.d.duplicate-bases.bad.Animal",
+        "path": "doc/data/messages/d/duplicate-bases/bad.py",
+        "language": "python",
+        "range": {
+          "start_line": 1,
+          "start_col": 0,
+          "end_line": 2,
+          "end_col": 8,
+          "start_byte": 0,
+          "end_byte": 22
+        },
+        "properties": {
+          "bases": [],
+          "decorators": [],
+          "is_abstract": false,
+          "docstring_summary": null
+        },
+        "content_hash": "sha256:acf645eef146338f4f79410816d36f3626844a26d61c604142f46b918d5ac069",
+        "graph_version": "sha256:250efa94b86a097ced60e241f9c711bd630a3d5e944ddce4055ebca711d20266"
+      }
+    }
+  ],
+  "exit_code": 0,
+  "duration_seconds": 32.523106599997845
+}

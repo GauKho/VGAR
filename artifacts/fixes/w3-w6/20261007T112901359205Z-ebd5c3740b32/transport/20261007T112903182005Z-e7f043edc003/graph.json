@@ -1,0 +1,483 @@
+{
+  "graph_version": "sha256:2e30ab2f266d2422baafa2967bc9b989203dd274acc4a243a13fe05b7e9bb24a",
+  "repo_key": "smoke/w6",
+  "repository_revision": "synthetic-fixture",
+  "nodes": [
+    {
+      "id": "vgar:smoke/w6:repository",
+      "type": "Repository",
+      "repo_key": "smoke/w6",
+      "name": "fixture",
+      "qualified_name": "smoke/w6",
+      "path": null,
+      "language": null,
+      "range": null,
+      "properties": {
+        "root_uri": "file:///D:/Project/CAPSTONES/VGAR/artifacts/fixes/w3-w6/20261007T112901359205Z-ebd5c3740b32/transport/20261007T112903182005Z-e7f043edc003/fixture",
+        "default_language": "python",
+        "repository_revision": "synthetic-fixture"
+      },
+      "content_hash": "sha256:3a3436765885cdf2edc179512c22dd4c4259410f0d18f391cbc8d83a837c678e",
+      "graph_version": "sha256:2e30ab2f266d2422baafa2967bc9b989203dd274acc4a243a13fe05b7e9bb24a"
+    },
+    {
+      "id": "vgar:smoke/w6:python:file:src/demo.py",
+      "type": "File",
+      "repo_key": "smoke/w6",
+      "name": "demo.py",
+      "qualified_name": "src/demo.py",
+      "path": "src/demo.py",
+      "language": "python",
+      "range": {
+        "start_line": 1,
+        "start_col": 0,
+        "end_line": 3,
+        "end_col": 0,
+        "start_byte": 0,
+        "end_byte": 36
+      },
+      "properties": {
+        "extension": ".py",
+        "size_bytes": 36,
+        "parse_status": "parsed",
+        "is_test_file": false
+      },
+      "content_hash": "sha256:49352bbf265f8f2478afb5055eb2099241aa14c265681994e69b235a16cebb73",
+      "graph_version": "sha256:2e30ab2f266d2422baafa2967bc9b989203dd274acc4a243a13fe05b7e9bb24a"
+    },
+    {
+      "id": "vgar:smoke/w6:python:module:src/demo.py:demo",
+      "type": "Module",
+      "repo_key": "smoke/w6",
+      "name": "demo",
+      "qualified_name": "demo",
+      "path": "src/demo.py",
+      "language": "python",
+      "range": {
+        "start_line": 1,
+        "start_col": 0,
+        "end_line": 3,
+        "end_col": 0,
+        "start_byte": 0,
+        "end_byte": 36
+      },
+      "properties": {
+        "module_name": "demo",
+        "is_package": false,
+        "is_external": false,
+        "resolution_status": "resolved"
+      },
+      "content_hash": "sha256:49352bbf265f8f2478afb5055eb2099241aa14c265681994e69b235a16cebb73",
+      "graph_version": "sha256:2e30ab2f266d2422baafa2967bc9b989203dd274acc4a243a13fe05b7e9bb24a"
+    },
+    {
+      "id": "vgar:smoke/w6:python:function:src/demo.py:demo.answer",
+      "type": "Function",
+      "repo_key": "smoke/w6",
+      "name": "answer",
+      "qualified_name": "demo.answer",
+      "path": "src/demo.py",
+      "language": "python",
+      "range": {
+        "start_line": 1,
+        "start_col": 0,
+        "end_line": 2,
+        "end_col": 12,
+        "start_byte": 0,
+        "end_byte": 34
+      },
+      "properties": {
+        "signature": "def answer() -> int",
+        "parameters": [],
+        "return_annotation": "int",
+        "decorators": [],
+        "is_async": false,
+        "visibility": "public"
+      },
+      "content_hash": "sha256:9c31fbe335a5adf168f86a66d52db4e1216358a22ce26837a8b0a2ecf0d3b6ca",
+      "graph_version": "sha256:2e30ab2f266d2422baafa2967bc9b989203dd274acc4a243a13fe05b7e9bb24a"
+    },
+    {
+      "id": "vgar:smoke/w6:python:file:tests/test_demo.py",
+      "type": "File",
+      "repo_key": "smoke/w6",
+      "name": "test_demo.py",
+      "qualified_name": "tests/test_demo.py",
+      "path": "tests/test_demo.py",
+      "language": "python",
+      "range": {
+        "start_line": 1,
+        "start_col": 0,
+        "end_line": 6,
+        "end_col": 0,
+        "start_byte": 0,
+        "end_byte": 84
+      },
+      "properties": {
+        "extension": ".py",
+        "size_bytes": 84,
+        "parse_status": "parsed",
+        "is_test_file": true
+      },
+      "content_hash": "sha256:521fcf928443a999ae39ae4df2015424a021c4fb472905a0c8245af6df112d70",
+      "graph_version": "sha256:2e30ab2f266d2422baafa2967bc9b989203dd274acc4a243a13fe05b7e9bb24a"
+    },
+    {
+      "id": "vgar:smoke/w6:python:module:tests/test_demo.py:tests.test_demo",
+      "type": "Module",
+      "repo_key": "smoke/w6",
+      "name": "test_demo",
+      "qualified_name": "tests.test_demo",
+      "path": "tests/test_demo.py",
+      "language": "python",
+      "range": {
+        "start_line": 1,
+        "start_col": 0,
+        "end_line": 6,
+        "end_col": 0,
+        "start_byte": 0,
+        "end_byte": 84
+      },
+      "properties": {
+        "module_name": "tests.test_demo",
+        "is_package": false,
+        "is_external": false,
+        "resolution_status": "resolved"
+      },
+      "content_hash": "sha256:521fcf928443a999ae39ae4df2015424a021c4fb472905a0c8245af6df112d70",
+      "graph_version": "sha256:2e30ab2f266d2422baafa2967bc9b989203dd274acc4a243a13fe05b7e9bb24a"
+    },
+    {
+      "id": "vgar:smoke/w6:python:import:tests/test_demo.py:1:0:0610f054c3e2",
+      "type": "Import",
+      "repo_key": "smoke/w6",
+      "name": "answer",
+      "qualified_name": "tests.test_demo::<import:answer:0610f054c3e2>",
+      "path": "tests/test_demo.py",
+      "language": "python",
+      "range": {
+        "start_line": 1,
+        "start_col": 0,
+        "end_line": 1,
+        "end_col": 23,
+        "start_byte": 0,
+        "end_byte": 23
+      },
+      "properties": {
+        "raw_text": "from demo import answer",
+        "imported_module": "demo",
+        "imported_name": "answer",
+        "alias": null,
+        "level": 0,
+        "resolution_status": "resolved"
+      },
+      "content_hash": "sha256:94810b11260066cfc554480d5e817ec51686a6b2f11dd04d512babf061d8697e",
+      "graph_version": "sha256:2e30ab2f266d2422baafa2967bc9b989203dd274acc4a243a13fe05b7e9bb24a"
+    },
+    {
+      "id": "vgar:smoke/w6:python:test:tests/test_demo.py:tests.test_demo.test_answer",
+      "type": "Test",
+      "repo_key": "smoke/w6",
+      "name": "test_answer",
+      "qualified_name": "tests.test_demo.test_answer",
+      "path": "tests/test_demo.py",
+      "language": "python",
+      "range": {
+        "start_line": 4,
+        "start_col": 0,
+        "end_line": 5,
+        "end_col": 25,
+        "start_byte": 29,
+        "end_byte": 82
+      },
+      "properties": {
+        "framework": "pytest",
+        "test_kind": "function",
+        "markers": [],
+        "test_command_hint": "pytest tests/test_demo.py::test_answer"
+      },
+      "content_hash": "sha256:c0b7794c2c74e27b1b2325f75aa279db534018534e51124afd2cfd501bfd9917",
+      "graph_version": "sha256:2e30ab2f266d2422baafa2967bc9b989203dd274acc4a243a13fe05b7e9bb24a"
+    },
+    {
+      "id": "vgar:smoke/w6:python:callsite:tests/test_demo.py:tests.test_demo.test_answer:527c852a7437",
+      "type": "CallSite",
+      "repo_key": "smoke/w6",
+      "name": "answer",
+      "qualified_name": "tests.test_demo.test_answer::<call:1>",
+      "path": "tests/test_demo.py",
+      "language": "python",
+      "range": {
+        "start_line": 5,
+        "start_col": 11,
+        "end_line": 5,
+        "end_col": 19,
+        "start_byte": 68,
+        "end_byte": 76
+      },
+      "properties": {
+        "callee_text": "answer",
+        "argument_count": 0,
+        "dispatch_kind": "direct",
+        "resolution_status": "resolved",
+        "candidate_count": 1
+      },
+      "content_hash": "sha256:797517007540c89c1173d169779a00404391c835a2e52d3adc2d508268b909c5",
+      "graph_version": "sha256:2e30ab2f266d2422baafa2967bc9b989203dd274acc4a243a13fe05b7e9bb24a"
+    }
+  ],
+  "edges": [
+    {
+      "id": "sha256:439818bbdf98540186e744939862163e565538cab8721bcb46f63f3077a617f5",
+      "type": "CONTAINS",
+      "source_id": "vgar:smoke/w6:repository",
+      "target_id": "vgar:smoke/w6:python:file:src/demo.py",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "repository.file.v1",
+        "source_revision": "synthetic-fixture",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 0
+      },
+      "graph_version": "sha256:2e30ab2f266d2422baafa2967bc9b989203dd274acc4a243a13fe05b7e9bb24a"
+    },
+    {
+      "id": "sha256:3e7868c29b54126a09bad8922b3b2b0f54d7697f2ed6dd83400210a9401d0493",
+      "type": "CONTAINS",
+      "source_id": "vgar:smoke/w6:python:file:src/demo.py",
+      "target_id": "vgar:smoke/w6:python:module:src/demo.py:demo",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.file.module.v1",
+        "source_revision": "synthetic-fixture",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 0
+      },
+      "graph_version": "sha256:2e30ab2f266d2422baafa2967bc9b989203dd274acc4a243a13fe05b7e9bb24a"
+    },
+    {
+      "id": "sha256:8a8940cf8a04613259785c18ebf3f9642f14c974f682abe72fad371dcdf985be",
+      "type": "CONTAINS",
+      "source_id": "vgar:smoke/w6:python:module:src/demo.py:demo",
+      "target_id": "vgar:smoke/w6:python:function:src/demo.py:demo.answer",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.scope.function.v1",
+        "source_revision": "synthetic-fixture",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 0
+      },
+      "graph_version": "sha256:2e30ab2f266d2422baafa2967bc9b989203dd274acc4a243a13fe05b7e9bb24a"
+    },
+    {
+      "id": "sha256:c92df7f476fa97b59586271cbf77fc5fd5e8dcab49b5f1ca3ef01afe7fa923ef",
+      "type": "CONTAINS",
+      "source_id": "vgar:smoke/w6:repository",
+      "target_id": "vgar:smoke/w6:python:file:tests/test_demo.py",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "repository.file.v1",
+        "source_revision": "synthetic-fixture",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 1
+      },
+      "graph_version": "sha256:2e30ab2f266d2422baafa2967bc9b989203dd274acc4a243a13fe05b7e9bb24a"
+    },
+    {
+      "id": "sha256:1474ee71490fdc0b1557f2c8e5e64cc69f9d64176a88361f257813160729d4a5",
+      "type": "CONTAINS",
+      "source_id": "vgar:smoke/w6:python:file:tests/test_demo.py",
+      "target_id": "vgar:smoke/w6:python:module:tests/test_demo.py:tests.test_demo",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.file.module.v1",
+        "source_revision": "synthetic-fixture",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 0
+      },
+      "graph_version": "sha256:2e30ab2f266d2422baafa2967bc9b989203dd274acc4a243a13fe05b7e9bb24a"
+    },
+    {
+      "id": "sha256:bfddad998ae8dc7f0ee1b6cec6e03838068b9ddaa714b813dfd2161954597f95",
+      "type": "CONTAINS",
+      "source_id": "vgar:smoke/w6:python:module:tests/test_demo.py:tests.test_demo",
+      "target_id": "vgar:smoke/w6:python:import:tests/test_demo.py:1:0:0610f054c3e2",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.module.import.v1",
+        "source_revision": "synthetic-fixture",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 0
+      },
+      "graph_version": "sha256:2e30ab2f266d2422baafa2967bc9b989203dd274acc4a243a13fe05b7e9bb24a"
+    },
+    {
+      "id": "sha256:8967efd98c0040cc690765ba106a48bf0af2edf8c32fe6deba77465ecf12d4b4",
+      "type": "CONTAINS",
+      "source_id": "vgar:smoke/w6:python:module:tests/test_demo.py:tests.test_demo",
+      "target_id": "vgar:smoke/w6:python:test:tests/test_demo.py:tests.test_demo.test_answer",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.scope.function.v1",
+        "source_revision": "synthetic-fixture",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 1
+      },
+      "graph_version": "sha256:2e30ab2f266d2422baafa2967bc9b989203dd274acc4a243a13fe05b7e9bb24a"
+    },
+    {
+      "id": "sha256:2274eb8e75f72e6814107122e8a0c301708514ff3b15f5bae6a50bafea59d2ad",
+      "type": "CONTAINS",
+      "source_id": "vgar:smoke/w6:python:test:tests/test_demo.py:tests.test_demo.test_answer",
+      "target_id": "vgar:smoke/w6:python:callsite:tests/test_demo.py:tests.test_demo.test_answer:527c852a7437",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.test.callsite.v1",
+        "source_revision": "synthetic-fixture",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 0
+      },
+      "graph_version": "sha256:2e30ab2f266d2422baafa2967bc9b989203dd274acc4a243a13fe05b7e9bb24a"
+    },
+    {
+      "id": "sha256:cca58fe63e389cddf3c4e9f22d6c7d754e200ba70b05d3a16b2f41be268e24b3",
+      "type": "IMPORTS",
+      "source_id": "vgar:smoke/w6:python:import:tests/test_demo.py:1:0:0610f054c3e2",
+      "target_id": "vgar:smoke/w6:python:module:src/demo.py:demo",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.import.resolve.v1",
+        "source_revision": "synthetic-fixture",
+        "evidence": []
+      },
+      "properties": {
+        "imported_name": "answer",
+        "alias": null,
+        "is_wildcard": false
+      },
+      "graph_version": "sha256:2e30ab2f266d2422baafa2967bc9b989203dd274acc4a243a13fe05b7e9bb24a"
+    },
+    {
+      "id": "sha256:d2887ff1ef2937115d56aacecf58d5768370d971c2ebb40c206d4be243f1d1b1",
+      "type": "CALLS",
+      "source_id": "vgar:smoke/w6:python:callsite:tests/test_demo.py:tests.test_demo.test_answer:527c852a7437",
+      "target_id": "vgar:smoke/w6:python:function:src/demo.py:demo.answer",
+      "confidence": 0.95,
+      "resolution": "analyzer",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.call.resolve.v1",
+        "source_revision": "synthetic-fixture",
+        "evidence": []
+      },
+      "properties": {
+        "binding_kind": "imported_symbol",
+        "argument_match": null,
+        "candidate_rank": 1,
+        "confidence_reason": "Unique deterministic symbol match"
+      },
+      "graph_version": "sha256:2e30ab2f266d2422baafa2967bc9b989203dd274acc4a243a13fe05b7e9bb24a"
+    },
+    {
+      "id": "sha256:e928b37fcbfdbdf00b2dc39ea33ef32bbc762197e9616394c9758dacae0c7588",
+      "type": "TESTS",
+      "source_id": "vgar:smoke/w6:python:test:tests/test_demo.py:tests.test_demo.test_answer",
+      "target_id": "vgar:smoke/w6:python:function:src/demo.py:demo.answer",
+      "confidence": 0.95,
+      "resolution": "analyzer",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.test.direct_call.v1",
+        "source_revision": "synthetic-fixture",
+        "evidence": []
+      },
+      "properties": {
+        "link_method": "direct_call",
+        "coverage_count": null
+      },
+      "graph_version": "sha256:2e30ab2f266d2422baafa2967bc9b989203dd274acc4a243a13fe05b7e9bb24a"
+    }
+  ],
+  "statistics": {
+    "node_count": 9,
+    "edge_count": 11,
+    "node_counts_by_type": {
+      "Repository": 1,
+      "File": 2,
+      "Module": 2,
+      "Function": 1,
+      "Import": 1,
+      "Test": 1,
+      "CallSite": 1
+    },
+    "edge_counts_by_type": {
+      "CONTAINS": 8,
+      "IMPORTS": 1,
+      "CALLS": 1,
+      "TESTS": 1
+    },
+    "callsite_count": 1,
+    "unresolved_call_count": 0,
+    "unresolved_call_rate": 0.0,
+    "partial_file_count": 0,
+    "skipped_overload_count": 0,
+    "renamed_duplicate_count": 0,
+    "failed_file_count": 0,
+    "failed_files": [],
+    "source_inventory": {
+      "src/demo.py": "sha256:49352bbf265f8f2478afb5055eb2099241aa14c265681994e69b235a16cebb73",
+      "tests/test_demo.py": "sha256:521fcf928443a999ae39ae4df2015424a021c4fb472905a0c8245af6df112d70"
+    },
+    "source_scope": {
+      "excluded_paths": []
+    },
+    "unresolved_base_count": 0,
+    "unresolved_bases": [],
+    "build_time_ms": 2.307
+  }
+}

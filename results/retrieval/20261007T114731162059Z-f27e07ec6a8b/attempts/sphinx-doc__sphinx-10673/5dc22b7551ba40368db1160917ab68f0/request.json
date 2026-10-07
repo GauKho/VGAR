@@ -1,0 +1,102 @@
+{
+  "root": "D:\\Project\\CAPSTONES\\VGAR",
+  "row": {
+    "instance_id": "sphinx-doc__sphinx-10673",
+    "repo": "sphinx-doc/sphinx",
+    "base_commit": "f35d2a6cc726f97d0e859ca7a0e1729f7da8a6c8",
+    "problem_statement": "toctree contains reference to nonexisting document 'genindex', 'modindex', 'search'\n**Is your feature request related to a problem? Please describe.**\r\nA lot of users try to add the following links to the toctree:\r\n```\r\n* :ref:`genindex`\r\n* :ref:`modindex`\r\n* :ref:`search`\r\n```\r\nlike this:\r\n```\r\n.. toctree::\r\n   :maxdepth: 1\r\n   :caption: Indices and tables\r\n\r\n   genindex \r\n   modindex\r\n   search\r\n```\r\n\r\nSee:\r\n* https://stackoverflow.com/questions/36235578/how-can-i-include-the-genindex-in-a-sphinx-toc\r\n* https://stackoverflow.com/questions/25243482/how-to-add-sphinx-generated-index-to-the-sidebar-when-using-read-the-docs-theme\r\n* https://stackoverflow.com/questions/40556423/how-can-i-link-the-generated-index-page-in-readthedocs-navigation-bar\r\n\r\nAnd probably more.\r\n\r\nHowever when doing this we get:\r\n```\r\n$ make html\r\n...\r\n.../index.rst:30: WARNING: toctree contains reference to nonexisting document 'genindex'\r\n.../index.rst:30: WARNING: toctree contains reference to nonexisting document 'modindex'\r\n.../index.rst:30: WARNING: toctree contains reference to nonexisting document 'search'\r\n...\r\n```\r\n\r\n**Describe the solution you'd like**\r\nThe following directive should be possible and do not rise errors:\r\n```\r\n.. toctree::\r\n   :maxdepth: 1\r\n   :caption: Indices and tables\r\n\r\n   genindex \r\n   modindex\r\n   search\r\n``\n",
+    "difficulty": "15 min - 1 hour",
+    "query_hash": "sha256:f455450f1dbed1a4b75c2bcd97f9147d124b866223283f6287bd09ce6eab7d8e",
+    "patch_hash": "sha256:0fc6f76c4f0a0d81c35e62ba53b45c47cb9850195710a9a50c5361c6aff07685",
+    "gold_patch_path": "data/gold/patches/sphinx-doc__sphinx-10673.patch",
+    "changed_source_files": [
+      "sphinx/directives/other.py",
+      "sphinx/environment/adapters/toctree.py",
+      "sphinx/environment/collectors/toctree.py"
+    ],
+    "split": "dev",
+    "is_multi_file": true
+  },
+  "config": {
+    "manifest_hash": "sha256:33ddf233c44832c87abfeb7b62b1aef9fc1e4e8f89f67653fc5e7dc20cc86708",
+    "budget_tokens": 8000,
+    "scoring_version": "retrieval-scoring-v1",
+    "counter_label": "local-hf:Qwen/Qwen3-4B-Instruct-2507@cdbee75f17c01a7cc42f958dc650907174af0554:sha256=aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4:no-special-tokens",
+    "counter_is_fallback": false,
+    "snippet_policy": {
+      "max_snippet_lines": 80,
+      "header": true,
+      "overlap": "skip_if_overlaps_different_group"
+    },
+    "arms": {
+      "graph": {
+        "uses_fail_to_pass": false
+      },
+      "graph_f2p": {
+        "uses_fail_to_pass": true
+      }
+    },
+    "graph": {
+      "use_jedi": false,
+      "builder_hash": "62bb14a051c1",
+      "source_roots": [
+        "src"
+      ]
+    },
+    "retrieval": {
+      "max_hops": 2,
+      "max_candidates": 100,
+      "min_edge_confidence": 0.6,
+      "weights": {
+        "task_similarity": 0.2,
+        "graph_distance": 0.3,
+        "edge_confidence": 0.2,
+        "failing_test_proximity": 0.2,
+        "public_api_risk": 0.1,
+        "recent_change_frequency": 0.1
+      },
+      "include": "make_include(corpus): not Test and path in is_source corpus"
+    },
+    "limit": null,
+    "task_ids": [
+      "astropy__astropy-13398",
+      "django__django-11138",
+      "matplotlib__matplotlib-14623",
+      "pydata__xarray-3305",
+      "pylint-dev__pylint-4551",
+      "sphinx-doc__sphinx-10673",
+      "sympy__sympy-16597",
+      "astropy__astropy-8707",
+      "django__django-11734",
+      "pydata__xarray-3993",
+      "pylint-dev__pylint-4604",
+      "sphinx-doc__sphinx-8120",
+      "sympy__sympy-17318",
+      "django__django-11885",
+      "pydata__xarray-6992",
+      "pylint-dev__pylint-6386",
+      "sphinx-doc__sphinx-8548",
+      "sympy__sympy-20438",
+      "django__django-12155",
+      "django__django-12325",
+      "django__django-12741",
+      "django__django-13195",
+      "django__django-13212",
+      "django__django-13344",
+      "django__django-13512"
+    ],
+    "execution": {
+      "task_timeout_seconds": 300.0,
+      "offline": true,
+      "rebuild_graphs": false,
+      "rebuild_trees": true
+    }
+  },
+  "failing_tests": [
+    "tests/test_environment_toctree.py::test_toctree_index"
+  ],
+  "offline": true,
+  "rebuild_graphs": false,
+  "rebuild_trees": true,
+  "tokenizer_manifest": "D:\\Project\\CAPSTONES\\VGAR\\artifacts\\m1\\tokenizer-acceptance\\tokenizer_manifest.json"
+}

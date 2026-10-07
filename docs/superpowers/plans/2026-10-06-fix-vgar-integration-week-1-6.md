@@ -6,6 +6,8 @@
 
 **Điều chỉnh theo người dùng:** Tuần 1–2 là research, không yêu cầu tích hợp vào VGAR và không được ghi là task chưa hoàn thành của repo. Kế hoạch này chỉ sửa lỗi/hoàn thiện tích hợp tuần 3–6. Giữ tên file cũ để không làm hỏng các liên kết đã chia sẻ.
 
+**Cập nhật sau đợt mở lại07/10 (ưu tiên hơn checkpoint19/25 ở trên):** suitecode365passed4skip; Pylint duplicate inheritance fixed; overlay/worker selective ownership cófullbase/deltavalidation vàpublicsnapshot isolation. Newrun25 `20261007T114731162059Z-f27e07ec6a8b`23success2WinError5; comparison `20261007T122342844612Z-12c751a0b3f6`23pairs COMPARED_PARTIAL. Minimum20đã có, **Gate8.4 target25 vẫn unchecked**, không thay yêu cầu/population. ColdSympy2timeouts giữriêng; Jedi/directWindowsrename methods đã lỗi lặp thìdừng, ownersreview cònchờ. Theo [hướng dẫn hiện tại,mục6](../../GIAI_THICH_VGAR_TRUOC_SAU_FIX_TUAN_3_6_VA_CACH_KIEM_THU.md); PROGRESS lưusource/evidence/methods. Không commit/push/mởscope hayrerunwholeaudit.
+
 **Mục tiêu:** Khắc phục lỗi ở ranh giới M1/M2/M3, hoàn thiện grounding/context qua MCP và tạo bằng chứng nghiệm thu retrieval đến hết tuần 6.
 
 **Kiến trúc giữ nguyên:** Python graph builder + SQLite; API grounding/retrieval của M1; BM25, gold mapping và shared scorer của M2; MCP stdio/LangChain của M3. Không viết lại hệ thống.

@@ -855,6 +855,7 @@ class PythonGraphBuilder:
             if record.module_name not in self.modules:
                 continue
             module = record.binding
+            inherited_targets: set[str] = set()
             for position, base_expression in enumerate(record.bases, start=1):
                 target_id = module.definitions.get(base_expression)
                 if target_id is None and base_expression in module.imported_symbols:
@@ -881,7 +882,9 @@ class PythonGraphBuilder:
                         "base_expression": base_expression,
                         "mro_position": position,
                     },
+                    identity_occurrence=position if target_id in inherited_targets else None,
                 )
+                inherited_targets.add(target_id)
 
     def _resolve_calls(self) -> None:
         test_targets: dict[tuple[str, str], float] = {}
@@ -1254,10 +1257,14 @@ class PythonGraphBuilder:
         resolution: str,
         rule_id: str,
         properties: dict[str, Any],
+        identity_occurrence: int | None = None,
     ) -> None:
-        identity = self._hash_text(
-            f"{edge_type}\0{source_id}\0{target_id}\0{rule_id}"
-        )
+        # Repeated bases (including aliases) are separate source occurrences.
+        # Keep existing IDs for ordinary edges; never silently drop duplicates.
+        identity_text = f"{edge_type}\0{source_id}\0{target_id}\0{rule_id}"
+        if identity_occurrence is not None:
+            identity_text += f"\0occurrence:{identity_occurrence}"
+        identity = self._hash_text(identity_text)
         self.edges.append(
             {
                 "id": identity,

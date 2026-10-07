@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import ast
+import copy
 import re
 from dataclasses import dataclass, field
 from typing import Any
@@ -71,7 +72,7 @@ class TaskAnchorFinder:
         self.graph_version = document["graph_version"]
         self.nodes = sorted(
             (
-                node for node in document["nodes"]
+                copy.deepcopy(node) for node in document["nodes"]
                 if node["type"] in _SYMBOL_TYPES | {"File"} and node["path"]
             ),
             key=lambda node: node["id"],

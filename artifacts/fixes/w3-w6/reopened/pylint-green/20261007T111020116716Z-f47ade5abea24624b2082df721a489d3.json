@@ -1,0 +1,585 @@
+{
+  "run_id": "f47ade5abea24624b2082df721a489d3",
+  "task_id": "pending-pylint-green",
+  "started_utc": "2026-10-07T11:10:20.122721+00:00",
+  "ended_utc": "2026-10-07T11:10:22.550936+00:00",
+  "source_repo": "D:\\Project\\CAPSTONES\\VGAR",
+  "source_hash_before": "000be0e30ea9569429f18f2271631620f5757546d7ad2d8023059f46c5010b3e",
+  "source_hash_after": "000be0e30ea9569429f18f2271631620f5757546d7ad2d8023059f46c5010b3e",
+  "worktree_id": "development-test",
+  "cwd": "D:\\Project\\CAPSTONES\\VGAR",
+  "argv": [
+    "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "--junitxml=D:\\Project\\CAPSTONES\\VGAR\\.m2-pytest-7eeen7ik\\junit.xml",
+    "tests/test_pending_graph_failures.py",
+    "tests/test_graph_transaction_bindings.py"
+  ],
+  "timeout_seconds": 120.0,
+  "python_executable": "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe",
+  "python_version": "3.11.6",
+  "pytest_version": "8.4.2",
+  "environment": {
+    "PYTHONPATH": "D:\\Project\\CAPSTONES\\VGAR\\src;D:\\Project\\CAPSTONES\\VGAR",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTEST_DISABLE_PLUGIN_AUTOLOAD": "1"
+  },
+  "status": "PASS",
+  "complete": true,
+  "test_result": {
+    "status": "PASS",
+    "command": "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe -m pytest -q -p no:cacheprovider --junitxml=D:\\Project\\CAPSTONES\\VGAR\\.m2-pytest-7eeen7ik\\junit.xml tests/test_pending_graph_failures.py tests/test_graph_transaction_bindings.py",
+    "argv": [
+      "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe",
+      "-m",
+      "pytest",
+      "-q",
+      "-p",
+      "no:cacheprovider",
+      "--junitxml=D:\\Project\\CAPSTONES\\VGAR\\.m2-pytest-7eeen7ik\\junit.xml",
+      "tests/test_pending_graph_failures.py",
+      "tests/test_graph_transaction_bindings.py"
+    ],
+    "exit_code": 0,
+    "duration_ms": 1610,
+    "stdout": "...................................                                      [100%]\r\n- generated xml file: D:\\Project\\CAPSTONES\\VGAR\\.m2-pytest-7eeen7ik\\junit.xml -\r\n35 passed in 0.84s\r\n",
+    "stderr": "",
+    "timeout_seconds": 120.0,
+    "cases": [
+      {
+        "name": "tests.test_pending_graph_failures::test_repeated_base_occurrences_keep_distinct_inheritance_edges[Animal, Animal]",
+        "status": "PASS",
+        "duration_ms": 15,
+        "detail": null
+      },
+      {
+        "name": "tests.test_pending_graph_failures::test_repeated_base_occurrences_keep_distinct_inheritance_edges[Animal, Alias]",
+        "status": "PASS",
+        "duration_ms": 7,
+        "detail": null
+      },
+      {
+        "name": "tests.test_graph_transaction_bindings::test_failed_file_rollback_removes_all_auxiliary_state",
+        "status": "PASS",
+        "duration_ms": 37,
+        "detail": null
+      },
+      {
+        "name": "tests.test_graph_transaction_bindings::test_good_source_can_be_retrieved_after_failed_file",
+        "status": "PASS",
+        "duration_ms": 11,
+        "detail": null
+      },
+      {
+        "name": "tests.test_graph_transaction_bindings::test_inventory_still_checks_failed_and_good_source[modify_failed]",
+        "status": "PASS",
+        "duration_ms": 20,
+        "detail": null
+      },
+      {
+        "name": "tests.test_graph_transaction_bindings::test_inventory_still_checks_failed_and_good_source[delete_failed]",
+        "status": "PASS",
+        "duration_ms": 8,
+        "detail": null
+      },
+      {
+        "name": "tests.test_graph_transaction_bindings::test_inventory_still_checks_failed_and_good_source[add_source]",
+        "status": "PASS",
+        "duration_ms": 7,
+        "detail": null
+      },
+      {
+        "name": "tests.test_graph_transaction_bindings::test_inventory_still_checks_failed_and_good_source[modify_good]",
+        "status": "PASS",
+        "duration_ms": 9,
+        "detail": null
+      },
+      {
+        "name": "tests.test_graph_transaction_bindings::test_malformed_inventory_cannot_weaken_file_hashes[inventory0]",
+        "status": "PASS",
+        "duration_ms": 15,
+        "detail": null
+      },
+      {
+        "name": "tests.test_graph_transaction_bindings::test_malformed_inventory_cannot_weaken_file_hashes[inventory1]",
+        "status": "PASS",
+        "duration_ms": 6,
+        "detail": null
+      },
+      {
+        "name": "tests.test_graph_transaction_bindings::test_malformed_inventory_cannot_weaken_file_hashes[inventory2]",
+        "status": "PASS",
+        "duration_ms": 7,
+        "detail": null
+      },
+      {
+        "name": "tests.test_graph_transaction_bindings::test_legacy_graph_without_inventory_remains_source_verified",
+        "status": "PASS",
+        "duration_ms": 19,
+        "detail": null
+      },
+      {
+        "name": "tests.test_graph_transaction_bindings::test_imported_base_uses_binding_before_class_assignment[base.py]",
+        "status": "PASS",
+        "duration_ms": 27,
+        "detail": null
+      },
+      {
+        "name": "tests.test_graph_transaction_bindings::test_imported_base_uses_binding_before_class_assignment[zbase.py]",
+        "status": "PASS",
+        "duration_ms": 20,
+        "detail": null
+      },
+      {
+        "name": "tests.test_graph_transaction_bindings::test_redefined_class_can_inherit_previous_occurrence",
+        "status": "PASS",
+        "duration_ms": 14,
+        "detail": null
+      },
+      {
+        "name": "tests.test_graph_transaction_bindings::test_unbound_or_dynamic_base_is_unresolved_not_self_loop[class A(A): pass\\n]",
+        "status": "PASS",
+        "duration_ms": 15,
+        "detail": null
+      },
+      {
+        "name": "tests.test_graph_transaction_bindings::test_unbound_or_dynamic_base_is_unresolved_not_self_loop[class A(factory()): pass\\n]",
+        "status": "PASS",
+        "duration_ms": 5,
+        "detail": null
+      },
+      {
+        "name": "tests.test_graph_transaction_bindings::test_only_property_setter_attribute_matches[@value.setter-True]",
+        "status": "PASS",
+        "duration_ms": 1,
+        "detail": null
+      },
+      {
+        "name": "tests.test_graph_transaction_bindings::test_only_property_setter_attribute_matches[@obj.value.setter-True]",
+        "status": "PASS",
+        "duration_ms": 0,
+        "detail": null
+      },
+      {
+        "name": "tests.test_graph_transaction_bindings::test_only_property_setter_attribute_matches[@app.get('/login')-False]",
+        "status": "PASS",
+        "duration_ms": 0,
+        "detail": null
+      },
+      {
+        "name": "tests.test_graph_transaction_bindings::test_only_property_setter_attribute_matches[@pytest.mark.parametrize('x', [1])-False]",
+        "status": "PASS",
+        "duration_ms": 1,
+        "detail": null
+      },
+      {
+        "name": "tests.test_graph_transaction_bindings::test_only_property_setter_attribute_matches[@value.deleter-False]",
+        "status": "PASS",
+        "duration_ms": 1,
+        "detail": null
+      },
+      {
+        "name": "tests.test_graph_transaction_bindings::test_only_property_setter_attribute_matches[@something.setter()-False]",
+        "status": "PASS",
+        "duration_ms": 1,
+        "detail": null
+      },
+      {
+        "name": "tests.test_graph_transaction_bindings::test_conditional_duplicate_and_nested_definitions_map_to_m2_occurrences",
+        "status": "PASS",
+        "duration_ms": 25,
+        "detail": null
+      },
+      {
+        "name": "tests.test_graph_transaction_bindings::test_duplicate_scopes_do_not_share_local_binding_tables",
+        "status": "PASS",
+        "duration_ms": 13,
+        "detail": null
+      },
+      {
+        "name": "tests.test_graph_transaction_bindings::test_file_hash_in_inventory_is_raw_not_snippet_hash",
+        "status": "PASS",
+        "duration_ms": 15,
+        "detail": null
+      },
+      {
+        "name": "tests.test_graph_transaction_bindings::test_compound_statement_blocks_are_discovered[if X:\\n    def f(): pass\\nelif Y:\\n    def f(): pass\\nelse:\\n    def f(): pass\\n-3]",
+        "status": "PASS",
+        "duration_ms": 14,
+        "detail": null
+      },
+      {
+        "name": "tests.test_graph_transaction_bindings::test_compound_statement_blocks_are_discovered[try:\\n    def f(): pass\\nexcept Exception:\\n    def f(): pass\\nelse:\\n    def f(): pass\\nfinally:\\n    def f(): pass\\n-4]",
+        "status": "PASS",
+        "duration_ms": 17,
+        "detail": null
+      },
+      {
+        "name": "tests.test_graph_transaction_bindings::test_compound_statement_blocks_are_discovered[for x in y:\\n    def f(): pass\\nelse:\\n    def f(): pass\\n-2]",
+        "status": "PASS",
+        "duration_ms": 17,
+        "detail": null
+      },
+      {
+        "name": "tests.test_graph_transaction_bindings::test_compound_statement_blocks_are_discovered[while x:\\n    def f(): pass\\nelse:\\n    def f(): pass\\n-2]",
+        "status": "PASS",
+        "duration_ms": 15,
+        "detail": null
+      },
+      {
+        "name": "tests.test_graph_transaction_bindings::test_compound_statement_blocks_are_discovered[with lock:\\n    def f(): pass\\n-1]",
+        "status": "PASS",
+        "duration_ms": 8,
+        "detail": null
+      },
+      {
+        "name": "tests.test_graph_transaction_bindings::test_compound_statement_blocks_are_discovered[match x:\\n    case 1:\\n        def f(): pass\\n    case _:\\n        def f(): pass\\n-2]",
+        "status": "PASS",
+        "duration_ms": 16,
+        "detail": null
+      },
+      {
+        "name": "tests.test_graph_transaction_bindings::test_scope_indexing_failure_is_also_transactional",
+        "status": "PASS",
+        "duration_ms": 29,
+        "detail": null
+      },
+      {
+        "name": "tests.test_graph_transaction_bindings::test_duplicate_definition_calls_remain_ambiguous_without_execution_proof",
+        "status": "PASS",
+        "duration_ms": 17,
+        "detail": null
+      },
+      {
+        "name": "tests.test_graph_transaction_bindings::test_later_import_rebinds_earlier_class_before_inheritance",
+        "status": "PASS",
+        "duration_ms": 7,
+        "detail": null
+      }
+    ],
+    "case_counts": {
+      "passed": 35,
+      "failed": 0,
+      "error": 0,
+      "skipped": 0
+    },
+    "reason": null,
+    "complete": true,
+    "output_truncated": false,
+    "stdout_bytes": 182,
+    "stderr_bytes": 0
+  },
+  "phase": "DONE",
+  "source_scope": {
+    "excluded_paths": [
+      "artifacts",
+      "data/downloads",
+      "data/gold",
+      "data/graphs",
+      "data/repositories",
+      "generated",
+      "logs",
+      "results"
+    ]
+  },
+  "preflight_before": {
+    "fingerprint": "000be0e30ea9569429f18f2271631620f5757546d7ad2d8023059f46c5010b3e",
+    "scope": {
+      "excluded_paths": [
+        "artifacts",
+        "data/downloads",
+        "data/gold",
+        "data/graphs",
+        "data/repositories",
+        "generated",
+        "logs",
+        "results"
+      ]
+    },
+    "duration_seconds": 0.3119999999908032,
+    "argv": [
+      "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe",
+      "-B",
+      "-m",
+      "vgar.repair.source_preflight",
+      "D:\\Project\\CAPSTONES\\VGAR"
+    ],
+    "stdout": "{\"fingerprint\": \"000be0e30ea9569429f18f2271631620f5757546d7ad2d8023059f46c5010b3e\", \"scope\": {\"excluded_paths\": [\"artifacts\", \"data/downloads\", \"data/gold\", \"data/graphs\", \"data/repositories\", \"generated\", \"logs\", \"results\"]}}\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  "pytest_result": {
+    "status": "PASS",
+    "command": "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe -m pytest -q -p no:cacheprovider --junitxml=D:\\Project\\CAPSTONES\\VGAR\\.m2-pytest-7eeen7ik\\junit.xml tests/test_pending_graph_failures.py tests/test_graph_transaction_bindings.py",
+    "argv": [
+      "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe",
+      "-m",
+      "pytest",
+      "-q",
+      "-p",
+      "no:cacheprovider",
+      "--junitxml=D:\\Project\\CAPSTONES\\VGAR\\.m2-pytest-7eeen7ik\\junit.xml",
+      "tests/test_pending_graph_failures.py",
+      "tests/test_graph_transaction_bindings.py"
+    ],
+    "exit_code": 0,
+    "duration_ms": 1610,
+    "stdout": "...................................                                      [100%]\r\n- generated xml file: D:\\Project\\CAPSTONES\\VGAR\\.m2-pytest-7eeen7ik\\junit.xml -\r\n35 passed in 0.84s\r\n",
+    "stderr": "",
+    "timeout_seconds": 120.0,
+    "cases": [
+      {
+        "name": "tests.test_pending_graph_failures::test_repeated_base_occurrences_keep_distinct_inheritance_edges[Animal, Animal]",
+        "status": "PASS",
+        "duration_ms": 15,
+        "detail": null
+      },
+      {
+        "name": "tests.test_pending_graph_failures::test_repeated_base_occurrences_keep_distinct_inheritance_edges[Animal, Alias]",
+        "status": "PASS",
+        "duration_ms": 7,
+        "detail": null
+      },
+      {
+        "name": "tests.test_graph_transaction_bindings::test_failed_file_rollback_removes_all_auxiliary_state",
+        "status": "PASS",
+        "duration_ms": 37,
+        "detail": null
+      },
+      {
+        "name": "tests.test_graph_transaction_bindings::test_good_source_can_be_retrieved_after_failed_file",
+        "status": "PASS",
+        "duration_ms": 11,
+        "detail": null
+      },
+      {
+        "name": "tests.test_graph_transaction_bindings::test_inventory_still_checks_failed_and_good_source[modify_failed]",
+        "status": "PASS",
+        "duration_ms": 20,
+        "detail": null
+      },
+      {
+        "name": "tests.test_graph_transaction_bindings::test_inventory_still_checks_failed_and_good_source[delete_failed]",
+        "status": "PASS",
+        "duration_ms": 8,
+        "detail": null
+      },
+      {
+        "name": "tests.test_graph_transaction_bindings::test_inventory_still_checks_failed_and_good_source[add_source]",
+        "status": "PASS",
+        "duration_ms": 7,
+        "detail": null
+      },
+      {
+        "name": "tests.test_graph_transaction_bindings::test_inventory_still_checks_failed_and_good_source[modify_good]",
+        "status": "PASS",
+        "duration_ms": 9,
+        "detail": null
+      },
+      {
+        "name": "tests.test_graph_transaction_bindings::test_malformed_inventory_cannot_weaken_file_hashes[inventory0]",
+        "status": "PASS",
+        "duration_ms": 15,
+        "detail": null
+      },
+      {
+        "name": "tests.test_graph_transaction_bindings::test_malformed_inventory_cannot_weaken_file_hashes[inventory1]",
+        "status": "PASS",
+        "duration_ms": 6,
+        "detail": null
+      },
+      {
+        "name": "tests.test_graph_transaction_bindings::test_malformed_inventory_cannot_weaken_file_hashes[inventory2]",
+        "status": "PASS",
+        "duration_ms": 7,
+        "detail": null
+      },
+      {
+        "name": "tests.test_graph_transaction_bindings::test_legacy_graph_without_inventory_remains_source_verified",
+        "status": "PASS",
+        "duration_ms": 19,
+        "detail": null
+      },
+      {
+        "name": "tests.test_graph_transaction_bindings::test_imported_base_uses_binding_before_class_assignment[base.py]",
+        "status": "PASS",
+        "duration_ms": 27,
+        "detail": null
+      },
+      {
+        "name": "tests.test_graph_transaction_bindings::test_imported_base_uses_binding_before_class_assignment[zbase.py]",
+        "status": "PASS",
+        "duration_ms": 20,
+        "detail": null
+      },
+      {
+        "name": "tests.test_graph_transaction_bindings::test_redefined_class_can_inherit_previous_occurrence",
+        "status": "PASS",
+        "duration_ms": 14,
+        "detail": null
+      },
+      {
+        "name": "tests.test_graph_transaction_bindings::test_unbound_or_dynamic_base_is_unresolved_not_self_loop[class A(A): pass\\n]",
+        "status": "PASS",
+        "duration_ms": 15,
+        "detail": null
+      },
+      {
+        "name": "tests.test_graph_transaction_bindings::test_unbound_or_dynamic_base_is_unresolved_not_self_loop[class A(factory()): pass\\n]",
+        "status": "PASS",
+        "duration_ms": 5,
+        "detail": null
+      },
+      {
+        "name": "tests.test_graph_transaction_bindings::test_only_property_setter_attribute_matches[@value.setter-True]",
+        "status": "PASS",
+        "duration_ms": 1,
+        "detail": null
+      },
+      {
+        "name": "tests.test_graph_transaction_bindings::test_only_property_setter_attribute_matches[@obj.value.setter-True]",
+        "status": "PASS",
+        "duration_ms": 0,
+        "detail": null
+      },
+      {
+        "name": "tests.test_graph_transaction_bindings::test_only_property_setter_attribute_matches[@app.get('/login')-False]",
+        "status": "PASS",
+        "duration_ms": 0,
+        "detail": null
+      },
+      {
+        "name": "tests.test_graph_transaction_bindings::test_only_property_setter_attribute_matches[@pytest.mark.parametrize('x', [1])-False]",
+        "status": "PASS",
+        "duration_ms": 1,
+        "detail": null
+      },
+      {
+        "name": "tests.test_graph_transaction_bindings::test_only_property_setter_attribute_matches[@value.deleter-False]",
+        "status": "PASS",
+        "duration_ms": 1,
+        "detail": null
+      },
+      {
+        "name": "tests.test_graph_transaction_bindings::test_only_property_setter_attribute_matches[@something.setter()-False]",
+        "status": "PASS",
+        "duration_ms": 1,
+        "detail": null
+      },
+      {
+        "name": "tests.test_graph_transaction_bindings::test_conditional_duplicate_and_nested_definitions_map_to_m2_occurrences",
+        "status": "PASS",
+        "duration_ms": 25,
+        "detail": null
+      },
+      {
+        "name": "tests.test_graph_transaction_bindings::test_duplicate_scopes_do_not_share_local_binding_tables",
+        "status": "PASS",
+        "duration_ms": 13,
+        "detail": null
+      },
+      {
+        "name": "tests.test_graph_transaction_bindings::test_file_hash_in_inventory_is_raw_not_snippet_hash",
+        "status": "PASS",
+        "duration_ms": 15,
+        "detail": null
+      },
+      {
+        "name": "tests.test_graph_transaction_bindings::test_compound_statement_blocks_are_discovered[if X:\\n    def f(): pass\\nelif Y:\\n    def f(): pass\\nelse:\\n    def f(): pass\\n-3]",
+        "status": "PASS",
+        "duration_ms": 14,
+        "detail": null
+      },
+      {
+        "name": "tests.test_graph_transaction_bindings::test_compound_statement_blocks_are_discovered[try:\\n    def f(): pass\\nexcept Exception:\\n    def f(): pass\\nelse:\\n    def f(): pass\\nfinally:\\n    def f(): pass\\n-4]",
+        "status": "PASS",
+        "duration_ms": 17,
+        "detail": null
+      },
+      {
+        "name": "tests.test_graph_transaction_bindings::test_compound_statement_blocks_are_discovered[for x in y:\\n    def f(): pass\\nelse:\\n    def f(): pass\\n-2]",
+        "status": "PASS",
+        "duration_ms": 17,
+        "detail": null
+      },
+      {
+        "name": "tests.test_graph_transaction_bindings::test_compound_statement_blocks_are_discovered[while x:\\n    def f(): pass\\nelse:\\n    def f(): pass\\n-2]",
+        "status": "PASS",
+        "duration_ms": 15,
+        "detail": null
+      },
+      {
+        "name": "tests.test_graph_transaction_bindings::test_compound_statement_blocks_are_discovered[with lock:\\n    def f(): pass\\n-1]",
+        "status": "PASS",
+        "duration_ms": 8,
+        "detail": null
+      },
+      {
+        "name": "tests.test_graph_transaction_bindings::test_compound_statement_blocks_are_discovered[match x:\\n    case 1:\\n        def f(): pass\\n    case _:\\n        def f(): pass\\n-2]",
+        "status": "PASS",
+        "duration_ms": 16,
+        "detail": null
+      },
+      {
+        "name": "tests.test_graph_transaction_bindings::test_scope_indexing_failure_is_also_transactional",
+        "status": "PASS",
+        "duration_ms": 29,
+        "detail": null
+      },
+      {
+        "name": "tests.test_graph_transaction_bindings::test_duplicate_definition_calls_remain_ambiguous_without_execution_proof",
+        "status": "PASS",
+        "duration_ms": 17,
+        "detail": null
+      },
+      {
+        "name": "tests.test_graph_transaction_bindings::test_later_import_rebinds_earlier_class_before_inheritance",
+        "status": "PASS",
+        "duration_ms": 7,
+        "detail": null
+      }
+    ],
+    "case_counts": {
+      "passed": 35,
+      "failed": 0,
+      "error": 0,
+      "skipped": 0
+    },
+    "reason": null,
+    "complete": true,
+    "output_truncated": false,
+    "stdout_bytes": 182,
+    "stderr_bytes": 0
+  },
+  "preflight_after": {
+    "fingerprint": "000be0e30ea9569429f18f2271631620f5757546d7ad2d8023059f46c5010b3e",
+    "scope": {
+      "excluded_paths": [
+        "artifacts",
+        "data/downloads",
+        "data/gold",
+        "data/graphs",
+        "data/repositories",
+        "generated",
+        "logs",
+        "results"
+      ]
+    },
+    "duration_seconds": 0.375,
+    "argv": [
+      "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe",
+      "-B",
+      "-m",
+      "vgar.repair.source_preflight",
+      "D:\\Project\\CAPSTONES\\VGAR"
+    ],
+    "stdout": "{\"fingerprint\": \"000be0e30ea9569429f18f2271631620f5757546d7ad2d8023059f46c5010b3e\", \"scope\": {\"excluded_paths\": [\"artifacts\", \"data/downloads\", \"data/gold\", \"data/graphs\", \"data/repositories\", \"generated\", \"logs\", \"results\"]}}\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  "command": "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe -m pytest -q -p no:cacheprovider --junitxml=D:\\Project\\CAPSTONES\\VGAR\\.m2-pytest-7eeen7ik\\junit.xml tests/test_pending_graph_failures.py tests/test_graph_transaction_bindings.py"
+}

@@ -1,0 +1,113 @@
+{
+  "status": "PASS",
+  "data": {
+    "graph_version": "sha256:2e30ab2f266d2422baafa2967bc9b989203dd274acc4a243a13fe05b7e9bb24a",
+    "anchor_ids": [
+      "vgar:smoke/w6:python:function:src/demo.py:demo.answer"
+    ],
+    "items": [
+      {
+        "node_id": "vgar:smoke/w6:python:function:src/demo.py:demo.answer",
+        "path": "src/demo.py",
+        "symbol": "demo.answer",
+        "range": {
+          "start_line": 1,
+          "start_col": 0,
+          "end_line": 2,
+          "end_col": 12
+        },
+        "snippet": "def answer() -> int:\r\n    return 0",
+        "relevance_score": 0.71875,
+        "graph_distance": 0,
+        "graph_rationale": [
+          "TASK_ANCHOR"
+        ],
+        "confidence": 0.8,
+        "token_count": 9
+      },
+      {
+        "node_id": "vgar:smoke/w6:python:test:tests/test_demo.py:tests.test_demo.test_answer",
+        "path": "tests/test_demo.py",
+        "symbol": "tests.test_demo.test_answer",
+        "range": {
+          "start_line": 4,
+          "start_col": 0,
+          "end_line": 5,
+          "end_col": 25
+        },
+        "snippet": "def test_answer() -> None:\r\n    assert answer() == 42",
+        "relevance_score": 0.4430555555555556,
+        "graph_distance": 1,
+        "graph_rationale": [
+          "TASK_ANCHOR",
+          "CALLERS:vgar:smoke/w6:python:function:src/demo.py:demo.answer->vgar:smoke/w6:python:test:tests/test_demo.py:tests.test_demo.test_answer"
+        ],
+        "confidence": 0.8,
+        "token_count": 14
+      }
+    ],
+    "total_token_count": 23,
+    "token_budget": 8000,
+    "truncated": false
+  },
+  "error": null,
+  "metadata": {
+    "duration_ms": 43,
+    "request_id": "b76b248520e04dba98801585bd5742bb",
+    "backend": "sqlite",
+    "tool": "get_related_context",
+    "task_handle": "vgar-task:f0e1d0ec7d6bee9a2e01572b6fbe137e328f6a5e2dcf363fba9bc94121e00fb6",
+    "overlay_id": "sha256:fb23a268bdbf2e2b814bac71a257af47dab0865d956e9b554c1fa69aaccd421a",
+    "counter_label": "FALLBACK:utf8_bytes_ceil_div4",
+    "retrieval_diagnostics": {
+      "unavailable_features": [
+        "architecture_dependencies",
+        "recent_change_frequency",
+        "failing_test_proximity"
+      ],
+      "omissions": [
+        {
+          "node_id": "vgar:smoke/w6:python:module:src/demo.py:demo",
+          "reason": "overlapping_selected_range"
+        },
+        {
+          "node_id": "vgar:smoke/w6:python:file:src/demo.py",
+          "reason": "overlapping_selected_range"
+        },
+        {
+          "node_id": "vgar:smoke/w6:python:module:tests/test_demo.py:tests.test_demo",
+          "reason": "overlapping_selected_range"
+        }
+      ],
+      "traversal_limited": false,
+      "config": {
+        "max_hops": 2,
+        "max_candidates": 100,
+        "min_edge_confidence": 0.6,
+        "weights": {
+          "task_similarity": 0.2,
+          "graph_distance": 0.3,
+          "edge_confidence": 0.2,
+          "failing_test_proximity": 0.2,
+          "public_api_risk": 0.1,
+          "recent_change_frequency": 0.1
+        },
+        "profile": "semantic-context-v1",
+        "active_features": [
+          "task_similarity",
+          "graph_distance",
+          "edge_confidence",
+          "public_api_risk"
+        ],
+        "normalized_weights": {
+          "task_similarity": 0.25000000000000006,
+          "graph_distance": 0.375,
+          "edge_confidence": 0.25000000000000006,
+          "public_api_risk": 0.12500000000000003
+        },
+        "failing_test_traversal_limited": false,
+        "filtered_by_include": 0
+      }
+    }
+  }
+}

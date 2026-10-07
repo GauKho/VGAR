@@ -1,0 +1,185 @@
+{
+  "run_id": "20261007T111617575879Z-2c7ec8faec96",
+  "kind": "reduced-preparation-diagnostic",
+  "status": "PASS",
+  "started_utc": "2026-10-07T11:16:17.575879+00:00",
+  "complete": true,
+  "python": "3.11.6 (tags/v3.11.6:8b6ee5b, Oct  2 2023, 14:57:12) [MSC v.1935 64 bit (AMD64)]",
+  "interpreter": "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe",
+  "platform": "Windows-10-10.0.26300-SP0",
+  "command_argv": [
+    "artifacts/fixes/w3-w6/reopened/profile_preparation.py",
+    "--files",
+    "30"
+  ],
+  "cwd": "D:\\Project\\CAPSTONES\\VGAR",
+  "benchmark": false,
+  "sample_files": 30,
+  "phases": [
+    {
+      "name": "TaskOverlayBuilder",
+      "seconds": 0.34026869999070186,
+      "peak_rss_bytes": 48238592,
+      "calls": 951506,
+      "hottest": [
+        {
+          "function": "('D:\\\\Project\\\\CAPSTONES\\\\VGAR\\\\artifacts\\\\fixes\\\\w3-w6\\\\reopened\\\\profile_preparation.py', 45, '<lambda>')",
+          "calls": 1,
+          "self_seconds": 6.6e-06,
+          "cumulative_seconds": 0.3388819
+        },
+        {
+          "function": "('D:\\\\Project\\\\CAPSTONES\\\\VGAR\\\\src\\\\vgar\\\\graph\\\\task_overlay.py', 27, '__init__')",
+          "calls": 1,
+          "self_seconds": 0.0004491,
+          "cumulative_seconds": 0.33887530000000005
+        },
+        {
+          "function": "('C:\\\\Program Files\\\\Python311\\\\Lib\\\\copy.py', 128, 'deepcopy')",
+          "calls": 117745,
+          "self_seconds": 0.1333338,
+          "cumulative_seconds": 0.2421976
+        },
+        {
+          "function": "('C:\\\\Program Files\\\\Python311\\\\Lib\\\\copy.py', 227, '_deepcopy_dict')",
+          "calls": 9234,
+          "self_seconds": 0.0452837,
+          "cumulative_seconds": 0.2421857
+        },
+        {
+          "function": "('C:\\\\Program Files\\\\Python311\\\\Lib\\\\copy.py', 201, '_deepcopy_list')",
+          "calls": 2029,
+          "self_seconds": 0.0049732000000000005,
+          "cumulative_seconds": 0.2419428
+        },
+        {
+          "function": "('D:\\\\Project\\\\CAPSTONES\\\\VGAR\\\\src\\\\vgar\\\\contracts\\\\schema.py', 111, 'validate_graph_document')",
+          "calls": 2,
+          "self_seconds": 0.0340639,
+          "cumulative_seconds": 0.0953846
+        },
+        {
+          "function": "('D:\\\\Project\\\\CAPSTONES\\\\VGAR\\\\src\\\\vgar\\\\graph\\\\grounding.py', 69, '__init__')",
+          "calls": 1,
+          "self_seconds": 0.0001121,
+          "cumulative_seconds": 0.050213
+        },
+        {
+          "function": "('~', 0, \"<method 'get' of 'dict' objects>\")",
+          "calls": 353897,
+          "self_seconds": 0.036939400000000004,
+          "cumulative_seconds": 0.036939400000000004
+        },
+        {
+          "function": "('D:\\\\Project\\\\CAPSTONES\\\\VGAR\\\\src\\\\vgar\\\\contracts\\\\schema.py', 267, '_valid_range')",
+          "calls": 2726,
+          "self_seconds": 0.0040996,
+          "cumulative_seconds": 0.0342521
+        },
+        {
+          "function": "('~', 0, '<built-in method builtins.any>')",
+          "calls": 5452,
+          "self_seconds": 0.006193400000000001,
+          "cumulative_seconds": 0.0281268
+        },
+        {
+          "function": "('~', 0, '<built-in method builtins.isinstance>')",
+          "calls": 85489,
+          "self_seconds": 0.011405100000000001,
+          "cumulative_seconds": 0.0183789
+        },
+        {
+          "function": "('~', 0, '<built-in method builtins.id>')",
+          "calls": 140272,
+          "self_seconds": 0.013341500000000001,
+          "cumulative_seconds": 0.013341500000000001
+        }
+      ]
+    },
+    {
+      "name": "GraphContextRetriever",
+      "seconds": 0.28465940000023693,
+      "peak_rss_bytes": 49070080,
+      "calls": 809935,
+      "hottest": [
+        {
+          "function": "('D:\\\\Project\\\\CAPSTONES\\\\VGAR\\\\artifacts\\\\fixes\\\\w3-w6\\\\reopened\\\\profile_preparation.py', 46, '<lambda>')",
+          "calls": 1,
+          "self_seconds": 1.83e-05,
+          "cumulative_seconds": 0.28429150000000003
+        },
+        {
+          "function": "('D:\\\\Project\\\\CAPSTONES\\\\VGAR\\\\src\\\\vgar\\\\graph\\\\retrieval.py', 64, '__init__')",
+          "calls": 1,
+          "self_seconds": 0.0006048000000000001,
+          "cumulative_seconds": 0.2842732
+        },
+        {
+          "function": "('C:\\\\Program Files\\\\Python311\\\\Lib\\\\copy.py', 128, 'deepcopy')",
+          "calls": 117768,
+          "self_seconds": 0.12496610000000001,
+          "cumulative_seconds": 0.22760390000000003
+        },
+        {
+          "function": "('C:\\\\Program Files\\\\Python311\\\\Lib\\\\copy.py', 227, '_deepcopy_dict')",
+          "calls": 9236,
+          "self_seconds": 0.0424825,
+          "cumulative_seconds": 0.2271382
+        },
+        {
+          "function": "('C:\\\\Program Files\\\\Python311\\\\Lib\\\\copy.py', 201, '_deepcopy_list')",
+          "calls": 2029,
+          "self_seconds": 0.0042529,
+          "cumulative_seconds": 0.2267025
+        },
+        {
+          "function": "('D:\\\\Project\\\\CAPSTONES\\\\VGAR\\\\src\\\\vgar\\\\contracts\\\\schema.py', 111, 'validate_graph_document')",
+          "calls": 1,
+          "self_seconds": 0.0181546,
+          "cumulative_seconds": 0.0503101
+        },
+        {
+          "function": "('~', 0, \"<method 'get' of 'dict' objects>\")",
+          "calls": 299159,
+          "self_seconds": 0.030598200000000002,
+          "cumulative_seconds": 0.030598200000000002
+        },
+        {
+          "function": "('D:\\\\Project\\\\CAPSTONES\\\\VGAR\\\\src\\\\vgar\\\\contracts\\\\schema.py', 267, '_valid_range')",
+          "calls": 1363,
+          "self_seconds": 0.0020436,
+          "cumulative_seconds": 0.016383500000000002
+        },
+        {
+          "function": "('~', 0, '<built-in method builtins.any>')",
+          "calls": 2727,
+          "self_seconds": 0.003073,
+          "cumulative_seconds": 0.013425000000000001
+        },
+        {
+          "function": "('~', 0, '<built-in method builtins.id>')",
+          "calls": 140302,
+          "self_seconds": 0.0125182,
+          "cumulative_seconds": 0.0125182
+        },
+        {
+          "function": "('C:\\\\Program Files\\\\Python311\\\\Lib\\\\copy.py', 182, '_deepcopy_atomic')",
+          "calls": 106472,
+          "self_seconds": 0.0098382,
+          "cumulative_seconds": 0.0098382
+        },
+        {
+          "function": "('~', 0, '<built-in method builtins.isinstance>')",
+          "calls": 42772,
+          "self_seconds": 0.0057517,
+          "cumulative_seconds": 0.009309000000000001
+        }
+      ]
+    }
+  ],
+  "tree": "D:\\Project\\CAPSTONES\\VGAR\\data\\repositories\\trees\\rebuilt\\6309fbea9853",
+  "nodes": 1415,
+  "edges": 1685,
+  "exit_code": 0,
+  "duration_seconds": 1.085302799998317
+}

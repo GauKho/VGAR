@@ -100,7 +100,8 @@ def run_task(request: dict, stages: StageRecorder) -> dict:
         overlays = TaskOverlayBuilder(document)
         retrieval = config["retrieval"]
         retriever = GraphContextRetriever(document, tree, count_tokens=counter, counter_label=label,
-                    config=RetrievalConfig(max_hops=retrieval["max_hops"], max_candidates=retrieval["max_candidates"]))
+                    config=RetrievalConfig(max_hops=retrieval["max_hops"], max_candidates=retrieval["max_candidates"]),
+                    _take_ownership=True)
         include = make_include(corpus)
     outputs = {}
     for arm, uses_f2p in ARMS.items():

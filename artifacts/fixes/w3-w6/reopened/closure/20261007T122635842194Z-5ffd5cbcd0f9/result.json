@@ -1,0 +1,2507 @@
+{
+  "run_id": "20261007T122635842194Z-5ffd5cbcd0f9",
+  "kind": "reopened-integrity-parity-analysis",
+  "status": "PASS",
+  "started_utc": "2026-10-07T12:26:35.842194+00:00",
+  "complete": true,
+  "python": "3.11.6 (tags/v3.11.6:8b6ee5b, Oct  2 2023, 14:57:12) [MSC v.1935 64 bit (AMD64)]",
+  "interpreter": "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe",
+  "platform": "Windows-10-10.0.26300-SP0",
+  "command_argv": [
+    "artifacts/fixes/w3-w6/reopened/close_reopened.py"
+  ],
+  "cwd": "D:\\Project\\CAPSTONES\\VGAR",
+  "exit_code": 0,
+  "benchmark_status": "PARTIAL_FAILURE",
+  "comparison_status": "COMPARED_PARTIAL",
+  "paired_tasks": 23,
+  "attempted_tasks": 25,
+  "raw_hashes_verified": 25,
+  "checks": [
+    {
+      "instance_id": "astropy__astropy-13398",
+      "status": "SUCCEEDED",
+      "artifact_hash": "sha256:56fa328ad00ba1e1fe167bb5e7b726291c9e45db84032430106115c11af96b43",
+      "duration_seconds": 73.98575199999323,
+      "peak_rss_bytes": 536760320,
+      "graph_cached": false,
+      "actual_stages": [
+        {
+          "phase": "TOKENIZER",
+          "duration_seconds": 0.434356999990996,
+          "peak_rss_bytes": 193970176
+        },
+        {
+          "phase": "LOAD_SOURCE",
+          "duration_seconds": 0.29826470000261907,
+          "peak_rss_bytes": 193970176
+        },
+        {
+          "phase": "EXTRACT_TREE",
+          "duration_seconds": 0.57424090000859,
+          "peak_rss_bytes": 193970176
+        },
+        {
+          "phase": "BUILD_GRAPH",
+          "duration_seconds": 54.444537699993816,
+          "peak_rss_bytes": 525529088
+        },
+        {
+          "phase": "PREPARE_RETRIEVAL",
+          "duration_seconds": 6.463483999992604,
+          "peak_rss_bytes": 525529088
+        },
+        {
+          "phase": "GROUND",
+          "duration_seconds": 3.6130750000011176,
+          "peak_rss_bytes": 525529088
+        },
+        {
+          "phase": "RETRIEVE",
+          "duration_seconds": 1.915946499997517,
+          "peak_rss_bytes": 536236032
+        },
+        {
+          "phase": "GROUND",
+          "duration_seconds": 3.4181548000051407,
+          "peak_rss_bytes": 536236032
+        },
+        {
+          "phase": "RETRIEVE",
+          "duration_seconds": 1.9316631999972742,
+          "peak_rss_bytes": 536449024
+        },
+        {
+          "phase": "SCORE",
+          "duration_seconds": 0.10551249999844003,
+          "peak_rss_bytes": 536449024
+        },
+        {
+          "phase": "WRITE",
+          "duration_seconds": 0.009007000000565313,
+          "peak_rss_bytes": 536449024
+        }
+      ],
+      "phase": "WRITE",
+      "error": null,
+      "traceback": null
+    },
+    {
+      "instance_id": "django__django-11138",
+      "status": "SUCCEEDED",
+      "artifact_hash": "sha256:ca6ec43ad8bb1eb22191f30624051768871ebfbc4f477d1dcceeab66ad03d99d",
+      "duration_seconds": 151.66813280001224,
+      "peak_rss_bytes": 740081664,
+      "graph_cached": false,
+      "actual_stages": [
+        {
+          "phase": "TOKENIZER",
+          "duration_seconds": 0.46828489999461453,
+          "peak_rss_bytes": 194306048
+        },
+        {
+          "phase": "LOAD_SOURCE",
+          "duration_seconds": 0.5470537999935914,
+          "peak_rss_bytes": 194306048
+        },
+        {
+          "phase": "EXTRACT_TREE",
+          "duration_seconds": 1.5857251999987056,
+          "peak_rss_bytes": 194306048
+        },
+        {
+          "phase": "BUILD_GRAPH",
+          "duration_seconds": 123.2426059999998,
+          "peak_rss_bytes": 719269888
+        },
+        {
+          "phase": "PREPARE_RETRIEVAL",
+          "duration_seconds": 6.453690399997868,
+          "peak_rss_bytes": 727478272
+        },
+        {
+          "phase": "GROUND",
+          "duration_seconds": 4.872662399997353,
+          "peak_rss_bytes": 727478272
+        },
+        {
+          "phase": "RETRIEVE",
+          "duration_seconds": 4.847131599992281,
+          "peak_rss_bytes": 736481280
+        },
+        {
+          "phase": "GROUND",
+          "duration_seconds": 4.9101264999917476,
+          "peak_rss_bytes": 736481280
+        },
+        {
+          "phase": "RETRIEVE",
+          "duration_seconds": 3.671393700002227,
+          "peak_rss_bytes": 740081664
+        },
+        {
+          "phase": "SCORE",
+          "duration_seconds": 0.12533470000198577,
+          "peak_rss_bytes": 740081664
+        },
+        {
+          "phase": "WRITE",
+          "duration_seconds": 0.013517100000171922,
+          "peak_rss_bytes": 740081664
+        }
+      ],
+      "phase": "WRITE",
+      "error": null,
+      "traceback": null
+    },
+    {
+      "instance_id": "matplotlib__matplotlib-14623",
+      "status": "SUCCEEDED",
+      "artifact_hash": "sha256:bb5e0df692f61923e80a0bc049675775a681bf6781c06e3afd9785ab4c1906f1",
+      "duration_seconds": 45.54532079999626,
+      "peak_rss_bytes": 319602688,
+      "graph_cached": false,
+      "actual_stages": [
+        {
+          "phase": "TOKENIZER",
+          "duration_seconds": 0.4753785999928368,
+          "peak_rss_bytes": 194400256
+        },
+        {
+          "phase": "LOAD_SOURCE",
+          "duration_seconds": 0.6989912999997614,
+          "peak_rss_bytes": 194400256
+        },
+        {
+          "phase": "EXTRACT_TREE",
+          "duration_seconds": 0.9763194999977713,
+          "peak_rss_bytes": 194400256
+        },
+        {
+          "phase": "BUILD_GRAPH",
+          "duration_seconds": 33.58854159999464,
+          "peak_rss_bytes": 310222848
+        },
+        {
+          "phase": "PREPARE_RETRIEVAL",
+          "duration_seconds": 5.389679100000649,
+          "peak_rss_bytes": 311271424
+        },
+        {
+          "phase": "GROUND",
+          "duration_seconds": 0.26040959999954794,
+          "peak_rss_bytes": 311271424
+        },
+        {
+          "phase": "RETRIEVE",
+          "duration_seconds": 1.1081116999994265,
+          "peak_rss_bytes": 319602688
+        },
+        {
+          "phase": "GROUND",
+          "duration_seconds": 0.2655852999887429,
+          "peak_rss_bytes": 319602688
+        },
+        {
+          "phase": "RETRIEVE",
+          "duration_seconds": 1.3836892999970587,
+          "peak_rss_bytes": 319602688
+        },
+        {
+          "phase": "SCORE",
+          "duration_seconds": 0.6563621000095736,
+          "peak_rss_bytes": 319602688
+        },
+        {
+          "phase": "WRITE",
+          "duration_seconds": 0.01593370000773575,
+          "peak_rss_bytes": 319602688
+        }
+      ],
+      "phase": "WRITE",
+      "error": null,
+      "traceback": null
+    },
+    {
+      "instance_id": "pydata__xarray-3305",
+      "status": "SUCCEEDED",
+      "artifact_hash": "sha256:16f8e801d8493e49153e887c5b0be486c63b152f4ec948d2347626a99170ad08",
+      "duration_seconds": 13.909858999992139,
+      "peak_rss_bytes": 207904768,
+      "graph_cached": false,
+      "actual_stages": [
+        {
+          "phase": "TOKENIZER",
+          "duration_seconds": 0.4675241999939317,
+          "peak_rss_bytes": 194228224
+        },
+        {
+          "phase": "LOAD_SOURCE",
+          "duration_seconds": 0.06738870000117458,
+          "peak_rss_bytes": 194228224
+        },
+        {
+          "phase": "EXTRACT_TREE",
+          "duration_seconds": 0.09648409999499563,
+          "peak_rss_bytes": 194228224
+        },
+        {
+          "phase": "BUILD_GRAPH",
+          "duration_seconds": 9.662222200000542,
+          "peak_rss_bytes": 197029888
+        },
+        {
+          "phase": "PREPARE_RETRIEVAL",
+          "duration_seconds": 1.4530935999937356,
+          "peak_rss_bytes": 199704576
+        },
+        {
+          "phase": "GROUND",
+          "duration_seconds": 0.10092789999907836,
+          "peak_rss_bytes": 199704576
+        },
+        {
+          "phase": "RETRIEVE",
+          "duration_seconds": 0.4791378999943845,
+          "peak_rss_bytes": 201490432
+        },
+        {
+          "phase": "GROUND",
+          "duration_seconds": 0.0895918000023812,
+          "peak_rss_bytes": 201490432
+        },
+        {
+          "phase": "RETRIEVE",
+          "duration_seconds": 0.44348380000155885,
+          "peak_rss_bytes": 203800576
+        },
+        {
+          "phase": "SCORE",
+          "duration_seconds": 0.3260114999866346,
+          "peak_rss_bytes": 205070336
+        },
+        {
+          "phase": "WRITE",
+          "duration_seconds": 0.008625400005257688,
+          "peak_rss_bytes": 205070336
+        }
+      ],
+      "phase": "WRITE",
+      "error": null,
+      "traceback": null
+    },
+    {
+      "instance_id": "pylint-dev__pylint-4551",
+      "status": "SUCCEEDED",
+      "artifact_hash": "sha256:a5d4c6b52eb3847732995d93b7049665e1c74743257c3d05135fe51231e0dbaa",
+      "duration_seconds": 26.973558600002434,
+      "peak_rss_bytes": 194256896,
+      "graph_cached": false,
+      "actual_stages": [
+        {
+          "phase": "TOKENIZER",
+          "duration_seconds": 0.4711723000073107,
+          "peak_rss_bytes": 194256896
+        },
+        {
+          "phase": "LOAD_SOURCE",
+          "duration_seconds": 0.10538350000570063,
+          "peak_rss_bytes": 194256896
+        },
+        {
+          "phase": "EXTRACT_TREE",
+          "duration_seconds": 0.3873180999944452,
+          "peak_rss_bytes": 194256896
+        },
+        {
+          "phase": "BUILD_GRAPH",
+          "duration_seconds": 22.296418099998846,
+          "peak_rss_bytes": 194256896
+        },
+        {
+          "phase": "PREPARE_RETRIEVAL",
+          "duration_seconds": 1.1838075000123354,
+          "peak_rss_bytes": 194256896
+        },
+        {
+          "phase": "GROUND",
+          "duration_seconds": 0.08877790000406094,
+          "peak_rss_bytes": 194256896
+        },
+        {
+          "phase": "RETRIEVE",
+          "duration_seconds": 0.8120205999875907,
+          "peak_rss_bytes": 194256896
+        },
+        {
+          "phase": "GROUND",
+          "duration_seconds": 0.1073484000080498,
+          "peak_rss_bytes": 194256896
+        },
+        {
+          "phase": "RETRIEVE",
+          "duration_seconds": 0.8036596000019927,
+          "peak_rss_bytes": 194256896
+        },
+        {
+          "phase": "SCORE",
+          "duration_seconds": 0.0842560000019148,
+          "peak_rss_bytes": 194256896
+        },
+        {
+          "phase": "WRITE",
+          "duration_seconds": 0.014239600001019426,
+          "peak_rss_bytes": 194256896
+        }
+      ],
+      "phase": "WRITE",
+      "error": null,
+      "traceback": null
+    },
+    {
+      "instance_id": "sphinx-doc__sphinx-10673",
+      "status": "SUCCEEDED",
+      "artifact_hash": "sha256:cdbb38d1276cdbb65fc66c9cb0282cc09a6a00489c20a46116fe35133188dc2c",
+      "duration_seconds": 28.631597100000363,
+      "peak_rss_bytes": 243806208,
+      "graph_cached": false,
+      "actual_stages": [
+        {
+          "phase": "TOKENIZER",
+          "duration_seconds": 0.4794685000088066,
+          "peak_rss_bytes": 194170880
+        },
+        {
+          "phase": "LOAD_SOURCE",
+          "duration_seconds": 0.18964089998917188,
+          "peak_rss_bytes": 194170880
+        },
+        {
+          "phase": "EXTRACT_TREE",
+          "duration_seconds": 0.3508358999970369,
+          "peak_rss_bytes": 194170880
+        },
+        {
+          "phase": "BUILD_GRAPH",
+          "duration_seconds": 21.826458999988972,
+          "peak_rss_bytes": 230260736
+        },
+        {
+          "phase": "PREPARE_RETRIEVAL",
+          "duration_seconds": 2.6091204000113066,
+          "peak_rss_bytes": 239611904
+        },
+        {
+          "phase": "GROUND",
+          "duration_seconds": 0.25510039999790024,
+          "peak_rss_bytes": 239611904
+        },
+        {
+          "phase": "RETRIEVE",
+          "duration_seconds": 0.8592657999979565,
+          "peak_rss_bytes": 239611904
+        },
+        {
+          "phase": "GROUND",
+          "duration_seconds": 0.3952696000051219,
+          "peak_rss_bytes": 239611904
+        },
+        {
+          "phase": "RETRIEVE",
+          "duration_seconds": 0.891267599989078,
+          "peak_rss_bytes": 239611904
+        },
+        {
+          "phase": "SCORE",
+          "duration_seconds": 0.09515880000253674,
+          "peak_rss_bytes": 239611904
+        },
+        {
+          "phase": "WRITE",
+          "duration_seconds": 0.011080999989644624,
+          "peak_rss_bytes": 239611904
+        }
+      ],
+      "phase": "WRITE",
+      "error": null,
+      "traceback": null
+    },
+    {
+      "instance_id": "sympy__sympy-16597",
+      "status": "SUCCEEDED",
+      "artifact_hash": "sha256:1fe28690ca40d1c551338798d4653588d8797bb5cb7966cc04c2e2fe3137556a",
+      "duration_seconds": 128.64327390000108,
+      "peak_rss_bytes": 5788811264,
+      "graph_cached": true,
+      "actual_stages": [
+        {
+          "phase": "TOKENIZER",
+          "duration_seconds": 0.5231517999927746,
+          "peak_rss_bytes": 194158592
+        },
+        {
+          "phase": "LOAD_SOURCE",
+          "duration_seconds": 0.2156033000064781,
+          "peak_rss_bytes": 194158592
+        },
+        {
+          "phase": "EXTRACT_TREE",
+          "duration_seconds": 0.7285739000071771,
+          "peak_rss_bytes": 194158592
+        },
+        {
+          "phase": "BUILD_GRAPH",
+          "duration_seconds": 60.2434232999949,
+          "peak_rss_bytes": 5785333760
+        },
+        {
+          "phase": "PREPARE_RETRIEVAL",
+          "duration_seconds": 40.438571300008334,
+          "peak_rss_bytes": 5785333760
+        },
+        {
+          "phase": "GROUND",
+          "duration_seconds": 0.734915799999726,
+          "peak_rss_bytes": 5785333760
+        },
+        {
+          "phase": "RETRIEVE",
+          "duration_seconds": 11.515990100000636,
+          "peak_rss_bytes": 5785333760
+        },
+        {
+          "phase": "GROUND",
+          "duration_seconds": 0.791899400006514,
+          "peak_rss_bytes": 5785333760
+        },
+        {
+          "phase": "RETRIEVE",
+          "duration_seconds": 11.1938930000033,
+          "peak_rss_bytes": 5785333760
+        },
+        {
+          "phase": "SCORE",
+          "duration_seconds": 0.3026118999987375,
+          "peak_rss_bytes": 5785333760
+        },
+        {
+          "phase": "WRITE",
+          "duration_seconds": 0.007128799989004619,
+          "peak_rss_bytes": 5785333760
+        }
+      ],
+      "phase": "WRITE",
+      "error": null,
+      "traceback": null
+    },
+    {
+      "instance_id": "astropy__astropy-8707",
+      "status": "SUCCEEDED",
+      "artifact_hash": "sha256:d8c3f915b9a52615c5f80bdc257b1ad298c8218f4f1c0a8cc35c47dad4f31203",
+      "duration_seconds": 52.21344590000808,
+      "peak_rss_bytes": 419438592,
+      "graph_cached": false,
+      "actual_stages": [
+        {
+          "phase": "TOKENIZER",
+          "duration_seconds": 0.49925290000101086,
+          "peak_rss_bytes": 194256896
+        },
+        {
+          "phase": "LOAD_SOURCE",
+          "duration_seconds": 0.23928870000236202,
+          "peak_rss_bytes": 194256896
+        },
+        {
+          "phase": "EXTRACT_TREE",
+          "duration_seconds": 0.5459363999980269,
+          "peak_rss_bytes": 194256896
+        },
+        {
+          "phase": "BUILD_GRAPH",
+          "duration_seconds": 41.12155779999739,
+          "peak_rss_bytes": 407117824
+        },
+        {
+          "phase": "PREPARE_RETRIEVAL",
+          "duration_seconds": 4.648731499997666,
+          "peak_rss_bytes": 410497024
+        },
+        {
+          "phase": "GROUND",
+          "duration_seconds": 0.4235179999959655,
+          "peak_rss_bytes": 410497024
+        },
+        {
+          "phase": "RETRIEVE",
+          "duration_seconds": 1.9159301000036066,
+          "peak_rss_bytes": 418746368
+        },
+        {
+          "phase": "GROUND",
+          "duration_seconds": 0.413495700006024,
+          "peak_rss_bytes": 418746368
+        },
+        {
+          "phase": "RETRIEVE",
+          "duration_seconds": 1.450458899998921,
+          "peak_rss_bytes": 419438592
+        },
+        {
+          "phase": "SCORE",
+          "duration_seconds": 0.16900160000659525,
+          "peak_rss_bytes": 419438592
+        },
+        {
+          "phase": "WRITE",
+          "duration_seconds": 0.007209700008388609,
+          "peak_rss_bytes": 419438592
+        }
+      ],
+      "phase": "WRITE",
+      "error": null,
+      "traceback": null
+    },
+    {
+      "instance_id": "django__django-11734",
+      "status": "SUCCEEDED",
+      "artifact_hash": "sha256:ff265e88dc2e072b6ca9d7024b650320571aafce50d94655bb3b81912bf85799",
+      "duration_seconds": 146.2836141999869,
+      "peak_rss_bytes": 761102336,
+      "graph_cached": false,
+      "actual_stages": [
+        {
+          "phase": "TOKENIZER",
+          "duration_seconds": 0.4477206000010483,
+          "peak_rss_bytes": 194248704
+        },
+        {
+          "phase": "LOAD_SOURCE",
+          "duration_seconds": 0.5621152000094298,
+          "peak_rss_bytes": 194248704
+        },
+        {
+          "phase": "EXTRACT_TREE",
+          "duration_seconds": 1.6799346000043442,
+          "peak_rss_bytes": 194248704
+        },
+        {
+          "phase": "BUILD_GRAPH",
+          "duration_seconds": 124.24916900000244,
+          "peak_rss_bytes": 741724160
+        },
+        {
+          "phase": "PREPARE_RETRIEVAL",
+          "duration_seconds": 7.288140300006489,
+          "peak_rss_bytes": 745185280
+        },
+        {
+          "phase": "GROUND",
+          "duration_seconds": 1.1389624000003096,
+          "peak_rss_bytes": 745185280
+        },
+        {
+          "phase": "RETRIEVE",
+          "duration_seconds": 4.8163386000087485,
+          "peak_rss_bytes": 757833728
+        },
+        {
+          "phase": "GROUND",
+          "duration_seconds": 1.1466934999916703,
+          "peak_rss_bytes": 757833728
+        },
+        {
+          "phase": "RETRIEVE",
+          "duration_seconds": 3.8491059000079986,
+          "peak_rss_bytes": 761102336
+        },
+        {
+          "phase": "SCORE",
+          "duration_seconds": 0.22120460000587627,
+          "peak_rss_bytes": 761102336
+        },
+        {
+          "phase": "WRITE",
+          "duration_seconds": 0.006416999996872619,
+          "peak_rss_bytes": 761102336
+        }
+      ],
+      "phase": "WRITE",
+      "error": null,
+      "traceback": null
+    },
+    {
+      "instance_id": "pydata__xarray-3993",
+      "status": "SUCCEEDED",
+      "artifact_hash": "sha256:3537630ab6ef32a1df6ce0a67a7cfcb4b0287bd63ddb929fd104a53239513bf1",
+      "duration_seconds": 17.094764200010104,
+      "peak_rss_bytes": 241475584,
+      "graph_cached": false,
+      "actual_stages": [
+        {
+          "phase": "TOKENIZER",
+          "duration_seconds": 0.44665929999609943,
+          "peak_rss_bytes": 194367488
+        },
+        {
+          "phase": "LOAD_SOURCE",
+          "duration_seconds": 0.05874500000209082,
+          "peak_rss_bytes": 194367488
+        },
+        {
+          "phase": "EXTRACT_TREE",
+          "duration_seconds": 0.10080990000278689,
+          "peak_rss_bytes": 194367488
+        },
+        {
+          "phase": "BUILD_GRAPH",
+          "duration_seconds": 11.853971999997157,
+          "peak_rss_bytes": 225288192
+        },
+        {
+          "phase": "PREPARE_RETRIEVAL",
+          "duration_seconds": 1.638445300006424,
+          "peak_rss_bytes": 227143680
+        },
+        {
+          "phase": "GROUND",
+          "duration_seconds": 0.13337189999583643,
+          "peak_rss_bytes": 227143680
+        },
+        {
+          "phase": "RETRIEVE",
+          "duration_seconds": 0.6558499999955529,
+          "peak_rss_bytes": 234926080
+        },
+        {
+          "phase": "GROUND",
+          "duration_seconds": 0.0852459000016097,
+          "peak_rss_bytes": 234926080
+        },
+        {
+          "phase": "RETRIEVE",
+          "duration_seconds": 0.9313028000033228,
+          "peak_rss_bytes": 241475584
+        },
+        {
+          "phase": "SCORE",
+          "duration_seconds": 0.48197709998930804,
+          "peak_rss_bytes": 241475584
+        },
+        {
+          "phase": "WRITE",
+          "duration_seconds": 0.007161399989854544,
+          "peak_rss_bytes": 241475584
+        }
+      ],
+      "phase": "WRITE",
+      "error": null,
+      "traceback": null
+    },
+    {
+      "instance_id": "pylint-dev__pylint-4604",
+      "status": "SUCCEEDED",
+      "artifact_hash": "sha256:b873560417cf6a2c9d85fbfb7b108dd2f18244fc7c73581d63776bef4fd98b28",
+      "duration_seconds": 24.180842899993877,
+      "peak_rss_bytes": 194125824,
+      "graph_cached": false,
+      "actual_stages": [
+        {
+          "phase": "TOKENIZER",
+          "duration_seconds": 0.5162520000012591,
+          "peak_rss_bytes": 194125824
+        },
+        {
+          "phase": "LOAD_SOURCE",
+          "duration_seconds": 0.10337450000224635,
+          "peak_rss_bytes": 194125824
+        },
+        {
+          "phase": "EXTRACT_TREE",
+          "duration_seconds": 0.41772820000187494,
+          "peak_rss_bytes": 194125824
+        },
+        {
+          "phase": "BUILD_GRAPH",
+          "duration_seconds": 19.234256700001424,
+          "peak_rss_bytes": 194125824
+        },
+        {
+          "phase": "PREPARE_RETRIEVAL",
+          "duration_seconds": 1.2594116999971448,
+          "peak_rss_bytes": 194125824
+        },
+        {
+          "phase": "GROUND",
+          "duration_seconds": 0.09917729999870062,
+          "peak_rss_bytes": 194125824
+        },
+        {
+          "phase": "RETRIEVE",
+          "duration_seconds": 0.7763040999998339,
+          "peak_rss_bytes": 194125824
+        },
+        {
+          "phase": "GROUND",
+          "duration_seconds": 0.07007619999058079,
+          "peak_rss_bytes": 194125824
+        },
+        {
+          "phase": "RETRIEVE",
+          "duration_seconds": 0.7668627999955788,
+          "peak_rss_bytes": 194125824
+        },
+        {
+          "phase": "SCORE",
+          "duration_seconds": 0.139995400008047,
+          "peak_rss_bytes": 194125824
+        },
+        {
+          "phase": "WRITE",
+          "duration_seconds": 0.005643999989842996,
+          "peak_rss_bytes": 194125824
+        }
+      ],
+      "phase": "WRITE",
+      "error": null,
+      "traceback": null
+    },
+    {
+      "instance_id": "sphinx-doc__sphinx-8120",
+      "status": "SUCCEEDED",
+      "artifact_hash": "sha256:d8a1d87a29f33c903e448c6428476251ddff5d092c7735cc1a3eefbe88477b1b",
+      "duration_seconds": 26.485963299986906,
+      "peak_rss_bytes": 229928960,
+      "graph_cached": false,
+      "actual_stages": [
+        {
+          "phase": "TOKENIZER",
+          "duration_seconds": 0.4515135999972699,
+          "peak_rss_bytes": 193884160
+        },
+        {
+          "phase": "LOAD_SOURCE",
+          "duration_seconds": 0.17920869999215938,
+          "peak_rss_bytes": 193884160
+        },
+        {
+          "phase": "EXTRACT_TREE",
+          "duration_seconds": 0.32685300000594,
+          "peak_rss_bytes": 193884160
+        },
+        {
+          "phase": "BUILD_GRAPH",
+          "duration_seconds": 19.897034000008716,
+          "peak_rss_bytes": 219099136
+        },
+        {
+          "phase": "PREPARE_RETRIEVAL",
+          "duration_seconds": 2.3419957000005525,
+          "peak_rss_bytes": 226103296
+        },
+        {
+          "phase": "GROUND",
+          "duration_seconds": 0.36896469999919645,
+          "peak_rss_bytes": 226103296
+        },
+        {
+          "phase": "RETRIEVE",
+          "duration_seconds": 0.9487047000002349,
+          "peak_rss_bytes": 229662720
+        },
+        {
+          "phase": "GROUND",
+          "duration_seconds": 0.3553544000023976,
+          "peak_rss_bytes": 229662720
+        },
+        {
+          "phase": "RETRIEVE",
+          "duration_seconds": 0.8918892999936361,
+          "peak_rss_bytes": 229928960
+        },
+        {
+          "phase": "SCORE",
+          "duration_seconds": 0.04234099999302998,
+          "peak_rss_bytes": 229928960
+        },
+        {
+          "phase": "WRITE",
+          "duration_seconds": 0.005234200012637302,
+          "peak_rss_bytes": 229928960
+        }
+      ],
+      "phase": "WRITE",
+      "error": null,
+      "traceback": null
+    },
+    {
+      "instance_id": "sympy__sympy-17318",
+      "status": "SUCCEEDED",
+      "artifact_hash": "sha256:73d19e4758c5c7db99a84a1dfae5016d9cbf80d197366e1f946a4e7c619e3d15",
+      "duration_seconds": 129.31795300000522,
+      "peak_rss_bytes": 6344990720,
+      "graph_cached": true,
+      "actual_stages": [
+        {
+          "phase": "TOKENIZER",
+          "duration_seconds": 0.5088171999959741,
+          "peak_rss_bytes": 193970176
+        },
+        {
+          "phase": "LOAD_SOURCE",
+          "duration_seconds": 0.2278641000011703,
+          "peak_rss_bytes": 193970176
+        },
+        {
+          "phase": "EXTRACT_TREE",
+          "duration_seconds": 0.8463615000073332,
+          "peak_rss_bytes": 193970176
+        },
+        {
+          "phase": "BUILD_GRAPH",
+          "duration_seconds": 58.43012279999675,
+          "peak_rss_bytes": 6344990720
+        },
+        {
+          "phase": "PREPARE_RETRIEVAL",
+          "duration_seconds": 39.404321800000616,
+          "peak_rss_bytes": 6344990720
+        },
+        {
+          "phase": "GROUND",
+          "duration_seconds": 2.9478174000105355,
+          "peak_rss_bytes": 6344990720
+        },
+        {
+          "phase": "RETRIEVE",
+          "duration_seconds": 11.11256749999302,
+          "peak_rss_bytes": 6344990720
+        },
+        {
+          "phase": "GROUND",
+          "duration_seconds": 2.898412399998051,
+          "peak_rss_bytes": 6344990720
+        },
+        {
+          "phase": "RETRIEVE",
+          "duration_seconds": 11.0263253999874,
+          "peak_rss_bytes": 6344990720
+        },
+        {
+          "phase": "SCORE",
+          "duration_seconds": 0.15341959999932442,
+          "peak_rss_bytes": 6344990720
+        },
+        {
+          "phase": "WRITE",
+          "duration_seconds": 0.009079999988898635,
+          "peak_rss_bytes": 6344990720
+        }
+      ],
+      "phase": "WRITE",
+      "error": null,
+      "traceback": null
+    },
+    {
+      "instance_id": "django__django-11885",
+      "status": "SUCCEEDED",
+      "artifact_hash": "sha256:8b765212f22253932cccb99f7fc51a6a8f0f6087079f324d0975a7a508104627",
+      "duration_seconds": 63.699435400005314,
+      "peak_rss_bytes": 1691836416,
+      "graph_cached": true,
+      "actual_stages": [
+        {
+          "phase": "TOKENIZER",
+          "duration_seconds": 0.4980547999875853,
+          "peak_rss_bytes": 193900544
+        },
+        {
+          "phase": "LOAD_SOURCE",
+          "duration_seconds": 0.5933025999984238,
+          "peak_rss_bytes": 193900544
+        },
+        {
+          "phase": "EXTRACT_TREE",
+          "duration_seconds": 1.6900366000045324,
+          "peak_rss_bytes": 193900544
+        },
+        {
+          "phase": "BUILD_GRAPH",
+          "duration_seconds": 38.21272159999353,
+          "peak_rss_bytes": 1691836416
+        },
+        {
+          "phase": "PREPARE_RETRIEVAL",
+          "duration_seconds": 7.549228100004257,
+          "peak_rss_bytes": 1691836416
+        },
+        {
+          "phase": "GROUND",
+          "duration_seconds": 2.916274600007455,
+          "peak_rss_bytes": 1691836416
+        },
+        {
+          "phase": "RETRIEVE",
+          "duration_seconds": 3.9078574999875855,
+          "peak_rss_bytes": 1691836416
+        },
+        {
+          "phase": "GROUND",
+          "duration_seconds": 3.0978794999973616,
+          "peak_rss_bytes": 1691836416
+        },
+        {
+          "phase": "RETRIEVE",
+          "duration_seconds": 4.231977399991592,
+          "peak_rss_bytes": 1691836416
+        },
+        {
+          "phase": "SCORE",
+          "duration_seconds": 0.05743380000058096,
+          "peak_rss_bytes": 1691836416
+        },
+        {
+          "phase": "WRITE",
+          "duration_seconds": 0.006211300002178177,
+          "peak_rss_bytes": 1691836416
+        }
+      ],
+      "phase": "WRITE",
+      "error": null,
+      "traceback": null
+    },
+    {
+      "instance_id": "pydata__xarray-6992",
+      "status": "SUCCEEDED",
+      "artifact_hash": "sha256:ad68702380400e560a520d6e8017b0c2063c70b3e580e993efaea91619fb00fa",
+      "duration_seconds": 20.685597100004088,
+      "peak_rss_bytes": 309936128,
+      "graph_cached": false,
+      "actual_stages": [
+        {
+          "phase": "TOKENIZER",
+          "duration_seconds": 0.4558740000065882,
+          "peak_rss_bytes": 193929216
+        },
+        {
+          "phase": "LOAD_SOURCE",
+          "duration_seconds": 0.07894059999671299,
+          "peak_rss_bytes": 193929216
+        },
+        {
+          "phase": "EXTRACT_TREE",
+          "duration_seconds": 0.16492710000602528,
+          "peak_rss_bytes": 193929216
+        },
+        {
+          "phase": "BUILD_GRAPH",
+          "duration_seconds": 14.167531700004474,
+          "peak_rss_bytes": 258707456
+        },
+        {
+          "phase": "PREPARE_RETRIEVAL",
+          "duration_seconds": 2.386348600004567,
+          "peak_rss_bytes": 259575808
+        },
+        {
+          "phase": "GROUND",
+          "duration_seconds": 0.20289790000242647,
+          "peak_rss_bytes": 259575808
+        },
+        {
+          "phase": "RETRIEVE",
+          "duration_seconds": 0.8034597000078065,
+          "peak_rss_bytes": 270196736
+        },
+        {
+          "phase": "GROUND",
+          "duration_seconds": 0.20461020000220742,
+          "peak_rss_bytes": 270196736
+        },
+        {
+          "phase": "RETRIEVE",
+          "duration_seconds": 0.9814970000006724,
+          "peak_rss_bytes": 309936128
+        },
+        {
+          "phase": "SCORE",
+          "duration_seconds": 0.594936499997857,
+          "peak_rss_bytes": 309936128
+        },
+        {
+          "phase": "WRITE",
+          "duration_seconds": 0.007498799997847527,
+          "peak_rss_bytes": 309936128
+        }
+      ],
+      "phase": "WRITE",
+      "error": null,
+      "traceback": null
+    },
+    {
+      "instance_id": "pylint-dev__pylint-6386",
+      "status": "SUCCEEDED",
+      "artifact_hash": "sha256:152d2381e509a2c0be529abd872c121ab8424903106c1c882abe5fc635974448",
+      "duration_seconds": 29.81736249999085,
+      "peak_rss_bytes": 329932800,
+      "graph_cached": true,
+      "actual_stages": [
+        {
+          "phase": "TOKENIZER",
+          "duration_seconds": 0.5167265000054613,
+          "peak_rss_bytes": 194408448
+        },
+        {
+          "phase": "LOAD_SOURCE",
+          "duration_seconds": 0.16355789999943227,
+          "peak_rss_bytes": 194408448
+        },
+        {
+          "phase": "EXTRACT_TREE",
+          "duration_seconds": 0.8574563000001945,
+          "peak_rss_bytes": 194408448
+        },
+        {
+          "phase": "BUILD_GRAPH",
+          "duration_seconds": 22.82291190000251,
+          "peak_rss_bytes": 329932800
+        },
+        {
+          "phase": "PREPARE_RETRIEVAL",
+          "duration_seconds": 1.4842231000075117,
+          "peak_rss_bytes": 329932800
+        },
+        {
+          "phase": "GROUND",
+          "duration_seconds": 0.2028120999893872,
+          "peak_rss_bytes": 329932800
+        },
+        {
+          "phase": "RETRIEVE",
+          "duration_seconds": 1.3619370000087656,
+          "peak_rss_bytes": 329932800
+        },
+        {
+          "phase": "GROUND",
+          "duration_seconds": 0.19914689999131951,
+          "peak_rss_bytes": 329932800
+        },
+        {
+          "phase": "RETRIEVE",
+          "duration_seconds": 1.2873188000085065,
+          "peak_rss_bytes": 329932800
+        },
+        {
+          "phase": "SCORE",
+          "duration_seconds": 0.2459996000106912,
+          "peak_rss_bytes": 329932800
+        },
+        {
+          "phase": "WRITE",
+          "duration_seconds": 0.0063805999961914495,
+          "peak_rss_bytes": 329932800
+        }
+      ],
+      "phase": "WRITE",
+      "error": null,
+      "traceback": null
+    },
+    {
+      "instance_id": "sphinx-doc__sphinx-8548",
+      "status": "SUCCEEDED",
+      "artifact_hash": "sha256:f99a56c74cc1858a202a3ecf1f4abbd087fe88a951c00efc7d1e1f285786df08",
+      "duration_seconds": 26.83628889999818,
+      "peak_rss_bytes": 245878784,
+      "graph_cached": false,
+      "actual_stages": [
+        {
+          "phase": "TOKENIZER",
+          "duration_seconds": 0.46291800000471994,
+          "peak_rss_bytes": 194129920
+        },
+        {
+          "phase": "LOAD_SOURCE",
+          "duration_seconds": 0.17513030000554863,
+          "peak_rss_bytes": 194129920
+        },
+        {
+          "phase": "EXTRACT_TREE",
+          "duration_seconds": 0.31381610000971705,
+          "peak_rss_bytes": 194129920
+        },
+        {
+          "phase": "BUILD_GRAPH",
+          "duration_seconds": 20.33130639999581,
+          "peak_rss_bytes": 221667328
+        },
+        {
+          "phase": "PREPARE_RETRIEVAL",
+          "duration_seconds": 2.449880000000121,
+          "peak_rss_bytes": 230285312
+        },
+        {
+          "phase": "GROUND",
+          "duration_seconds": 0.0406652999954531,
+          "peak_rss_bytes": 230285312
+        },
+        {
+          "phase": "RETRIEVE",
+          "duration_seconds": 1.0872967999894172,
+          "peak_rss_bytes": 245489664
+        },
+        {
+          "phase": "GROUND",
+          "duration_seconds": 0.04371930001070723,
+          "peak_rss_bytes": 245489664
+        },
+        {
+          "phase": "RETRIEVE",
+          "duration_seconds": 0.9854755999986082,
+          "peak_rss_bytes": 245878784
+        },
+        {
+          "phase": "SCORE",
+          "duration_seconds": 0.2518310999876121,
+          "peak_rss_bytes": 245878784
+        },
+        {
+          "phase": "WRITE",
+          "duration_seconds": 0.013066300001810305,
+          "peak_rss_bytes": 245878784
+        }
+      ],
+      "phase": "WRITE",
+      "error": null,
+      "traceback": null
+    },
+    {
+      "instance_id": "sympy__sympy-20438",
+      "status": "SUCCEEDED",
+      "artifact_hash": "sha256:c2c6fd103d2f4abccb46c1d7842a55ce8c1fd86ab5787c4531135830d7f697d1",
+      "duration_seconds": 135.86211750000075,
+      "peak_rss_bytes": 6580867072,
+      "graph_cached": true,
+      "actual_stages": [
+        {
+          "phase": "TOKENIZER",
+          "duration_seconds": 0.4497202000056859,
+          "peak_rss_bytes": 194433024
+        },
+        {
+          "phase": "LOAD_SOURCE",
+          "duration_seconds": 0.24047319999954198,
+          "peak_rss_bytes": 194433024
+        },
+        {
+          "phase": "EXTRACT_TREE",
+          "duration_seconds": 0.8504431000037584,
+          "peak_rss_bytes": 194433024
+        },
+        {
+          "phase": "BUILD_GRAPH",
+          "duration_seconds": 63.2559229000035,
+          "peak_rss_bytes": 6580867072
+        },
+        {
+          "phase": "PREPARE_RETRIEVAL",
+          "duration_seconds": 41.28068979999807,
+          "peak_rss_bytes": 6580867072
+        },
+        {
+          "phase": "GROUND",
+          "duration_seconds": 1.65576229999715,
+          "peak_rss_bytes": 6580867072
+        },
+        {
+          "phase": "RETRIEVE",
+          "duration_seconds": 11.968413099995814,
+          "peak_rss_bytes": 6580867072
+        },
+        {
+          "phase": "GROUND",
+          "duration_seconds": 1.6463451000017812,
+          "peak_rss_bytes": 6580867072
+        },
+        {
+          "phase": "RETRIEVE",
+          "duration_seconds": 12.297715399996378,
+          "peak_rss_bytes": 6580867072
+        },
+        {
+          "phase": "SCORE",
+          "duration_seconds": 0.3078179000003729,
+          "peak_rss_bytes": 6580867072
+        },
+        {
+          "phase": "WRITE",
+          "duration_seconds": 0.007680700000491925,
+          "peak_rss_bytes": 6580867072
+        }
+      ],
+      "phase": "WRITE",
+      "error": null,
+      "traceback": null
+    },
+    {
+      "instance_id": "django__django-12155",
+      "status": "SUCCEEDED",
+      "artifact_hash": "sha256:4892fe5f036592c9ebdcf5fd5dba4ed9475455806fea681a06e618413df50a3d",
+      "duration_seconds": 144.82657269999618,
+      "peak_rss_bytes": 765566976,
+      "graph_cached": false,
+      "actual_stages": [
+        {
+          "phase": "TOKENIZER",
+          "duration_seconds": 0.47150100000726525,
+          "peak_rss_bytes": 194330624
+        },
+        {
+          "phase": "LOAD_SOURCE",
+          "duration_seconds": 0.5391186000051675,
+          "peak_rss_bytes": 194330624
+        },
+        {
+          "phase": "EXTRACT_TREE",
+          "duration_seconds": 1.6733976999967126,
+          "peak_rss_bytes": 194330624
+        },
+        {
+          "phase": "BUILD_GRAPH",
+          "duration_seconds": 123.72667239999282,
+          "peak_rss_bytes": 744505344
+        },
+        {
+          "phase": "PREPARE_RETRIEVAL",
+          "duration_seconds": 7.348478600004455,
+          "peak_rss_bytes": 752119808
+        },
+        {
+          "phase": "GROUND",
+          "duration_seconds": 1.490499199993792,
+          "peak_rss_bytes": 752119808
+        },
+        {
+          "phase": "RETRIEVE",
+          "duration_seconds": 3.5169958000042243,
+          "peak_rss_bytes": 764866560
+        },
+        {
+          "phase": "GROUND",
+          "duration_seconds": 1.2915206000034232,
+          "peak_rss_bytes": 764866560
+        },
+        {
+          "phase": "RETRIEVE",
+          "duration_seconds": 3.697136099988711,
+          "peak_rss_bytes": 765566976
+        },
+        {
+          "phase": "SCORE",
+          "duration_seconds": 0.08389710000483319,
+          "peak_rss_bytes": 765566976
+        },
+        {
+          "phase": "WRITE",
+          "duration_seconds": 0.009861700003966689,
+          "peak_rss_bytes": 765566976
+        }
+      ],
+      "phase": "WRITE",
+      "error": null,
+      "traceback": null
+    },
+    {
+      "instance_id": "django__django-12325",
+      "status": "SUCCEEDED",
+      "artifact_hash": "sha256:b07a0eb407598d13e56a69d5418112de6d3fde8b1705d21f803687063e762d16",
+      "duration_seconds": 133.66494760000205,
+      "peak_rss_bytes": 772349952,
+      "graph_cached": false,
+      "actual_stages": [
+        {
+          "phase": "TOKENIZER",
+          "duration_seconds": 0.4938660999905551,
+          "peak_rss_bytes": 194478080
+        },
+        {
+          "phase": "LOAD_SOURCE",
+          "duration_seconds": 0.5697838000050979,
+          "peak_rss_bytes": 194478080
+        },
+        {
+          "phase": "EXTRACT_TREE",
+          "duration_seconds": 1.68045090000669,
+          "peak_rss_bytes": 194478080
+        },
+        {
+          "phase": "BUILD_GRAPH",
+          "duration_seconds": 111.42015629999514,
+          "peak_rss_bytes": 752373760
+        },
+        {
+          "phase": "PREPARE_RETRIEVAL",
+          "duration_seconds": 7.725601300000562,
+          "peak_rss_bytes": 755556352
+        },
+        {
+          "phase": "GROUND",
+          "duration_seconds": 1.278831599993282,
+          "peak_rss_bytes": 755556352
+        },
+        {
+          "phase": "RETRIEVE",
+          "duration_seconds": 4.18794699999853,
+          "peak_rss_bytes": 768208896
+        },
+        {
+          "phase": "GROUND",
+          "duration_seconds": 1.3156244999991031,
+          "peak_rss_bytes": 768208896
+        },
+        {
+          "phase": "RETRIEVE",
+          "duration_seconds": 3.837231500001508,
+          "peak_rss_bytes": 772349952
+        },
+        {
+          "phase": "SCORE",
+          "duration_seconds": 0.1997443000000203,
+          "peak_rss_bytes": 772349952
+        },
+        {
+          "phase": "WRITE",
+          "duration_seconds": 0.009258899997803383,
+          "peak_rss_bytes": 772349952
+        }
+      ],
+      "phase": "WRITE",
+      "error": null,
+      "traceback": null
+    },
+    {
+      "instance_id": "django__django-12741",
+      "status": "SUCCEEDED",
+      "artifact_hash": "sha256:2ccd46e7618c4f0d02a0edc34ef368f97509bc48967ebe81b2511624aeb3cf4a",
+      "duration_seconds": 137.29568889999064,
+      "peak_rss_bytes": 778592256,
+      "graph_cached": false,
+      "actual_stages": [
+        {
+          "phase": "TOKENIZER",
+          "duration_seconds": 0.45587639999575913,
+          "peak_rss_bytes": 194478080
+        },
+        {
+          "phase": "LOAD_SOURCE",
+          "duration_seconds": 0.5339402000099653,
+          "peak_rss_bytes": 194478080
+        },
+        {
+          "phase": "EXTRACT_TREE",
+          "duration_seconds": 1.7415061999927275,
+          "peak_rss_bytes": 194478080
+        },
+        {
+          "phase": "BUILD_GRAPH",
+          "duration_seconds": 117.74425790000532,
+          "peak_rss_bytes": 758386688
+        },
+        {
+          "phase": "PREPARE_RETRIEVAL",
+          "duration_seconds": 7.390927699991153,
+          "peak_rss_bytes": 762589184
+        },
+        {
+          "phase": "GROUND",
+          "duration_seconds": 0.5098379999981262,
+          "peak_rss_bytes": 762589184
+        },
+        {
+          "phase": "RETRIEVE",
+          "duration_seconds": 3.657640800010995,
+          "peak_rss_bytes": 775106560
+        },
+        {
+          "phase": "GROUND",
+          "duration_seconds": 0.5627622000029078,
+          "peak_rss_bytes": 775106560
+        },
+        {
+          "phase": "RETRIEVE",
+          "duration_seconds": 3.6862416000076337,
+          "peak_rss_bytes": 778592256
+        },
+        {
+          "phase": "SCORE",
+          "duration_seconds": 0.07686499999545049,
+          "peak_rss_bytes": 778592256
+        },
+        {
+          "phase": "WRITE",
+          "duration_seconds": 0.006396199998562224,
+          "peak_rss_bytes": 778592256
+        }
+      ],
+      "phase": "WRITE",
+      "error": null,
+      "traceback": null
+    },
+    {
+      "instance_id": "django__django-13195",
+      "status": "SUCCEEDED",
+      "artifact_hash": "sha256:cbb6123276335a811205b3a445dc0ac89f448d0d149e44b44134893eafbef69a",
+      "duration_seconds": 153.9067861999938,
+      "peak_rss_bytes": 789524480,
+      "graph_cached": false,
+      "actual_stages": [
+        {
+          "phase": "TOKENIZER",
+          "duration_seconds": 0.4568588000111049,
+          "peak_rss_bytes": 194519040
+        },
+        {
+          "phase": "LOAD_SOURCE",
+          "duration_seconds": 0.5577311999950325,
+          "peak_rss_bytes": 194519040
+        },
+        {
+          "phase": "EXTRACT_TREE",
+          "duration_seconds": 1.7367747999960557,
+          "peak_rss_bytes": 194519040
+        },
+        {
+          "phase": "BUILD_GRAPH",
+          "duration_seconds": 123.84950510000635,
+          "peak_rss_bytes": 767369216
+        },
+        {
+          "phase": "PREPARE_RETRIEVAL",
+          "duration_seconds": 8.6350087000028,
+          "peak_rss_bytes": 774213632
+        },
+        {
+          "phase": "GROUND",
+          "duration_seconds": 4.1775999999954365,
+          "peak_rss_bytes": 774213632
+        },
+        {
+          "phase": "RETRIEVE",
+          "duration_seconds": 3.8326931999908993,
+          "peak_rss_bytes": 786870272
+        },
+        {
+          "phase": "GROUND",
+          "duration_seconds": 4.249248400010401,
+          "peak_rss_bytes": 786870272
+        },
+        {
+          "phase": "RETRIEVE",
+          "duration_seconds": 5.10451550000289,
+          "peak_rss_bytes": 789524480
+        },
+        {
+          "phase": "SCORE",
+          "duration_seconds": 0.13910590000159573,
+          "peak_rss_bytes": 789524480
+        },
+        {
+          "phase": "WRITE",
+          "duration_seconds": 0.01001410000026226,
+          "peak_rss_bytes": 789524480
+        }
+      ],
+      "phase": "WRITE",
+      "error": null,
+      "traceback": null
+    },
+    {
+      "instance_id": "django__django-13212",
+      "status": "FAILED",
+      "artifact_hash": "sha256:09e77d5800b48893bcf3ae110c119bbfe03e50a676d814184d4f8712a0739e45",
+      "duration_seconds": 3.2827625000063563,
+      "peak_rss_bytes": 194424832,
+      "graph_cached": null,
+      "actual_stages": [
+        {
+          "phase": "TOKENIZER",
+          "duration_seconds": 0.4492090999992797,
+          "peak_rss_bytes": 194424832
+        },
+        {
+          "phase": "LOAD_SOURCE",
+          "duration_seconds": 0.5879921000014292,
+          "peak_rss_bytes": 194424832
+        },
+        {
+          "phase": "EXTRACT_TREE",
+          "duration_seconds": 1.748750500002643,
+          "peak_rss_bytes": 194424832
+        },
+        {
+          "phase": "WRITE",
+          "duration_seconds": 0.0016244999860646203,
+          "peak_rss_bytes": 194424832
+        }
+      ],
+      "phase": "EXTRACT_TREE",
+      "error": "[WinError 5] Access is denied: 'D:\\\\Project\\\\CAPSTONES\\\\VGAR\\\\data\\\\repositories\\\\trees\\\\rebuilt\\\\.vgar-tree-partial-t5ohjqcf' -> 'D:\\\\Project\\\\CAPSTONES\\\\VGAR\\\\data\\\\repositories\\\\trees\\\\rebuilt\\\\fc28ab25aa65'",
+      "traceback": "Traceback (most recent call last):\n  File \"D:\\Project\\CAPSTONES\\VGAR\\src\\vgar\\evaluation\\retrieval\\worker.py\", line 148, in main\n    result = run_task(request, stages)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\Project\\CAPSTONES\\VGAR\\src\\vgar\\evaluation\\retrieval\\worker.py\", line 94, in run_task\n    tree_meta = extract_python_tree(provenance[\"cache_path\"], row[\"repo\"], row[\"base_commit\"], tree)\n                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\Project\\CAPSTONES\\VGAR\\src\\vgar\\evaluation\\retrieval\\graph_arm.py\", line 77, in extract_python_tree\n    partial.rename(destination)\n  File \"C:\\Program Files\\Python311\\Lib\\pathlib.py\", line 1175, in rename\n    os.rename(self, target)\nPermissionError: [WinError 5] Access is denied: 'D:\\\\Project\\\\CAPSTONES\\\\VGAR\\\\data\\\\repositories\\\\trees\\\\rebuilt\\\\.vgar-tree-partial-t5ohjqcf' -> 'D:\\\\Project\\\\CAPSTONES\\\\VGAR\\\\data\\\\repositories\\\\trees\\\\rebuilt\\\\fc28ab25aa65'\n"
+    },
+    {
+      "instance_id": "django__django-13344",
+      "status": "FAILED",
+      "artifact_hash": "sha256:a00adf3f395129ff12be4b50b1e4c5d20f39b5827860ac021f92091eb3b68df6",
+      "duration_seconds": 3.233821200003149,
+      "peak_rss_bytes": 194154496,
+      "graph_cached": null,
+      "actual_stages": [
+        {
+          "phase": "TOKENIZER",
+          "duration_seconds": 0.47501360000751447,
+          "peak_rss_bytes": 194154496
+        },
+        {
+          "phase": "LOAD_SOURCE",
+          "duration_seconds": 0.5620572000043467,
+          "peak_rss_bytes": 194154496
+        },
+        {
+          "phase": "EXTRACT_TREE",
+          "duration_seconds": 1.6737581999914255,
+          "peak_rss_bytes": 194154496
+        },
+        {
+          "phase": "WRITE",
+          "duration_seconds": 0.0015733999898657203,
+          "peak_rss_bytes": 194154496
+        }
+      ],
+      "phase": "EXTRACT_TREE",
+      "error": "[WinError 5] Access is denied: 'D:\\\\Project\\\\CAPSTONES\\\\VGAR\\\\data\\\\repositories\\\\trees\\\\rebuilt\\\\.vgar-tree-partial-zgcylnwy' -> 'D:\\\\Project\\\\CAPSTONES\\\\VGAR\\\\data\\\\repositories\\\\trees\\\\rebuilt\\\\2bfa1eb71c3a'",
+      "traceback": "Traceback (most recent call last):\n  File \"D:\\Project\\CAPSTONES\\VGAR\\src\\vgar\\evaluation\\retrieval\\worker.py\", line 148, in main\n    result = run_task(request, stages)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\Project\\CAPSTONES\\VGAR\\src\\vgar\\evaluation\\retrieval\\worker.py\", line 94, in run_task\n    tree_meta = extract_python_tree(provenance[\"cache_path\"], row[\"repo\"], row[\"base_commit\"], tree)\n                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\Project\\CAPSTONES\\VGAR\\src\\vgar\\evaluation\\retrieval\\graph_arm.py\", line 77, in extract_python_tree\n    partial.rename(destination)\n  File \"C:\\Program Files\\Python311\\Lib\\pathlib.py\", line 1175, in rename\n    os.rename(self, target)\nPermissionError: [WinError 5] Access is denied: 'D:\\\\Project\\\\CAPSTONES\\\\VGAR\\\\data\\\\repositories\\\\trees\\\\rebuilt\\\\.vgar-tree-partial-zgcylnwy' -> 'D:\\\\Project\\\\CAPSTONES\\\\VGAR\\\\data\\\\repositories\\\\trees\\\\rebuilt\\\\2bfa1eb71c3a'\n"
+    },
+    {
+      "instance_id": "django__django-13512",
+      "status": "SUCCEEDED",
+      "artifact_hash": "sha256:f117fabf5020973aa349d7c567173d84f01a89eea1975d7322c8375bea072fde",
+      "duration_seconds": 57.36445079999976,
+      "peak_rss_bytes": 1790263296,
+      "graph_cached": true,
+      "actual_stages": [
+        {
+          "phase": "TOKENIZER",
+          "duration_seconds": 0.4443112999870209,
+          "peak_rss_bytes": 194273280
+        },
+        {
+          "phase": "LOAD_SOURCE",
+          "duration_seconds": 0.5311419000063324,
+          "peak_rss_bytes": 194273280
+        },
+        {
+          "phase": "EXTRACT_TREE",
+          "duration_seconds": 1.6266144999972312,
+          "peak_rss_bytes": 194273280
+        },
+        {
+          "phase": "BUILD_GRAPH",
+          "duration_seconds": 35.77247389999684,
+          "peak_rss_bytes": 1790263296
+        },
+        {
+          "phase": "PREPARE_RETRIEVAL",
+          "duration_seconds": 7.273558500004583,
+          "peak_rss_bytes": 1790263296
+        },
+        {
+          "phase": "GROUND",
+          "duration_seconds": 1.1036407999927178,
+          "peak_rss_bytes": 1790263296
+        },
+        {
+          "phase": "RETRIEVE",
+          "duration_seconds": 4.227451599988854,
+          "peak_rss_bytes": 1790263296
+        },
+        {
+          "phase": "GROUND",
+          "duration_seconds": 1.1599563000054331,
+          "peak_rss_bytes": 1790263296
+        },
+        {
+          "phase": "RETRIEVE",
+          "duration_seconds": 4.139864700002363,
+          "peak_rss_bytes": 1790263296
+        },
+        {
+          "phase": "SCORE",
+          "duration_seconds": 0.1470716000039829,
+          "peak_rss_bytes": 1790263296
+        },
+        {
+          "phase": "WRITE",
+          "duration_seconds": 0.009672200001659803,
+          "peak_rss_bytes": 1790263296
+        }
+      ],
+      "phase": "WRITE",
+      "error": null,
+      "traceback": null
+    }
+  ],
+  "unchanged_overlap_ids": [
+    "astropy__astropy-13398",
+    "django__django-11138",
+    "matplotlib__matplotlib-14623",
+    "pydata__xarray-3305",
+    "pylint-dev__pylint-4551",
+    "sphinx-doc__sphinx-10673",
+    "astropy__astropy-8707",
+    "django__django-11734",
+    "pydata__xarray-3993",
+    "pylint-dev__pylint-4604",
+    "sphinx-doc__sphinx-8120",
+    "pydata__xarray-6992",
+    "sphinx-doc__sphinx-8548",
+    "django__django-12155",
+    "django__django-12325",
+    "django__django-12741",
+    "django__django-13195"
+  ],
+  "prior_manual10_ranking_and_metrics_unchanged": [
+    "astropy__astropy-13398",
+    "django__django-11138",
+    "matplotlib__matplotlib-14623",
+    "pydata__xarray-3305",
+    "pylint-dev__pylint-4551",
+    "sphinx-doc__sphinx-10673",
+    "astropy__astropy-8707",
+    "django__django-11734",
+    "pydata__xarray-3993",
+    "pylint-dev__pylint-4604"
+  ],
+  "cache_hits": 6,
+  "cache_misses": 17,
+  "summaries": {
+    "bm25": {
+      "attempted_tasks": 23,
+      "completed_tasks": 23,
+      "failed_tasks": 0,
+      "metrics": {
+        "chunk_seconds": {
+          "mean": 3.308643147826012,
+          "eligible_tasks": 23
+        },
+        "context_tokens": {
+          "mean": 7997.304347826087,
+          "eligible_tasks": 23
+        },
+        "excluded_count": {
+          "mean": 0,
+          "eligible_tasks": 23
+        },
+        "file_all_gold@1": {
+          "mean": 0,
+          "eligible_tasks": 23
+        },
+        "file_all_gold@10": {
+          "mean": 0.30434782608695654,
+          "eligible_tasks": 23
+        },
+        "file_all_gold@20": {
+          "mean": 0.5652173913043478,
+          "eligible_tasks": 23
+        },
+        "file_all_gold@3": {
+          "mean": 0.13043478260869565,
+          "eligible_tasks": 23
+        },
+        "file_all_gold@5": {
+          "mean": 0.2608695652173913,
+          "eligible_tasks": 23
+        },
+        "file_gold_count": {
+          "mean": 2.6956521739130435,
+          "eligible_tasks": 23
+        },
+        "file_mrr": {
+          "mean": 0.5877225672877847,
+          "eligible_tasks": 23
+        },
+        "file_reach": {
+          "mean": 1.0,
+          "eligible_tasks": 23
+        },
+        "file_recall@1": {
+          "mean": 0.1956521739130435,
+          "eligible_tasks": 23
+        },
+        "file_recall@10": {
+          "mean": 0.6086956521739131,
+          "eligible_tasks": 23
+        },
+        "file_recall@20": {
+          "mean": 0.7355072463768116,
+          "eligible_tasks": 23
+        },
+        "file_recall@3": {
+          "mean": 0.3695652173913043,
+          "eligible_tasks": 23
+        },
+        "file_recall@5": {
+          "mean": 0.5362318840579711,
+          "eligible_tasks": 23
+        },
+        "file_retrievability_coverage": {
+          "mean": 0.9891304347826086,
+          "eligible_tasks": 23
+        },
+        "function_all_gold@1": {
+          "mean": 0,
+          "eligible_tasks": 23
+        },
+        "function_all_gold@10": {
+          "mean": 0.21739130434782608,
+          "eligible_tasks": 23
+        },
+        "function_all_gold@20": {
+          "mean": 0.21739130434782608,
+          "eligible_tasks": 23
+        },
+        "function_all_gold@3": {
+          "mean": 0.08695652173913043,
+          "eligible_tasks": 23
+        },
+        "function_all_gold@5": {
+          "mean": 0.13043478260869565,
+          "eligible_tasks": 23
+        },
+        "function_gold_count": {
+          "mean": 3.8260869565217392,
+          "eligible_tasks": 23
+        },
+        "function_mrr": {
+          "mean": 0.4094876555057832,
+          "eligible_tasks": 23
+        },
+        "function_reach": {
+          "mean": 1.0,
+          "eligible_tasks": 23
+        },
+        "function_recall@1": {
+          "mean": 0.07934782608695652,
+          "eligible_tasks": 23
+        },
+        "function_recall@10": {
+          "mean": 0.44963768115942027,
+          "eligible_tasks": 23
+        },
+        "function_recall@20": {
+          "mean": 0.4782608695652174,
+          "eligible_tasks": 23
+        },
+        "function_recall@3": {
+          "mean": 0.21304347826086956,
+          "eligible_tasks": 23
+        },
+        "function_recall@5": {
+          "mean": 0.29818840579710143,
+          "eligible_tasks": 23
+        },
+        "mapping_coverage": {
+          "mean": 1.0,
+          "eligible_tasks": 23
+        },
+        "packed_all_gold_files_in_context": {
+          "mean": 0.43478260869565216,
+          "eligible_tasks": 23
+        },
+        "packed_all_gold_functions_in_context": {
+          "mean": 0.21739130434782608,
+          "eligible_tasks": 23
+        },
+        "packed_gold_file_in_context": {
+          "mean": 0.677536231884058,
+          "eligible_tasks": 23
+        },
+        "packed_gold_function_in_context": {
+          "mean": 0.45551839464882943,
+          "eligible_tasks": 23
+        },
+        "packed_items_packed": {
+          "mean": 21.91304347826087,
+          "eligible_tasks": 23
+        },
+        "packed_skipped_overlap": {
+          "mean": 2.9130434782608696,
+          "eligible_tasks": 23
+        },
+        "packed_skipped_token_budget": {
+          "mean": 13280.478260869566,
+          "eligible_tasks": 23
+        },
+        "packed_tokens_to_first_gold_file": {
+          "mean": 1160.7619047619048,
+          "eligible_tasks": 21
+        },
+        "packed_tokens_to_first_gold_function": {
+          "mean": 1769.1176470588234,
+          "eligible_tasks": 17
+        },
+        "packed_truncated": {
+          "mean": 1,
+          "eligible_tasks": 23
+        },
+        "rank_items": {
+          "mean": 13305.304347826086,
+          "eligible_tasks": 23
+        },
+        "rank_seconds": {
+          "mean": 3.7125782695653156,
+          "eligible_tasks": 23
+        },
+        "unmapped_count": {
+          "mean": 0,
+          "eligible_tasks": 23
+        }
+      }
+    },
+    "graph": {
+      "attempted_tasks": 23,
+      "completed_tasks": 23,
+      "failed_tasks": 0,
+      "metrics": {
+        "anchor_count": {
+          "mean": 80.78260869565217,
+          "eligible_tasks": 23
+        },
+        "candidates_in": {
+          "mean": 79.82608695652173,
+          "eligible_tasks": 23
+        },
+        "context_tokens": {
+          "mean": 7032.086956521739,
+          "eligible_tasks": 23
+        },
+        "excluded_count": {
+          "mean": 0,
+          "eligible_tasks": 23
+        },
+        "file_all_gold@1": {
+          "mean": 0,
+          "eligible_tasks": 23
+        },
+        "file_all_gold@10": {
+          "mean": 0.21739130434782608,
+          "eligible_tasks": 23
+        },
+        "file_all_gold@20": {
+          "mean": 0.2608695652173913,
+          "eligible_tasks": 23
+        },
+        "file_all_gold@3": {
+          "mean": 0.08695652173913043,
+          "eligible_tasks": 23
+        },
+        "file_all_gold@5": {
+          "mean": 0.17391304347826086,
+          "eligible_tasks": 23
+        },
+        "file_gold_count": {
+          "mean": 2.6956521739130435,
+          "eligible_tasks": 23
+        },
+        "file_mrr": {
+          "mean": 0.3269864193777237,
+          "eligible_tasks": 23
+        },
+        "file_reach": {
+          "mean": 0.4492753623188406,
+          "eligible_tasks": 23
+        },
+        "file_recall@1": {
+          "mean": 0.10144927536231883,
+          "eligible_tasks": 23
+        },
+        "file_recall@10": {
+          "mean": 0.37318840579710144,
+          "eligible_tasks": 23
+        },
+        "file_recall@20": {
+          "mean": 0.40942028985507245,
+          "eligible_tasks": 23
+        },
+        "file_recall@3": {
+          "mean": 0.21014492753623187,
+          "eligible_tasks": 23
+        },
+        "file_recall@5": {
+          "mean": 0.2826086956521739,
+          "eligible_tasks": 23
+        },
+        "file_retrievability_coverage": {
+          "mean": 0.9891304347826086,
+          "eligible_tasks": 23
+        },
+        "function_all_gold@1": {
+          "mean": 0,
+          "eligible_tasks": 23
+        },
+        "function_all_gold@10": {
+          "mean": 0.043478260869565216,
+          "eligible_tasks": 23
+        },
+        "function_all_gold@20": {
+          "mean": 0.043478260869565216,
+          "eligible_tasks": 23
+        },
+        "function_all_gold@3": {
+          "mean": 0,
+          "eligible_tasks": 23
+        },
+        "function_all_gold@5": {
+          "mean": 0,
+          "eligible_tasks": 23
+        },
+        "function_gold_count": {
+          "mean": 3.8260869565217392,
+          "eligible_tasks": 23
+        },
+        "function_mrr": {
+          "mean": 0.17461063742762925,
+          "eligible_tasks": 23
+        },
+        "function_reach": {
+          "mean": 0.23333333333333334,
+          "eligible_tasks": 23
+        },
+        "function_recall@1": {
+          "mean": 0.05072463768115942,
+          "eligible_tasks": 23
+        },
+        "function_recall@10": {
+          "mean": 0.12318840579710144,
+          "eligible_tasks": 23
+        },
+        "function_recall@20": {
+          "mean": 0.13768115942028986,
+          "eligible_tasks": 23
+        },
+        "function_recall@3": {
+          "mean": 0.08695652173913043,
+          "eligible_tasks": 23
+        },
+        "function_recall@5": {
+          "mean": 0.08695652173913043,
+          "eligible_tasks": 23
+        },
+        "mapping_coverage": {
+          "mean": 1.0,
+          "eligible_tasks": 23
+        },
+        "no_anchors": {
+          "mean": 0,
+          "eligible_tasks": 23
+        },
+        "packed_all_gold_files_in_context": {
+          "mean": 0.2608695652173913,
+          "eligible_tasks": 23
+        },
+        "packed_all_gold_functions_in_context": {
+          "mean": 0.08695652173913043,
+          "eligible_tasks": 23
+        },
+        "packed_gold_file_in_context": {
+          "mean": 0.43478260869565216,
+          "eligible_tasks": 23
+        },
+        "packed_gold_function_in_context": {
+          "mean": 0.213768115942029,
+          "eligible_tasks": 23
+        },
+        "packed_items_packed": {
+          "mean": 53.08695652173913,
+          "eligible_tasks": 23
+        },
+        "packed_skipped_overlap": {
+          "mean": 10.391304347826088,
+          "eligible_tasks": 23
+        },
+        "packed_skipped_token_budget": {
+          "mean": 16.347826086956523,
+          "eligible_tasks": 23
+        },
+        "packed_tokens_to_first_gold_file": {
+          "mean": 1090.3529411764705,
+          "eligible_tasks": 17
+        },
+        "packed_tokens_to_first_gold_function": {
+          "mean": 2406,
+          "eligible_tasks": 9
+        },
+        "packed_truncated": {
+          "mean": 0.6086956521739131,
+          "eligible_tasks": 23
+        },
+        "rank_items": {
+          "mean": 79.82608695652173,
+          "eligible_tasks": 23
+        },
+        "retrieve_seconds": {
+          "mean": 4.749509756522299,
+          "eligible_tasks": 23
+        },
+        "unmapped_count": {
+          "mean": 0,
+          "eligible_tasks": 23
+        }
+      }
+    },
+    "graph_f2p": {
+      "attempted_tasks": 23,
+      "completed_tasks": 23,
+      "failed_tasks": 0,
+      "metrics": {
+        "anchor_count": {
+          "mean": 82.69565217391305,
+          "eligible_tasks": 23
+        },
+        "candidates_in": {
+          "mean": 78.17391304347827,
+          "eligible_tasks": 23
+        },
+        "context_tokens": {
+          "mean": 7023.869565217391,
+          "eligible_tasks": 23
+        },
+        "excluded_count": {
+          "mean": 0,
+          "eligible_tasks": 23
+        },
+        "file_all_gold@1": {
+          "mean": 0,
+          "eligible_tasks": 23
+        },
+        "file_all_gold@10": {
+          "mean": 0.21739130434782608,
+          "eligible_tasks": 23
+        },
+        "file_all_gold@20": {
+          "mean": 0.2608695652173913,
+          "eligible_tasks": 23
+        },
+        "file_all_gold@3": {
+          "mean": 0.08695652173913043,
+          "eligible_tasks": 23
+        },
+        "file_all_gold@5": {
+          "mean": 0.17391304347826086,
+          "eligible_tasks": 23
+        },
+        "file_gold_count": {
+          "mean": 2.6956521739130435,
+          "eligible_tasks": 23
+        },
+        "file_mrr": {
+          "mean": 0.3335081585081585,
+          "eligible_tasks": 23
+        },
+        "file_reach": {
+          "mean": 0.47101449275362317,
+          "eligible_tasks": 23
+        },
+        "file_recall@1": {
+          "mean": 0.10144927536231883,
+          "eligible_tasks": 23
+        },
+        "file_recall@10": {
+          "mean": 0.39492753623188404,
+          "eligible_tasks": 23
+        },
+        "file_recall@20": {
+          "mean": 0.43115942028985504,
+          "eligible_tasks": 23
+        },
+        "file_recall@3": {
+          "mean": 0.21014492753623187,
+          "eligible_tasks": 23
+        },
+        "file_recall@5": {
+          "mean": 0.30434782608695654,
+          "eligible_tasks": 23
+        },
+        "file_retrievability_coverage": {
+          "mean": 0.9891304347826086,
+          "eligible_tasks": 23
+        },
+        "function_all_gold@1": {
+          "mean": 0,
+          "eligible_tasks": 23
+        },
+        "function_all_gold@10": {
+          "mean": 0.043478260869565216,
+          "eligible_tasks": 23
+        },
+        "function_all_gold@20": {
+          "mean": 0.08695652173913043,
+          "eligible_tasks": 23
+        },
+        "function_all_gold@3": {
+          "mean": 0,
+          "eligible_tasks": 23
+        },
+        "function_all_gold@5": {
+          "mean": 0,
+          "eligible_tasks": 23
+        },
+        "function_gold_count": {
+          "mean": 3.8260869565217392,
+          "eligible_tasks": 23
+        },
+        "function_mrr": {
+          "mean": 0.1833155560680533,
+          "eligible_tasks": 23
+        },
+        "function_reach": {
+          "mean": 0.25507246376811593,
+          "eligible_tasks": 23
+        },
+        "function_recall@1": {
+          "mean": 0.05072463768115942,
+          "eligible_tasks": 23
+        },
+        "function_recall@10": {
+          "mean": 0.14492753623188406,
+          "eligible_tasks": 23
+        },
+        "function_recall@20": {
+          "mean": 0.18115942028985507,
+          "eligible_tasks": 23
+        },
+        "function_recall@3": {
+          "mean": 0.08695652173913043,
+          "eligible_tasks": 23
+        },
+        "function_recall@5": {
+          "mean": 0.10869565217391304,
+          "eligible_tasks": 23
+        },
+        "mapping_coverage": {
+          "mean": 1.0,
+          "eligible_tasks": 23
+        },
+        "no_anchors": {
+          "mean": 0,
+          "eligible_tasks": 23
+        },
+        "packed_all_gold_files_in_context": {
+          "mean": 0.2608695652173913,
+          "eligible_tasks": 23
+        },
+        "packed_all_gold_functions_in_context": {
+          "mean": 0.08695652173913043,
+          "eligible_tasks": 23
+        },
+        "packed_gold_file_in_context": {
+          "mean": 0.45652173913043476,
+          "eligible_tasks": 23
+        },
+        "packed_gold_function_in_context": {
+          "mean": 0.21014492753623187,
+          "eligible_tasks": 23
+        },
+        "packed_items_packed": {
+          "mean": 51.04347826086956,
+          "eligible_tasks": 23
+        },
+        "packed_skipped_overlap": {
+          "mean": 11.521739130434783,
+          "eligible_tasks": 23
+        },
+        "packed_skipped_token_budget": {
+          "mean": 15.608695652173912,
+          "eligible_tasks": 23
+        },
+        "packed_tokens_to_first_gold_file": {
+          "mean": 1132.8333333333333,
+          "eligible_tasks": 18
+        },
+        "packed_tokens_to_first_gold_function": {
+          "mean": 1311,
+          "eligible_tasks": 8
+        },
+        "packed_truncated": {
+          "mean": 0.5652173913043478,
+          "eligible_tasks": 23
+        },
+        "rank_items": {
+          "mean": 78.17391304347827,
+          "eligible_tasks": 23
+        },
+        "retrieve_seconds": {
+          "mean": 4.713012882611467,
+          "eligible_tasks": 23
+        },
+        "unmapped_count": {
+          "mean": 0,
+          "eligible_tasks": 23
+        }
+      }
+    }
+  },
+  "paired_statistics": {
+    "graph": {
+      "file_recall@3": {
+        "n": 23,
+        "mean_delta": -0.15942028985507245,
+        "ci95": [
+          -0.286231884057971,
+          -0.036231884057971016
+        ],
+        "wins": 2,
+        "ties": 10,
+        "losses": 11
+      },
+      "file_recall@5": {
+        "n": 23,
+        "mean_delta": -0.25362318840579706,
+        "ci95": [
+          -0.4384057971014493,
+          -0.06884057971014493
+        ],
+        "wins": 5,
+        "ties": 4,
+        "losses": 14
+      },
+      "file_recall@10": {
+        "n": 23,
+        "mean_delta": -0.2355072463768116,
+        "ci95": [
+          -0.40217391304347827,
+          -0.06521739130434782
+        ],
+        "wins": 4,
+        "ties": 6,
+        "losses": 13
+      },
+      "function_recall@3": {
+        "n": 23,
+        "mean_delta": -0.12608695652173912,
+        "ci95": [
+          -0.22753623188405797,
+          -0.02898550724637681
+        ],
+        "wins": 1,
+        "ties": 13,
+        "losses": 9
+      },
+      "function_recall@5": {
+        "n": 23,
+        "mean_delta": -0.21123188405797103,
+        "ci95": [
+          -0.3416666666666667,
+          -0.08876811594202898
+        ],
+        "wins": 1,
+        "ties": 10,
+        "losses": 12
+      },
+      "function_recall@10": {
+        "n": 23,
+        "mean_delta": -0.3264492753623189,
+        "ci95": [
+          -0.5123188405797101,
+          -0.13659420289855073
+        ],
+        "wins": 1,
+        "ties": 8,
+        "losses": 14
+      },
+      "file_mrr": {
+        "n": 23,
+        "mean_delta": -0.26073614791006094,
+        "ci95": [
+          -0.41440950353993833,
+          -0.1227451533973273
+        ],
+        "wins": 3,
+        "ties": 5,
+        "losses": 15
+      },
+      "function_mrr": {
+        "n": 23,
+        "mean_delta": -0.23487701807815392,
+        "ci95": [
+          -0.4031722066194458,
+          -0.06873631094803118
+        ],
+        "wins": 1,
+        "ties": 2,
+        "losses": 20
+      },
+      "packed_gold_file_in_context": {
+        "n": 23,
+        "mean_delta": -0.2427536231884058,
+        "ci95": [
+          -0.44565217391304346,
+          -0.01449275362318841
+        ],
+        "wins": 4,
+        "ties": 7,
+        "losses": 12
+      },
+      "packed_gold_function_in_context": {
+        "n": 23,
+        "mean_delta": -0.24175027870680044,
+        "ci95": [
+          -0.43232998885172796,
+          -0.05406911928651059
+        ],
+        "wins": 2,
+        "ties": 9,
+        "losses": 12
+      },
+      "context_tokens": {
+        "n": 23,
+        "mean_delta": -965.2173913043479,
+        "ci95": [
+          -1829.695652173913,
+          -300.7826086956522
+        ],
+        "wins": 1,
+        "ties": 1,
+        "losses": 21
+      }
+    },
+    "graph_f2p": {
+      "file_recall@3": {
+        "n": 23,
+        "mean_delta": -0.15942028985507245,
+        "ci95": [
+          -0.286231884057971,
+          -0.036231884057971016
+        ],
+        "wins": 2,
+        "ties": 10,
+        "losses": 11
+      },
+      "file_recall@5": {
+        "n": 23,
+        "mean_delta": -0.23188405797101447,
+        "ci95": [
+          -0.4166666666666667,
+          -0.04710144927536231
+        ],
+        "wins": 5,
+        "ties": 5,
+        "losses": 13
+      },
+      "file_recall@10": {
+        "n": 23,
+        "mean_delta": -0.213768115942029,
+        "ci95": [
+          -0.3840579710144928,
+          -0.043478260869565216
+        ],
+        "wins": 4,
+        "ties": 7,
+        "losses": 12
+      },
+      "function_recall@3": {
+        "n": 23,
+        "mean_delta": -0.12608695652173912,
+        "ci95": [
+          -0.22753623188405797,
+          -0.02898550724637681
+        ],
+        "wins": 1,
+        "ties": 13,
+        "losses": 9
+      },
+      "function_recall@5": {
+        "n": 23,
+        "mean_delta": -0.1894927536231884,
+        "ci95": [
+          -0.32753623188405795,
+          -0.05434782608695652
+        ],
+        "wins": 2,
+        "ties": 9,
+        "losses": 12
+      },
+      "function_recall@10": {
+        "n": 23,
+        "mean_delta": -0.30471014492753623,
+        "ci95": [
+          -0.4985507246376812,
+          -0.10144927536231885
+        ],
+        "wins": 2,
+        "ties": 7,
+        "losses": 14
+      },
+      "file_mrr": {
+        "n": 23,
+        "mean_delta": -0.25421440877962614,
+        "ci95": [
+          -0.4078280415236937,
+          -0.11783086478738654
+        ],
+        "wins": 3,
+        "ties": 6,
+        "losses": 14
+      },
+      "function_mrr": {
+        "n": 23,
+        "mean_delta": -0.2261720994377299,
+        "ci95": [
+          -0.395507149934186,
+          -0.0568136950514728
+        ],
+        "wins": 2,
+        "ties": 2,
+        "losses": 19
+      },
+      "packed_gold_file_in_context": {
+        "n": 23,
+        "mean_delta": -0.22101449275362317,
+        "ci95": [
+          -0.41304347826086957,
+          -0.007246376811594202
+        ],
+        "wins": 4,
+        "ties": 7,
+        "losses": 12
+      },
+      "packed_gold_function_in_context": {
+        "n": 23,
+        "mean_delta": -0.24537346711259755,
+        "ci95": [
+          -0.44537346711259757,
+          -0.04102564102564103
+        ],
+        "wins": 3,
+        "ties": 8,
+        "losses": 12
+      },
+      "context_tokens": {
+        "n": 23,
+        "mean_delta": -973.4347826086956,
+        "ci95": [
+          -1835.7391304347825,
+          -306.6521739130435
+        ],
+        "wins": 2,
+        "ties": 2,
+        "losses": 19
+      }
+    }
+  },
+  "source_digest": "sha256:846a942434b5fb34c1861883fac72e21260d0de06cb5d2ce9535594db24a6dfb",
+  "caveats": [
+    "PASS is integrity analysis, not full benchmark/repair PASS",
+    "23 paired observations condition on successful tasks; 2 failures remain in denominator25",
+    "Warm cache latency is not cold-start; actual stage times, not cached historical build_seconds",
+    "Self review does not replace owner approvals; environment/inference NOT_RUN"
+  ]
+}

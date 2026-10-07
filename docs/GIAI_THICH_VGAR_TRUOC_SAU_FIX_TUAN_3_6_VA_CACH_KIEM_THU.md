@@ -6,7 +6,7 @@
 
 **Đối tượng:** thành viên M1, M2, M3 và leader muốn hiểu việc đã triển khai, tự đọc evidence, tự kiểm thử và bàn giao đúng trạng thái. Đây là tài liệu giải thích code/evidence, không phải một kế hoạch sửa lỗi mới hoặc xác nhận toàn bộ đồ án hoàn thành.
 
-**Trạng thái tổng quát:** `PARTIAL_HANDOFF`. Các sửa chữa tích hợp đã có kiểm thử kỹ thuật; benchmark còn lỗi và chưa đủ gate. Không có công việc chạy ngầm được khởi động bởi việc viết tài liệu này. Không commit/push, không sửa hệ thống cũ, không thực hiện environment readiness đã bị loại trừ.
+**Trạng thái tổng quát sau mở lại:** `PARTIAL_HANDOFF`. Code sau fix qua suite **365 passed / 4 skipped**; run mới có **23/25 task SUCCEEDED**, comparison **23 valid pairs**, đạt số lượng tối thiểu20 nhưng **chưa đạt mục tiêu25 completed pairs**. Hai Django mới lỗi WinError5; chưa có owner sign-off. Không có benchmark/test còn chạy ở checkpoint cuối. Không commit/push đợt này, không sửa hệ thống cũ, không thực hiện environment readiness đã bị loại trừ. Số19/25 và359tests ở các phần lịch sử vẫn giữ để đối chiếu, không đại diện kết quả mới nhất.
 
 ## Mục lục
 
@@ -80,7 +80,7 @@ Trước đây từng module có code và tests riêng, nhưng các module chưa
 | SWE-bench retrieval | Manifest + base source + issue; patch chỉ scorer | Ranking/coverage/metrics/tokens/trace | Không sửa lỗi target | Không | Khả năng tìm code theo gold changed-code proxy |
 | Agent repair thật | Repo + task + model + test policy | Patch và verification | Bản sao workspace nếu guards đúng | Có | Chỉ task/đường chạy đã thực sự được xác minh |
 
-**359 passed / 4 skipped** là kết quả suite code. **19/25** là số task retrieval chạy thành công, không phải 19 task được repair. Hiện chưa đo repair pass rate SWE-bench trong đợt fix này. Tokenizer đếm token không phải LLM inference.
+**365 passed / 4 skipped** là suite code mới nhất. **23/25** là số task retrieval chạy thành công trong run mới, không phải23task được repair.359/4skip và19/25 là kết quả lịch sử trước mở lại. Chưa đo repair pass rate SWE-bench trong đợt fix này. Tokenizer đếm token không phải LLM inference.
 
 ## 3. Nền tảng có sẵn trước đợt fix: M1, M2, M3
 
@@ -148,7 +148,7 @@ Trong bảng, các path `graph/`, `repair/`, `evaluation/`, `mcp/` đều dướ
 | Atomic telemetry replace bị Windows reader khóa | Regression/trace `PermissionError` khi writer replace JSON | Retry bounded riêng PermissionError khi ghi JSON: tối đa 20 lần, 10ms; lock kéo dài vẫn ERROR. **Không** đồng nghĩa rename thư mục Django đã được sửa |
 | Worker public retrieval thừa hưởng credential names | Test synthetic credential trước fix fail | Filter tên biến môi trường; không in secret thật. Không phải bảo đảm chống mọi secret/code độc hại |
 | Host graph source/version binding | CLI/workflow kế thừa source_root=None hoặc foreign source/version | RED4 → fix bind leased source/reset version → GREEN24 → suite359; không đổi ranking/model |
-| Sáu errors trên no-Jedi dev25 | 3 Sympy timeout, 2 Django WinError5, 1 Pylint duplicate edge | **Chưa sửa**. Dừng sau một attempt mỗi case, giữ trong population/report |
+| Sáu errors trên no-Jedi dev25 lịch sử | 3Sympy timeout,2Django WinError5,1Pylint duplicate edge | Pylint ID đã fix, snapshot preparation đã tối ưu; cả6cases PASS trong run mới. Hai Django khác WinError5, cold Sympy limits còn; trạng thái hiện tại ở6.1–6.3 |
 
 Không coi mọi lỗi KeyError/Path/MemoryError ở run lịch sử là còn tồn tại trên code hiện tại: source digests khác nhau và evidence cũ không đủ trace. Bảng ghi cái đã tái hiện hoặc đã quan sát, không suy đoán nguyên nhân chưa có bằng chứng.
 
@@ -159,13 +159,13 @@ Không coi mọi lỗi KeyError/Path/MemoryError ở run lịch sử là còn t�
 | Milestone | Thay đổi thực hiện | File chính | Output/tác dụng | Bằng chứng mức nào? |
 |---|---|---|---|---|
 | 1 — Comparison contract | Consumer dùng `arms`; population/query/base/corpus/patch/gold/counter/scorer guards; zero/partial nonzero; full rank primary | `src/vgar/evaluation/retrieval/compare.py`, `report.py`, `scripts/compare_graph_vs_bm25.py`, tests comparator | `result.json`/`REPORT.md` không còn dựa vào shape giả; phản ánh failures | Regression + actual fixture pipeline + real partial19 comparison |
-| 2 — Graph robustness | File transactions/journal rollback; inventory cả failed files; compound/duplicates/bindings/setter/inheritance | `src/vgar/graph/builder.py`, `retrieval.py`, `tests/test_graph_transaction_bindings.py` | Snapshot/source proof nhất quán, occurrence-aware node IDs | Fixtures; **Pylint duplicate edge thật vẫn còn** |
+| 2 — Graph robustness | File transactions/journal rollback; inventory cả failed files; compound/duplicates/bindings/setter/inheritance | `src/vgar/graph/builder.py`, `retrieval.py`, `tests/test_graph_transaction_bindings.py` | Snapshot/source proof nhất quán, occurrence-aware node IDs | Repeated inheritance Pylint đã có fix/regression/real-taskPASS ở đợt mở lại |
 | 3 — Source scope / recorder | Prune trước descent; VGAR-specific operational exclusions; generic repo không mất package `data`; pending trước preflight; preflight deadlines | `src/vgar/source_scope.py`, `repair/source_preflight.py`, `workspace.py`, recorder, `tests/test_source_scope.py` | Chạy trên VGAR không trộn cache; hash timeout có evidence | Tests scope/preflight + full recorder |
 | 4 — MCP/M2 boundary | Host lease, root/link/path guards; atomic exact edit giữ newline; shared response/audit; execution gọi M2 runner | `mcp/workspace_guard.py`, tooling, repo/execution servers, settings, CLI/prepare và smokes | ToolResponse + audit + pytest/JUnit evidence nhất quán | Boundary tests + stdio/scripted fixtures; không OS sandbox |
 | 5 — Cache/lifecycle | Tree/cache verification; versioned immutable recovery; per-task process/deadline/logs/RSS; resume fork guards; recursive source fingerprint | `evaluation/retrieval/graph_cache.py`, `lifecycle.py`, `worker.py`, `graph_arm.py`, `evidence.py`, runner | Run/task/attempt artifacts, stage trace, terminal ERROR, new run khi resume | Lifecycle/cache regressions và real dev25 traces |
 | 6 — W6 MCP retrieval | Store source spans/metadata và persistent task context; expose anchors/context; stateless task_handle; depth guard/resource-ID decoding | `graph/sqlite_store.py`, `sqlite_service.py`, `port.py`, `factory.py`, `demo_service.py`, graph server/registry/settings, `scripts/smoke_w5_w6.py` | `ContextPayload`, diagnostics sidecar, `context.json`, `CONTEXT.md`, audit | Direct tests + fresh-session transport fixture + pinned tokenizer |
 | 7 — Docs/handoff | Contract/ADR/README/run guidance/completion/current status | `docs/`, `README.md`, `PROGRESS.md`, `.env.example` | Nhóm thấy đúng semantics/limits, không coi history là hiện tại | Local-link/PowerShell syntax checks; owner approval riêng |
-| 8 — Acceptance evidence | Full suite; actual fixture compare/report; no-Jedi pilot/dev25; partial CI; manual10; affected self-review | Tests, `results/retrieval/`, `artifacts/fixes/w3-w6/`, review docs | Có evidence cả thành công và lỗi; benchmark chưa đạt gate | Pilot3/3, dev25 19/25, suite359/4skip; **không complete toàn W6** |
+| 8 — Acceptance evidence | Full suite; actual fixture compare/report; no-Jedi pilot/dev25; partial CI; manual10; affected self-review | Tests, `results/retrieval/`, `artifacts/fixes/w3-w6/`, review docs | Hiện23/25paired, minimum20 có nhưng strict25/owner sign-off chưa đủ | Pilot3/3, run mới23/25, suite365/4skip; **không complete toàn W6** |
 | Fix cuối — host binding | `graph.source_root=lease.path`, `graph.version=None`, workspace_root đúng cho DB mới | `src/vgar/cli.py::sandbox`, `src/vgar/agents/nodes/prepare.py::prepare_workspace`, `tests/test_host_retrieval_binding.py` | Consumer không đọc source/version của repo khác | RED4 → GREEN24 → full359; sửa sau measurements |
 
 ### 5.2. Những gì giữ nguyên
@@ -180,41 +180,116 @@ Hai bảng SQLite nội bộ mới `node_source_metadata` và `task_contexts` ph
 
 | Nội dung | Trạng thái | Vì sao / lỗi gì? | Nằm ở đâu để xem? | Cần gì để đóng? |
 |---|---|---|---|---|
-| Paired retrieval20–30, mục tiêu25 | **Chưa đạt** | 19 valid pairs trên25 attempts; dưới20. Không bổ sung/drop task để đủ số | `results/retrieval/20261007T014445273889Z-664d06a6c1c0/`, comparison `20261007T022806825449Z-7e61dc92fe7b/` | Điều tra failures khi được mở lại; quyết định protocol/run mới và owners review |
-| sympy__sympy-16597 | **Dừng, chưa sửa** | Timeout300,031s `PREPARE_RETRIEVAL`, peak RSS4.785.938.432bytes | Graph run `tasks/sympy__sympy-16597.json` | Profile preparation/constructor/cache/build cost; không mặc định tăng RAM/deadline |
-| sympy__sympy-17318 | **Dừng, chưa sửa** | Timeout300,010s `PREPARE_RETRIEVAL`, RSS4.904.476.672bytes | `tasks/sympy__sympy-17318.json` cùng run | Như trên; không có MemoryError được ghi |
-| sympy__sympy-20438 | **Dừng, chưa sửa** | Timeout300,043s `PREPARE_RETRIEVAL`; build đã tốn223,357s; deadline cho cả task | `tasks/sympy__sympy-20438.json` | Đo thời gian build/preparation, giữ guards |
-| django__django-11885 | **Dừng, chưa sửa** | `PermissionError/WinError5`, `EXTRACT_TREE`, rename partial directory,3,541s | `tasks/django__django-11885.json` | Reproducer xác định handle/ACL/timing; chưa biết antivirus/process cụ thể |
-| django__django-13512 | **Dừng, chưa sửa** | Cùng nhóm WinError5,3,397s | `tasks/django__django-13512.json` | Không tự đổi ACL/tắt bảo vệ/xóa partial tree |
-| pylint-dev__pylint-6386 | **Dừng, lỗi code chưa sửa** | `GraphValidationError` duplicate edge ID trong `BUILD_GRAPH`,32,684s | `tasks/pylint-dev__pylint-6386.json` | M1 định vị occurrence, thêm regression, sửa nguyên nhân; không bỏ validator/dedup giấu collision |
-| Jedi profile | **Chưa sửa** | Pilot0/3 timeout BUILD_GRAPH300s; no-Jedi approval không fix Jedi | Run `20261006T160820338280Z-24c3cf0056d1`, báo cáo pending | Chỉ điều tra tiếp khi được duyệt, không trộn metrics hai profiles |
+| Mục tiêu25 completed pairs / gate8.4 đầy đủ | **Chưa hoàn thành; đã đủ cỡ mẫu tối thiểu20** | Run mới23success/2failures/25attempts; comparison23pairs COMPARED_PARTIAL/exit1. Không đổi population để gọi PASS25 | Run `results/retrieval/20261007T114731162059Z-f27e07ec6a8b/`; comparison `20261007T122342844612Z-12c751a0b3f6/` | Fix Windows bằng phương pháp khác sau khi được mở lại, hoặc leader duyệt nghiệm thu partial có coverage rõ; không tự bỏ2cases |
+| Windows tree publication / Django13212,13344 | **Dừng phương pháp lỗi lặp; chưa sửa gốc** | WinError5 EXTRACT_TREE, partial.rename(destination),3,3/3,2s. Hai case lịch sử11885/13512 đã PASS lại nhưng cùng lỗi xuất hiện ở cases khác; không chứng minh durable fix | Hai task JSON của run mới, logs/trace dưới attempt_path; mục6.3 giữ bảng từng task | Cần reproducer/instrumentation xác định file handle/ACL/timing cụ thể. Không tiếp tục direct rename với UUID mới, không đổi ACL/tắt bảo vệ/xóa partials |
+| Cold-start Sympy17318/20438 dưới300s | **Chưa đảm bảo; warm verified-cache đã PASS** | Sau fix, cold17318BUILD244,70s/PREPARE47,40s;20438BUILD240,81s/PREPARE51,99s; cả hai timeout ở RETRIEVE. Warm run mới129,3s/135,9sPASS | `results/retrieval/20261007T113445894384Z-a00f54ff6e33/` và run25 mới | Profiling build/serialization/validation trên máy đủ RAM khi được mở lại. Không gọi warm PASS là cold fix; không tăng deadline hoặc cắt corpus để giấu lỗi |
+| Jedi profile | **Dừng theo ngưỡng lỗi, chưa sửa** | Pilot0/3 timeout BUILD_GRAPH300s; diagnostic dynamic_params-off native crash. no-Jedi approval không fix Jedi | Run `20261006T160820338280Z-24c3cf0056d1`, báo cáo pending | Không lặp pilot300s/override đã crash; cần phương án isolation/budget được review khác. Profile chính vẫn no-Jedi |
 | Sign-off owners M1/M2/M3 | **Chờ người phụ trách** | Automated tests/self-audit không thay review nhóm; task_handle/no-Jedi đã được user duyệt nhưng không phải ba owner cùng ký | ADR identities/task handles + affected-files review | Owners review contract/identity/scoring/source binding và xác nhận |
 | Environment readiness50–100/smoke3 | **EXCLUDED_BY_USER / NOT_RUN** | Người dùng yêu cầu không làm đợt này; archive/source không chứng minh tests environments chạy | Báo cáo pending / completion | Chỉ mở lại theo yêu cầu; không tính là đã PASS |
 | Inference thật / SWE-bench repair rate / full verifier nâng cao | **Ngoài phạm vi** | Không chạy model/sinh patch benchmark ở đợt này, không có số đo | README/model/workflow; report ghi inferenceNOT_RUN | Một task triển khai/đánh giá riêng được duyệt; không suy từ retrieval |
-| Minor performance findings | **Deferred, chưa sửa** | Global dictionary journal/deepcopy/full-graph reads/reground có thể tốn CPU/RAM, chưa biết tỷ lệ thời gian | Affected-files self-review | Profiling cụ thể; không tối ưu phỏng đoán/đổi architecture |
+| Performance ngoài snapshot preparation | **Một phần đã fix; journal/SQLite deferred** | Whole-graph deepcopy của overlay/worker đã giảm và có regression. Global journal scan/SQLite full reads/reground chưa profiling sâu; không phải tất cả performance findings đã đóng | `docs/reviews/2026-10-07-reopened-tasks-review-w3-w6.md`; profile/evidence dưới reopened | Task profiling riêng, không suy từ mẫu30files rằng đã fix toàn bộ hệ thống |
 
-Tất cả six task artifacts nằm dưới đường dẫn đầy đủ `D:\Project\CAPSTONES\VGAR\results\retrieval\20261007T014445273889Z-664d06a6c1c0\tasks\`. Một bundle tổng hợp toàn bộ failures là `artifacts/fixes/w3-w6/benchmark-handoff/20261007T022932115081Z-785d8f78eb4e/result.json`.
+Sáu failures lịch sử vẫn nằm dưới `D:\Project\CAPSTONES\VGAR\results\retrieval\20261007T014445273889Z-664d06a6c1c0\tasks\`, bundle cũ `artifacts/fixes/w3-w6/benchmark-handoff/20261007T022932115081Z-785d8f78eb4e/result.json`. **Hai failures hiện tại** nằm trong run mới đã ghi ở bảng; không nhầm failed task cũ với task còn failed hiện nay.
 
 ### 6.2. Nội dung đã hoàn thành, ở mức cụ thể nào?
+
+> **Mở lại task ngày 07/10/2026:** tối đa3 thất bại/task/phương pháp rồi chuyển task; không lặp cách cũ không có giả thuyết mới. RED cố ý chứng minh bug không phải fix attempt thất bại. Số19/25 và359/4skip ở phần lịch sử giữ nguyên. Bảng này là trạng thái mới nhất, chi tiết từng lượt ở mục6.3.
 
 | Nội dung | Mức hoàn thành / output | Implementation / tài liệu | Giới hạn |
 |---|---|---|---|
 | pytest wrapper M2 | Command/argv, stdout/stderr, exit/duration, cases/JUnit/status | `src/vgar/repair/test_runner.py`; default records `artifacts/m2/test-runs/` | Tests trusted repo; timeout/output limit; không là proof semantic correctness |
 | Baseline trước patch | Disposable copy + hash trước/sau + EvidenceBundle, `patch_applied=false` | `repair/baseline.py`, `scripts/run_m2_baseline.py` | Chạy test, **không tự sửa lỗi** |
 | Evidence writer/recorder | Atomic pending→final, phase/preflight traces, mỗi invocation JSON riêng | `repair/evidence_writer.py`, `source_preflight.py`, recorder | Hard kill/mất điện có thể để pending; không bảo đảm finalize tức thì |
-| Graph/source robustness | Transactions/identity/binding/snapshot guards/scope regression | Builder/retrieval/source_scope + tests | Không đảm bảo mọi Python dynamic case; duplicateedge Pylint còn mở |
+| Graph/source robustness | Transactions/identity/binding/snapshot guards/scope regression; repeated inheritance ID đã sửa | Builder/retrieval/source_scope + `tests/test_pending_graph_failures.py` | Không đảm bảo mọi Python dynamic case; không bỏ schema để tránh duplicate |
+| Pylint6386 duplicate edge | Fixed source-target-rule collision cho repeated base/alias; real task PASS43,3s, run25 PASS29,8s | `src/vgar/graph/builder.py`; diagnostic + RED/GREEN dưới `artifacts/fixes/w3-w6/reopened/` | Giữ2INHERITS/mro positions; không chứng minh toàn bộ static resolution hoàn hảo |
+| Snapshot preparation | Selective-owned grounding/overlay; private worker transfer; targeted59PASS, suite365PASS4skip | `graph/grounding.py`, `task_overlay.py`, `retrieval.py`, `evaluation/retrieval/worker.py`; `tests/test_retrieval_snapshot_memory.py` | Public retriever vẫn isolate; full base/delta guards còn; cold-start limits ở6.1 |
+| Sáu task failed trước đây | Cả6task SUCCEEDED trong cùng run mới: Sympy3, Django11885/13512, Pylint6386 | `results/retrieval/20261007T114731162059Z-f27e07ec6a8b/tasks/` | Hai Django khác failed; không suy rằng mọi lỗi Windows đã hết |
 | BM25/chunks/gold/scorer | Baseline25 từ run lịch sử, cross-arm mapping/guards tests | `evaluation/retrieval/` | Gold changed-code proxy không phải ground truth đầy đủ về relevance |
-| Cache/provenance/lifecycle | Verified tree/pairs; bounded workers; hashes/logs/telemetry/resume fork | graph_cache/lifecycle/worker/evidence | RSS sampling có giới hạn; stop fail1 hiện không được tự resume |
+| Cache/provenance/lifecycle | Verified tree/pairs; bounded workers; hashes/logs/telemetry/resume fork | graph_cache/lifecycle/worker/evidence | RSS sampling có giới hạn; không resume run khác source/config, không trộn cache-hit latency với cold-start |
 | MCP W6 tools/context | Hai tools mới + persistent task_handle + frozen context + display | Graph service/server, `scripts/smoke_w5_w6.py` | Demo backend không có source thật trả GRAPH_NOT_READY |
 | MCP lease/envelope/audit | Shared response/audit/host workspace restrictions; M2 executor | MCP modules + workspace tests | Capability guard, không OS sandbox |
 | Host source/version binding | CLI/workflow bind đúng source của leased copy | CLI/prepare + test_host_retrieval_binding | Source đổi sau patch vẫn stale; **không automatic incremental reindex** |
 | Pilot no-Jedi | 3/3 thành công, official counter | `results/retrieval/20261007T013925676777Z-55ae5fb6a24a/` | Không phải paired25/repair |
-| Báo cáo Graph–BM25/CI | Partial19 pairs, errors/population25, oracle riêng | Comparison result/REPORT + review dev25 | Report hoàn tất, **benchmark gate chưa đạt** |
+| Báo cáo Graph–BM25/CI | **23paired tasks/25attempts**, cùngquery/corpus/gold/counter/scorer, oracle riêng | [REPORT mới](../results/retrieval/20261007T122342844612Z-12c751a0b3f6/REPORT.md) | Đã vượt minimum20 nhưng strict gate25 còn thiếu; CI conditional23, không loại2errors khỏi coverage |
 | Manual10 | Issue/base/gold/anchors/top5/packing/source interpretation cho10distinct tasks | `docs/reviews/2026-10-07-manual-retrieval-audit-10.md` | Self-audit, chọn10success đầu manifest không theo accuracy; không independent owner approval |
-| Full suite cuối | **359 passed,4 skipped**, source trước=sau | Full recorder cuối, mục9 | Bốn symlink skip không phải PASS; không thay real repair |
+| Full suite sau fix mới | **365 passed,4 skipped**, source trước=sau,102,69s | `artifacts/fixes/w3-w6/reopened/snapshot-full-suite/20261007T112734572936Z-da791aaa6072446ca8b9184e92a80a7d.json` | Bốn symlink skip không phải PASS; không thay real repair; code không sửa thêm sau suite, docs cập nhật riêng |
+| Integrity/parity bàn giao | Rawhash25/25PASS;17task overlap giữ nguyên rank/anchors/metric, gồm10manual-audit tasks | `artifacts/fixes/w3-w6/reopened/closure/20261007T122635842194Z-5ffd5cbcd0f9/result.json` | PASS của helper phân tích, không benchmark/repair/owner approval |
 | Handoff/self-review | Current status/ADR/run instructions/failure report | PROGRESS, README, docs/reviews, completion | Không tự commit/push/merge hoặc ký thay owners |
 
+### 6.3. Nhật ký task mở lại: phương pháp đã thử và điều kiện tiếp tục
+
+| Task | Trạng thái mới | Phương pháp / số lần fix fail đợt mới | Nguyên nhân, bằng chứng và phương pháp không lặp lại |
+|---|---|---|---|
+| Pylint duplicate edge | FIX ĐÃ QUA REGRESSION VÀ TASK THẬT | 0/3 fix fail; RED2expected → GREEN35; real task43,3sPASS | Lặp base/alias làm source-target-rule ID collision; sửa occurrence cho cạnh lặp, giữ ID cạnh thường. Không lặp whole dev25 hay dedup/bỏ validator. Evidence RED/GREEN dưới `reopened/pylint-red` / `pylint-green` |
+| Django rename tree | DỪNG PHƯƠNG PHÁP DIRECT RENAME: lỗi vẫn tái hiện | 2case lỗi mới +2case lịch sử, nhóm phương pháp lỗi lặp >=3 | Run25 mới:13212/13344 WinError5 EXTRACT_TREE tại partial.rename(destination),3,3/3,2s; **không phải memory/model/test fail**.11885/13512 PASS ở run mới không chứng minh durable fix. Process/handle/ACL gốc chưa xác định. Không chạy lại cùng UUID/direct-rename method, không đổi ACL/tắt bảo vệ/xóa partials; giữ failures trong denominator và chuyển comparison |
+| Sympy preparation | Fix kỹ thuật đã PASS;3/3 Sympy SUCCEEDED trong run25 | Hai cold failures mới vẫn giữ; mỗi case17318/20438 có2knownfail + warm success | Cold run `20261007T113445894384Z-a00f54ff6e33`:17318BUILD244,70s/PREPARE47,40s;20438BUILD240,81s/PREPARE51,99s; timeout RETRIEVE. Run25 warm16597/17318/20438=128,6/129,3/135,9sPASS. Không lặp cold cùng phương pháp, whole-graph deepcopy hoặc tăngdeadline; warm không phải cold robustness |
+| Paired gate 20–30 | COMPARED_PARTIAL23/25; minimum20 đã có, strict25 chưa đóng | Run mới23success/2WindowsFAILED; comparisonexit1 dự kiến cho partial | Run `20261007T114731162059Z-f27e07ec6a8b`, comparison `20261007T122342844612Z-12c751a0b3f6`. Không retrywhole25, không trộn old/new successes, không sửa scorer/weights/gold để làm đẹp số. Owners quyết định nghiệm thu partial |
+| Owner sign-off M1/M2/M3 | CHỜ CON NGƯỜI | Không chạy thay owner | Automated/self-review không thay chữ ký của nhóm |
+| Jedi profile | DỪNG THEO NGƯỠNG, CHƯA SỬA | Đã3timeout pilot lịch sử + diagnosticnativecrash | Không lặp pilot Jedi300s/default hoặc override dynamic_params đã crash; no-Jedi vẫn chính. Phương án khác cần review ở task sau |
+| Environment / inference ngoài scope | KHÔNG MỞ LẠI | Không áp quy tắc retry | Giữ nguyên exclusion và scope tuần 3–6 |
+
+Artifacts mới nằm trong `artifacts/fixes/w3-w6/reopened/`; mỗi diagnostic/test/run có record mới. Lượt RED regression cố ý trước fix không phải phương án khắc phục thất bại, nhưng vẫn lưu đầy đủ.
+
+Pylint full suite đã terminal: `artifacts/fixes/w3-w6/reopened/pylint-full-suite/20261007T111252008679Z-95b98d3c89ba43e0bbafc83278fb9568.json`, **361 passed,4 skipped**, exit0. Đây là suite trước thay đổi tối ưu Sympy; phải kiểm lại suite sau thay đổi mới.
+
+**Lỗi phương pháp kiểm tra cần tránh:** recorder `reopened/snapshot-full-suite/20261007T112435102906Z-171bfdf52e8544c4bb1fb029f7a41c52.json` ERROR vì fingerprint thay đổi trong lúc agent cập nhật tài liệu. Pytest365passed/4skip nhưng **run không PASS**. Tài liệu cũng nằm trong snapshot, không chỉ code/tests. Full-suite gate fail1/3; chỉ chạy lại sau khi dừng toàn bộ edits, không tắt integrity guard. Khi suite đang chạy, chỉ đọc; cập nhật guide/PROGRESS sau terminal.
+
+Lượt ổn định `reopened/snapshot-full-suite/20261007T112734572936Z-da791aaa6072446ca8b9184e92a80a7d.json` đã **PASS**, giữ fingerprint trước/sau. Targeted59tests PASS và profiling mới `reopened/preparation-profile/20261007T112423310141Z-8621495c96cb/result.json` xác nhận không deepcopy toàn graph ở worker; public retriever vẫn isolate. Official cold Sympy16597 `results/retrieval/20261007T112951737700Z-403f2785c84f` đã terminal SUCCEEDED247,2s; hai cold Sympy còn lại timeout như bảng trên.
+
+**Cập nhật terminal:** run25 mới SUCCEEDED23/25; cả3Sympy PASS dùngverifiedcache,2Django khácWinError5. Suite ổn định365passed/4skip102,69s, before=after9ca9fc18…. Không gộp các run một-task vào historical19/25; không còn task đang chạy.
+
+#### Nhật ký run paired25 mới (không trộn run cũ)
+
+Run `D:\Project\CAPSTONES\VGAR\results\retrieval\20261007T114731162059Z-f27e07ec6a8b` đã terminal **PARTIAL_FAILURE/exit1:23SUCCEEDED,2FAILED/25attempts**; cùng manifest25, no-Jedi, budget8000, tokenizer pin, deadline300s. Bảng dưới được cập nhật theo từng task terminal. Có6cache hits/17cache misses trong23success; `cache hit` **không** cold-start latency. Failures lạnh Sympy giữ riêng. Nhóm direct Windows rename đã lỗi lặp >=3 cả lịch sử và mới, không chạy lại trong đợt này.
+
+| Task trong run mới | Trạng thái | Giây / cache | Nguyên nhân nếu lỗi / evidence |
+|---|---|---|---|
+| astropy__astropy-13398 | SUCCEEDED | 74.0s / cache miss | SUCCEEDED retrieval; không phải repair/inference; `tasks/astropy__astropy-13398.json` dưới run trên |
+| django__django-11138 | SUCCEEDED | 151.7s / cache miss | SUCCEEDED retrieval; không phải repair/inference; `tasks/django__django-11138.json` dưới run trên |
+| matplotlib__matplotlib-14623 | SUCCEEDED | 45.5s / cache miss | SUCCEEDED retrieval; không phải repair/inference; `tasks/matplotlib__matplotlib-14623.json` dưới run trên |
+| pydata__xarray-3305 | SUCCEEDED | 13.9s / cache miss | SUCCEEDED retrieval; không phải repair/inference; `tasks/pydata__xarray-3305.json` dưới run trên |
+| pylint-dev__pylint-4551 | SUCCEEDED | 27.0s / cache miss | SUCCEEDED retrieval; không phải repair/inference; `tasks/pylint-dev__pylint-4551.json` dưới run trên |
+| sphinx-doc__sphinx-10673 | SUCCEEDED | 28.6s / cache miss | SUCCEEDED retrieval; không phải repair/inference; `tasks/sphinx-doc__sphinx-10673.json` dưới run trên |
+| sympy__sympy-16597 | SUCCEEDED | 128.6s / cache hit | SUCCEEDED retrieval; không phải repair/inference; `tasks/sympy__sympy-16597.json` dưới run trên |
+| astropy__astropy-8707 | SUCCEEDED | 52.2s / cache miss | SUCCEEDED retrieval; không phải repair/inference; `tasks/astropy__astropy-8707.json` dưới run trên |
+| django__django-11734 | SUCCEEDED | 146.3s / cache miss | SUCCEEDED retrieval; không phải repair/inference; `tasks/django__django-11734.json` dưới run trên |
+| pydata__xarray-3993 | SUCCEEDED | 17.1s / cache miss | SUCCEEDED retrieval; không phải repair/inference; `tasks/pydata__xarray-3993.json` dưới run trên |
+| pylint-dev__pylint-4604 | SUCCEEDED | 24.2s / cache miss | SUCCEEDED retrieval; không phải repair/inference; `tasks/pylint-dev__pylint-4604.json` dưới run trên |
+| sphinx-doc__sphinx-8120 | SUCCEEDED | 26.5s / cache miss | SUCCEEDED retrieval; không phải repair/inference; `tasks/sphinx-doc__sphinx-8120.json` dưới run trên |
+| sympy__sympy-17318 | SUCCEEDED | 129.3s / cache hit | SUCCEEDED retrieval; không phải repair/inference; `tasks/sympy__sympy-17318.json` dưới run trên |
+| django__django-11885 | SUCCEEDED | 63.7s / cache hit | SUCCEEDED retrieval; không phải repair/inference; `tasks/django__django-11885.json` dưới run trên |
+| pydata__xarray-6992 | SUCCEEDED | 20.7s / cache miss | SUCCEEDED retrieval; không phải repair/inference; `tasks/pydata__xarray-6992.json` dưới run trên |
+| pylint-dev__pylint-6386 | SUCCEEDED | 29.8s / cache hit | SUCCEEDED retrieval; không phải repair/inference; `tasks/pylint-dev__pylint-6386.json` dưới run trên |
+| sphinx-doc__sphinx-8548 | SUCCEEDED | 26.8s / cache miss | SUCCEEDED retrieval; không phải repair/inference; `tasks/sphinx-doc__sphinx-8548.json` dưới run trên |
+| sympy__sympy-20438 | SUCCEEDED | 135.9s / cache hit | SUCCEEDED retrieval; không phải repair/inference; `tasks/sympy__sympy-20438.json` dưới run trên |
+| django__django-12155 | SUCCEEDED | 144.8s / cache miss | SUCCEEDED retrieval; không phải repair/inference; `tasks/django__django-12155.json` dưới run trên |
+| django__django-12325 | SUCCEEDED | 133.7s / cache miss | SUCCEEDED retrieval; không phải repair/inference; `tasks/django__django-12325.json` dưới run trên |
+| django__django-12741 | SUCCEEDED | 137.3s / cache miss | SUCCEEDED retrieval; không phải repair/inference; `tasks/django__django-12741.json` dưới run trên |
+| django__django-13195 | SUCCEEDED | 153.9s / cache miss | SUCCEEDED retrieval; không phải repair/inference; `tasks/django__django-13195.json` dưới run trên |
+| django__django-13212 | FAILED | 3.3s / cache chưa kết luận | EXTRACT_TREE: PermissionError [WinError 5] Access is denied: 'D:\\Project\\CAPSTONES\\VGAR\\data\\repositories\\trees\\rebuilt\\.vgar-tree-partial-t5ohjqcf' -> 'D:\\Project\\CAPSTONES\\VGAR\\data\\repositories\\trees\\rebuilt\\fc28ab25aa65'; không tự retry; `tasks/django__django-13212.json` dưới run trên |
+| django__django-13344 | FAILED | 3.2s / cache chưa kết luận | EXTRACT_TREE: PermissionError [WinError 5] Access is denied: 'D:\\Project\\CAPSTONES\\VGAR\\data\\repositories\\trees\\rebuilt\\.vgar-tree-partial-zgcylnwy' -> 'D:\\Project\\CAPSTONES\\VGAR\\data\\repositories\\trees\\rebuilt\\2bfa1eb71c3a'; không tự retry; `tasks/django__django-13344.json` dưới run trên |
+| django__django-13512 | SUCCEEDED | 57.4s / cache hit | SUCCEEDED retrieval; không phải repair/inference; `tasks/django__django-13512.json` dưới run trên |
+<!-- PAIRED25_REOPENED_ROWS -->
+
+#### Kết quả comparison và điều kiện tiếp tục
+
+[REPORT mới](../results/retrieval/20261007T122342844612Z-12c751a0b3f6/REPORT.md) / `result.json`: **COMPARED_PARTIAL,23pairs,exit1**, cùng population25, query/corpus/gold/tokenizer/scorer/snippet policy. Đây là exit code chủ ý để không gọi cohort incomplete là PASS, không phải script crash (stderr rỗng). Command/argv/stdout/stderr/exit lưu ở `artifacts/fixes/w3-w6/reopened/paired23-comparison-execution/20261007T122335709247Z-5c165a8519a3/result.json`.
+
+| Metric primary issue-only,23paired tasks | BM25 | Graph | Diễn giải |
+|---|---:|---:|---|
+| File Recall@5 | 0,5362 | 0,2826 | Graph thấp hơn0,2536;95%paired-bootstrapCI delta[-0,4384;-0,0688] |
+| Function Recall@5 | 0,2982 | 0,0870 | Graph thấp hơn; không tuning weights/scorer/gold để che kết quả âm |
+
+Không lấy meanBM25 toàn25 ở đầu REPORT để thay meanBM25 **paired23** trong bảng này. `graph_f2p` có failing-test metadata từ benchmark, là **oracle-assisted**, không phải primary issue-only hoặc model repair.
+
+Run mới mất1.778,25s≈29,64phút. Trong23success có6cachehit/17cachemiss; không gọi warm latency là cold-start và không dùng stored `graph.build_seconds` của cache để thay actualBUILD_GRAPH telemetry. PeakRSS lớn nhất6.580.867.072bytes≈6,13GiB ở Sympy20438 warm-cache; cache JSON loading có peak riêng, không suy rằng mọi case đều giảm RAM hoặc cần GPU. Lỗi WinError5 xảy ra trước build, không có bằng chứng quy cho thiếuRAM/model.
+
+`artifacts/fixes/w3-w6/reopened/closure/20261007T122635842194Z-5ffd5cbcd0f9/result.json` PASS **phân tích integrity**, kiểm25rawtaskhash, sourcecode fingerprint không đổi từrun25,17tasks overlap giữrank/anchors/metrics, gồm10manual-audit tasks trước. Không làm lại manual audit hoặc benchmark đã xong; owner approval vẫn chờ.
+
+**Điểm dừng:** không cònjob chạy. Không chạy lại direct Windows rename/Jedi methods đã lỗi lặp. Nếu mở lại, đọc cảfailuretrace/partialtree/hash trước; cần hypothesis mới và giữgiới hạn3fail, không tự thaydeadline/corpus/exclusions. ColdSympy optimization thêm và instrumentWindows handle chưa được triển khai, không coi là fix xong. Environment/inference ngoài scope giữnguyên NOT_RUN.
+
 ## 7. Cấu trúc repo và vai trò từng nhóm file
+
 
 ### 7.1. Bản đồ thư mục
 
@@ -617,13 +692,13 @@ Gold labels là changed-code proxy. New files chưa tồn tại ở base không 
 
 Dev25 mất2576,420s≈42,94phút tổng. Success19: mean86,005s/task,median63,949s,p95/max176,730s. BUILD_GRAPH stage hiện tại mean57,582s trên success19. Ba cachehits khiến metadata `graph_build_seconds` có thể là build từ trước; khi đọc latency phải dùng telemetry hiện tại, không giả cold/warm giống nhau.
 
-Peak RSS lớn nhất quan sát4.904.476.672bytes≈4,57GiB. Đây là resident RAM/process-tree sampling, không GPUVRAM/virtual-memory/totalTaskManagerRAM. Pytest, Windows, IDE và source/caches có chi phí thêm; không hứa máy chỉ cần đúng4,57GiB là chắc chắn đủ. Ba Sympy hết deadline **trước ranking**, hai Django lỗi permission, Pylint lỗi graph schema: không có căn cứ gộp tất cả thành thiếu GPU/RAM.
+Trong **run lịch sử19/25**, peakRSS lớn nhất4.904.476.672bytes≈4,57GiB. Run mới23/25 cópeak6.580.867.072bytes≈6,13GiB; xem6.3 để phân biệt cold/warm. Đây là resident RAM/process-tree sampling, không GPUVRAM/virtual-memory/totalTaskManagerRAM. Pytest, Windows, IDE và source/caches có chi phí thêm; không hứa máy chỉ cần đúngpeakRSS là chắc chắn đủ. Ba Sympy lịch sử hết deadline trước ranking, hai Django lịch sử lỗi permission, Pylint lịch sử lỗi graph schema: không gộp tất cả thành thiếu GPU/RAM.
 
 Retrieval/test fixtures ở đây không load weights/call LLM: API inference cost **0USD**. CPU/RAM/disk/network/thuê máy vẫn có chi phí. Cài pyproject có torch/model dependencies nhưng không nghĩa retrieval cần GPU. Model inference thật là flow khác, có thể chậm do offload; đợt này không đo hoặc fix nó.
 
 ## 11. Tự chạy trên Windows PowerShell từ đầu đến cuối
 
-Phần này cho thành viên **tự chọn chạy**, không có lệnh benchmark nào được tự động thực thi lúc viết tài liệu. Khuyến nghị: đọc evidence đã có → setup nếu thiếu → unit/baseline/smoke. Benchmark đang dừng theo user fail1-rule, chỉ mở lại khi được duyệt. Không chạy tất cả blocks bất chấp cảnh báo.
+Phần này cho thành viên **tự chọn chạy**. Đợt mở lại đã thực thi các run ở6.3; việc mở/đọc tài liệu không tự chạy commands. Khuyến nghị: đọc evidence → setup nếu thiếu → unit/baseline/smoke. Các phương pháp Windows rename/Jedi đang dừng theo ngưỡng lỗi lặp; không rerun benchmark đã xong hoặc phương pháp đã fail khi chưa có hypothesis mới/được mở lại. Không chạy tất cả blocks bất chấp cảnh báo.
 
 ### 11.1. Lần đầu: tạo venv riêng, không mượn hệ thống cũ
 

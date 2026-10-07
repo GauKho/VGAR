@@ -1,0 +1,26 @@
+{
+  "phase": "WRITE",
+  "stages": [
+    {
+      "phase": "TOKENIZER",
+      "duration_seconds": 0.47501360000751447,
+      "peak_rss_bytes": 194154496
+    },
+    {
+      "phase": "LOAD_SOURCE",
+      "duration_seconds": 0.5620572000043467,
+      "peak_rss_bytes": 194154496
+    },
+    {
+      "phase": "EXTRACT_TREE",
+      "duration_seconds": 1.6737581999914255,
+      "peak_rss_bytes": 194154496
+    },
+    {
+      "phase": "WRITE",
+      "duration_seconds": 0.0015733999898657203,
+      "peak_rss_bytes": 194154496
+    }
+  ],
+  "peak_rss_bytes": 194154496
+}

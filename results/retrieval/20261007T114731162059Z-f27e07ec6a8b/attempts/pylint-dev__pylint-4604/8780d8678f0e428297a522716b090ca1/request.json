@@ -1,0 +1,121 @@
+{
+  "root": "D:\\Project\\CAPSTONES\\VGAR",
+  "row": {
+    "instance_id": "pylint-dev__pylint-4604",
+    "repo": "pylint-dev/pylint",
+    "base_commit": "1e55ae64624d28c5fe8b63ad7979880ee2e6ef3f",
+    "problem_statement": "unused-import false positive for a module used in a type comment\n### Steps to reproduce\r\n\r\n```python\r\n\"\"\"Docstring.\"\"\"\r\n\r\nimport abc\r\nfrom abc import ABC\r\n\r\nX = ...  # type: abc.ABC\r\nY = ...  # type: ABC\r\n```\r\n\r\n### Current behavior\r\n\r\n```\r\n************* Module a\r\n/tmp/a.py:3:0: W0611: Unused import abc (unused-import)\r\n\r\n-----------------------------------\r\nYour code has been rated at 7.50/10\r\n```\r\n\r\n### Expected behavior\r\n\r\n`unused-import` should not be emitted.\r\n\r\n### pylint --version output\r\n\r\nResult of `pylint --version` output:\r\n\r\n```\r\npylint 2.8.3\r\nastroid 2.5.6\r\nPython 3.9.2 (default, Feb 28 2021, 17:03:44) \r\n[GCC 10.2.1 20210110]\r\n```\r\n\r\nThis is a follow up to #3112.\n",
+    "difficulty": "15 min - 1 hour",
+    "query_hash": "sha256:0072c898db86e2500d95b0b95f0929f23f8a733dc9b0eb4a0d170189049a8dbb",
+    "patch_hash": "sha256:b50bd937b95d0b58008208d4e7cd122bb869602d0c84319bbae3ebf0f024887c",
+    "gold_patch_path": "data/gold/patches/pylint-dev__pylint-4604.patch",
+    "changed_source_files": [
+      "pylint/checkers/variables.py",
+      "pylint/constants.py"
+    ],
+    "split": "dev",
+    "is_multi_file": true
+  },
+  "config": {
+    "manifest_hash": "sha256:33ddf233c44832c87abfeb7b62b1aef9fc1e4e8f89f67653fc5e7dc20cc86708",
+    "budget_tokens": 8000,
+    "scoring_version": "retrieval-scoring-v1",
+    "counter_label": "local-hf:Qwen/Qwen3-4B-Instruct-2507@cdbee75f17c01a7cc42f958dc650907174af0554:sha256=aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4:no-special-tokens",
+    "counter_is_fallback": false,
+    "snippet_policy": {
+      "max_snippet_lines": 80,
+      "header": true,
+      "overlap": "skip_if_overlaps_different_group"
+    },
+    "arms": {
+      "graph": {
+        "uses_fail_to_pass": false
+      },
+      "graph_f2p": {
+        "uses_fail_to_pass": true
+      }
+    },
+    "graph": {
+      "use_jedi": false,
+      "builder_hash": "62bb14a051c1",
+      "source_roots": [
+        "src"
+      ]
+    },
+    "retrieval": {
+      "max_hops": 2,
+      "max_candidates": 100,
+      "min_edge_confidence": 0.6,
+      "weights": {
+        "task_similarity": 0.2,
+        "graph_distance": 0.3,
+        "edge_confidence": 0.2,
+        "failing_test_proximity": 0.2,
+        "public_api_risk": 0.1,
+        "recent_change_frequency": 0.1
+      },
+      "include": "make_include(corpus): not Test and path in is_source corpus"
+    },
+    "limit": null,
+    "task_ids": [
+      "astropy__astropy-13398",
+      "django__django-11138",
+      "matplotlib__matplotlib-14623",
+      "pydata__xarray-3305",
+      "pylint-dev__pylint-4551",
+      "sphinx-doc__sphinx-10673",
+      "sympy__sympy-16597",
+      "astropy__astropy-8707",
+      "django__django-11734",
+      "pydata__xarray-3993",
+      "pylint-dev__pylint-4604",
+      "sphinx-doc__sphinx-8120",
+      "sympy__sympy-17318",
+      "django__django-11885",
+      "pydata__xarray-6992",
+      "pylint-dev__pylint-6386",
+      "sphinx-doc__sphinx-8548",
+      "sympy__sympy-20438",
+      "django__django-12155",
+      "django__django-12325",
+      "django__django-12741",
+      "django__django-13195",
+      "django__django-13212",
+      "django__django-13344",
+      "django__django-13512"
+    ],
+    "execution": {
+      "task_timeout_seconds": 300.0,
+      "offline": true,
+      "rebuild_graphs": false,
+      "rebuild_trees": true
+    }
+  },
+  "failing_tests": [
+    "tests/checkers/unittest_variables.py::TestVariablesChecker::test_bitbucket_issue_78",
+    "tests/checkers/unittest_variables.py::TestVariablesChecker::test_no_name_in_module_skipped",
+    "tests/checkers/unittest_variables.py::TestVariablesChecker::test_all_elements_without_parent",
+    "tests/checkers/unittest_variables.py::TestVariablesChecker::test_redefined_builtin_ignored",
+    "tests/checkers/unittest_variables.py::TestVariablesChecker::test_redefined_builtin_custom_modules",
+    "tests/checkers/unittest_variables.py::TestVariablesChecker::test_redefined_builtin_modname_not_ignored",
+    "tests/checkers/unittest_variables.py::TestVariablesChecker::test_redefined_builtin_in_function",
+    "tests/checkers/unittest_variables.py::TestVariablesChecker::test_unassigned_global",
+    "tests/checkers/unittest_variables.py::TestVariablesChecker::test_listcomp_in_decorator",
+    "tests/checkers/unittest_variables.py::TestVariablesChecker::test_listcomp_in_ancestors",
+    "tests/checkers/unittest_variables.py::TestVariablesChecker::test_return_type_annotation",
+    "tests/checkers/unittest_variables.py::TestVariablesChecker::test_attribute_in_type_comment",
+    "tests/checkers/unittest_variables.py::TestVariablesCheckerWithTearDown::test_custom_callback_string",
+    "tests/checkers/unittest_variables.py::TestVariablesCheckerWithTearDown::test_redefined_builtin_modname_not_ignored",
+    "tests/checkers/unittest_variables.py::TestVariablesCheckerWithTearDown::test_redefined_builtin_in_function",
+    "tests/checkers/unittest_variables.py::TestVariablesCheckerWithTearDown::test_import_as_underscore",
+    "tests/checkers/unittest_variables.py::TestVariablesCheckerWithTearDown::test_lambda_in_classdef",
+    "tests/checkers/unittest_variables.py::TestVariablesCheckerWithTearDown::test_nested_lambda",
+    "tests/checkers/unittest_variables.py::TestVariablesCheckerWithTearDown::test_ignored_argument_names_no_message",
+    "tests/checkers/unittest_variables.py::TestVariablesCheckerWithTearDown::test_ignored_argument_names_starred_args",
+    "tests/checkers/unittest_variables.py::TestMissingSubmodule::test_package_all"
+  ],
+  "offline": true,
+  "rebuild_graphs": false,
+  "rebuild_trees": true,
+  "tokenizer_manifest": "D:\\Project\\CAPSTONES\\VGAR\\artifacts\\m1\\tokenizer-acceptance\\tokenizer_manifest.json"
+}

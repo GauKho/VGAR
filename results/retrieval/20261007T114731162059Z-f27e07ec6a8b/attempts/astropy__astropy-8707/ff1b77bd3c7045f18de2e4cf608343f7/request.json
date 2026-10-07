@@ -1,0 +1,101 @@
+{
+  "root": "D:\\Project\\CAPSTONES\\VGAR",
+  "row": {
+    "instance_id": "astropy__astropy-8707",
+    "repo": "astropy/astropy",
+    "base_commit": "a85a0747c54bac75e9c3b2fe436b105ea029d6cf",
+    "problem_statement": "Header.fromstring does not accept Python 3 bytes\nAccording to [the docs](http://docs.astropy.org/en/stable/_modules/astropy/io/fits/header.html#Header.fromstring), the method `Header.fromstring` \"...creates an HDU header from a byte string containing the entire header data.\"\r\n\r\nBy \"byte string\" here it really means the `str` type which on Python 2 could be raw binary data, but on Python 3 explicitly is not.   In fact it does work on Python 3's unicode `str`s, but here it assumes that the data can be ASCII-encoded.\r\n\r\nIts counterpart, `Header.fromfile` will work with files opened in text or binary mode.  So probably the simplest solution for now (as opposed to adding new methods or something like that) is to change `Header.fromstring` to accept unicode or bytes string types.\r\n\r\n`Card.fromstring` likely needs a similar treatment.\n",
+    "difficulty": "15 min - 1 hour",
+    "query_hash": "sha256:f7420a19ba5b0c807396a84da376d8303e69ff66d0216c332adf099da589a714",
+    "patch_hash": "sha256:f993c1ada6f19bcdfa8989e0c1c61151cd881a81d549f2789663270537c093f2",
+    "gold_patch_path": "data/gold/patches/astropy__astropy-8707.patch",
+    "changed_source_files": [
+      "astropy/io/fits/card.py",
+      "astropy/io/fits/header.py"
+    ],
+    "split": "dev",
+    "is_multi_file": true
+  },
+  "config": {
+    "manifest_hash": "sha256:33ddf233c44832c87abfeb7b62b1aef9fc1e4e8f89f67653fc5e7dc20cc86708",
+    "budget_tokens": 8000,
+    "scoring_version": "retrieval-scoring-v1",
+    "counter_label": "local-hf:Qwen/Qwen3-4B-Instruct-2507@cdbee75f17c01a7cc42f958dc650907174af0554:sha256=aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4:no-special-tokens",
+    "counter_is_fallback": false,
+    "snippet_policy": {
+      "max_snippet_lines": 80,
+      "header": true,
+      "overlap": "skip_if_overlaps_different_group"
+    },
+    "arms": {
+      "graph": {
+        "uses_fail_to_pass": false
+      },
+      "graph_f2p": {
+        "uses_fail_to_pass": true
+      }
+    },
+    "graph": {
+      "use_jedi": false,
+      "builder_hash": "62bb14a051c1",
+      "source_roots": [
+        "src"
+      ]
+    },
+    "retrieval": {
+      "max_hops": 2,
+      "max_candidates": 100,
+      "min_edge_confidence": 0.6,
+      "weights": {
+        "task_similarity": 0.2,
+        "graph_distance": 0.3,
+        "edge_confidence": 0.2,
+        "failing_test_proximity": 0.2,
+        "public_api_risk": 0.1,
+        "recent_change_frequency": 0.1
+      },
+      "include": "make_include(corpus): not Test and path in is_source corpus"
+    },
+    "limit": null,
+    "task_ids": [
+      "astropy__astropy-13398",
+      "django__django-11138",
+      "matplotlib__matplotlib-14623",
+      "pydata__xarray-3305",
+      "pylint-dev__pylint-4551",
+      "sphinx-doc__sphinx-10673",
+      "sympy__sympy-16597",
+      "astropy__astropy-8707",
+      "django__django-11734",
+      "pydata__xarray-3993",
+      "pylint-dev__pylint-4604",
+      "sphinx-doc__sphinx-8120",
+      "sympy__sympy-17318",
+      "django__django-11885",
+      "pydata__xarray-6992",
+      "pylint-dev__pylint-6386",
+      "sphinx-doc__sphinx-8548",
+      "sympy__sympy-20438",
+      "django__django-12155",
+      "django__django-12325",
+      "django__django-12741",
+      "django__django-13195",
+      "django__django-13212",
+      "django__django-13344",
+      "django__django-13512"
+    ],
+    "execution": {
+      "task_timeout_seconds": 300.0,
+      "offline": true,
+      "rebuild_graphs": false,
+      "rebuild_trees": true
+    }
+  },
+  "failing_tests": [
+    "astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_card_from_bytes"
+  ],
+  "offline": true,
+  "rebuild_graphs": false,
+  "rebuild_trees": true,
+  "tokenizer_manifest": "D:\\Project\\CAPSTONES\\VGAR\\artifacts\\m1\\tokenizer-acceptance\\tokenizer_manifest.json"
+}

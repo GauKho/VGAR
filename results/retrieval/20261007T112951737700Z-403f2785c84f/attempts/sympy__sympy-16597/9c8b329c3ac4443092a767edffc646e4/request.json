@@ -1,0 +1,83 @@
+{
+  "root": "D:\\Project\\CAPSTONES\\VGAR",
+  "row": {
+    "instance_id": "sympy__sympy-16597",
+    "repo": "sympy/sympy",
+    "base_commit": "6fd65310fa3167b9626c38a5487e171ca407d988",
+    "problem_statement": "a.is_even does not imply a.is_finite\nI'm not sure what the right answer is here:\r\n```julia\r\nIn [1]: m = Symbol('m', even=True)                                                                                                             \r\n\r\nIn [2]: m.is_finite                                                                                                                            \r\n\r\nIn [3]: print(m.is_finite)                                                                                                                     \r\nNone\r\n```\r\nI would expect that a number should be finite before it can be even.\n",
+    "difficulty": "1-4 hours",
+    "query_hash": "sha256:1b04ffa8e91360cc91e2397541d3f8c5f34ffc0cb5cd84b0015747240c26932c",
+    "patch_hash": "sha256:413a90c09ecfd8f552a5db49bb59f74eac1ae550dca0d19aaa1eb11575bea1ac",
+    "gold_patch_path": "data/gold/patches/sympy__sympy-16597.patch",
+    "changed_source_files": [
+      "sympy/assumptions/ask.py",
+      "sympy/assumptions/ask_generated.py",
+      "sympy/core/assumptions.py",
+      "sympy/core/power.py",
+      "sympy/printing/tree.py",
+      "sympy/tensor/indexed.py"
+    ],
+    "split": "dev",
+    "is_multi_file": true
+  },
+  "config": {
+    "manifest_hash": "sha256:33ddf233c44832c87abfeb7b62b1aef9fc1e4e8f89f67653fc5e7dc20cc86708",
+    "budget_tokens": 8000,
+    "scoring_version": "retrieval-scoring-v1",
+    "counter_label": "local-hf:Qwen/Qwen3-4B-Instruct-2507@cdbee75f17c01a7cc42f958dc650907174af0554:sha256=aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4:no-special-tokens",
+    "counter_is_fallback": false,
+    "snippet_policy": {
+      "max_snippet_lines": 80,
+      "header": true,
+      "overlap": "skip_if_overlaps_different_group"
+    },
+    "arms": {
+      "graph": {
+        "uses_fail_to_pass": false
+      },
+      "graph_f2p": {
+        "uses_fail_to_pass": true
+      }
+    },
+    "graph": {
+      "use_jedi": false,
+      "builder_hash": "62bb14a051c1",
+      "source_roots": [
+        "src"
+      ]
+    },
+    "retrieval": {
+      "max_hops": 2,
+      "max_candidates": 100,
+      "min_edge_confidence": 0.6,
+      "weights": {
+        "task_similarity": 0.2,
+        "graph_distance": 0.3,
+        "edge_confidence": 0.2,
+        "failing_test_proximity": 0.2,
+        "public_api_risk": 0.1,
+        "recent_change_frequency": 0.1
+      },
+      "include": "make_include(corpus): not Test and path in is_source corpus"
+    },
+    "limit": null,
+    "task_ids": [
+      "sympy__sympy-16597"
+    ],
+    "execution": {
+      "task_timeout_seconds": 300.0,
+      "offline": true,
+      "rebuild_graphs": false,
+      "rebuild_trees": true
+    }
+  },
+  "failing_tests": [
+    "test_infinity",
+    "test_neg_infinity",
+    "test_other_symbol"
+  ],
+  "offline": true,
+  "rebuild_graphs": false,
+  "rebuild_trees": true,
+  "tokenizer_manifest": "D:\\Project\\CAPSTONES\\VGAR\\artifacts\\m1\\tokenizer-acceptance\\tokenizer_manifest.json"
+}

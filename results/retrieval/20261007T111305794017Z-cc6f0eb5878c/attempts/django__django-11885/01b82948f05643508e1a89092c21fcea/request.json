@@ -1,0 +1,78 @@
+{
+  "root": "D:\\Project\\CAPSTONES\\VGAR",
+  "row": {
+    "instance_id": "django__django-11885",
+    "repo": "django/django",
+    "base_commit": "04ac9b45a34440fa447feb6ae934687aacbfc5f4",
+    "problem_statement": "Combine fast delete queries\nDescription\n\t\nWhen emulating ON DELETE CASCADE via on_delete=models.CASCADE the deletion.Collector will try to perform fast queries which are DELETE FROM table WHERE table.pk IN .... There's a few conditions required for this fast path to be taken but when this happens the collection logic should combine such queries by table to reduce the number of roundtrips to the database.\nFor example, given the following models\nclass Person(models.Model):\n\tfriends = models.ManyToManyField('self')\nclass User(models.Model):\n\tpass\nclass Entry(models.Model):\n\tcreated_by = models.ForeignKey(User)\n\tupdated_by = models.ForeignKey(User)\nIssuing a person.delete() or user.delete() will result in 3 queries of the form\nDELETE FROM person_friends WHERE from_id = :id\nDELETE FROM person_friends WHERE to_id = :id\nDELETE FROM person WHERE id = :id\nDELETE FROM entry WHERE created_by_id = :id\nDELETE FROM entry WHERE updated_by = :id\nDELETRE FROM user WHERE id = :id\nBut both queries (or N queries depending on the number of foreign relationships) can be combined into a single one by using OR\nDELETE FROM person_friends WHERE from_id = :id OR to_id = :id\nDELETE FROM person WHERE id = :id\nDELETE FROM entry WHERE created_by_id = :id OR updated_by = :id\nDELETE FROM user WHERE id = :id\n",
+    "difficulty": "1-4 hours",
+    "query_hash": "sha256:bd6ce8dcb4e3ccf23898a9f244352cc8d464c3f6e5fff1f656d5a30446a6ea10",
+    "patch_hash": "sha256:c3097c2e23c45888542b92364d2b727bdd0ed58b6527e7cf530e7b75f3006e64",
+    "gold_patch_path": "data/gold/patches/django__django-11885.patch",
+    "changed_source_files": [
+      "django/contrib/admin/utils.py",
+      "django/db/models/deletion.py"
+    ],
+    "split": "dev",
+    "is_multi_file": true
+  },
+  "config": {
+    "manifest_hash": "sha256:33ddf233c44832c87abfeb7b62b1aef9fc1e4e8f89f67653fc5e7dc20cc86708",
+    "budget_tokens": 8000,
+    "scoring_version": "retrieval-scoring-v1",
+    "counter_label": "local-hf:Qwen/Qwen3-4B-Instruct-2507@cdbee75f17c01a7cc42f958dc650907174af0554:sha256=aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4:no-special-tokens",
+    "counter_is_fallback": false,
+    "snippet_policy": {
+      "max_snippet_lines": 80,
+      "header": true,
+      "overlap": "skip_if_overlaps_different_group"
+    },
+    "arms": {
+      "graph": {
+        "uses_fail_to_pass": false
+      },
+      "graph_f2p": {
+        "uses_fail_to_pass": true
+      }
+    },
+    "graph": {
+      "use_jedi": false,
+      "builder_hash": "62bb14a051c1",
+      "source_roots": [
+        "src"
+      ]
+    },
+    "retrieval": {
+      "max_hops": 2,
+      "max_candidates": 100,
+      "min_edge_confidence": 0.6,
+      "weights": {
+        "task_similarity": 0.2,
+        "graph_distance": 0.3,
+        "edge_confidence": 0.2,
+        "failing_test_proximity": 0.2,
+        "public_api_risk": 0.1,
+        "recent_change_frequency": 0.1
+      },
+      "include": "make_include(corpus): not Test and path in is_source corpus"
+    },
+    "limit": null,
+    "task_ids": [
+      "django__django-11885",
+      "django__django-13512"
+    ],
+    "execution": {
+      "task_timeout_seconds": 300.0,
+      "offline": true,
+      "rebuild_graphs": false,
+      "rebuild_trees": true
+    }
+  },
+  "failing_tests": [
+    "test_fast_delete_combined_relationships (delete.tests.FastDeleteTests)"
+  ],
+  "offline": true,
+  "rebuild_graphs": false,
+  "rebuild_trees": true,
+  "tokenizer_manifest": "D:\\Project\\CAPSTONES\\VGAR\\artifacts\\m1\\tokenizer-acceptance\\tokenizer_manifest.json"
+}

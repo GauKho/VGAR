@@ -7,7 +7,7 @@ import json
 from dataclasses import asdict, dataclass
 from typing import Any
 
-from vgar.contracts.schema import validate_graph_document
+from vgar.contracts.schema import GraphValidationError, validate_graph_document
 from vgar.graph.grounding import AnchorResult, TaskAnchorFinder
 
 
@@ -25,11 +25,17 @@ class TaskOverlay:
 
 class TaskOverlayBuilder:
     def __init__(self, document: dict[str, Any]) -> None:
-        validate_graph_document(document)
-        # Own a snapshot copy so later caller mutations cannot change this task view.
-        self._document = copy.deepcopy(document)
-        self._finder = TaskAnchorFinder(self._document)
-        self._nodes = {node["id"]: node for node in self._document["nodes"]}
+        # Finder validates the complete base once and owns only grounding records.
+        # Do not copy all callsites/edges/cold statistics for every task overlay.
+        self._finder = TaskAnchorFinder(document)
+        self._document = {key: document[key] for key in
+                          ("repo_key", "graph_version", "repository_revision")}
+        self._nodes = {node["id"]: node for node in self._finder.nodes}
+        self._base_ids = {node["id"] for node in document["nodes"]}
+        self._base_edge_ids = {edge["id"] for edge in document["edges"]}
+        self._repository = copy.deepcopy(next(
+            node for node in document["nodes"] if node["type"] == "Repository"
+        ))
 
     def build(
         self, task_id: str, issue_text: str, failing_tests: list[str] | None = None,
@@ -45,7 +51,7 @@ class TaskOverlayBuilder:
             "profile": "task-overlay-v1",
         })
         issue_id = f"vgar:{self._document['repo_key']}:issue:{task_hash}"
-        if issue_id in self._nodes:
+        if issue_id in self._base_ids:
             raise ValueError("base graph already contains this task Issue; use a repository snapshot")
         issue = {
             "id": issue_id, "type": "Issue", "repo_key": self._document["repo_key"],
@@ -86,10 +92,16 @@ class TaskOverlayBuilder:
                     {"input_reported_failure": True, "execution_verified": False},
                 ))
         edges.sort(key=lambda edge: (edge["type"], edge["source_id"], edge["target_id"]))
-        # Validate existing endpoints/provenance without changing the shared contract.
+        # The unchanged base has already been validated. Validate the delta and
+        # its owned endpoints, including collisions with every original edge ID.
+        collisions = sorted({edge["id"] for edge in edges} & self._base_edge_ids)
+        if collisions:
+            raise GraphValidationError([f"duplicate edge id: {edge_id}" for edge_id in collisions])
+        endpoints = sorted({anchor.node_id for anchor in grounding.anchors})
         validate_graph_document({
-            **self._document, "nodes": self._document["nodes"] + [issue],
-            "edges": self._document["edges"] + edges,
+            **self._document,
+            "nodes": [self._repository, issue] + [self._nodes[node_id] for node_id in endpoints],
+            "edges": edges,
         })
         return TaskOverlay(grounding.graph_version, overlay_id, task_id, [issue], edges, grounding)
 

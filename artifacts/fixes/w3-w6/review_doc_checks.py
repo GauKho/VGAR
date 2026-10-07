@@ -17,6 +17,8 @@ DOCUMENTS = [
     'docs/reviews/2026-10-07-affected-files-review-w3-w6.md',
     'docs/reviews/2026-10-07-dev25-no-jedi-results.md',
     'docs/superpowers/plans/2026-10-06-fix-vgar-integration-week-1-6.md',
+    'docs/GIAI_THICH_VGAR_TRUOC_SAU_FIX_TUAN_3_6_VA_CACH_KIEM_THU.md',
+    'docs/reviews/2026-10-07-reopened-tasks-review-w3-w6.md',
 ]
 
 

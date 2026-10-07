@@ -4,6 +4,8 @@ Cập nhật: **07/10/2026**. Báo cáo này bổ sung cho [PROGRESS](../PROGRES
 
 ## 1. Quy tắc dừng được người dùng xác nhận
 
+**Checkpoint mới sau mở lại:** tối đa3thất bại/task/phương pháp rồi chuyển; không lặp cách cũ không có hypothesis mới. [Mục6 của hướng dẫn](GIAI_THICH_VGAR_TRUOC_SAU_FIX_TUAN_3_6_VA_CACH_KIEM_THU.md#6-trạng-thái-task-chưa-hoàn-thành-trước-hoàn-thành-sau) là bảng current; các mục bên dưới là **checkpoint lịch sử19/25**, không overwrite artifact. Pylint inheritance ID đã fix; snapshot preparation đã tối ưu/kiểm59targeted tests; suitecode365passed4skip. Run mới `20261007T114731162059Z-f27e07ec6a8b` terminal23SUCCEEDED/2FAILED, comparison `20261007T122342844612Z-12c751a0b3f6` COMPARED_PARTIAL23pairs/exit1. Đủ sốlượng≥20, chưa strict25. Cả6cases lỗi trước PASS trong run mới nhưng Django13212/13344 WinError5 EXTRACT_TREE; dừng direct-rename group có2historical+2new failures, không tựđổiACL/tắtbảovệ/retry. Jedi3timeouts dừng; coldSympy17318/20438 vẫn timeout300s trongrunriêng dùwarmPASS. Owner approvals chờngười. Không commit/push hayjobđangchạy; khôngenvironment/modelinference.
+
 Quy tắc mới ngày07/10: task **fail1lần có thể dừng** và chuyển sang task độc lập khác; không cần đợi lỗi lặp lại. Ghi lại nguyên nhân đã xác định, evidence, phần chưa biết và điều kiện tiếp tục; không tự retry cùng cấu hình. **Dừng task không có nghĩa task đã hoàn thành hoặc được loại khỏi tiêu chí nghiệm thu.**
 
 Chỉ tuần **3–6**. Không sửa research tuần 1–2, hệ thống cũ, model inference/fine-tuning hoặc tuần 7–16. Không commit/push. Không tự đổi profile benchmark, tăng timeout, bỏ task lỗi hoặc bỏ validator để đạt số đẹp.

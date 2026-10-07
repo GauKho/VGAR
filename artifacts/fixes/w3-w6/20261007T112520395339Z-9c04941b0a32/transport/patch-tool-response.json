@@ -1,0 +1,18 @@
+{
+  "status": "PASS",
+  "data": {
+    "status": "PASS",
+    "path": "src/demo.py",
+    "patch_diff": "--- src/demo.py\n+++ src/demo.py\n@@ -1,2 +1,2 @@\n def answer() -> int:\r\n-    return 0\r\n+    return 42\r\n",
+    "changed_files": [
+      "src/demo.py"
+    ]
+  },
+  "error": null,
+  "metadata": {
+    "duration_ms": 18,
+    "request_id": "3c5d2845b45747b0a7aa5d69d3044c7f",
+    "backend": "filesystem",
+    "tool": "apply_patch"
+  }
+}
