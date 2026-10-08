@@ -14,3 +14,8 @@ artifacts/m1/tokenizers/
 /docs/m1_w3_w4_handoff.md
 /docs/m1_milestone_2_progress.md
 /docs/m1_milestone_3_progress.md
+data/
+fine_tuning_qwen_3_4b.ipynb
+data/graphs/
+results/
+*.zip

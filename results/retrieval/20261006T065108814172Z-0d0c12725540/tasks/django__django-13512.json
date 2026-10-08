@@ -1,0 +1,3600 @@
+{
+  "instance_id": "django__django-13512",
+  "repository": "django/django",
+  "base_commit": "b79088306513d5ed76d31ac40ab3c15f858946ea",
+  "status": "SUCCEEDED",
+  "query_hash": "sha256:77633ba2243ab634f8e720517e2dea5dee17f839be6ad5ae87c58b4bf021cbf6",
+  "patch_hash": "sha256:c8370211cbf37387fa30af6468cc52c0078a51e80fa36168001daa7b7071e600",
+  "corpus_hash": "sha256:1675ab9b450904b7c9e570991670fcce909c74d2056bca82b93ea8e6b8527baf",
+  "gold": {
+    "gold_files": [
+      "django/contrib/admin/utils.py",
+      "django/forms/fields.py"
+    ],
+    "gold_functions": [
+      "django/contrib/admin/utils.py::django.contrib.admin.utils.display_for_field",
+      "django/forms/fields.py::django.forms.fields.JSONField.prepare_value"
+    ],
+    "all_changed_source_files": [
+      "django/contrib/admin/utils.py",
+      "django/forms/fields.py"
+    ],
+    "unretrievable_files": [],
+    "mapping_events": [
+      {
+        "path": "django/contrib/admin/utils.py",
+        "side": "new",
+        "line": 3,
+        "function_id": null,
+        "disposition": "module_edit"
+      },
+      {
+        "path": "django/contrib/admin/utils.py",
+        "side": "old",
+        "line": 403,
+        "function_id": "django/contrib/admin/utils.py::django.contrib.admin.utils.display_for_field",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "django/contrib/admin/utils.py",
+        "side": "new",
+        "line": 404,
+        "function_id": "django/contrib/admin/utils.py::django.contrib.admin.utils.display_for_field",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "django/forms/fields.py",
+        "side": "old",
+        "line": 1261,
+        "function_id": "django/forms/fields.py::django.forms.fields.JSONField.prepare_value",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "django/forms/fields.py",
+        "side": "new",
+        "line": 1261,
+        "function_id": "django/forms/fields.py::django.forms.fields.JSONField.prepare_value",
+        "disposition": "mapped_function"
+      }
+    ],
+    "function_labels_complete": true,
+    "mapping_coverage": 1.0,
+    "file_retrievability_coverage": 1.0,
+    "label_semantics": "developer_changed_code_proxy_not_complete_relevance"
+  },
+  "arms": {
+    "graph": {
+      "rank_hash": "sha256:938b02a2ccd0f769e7f840e271540ce59eac52731c854a95ecf95154933b1111",
+      "ranking_total_count": 90,
+      "ranked": [
+        {
+          "rank": 1,
+          "item_id": "vgar:django__django:python:method:django/utils/xmlutils.py:django.utils.xmlutils.SimplerXMLGenerator.characters",
+          "path": "django/utils/xmlutils.py",
+          "kind": "method",
+          "symbol": "django.utils.xmlutils.SimplerXMLGenerator.characters",
+          "function_id": "django/utils/xmlutils.py::django.utils.xmlutils.SimplerXMLGenerator.characters",
+          "score": 0.6264423076923078,
+          "lines": [
+            23,
+            28
+          ],
+          "snippet_sha256": "sha256:6319d3f34140282856cfc14f2c8209962b026bbf1c551e7766646f40216b2b40"
+        },
+        {
+          "rank": 2,
+          "item_id": "vgar:django__django:python:function:django/template/defaultfilters.py:django.template.defaultfilters.default.setter",
+          "path": "django/template/defaultfilters.py",
+          "kind": "function",
+          "symbol": "django.template.defaultfilters.default",
+          "function_id": "django/template/defaultfilters.py::django.template.defaultfilters.default",
+          "score": 0.617311507936508,
+          "lines": [
+            753,
+            755
+          ],
+          "snippet_sha256": "sha256:07928f3bce6253925ce9efea25ac1673ff00f4b81af27f8066e1e3b0d64cfb00"
+        },
+        {
+          "rank": 3,
+          "item_id": "vgar:django__django:python:function:django/utils/regex_helper.py:django.utils.regex_helper.contains",
+          "path": "django/utils/regex_helper.py",
+          "kind": "function",
+          "symbol": "django.utils.regex_helper.contains",
+          "function_id": "django/utils/regex_helper.py::django.utils.regex_helper.contains",
+          "score": 0.6119791666666667,
+          "lines": [
+            272,
+            283
+          ],
+          "snippet_sha256": "sha256:eae8910c15907cfbccf606dc57aaeedc0429500f6f504d85137b2801baec1071"
+        },
+        {
+          "rank": 4,
+          "item_id": "vgar:django__django:python:method:django/utils/dateformat.py:django.utils.dateformat.TimeFormat.a",
+          "path": "django/utils/dateformat.py",
+          "kind": "method",
+          "symbol": "django.utils.dateformat.TimeFormat.a",
+          "function_id": "django/utils/dateformat.py::django.utils.dateformat.TimeFormat.a",
+          "score": 0.6015625000000001,
+          "lines": [
+            62,
+            66
+          ],
+          "snippet_sha256": "sha256:aa201b08c8daaba292b96952ca22a6ac52c38c8bb27dbd5ba11a9eecdc79c707"
+        },
+        {
+          "rank": 5,
+          "item_id": "vgar:django__django:python:method:django/utils/dateformat.py:django.utils.dateformat.DateFormat.I",
+          "path": "django/utils/dateformat.py",
+          "kind": "method",
+          "symbol": "django.utils.dateformat.DateFormat.I",
+          "function_id": "django/utils/dateformat.py::django.utils.dateformat.DateFormat.I",
+          "score": 0.5949626865671642,
+          "lines": [
+            237,
+            248
+          ],
+          "snippet_sha256": "sha256:0ea66e33a5dc3360a69a49e10783afb7fe22c79a8ad826ff6a38a870e512a764"
+        },
+        {
+          "rank": 6,
+          "item_id": "vgar:django__django:python:method:django/utils/text.py:django.utils.text.Truncator.chars",
+          "path": "django/utils/text.py",
+          "kind": "method",
+          "symbol": "django.utils.text.Truncator.chars",
+          "function_id": "django/utils/text.py::django.utils.text.Truncator.chars",
+          "score": 0.5948529411764706,
+          "lines": [
+            81,
+            102
+          ],
+          "snippet_sha256": "sha256:c4214e1da69ae5e0360acfe568be920901dcea35fefbfb92142680939ba0e17e"
+        },
+        {
+          "rank": 7,
+          "item_id": "vgar:django__django:python:method:django/contrib/gis/gdal/geomtype.py:django.contrib.gis.gdal.geomtype.OGRGeomType.django",
+          "path": "django/contrib/gis/gdal/geomtype.py",
+          "kind": "method",
+          "symbol": "django.contrib.gis.gdal.geomtype.OGRGeomType.django",
+          "function_id": "django/contrib/gis/gdal/geomtype.py::django.contrib.gis.gdal.geomtype.OGRGeomType.django",
+          "score": 0.5912878787878788,
+          "lines": [
+            78,
+            87
+          ],
+          "snippet_sha256": "sha256:7cff4b21568af087336b13b5f2df2b1b8e86c0940bd298dbbacb52cad8c08878"
+        },
+        {
+          "rank": 8,
+          "item_id": "vgar:django__django:python:method:django/core/serializers/json.py:django.core.serializers.json.DjangoJSONEncoder.default",
+          "path": "django/core/serializers/json.py",
+          "kind": "method",
+          "symbol": "django.core.serializers.json.DjangoJSONEncoder.default",
+          "function_id": "django/core/serializers/json.py::django.core.serializers.json.DjangoJSONEncoder.default",
+          "score": 0.576388888888889,
+          "lines": [
+            82,
+            105
+          ],
+          "snippet_sha256": "sha256:9788949a1694e5d7da56705bebb1568a632f149f3403888752a4085a75061332"
+        },
+        {
+          "rank": 9,
+          "item_id": "vgar:django__django:python:method:django/http/request.py:django.http.request.HttpRequest.encoding",
+          "path": "django/http/request.py",
+          "kind": "method",
+          "symbol": "django.http.request.HttpRequest.encoding",
+          "function_id": "django/http/request.py::django.http.request.HttpRequest.encoding@definition:278:280",
+          "score": 0.5705645161290324,
+          "lines": [
+            279,
+            280
+          ],
+          "snippet_sha256": "sha256:4039fb413f1155e14927cf4d1855e4ff77c5622c8f3cb6da7402fddcd3b50d0c"
+        },
+        {
+          "rank": 10,
+          "item_id": "vgar:django__django:python:function:django/template/defaultfilters.py:django.template.defaultfilters.last.setter",
+          "path": "django/template/defaultfilters.py",
+          "kind": "function",
+          "symbol": "django.template.defaultfilters.last",
+          "function_id": "django/template/defaultfilters.py::django.template.defaultfilters.last",
+          "score": 0.5705645161290324,
+          "lines": [
+            538,
+            543
+          ],
+          "snippet_sha256": "sha256:ad1685d0338674d9634a53df1fae103f7e464e81de157c50a5ccaf557cd892aa"
+        },
+        {
+          "rank": 11,
+          "item_id": "vgar:django__django:python:method:django/http/request.py:django.http.request.HttpRequest.encoding.setter",
+          "path": "django/http/request.py",
+          "kind": "method",
+          "symbol": "django.http.request.HttpRequest.encoding",
+          "function_id": "django/http/request.py::django.http.request.HttpRequest.encoding@definition:282:293",
+          "score": 0.570436507936508,
+          "lines": [
+            283,
+            293
+          ],
+          "snippet_sha256": "sha256:6c4f3e18e0fbd1013f2536c58a7fc67603390651ea6558a42d39498e11f8f899"
+        },
+        {
+          "rank": 12,
+          "item_id": "vgar:django__django:python:method:django/template/defaulttags.py:django.template.defaulttags.TemplateLiteral.display",
+          "path": "django/template/defaulttags.py",
+          "kind": "method",
+          "symbol": "django.template.defaulttags.TemplateLiteral.display",
+          "function_id": "django/template/defaulttags.py::django.template.defaulttags.TemplateLiteral.display",
+          "score": 0.570436507936508,
+          "lines": [
+            885,
+            886
+          ],
+          "snippet_sha256": "sha256:fb303ecbee9b9f036e01c9dba46423a71f65ad2312deece7d7b7f8c8b559d522"
+        },
+        {
+          "rank": 13,
+          "item_id": "vgar:django__django:python:method:django/template/smartif.py:django.template.smartif.Literal.display",
+          "path": "django/template/smartif.py",
+          "kind": "method",
+          "symbol": "django.template.smartif.Literal.display",
+          "function_id": "django/template/smartif.py::django.template.smartif.Literal.display",
+          "score": 0.570436507936508,
+          "lines": [
+            127,
+            128
+          ],
+          "snippet_sha256": "sha256:f08e2b9c290e363ff01875312fb54b26d7b45bce134fe3137c0fe4783a9420b6"
+        },
+        {
+          "rank": 14,
+          "item_id": "vgar:django__django:python:method:django/contrib/gis/gdal/feature.py:django.contrib.gis.gdal.feature.Feature.encoding",
+          "path": "django/contrib/gis/gdal/feature.py",
+          "kind": "method",
+          "symbol": "django.contrib.gis.gdal.feature.Feature.encoding",
+          "function_id": "django/contrib/gis/gdal/feature.py::django.contrib.gis.gdal.feature.Feature.encoding",
+          "score": 0.5703125,
+          "lines": [
+            58,
+            59
+          ],
+          "snippet_sha256": "sha256:d757a43e18c5e54848904febac76a14020de380db7fb3ada156129e37f762952"
+        },
+        {
+          "rank": 15,
+          "item_id": "vgar:django__django:python:method:django/db/models/query.py:django.db.models.query.QuerySet.last",
+          "path": "django/db/models/query.py",
+          "kind": "method",
+          "symbol": "django.db.models.query.QuerySet.last",
+          "function_id": "django/db/models/query.py::django.db.models.query.QuerySet.last",
+          "score": 0.5703125,
+          "lines": [
+            675,
+            678
+          ],
+          "snippet_sha256": "sha256:e066ecaac53d5ff0dfe8db84603dcaa65a6504e9d31826349598b4ca90adc9a1"
+        },
+        {
+          "rank": 16,
+          "item_id": "vgar:django__django:python:method:django/http/request.py:django.http.request.QueryDict.encoding",
+          "path": "django/http/request.py",
+          "kind": "method",
+          "symbol": "django.http.request.QueryDict.encoding",
+          "function_id": "django/http/request.py::django.http.request.QueryDict.encoding@definition:495:499",
+          "score": 0.5703125,
+          "lines": [
+            496,
+            499
+          ],
+          "snippet_sha256": "sha256:c992aa0efcac260e36451b8df03658f37e4ee1ec79c90eecf494f65d4a37f80a"
+        },
+        {
+          "rank": 17,
+          "item_id": "vgar:django__django:python:method:django/template/smartif.py:django.template.smartif.TokenBase.display",
+          "path": "django/template/smartif.py",
+          "kind": "method",
+          "symbol": "django.template.smartif.TokenBase.display",
+          "function_id": "django/template/smartif.py::django.template.smartif.TokenBase.display",
+          "score": 0.5703125,
+          "lines": [
+            32,
+            36
+          ],
+          "snippet_sha256": "sha256:add640cb0e33e81578df9a7878fc20e31cf489a6148b092145cd59aeef1a036c"
+        },
+        {
+          "rank": 18,
+          "item_id": "vgar:django__django:python:method:django/utils/dateformat.py:django.utils.dateformat.DateFormat.t",
+          "path": "django/utils/dateformat.py",
+          "kind": "method",
+          "symbol": "django.utils.dateformat.DateFormat.t",
+          "function_id": "django/utils/dateformat.py::django.utils.dateformat.DateFormat.t",
+          "score": 0.5703125,
+          "lines": [
+            308,
+            310
+          ],
+          "snippet_sha256": "sha256:4b9164c2da82b7b09b4c5cb9335fea61e04e0ad52449a09e27c055dde84f9b10"
+        },
+        {
+          "rank": 19,
+          "item_id": "vgar:django__django:python:method:django/contrib/gis/gdal/geometries.py:django.contrib.gis.gdal.geometries.OGRGeometry.json",
+          "path": "django/contrib/gis/gdal/geometries.py",
+          "kind": "method",
+          "symbol": "django.contrib.gis.gdal.geometries.OGRGeometry.json",
+          "function_id": "django/contrib/gis/gdal/geometries.py::django.contrib.gis.gdal.geometries.OGRGeometry.json",
+          "score": 0.5701923076923078,
+          "lines": [
+            323,
+            327
+          ],
+          "snippet_sha256": "sha256:fa2510df3d9614cfdb25ecd4963db1515ad5ca0862621809b176db6ab0bf0ea4"
+        },
+        {
+          "rank": 20,
+          "item_id": "vgar:django__django:python:method:django/http/request.py:django.http.request.QueryDict.encoding.setter",
+          "path": "django/http/request.py",
+          "kind": "method",
+          "symbol": "django.http.request.QueryDict.encoding",
+          "function_id": "django/http/request.py::django.http.request.QueryDict.encoding@definition:501:503",
+          "score": 0.5701923076923078,
+          "lines": [
+            502,
+            503
+          ],
+          "snippet_sha256": "sha256:000f2838d6926eb472baf8a361aa653dbc039b88304bc99c379fb5af21600b04"
+        },
+        {
+          "rank": 21,
+          "item_id": "vgar:django__django:python:method:django/contrib/gis/gdal/geometries.py:django.contrib.gis.gdal.geometries.OGRGeometry.contains",
+          "path": "django/contrib/gis/gdal/geometries.py",
+          "kind": "method",
+          "symbol": "django.contrib.gis.gdal.geometries.OGRGeometry.contains",
+          "function_id": "django/contrib/gis/gdal/geometries.py::django.contrib.gis.gdal.geometries.OGRGeometry.contains",
+          "score": 0.5700757575757576,
+          "lines": [
+            443,
+            445
+          ],
+          "snippet_sha256": "sha256:382524032030e4ee54bac6888baafde87a2435a32b03ef04e6b627bdb9df38dc"
+        },
+        {
+          "rank": 22,
+          "item_id": "vgar:django__django:python:method:django/contrib/gis/geos/geometry.py:django.contrib.gis.geos.geometry.GEOSGeometryBase.json",
+          "path": "django/contrib/gis/geos/geometry.py",
+          "kind": "method",
+          "symbol": "django.contrib.gis.geos.geometry.GEOSGeometryBase.json",
+          "function_id": "django/contrib/gis/geos/geometry.py::django.contrib.gis.geos.geometry.GEOSGeometryBase.json",
+          "score": 0.5700757575757576,
+          "lines": [
+            384,
+            388
+          ],
+          "snippet_sha256": "sha256:418815c0dba39807afbe29fe8ac335550db1169214aaf40f847ba44e9435ab8b"
+        },
+        {
+          "rank": 23,
+          "item_id": "vgar:django__django:python:method:django/contrib/gis/geos/prepared.py:django.contrib.gis.geos.prepared.PreparedGeometry.contains",
+          "path": "django/contrib/gis/geos/prepared.py",
+          "kind": "method",
+          "symbol": "django.contrib.gis.geos.prepared.PreparedGeometry.contains",
+          "function_id": "django/contrib/gis/geos/prepared.py::django.contrib.gis.geos.prepared.PreparedGeometry.contains",
+          "score": 0.5700757575757576,
+          "lines": [
+            24,
+            25
+          ],
+          "snippet_sha256": "sha256:21e826cdc3afb0cca99e3f24a4eec888a8215606bb3314bc55ea7a86119784d6"
+        },
+        {
+          "rank": 24,
+          "item_id": "vgar:django__django:python:method:django/contrib/gis/geos/geometry.py:django.contrib.gis.geos.geometry.GEOSGeometryBase.contains",
+          "path": "django/contrib/gis/geos/geometry.py",
+          "kind": "method",
+          "symbol": "django.contrib.gis.geos.geometry.GEOSGeometryBase.contains",
+          "function_id": "django/contrib/gis/geos/geometry.py::django.contrib.gis.geos.geometry.GEOSGeometryBase.contains",
+          "score": 0.5699626865671642,
+          "lines": [
+            259,
+            261
+          ],
+          "snippet_sha256": "sha256:1b8aeb6e195dbb30d1290e175f9ce073943eb3abb64fe62d74b1778e87e84d08"
+        },
+        {
+          "rank": 25,
+          "item_id": "vgar:django__django:python:method:django/contrib/messages/storage/cookie.py:django.contrib.messages.storage.cookie.MessageEncoder.default",
+          "path": "django/contrib/messages/storage/cookie.py",
+          "kind": "method",
+          "symbol": "django.contrib.messages.storage.cookie.MessageEncoder.default",
+          "function_id": "django/contrib/messages/storage/cookie.py::django.contrib.messages.storage.cookie.MessageEncoder.default",
+          "score": 0.5699626865671642,
+          "lines": [
+            17,
+            25
+          ],
+          "snippet_sha256": "sha256:dafc7229e3968605ee23573473e00cd6a52a07f92203eb22611ad9626d9af77c"
+        },
+        {
+          "rank": 26,
+          "item_id": "vgar:django__django:python:method:django/utils/text.py:django.utils.text.Truncator.add_truncation_text",
+          "path": "django/utils/text.py",
+          "kind": "method",
+          "symbol": "django.utils.text.Truncator.add_truncation_text",
+          "function_id": "django/utils/text.py::django.utils.text.Truncator.add_truncation_text",
+          "score": 0.45373134328358217,
+          "lines": [
+            66,
+            79
+          ],
+          "snippet_sha256": "sha256:6cd28e17d0a7f949407d492fafa59dd5e6ec65b8bd4834357d12deb8853e8292"
+        },
+        {
+          "rank": 27,
+          "item_id": "vgar:django__django:python:function:django/utils/translation/__init__.py:django.utils.translation.gettext",
+          "path": "django/utils/translation/__init__.py",
+          "kind": "function",
+          "symbol": "django.utils.translation.gettext",
+          "function_id": "django/utils/translation/__init__.py::django.utils.translation.gettext",
+          "score": 0.44073420698924737,
+          "lines": [
+            93,
+            94
+          ],
+          "snippet_sha256": "sha256:249c19b4cd408ddb6f143048c77a093f74c5b69084f5ffb0b5c6114eceb985bd"
+        },
+        {
+          "rank": 28,
+          "item_id": "vgar:django__django:python:function:django/utils/duration.py:django.utils.duration.duration_iso_string",
+          "path": "django/utils/duration.py",
+          "kind": "function",
+          "symbol": "django.utils.duration.duration_iso_string",
+          "function_id": "django/utils/duration.py::django.utils.duration.duration_iso_string",
+          "score": 0.435218253968254,
+          "lines": [
+            31,
+            40
+          ],
+          "snippet_sha256": "sha256:ae11e5dd34618de7adcdc38204428d04f0f41ea88dbbe28737015cd75d074098"
+        },
+        {
+          "rank": 29,
+          "item_id": "vgar:django__django:python:function:django/utils/timezone.py:django.utils.timezone.is_aware",
+          "path": "django/utils/timezone.py",
+          "kind": "function",
+          "symbol": "django.utils.timezone.is_aware",
+          "function_id": "django/utils/timezone.py::django.utils.timezone.is_aware",
+          "score": 0.43098958333333337,
+          "lines": [
+            202,
+            212
+          ],
+          "snippet_sha256": "sha256:09625ce81cd2c1a81c66147b18d7fe26417e60d8877978a321983f58d1b245df"
+        },
+        {
+          "rank": 30,
+          "item_id": "vgar:django__django:python:method:django/db/models/query.py:django.db.models.query.QuerySet.order_by",
+          "path": "django/db/models/query.py",
+          "kind": "method",
+          "symbol": "django.db.models.query.QuerySet.order_by",
+          "function_id": "django/db/models/query.py::django.db.models.query.QuerySet.order_by",
+          "score": 0.42803030303030304,
+          "lines": [
+            1135,
+            1142
+          ],
+          "snippet_sha256": "sha256:5d7d0db1c0d758e945301c91a2ce462bfc159448a5d997dccb92f7f997c6d2e3"
+        },
+        {
+          "rank": 31,
+          "item_id": "vgar:django__django:python:method:django/db/models/query.py:django.db.models.query.QuerySet.reverse",
+          "path": "django/db/models/query.py",
+          "kind": "method",
+          "symbol": "django.db.models.query.QuerySet.reverse",
+          "function_id": "django/db/models/query.py::django.db.models.query.QuerySet.reverse",
+          "score": 0.4205128205128205,
+          "lines": [
+            1165,
+            1171
+          ],
+          "snippet_sha256": "sha256:5c88a3b90f721dfaeab478a13a03954e80561f1c08c41a32204bda002efde082"
+        },
+        {
+          "rank": 32,
+          "item_id": "vgar:django__django:python:function:django/utils/regex_helper.py:django.utils.regex_helper.normalize",
+          "path": "django/utils/regex_helper.py",
+          "kind": "function",
+          "symbol": "django.utils.regex_helper.normalize",
+          "function_id": "django/utils/regex_helper.py::django.utils.regex_helper.normalize",
+          "score": 0.41015625000000006,
+          "lines": [
+            41,
+            190
+          ],
+          "snippet_sha256": "sha256:cd00eb1695abac93e72d194846862b040e0af9d3fefd2f7235fd0ac23bcd8d62"
+        },
+        {
+          "rank": 33,
+          "item_id": "vgar:django__django:python:method:django/utils/xmlutils.py:django.utils.xmlutils.SimplerXMLGenerator.addQuickElement",
+          "path": "django/utils/xmlutils.py",
+          "kind": "method",
+          "symbol": "django.utils.xmlutils.SimplerXMLGenerator.addQuickElement",
+          "function_id": "django/utils/xmlutils.py::django.utils.xmlutils.SimplerXMLGenerator.addQuickElement",
+          "score": 0.4035211267605634,
+          "lines": [
+            14,
+            21
+          ],
+          "snippet_sha256": "sha256:7436bc5d65c76e666e9f9187c62c78c47307a32f5337e92a8ed1083116de6242"
+        },
+        {
+          "rank": 34,
+          "item_id": "vgar:django__django:python:function:django/utils/dateformat.py:django.utils.dateformat.format",
+          "path": "django/utils/dateformat.py",
+          "kind": "function",
+          "symbol": "django.utils.dateformat.format",
+          "function_id": "django/utils/dateformat.py::django.utils.dateformat.format",
+          "score": 0.3960937500000001,
+          "lines": [
+            340,
+            343
+          ],
+          "snippet_sha256": "sha256:0d5c48e966fe61b5d2312984ebb0448f44ab18eea821359378a5fcb55f7a44be"
+        },
+        {
+          "rank": 35,
+          "item_id": "vgar:django__django:python:method:django/contrib/gis/admin/options.py:django.contrib.gis.admin.options.GeoModelAdmin.get_map_widget",
+          "path": "django/contrib/gis/admin/options.py",
+          "kind": "method",
+          "symbol": "django.contrib.gis.admin.options.GeoModelAdmin.get_map_widget",
+          "function_id": "django/contrib/gis/admin/options.py::django.contrib.gis.admin.options.GeoModelAdmin.get_map_widget",
+          "score": 0.3796195652173913,
+          "lines": [
+            65,
+            124
+          ],
+          "snippet_sha256": "sha256:fb67dbf6bc3f2cb82fcec8708a7693c07444aba33aeb2c3a62f51028b8540887"
+        },
+        {
+          "rank": 36,
+          "item_id": "vgar:django__django:python:method:django/utils/dateformat.py:django.utils.dateformat.TimeFormat.P",
+          "path": "django/utils/dateformat.py",
+          "kind": "method",
+          "symbol": "django.utils.dateformat.TimeFormat.P",
+          "function_id": "django/utils/dateformat.py::django.utils.dateformat.TimeFormat.P",
+          "score": 0.3788461538461539,
+          "lines": [
+            141,
+            152
+          ],
+          "snippet_sha256": "sha256:eaf0763494e4422d53143e7c6b9364886a95ac2daff921f28b5ca86aa42cbf8b"
+        },
+        {
+          "rank": 37,
+          "item_id": "vgar:django__django:python:method:django/contrib/gis/utils/layermapping.py:django.contrib.gis.utils.layermapping.LayerMapping.check_layer",
+          "path": "django/contrib/gis/utils/layermapping.py",
+          "kind": "method",
+          "symbol": "django.contrib.gis.utils.layermapping.LayerMapping.check_layer",
+          "function_id": "django/contrib/gis/utils/layermapping.py::django.contrib.gis.utils.layermapping.LayerMapping.check_layer",
+          "score": 0.3724813432835821,
+          "lines": [
+            169,
+            264
+          ],
+          "snippet_sha256": "sha256:9a7c0f30090f9ff9765b35ef8e700bdf33b8d0172ca82bdba3ece75d7da5bc83"
+        },
+        {
+          "rank": 38,
+          "item_id": "vgar:django__django:python:method:django/contrib/gis/db/backends/mysql/introspection.py:django.contrib.gis.db.backends.mysql.introspection.MySQLIntrospection.get_geometry_type",
+          "path": "django/contrib/gis/db/backends/mysql/introspection.py",
+          "kind": "method",
+          "symbol": "django.contrib.gis.db.backends.mysql.introspection.MySQLIntrospection.get_geometry_type",
+          "function_id": "django/contrib/gis/db/backends/mysql/introspection.py::django.contrib.gis.db.backends.mysql.introspection.MySQLIntrospection.get_geometry_type",
+          "score": 0.3479166666666667,
+          "lines": [
+            13,
+            29
+          ],
+          "snippet_sha256": "sha256:34be5aa33cb1a43d44109daf08e2bf61fbf3cc1844c372fca42cba9455a6c8c5"
+        },
+        {
+          "rank": 39,
+          "item_id": "vgar:django__django:python:method:django/utils/text.py:django.utils.text.Truncator._text_chars",
+          "path": "django/utils/text.py",
+          "kind": "method",
+          "symbol": "django.utils.text.Truncator._text_chars",
+          "function_id": "django/utils/text.py::django.utils.text.Truncator._text_chars",
+          "score": 0.3450757575757576,
+          "lines": [
+            104,
+            122
+          ],
+          "snippet_sha256": "sha256:a6edf735d843c2a7ac2a9513082baffcbb5bb069d2693d494a27aeea6e05c889"
+        },
+        {
+          "rank": 40,
+          "item_id": "vgar:django__django:python:method:django/contrib/gis/gdal/geomtype.py:django.contrib.gis.gdal.geomtype.OGRGeomType.to_multi",
+          "path": "django/contrib/gis/gdal/geomtype.py",
+          "kind": "method",
+          "symbol": "django.contrib.gis.gdal.geomtype.OGRGeomType.to_multi",
+          "function_id": "django/contrib/gis/gdal/geomtype.py::django.contrib.gis.gdal.geomtype.OGRGeomType.to_multi",
+          "score": 0.34496268656716417,
+          "lines": [
+            89,
+            95
+          ],
+          "snippet_sha256": "sha256:b6c7c576a4f3032d57f2c04dadaaa4b475297cede158feee0d796af049c068a6"
+        },
+        {
+          "rank": 41,
+          "item_id": "vgar:django__django:python:method:django/contrib/gis/db/backends/postgis/introspection.py:django.contrib.gis.db.backends.postgis.introspection.PostGISIntrospection.get_geometry_type",
+          "path": "django/contrib/gis/db/backends/postgis/introspection.py",
+          "kind": "method",
+          "symbol": "django.contrib.gis.db.backends.postgis.introspection.PostGISIntrospection.get_geometry_type",
+          "function_id": "django/contrib/gis/db/backends/postgis/introspection.py::django.contrib.gis.db.backends.postgis.introspection.PostGISIntrospection.get_geometry_type",
+          "score": 0.3443493150684932,
+          "lines": [
+            29,
+            60
+          ],
+          "snippet_sha256": "sha256:60eafdbe0bfdf89f4b3ed2ee3a59757a6a5831dec59f0a21ff6ac64992880e58"
+        },
+        {
+          "rank": 42,
+          "item_id": "vgar:django__django:python:method:django/contrib/gis/db/backends/spatialite/introspection.py:django.contrib.gis.db.backends.spatialite.introspection.SpatiaLiteIntrospection.get_geometry_type",
+          "path": "django/contrib/gis/db/backends/spatialite/introspection.py",
+          "kind": "method",
+          "symbol": "django.contrib.gis.db.backends.spatialite.introspection.SpatiaLiteIntrospection.get_geometry_type",
+          "function_id": "django/contrib/gis/db/backends/spatialite/introspection.py::django.contrib.gis.db.backends.spatialite.introspection.SpatiaLiteIntrospection.get_geometry_type",
+          "score": 0.3443493150684932,
+          "lines": [
+            27,
+            57
+          ],
+          "snippet_sha256": "sha256:774368a1b036463d9b50aa03ab74b4b49853f5731cecaf4f64690be6ca972355"
+        },
+        {
+          "rank": 43,
+          "item_id": "vgar:django__django:python:class:django/utils/text.py:django.utils.text.Truncator",
+          "path": "django/utils/text.py",
+          "kind": "class",
+          "symbol": "django.utils.text.Truncator",
+          "function_id": null,
+          "score": 0.34159836065573773,
+          "lines": [
+            59,
+            218
+          ],
+          "snippet_sha256": "sha256:67458e63f2b6ccc56bb30e3251bdd0439204169cbeac3c2ef5f4ef5c3e05edf2"
+        },
+        {
+          "rank": 44,
+          "item_id": "vgar:django__django:python:class:django/utils/dateformat.py:django.utils.dateformat.DateFormat",
+          "path": "django/utils/dateformat.py",
+          "kind": "class",
+          "symbol": "django.utils.dateformat.DateFormat",
+          "function_id": null,
+          "score": 0.34153225806451615,
+          "lines": [
+            209,
+            337
+          ],
+          "snippet_sha256": "sha256:a121c5843aac91a7915594bb02ebe909d9796fc2ef573bbc9a6814a1176b6afd"
+        },
+        {
+          "rank": 45,
+          "item_id": "vgar:django__django:python:class:django/utils/xmlutils.py:django.utils.xmlutils.SimplerXMLGenerator",
+          "path": "django/utils/xmlutils.py",
+          "kind": "class",
+          "symbol": "django.utils.xmlutils.SimplerXMLGenerator",
+          "function_id": null,
+          "score": 0.34153225806451615,
+          "lines": [
+            13,
+            33
+          ],
+          "snippet_sha256": "sha256:ba0a3d35948bd63dabc31793d3e37c16ed134d90dac5fec7777820f7625eff4a"
+        },
+        {
+          "rank": 46,
+          "item_id": "vgar:django__django:python:class:django/utils/xmlutils.py:django.utils.xmlutils.UnserializableContentError",
+          "path": "django/utils/xmlutils.py",
+          "kind": "class",
+          "symbol": "django.utils.xmlutils.UnserializableContentError",
+          "function_id": null,
+          "score": 0.34146825396825403,
+          "lines": [
+            9,
+            10
+          ],
+          "snippet_sha256": "sha256:544c54d7e4287629e84f4f58a563a22559b7f61dfafebcb4dff8510357126f0a"
+        },
+        {
+          "rank": 47,
+          "item_id": "vgar:django__django:python:class:django/contrib/gis/gdal/geomtype.py:django.contrib.gis.gdal.geomtype.OGRGeomType",
+          "path": "django/contrib/gis/gdal/geomtype.py",
+          "kind": "class",
+          "symbol": "django.contrib.gis.gdal.geomtype.OGRGeomType",
+          "function_id": null,
+          "score": 0.34140624999999997,
+          "lines": [
+            4,
+            95
+          ],
+          "snippet_sha256": "sha256:8cc0439c7df3d3732a99463dc3d513a02d4511acc1aac03b03e52e54209e52de"
+        },
+        {
+          "rank": 48,
+          "item_id": "vgar:django__django:python:method:django/utils/dateformat.py:django.utils.dateformat.DateFormat.D",
+          "path": "django/utils/dateformat.py",
+          "kind": "method",
+          "symbol": "django.utils.dateformat.DateFormat.D",
+          "function_id": "django/utils/dateformat.py::django.utils.dateformat.DateFormat.D",
+          "score": 0.34134615384615385,
+          "lines": [
+            225,
+            227
+          ],
+          "snippet_sha256": "sha256:33aa3cb6341409b6828b8592b4818e2765f66f1d68cc07a2c4d1e9034d754bdc"
+        },
+        {
+          "rank": 49,
+          "item_id": "vgar:django__django:python:method:django/utils/dateformat.py:django.utils.dateformat.DateFormat.E",
+          "path": "django/utils/dateformat.py",
+          "kind": "method",
+          "symbol": "django.utils.dateformat.DateFormat.E",
+          "function_id": "django/utils/dateformat.py::django.utils.dateformat.DateFormat.E",
+          "score": 0.34134615384615385,
+          "lines": [
+            229,
+            231
+          ],
+          "snippet_sha256": "sha256:f597e25e92e2847e4062c320825d3d8d4bd0966879b7e339d1969da6b3f50803"
+        },
+        {
+          "rank": 50,
+          "item_id": "vgar:django__django:python:method:django/utils/dateformat.py:django.utils.dateformat.DateFormat.F",
+          "path": "django/utils/dateformat.py",
+          "kind": "method",
+          "symbol": "django.utils.dateformat.DateFormat.F",
+          "function_id": "django/utils/dateformat.py::django.utils.dateformat.DateFormat.F",
+          "score": 0.34134615384615385,
+          "lines": [
+            233,
+            235
+          ],
+          "snippet_sha256": "sha256:1d0935d75af575354331d747234d6938fae0a47c2f98d902abaa437a521b6c94"
+        },
+        {
+          "rank": 51,
+          "item_id": "vgar:django__django:python:method:django/utils/dateformat.py:django.utils.dateformat.DateFormat.L",
+          "path": "django/utils/dateformat.py",
+          "kind": "method",
+          "symbol": "django.utils.dateformat.DateFormat.L",
+          "function_id": "django/utils/dateformat.py::django.utils.dateformat.DateFormat.L",
+          "score": 0.34134615384615385,
+          "lines": [
+            258,
+            260
+          ],
+          "snippet_sha256": "sha256:62366abf9eea6311c0300d40f67b88b0396455d2e55ecb689c9e61318d1bbd62"
+        },
+        {
+          "rank": 52,
+          "item_id": "vgar:django__django:python:method:django/utils/dateformat.py:django.utils.dateformat.DateFormat.M",
+          "path": "django/utils/dateformat.py",
+          "kind": "method",
+          "symbol": "django.utils.dateformat.DateFormat.M",
+          "function_id": "django/utils/dateformat.py::django.utils.dateformat.DateFormat.M",
+          "score": 0.34134615384615385,
+          "lines": [
+            266,
+            268
+          ],
+          "snippet_sha256": "sha256:635e7b1460f52495917e78498e4b1cdba0febb82e9f07ceffbe08ca3169bc593"
+        },
+        {
+          "rank": 53,
+          "item_id": "vgar:django__django:python:method:django/utils/dateformat.py:django.utils.dateformat.DateFormat.N",
+          "path": "django/utils/dateformat.py",
+          "kind": "method",
+          "symbol": "django.utils.dateformat.DateFormat.N",
+          "function_id": "django/utils/dateformat.py::django.utils.dateformat.DateFormat.N",
+          "score": 0.34134615384615385,
+          "lines": [
+            274,
+            276
+          ],
+          "snippet_sha256": "sha256:f2d76e3fa94dc74b8edad2975db9d89e201c749739dbad6d63d66867cad73a19"
+        },
+        {
+          "rank": 54,
+          "item_id": "vgar:django__django:python:method:django/utils/dateformat.py:django.utils.dateformat.DateFormat.S",
+          "path": "django/utils/dateformat.py",
+          "kind": "method",
+          "symbol": "django.utils.dateformat.DateFormat.S",
+          "function_id": "django/utils/dateformat.py::django.utils.dateformat.DateFormat.S",
+          "score": 0.34134615384615385,
+          "lines": [
+            295,
+            306
+          ],
+          "snippet_sha256": "sha256:c3ff59a525f034e37845a5ebefbcc8b2ebe59075d5885ed4b5306e167b246862"
+        },
+        {
+          "rank": 55,
+          "item_id": "vgar:django__django:python:method:django/utils/dateformat.py:django.utils.dateformat.DateFormat.U",
+          "path": "django/utils/dateformat.py",
+          "kind": "method",
+          "symbol": "django.utils.dateformat.DateFormat.U",
+          "function_id": "django/utils/dateformat.py::django.utils.dateformat.DateFormat.U",
+          "score": 0.34134615384615385,
+          "lines": [
+            312,
+            317
+          ],
+          "snippet_sha256": "sha256:c7f2f5cd64ffcb3d5a717a81cd9315731218d4bed010db04a4bc8759feef2fda"
+        },
+        {
+          "rank": 56,
+          "item_id": "vgar:django__django:python:method:django/utils/dateformat.py:django.utils.dateformat.DateFormat.W",
+          "path": "django/utils/dateformat.py",
+          "kind": "method",
+          "symbol": "django.utils.dateformat.DateFormat.W",
+          "function_id": "django/utils/dateformat.py::django.utils.dateformat.DateFormat.W",
+          "score": 0.34134615384615385,
+          "lines": [
+            323,
+            325
+          ],
+          "snippet_sha256": "sha256:7fb462e2ab0465d542377515a20f1e03ade29eb9d07126843dcb8516291329c6"
+        },
+        {
+          "rank": 57,
+          "item_id": "vgar:django__django:python:method:django/utils/dateformat.py:django.utils.dateformat.DateFormat.Y",
+          "path": "django/utils/dateformat.py",
+          "kind": "method",
+          "symbol": "django.utils.dateformat.DateFormat.Y",
+          "function_id": "django/utils/dateformat.py::django.utils.dateformat.DateFormat.Y",
+          "score": 0.34134615384615385,
+          "lines": [
+            331,
+            333
+          ],
+          "snippet_sha256": "sha256:0f9655a4d0711042c45c1759de5d12066aff154150c55f959c03b8d172d63f48"
+        },
+        {
+          "rank": 58,
+          "item_id": "vgar:django__django:python:method:django/utils/dateformat.py:django.utils.dateformat.DateFormat.b",
+          "path": "django/utils/dateformat.py",
+          "kind": "method",
+          "symbol": "django.utils.dateformat.DateFormat.b",
+          "function_id": "django/utils/dateformat.py::django.utils.dateformat.DateFormat.b",
+          "score": 0.34134615384615385,
+          "lines": [
+            210,
+            212
+          ],
+          "snippet_sha256": "sha256:92349bc67c0ce835426e3b6c0b13ca63263c7f192bb3ef05b11a5682ec5213ad"
+        },
+        {
+          "rank": 59,
+          "item_id": "vgar:django__django:python:method:django/utils/dateformat.py:django.utils.dateformat.DateFormat.c",
+          "path": "django/utils/dateformat.py",
+          "kind": "method",
+          "symbol": "django.utils.dateformat.DateFormat.c",
+          "function_id": "django/utils/dateformat.py::django.utils.dateformat.DateFormat.c",
+          "score": 0.34134615384615385,
+          "lines": [
+            214,
+            219
+          ],
+          "snippet_sha256": "sha256:0e91b9ca258e604967dd053c10b4366e4e4882fa4eb5e71b5683c454b44a81dc"
+        },
+        {
+          "rank": 60,
+          "item_id": "vgar:django__django:python:method:django/utils/dateformat.py:django.utils.dateformat.DateFormat.d",
+          "path": "django/utils/dateformat.py",
+          "kind": "method",
+          "symbol": "django.utils.dateformat.DateFormat.d",
+          "function_id": "django/utils/dateformat.py::django.utils.dateformat.DateFormat.d",
+          "score": 0.34134615384615385,
+          "lines": [
+            221,
+            223
+          ],
+          "snippet_sha256": "sha256:9d0a709112206f5b670f8efdade887fec557169ef90fd2967949c4369d998392"
+        },
+        {
+          "rank": 61,
+          "item_id": "vgar:django__django:python:method:django/utils/dateformat.py:django.utils.dateformat.DateFormat.j",
+          "path": "django/utils/dateformat.py",
+          "kind": "method",
+          "symbol": "django.utils.dateformat.DateFormat.j",
+          "function_id": "django/utils/dateformat.py::django.utils.dateformat.DateFormat.j",
+          "score": 0.34134615384615385,
+          "lines": [
+            250,
+            252
+          ],
+          "snippet_sha256": "sha256:254279040e862f4cdcb17bde4a2af2365ccbccaa7f1cc2057ff0176602872cf1"
+        },
+        {
+          "rank": 62,
+          "item_id": "vgar:django__django:python:method:django/contrib/gis/gdal/feature.py:django.contrib.gis.gdal.feature.Feature.geom_type",
+          "path": "django/contrib/gis/gdal/feature.py",
+          "kind": "method",
+          "symbol": "django.contrib.gis.gdal.feature.Feature.geom_type",
+          "function_id": "django/contrib/gis/gdal/feature.py::django.contrib.gis.gdal.feature.Feature.geom_type",
+          "score": 0.3412878787878788,
+          "lines": [
+            96,
+            98
+          ],
+          "snippet_sha256": "sha256:6b8eb698b07d5ef26b3f32224669f6c3ef5b7dd2a3dc63a87805fac8a2b0388d"
+        },
+        {
+          "rank": 63,
+          "item_id": "vgar:django__django:python:method:django/contrib/gis/gdal/geometries.py:django.contrib.gis.gdal.geometries.Polygon.centroid",
+          "path": "django/contrib/gis/gdal/geometries.py",
+          "kind": "method",
+          "symbol": "django.contrib.gis.gdal.geometries.Polygon.centroid",
+          "function_id": "django/contrib/gis/gdal/geometries.py::django.contrib.gis.gdal.geometries.Polygon.centroid",
+          "score": 0.3412878787878788,
+          "lines": [
+            627,
+            632
+          ],
+          "snippet_sha256": "sha256:ae3582f09622afd135ec6227afc8c44234beb90c7d0312d0d48848d201bceb10"
+        },
+        {
+          "rank": 64,
+          "item_id": "vgar:django__django:python:method:django/contrib/gis/gdal/layer.py:django.contrib.gis.gdal.layer.Layer.geom_type",
+          "path": "django/contrib/gis/gdal/layer.py",
+          "kind": "method",
+          "symbol": "django.contrib.gis.gdal.layer.Layer.geom_type",
+          "function_id": "django/contrib/gis/gdal/layer.py::django.contrib.gis.gdal.layer.Layer.geom_type",
+          "score": 0.3412878787878788,
+          "lines": [
+            117,
+            119
+          ],
+          "snippet_sha256": "sha256:3bc2bbaaf19fa6c18c245d47e737ff7e6253eef18684cb7d996a492032e579b9"
+        },
+        {
+          "rank": 65,
+          "item_id": "vgar:django__django:python:method:django/contrib/gis/gdal/geometries.py:django.contrib.gis.gdal.geometries.OGRGeometry.geom_type",
+          "path": "django/contrib/gis/gdal/geometries.py",
+          "kind": "method",
+          "symbol": "django.contrib.gis.gdal.geometries.OGRGeometry.geom_type",
+          "function_id": "django/contrib/gis/gdal/geometries.py::django.contrib.gis.gdal.geometries.OGRGeometry.geom_type",
+          "score": 0.3412313432835821,
+          "lines": [
+            227,
+            229
+          ],
+          "snippet_sha256": "sha256:3d4cfd075a797ee560b455ec240b91594da398b8084263535c89794e8e556bf0"
+        },
+        {
+          "rank": 66,
+          "item_id": "vgar:django__django:python:method:django/contrib/gis/gdal/geomtype.py:django.contrib.gis.gdal.geomtype.OGRGeomType.name",
+          "path": "django/contrib/gis/gdal/geomtype.py",
+          "kind": "method",
+          "symbol": "django.contrib.gis.gdal.geomtype.OGRGeomType.name",
+          "function_id": "django/contrib/gis/gdal/geomtype.py::django.contrib.gis.gdal.geomtype.OGRGeomType.name",
+          "score": 0.3412313432835821,
+          "lines": [
+            73,
+            75
+          ],
+          "snippet_sha256": "sha256:e97b8cf266126e66bcfa3752c57c5468785884b74209a3c7aaa27c387ffa5d94"
+        },
+        {
+          "rank": 67,
+          "item_id": "vgar:django__django:python:method:django/utils/text.py:django.utils.text.Truncator._truncate_html",
+          "path": "django/utils/text.py",
+          "kind": "method",
+          "symbol": "django.utils.text.Truncator._truncate_html",
+          "function_id": "django/utils/text.py::django.utils.text.Truncator._truncate_html",
+          "score": 0.34117647058823536,
+          "lines": [
+            148,
+            218
+          ],
+          "snippet_sha256": "sha256:daff3373a7d3cc351acb4a9dafd6d88150cb1104b69b5cc16dd585b2240f19f4"
+        },
+        {
+          "rank": 68,
+          "item_id": "vgar:django__django:python:class:django/contrib/admin/options.py:django.contrib.admin.options.ModelAdmin",
+          "path": "django/contrib/admin/options.py",
+          "kind": "class",
+          "symbol": "django.contrib.admin.options.ModelAdmin",
+          "function_id": null,
+          "score": 0.3206967213114755,
+          "lines": [
+            551,
+            1995
+          ],
+          "snippet_sha256": "sha256:2807bdab654186436b6dc5c7faa5d539152ddb9e368589004dc15cd5a6d17c68"
+        },
+        {
+          "rank": 69,
+          "item_id": "vgar:django__django:python:class:django/core/serializers/json.py:django.core.serializers.json.DjangoJSONEncoder",
+          "path": "django/core/serializers/json.py",
+          "kind": "class",
+          "symbol": "django.core.serializers.json.DjangoJSONEncoder",
+          "function_id": null,
+          "score": 0.3206967213114755,
+          "lines": [
+            77,
+            105
+          ],
+          "snippet_sha256": "sha256:68a11ca0fcfbf1b88fccf173f013fc7010ffac62d1ff2ea83bee9a07e9ae7acc"
+        },
+        {
+          "rank": 70,
+          "item_id": "vgar:django__django:python:class:django/http/request.py:django.http.request.HttpRequest",
+          "path": "django/http/request.py",
+          "kind": "class",
+          "symbol": "django.http.request.HttpRequest",
+          "function_id": null,
+          "score": 0.31666666666666665,
+          "lines": [
+            53,
+            403
+          ],
+          "snippet_sha256": "sha256:62a47fc174a998a4c7de69118b600bd0f99301a2a4b27f807d0e01c627941ec0"
+        },
+        {
+          "rank": 71,
+          "item_id": "vgar:django__django:python:module:django/template/defaultfilters.py:django.template.defaultfilters",
+          "path": "django/template/defaultfilters.py",
+          "kind": "module",
+          "symbol": "django.template.defaultfilters",
+          "function_id": null,
+          "score": 0.31666666666666665,
+          "lines": [
+            1,
+            908
+          ],
+          "snippet_sha256": "sha256:e8f959367f98a84100478526411f1a72c47a0b2aa365e2b2be8a05e40c282537"
+        },
+        {
+          "rank": 72,
+          "item_id": "vgar:django__django:python:class:django/template/defaulttags.py:django.template.defaulttags.TemplateLiteral",
+          "path": "django/template/defaulttags.py",
+          "kind": "class",
+          "symbol": "django.template.defaulttags.TemplateLiteral",
+          "function_id": null,
+          "score": 0.31659836065573765,
+          "lines": [
+            880,
+            889
+          ],
+          "snippet_sha256": "sha256:03bcc77ac9855fd41c04fa041007da8699672203a1beb7eea94f9accb2281c72"
+        },
+        {
+          "rank": 73,
+          "item_id": "vgar:django__django:python:class:django/template/smartif.py:django.template.smartif.Literal",
+          "path": "django/template/smartif.py",
+          "kind": "class",
+          "symbol": "django.template.smartif.Literal",
+          "function_id": null,
+          "score": 0.31659836065573765,
+          "lines": [
+            114,
+            137
+          ],
+          "snippet_sha256": "sha256:6b4f3a64ce84f9c915dcbfe230d3137e534218b0ab5e72452f875be664c2c68b"
+        },
+        {
+          "rank": 74,
+          "item_id": "vgar:django__django:python:module:django/utils/regex_helper.py:django.utils.regex_helper",
+          "path": "django/utils/regex_helper.py",
+          "kind": "module",
+          "symbol": "django.utils.regex_helper",
+          "function_id": null,
+          "score": 0.31659836065573765,
+          "lines": [
+            1,
+            352
+          ],
+          "snippet_sha256": "sha256:ac3c0ff846121ed0ffb4b2e2346dd10b1eeb3a2e6dfc51fb08e7e10cf3b5aca8"
+        },
+        {
+          "rank": 75,
+          "item_id": "vgar:django__django:python:class:django/contrib/gis/gdal/feature.py:django.contrib.gis.gdal.feature.Feature",
+          "path": "django/contrib/gis/gdal/feature.py",
+          "kind": "class",
+          "symbol": "django.contrib.gis.gdal.feature.Feature",
+          "function_id": null,
+          "score": 0.3165322580645162,
+          "lines": [
+            13,
+            115
+          ],
+          "snippet_sha256": "sha256:e1e0fd13fb5b7bd69f15ed049fdeac7586493def4865659ff168edfa528d7442"
+        },
+        {
+          "rank": 76,
+          "item_id": "vgar:django__django:python:class:django/db/models/query.py:django.db.models.query.QuerySet",
+          "path": "django/db/models/query.py",
+          "kind": "class",
+          "symbol": "django.db.models.query.QuerySet",
+          "function_id": null,
+          "score": 0.3165322580645162,
+          "lines": [
+            175,
+            1393
+          ],
+          "snippet_sha256": "sha256:0947752035eab2341f83edfc23d9450357d5e1a175c419031c889cb1370cbac5"
+        },
+        {
+          "rank": 77,
+          "item_id": "vgar:django__django:python:class:django/http/request.py:django.http.request.QueryDict",
+          "path": "django/http/request.py",
+          "kind": "class",
+          "symbol": "django.http.request.QueryDict",
+          "function_id": null,
+          "score": 0.3165322580645162,
+          "lines": [
+            432,
+            597
+          ],
+          "snippet_sha256": "sha256:ecd2e041adf3dedcf0d2ee50247871d37157c26d462e58a347730e197cafbdb8"
+        },
+        {
+          "rank": 78,
+          "item_id": "vgar:django__django:python:class:django/template/smartif.py:django.template.smartif.TokenBase",
+          "path": "django/template/smartif.py",
+          "kind": "class",
+          "symbol": "django.template.smartif.TokenBase",
+          "function_id": null,
+          "score": 0.3165322580645162,
+          "lines": [
+            11,
+            40
+          ],
+          "snippet_sha256": "sha256:7b5614cd66d50d3686698a7b2de317110ec45bfbffa90d53edef98da89c217e0"
+        },
+        {
+          "rank": 79,
+          "item_id": "vgar:django__django:python:class:django/utils/dateformat.py:django.utils.dateformat.TimeFormat",
+          "path": "django/utils/dateformat.py",
+          "kind": "class",
+          "symbol": "django.utils.dateformat.TimeFormat",
+          "function_id": null,
+          "score": 0.3165322580645162,
+          "lines": [
+            47,
+            206
+          ],
+          "snippet_sha256": "sha256:1ebe5547d3a7a89b12525d9c876a6571b4fbdafbab57bbe185c7963d1b2b5022"
+        },
+        {
+          "rank": 80,
+          "item_id": "vgar:django__django:python:class:django/contrib/gis/gdal/geometries.py:django.contrib.gis.gdal.geometries.OGRGeometry",
+          "path": "django/contrib/gis/gdal/geometries.py",
+          "kind": "class",
+          "symbol": "django.contrib.gis.gdal.geometries.OGRGeometry",
+          "function_id": null,
+          "score": 0.31646825396825395,
+          "lines": [
+            59,
+            498
+          ],
+          "snippet_sha256": "sha256:44273da810f0c1a9baf16334074910e71370a9b00baa94cf506a688b95b28c72"
+        },
+        {
+          "rank": 81,
+          "item_id": "vgar:django__django:python:class:django/contrib/gis/geos/prepared.py:django.contrib.gis.geos.prepared.PreparedGeometry",
+          "path": "django/contrib/gis/geos/prepared.py",
+          "kind": "class",
+          "symbol": "django.contrib.gis.geos.prepared.PreparedGeometry",
+          "function_id": null,
+          "score": 0.31646825396825395,
+          "lines": [
+            5,
+            49
+          ],
+          "snippet_sha256": "sha256:89ddfce4931ea2af9a62575f4f3ce10e07f6b16d6c2dcab15da29a61868333f0"
+        },
+        {
+          "rank": 82,
+          "item_id": "vgar:django__django:python:class:django/contrib/gis/geos/geometry.py:django.contrib.gis.geos.geometry.GEOSGeometryBase",
+          "path": "django/contrib/gis/geos/geometry.py",
+          "kind": "class",
+          "symbol": "django.contrib.gis.geos.geometry.GEOSGeometryBase",
+          "function_id": null,
+          "score": 0.31640625,
+          "lines": [
+            24,
+            638
+          ],
+          "snippet_sha256": "sha256:0710bb8a085394919fae29778e76b73070b6adae463d51d505eb1774d8244e79"
+        },
+        {
+          "rank": 83,
+          "item_id": "vgar:django__django:python:class:django/contrib/messages/storage/cookie.py:django.contrib.messages.storage.cookie.MessageEncoder",
+          "path": "django/contrib/messages/storage/cookie.py",
+          "kind": "class",
+          "symbol": "django.contrib.messages.storage.cookie.MessageEncoder",
+          "function_id": null,
+          "score": 0.31640625,
+          "lines": [
+            11,
+            25
+          ],
+          "snippet_sha256": "sha256:81cfa27c46fffd7164094dcaa81153a39e944e6c324e99df8d51dd9590414346"
+        },
+        {
+          "rank": 84,
+          "item_id": "vgar:django__django:python:method:django/contrib/gis/gdal/geometries.py:django.contrib.gis.gdal.geometries.OGRGeometry._topology",
+          "path": "django/contrib/gis/gdal/geometries.py",
+          "kind": "method",
+          "symbol": "django.contrib.gis.gdal.geometries.OGRGeometry._topology",
+          "function_id": "django/contrib/gis/gdal/geometries.py::django.contrib.gis.gdal.geometries.OGRGeometry._topology",
+          "score": 0.3161764705882353,
+          "lines": [
+            409,
+            417
+          ],
+          "snippet_sha256": "sha256:dad9500d3897f2491da3dd849f2a634cef2222d6679fec04eafe70078f1ec4f8"
+        },
+        {
+          "rank": 85,
+          "item_id": "vgar:django__django:python:module:django/contrib/gis/gdal/geomtype.py:django.contrib.gis.gdal.geomtype",
+          "path": "django/contrib/gis/gdal/geomtype.py",
+          "kind": "module",
+          "symbol": "django.contrib.gis.gdal.geomtype",
+          "function_id": null,
+          "score": 0.27903225806451615,
+          "lines": [
+            1,
+            96
+          ],
+          "snippet_sha256": "sha256:8421dfc50b1e7016a4219503670124102747edd83709d17863f900158916f4e8"
+        },
+        {
+          "rank": 86,
+          "item_id": "vgar:django__django:python:method:django/contrib/gis/gdal/geometries.py:django.contrib.gis.gdal.geometries.Point._create_empty",
+          "path": "django/contrib/gis/gdal/geometries.py",
+          "kind": "method",
+          "symbol": "django.contrib.gis.gdal.geometries.Point._create_empty",
+          "function_id": "django/contrib/gis/gdal/geometries.py::django.contrib.gis.gdal.geometries.Point._create_empty",
+          "score": 0.2787313432835821,
+          "lines": [
+            509,
+            510
+          ],
+          "snippet_sha256": "sha256:c2b8c1108a7b4e3471f55731707172a59d4f21659bfcf6f7a483fcdd0c8458dd"
+        },
+        {
+          "rank": 87,
+          "item_id": "vgar:django__django:python:method:django/contrib/gis/gdal/geomtype.py:django.contrib.gis.gdal.geomtype.OGRGeomType.__str__",
+          "path": "django/contrib/gis/gdal/geomtype.py",
+          "kind": "method",
+          "symbol": "django.contrib.gis.gdal.geomtype.OGRGeomType.__str__",
+          "function_id": "django/contrib/gis/gdal/geomtype.py::django.contrib.gis.gdal.geomtype.OGRGeomType.__str__",
+          "score": 0.2787313432835821,
+          "lines": [
+            54,
+            56
+          ],
+          "snippet_sha256": "sha256:8fdef9b3a00486b277fd402b63d81d290227a5f72104212a6102bbac800b1515"
+        },
+        {
+          "rank": 88,
+          "item_id": "vgar:django__django:python:method:django/contrib/gis/gdal/geomtype.py:django.contrib.gis.gdal.geomtype.OGRGeomType.__eq__",
+          "path": "django/contrib/gis/gdal/geomtype.py",
+          "kind": "method",
+          "symbol": "django.contrib.gis.gdal.geomtype.OGRGeomType.__eq__",
+          "function_id": "django/contrib/gis/gdal/geomtype.py::django.contrib.gis.gdal.geomtype.OGRGeomType.__eq__",
+          "score": 0.2786764705882353,
+          "lines": [
+            58,
+            70
+          ],
+          "snippet_sha256": "sha256:7e78390c070e860574ce638604a87ae9c5ba48cae6a71282a293229758f43a34"
+        },
+        {
+          "rank": 89,
+          "item_id": "vgar:django__django:python:method:django/contrib/gis/gdal/geomtype.py:django.contrib.gis.gdal.geomtype.OGRGeomType.__init__",
+          "path": "django/contrib/gis/gdal/geomtype.py",
+          "kind": "method",
+          "symbol": "django.contrib.gis.gdal.geomtype.OGRGeomType.__init__",
+          "function_id": "django/contrib/gis/gdal/geomtype.py::django.contrib.gis.gdal.geomtype.OGRGeomType.__init__",
+          "score": 0.2786764705882353,
+          "lines": [
+            33,
+            52
+          ],
+          "snippet_sha256": "sha256:aefb4b73efe83872d6d6b0ea6cff24aa42e90f0b2877622ee7e1c43ad8be4fe8"
+        },
+        {
+          "rank": 90,
+          "item_id": "vgar:django__django:python:method:django/contrib/gis/gdal/geometries.py:django.contrib.gis.gdal.geometries.OGRGeometry.__init__",
+          "path": "django/contrib/gis/gdal/geometries.py",
+          "kind": "method",
+          "symbol": "django.contrib.gis.gdal.geometries.OGRGeometry.__init__",
+          "function_id": "django/contrib/gis/gdal/geometries.py::django.contrib.gis.gdal.geometries.OGRGeometry.__init__",
+          "score": 0.2785714285714286,
+          "lines": [
+            63,
+            117
+          ],
+          "snippet_sha256": "sha256:ff11170c1da5f0cd149994cc3e3dd686256c5f9df3a9bc98a1f345cf21dfff38"
+        }
+      ],
+      "rank_order": [
+        "vgar:django__django:python:method:django/utils/xmlutils.py:django.utils.xmlutils.SimplerXMLGenerator.characters",
+        "vgar:django__django:python:function:django/template/defaultfilters.py:django.template.defaultfilters.default.setter",
+        "vgar:django__django:python:function:django/utils/regex_helper.py:django.utils.regex_helper.contains",
+        "vgar:django__django:python:method:django/utils/dateformat.py:django.utils.dateformat.TimeFormat.a",
+        "vgar:django__django:python:method:django/utils/dateformat.py:django.utils.dateformat.DateFormat.I",
+        "vgar:django__django:python:method:django/utils/text.py:django.utils.text.Truncator.chars",
+        "vgar:django__django:python:method:django/contrib/gis/gdal/geomtype.py:django.contrib.gis.gdal.geomtype.OGRGeomType.django",
+        "vgar:django__django:python:method:django/core/serializers/json.py:django.core.serializers.json.DjangoJSONEncoder.default",
+        "vgar:django__django:python:method:django/http/request.py:django.http.request.HttpRequest.encoding",
+        "vgar:django__django:python:function:django/template/defaultfilters.py:django.template.defaultfilters.last.setter",
+        "vgar:django__django:python:method:django/http/request.py:django.http.request.HttpRequest.encoding.setter",
+        "vgar:django__django:python:method:django/template/defaulttags.py:django.template.defaulttags.TemplateLiteral.display",
+        "vgar:django__django:python:method:django/template/smartif.py:django.template.smartif.Literal.display",
+        "vgar:django__django:python:method:django/contrib/gis/gdal/feature.py:django.contrib.gis.gdal.feature.Feature.encoding",
+        "vgar:django__django:python:method:django/db/models/query.py:django.db.models.query.QuerySet.last",
+        "vgar:django__django:python:method:django/http/request.py:django.http.request.QueryDict.encoding",
+        "vgar:django__django:python:method:django/template/smartif.py:django.template.smartif.TokenBase.display",
+        "vgar:django__django:python:method:django/utils/dateformat.py:django.utils.dateformat.DateFormat.t",
+        "vgar:django__django:python:method:django/contrib/gis/gdal/geometries.py:django.contrib.gis.gdal.geometries.OGRGeometry.json",
+        "vgar:django__django:python:method:django/http/request.py:django.http.request.QueryDict.encoding.setter",
+        "vgar:django__django:python:method:django/contrib/gis/gdal/geometries.py:django.contrib.gis.gdal.geometries.OGRGeometry.contains",
+        "vgar:django__django:python:method:django/contrib/gis/geos/geometry.py:django.contrib.gis.geos.geometry.GEOSGeometryBase.json",
+        "vgar:django__django:python:method:django/contrib/gis/geos/prepared.py:django.contrib.gis.geos.prepared.PreparedGeometry.contains",
+        "vgar:django__django:python:method:django/contrib/gis/geos/geometry.py:django.contrib.gis.geos.geometry.GEOSGeometryBase.contains",
+        "vgar:django__django:python:method:django/contrib/messages/storage/cookie.py:django.contrib.messages.storage.cookie.MessageEncoder.default",
+        "vgar:django__django:python:method:django/utils/text.py:django.utils.text.Truncator.add_truncation_text",
+        "vgar:django__django:python:function:django/utils/translation/__init__.py:django.utils.translation.gettext",
+        "vgar:django__django:python:function:django/utils/duration.py:django.utils.duration.duration_iso_string",
+        "vgar:django__django:python:function:django/utils/timezone.py:django.utils.timezone.is_aware",
+        "vgar:django__django:python:method:django/db/models/query.py:django.db.models.query.QuerySet.order_by",
+        "vgar:django__django:python:method:django/db/models/query.py:django.db.models.query.QuerySet.reverse",
+        "vgar:django__django:python:function:django/utils/regex_helper.py:django.utils.regex_helper.normalize",
+        "vgar:django__django:python:method:django/utils/xmlutils.py:django.utils.xmlutils.SimplerXMLGenerator.addQuickElement",
+        "vgar:django__django:python:function:django/utils/dateformat.py:django.utils.dateformat.format",
+        "vgar:django__django:python:method:django/contrib/gis/admin/options.py:django.contrib.gis.admin.options.GeoModelAdmin.get_map_widget",
+        "vgar:django__django:python:method:django/utils/dateformat.py:django.utils.dateformat.TimeFormat.P",
+        "vgar:django__django:python:method:django/contrib/gis/utils/layermapping.py:django.contrib.gis.utils.layermapping.LayerMapping.check_layer",
+        "vgar:django__django:python:method:django/contrib/gis/db/backends/mysql/introspection.py:django.contrib.gis.db.backends.mysql.introspection.MySQLIntrospection.get_geometry_type",
+        "vgar:django__django:python:method:django/utils/text.py:django.utils.text.Truncator._text_chars",
+        "vgar:django__django:python:method:django/contrib/gis/gdal/geomtype.py:django.contrib.gis.gdal.geomtype.OGRGeomType.to_multi",
+        "vgar:django__django:python:method:django/contrib/gis/db/backends/postgis/introspection.py:django.contrib.gis.db.backends.postgis.introspection.PostGISIntrospection.get_geometry_type",
+        "vgar:django__django:python:method:django/contrib/gis/db/backends/spatialite/introspection.py:django.contrib.gis.db.backends.spatialite.introspection.SpatiaLiteIntrospection.get_geometry_type",
+        "vgar:django__django:python:class:django/utils/text.py:django.utils.text.Truncator",
+        "vgar:django__django:python:class:django/utils/dateformat.py:django.utils.dateformat.DateFormat",
+        "vgar:django__django:python:class:django/utils/xmlutils.py:django.utils.xmlutils.SimplerXMLGenerator",
+        "vgar:django__django:python:class:django/utils/xmlutils.py:django.utils.xmlutils.UnserializableContentError",
+        "vgar:django__django:python:class:django/contrib/gis/gdal/geomtype.py:django.contrib.gis.gdal.geomtype.OGRGeomType",
+        "vgar:django__django:python:method:django/utils/dateformat.py:django.utils.dateformat.DateFormat.D",
+        "vgar:django__django:python:method:django/utils/dateformat.py:django.utils.dateformat.DateFormat.E",
+        "vgar:django__django:python:method:django/utils/dateformat.py:django.utils.dateformat.DateFormat.F",
+        "vgar:django__django:python:method:django/utils/dateformat.py:django.utils.dateformat.DateFormat.L",
+        "vgar:django__django:python:method:django/utils/dateformat.py:django.utils.dateformat.DateFormat.M",
+        "vgar:django__django:python:method:django/utils/dateformat.py:django.utils.dateformat.DateFormat.N",
+        "vgar:django__django:python:method:django/utils/dateformat.py:django.utils.dateformat.DateFormat.S",
+        "vgar:django__django:python:method:django/utils/dateformat.py:django.utils.dateformat.DateFormat.U",
+        "vgar:django__django:python:method:django/utils/dateformat.py:django.utils.dateformat.DateFormat.W",
+        "vgar:django__django:python:method:django/utils/dateformat.py:django.utils.dateformat.DateFormat.Y",
+        "vgar:django__django:python:method:django/utils/dateformat.py:django.utils.dateformat.DateFormat.b",
+        "vgar:django__django:python:method:django/utils/dateformat.py:django.utils.dateformat.DateFormat.c",
+        "vgar:django__django:python:method:django/utils/dateformat.py:django.utils.dateformat.DateFormat.d",
+        "vgar:django__django:python:method:django/utils/dateformat.py:django.utils.dateformat.DateFormat.j",
+        "vgar:django__django:python:method:django/contrib/gis/gdal/feature.py:django.contrib.gis.gdal.feature.Feature.geom_type",
+        "vgar:django__django:python:method:django/contrib/gis/gdal/geometries.py:django.contrib.gis.gdal.geometries.Polygon.centroid",
+        "vgar:django__django:python:method:django/contrib/gis/gdal/layer.py:django.contrib.gis.gdal.layer.Layer.geom_type",
+        "vgar:django__django:python:method:django/contrib/gis/gdal/geometries.py:django.contrib.gis.gdal.geometries.OGRGeometry.geom_type",
+        "vgar:django__django:python:method:django/contrib/gis/gdal/geomtype.py:django.contrib.gis.gdal.geomtype.OGRGeomType.name",
+        "vgar:django__django:python:method:django/utils/text.py:django.utils.text.Truncator._truncate_html",
+        "vgar:django__django:python:class:django/contrib/admin/options.py:django.contrib.admin.options.ModelAdmin",
+        "vgar:django__django:python:class:django/core/serializers/json.py:django.core.serializers.json.DjangoJSONEncoder",
+        "vgar:django__django:python:class:django/http/request.py:django.http.request.HttpRequest",
+        "vgar:django__django:python:module:django/template/defaultfilters.py:django.template.defaultfilters",
+        "vgar:django__django:python:class:django/template/defaulttags.py:django.template.defaulttags.TemplateLiteral",
+        "vgar:django__django:python:class:django/template/smartif.py:django.template.smartif.Literal",
+        "vgar:django__django:python:module:django/utils/regex_helper.py:django.utils.regex_helper",
+        "vgar:django__django:python:class:django/contrib/gis/gdal/feature.py:django.contrib.gis.gdal.feature.Feature",
+        "vgar:django__django:python:class:django/db/models/query.py:django.db.models.query.QuerySet",
+        "vgar:django__django:python:class:django/http/request.py:django.http.request.QueryDict",
+        "vgar:django__django:python:class:django/template/smartif.py:django.template.smartif.TokenBase",
+        "vgar:django__django:python:class:django/utils/dateformat.py:django.utils.dateformat.TimeFormat",
+        "vgar:django__django:python:class:django/contrib/gis/gdal/geometries.py:django.contrib.gis.gdal.geometries.OGRGeometry",
+        "vgar:django__django:python:class:django/contrib/gis/geos/prepared.py:django.contrib.gis.geos.prepared.PreparedGeometry",
+        "vgar:django__django:python:class:django/contrib/gis/geos/geometry.py:django.contrib.gis.geos.geometry.GEOSGeometryBase",
+        "vgar:django__django:python:class:django/contrib/messages/storage/cookie.py:django.contrib.messages.storage.cookie.MessageEncoder",
+        "vgar:django__django:python:method:django/contrib/gis/gdal/geometries.py:django.contrib.gis.gdal.geometries.OGRGeometry._topology",
+        "vgar:django__django:python:module:django/contrib/gis/gdal/geomtype.py:django.contrib.gis.gdal.geomtype",
+        "vgar:django__django:python:method:django/contrib/gis/gdal/geometries.py:django.contrib.gis.gdal.geometries.Point._create_empty",
+        "vgar:django__django:python:method:django/contrib/gis/gdal/geomtype.py:django.contrib.gis.gdal.geomtype.OGRGeomType.__str__",
+        "vgar:django__django:python:method:django/contrib/gis/gdal/geomtype.py:django.contrib.gis.gdal.geomtype.OGRGeomType.__eq__",
+        "vgar:django__django:python:method:django/contrib/gis/gdal/geomtype.py:django.contrib.gis.gdal.geomtype.OGRGeomType.__init__",
+        "vgar:django__django:python:method:django/contrib/gis/gdal/geometries.py:django.contrib.gis.gdal.geometries.OGRGeometry.__init__"
+      ],
+      "anchors": [
+        {
+          "node_id": "vgar:django__django:python:method:django/contrib/gis/gdal/geomtype.py:django.contrib.gis.gdal.geomtype.OGRGeomType.django",
+          "score": 0.6,
+          "symbol": "django.contrib.gis.gdal.geomtype.OGRGeomType.django",
+          "type": "Method",
+          "path": "django/contrib/gis/gdal/geomtype.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/utils/dateformat.py:django.utils.dateformat.DateFormat.I",
+          "score": 0.6,
+          "symbol": "django.utils.dateformat.DateFormat.I",
+          "type": "Method",
+          "path": "django/utils/dateformat.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/utils/text.py:django.utils.text.Truncator.chars",
+          "score": 0.6,
+          "symbol": "django.utils.text.Truncator.chars",
+          "type": "Method",
+          "path": "django/utils/text.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/utils/xmlutils.py:django.utils.xmlutils.SimplerXMLGenerator.characters",
+          "score": 0.6,
+          "symbol": "django.utils.xmlutils.SimplerXMLGenerator.characters",
+          "type": "Method",
+          "path": "django/utils/xmlutils.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/contrib/gis/gdal/feature.py:django.contrib.gis.gdal.feature.Feature.encoding",
+          "score": 0.5,
+          "symbol": "django.contrib.gis.gdal.feature.Feature.encoding",
+          "type": "Method",
+          "path": "django/contrib/gis/gdal/feature.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/contrib/gis/gdal/geometries.py:django.contrib.gis.gdal.geometries.OGRGeometry.contains",
+          "score": 0.5,
+          "symbol": "django.contrib.gis.gdal.geometries.OGRGeometry.contains",
+          "type": "Method",
+          "path": "django/contrib/gis/gdal/geometries.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/contrib/gis/gdal/geometries.py:django.contrib.gis.gdal.geometries.OGRGeometry.json",
+          "score": 0.5,
+          "symbol": "django.contrib.gis.gdal.geometries.OGRGeometry.json",
+          "type": "Method",
+          "path": "django/contrib/gis/gdal/geometries.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/contrib/gis/geos/geometry.py:django.contrib.gis.geos.geometry.GEOSGeometryBase.contains",
+          "score": 0.5,
+          "symbol": "django.contrib.gis.geos.geometry.GEOSGeometryBase.contains",
+          "type": "Method",
+          "path": "django/contrib/gis/geos/geometry.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/contrib/gis/geos/geometry.py:django.contrib.gis.geos.geometry.GEOSGeometryBase.json",
+          "score": 0.5,
+          "symbol": "django.contrib.gis.geos.geometry.GEOSGeometryBase.json",
+          "type": "Method",
+          "path": "django/contrib/gis/geos/geometry.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/contrib/gis/geos/prepared.py:django.contrib.gis.geos.prepared.PreparedGeometry.contains",
+          "score": 0.5,
+          "symbol": "django.contrib.gis.geos.prepared.PreparedGeometry.contains",
+          "type": "Method",
+          "path": "django/contrib/gis/geos/prepared.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/contrib/messages/storage/cookie.py:django.contrib.messages.storage.cookie.MessageEncoder.default",
+          "score": 0.5,
+          "symbol": "django.contrib.messages.storage.cookie.MessageEncoder.default",
+          "type": "Method",
+          "path": "django/contrib/messages/storage/cookie.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/core/serializers/json.py:django.core.serializers.json.DjangoJSONEncoder.default",
+          "score": 0.5,
+          "symbol": "django.core.serializers.json.DjangoJSONEncoder.default",
+          "type": "Method",
+          "path": "django/core/serializers/json.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/db/models/query.py:django.db.models.query.QuerySet.last",
+          "score": 0.5,
+          "symbol": "django.db.models.query.QuerySet.last",
+          "type": "Method",
+          "path": "django/db/models/query.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/http/request.py:django.http.request.HttpRequest.encoding",
+          "score": 0.5,
+          "symbol": "django.http.request.HttpRequest.encoding",
+          "type": "Method",
+          "path": "django/http/request.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/http/request.py:django.http.request.HttpRequest.encoding.setter",
+          "score": 0.5,
+          "symbol": "django.http.request.HttpRequest.encoding",
+          "type": "Method",
+          "path": "django/http/request.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/http/request.py:django.http.request.QueryDict.encoding",
+          "score": 0.5,
+          "symbol": "django.http.request.QueryDict.encoding",
+          "type": "Method",
+          "path": "django/http/request.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/http/request.py:django.http.request.QueryDict.encoding.setter",
+          "score": 0.5,
+          "symbol": "django.http.request.QueryDict.encoding",
+          "type": "Method",
+          "path": "django/http/request.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:function:django/template/defaultfilters.py:django.template.defaultfilters.default.setter",
+          "score": 0.5,
+          "symbol": "django.template.defaultfilters.default",
+          "type": "Function",
+          "path": "django/template/defaultfilters.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:function:django/template/defaultfilters.py:django.template.defaultfilters.last.setter",
+          "score": 0.5,
+          "symbol": "django.template.defaultfilters.last",
+          "type": "Function",
+          "path": "django/template/defaultfilters.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/template/defaulttags.py:django.template.defaulttags.TemplateLiteral.display",
+          "score": 0.5,
+          "symbol": "django.template.defaulttags.TemplateLiteral.display",
+          "type": "Method",
+          "path": "django/template/defaulttags.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/template/smartif.py:django.template.smartif.Literal.display",
+          "score": 0.5,
+          "symbol": "django.template.smartif.Literal.display",
+          "type": "Method",
+          "path": "django/template/smartif.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/template/smartif.py:django.template.smartif.TokenBase.display",
+          "score": 0.5,
+          "symbol": "django.template.smartif.TokenBase.display",
+          "type": "Method",
+          "path": "django/template/smartif.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/utils/dateformat.py:django.utils.dateformat.DateFormat.t",
+          "score": 0.5,
+          "symbol": "django.utils.dateformat.DateFormat.t",
+          "type": "Method",
+          "path": "django/utils/dateformat.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/utils/dateformat.py:django.utils.dateformat.TimeFormat.a",
+          "score": 0.5,
+          "symbol": "django.utils.dateformat.TimeFormat.a",
+          "type": "Method",
+          "path": "django/utils/dateformat.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:function:django/utils/regex_helper.py:django.utils.regex_helper.contains",
+          "score": 0.5,
+          "symbol": "django.utils.regex_helper.contains",
+          "type": "Function",
+          "path": "django/utils/regex_helper.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/dispatch/tests.py:tests.dispatch.tests.Callable.a",
+          "score": 0.5,
+          "symbol": "tests.dispatch.tests.Callable.a",
+          "type": "Method",
+          "path": "tests/dispatch/tests.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:function:tests/model_inheritance/tests.py:tests.model_inheritance.tests.ModelInheritanceTests.test_create_child_no_update.a",
+          "score": 0.5,
+          "symbol": "tests.model_inheritance.tests.ModelInheritanceTests.test_create_child_no_update.a",
+          "type": "Function",
+          "path": "tests/model_inheritance/tests.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:class:tests/modeladmin/test_checks.py:tests.modeladmin.test_checks.AutocompleteFieldsTests.test_autocomplete_e036.Admin",
+          "score": 0.5,
+          "symbol": "tests.modeladmin.test_checks.AutocompleteFieldsTests.test_autocomplete_e036.Admin",
+          "type": "Class",
+          "path": "tests/modeladmin/test_checks.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:class:tests/modeladmin/test_checks.py:tests.modeladmin.test_checks.AutocompleteFieldsTests.test_autocomplete_e037.Admin",
+          "score": 0.5,
+          "symbol": "tests.modeladmin.test_checks.AutocompleteFieldsTests.test_autocomplete_e037.Admin",
+          "type": "Class",
+          "path": "tests/modeladmin/test_checks.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:class:tests/modeladmin/test_checks.py:tests.modeladmin.test_checks.AutocompleteFieldsTests.test_autocomplete_e039.Admin",
+          "score": 0.5,
+          "symbol": "tests.modeladmin.test_checks.AutocompleteFieldsTests.test_autocomplete_e039.Admin",
+          "type": "Class",
+          "path": "tests/modeladmin/test_checks.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:class:tests/modeladmin/test_checks.py:tests.modeladmin.test_checks.AutocompleteFieldsTests.test_autocomplete_e38.Admin",
+          "score": 0.5,
+          "symbol": "tests.modeladmin.test_checks.AutocompleteFieldsTests.test_autocomplete_e38.Admin",
+          "type": "Class",
+          "path": "tests/modeladmin/test_checks.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:class:tests/modeladmin/test_checks.py:tests.modeladmin.test_checks.AutocompleteFieldsTests.test_autocomplete_is_onetoone.Admin",
+          "score": 0.5,
+          "symbol": "tests.modeladmin.test_checks.AutocompleteFieldsTests.test_autocomplete_is_onetoone.Admin",
+          "type": "Class",
+          "path": "tests/modeladmin/test_checks.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/serializers/test_json.py:tests.serializers.test_json.JsonSerializerTestCase.test_custom_encoder.CustomJSONEncoder.default",
+          "score": 0.5,
+          "symbol": "tests.serializers.test_json.JsonSerializerTestCase.test_custom_encoder.CustomJSONEncoder.default",
+          "type": "Method",
+          "path": "tests/serializers/test_json.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/serializers/test_jsonl.py:tests.serializers.test_jsonl.JsonlSerializerTestCase.test_custom_encoder.CustomJSONEncoder.default",
+          "score": 0.5,
+          "symbol": "tests.serializers.test_jsonl.JsonlSerializerTestCase.test_custom_encoder.CustomJSONEncoder.default",
+          "type": "Method",
+          "path": "tests/serializers/test_jsonl.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:function:tests/timezones/tests.py:tests.timezones.tests.TemplateTests.test_localtime_templatetag_and_filters.t",
+          "score": 0.5,
+          "symbol": "tests.timezones.tests.TemplateTests.test_localtime_templatetag_and_filters.t",
+          "type": "Function",
+          "path": "tests/timezones/tests.py"
+        }
+      ],
+      "unmapped": [],
+      "excluded": [],
+      "diagnostics": {
+        "m1_native_total_tokens": 7726,
+        "m1_native_items": 68,
+        "m1_native_truncated": true,
+        "traversal_limited": true,
+        "unavailable_features": [
+          "architecture_dependencies",
+          "recent_change_frequency",
+          "failing_test_proximity"
+        ],
+        "omissions": {
+          "overlapping_selected_range": 20,
+          "token_budget": 2
+        },
+        "retrieval_config": {
+          "max_hops": 2,
+          "max_candidates": 100,
+          "min_edge_confidence": 0.6,
+          "weights": {
+            "task_similarity": 0.2,
+            "graph_distance": 0.3,
+            "edge_confidence": 0.2,
+            "failing_test_proximity": 0.2,
+            "public_api_risk": 0.1,
+            "recent_change_frequency": 0.1
+          },
+          "profile": "semantic-context-v1",
+          "active_features": [
+            "task_similarity",
+            "graph_distance",
+            "edge_confidence",
+            "public_api_risk"
+          ],
+          "normalized_weights": {
+            "task_similarity": 0.25000000000000006,
+            "graph_distance": 0.375,
+            "edge_confidence": 0.25000000000000006,
+            "public_api_risk": 0.12500000000000003
+          },
+          "failing_test_traversal_limited": false,
+          "filtered_by_include": 310
+        }
+      },
+      "scoring": {
+        "instance_id": "django__django-13512",
+        "arm": "graph",
+        "scoring_version": "retrieval-scoring-v1",
+        "rank_hash": "sha256:938b02a2ccd0f769e7f840e271540ce59eac52731c854a95ecf95154933b1111",
+        "rank": {
+          "metrics": {
+            "file_gold_count": 2,
+            "file_mrr": 0,
+            "file_recall@1": 0.0,
+            "file_all_gold@1": 0,
+            "file_recall@3": 0.0,
+            "file_all_gold@3": 0,
+            "file_recall@5": 0.0,
+            "file_all_gold@5": 0,
+            "file_recall@10": 0.0,
+            "file_all_gold@10": 0,
+            "file_recall@20": 0.0,
+            "file_all_gold@20": 0,
+            "function_gold_count": 2,
+            "function_mrr": 0,
+            "function_recall@1": 0.0,
+            "function_all_gold@1": 0,
+            "function_recall@3": 0.0,
+            "function_all_gold@3": 0,
+            "function_recall@5": 0.0,
+            "function_all_gold@5": 0,
+            "function_recall@10": 0.0,
+            "function_all_gold@10": 0,
+            "function_recall@20": 0.0,
+            "function_all_gold@20": 0
+          },
+          "reach": {
+            "file": 0.0,
+            "function": 0.0
+          },
+          "size": {
+            "items": 90,
+            "files": 26,
+            "functions": 68
+          }
+        },
+        "packed": {
+          "budget_tokens": 8000,
+          "counter_label": "local-hf:Qwen/Qwen3-4B-Instruct-2507@cdbee75f17c01a7cc42f958dc650907174af0554:sha256=aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4:no-special-tokens",
+          "snippet_policy": {
+            "max_snippet_lines": 80,
+            "header": true,
+            "overlap": "skip_if_overlaps_different_group"
+          },
+          "metrics": {
+            "gold_file_in_context": 0.0,
+            "gold_function_in_context": 0.0,
+            "all_gold_files_in_context": 0,
+            "all_gold_functions_in_context": 0,
+            "total_tokens": 7938,
+            "tokens_to_first_gold_file": null,
+            "tokens_to_first_gold_function": null,
+            "items_packed": 66,
+            "skipped": {
+              "token_budget": 4,
+              "overlap": 20
+            },
+            "truncated": true
+          }
+        },
+        "excluded_count": 0,
+        "unmapped": [],
+        "excluded_reasons": {}
+      },
+      "metrics": {
+        "file_gold_count": 2,
+        "file_mrr": 0,
+        "file_recall@1": 0.0,
+        "file_all_gold@1": 0,
+        "file_recall@3": 0.0,
+        "file_all_gold@3": 0,
+        "file_recall@5": 0.0,
+        "file_all_gold@5": 0,
+        "file_recall@10": 0.0,
+        "file_all_gold@10": 0,
+        "file_recall@20": 0.0,
+        "file_all_gold@20": 0,
+        "function_gold_count": 2,
+        "function_mrr": 0,
+        "function_recall@1": 0.0,
+        "function_all_gold@1": 0,
+        "function_recall@3": 0.0,
+        "function_all_gold@3": 0,
+        "function_recall@5": 0.0,
+        "function_all_gold@5": 0,
+        "function_recall@10": 0.0,
+        "function_all_gold@10": 0,
+        "function_recall@20": 0.0,
+        "function_all_gold@20": 0,
+        "file_reach": 0.0,
+        "function_reach": 0.0,
+        "rank_items": 90,
+        "packed_gold_file_in_context": 0.0,
+        "packed_gold_function_in_context": 0.0,
+        "packed_all_gold_files_in_context": 0,
+        "packed_all_gold_functions_in_context": 0,
+        "context_tokens": 7938,
+        "packed_tokens_to_first_gold_file": null,
+        "packed_tokens_to_first_gold_function": null,
+        "packed_items_packed": 66,
+        "packed_skipped_token_budget": 4,
+        "packed_skipped_overlap": 20,
+        "packed_truncated": 1,
+        "unmapped_count": 0,
+        "excluded_count": 0,
+        "anchor_count": 35,
+        "no_anchors": 0,
+        "candidates_in": 90,
+        "retrieve_seconds": 9.114425699999629,
+        "mapping_coverage": 1.0,
+        "file_retrievability_coverage": 1.0
+      }
+    },
+    "graph_f2p": {
+      "rank_hash": "sha256:119683ab14afc649c9b9d1ab788d0ac465ea05541db05fb81aa69a77893275fc",
+      "ranking_total_count": 86,
+      "ranked": [
+        {
+          "rank": 1,
+          "item_id": "vgar:django__django:python:method:django/utils/xmlutils.py:django.utils.xmlutils.SimplerXMLGenerator.characters",
+          "path": "django/utils/xmlutils.py",
+          "kind": "method",
+          "symbol": "django.utils.xmlutils.SimplerXMLGenerator.characters",
+          "function_id": "django/utils/xmlutils.py::django.utils.xmlutils.SimplerXMLGenerator.characters",
+          "score": 0.5011538461538463,
+          "lines": [
+            23,
+            28
+          ],
+          "snippet_sha256": "sha256:6319d3f34140282856cfc14f2c8209962b026bbf1c551e7766646f40216b2b40"
+        },
+        {
+          "rank": 2,
+          "item_id": "vgar:django__django:python:function:django/template/defaultfilters.py:django.template.defaultfilters.default.setter",
+          "path": "django/template/defaultfilters.py",
+          "kind": "function",
+          "symbol": "django.template.defaultfilters.default",
+          "function_id": "django/template/defaultfilters.py::django.template.defaultfilters.default",
+          "score": 0.4938492063492064,
+          "lines": [
+            753,
+            755
+          ],
+          "snippet_sha256": "sha256:07928f3bce6253925ce9efea25ac1673ff00f4b81af27f8066e1e3b0d64cfb00"
+        },
+        {
+          "rank": 3,
+          "item_id": "vgar:django__django:python:function:django/utils/regex_helper.py:django.utils.regex_helper.contains",
+          "path": "django/utils/regex_helper.py",
+          "kind": "function",
+          "symbol": "django.utils.regex_helper.contains",
+          "function_id": "django/utils/regex_helper.py::django.utils.regex_helper.contains",
+          "score": 0.48958333333333337,
+          "lines": [
+            272,
+            283
+          ],
+          "snippet_sha256": "sha256:eae8910c15907cfbccf606dc57aaeedc0429500f6f504d85137b2801baec1071"
+        },
+        {
+          "rank": 4,
+          "item_id": "vgar:django__django:python:method:django/utils/dateformat.py:django.utils.dateformat.TimeFormat.a",
+          "path": "django/utils/dateformat.py",
+          "kind": "method",
+          "symbol": "django.utils.dateformat.TimeFormat.a",
+          "function_id": "django/utils/dateformat.py::django.utils.dateformat.TimeFormat.a",
+          "score": 0.48125000000000007,
+          "lines": [
+            62,
+            66
+          ],
+          "snippet_sha256": "sha256:aa201b08c8daaba292b96952ca22a6ac52c38c8bb27dbd5ba11a9eecdc79c707"
+        },
+        {
+          "rank": 5,
+          "item_id": "vgar:django__django:python:function:django/contrib/admin/utils.py:django.contrib.admin.utils.display_for_field",
+          "path": "django/contrib/admin/utils.py",
+          "kind": "function",
+          "symbol": "django.contrib.admin.utils.display_for_field",
+          "function_id": "django/contrib/admin/utils.py::django.contrib.admin.utils.display_for_field",
+          "score": 0.47625,
+          "lines": [
+            380,
+            407
+          ],
+          "snippet_sha256": "sha256:dd9faf24f72e943ca9645f32c06df43921a3d804a5da0abfb280d557e41c8337"
+        },
+        {
+          "rank": 6,
+          "item_id": "vgar:django__django:python:method:django/utils/dateformat.py:django.utils.dateformat.DateFormat.I",
+          "path": "django/utils/dateformat.py",
+          "kind": "method",
+          "symbol": "django.utils.dateformat.DateFormat.I",
+          "function_id": "django/utils/dateformat.py::django.utils.dateformat.DateFormat.I",
+          "score": 0.4759701492537314,
+          "lines": [
+            237,
+            248
+          ],
+          "snippet_sha256": "sha256:0ea66e33a5dc3360a69a49e10783afb7fe22c79a8ad826ff6a38a870e512a764"
+        },
+        {
+          "rank": 7,
+          "item_id": "vgar:django__django:python:method:django/utils/text.py:django.utils.text.Truncator.chars",
+          "path": "django/utils/text.py",
+          "kind": "method",
+          "symbol": "django.utils.text.Truncator.chars",
+          "function_id": "django/utils/text.py::django.utils.text.Truncator.chars",
+          "score": 0.4758823529411765,
+          "lines": [
+            81,
+            102
+          ],
+          "snippet_sha256": "sha256:c4214e1da69ae5e0360acfe568be920901dcea35fefbfb92142680939ba0e17e"
+        },
+        {
+          "rank": 8,
+          "item_id": "vgar:django__django:python:method:django/contrib/gis/gdal/geomtype.py:django.contrib.gis.gdal.geomtype.OGRGeomType.django",
+          "path": "django/contrib/gis/gdal/geomtype.py",
+          "kind": "method",
+          "symbol": "django.contrib.gis.gdal.geomtype.OGRGeomType.django",
+          "function_id": "django/contrib/gis/gdal/geomtype.py::django.contrib.gis.gdal.geomtype.OGRGeomType.django",
+          "score": 0.4730303030303031,
+          "lines": [
+            78,
+            87
+          ],
+          "snippet_sha256": "sha256:7cff4b21568af087336b13b5f2df2b1b8e86c0940bd298dbbacb52cad8c08878"
+        },
+        {
+          "rank": 9,
+          "item_id": "vgar:django__django:python:function:django/contrib/admin/utils.py:django.contrib.admin.utils.label_for_field",
+          "path": "django/contrib/admin/utils.py",
+          "kind": "function",
+          "symbol": "django.contrib.admin.utils.label_for_field",
+          "function_id": "django/contrib/admin/utils.py::django.contrib.admin.utils.label_for_field",
+          "score": 0.4723214285714286,
+          "lines": [
+            308,
+            365
+          ],
+          "snippet_sha256": "sha256:263830b95c07d8ad34a4d8565bcdb8e2934978702fae863a63ce116c82660352"
+        },
+        {
+          "rank": 10,
+          "item_id": "vgar:django__django:python:method:django/core/serializers/json.py:django.core.serializers.json.DjangoJSONEncoder.default",
+          "path": "django/core/serializers/json.py",
+          "kind": "method",
+          "symbol": "django.core.serializers.json.DjangoJSONEncoder.default",
+          "function_id": "django/core/serializers/json.py::django.core.serializers.json.DjangoJSONEncoder.default",
+          "score": 0.46111111111111114,
+          "lines": [
+            82,
+            105
+          ],
+          "snippet_sha256": "sha256:9788949a1694e5d7da56705bebb1568a632f149f3403888752a4085a75061332"
+        },
+        {
+          "rank": 11,
+          "item_id": "vgar:django__django:python:method:django/http/request.py:django.http.request.HttpRequest.encoding",
+          "path": "django/http/request.py",
+          "kind": "method",
+          "symbol": "django.http.request.HttpRequest.encoding",
+          "function_id": "django/http/request.py::django.http.request.HttpRequest.encoding@definition:278:280",
+          "score": 0.4564516129032259,
+          "lines": [
+            279,
+            280
+          ],
+          "snippet_sha256": "sha256:4039fb413f1155e14927cf4d1855e4ff77c5622c8f3cb6da7402fddcd3b50d0c"
+        },
+        {
+          "rank": 12,
+          "item_id": "vgar:django__django:python:function:django/template/defaultfilters.py:django.template.defaultfilters.last.setter",
+          "path": "django/template/defaultfilters.py",
+          "kind": "function",
+          "symbol": "django.template.defaultfilters.last",
+          "function_id": "django/template/defaultfilters.py::django.template.defaultfilters.last",
+          "score": 0.4564516129032259,
+          "lines": [
+            538,
+            543
+          ],
+          "snippet_sha256": "sha256:ad1685d0338674d9634a53df1fae103f7e464e81de157c50a5ccaf557cd892aa"
+        },
+        {
+          "rank": 13,
+          "item_id": "vgar:django__django:python:method:django/http/request.py:django.http.request.HttpRequest.encoding.setter",
+          "path": "django/http/request.py",
+          "kind": "method",
+          "symbol": "django.http.request.HttpRequest.encoding",
+          "function_id": "django/http/request.py::django.http.request.HttpRequest.encoding@definition:282:293",
+          "score": 0.4563492063492064,
+          "lines": [
+            283,
+            293
+          ],
+          "snippet_sha256": "sha256:6c4f3e18e0fbd1013f2536c58a7fc67603390651ea6558a42d39498e11f8f899"
+        },
+        {
+          "rank": 14,
+          "item_id": "vgar:django__django:python:method:django/template/defaulttags.py:django.template.defaulttags.TemplateLiteral.display",
+          "path": "django/template/defaulttags.py",
+          "kind": "method",
+          "symbol": "django.template.defaulttags.TemplateLiteral.display",
+          "function_id": "django/template/defaulttags.py::django.template.defaulttags.TemplateLiteral.display",
+          "score": 0.4563492063492064,
+          "lines": [
+            885,
+            886
+          ],
+          "snippet_sha256": "sha256:fb303ecbee9b9f036e01c9dba46423a71f65ad2312deece7d7b7f8c8b559d522"
+        },
+        {
+          "rank": 15,
+          "item_id": "vgar:django__django:python:method:django/template/smartif.py:django.template.smartif.Literal.display",
+          "path": "django/template/smartif.py",
+          "kind": "method",
+          "symbol": "django.template.smartif.Literal.display",
+          "function_id": "django/template/smartif.py::django.template.smartif.Literal.display",
+          "score": 0.4563492063492064,
+          "lines": [
+            127,
+            128
+          ],
+          "snippet_sha256": "sha256:f08e2b9c290e363ff01875312fb54b26d7b45bce134fe3137c0fe4783a9420b6"
+        },
+        {
+          "rank": 16,
+          "item_id": "vgar:django__django:python:method:django/contrib/gis/gdal/feature.py:django.contrib.gis.gdal.feature.Feature.encoding",
+          "path": "django/contrib/gis/gdal/feature.py",
+          "kind": "method",
+          "symbol": "django.contrib.gis.gdal.feature.Feature.encoding",
+          "function_id": "django/contrib/gis/gdal/feature.py::django.contrib.gis.gdal.feature.Feature.encoding",
+          "score": 0.45625000000000004,
+          "lines": [
+            58,
+            59
+          ],
+          "snippet_sha256": "sha256:d757a43e18c5e54848904febac76a14020de380db7fb3ada156129e37f762952"
+        },
+        {
+          "rank": 17,
+          "item_id": "vgar:django__django:python:method:django/db/models/query.py:django.db.models.query.QuerySet.last",
+          "path": "django/db/models/query.py",
+          "kind": "method",
+          "symbol": "django.db.models.query.QuerySet.last",
+          "function_id": "django/db/models/query.py::django.db.models.query.QuerySet.last",
+          "score": 0.45625000000000004,
+          "lines": [
+            675,
+            678
+          ],
+          "snippet_sha256": "sha256:e066ecaac53d5ff0dfe8db84603dcaa65a6504e9d31826349598b4ca90adc9a1"
+        },
+        {
+          "rank": 18,
+          "item_id": "vgar:django__django:python:method:django/http/request.py:django.http.request.QueryDict.encoding",
+          "path": "django/http/request.py",
+          "kind": "method",
+          "symbol": "django.http.request.QueryDict.encoding",
+          "function_id": "django/http/request.py::django.http.request.QueryDict.encoding@definition:495:499",
+          "score": 0.45625000000000004,
+          "lines": [
+            496,
+            499
+          ],
+          "snippet_sha256": "sha256:c992aa0efcac260e36451b8df03658f37e4ee1ec79c90eecf494f65d4a37f80a"
+        },
+        {
+          "rank": 19,
+          "item_id": "vgar:django__django:python:method:django/template/smartif.py:django.template.smartif.TokenBase.display",
+          "path": "django/template/smartif.py",
+          "kind": "method",
+          "symbol": "django.template.smartif.TokenBase.display",
+          "function_id": "django/template/smartif.py::django.template.smartif.TokenBase.display",
+          "score": 0.45625000000000004,
+          "lines": [
+            32,
+            36
+          ],
+          "snippet_sha256": "sha256:add640cb0e33e81578df9a7878fc20e31cf489a6148b092145cd59aeef1a036c"
+        },
+        {
+          "rank": 20,
+          "item_id": "vgar:django__django:python:method:django/utils/dateformat.py:django.utils.dateformat.DateFormat.t",
+          "path": "django/utils/dateformat.py",
+          "kind": "method",
+          "symbol": "django.utils.dateformat.DateFormat.t",
+          "function_id": "django/utils/dateformat.py::django.utils.dateformat.DateFormat.t",
+          "score": 0.45625000000000004,
+          "lines": [
+            308,
+            310
+          ],
+          "snippet_sha256": "sha256:4b9164c2da82b7b09b4c5cb9335fea61e04e0ad52449a09e27c055dde84f9b10"
+        },
+        {
+          "rank": 21,
+          "item_id": "vgar:django__django:python:method:django/contrib/gis/gdal/geometries.py:django.contrib.gis.gdal.geometries.OGRGeometry.json",
+          "path": "django/contrib/gis/gdal/geometries.py",
+          "kind": "method",
+          "symbol": "django.contrib.gis.gdal.geometries.OGRGeometry.json",
+          "function_id": "django/contrib/gis/gdal/geometries.py::django.contrib.gis.gdal.geometries.OGRGeometry.json",
+          "score": 0.45615384615384624,
+          "lines": [
+            323,
+            327
+          ],
+          "snippet_sha256": "sha256:fa2510df3d9614cfdb25ecd4963db1515ad5ca0862621809b176db6ab0bf0ea4"
+        },
+        {
+          "rank": 22,
+          "item_id": "vgar:django__django:python:method:django/http/request.py:django.http.request.QueryDict.encoding.setter",
+          "path": "django/http/request.py",
+          "kind": "method",
+          "symbol": "django.http.request.QueryDict.encoding",
+          "function_id": "django/http/request.py::django.http.request.QueryDict.encoding@definition:501:503",
+          "score": 0.45615384615384624,
+          "lines": [
+            502,
+            503
+          ],
+          "snippet_sha256": "sha256:000f2838d6926eb472baf8a361aa653dbc039b88304bc99c379fb5af21600b04"
+        },
+        {
+          "rank": 23,
+          "item_id": "vgar:django__django:python:method:django/contrib/gis/gdal/geometries.py:django.contrib.gis.gdal.geometries.OGRGeometry.contains",
+          "path": "django/contrib/gis/gdal/geometries.py",
+          "kind": "method",
+          "symbol": "django.contrib.gis.gdal.geometries.OGRGeometry.contains",
+          "function_id": "django/contrib/gis/gdal/geometries.py::django.contrib.gis.gdal.geometries.OGRGeometry.contains",
+          "score": 0.45606060606060606,
+          "lines": [
+            443,
+            445
+          ],
+          "snippet_sha256": "sha256:382524032030e4ee54bac6888baafde87a2435a32b03ef04e6b627bdb9df38dc"
+        },
+        {
+          "rank": 24,
+          "item_id": "vgar:django__django:python:method:django/contrib/gis/geos/geometry.py:django.contrib.gis.geos.geometry.GEOSGeometryBase.json",
+          "path": "django/contrib/gis/geos/geometry.py",
+          "kind": "method",
+          "symbol": "django.contrib.gis.geos.geometry.GEOSGeometryBase.json",
+          "function_id": "django/contrib/gis/geos/geometry.py::django.contrib.gis.geos.geometry.GEOSGeometryBase.json",
+          "score": 0.45606060606060606,
+          "lines": [
+            384,
+            388
+          ],
+          "snippet_sha256": "sha256:418815c0dba39807afbe29fe8ac335550db1169214aaf40f847ba44e9435ab8b"
+        },
+        {
+          "rank": 25,
+          "item_id": "vgar:django__django:python:method:django/contrib/gis/geos/prepared.py:django.contrib.gis.geos.prepared.PreparedGeometry.contains",
+          "path": "django/contrib/gis/geos/prepared.py",
+          "kind": "method",
+          "symbol": "django.contrib.gis.geos.prepared.PreparedGeometry.contains",
+          "function_id": "django/contrib/gis/geos/prepared.py::django.contrib.gis.geos.prepared.PreparedGeometry.contains",
+          "score": 0.45606060606060606,
+          "lines": [
+            24,
+            25
+          ],
+          "snippet_sha256": "sha256:21e826cdc3afb0cca99e3f24a4eec888a8215606bb3314bc55ea7a86119784d6"
+        },
+        {
+          "rank": 26,
+          "item_id": "vgar:django__django:python:method:django/contrib/gis/geos/geometry.py:django.contrib.gis.geos.geometry.GEOSGeometryBase.contains",
+          "path": "django/contrib/gis/geos/geometry.py",
+          "kind": "method",
+          "symbol": "django.contrib.gis.geos.geometry.GEOSGeometryBase.contains",
+          "function_id": "django/contrib/gis/geos/geometry.py::django.contrib.gis.geos.geometry.GEOSGeometryBase.contains",
+          "score": 0.45597014925373136,
+          "lines": [
+            259,
+            261
+          ],
+          "snippet_sha256": "sha256:1b8aeb6e195dbb30d1290e175f9ce073943eb3abb64fe62d74b1778e87e84d08"
+        },
+        {
+          "rank": 27,
+          "item_id": "vgar:django__django:python:method:django/contrib/messages/storage/cookie.py:django.contrib.messages.storage.cookie.MessageEncoder.default",
+          "path": "django/contrib/messages/storage/cookie.py",
+          "kind": "method",
+          "symbol": "django.contrib.messages.storage.cookie.MessageEncoder.default",
+          "function_id": "django/contrib/messages/storage/cookie.py::django.contrib.messages.storage.cookie.MessageEncoder.default",
+          "score": 0.45597014925373136,
+          "lines": [
+            17,
+            25
+          ],
+          "snippet_sha256": "sha256:dafc7229e3968605ee23573473e00cd6a52a07f92203eb22611ad9626d9af77c"
+        },
+        {
+          "rank": 28,
+          "item_id": "vgar:django__django:python:method:django/utils/text.py:django.utils.text.Truncator.add_truncation_text",
+          "path": "django/utils/text.py",
+          "kind": "method",
+          "symbol": "django.utils.text.Truncator.add_truncation_text",
+          "function_id": "django/utils/text.py::django.utils.text.Truncator.add_truncation_text",
+          "score": 0.36298507462686574,
+          "lines": [
+            66,
+            79
+          ],
+          "snippet_sha256": "sha256:6cd28e17d0a7f949407d492fafa59dd5e6ec65b8bd4834357d12deb8853e8292"
+        },
+        {
+          "rank": 29,
+          "item_id": "vgar:django__django:python:function:django/utils/translation/__init__.py:django.utils.translation.gettext",
+          "path": "django/utils/translation/__init__.py",
+          "kind": "function",
+          "symbol": "django.utils.translation.gettext",
+          "function_id": "django/utils/translation/__init__.py::django.utils.translation.gettext",
+          "score": 0.3525873655913979,
+          "lines": [
+            93,
+            94
+          ],
+          "snippet_sha256": "sha256:249c19b4cd408ddb6f143048c77a093f74c5b69084f5ffb0b5c6114eceb985bd"
+        },
+        {
+          "rank": 30,
+          "item_id": "vgar:django__django:python:function:django/utils/duration.py:django.utils.duration.duration_iso_string",
+          "path": "django/utils/duration.py",
+          "kind": "function",
+          "symbol": "django.utils.duration.duration_iso_string",
+          "function_id": "django/utils/duration.py::django.utils.duration.duration_iso_string",
+          "score": 0.3481746031746032,
+          "lines": [
+            31,
+            40
+          ],
+          "snippet_sha256": "sha256:ae11e5dd34618de7adcdc38204428d04f0f41ea88dbbe28737015cd75d074098"
+        },
+        {
+          "rank": 31,
+          "item_id": "vgar:django__django:python:function:django/utils/timezone.py:django.utils.timezone.is_aware",
+          "path": "django/utils/timezone.py",
+          "kind": "function",
+          "symbol": "django.utils.timezone.is_aware",
+          "function_id": "django/utils/timezone.py::django.utils.timezone.is_aware",
+          "score": 0.3447916666666667,
+          "lines": [
+            202,
+            212
+          ],
+          "snippet_sha256": "sha256:09625ce81cd2c1a81c66147b18d7fe26417e60d8877978a321983f58d1b245df"
+        },
+        {
+          "rank": 32,
+          "item_id": "vgar:django__django:python:method:django/db/models/query.py:django.db.models.query.QuerySet.order_by",
+          "path": "django/db/models/query.py",
+          "kind": "method",
+          "symbol": "django.db.models.query.QuerySet.order_by",
+          "function_id": "django/db/models/query.py::django.db.models.query.QuerySet.order_by",
+          "score": 0.34242424242424246,
+          "lines": [
+            1135,
+            1142
+          ],
+          "snippet_sha256": "sha256:5d7d0db1c0d758e945301c91a2ce462bfc159448a5d997dccb92f7f997c6d2e3"
+        },
+        {
+          "rank": 33,
+          "item_id": "vgar:django__django:python:method:django/db/models/query.py:django.db.models.query.QuerySet.reverse",
+          "path": "django/db/models/query.py",
+          "kind": "method",
+          "symbol": "django.db.models.query.QuerySet.reverse",
+          "function_id": "django/db/models/query.py::django.db.models.query.QuerySet.reverse",
+          "score": 0.33641025641025646,
+          "lines": [
+            1165,
+            1171
+          ],
+          "snippet_sha256": "sha256:5c88a3b90f721dfaeab478a13a03954e80561f1c08c41a32204bda002efde082"
+        },
+        {
+          "rank": 34,
+          "item_id": "vgar:django__django:python:function:django/utils/regex_helper.py:django.utils.regex_helper.normalize",
+          "path": "django/utils/regex_helper.py",
+          "kind": "function",
+          "symbol": "django.utils.regex_helper.normalize",
+          "function_id": "django/utils/regex_helper.py::django.utils.regex_helper.normalize",
+          "score": 0.32812500000000006,
+          "lines": [
+            41,
+            190
+          ],
+          "snippet_sha256": "sha256:cd00eb1695abac93e72d194846862b040e0af9d3fefd2f7235fd0ac23bcd8d62"
+        },
+        {
+          "rank": 35,
+          "item_id": "vgar:django__django:python:method:django/utils/xmlutils.py:django.utils.xmlutils.SimplerXMLGenerator.addQuickElement",
+          "path": "django/utils/xmlutils.py",
+          "kind": "method",
+          "symbol": "django.utils.xmlutils.SimplerXMLGenerator.addQuickElement",
+          "function_id": "django/utils/xmlutils.py::django.utils.xmlutils.SimplerXMLGenerator.addQuickElement",
+          "score": 0.32281690140845076,
+          "lines": [
+            14,
+            21
+          ],
+          "snippet_sha256": "sha256:7436bc5d65c76e666e9f9187c62c78c47307a32f5337e92a8ed1083116de6242"
+        },
+        {
+          "rank": 36,
+          "item_id": "vgar:django__django:python:function:django/utils/dateformat.py:django.utils.dateformat.format",
+          "path": "django/utils/dateformat.py",
+          "kind": "function",
+          "symbol": "django.utils.dateformat.format",
+          "function_id": "django/utils/dateformat.py::django.utils.dateformat.format",
+          "score": 0.3168750000000001,
+          "lines": [
+            340,
+            343
+          ],
+          "snippet_sha256": "sha256:0d5c48e966fe61b5d2312984ebb0448f44ab18eea821359378a5fcb55f7a44be"
+        },
+        {
+          "rank": 37,
+          "item_id": "vgar:django__django:python:method:django/contrib/gis/admin/options.py:django.contrib.gis.admin.options.GeoModelAdmin.get_map_widget",
+          "path": "django/contrib/gis/admin/options.py",
+          "kind": "method",
+          "symbol": "django.contrib.gis.admin.options.GeoModelAdmin.get_map_widget",
+          "function_id": "django/contrib/gis/admin/options.py::django.contrib.gis.admin.options.GeoModelAdmin.get_map_widget",
+          "score": 0.3036956521739131,
+          "lines": [
+            65,
+            124
+          ],
+          "snippet_sha256": "sha256:fb67dbf6bc3f2cb82fcec8708a7693c07444aba33aeb2c3a62f51028b8540887"
+        },
+        {
+          "rank": 38,
+          "item_id": "vgar:django__django:python:method:django/utils/dateformat.py:django.utils.dateformat.TimeFormat.P",
+          "path": "django/utils/dateformat.py",
+          "kind": "method",
+          "symbol": "django.utils.dateformat.TimeFormat.P",
+          "function_id": "django/utils/dateformat.py::django.utils.dateformat.TimeFormat.P",
+          "score": 0.30307692307692313,
+          "lines": [
+            141,
+            152
+          ],
+          "snippet_sha256": "sha256:eaf0763494e4422d53143e7c6b9364886a95ac2daff921f28b5ca86aa42cbf8b"
+        },
+        {
+          "rank": 39,
+          "item_id": "vgar:django__django:python:method:django/contrib/gis/utils/layermapping.py:django.contrib.gis.utils.layermapping.LayerMapping.check_layer",
+          "path": "django/contrib/gis/utils/layermapping.py",
+          "kind": "method",
+          "symbol": "django.contrib.gis.utils.layermapping.LayerMapping.check_layer",
+          "function_id": "django/contrib/gis/utils/layermapping.py::django.contrib.gis.utils.layermapping.LayerMapping.check_layer",
+          "score": 0.29798507462686574,
+          "lines": [
+            169,
+            264
+          ],
+          "snippet_sha256": "sha256:9a7c0f30090f9ff9765b35ef8e700bdf33b8d0172ca82bdba3ece75d7da5bc83"
+        },
+        {
+          "rank": 40,
+          "item_id": "vgar:django__django:python:method:django/contrib/gis/db/backends/mysql/introspection.py:django.contrib.gis.db.backends.mysql.introspection.MySQLIntrospection.get_geometry_type",
+          "path": "django/contrib/gis/db/backends/mysql/introspection.py",
+          "kind": "method",
+          "symbol": "django.contrib.gis.db.backends.mysql.introspection.MySQLIntrospection.get_geometry_type",
+          "function_id": "django/contrib/gis/db/backends/mysql/introspection.py::django.contrib.gis.db.backends.mysql.introspection.MySQLIntrospection.get_geometry_type",
+          "score": 0.2783333333333334,
+          "lines": [
+            13,
+            29
+          ],
+          "snippet_sha256": "sha256:34be5aa33cb1a43d44109daf08e2bf61fbf3cc1844c372fca42cba9455a6c8c5"
+        },
+        {
+          "rank": 41,
+          "item_id": "vgar:django__django:python:method:django/utils/text.py:django.utils.text.Truncator._text_chars",
+          "path": "django/utils/text.py",
+          "kind": "method",
+          "symbol": "django.utils.text.Truncator._text_chars",
+          "function_id": "django/utils/text.py::django.utils.text.Truncator._text_chars",
+          "score": 0.2760606060606061,
+          "lines": [
+            104,
+            122
+          ],
+          "snippet_sha256": "sha256:a6edf735d843c2a7ac2a9513082baffcbb5bb069d2693d494a27aeea6e05c889"
+        },
+        {
+          "rank": 42,
+          "item_id": "vgar:django__django:python:method:django/contrib/gis/gdal/geomtype.py:django.contrib.gis.gdal.geomtype.OGRGeomType.to_multi",
+          "path": "django/contrib/gis/gdal/geomtype.py",
+          "kind": "method",
+          "symbol": "django.contrib.gis.gdal.geomtype.OGRGeomType.to_multi",
+          "function_id": "django/contrib/gis/gdal/geomtype.py::django.contrib.gis.gdal.geomtype.OGRGeomType.to_multi",
+          "score": 0.27597014925373137,
+          "lines": [
+            89,
+            95
+          ],
+          "snippet_sha256": "sha256:b6c7c576a4f3032d57f2c04dadaaa4b475297cede158feee0d796af049c068a6"
+        },
+        {
+          "rank": 43,
+          "item_id": "vgar:django__django:python:method:django/contrib/gis/db/backends/postgis/introspection.py:django.contrib.gis.db.backends.postgis.introspection.PostGISIntrospection.get_geometry_type",
+          "path": "django/contrib/gis/db/backends/postgis/introspection.py",
+          "kind": "method",
+          "symbol": "django.contrib.gis.db.backends.postgis.introspection.PostGISIntrospection.get_geometry_type",
+          "function_id": "django/contrib/gis/db/backends/postgis/introspection.py::django.contrib.gis.db.backends.postgis.introspection.PostGISIntrospection.get_geometry_type",
+          "score": 0.27547945205479457,
+          "lines": [
+            29,
+            60
+          ],
+          "snippet_sha256": "sha256:60eafdbe0bfdf89f4b3ed2ee3a59757a6a5831dec59f0a21ff6ac64992880e58"
+        },
+        {
+          "rank": 44,
+          "item_id": "vgar:django__django:python:method:django/contrib/gis/db/backends/spatialite/introspection.py:django.contrib.gis.db.backends.spatialite.introspection.SpatiaLiteIntrospection.get_geometry_type",
+          "path": "django/contrib/gis/db/backends/spatialite/introspection.py",
+          "kind": "method",
+          "symbol": "django.contrib.gis.db.backends.spatialite.introspection.SpatiaLiteIntrospection.get_geometry_type",
+          "function_id": "django/contrib/gis/db/backends/spatialite/introspection.py::django.contrib.gis.db.backends.spatialite.introspection.SpatiaLiteIntrospection.get_geometry_type",
+          "score": 0.27547945205479457,
+          "lines": [
+            27,
+            57
+          ],
+          "snippet_sha256": "sha256:774368a1b036463d9b50aa03ab74b4b49853f5731cecaf4f64690be6ca972355"
+        },
+        {
+          "rank": 45,
+          "item_id": "vgar:django__django:python:class:django/utils/text.py:django.utils.text.Truncator",
+          "path": "django/utils/text.py",
+          "kind": "class",
+          "symbol": "django.utils.text.Truncator",
+          "function_id": null,
+          "score": 0.2732786885245902,
+          "lines": [
+            59,
+            218
+          ],
+          "snippet_sha256": "sha256:67458e63f2b6ccc56bb30e3251bdd0439204169cbeac3c2ef5f4ef5c3e05edf2"
+        },
+        {
+          "rank": 46,
+          "item_id": "vgar:django__django:python:class:django/utils/dateformat.py:django.utils.dateformat.DateFormat",
+          "path": "django/utils/dateformat.py",
+          "kind": "class",
+          "symbol": "django.utils.dateformat.DateFormat",
+          "function_id": null,
+          "score": 0.27322580645161293,
+          "lines": [
+            209,
+            337
+          ],
+          "snippet_sha256": "sha256:a121c5843aac91a7915594bb02ebe909d9796fc2ef573bbc9a6814a1176b6afd"
+        },
+        {
+          "rank": 47,
+          "item_id": "vgar:django__django:python:class:django/utils/xmlutils.py:django.utils.xmlutils.SimplerXMLGenerator",
+          "path": "django/utils/xmlutils.py",
+          "kind": "class",
+          "symbol": "django.utils.xmlutils.SimplerXMLGenerator",
+          "function_id": null,
+          "score": 0.27322580645161293,
+          "lines": [
+            13,
+            33
+          ],
+          "snippet_sha256": "sha256:ba0a3d35948bd63dabc31793d3e37c16ed134d90dac5fec7777820f7625eff4a"
+        },
+        {
+          "rank": 48,
+          "item_id": "vgar:django__django:python:class:django/utils/xmlutils.py:django.utils.xmlutils.UnserializableContentError",
+          "path": "django/utils/xmlutils.py",
+          "kind": "class",
+          "symbol": "django.utils.xmlutils.UnserializableContentError",
+          "function_id": null,
+          "score": 0.27317460317460324,
+          "lines": [
+            9,
+            10
+          ],
+          "snippet_sha256": "sha256:544c54d7e4287629e84f4f58a563a22559b7f61dfafebcb4dff8510357126f0a"
+        },
+        {
+          "rank": 49,
+          "item_id": "vgar:django__django:python:class:django/contrib/gis/gdal/geomtype.py:django.contrib.gis.gdal.geomtype.OGRGeomType",
+          "path": "django/contrib/gis/gdal/geomtype.py",
+          "kind": "class",
+          "symbol": "django.contrib.gis.gdal.geomtype.OGRGeomType",
+          "function_id": null,
+          "score": 0.273125,
+          "lines": [
+            4,
+            95
+          ],
+          "snippet_sha256": "sha256:8cc0439c7df3d3732a99463dc3d513a02d4511acc1aac03b03e52e54209e52de"
+        },
+        {
+          "rank": 50,
+          "item_id": "vgar:django__django:python:method:django/utils/dateformat.py:django.utils.dateformat.DateFormat.D",
+          "path": "django/utils/dateformat.py",
+          "kind": "method",
+          "symbol": "django.utils.dateformat.DateFormat.D",
+          "function_id": "django/utils/dateformat.py::django.utils.dateformat.DateFormat.D",
+          "score": 0.2730769230769231,
+          "lines": [
+            225,
+            227
+          ],
+          "snippet_sha256": "sha256:33aa3cb6341409b6828b8592b4818e2765f66f1d68cc07a2c4d1e9034d754bdc"
+        },
+        {
+          "rank": 51,
+          "item_id": "vgar:django__django:python:method:django/utils/dateformat.py:django.utils.dateformat.DateFormat.E",
+          "path": "django/utils/dateformat.py",
+          "kind": "method",
+          "symbol": "django.utils.dateformat.DateFormat.E",
+          "function_id": "django/utils/dateformat.py::django.utils.dateformat.DateFormat.E",
+          "score": 0.2730769230769231,
+          "lines": [
+            229,
+            231
+          ],
+          "snippet_sha256": "sha256:f597e25e92e2847e4062c320825d3d8d4bd0966879b7e339d1969da6b3f50803"
+        },
+        {
+          "rank": 52,
+          "item_id": "vgar:django__django:python:method:django/utils/dateformat.py:django.utils.dateformat.DateFormat.F",
+          "path": "django/utils/dateformat.py",
+          "kind": "method",
+          "symbol": "django.utils.dateformat.DateFormat.F",
+          "function_id": "django/utils/dateformat.py::django.utils.dateformat.DateFormat.F",
+          "score": 0.2730769230769231,
+          "lines": [
+            233,
+            235
+          ],
+          "snippet_sha256": "sha256:1d0935d75af575354331d747234d6938fae0a47c2f98d902abaa437a521b6c94"
+        },
+        {
+          "rank": 53,
+          "item_id": "vgar:django__django:python:method:django/utils/dateformat.py:django.utils.dateformat.DateFormat.L",
+          "path": "django/utils/dateformat.py",
+          "kind": "method",
+          "symbol": "django.utils.dateformat.DateFormat.L",
+          "function_id": "django/utils/dateformat.py::django.utils.dateformat.DateFormat.L",
+          "score": 0.2730769230769231,
+          "lines": [
+            258,
+            260
+          ],
+          "snippet_sha256": "sha256:62366abf9eea6311c0300d40f67b88b0396455d2e55ecb689c9e61318d1bbd62"
+        },
+        {
+          "rank": 54,
+          "item_id": "vgar:django__django:python:method:django/utils/dateformat.py:django.utils.dateformat.DateFormat.M",
+          "path": "django/utils/dateformat.py",
+          "kind": "method",
+          "symbol": "django.utils.dateformat.DateFormat.M",
+          "function_id": "django/utils/dateformat.py::django.utils.dateformat.DateFormat.M",
+          "score": 0.2730769230769231,
+          "lines": [
+            266,
+            268
+          ],
+          "snippet_sha256": "sha256:635e7b1460f52495917e78498e4b1cdba0febb82e9f07ceffbe08ca3169bc593"
+        },
+        {
+          "rank": 55,
+          "item_id": "vgar:django__django:python:method:django/utils/dateformat.py:django.utils.dateformat.DateFormat.N",
+          "path": "django/utils/dateformat.py",
+          "kind": "method",
+          "symbol": "django.utils.dateformat.DateFormat.N",
+          "function_id": "django/utils/dateformat.py::django.utils.dateformat.DateFormat.N",
+          "score": 0.2730769230769231,
+          "lines": [
+            274,
+            276
+          ],
+          "snippet_sha256": "sha256:f2d76e3fa94dc74b8edad2975db9d89e201c749739dbad6d63d66867cad73a19"
+        },
+        {
+          "rank": 56,
+          "item_id": "vgar:django__django:python:method:django/utils/dateformat.py:django.utils.dateformat.DateFormat.S",
+          "path": "django/utils/dateformat.py",
+          "kind": "method",
+          "symbol": "django.utils.dateformat.DateFormat.S",
+          "function_id": "django/utils/dateformat.py::django.utils.dateformat.DateFormat.S",
+          "score": 0.2730769230769231,
+          "lines": [
+            295,
+            306
+          ],
+          "snippet_sha256": "sha256:c3ff59a525f034e37845a5ebefbcc8b2ebe59075d5885ed4b5306e167b246862"
+        },
+        {
+          "rank": 57,
+          "item_id": "vgar:django__django:python:method:django/contrib/gis/gdal/feature.py:django.contrib.gis.gdal.feature.Feature.geom_type",
+          "path": "django/contrib/gis/gdal/feature.py",
+          "kind": "method",
+          "symbol": "django.contrib.gis.gdal.feature.Feature.geom_type",
+          "function_id": "django/contrib/gis/gdal/feature.py::django.contrib.gis.gdal.feature.Feature.geom_type",
+          "score": 0.27303030303030307,
+          "lines": [
+            96,
+            98
+          ],
+          "snippet_sha256": "sha256:6b8eb698b07d5ef26b3f32224669f6c3ef5b7dd2a3dc63a87805fac8a2b0388d"
+        },
+        {
+          "rank": 58,
+          "item_id": "vgar:django__django:python:method:django/contrib/gis/gdal/geometries.py:django.contrib.gis.gdal.geometries.Polygon.centroid",
+          "path": "django/contrib/gis/gdal/geometries.py",
+          "kind": "method",
+          "symbol": "django.contrib.gis.gdal.geometries.Polygon.centroid",
+          "function_id": "django/contrib/gis/gdal/geometries.py::django.contrib.gis.gdal.geometries.Polygon.centroid",
+          "score": 0.27303030303030307,
+          "lines": [
+            627,
+            632
+          ],
+          "snippet_sha256": "sha256:ae3582f09622afd135ec6227afc8c44234beb90c7d0312d0d48848d201bceb10"
+        },
+        {
+          "rank": 59,
+          "item_id": "vgar:django__django:python:method:django/contrib/gis/gdal/layer.py:django.contrib.gis.gdal.layer.Layer.geom_type",
+          "path": "django/contrib/gis/gdal/layer.py",
+          "kind": "method",
+          "symbol": "django.contrib.gis.gdal.layer.Layer.geom_type",
+          "function_id": "django/contrib/gis/gdal/layer.py::django.contrib.gis.gdal.layer.Layer.geom_type",
+          "score": 0.27303030303030307,
+          "lines": [
+            117,
+            119
+          ],
+          "snippet_sha256": "sha256:3bc2bbaaf19fa6c18c245d47e737ff7e6253eef18684cb7d996a492032e579b9"
+        },
+        {
+          "rank": 60,
+          "item_id": "vgar:django__django:python:method:django/contrib/gis/gdal/geometries.py:django.contrib.gis.gdal.geometries.OGRGeometry.geom_type",
+          "path": "django/contrib/gis/gdal/geometries.py",
+          "kind": "method",
+          "symbol": "django.contrib.gis.gdal.geometries.OGRGeometry.geom_type",
+          "function_id": "django/contrib/gis/gdal/geometries.py::django.contrib.gis.gdal.geometries.OGRGeometry.geom_type",
+          "score": 0.2729850746268657,
+          "lines": [
+            227,
+            229
+          ],
+          "snippet_sha256": "sha256:3d4cfd075a797ee560b455ec240b91594da398b8084263535c89794e8e556bf0"
+        },
+        {
+          "rank": 61,
+          "item_id": "vgar:django__django:python:method:django/contrib/gis/gdal/geomtype.py:django.contrib.gis.gdal.geomtype.OGRGeomType.name",
+          "path": "django/contrib/gis/gdal/geomtype.py",
+          "kind": "method",
+          "symbol": "django.contrib.gis.gdal.geomtype.OGRGeomType.name",
+          "function_id": "django/contrib/gis/gdal/geomtype.py::django.contrib.gis.gdal.geomtype.OGRGeomType.name",
+          "score": 0.2729850746268657,
+          "lines": [
+            73,
+            75
+          ],
+          "snippet_sha256": "sha256:e97b8cf266126e66bcfa3752c57c5468785884b74209a3c7aaa27c387ffa5d94"
+        },
+        {
+          "rank": 62,
+          "item_id": "vgar:django__django:python:method:django/utils/text.py:django.utils.text.Truncator._truncate_html",
+          "path": "django/utils/text.py",
+          "kind": "method",
+          "symbol": "django.utils.text.Truncator._truncate_html",
+          "function_id": "django/utils/text.py::django.utils.text.Truncator._truncate_html",
+          "score": 0.2729411764705883,
+          "lines": [
+            148,
+            218
+          ],
+          "snippet_sha256": "sha256:daff3373a7d3cc351acb4a9dafd6d88150cb1104b69b5cc16dd585b2240f19f4"
+        },
+        {
+          "rank": 63,
+          "item_id": "vgar:django__django:python:class:django/contrib/admin/options.py:django.contrib.admin.options.ModelAdmin",
+          "path": "django/contrib/admin/options.py",
+          "kind": "class",
+          "symbol": "django.contrib.admin.options.ModelAdmin",
+          "function_id": null,
+          "score": 0.2565573770491804,
+          "lines": [
+            551,
+            1995
+          ],
+          "snippet_sha256": "sha256:2807bdab654186436b6dc5c7faa5d539152ddb9e368589004dc15cd5a6d17c68"
+        },
+        {
+          "rank": 64,
+          "item_id": "vgar:django__django:python:class:django/core/serializers/json.py:django.core.serializers.json.DjangoJSONEncoder",
+          "path": "django/core/serializers/json.py",
+          "kind": "class",
+          "symbol": "django.core.serializers.json.DjangoJSONEncoder",
+          "function_id": null,
+          "score": 0.2565573770491804,
+          "lines": [
+            77,
+            105
+          ],
+          "snippet_sha256": "sha256:68a11ca0fcfbf1b88fccf173f013fc7010ffac62d1ff2ea83bee9a07e9ae7acc"
+        },
+        {
+          "rank": 65,
+          "item_id": "vgar:django__django:python:class:django/contrib/postgres/forms/array.py:django.contrib.postgres.forms.array.SimpleArrayField",
+          "path": "django/contrib/postgres/forms/array.py",
+          "kind": "class",
+          "symbol": "django.contrib.postgres.forms.array.SimpleArrayField",
+          "function_id": null,
+          "score": 0.2563492063492064,
+          "lines": [
+            14,
+            102
+          ],
+          "snippet_sha256": "sha256:e4d24ba2677a8b4edaaf0eaae4919fc9d53ca8470f2c9741d63c8e193dc9fe2c"
+        },
+        {
+          "rank": 66,
+          "item_id": "vgar:django__django:python:class:django/http/request.py:django.http.request.HttpRequest",
+          "path": "django/http/request.py",
+          "kind": "class",
+          "symbol": "django.http.request.HttpRequest",
+          "function_id": null,
+          "score": 0.25333333333333335,
+          "lines": [
+            53,
+            403
+          ],
+          "snippet_sha256": "sha256:62a47fc174a998a4c7de69118b600bd0f99301a2a4b27f807d0e01c627941ec0"
+        },
+        {
+          "rank": 67,
+          "item_id": "vgar:django__django:python:module:django/template/defaultfilters.py:django.template.defaultfilters",
+          "path": "django/template/defaultfilters.py",
+          "kind": "module",
+          "symbol": "django.template.defaultfilters",
+          "function_id": null,
+          "score": 0.25333333333333335,
+          "lines": [
+            1,
+            908
+          ],
+          "snippet_sha256": "sha256:e8f959367f98a84100478526411f1a72c47a0b2aa365e2b2be8a05e40c282537"
+        },
+        {
+          "rank": 68,
+          "item_id": "vgar:django__django:python:class:django/template/defaulttags.py:django.template.defaulttags.TemplateLiteral",
+          "path": "django/template/defaulttags.py",
+          "kind": "class",
+          "symbol": "django.template.defaulttags.TemplateLiteral",
+          "function_id": null,
+          "score": 0.2532786885245902,
+          "lines": [
+            880,
+            889
+          ],
+          "snippet_sha256": "sha256:03bcc77ac9855fd41c04fa041007da8699672203a1beb7eea94f9accb2281c72"
+        },
+        {
+          "rank": 69,
+          "item_id": "vgar:django__django:python:class:django/template/smartif.py:django.template.smartif.Literal",
+          "path": "django/template/smartif.py",
+          "kind": "class",
+          "symbol": "django.template.smartif.Literal",
+          "function_id": null,
+          "score": 0.2532786885245902,
+          "lines": [
+            114,
+            137
+          ],
+          "snippet_sha256": "sha256:6b4f3a64ce84f9c915dcbfe230d3137e534218b0ab5e72452f875be664c2c68b"
+        },
+        {
+          "rank": 70,
+          "item_id": "vgar:django__django:python:module:django/utils/regex_helper.py:django.utils.regex_helper",
+          "path": "django/utils/regex_helper.py",
+          "kind": "module",
+          "symbol": "django.utils.regex_helper",
+          "function_id": null,
+          "score": 0.2532786885245902,
+          "lines": [
+            1,
+            352
+          ],
+          "snippet_sha256": "sha256:ac3c0ff846121ed0ffb4b2e2346dd10b1eeb3a2e6dfc51fb08e7e10cf3b5aca8"
+        },
+        {
+          "rank": 71,
+          "item_id": "vgar:django__django:python:class:django/contrib/gis/gdal/feature.py:django.contrib.gis.gdal.feature.Feature",
+          "path": "django/contrib/gis/gdal/feature.py",
+          "kind": "class",
+          "symbol": "django.contrib.gis.gdal.feature.Feature",
+          "function_id": null,
+          "score": 0.25322580645161297,
+          "lines": [
+            13,
+            115
+          ],
+          "snippet_sha256": "sha256:e1e0fd13fb5b7bd69f15ed049fdeac7586493def4865659ff168edfa528d7442"
+        },
+        {
+          "rank": 72,
+          "item_id": "vgar:django__django:python:class:django/db/models/query.py:django.db.models.query.QuerySet",
+          "path": "django/db/models/query.py",
+          "kind": "class",
+          "symbol": "django.db.models.query.QuerySet",
+          "function_id": null,
+          "score": 0.25322580645161297,
+          "lines": [
+            175,
+            1393
+          ],
+          "snippet_sha256": "sha256:0947752035eab2341f83edfc23d9450357d5e1a175c419031c889cb1370cbac5"
+        },
+        {
+          "rank": 73,
+          "item_id": "vgar:django__django:python:class:django/http/request.py:django.http.request.QueryDict",
+          "path": "django/http/request.py",
+          "kind": "class",
+          "symbol": "django.http.request.QueryDict",
+          "function_id": null,
+          "score": 0.25322580645161297,
+          "lines": [
+            432,
+            597
+          ],
+          "snippet_sha256": "sha256:ecd2e041adf3dedcf0d2ee50247871d37157c26d462e58a347730e197cafbdb8"
+        },
+        {
+          "rank": 74,
+          "item_id": "vgar:django__django:python:class:django/template/smartif.py:django.template.smartif.TokenBase",
+          "path": "django/template/smartif.py",
+          "kind": "class",
+          "symbol": "django.template.smartif.TokenBase",
+          "function_id": null,
+          "score": 0.25322580645161297,
+          "lines": [
+            11,
+            40
+          ],
+          "snippet_sha256": "sha256:7b5614cd66d50d3686698a7b2de317110ec45bfbffa90d53edef98da89c217e0"
+        },
+        {
+          "rank": 75,
+          "item_id": "vgar:django__django:python:class:django/utils/dateformat.py:django.utils.dateformat.TimeFormat",
+          "path": "django/utils/dateformat.py",
+          "kind": "class",
+          "symbol": "django.utils.dateformat.TimeFormat",
+          "function_id": null,
+          "score": 0.25322580645161297,
+          "lines": [
+            47,
+            206
+          ],
+          "snippet_sha256": "sha256:1ebe5547d3a7a89b12525d9c876a6571b4fbdafbab57bbe185c7963d1b2b5022"
+        },
+        {
+          "rank": 76,
+          "item_id": "vgar:django__django:python:class:django/contrib/gis/gdal/geometries.py:django.contrib.gis.gdal.geometries.OGRGeometry",
+          "path": "django/contrib/gis/gdal/geometries.py",
+          "kind": "class",
+          "symbol": "django.contrib.gis.gdal.geometries.OGRGeometry",
+          "function_id": null,
+          "score": 0.2531746031746032,
+          "lines": [
+            59,
+            498
+          ],
+          "snippet_sha256": "sha256:44273da810f0c1a9baf16334074910e71370a9b00baa94cf506a688b95b28c72"
+        },
+        {
+          "rank": 77,
+          "item_id": "vgar:django__django:python:class:django/contrib/gis/geos/prepared.py:django.contrib.gis.geos.prepared.PreparedGeometry",
+          "path": "django/contrib/gis/geos/prepared.py",
+          "kind": "class",
+          "symbol": "django.contrib.gis.geos.prepared.PreparedGeometry",
+          "function_id": null,
+          "score": 0.2531746031746032,
+          "lines": [
+            5,
+            49
+          ],
+          "snippet_sha256": "sha256:89ddfce4931ea2af9a62575f4f3ce10e07f6b16d6c2dcab15da29a61868333f0"
+        },
+        {
+          "rank": 78,
+          "item_id": "vgar:django__django:python:class:django/contrib/gis/geos/geometry.py:django.contrib.gis.geos.geometry.GEOSGeometryBase",
+          "path": "django/contrib/gis/geos/geometry.py",
+          "kind": "class",
+          "symbol": "django.contrib.gis.geos.geometry.GEOSGeometryBase",
+          "function_id": null,
+          "score": 0.25312500000000004,
+          "lines": [
+            24,
+            638
+          ],
+          "snippet_sha256": "sha256:0710bb8a085394919fae29778e76b73070b6adae463d51d505eb1774d8244e79"
+        },
+        {
+          "rank": 79,
+          "item_id": "vgar:django__django:python:class:django/contrib/messages/storage/cookie.py:django.contrib.messages.storage.cookie.MessageEncoder",
+          "path": "django/contrib/messages/storage/cookie.py",
+          "kind": "class",
+          "symbol": "django.contrib.messages.storage.cookie.MessageEncoder",
+          "function_id": null,
+          "score": 0.25312500000000004,
+          "lines": [
+            11,
+            25
+          ],
+          "snippet_sha256": "sha256:81cfa27c46fffd7164094dcaa81153a39e944e6c324e99df8d51dd9590414346"
+        },
+        {
+          "rank": 80,
+          "item_id": "vgar:django__django:python:method:django/contrib/gis/gdal/geometries.py:django.contrib.gis.gdal.geometries.OGRGeometry._topology",
+          "path": "django/contrib/gis/gdal/geometries.py",
+          "kind": "method",
+          "symbol": "django.contrib.gis.gdal.geometries.OGRGeometry._topology",
+          "function_id": "django/contrib/gis/gdal/geometries.py::django.contrib.gis.gdal.geometries.OGRGeometry._topology",
+          "score": 0.2529411764705883,
+          "lines": [
+            409,
+            417
+          ],
+          "snippet_sha256": "sha256:dad9500d3897f2491da3dd849f2a634cef2222d6679fec04eafe70078f1ec4f8"
+        },
+        {
+          "rank": 81,
+          "item_id": "vgar:django__django:python:module:django/contrib/gis/gdal/geomtype.py:django.contrib.gis.gdal.geomtype",
+          "path": "django/contrib/gis/gdal/geomtype.py",
+          "kind": "module",
+          "symbol": "django.contrib.gis.gdal.geomtype",
+          "function_id": null,
+          "score": 0.2232258064516129,
+          "lines": [
+            1,
+            96
+          ],
+          "snippet_sha256": "sha256:8421dfc50b1e7016a4219503670124102747edd83709d17863f900158916f4e8"
+        },
+        {
+          "rank": 82,
+          "item_id": "vgar:django__django:python:method:django/contrib/gis/gdal/geometries.py:django.contrib.gis.gdal.geometries.Point._create_empty",
+          "path": "django/contrib/gis/gdal/geometries.py",
+          "kind": "method",
+          "symbol": "django.contrib.gis.gdal.geometries.Point._create_empty",
+          "function_id": "django/contrib/gis/gdal/geometries.py::django.contrib.gis.gdal.geometries.Point._create_empty",
+          "score": 0.2229850746268657,
+          "lines": [
+            509,
+            510
+          ],
+          "snippet_sha256": "sha256:c2b8c1108a7b4e3471f55731707172a59d4f21659bfcf6f7a483fcdd0c8458dd"
+        },
+        {
+          "rank": 83,
+          "item_id": "vgar:django__django:python:method:django/contrib/gis/gdal/geomtype.py:django.contrib.gis.gdal.geomtype.OGRGeomType.__str__",
+          "path": "django/contrib/gis/gdal/geomtype.py",
+          "kind": "method",
+          "symbol": "django.contrib.gis.gdal.geomtype.OGRGeomType.__str__",
+          "function_id": "django/contrib/gis/gdal/geomtype.py::django.contrib.gis.gdal.geomtype.OGRGeomType.__str__",
+          "score": 0.2229850746268657,
+          "lines": [
+            54,
+            56
+          ],
+          "snippet_sha256": "sha256:8fdef9b3a00486b277fd402b63d81d290227a5f72104212a6102bbac800b1515"
+        },
+        {
+          "rank": 84,
+          "item_id": "vgar:django__django:python:method:django/contrib/gis/gdal/geomtype.py:django.contrib.gis.gdal.geomtype.OGRGeomType.__eq__",
+          "path": "django/contrib/gis/gdal/geomtype.py",
+          "kind": "method",
+          "symbol": "django.contrib.gis.gdal.geomtype.OGRGeomType.__eq__",
+          "function_id": "django/contrib/gis/gdal/geomtype.py::django.contrib.gis.gdal.geomtype.OGRGeomType.__eq__",
+          "score": 0.22294117647058825,
+          "lines": [
+            58,
+            70
+          ],
+          "snippet_sha256": "sha256:7e78390c070e860574ce638604a87ae9c5ba48cae6a71282a293229758f43a34"
+        },
+        {
+          "rank": 85,
+          "item_id": "vgar:django__django:python:method:django/contrib/gis/gdal/geomtype.py:django.contrib.gis.gdal.geomtype.OGRGeomType.__init__",
+          "path": "django/contrib/gis/gdal/geomtype.py",
+          "kind": "method",
+          "symbol": "django.contrib.gis.gdal.geomtype.OGRGeomType.__init__",
+          "function_id": "django/contrib/gis/gdal/geomtype.py::django.contrib.gis.gdal.geomtype.OGRGeomType.__init__",
+          "score": 0.22294117647058825,
+          "lines": [
+            33,
+            52
+          ],
+          "snippet_sha256": "sha256:aefb4b73efe83872d6d6b0ea6cff24aa42e90f0b2877622ee7e1c43ad8be4fe8"
+        },
+        {
+          "rank": 86,
+          "item_id": "vgar:django__django:python:method:django/contrib/gis/gdal/geometries.py:django.contrib.gis.gdal.geometries.OGRGeometry.__init__",
+          "path": "django/contrib/gis/gdal/geometries.py",
+          "kind": "method",
+          "symbol": "django.contrib.gis.gdal.geometries.OGRGeometry.__init__",
+          "function_id": "django/contrib/gis/gdal/geometries.py::django.contrib.gis.gdal.geometries.OGRGeometry.__init__",
+          "score": 0.2228571428571429,
+          "lines": [
+            63,
+            117
+          ],
+          "snippet_sha256": "sha256:ff11170c1da5f0cd149994cc3e3dd686256c5f9df3a9bc98a1f345cf21dfff38"
+        }
+      ],
+      "rank_order": [
+        "vgar:django__django:python:method:django/utils/xmlutils.py:django.utils.xmlutils.SimplerXMLGenerator.characters",
+        "vgar:django__django:python:function:django/template/defaultfilters.py:django.template.defaultfilters.default.setter",
+        "vgar:django__django:python:function:django/utils/regex_helper.py:django.utils.regex_helper.contains",
+        "vgar:django__django:python:method:django/utils/dateformat.py:django.utils.dateformat.TimeFormat.a",
+        "vgar:django__django:python:function:django/contrib/admin/utils.py:django.contrib.admin.utils.display_for_field",
+        "vgar:django__django:python:method:django/utils/dateformat.py:django.utils.dateformat.DateFormat.I",
+        "vgar:django__django:python:method:django/utils/text.py:django.utils.text.Truncator.chars",
+        "vgar:django__django:python:method:django/contrib/gis/gdal/geomtype.py:django.contrib.gis.gdal.geomtype.OGRGeomType.django",
+        "vgar:django__django:python:function:django/contrib/admin/utils.py:django.contrib.admin.utils.label_for_field",
+        "vgar:django__django:python:method:django/core/serializers/json.py:django.core.serializers.json.DjangoJSONEncoder.default",
+        "vgar:django__django:python:method:django/http/request.py:django.http.request.HttpRequest.encoding",
+        "vgar:django__django:python:function:django/template/defaultfilters.py:django.template.defaultfilters.last.setter",
+        "vgar:django__django:python:method:django/http/request.py:django.http.request.HttpRequest.encoding.setter",
+        "vgar:django__django:python:method:django/template/defaulttags.py:django.template.defaulttags.TemplateLiteral.display",
+        "vgar:django__django:python:method:django/template/smartif.py:django.template.smartif.Literal.display",
+        "vgar:django__django:python:method:django/contrib/gis/gdal/feature.py:django.contrib.gis.gdal.feature.Feature.encoding",
+        "vgar:django__django:python:method:django/db/models/query.py:django.db.models.query.QuerySet.last",
+        "vgar:django__django:python:method:django/http/request.py:django.http.request.QueryDict.encoding",
+        "vgar:django__django:python:method:django/template/smartif.py:django.template.smartif.TokenBase.display",
+        "vgar:django__django:python:method:django/utils/dateformat.py:django.utils.dateformat.DateFormat.t",
+        "vgar:django__django:python:method:django/contrib/gis/gdal/geometries.py:django.contrib.gis.gdal.geometries.OGRGeometry.json",
+        "vgar:django__django:python:method:django/http/request.py:django.http.request.QueryDict.encoding.setter",
+        "vgar:django__django:python:method:django/contrib/gis/gdal/geometries.py:django.contrib.gis.gdal.geometries.OGRGeometry.contains",
+        "vgar:django__django:python:method:django/contrib/gis/geos/geometry.py:django.contrib.gis.geos.geometry.GEOSGeometryBase.json",
+        "vgar:django__django:python:method:django/contrib/gis/geos/prepared.py:django.contrib.gis.geos.prepared.PreparedGeometry.contains",
+        "vgar:django__django:python:method:django/contrib/gis/geos/geometry.py:django.contrib.gis.geos.geometry.GEOSGeometryBase.contains",
+        "vgar:django__django:python:method:django/contrib/messages/storage/cookie.py:django.contrib.messages.storage.cookie.MessageEncoder.default",
+        "vgar:django__django:python:method:django/utils/text.py:django.utils.text.Truncator.add_truncation_text",
+        "vgar:django__django:python:function:django/utils/translation/__init__.py:django.utils.translation.gettext",
+        "vgar:django__django:python:function:django/utils/duration.py:django.utils.duration.duration_iso_string",
+        "vgar:django__django:python:function:django/utils/timezone.py:django.utils.timezone.is_aware",
+        "vgar:django__django:python:method:django/db/models/query.py:django.db.models.query.QuerySet.order_by",
+        "vgar:django__django:python:method:django/db/models/query.py:django.db.models.query.QuerySet.reverse",
+        "vgar:django__django:python:function:django/utils/regex_helper.py:django.utils.regex_helper.normalize",
+        "vgar:django__django:python:method:django/utils/xmlutils.py:django.utils.xmlutils.SimplerXMLGenerator.addQuickElement",
+        "vgar:django__django:python:function:django/utils/dateformat.py:django.utils.dateformat.format",
+        "vgar:django__django:python:method:django/contrib/gis/admin/options.py:django.contrib.gis.admin.options.GeoModelAdmin.get_map_widget",
+        "vgar:django__django:python:method:django/utils/dateformat.py:django.utils.dateformat.TimeFormat.P",
+        "vgar:django__django:python:method:django/contrib/gis/utils/layermapping.py:django.contrib.gis.utils.layermapping.LayerMapping.check_layer",
+        "vgar:django__django:python:method:django/contrib/gis/db/backends/mysql/introspection.py:django.contrib.gis.db.backends.mysql.introspection.MySQLIntrospection.get_geometry_type",
+        "vgar:django__django:python:method:django/utils/text.py:django.utils.text.Truncator._text_chars",
+        "vgar:django__django:python:method:django/contrib/gis/gdal/geomtype.py:django.contrib.gis.gdal.geomtype.OGRGeomType.to_multi",
+        "vgar:django__django:python:method:django/contrib/gis/db/backends/postgis/introspection.py:django.contrib.gis.db.backends.postgis.introspection.PostGISIntrospection.get_geometry_type",
+        "vgar:django__django:python:method:django/contrib/gis/db/backends/spatialite/introspection.py:django.contrib.gis.db.backends.spatialite.introspection.SpatiaLiteIntrospection.get_geometry_type",
+        "vgar:django__django:python:class:django/utils/text.py:django.utils.text.Truncator",
+        "vgar:django__django:python:class:django/utils/dateformat.py:django.utils.dateformat.DateFormat",
+        "vgar:django__django:python:class:django/utils/xmlutils.py:django.utils.xmlutils.SimplerXMLGenerator",
+        "vgar:django__django:python:class:django/utils/xmlutils.py:django.utils.xmlutils.UnserializableContentError",
+        "vgar:django__django:python:class:django/contrib/gis/gdal/geomtype.py:django.contrib.gis.gdal.geomtype.OGRGeomType",
+        "vgar:django__django:python:method:django/utils/dateformat.py:django.utils.dateformat.DateFormat.D",
+        "vgar:django__django:python:method:django/utils/dateformat.py:django.utils.dateformat.DateFormat.E",
+        "vgar:django__django:python:method:django/utils/dateformat.py:django.utils.dateformat.DateFormat.F",
+        "vgar:django__django:python:method:django/utils/dateformat.py:django.utils.dateformat.DateFormat.L",
+        "vgar:django__django:python:method:django/utils/dateformat.py:django.utils.dateformat.DateFormat.M",
+        "vgar:django__django:python:method:django/utils/dateformat.py:django.utils.dateformat.DateFormat.N",
+        "vgar:django__django:python:method:django/utils/dateformat.py:django.utils.dateformat.DateFormat.S",
+        "vgar:django__django:python:method:django/contrib/gis/gdal/feature.py:django.contrib.gis.gdal.feature.Feature.geom_type",
+        "vgar:django__django:python:method:django/contrib/gis/gdal/geometries.py:django.contrib.gis.gdal.geometries.Polygon.centroid",
+        "vgar:django__django:python:method:django/contrib/gis/gdal/layer.py:django.contrib.gis.gdal.layer.Layer.geom_type",
+        "vgar:django__django:python:method:django/contrib/gis/gdal/geometries.py:django.contrib.gis.gdal.geometries.OGRGeometry.geom_type",
+        "vgar:django__django:python:method:django/contrib/gis/gdal/geomtype.py:django.contrib.gis.gdal.geomtype.OGRGeomType.name",
+        "vgar:django__django:python:method:django/utils/text.py:django.utils.text.Truncator._truncate_html",
+        "vgar:django__django:python:class:django/contrib/admin/options.py:django.contrib.admin.options.ModelAdmin",
+        "vgar:django__django:python:class:django/core/serializers/json.py:django.core.serializers.json.DjangoJSONEncoder",
+        "vgar:django__django:python:class:django/contrib/postgres/forms/array.py:django.contrib.postgres.forms.array.SimpleArrayField",
+        "vgar:django__django:python:class:django/http/request.py:django.http.request.HttpRequest",
+        "vgar:django__django:python:module:django/template/defaultfilters.py:django.template.defaultfilters",
+        "vgar:django__django:python:class:django/template/defaulttags.py:django.template.defaulttags.TemplateLiteral",
+        "vgar:django__django:python:class:django/template/smartif.py:django.template.smartif.Literal",
+        "vgar:django__django:python:module:django/utils/regex_helper.py:django.utils.regex_helper",
+        "vgar:django__django:python:class:django/contrib/gis/gdal/feature.py:django.contrib.gis.gdal.feature.Feature",
+        "vgar:django__django:python:class:django/db/models/query.py:django.db.models.query.QuerySet",
+        "vgar:django__django:python:class:django/http/request.py:django.http.request.QueryDict",
+        "vgar:django__django:python:class:django/template/smartif.py:django.template.smartif.TokenBase",
+        "vgar:django__django:python:class:django/utils/dateformat.py:django.utils.dateformat.TimeFormat",
+        "vgar:django__django:python:class:django/contrib/gis/gdal/geometries.py:django.contrib.gis.gdal.geometries.OGRGeometry",
+        "vgar:django__django:python:class:django/contrib/gis/geos/prepared.py:django.contrib.gis.geos.prepared.PreparedGeometry",
+        "vgar:django__django:python:class:django/contrib/gis/geos/geometry.py:django.contrib.gis.geos.geometry.GEOSGeometryBase",
+        "vgar:django__django:python:class:django/contrib/messages/storage/cookie.py:django.contrib.messages.storage.cookie.MessageEncoder",
+        "vgar:django__django:python:method:django/contrib/gis/gdal/geometries.py:django.contrib.gis.gdal.geometries.OGRGeometry._topology",
+        "vgar:django__django:python:module:django/contrib/gis/gdal/geomtype.py:django.contrib.gis.gdal.geomtype",
+        "vgar:django__django:python:method:django/contrib/gis/gdal/geometries.py:django.contrib.gis.gdal.geometries.Point._create_empty",
+        "vgar:django__django:python:method:django/contrib/gis/gdal/geomtype.py:django.contrib.gis.gdal.geomtype.OGRGeomType.__str__",
+        "vgar:django__django:python:method:django/contrib/gis/gdal/geomtype.py:django.contrib.gis.gdal.geomtype.OGRGeomType.__eq__",
+        "vgar:django__django:python:method:django/contrib/gis/gdal/geomtype.py:django.contrib.gis.gdal.geomtype.OGRGeomType.__init__",
+        "vgar:django__django:python:method:django/contrib/gis/gdal/geometries.py:django.contrib.gis.gdal.geometries.OGRGeometry.__init__"
+      ],
+      "anchors": [
+        {
+          "node_id": "vgar:django__django:python:method:django/contrib/gis/gdal/geomtype.py:django.contrib.gis.gdal.geomtype.OGRGeomType.django",
+          "score": 0.6,
+          "symbol": "django.contrib.gis.gdal.geomtype.OGRGeomType.django",
+          "type": "Method",
+          "path": "django/contrib/gis/gdal/geomtype.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/utils/dateformat.py:django.utils.dateformat.DateFormat.I",
+          "score": 0.6,
+          "symbol": "django.utils.dateformat.DateFormat.I",
+          "type": "Method",
+          "path": "django/utils/dateformat.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/utils/text.py:django.utils.text.Truncator.chars",
+          "score": 0.6,
+          "symbol": "django.utils.text.Truncator.chars",
+          "type": "Method",
+          "path": "django/utils/text.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/utils/xmlutils.py:django.utils.xmlutils.SimplerXMLGenerator.characters",
+          "score": 0.6,
+          "symbol": "django.utils.xmlutils.SimplerXMLGenerator.characters",
+          "type": "Method",
+          "path": "django/utils/xmlutils.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:test:tests/admin_utils/tests.py:tests.admin_utils.tests.UtilsTests.test_json_display_for_field",
+          "score": 0.6,
+          "symbol": "tests.admin_utils.tests.UtilsTests.test_json_display_for_field",
+          "type": "Test",
+          "path": "tests/admin_utils/tests.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:test:tests/admin_utils/tests.py:tests.admin_utils.tests.UtilsTests.test_label_for_field",
+          "score": 0.6,
+          "symbol": "tests.admin_utils.tests.UtilsTests.test_label_for_field",
+          "type": "Test",
+          "path": "tests/admin_utils/tests.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/contrib/gis/gdal/feature.py:django.contrib.gis.gdal.feature.Feature.encoding",
+          "score": 0.5,
+          "symbol": "django.contrib.gis.gdal.feature.Feature.encoding",
+          "type": "Method",
+          "path": "django/contrib/gis/gdal/feature.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/contrib/gis/gdal/geometries.py:django.contrib.gis.gdal.geometries.OGRGeometry.contains",
+          "score": 0.5,
+          "symbol": "django.contrib.gis.gdal.geometries.OGRGeometry.contains",
+          "type": "Method",
+          "path": "django/contrib/gis/gdal/geometries.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/contrib/gis/gdal/geometries.py:django.contrib.gis.gdal.geometries.OGRGeometry.json",
+          "score": 0.5,
+          "symbol": "django.contrib.gis.gdal.geometries.OGRGeometry.json",
+          "type": "Method",
+          "path": "django/contrib/gis/gdal/geometries.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/contrib/gis/geos/geometry.py:django.contrib.gis.geos.geometry.GEOSGeometryBase.contains",
+          "score": 0.5,
+          "symbol": "django.contrib.gis.geos.geometry.GEOSGeometryBase.contains",
+          "type": "Method",
+          "path": "django/contrib/gis/geos/geometry.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/contrib/gis/geos/geometry.py:django.contrib.gis.geos.geometry.GEOSGeometryBase.json",
+          "score": 0.5,
+          "symbol": "django.contrib.gis.geos.geometry.GEOSGeometryBase.json",
+          "type": "Method",
+          "path": "django/contrib/gis/geos/geometry.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/contrib/gis/geos/prepared.py:django.contrib.gis.geos.prepared.PreparedGeometry.contains",
+          "score": 0.5,
+          "symbol": "django.contrib.gis.geos.prepared.PreparedGeometry.contains",
+          "type": "Method",
+          "path": "django/contrib/gis/geos/prepared.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/contrib/messages/storage/cookie.py:django.contrib.messages.storage.cookie.MessageEncoder.default",
+          "score": 0.5,
+          "symbol": "django.contrib.messages.storage.cookie.MessageEncoder.default",
+          "type": "Method",
+          "path": "django/contrib/messages/storage/cookie.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/core/serializers/json.py:django.core.serializers.json.DjangoJSONEncoder.default",
+          "score": 0.5,
+          "symbol": "django.core.serializers.json.DjangoJSONEncoder.default",
+          "type": "Method",
+          "path": "django/core/serializers/json.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/db/models/query.py:django.db.models.query.QuerySet.last",
+          "score": 0.5,
+          "symbol": "django.db.models.query.QuerySet.last",
+          "type": "Method",
+          "path": "django/db/models/query.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/http/request.py:django.http.request.HttpRequest.encoding",
+          "score": 0.5,
+          "symbol": "django.http.request.HttpRequest.encoding",
+          "type": "Method",
+          "path": "django/http/request.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/http/request.py:django.http.request.HttpRequest.encoding.setter",
+          "score": 0.5,
+          "symbol": "django.http.request.HttpRequest.encoding",
+          "type": "Method",
+          "path": "django/http/request.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/http/request.py:django.http.request.QueryDict.encoding",
+          "score": 0.5,
+          "symbol": "django.http.request.QueryDict.encoding",
+          "type": "Method",
+          "path": "django/http/request.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/http/request.py:django.http.request.QueryDict.encoding.setter",
+          "score": 0.5,
+          "symbol": "django.http.request.QueryDict.encoding",
+          "type": "Method",
+          "path": "django/http/request.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:function:django/template/defaultfilters.py:django.template.defaultfilters.default.setter",
+          "score": 0.5,
+          "symbol": "django.template.defaultfilters.default",
+          "type": "Function",
+          "path": "django/template/defaultfilters.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:function:django/template/defaultfilters.py:django.template.defaultfilters.last.setter",
+          "score": 0.5,
+          "symbol": "django.template.defaultfilters.last",
+          "type": "Function",
+          "path": "django/template/defaultfilters.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/template/defaulttags.py:django.template.defaulttags.TemplateLiteral.display",
+          "score": 0.5,
+          "symbol": "django.template.defaulttags.TemplateLiteral.display",
+          "type": "Method",
+          "path": "django/template/defaulttags.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/template/smartif.py:django.template.smartif.Literal.display",
+          "score": 0.5,
+          "symbol": "django.template.smartif.Literal.display",
+          "type": "Method",
+          "path": "django/template/smartif.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/template/smartif.py:django.template.smartif.TokenBase.display",
+          "score": 0.5,
+          "symbol": "django.template.smartif.TokenBase.display",
+          "type": "Method",
+          "path": "django/template/smartif.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/utils/dateformat.py:django.utils.dateformat.DateFormat.t",
+          "score": 0.5,
+          "symbol": "django.utils.dateformat.DateFormat.t",
+          "type": "Method",
+          "path": "django/utils/dateformat.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/utils/dateformat.py:django.utils.dateformat.TimeFormat.a",
+          "score": 0.5,
+          "symbol": "django.utils.dateformat.TimeFormat.a",
+          "type": "Method",
+          "path": "django/utils/dateformat.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:function:django/utils/regex_helper.py:django.utils.regex_helper.contains",
+          "score": 0.5,
+          "symbol": "django.utils.regex_helper.contains",
+          "type": "Function",
+          "path": "django/utils/regex_helper.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/dispatch/tests.py:tests.dispatch.tests.Callable.a",
+          "score": 0.5,
+          "symbol": "tests.dispatch.tests.Callable.a",
+          "type": "Method",
+          "path": "tests/dispatch/tests.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:test:tests/forms_tests/field_tests/test_jsonfield.py:tests.forms_tests.field_tests.test_jsonfield.JSONFieldTest.test_prepare_value",
+          "score": 0.5,
+          "symbol": "tests.forms_tests.field_tests.test_jsonfield.JSONFieldTest.test_prepare_value",
+          "type": "Test",
+          "path": "tests/forms_tests/field_tests/test_jsonfield.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:function:tests/model_inheritance/tests.py:tests.model_inheritance.tests.ModelInheritanceTests.test_create_child_no_update.a",
+          "score": 0.5,
+          "symbol": "tests.model_inheritance.tests.ModelInheritanceTests.test_create_child_no_update.a",
+          "type": "Function",
+          "path": "tests/model_inheritance/tests.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:class:tests/modeladmin/test_checks.py:tests.modeladmin.test_checks.AutocompleteFieldsTests.test_autocomplete_e036.Admin",
+          "score": 0.5,
+          "symbol": "tests.modeladmin.test_checks.AutocompleteFieldsTests.test_autocomplete_e036.Admin",
+          "type": "Class",
+          "path": "tests/modeladmin/test_checks.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:class:tests/modeladmin/test_checks.py:tests.modeladmin.test_checks.AutocompleteFieldsTests.test_autocomplete_e037.Admin",
+          "score": 0.5,
+          "symbol": "tests.modeladmin.test_checks.AutocompleteFieldsTests.test_autocomplete_e037.Admin",
+          "type": "Class",
+          "path": "tests/modeladmin/test_checks.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:class:tests/modeladmin/test_checks.py:tests.modeladmin.test_checks.AutocompleteFieldsTests.test_autocomplete_e039.Admin",
+          "score": 0.5,
+          "symbol": "tests.modeladmin.test_checks.AutocompleteFieldsTests.test_autocomplete_e039.Admin",
+          "type": "Class",
+          "path": "tests/modeladmin/test_checks.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:class:tests/modeladmin/test_checks.py:tests.modeladmin.test_checks.AutocompleteFieldsTests.test_autocomplete_e38.Admin",
+          "score": 0.5,
+          "symbol": "tests.modeladmin.test_checks.AutocompleteFieldsTests.test_autocomplete_e38.Admin",
+          "type": "Class",
+          "path": "tests/modeladmin/test_checks.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:class:tests/modeladmin/test_checks.py:tests.modeladmin.test_checks.AutocompleteFieldsTests.test_autocomplete_is_onetoone.Admin",
+          "score": 0.5,
+          "symbol": "tests.modeladmin.test_checks.AutocompleteFieldsTests.test_autocomplete_is_onetoone.Admin",
+          "type": "Class",
+          "path": "tests/modeladmin/test_checks.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:test:tests/postgres_tests/test_array.py:tests.postgres_tests.test_array.TestSimpleFormField.test_prepare_value",
+          "score": 0.5,
+          "symbol": "tests.postgres_tests.test_array.TestSimpleFormField.test_prepare_value",
+          "type": "Test",
+          "path": "tests/postgres_tests/test_array.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/serializers/test_json.py:tests.serializers.test_json.JsonSerializerTestCase.test_custom_encoder.CustomJSONEncoder.default",
+          "score": 0.5,
+          "symbol": "tests.serializers.test_json.JsonSerializerTestCase.test_custom_encoder.CustomJSONEncoder.default",
+          "type": "Method",
+          "path": "tests/serializers/test_json.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/serializers/test_jsonl.py:tests.serializers.test_jsonl.JsonlSerializerTestCase.test_custom_encoder.CustomJSONEncoder.default",
+          "score": 0.5,
+          "symbol": "tests.serializers.test_jsonl.JsonlSerializerTestCase.test_custom_encoder.CustomJSONEncoder.default",
+          "type": "Method",
+          "path": "tests/serializers/test_jsonl.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:function:tests/timezones/tests.py:tests.timezones.tests.TemplateTests.test_localtime_templatetag_and_filters.t",
+          "score": 0.5,
+          "symbol": "tests.timezones.tests.TemplateTests.test_localtime_templatetag_and_filters.t",
+          "type": "Function",
+          "path": "tests/timezones/tests.py"
+        }
+      ],
+      "unmapped": [],
+      "excluded": [],
+      "diagnostics": {
+        "m1_native_total_tokens": 7991,
+        "m1_native_items": 62,
+        "m1_native_truncated": true,
+        "traversal_limited": true,
+        "unavailable_features": [
+          "architecture_dependencies",
+          "recent_change_frequency"
+        ],
+        "omissions": {
+          "overlapping_selected_range": 20,
+          "token_budget": 4
+        },
+        "retrieval_config": {
+          "max_hops": 2,
+          "max_candidates": 100,
+          "min_edge_confidence": 0.6,
+          "weights": {
+            "task_similarity": 0.2,
+            "graph_distance": 0.3,
+            "edge_confidence": 0.2,
+            "failing_test_proximity": 0.2,
+            "public_api_risk": 0.1,
+            "recent_change_frequency": 0.1
+          },
+          "profile": "semantic-context-v1",
+          "active_features": [
+            "task_similarity",
+            "graph_distance",
+            "edge_confidence",
+            "failing_test_proximity",
+            "public_api_risk"
+          ],
+          "normalized_weights": {
+            "task_similarity": 0.20000000000000004,
+            "graph_distance": 0.30000000000000004,
+            "edge_confidence": 0.20000000000000004,
+            "failing_test_proximity": 0.20000000000000004,
+            "public_api_risk": 0.10000000000000002
+          },
+          "failing_test_traversal_limited": false,
+          "filtered_by_include": 314
+        }
+      },
+      "scoring": {
+        "instance_id": "django__django-13512",
+        "arm": "graph_f2p",
+        "scoring_version": "retrieval-scoring-v1",
+        "rank_hash": "sha256:119683ab14afc649c9b9d1ab788d0ac465ea05541db05fb81aa69a77893275fc",
+        "rank": {
+          "metrics": {
+            "file_gold_count": 2,
+            "file_mrr": 0.2,
+            "file_recall@1": 0.0,
+            "file_all_gold@1": 0,
+            "file_recall@3": 0.0,
+            "file_all_gold@3": 0,
+            "file_recall@5": 0.5,
+            "file_all_gold@5": 0,
+            "file_recall@10": 0.5,
+            "file_all_gold@10": 0,
+            "file_recall@20": 0.5,
+            "file_all_gold@20": 0,
+            "function_gold_count": 2,
+            "function_mrr": 0.2,
+            "function_recall@1": 0.0,
+            "function_all_gold@1": 0,
+            "function_recall@3": 0.0,
+            "function_all_gold@3": 0,
+            "function_recall@5": 0.5,
+            "function_all_gold@5": 0,
+            "function_recall@10": 0.5,
+            "function_all_gold@10": 0,
+            "function_recall@20": 0.5,
+            "function_all_gold@20": 0
+          },
+          "reach": {
+            "file": 0.5,
+            "function": 0.5
+          },
+          "size": {
+            "items": 86,
+            "files": 28,
+            "functions": 63
+          }
+        },
+        "packed": {
+          "budget_tokens": 8000,
+          "counter_label": "local-hf:Qwen/Qwen3-4B-Instruct-2507@cdbee75f17c01a7cc42f958dc650907174af0554:sha256=aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4:no-special-tokens",
+          "snippet_policy": {
+            "max_snippet_lines": 80,
+            "header": true,
+            "overlap": "skip_if_overlaps_different_group"
+          },
+          "metrics": {
+            "gold_file_in_context": 0.5,
+            "gold_function_in_context": 0.5,
+            "all_gold_files_in_context": 0,
+            "all_gold_functions_in_context": 0,
+            "total_tokens": 7881,
+            "tokens_to_first_gold_file": 574,
+            "tokens_to_first_gold_function": 574,
+            "items_packed": 61,
+            "skipped": {
+              "token_budget": 5,
+              "overlap": 20
+            },
+            "truncated": true
+          }
+        },
+        "excluded_count": 0,
+        "unmapped": [],
+        "excluded_reasons": {}
+      },
+      "metrics": {
+        "file_gold_count": 2,
+        "file_mrr": 0.2,
+        "file_recall@1": 0.0,
+        "file_all_gold@1": 0,
+        "file_recall@3": 0.0,
+        "file_all_gold@3": 0,
+        "file_recall@5": 0.5,
+        "file_all_gold@5": 0,
+        "file_recall@10": 0.5,
+        "file_all_gold@10": 0,
+        "file_recall@20": 0.5,
+        "file_all_gold@20": 0,
+        "function_gold_count": 2,
+        "function_mrr": 0.2,
+        "function_recall@1": 0.0,
+        "function_all_gold@1": 0,
+        "function_recall@3": 0.0,
+        "function_all_gold@3": 0,
+        "function_recall@5": 0.5,
+        "function_all_gold@5": 0,
+        "function_recall@10": 0.5,
+        "function_all_gold@10": 0,
+        "function_recall@20": 0.5,
+        "function_all_gold@20": 0,
+        "file_reach": 0.5,
+        "function_reach": 0.5,
+        "rank_items": 86,
+        "packed_gold_file_in_context": 0.5,
+        "packed_gold_function_in_context": 0.5,
+        "packed_all_gold_files_in_context": 0,
+        "packed_all_gold_functions_in_context": 0,
+        "context_tokens": 7881,
+        "packed_tokens_to_first_gold_file": 574,
+        "packed_tokens_to_first_gold_function": 574,
+        "packed_items_packed": 61,
+        "packed_skipped_token_budget": 5,
+        "packed_skipped_overlap": 20,
+        "packed_truncated": 1,
+        "unmapped_count": 0,
+        "excluded_count": 0,
+        "anchor_count": 39,
+        "no_anchors": 0,
+        "candidates_in": 86,
+        "retrieve_seconds": 8.648407399999996,
+        "mapping_coverage": 1.0,
+        "file_retrievability_coverage": 1.0
+      }
+    }
+  },
+  "graph": {
+    "build_seconds": 34.834723800000575,
+    "nodes": 185545,
+    "edges": 239648,
+    "graph_version": "sha256:d780aa00734ebc7ae155e5714ab4f96d75320311c6d934a5caddb22da72c6e3c",
+    "use_jedi": false,
+    "builder_hash": "1b89a2339f28",
+    "skipped_failed_files": 0,
+    "cached": false
+  },
+  "source_tree": {
+    "python_file_count": 2678,
+    "tree_hash": "sha256:6fd11fa41d676a5a1ee77cdf85ad4a524353e649170853f785e79b31294706d2"
+  },
+  "source_provenance": {
+    "source_backend": "github_codeload_commit_archive",
+    "snapshot_commit": "b79088306513d5ed76d31ac40ab3c15f858946ea",
+    "commit_validation": "immutable_40_SHA_URL_and_archive_root; not_git_object_hash_validation",
+    "source_file_count": 849,
+    "source_bytes": 4699470,
+    "excluded_sources": [],
+    "url": "https://codeload.github.com/django/django/tar.gz/b79088306513d5ed76d31ac40ab3c15f858946ea",
+    "archive_hash": "sha256:2e8822aac7298303f33d7608709ba4c5b7ceadd7a04219357688a3d92ad85a5e",
+    "base_commit": "b79088306513d5ed76d31ac40ab3c15f858946ea",
+    "cache_path": "data\\repositories\\archives\\django__django-b79088306513d5ed76d31ac40ab3c15f858946ea.tar.gz"
+  },
+  "fail_to_pass_count": 3,
+  "duration_seconds": 102.14406249999956
+}

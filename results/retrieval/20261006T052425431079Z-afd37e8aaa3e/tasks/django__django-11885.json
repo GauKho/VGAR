@@ -1,0 +1,7 @@
+{
+  "instance_id": "django__django-11885",
+  "status": "FAILED",
+  "error_class": "GraphError",
+  "error": "Source file set differs from graph snapshot; rebuild graph",
+  "duration_seconds": 70.78765719999956
+}

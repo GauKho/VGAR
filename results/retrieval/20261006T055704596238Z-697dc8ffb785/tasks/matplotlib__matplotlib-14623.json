@@ -1,0 +1,7 @@
+{
+  "instance_id": "matplotlib__matplotlib-14623",
+  "status": "FAILED",
+  "error_class": "GraphValidationError",
+  "error": "Invalid graph document:\n- duplicate edge id: sha256:4bb6190cf8793f2209f9004cdbe7f36c704baa9bf27513ca75e242fd6acef27f\n- duplicate edge id: sha256:b668d9435b09c1962459bcb36ad3d8547903a46c212a02a45ccf02941d745f5c\n- duplicate edge id: sha256:e7ac890991b52e450f4fefbcc549533e1e63b8478d8582698b1348c143c18bac\n- duplicate edge id: sha256:b556b42d8ea391547cc91d54fcd8d71a45278749d8ad32d44d6332bbb005be24\n- duplicate edge id: sha256:a4ba9444eb82ff2b46e8d78406af2cf3265a2bd7fa8ec5eb2782ba803e348dfa\n- duplicate edge id: sha256:dc3aea7e5e48bda4ceefc571a4a7452c0473943d13a715a464e5cf8e8b3d7148\n- duplicate edge id: sha256:21f79840655a8bd2dfde0d8500af0d340b32cc6cecfed2970c0c12e8aa1e1b3f\n- duplicate edge id: sha256:21f79840655a8bd2dfde0d8500af0d340b32cc6cecfed2970c0c12e8aa1e1b3f\n- duplicate edge id: sha256:21f79840655a8bd2dfde0d8500af0d340b32cc6cecfed2970c0c12e8aa1e1b3f\n- duplicate edge id: sha256:bddf6812b8bdc2a27b856e735984dff2c24466444ddfd43a6cc1744e879c1f9a",
+  "duration_seconds": 13.1522630999998
+}

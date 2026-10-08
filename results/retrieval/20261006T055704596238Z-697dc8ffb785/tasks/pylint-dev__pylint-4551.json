@@ -1,0 +1,7 @@
+{
+  "instance_id": "pylint-dev__pylint-4551",
+  "status": "FAILED",
+  "error_class": "GraphValidationError",
+  "error": "Invalid graph document:\n- duplicate edge id: sha256:1697928eaa5104554e7ec456abb065f02ff4303068a7dd8f6f104687bdd4b0e8\n- duplicate edge id: sha256:f055f29e7cac21747d100dd12edb28a903864b3d3740adb318df007ed60cda34\n- duplicate edge id: sha256:d523b7cd0af661ee873c842292fbdc4306c07eb7fe6512aafb44bd54d679e30e\n- duplicate edge id: sha256:e43ea6eca2cb8e3c51ac75fdff89110804e9992f16224987ad639406eecca4f5\n- duplicate edge id: sha256:20f12f639d859a7765b89547ec64ee951ed4b8d673f3b8deca196fe51124c0d6\n- duplicate edge id: sha256:26c37ff19bf5e07e6520141f3c553d4c3d667bb4d532d3001042a9a5a42862df\n- duplicate edge id: sha256:ef09a2d8ddeb7eb1b5531eacfacf5bd74c417a2234973a8af91db14b96a72d49\n- duplicate edge id: sha256:4106dc13937675b92f29e2043cbeeb3bb2110aa385962669f1ee4f7604c7aedd\n- duplicate edge id: sha256:4106dc13937675b92f29e2043cbeeb3bb2110aa385962669f1ee4f7604c7aedd\n- duplicate edge id: sha256:4106dc13937675b92f29e2043cbeeb3bb2110aa385962669f1ee4f7604c7aedd\n- duplicate edge id: sha256:ef08313cc595136e50a26d15779dedac1faa564c4bc4ac69c013434a0fcf5b30\n- duplicate edge id: sha256:f91c295ed094df8d7be1bb6cabbabe41fe27638a1b75731c2b464d5b262d790a\n- duplicate edge id: sha256:85c5c6b9cd0b6b60f6ff8de43e4fd5727ff39d97c5c2661ba05ffd9c2dce86d2",
+  "duration_seconds": 7.2009477000001425
+}

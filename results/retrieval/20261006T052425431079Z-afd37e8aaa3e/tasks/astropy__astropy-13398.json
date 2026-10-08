@@ -1,0 +1,7 @@
+{
+  "instance_id": "astropy__astropy-13398",
+  "status": "FAILED",
+  "error_class": "GraphError",
+  "error": "Source file set differs from graph snapshot; rebuild graph",
+  "duration_seconds": 47.184309199999916
+}

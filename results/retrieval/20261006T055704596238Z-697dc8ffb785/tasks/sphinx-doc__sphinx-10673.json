@@ -1,0 +1,7 @@
+{
+  "instance_id": "sphinx-doc__sphinx-10673",
+  "status": "FAILED",
+  "error_class": "GraphValidationError",
+  "error": "Invalid graph document:\n- duplicate edge id: sha256:22bf46c8ce5d8cc5672f41a880216695468ac3e61da3fda84014bf73bd21b6a9\n- duplicate edge id: sha256:fc5352f80f58fdc47cba056e4dc856ebb7c737788783744d3aaca37727a0e845\n- duplicate edge id: sha256:ffda06d15800d7f035ad1c1083408a25ee0d5f23ef372760200350e902235b68\n- duplicate edge id: sha256:ffda06d15800d7f035ad1c1083408a25ee0d5f23ef372760200350e902235b68\n- duplicate edge id: sha256:ffda06d15800d7f035ad1c1083408a25ee0d5f23ef372760200350e902235b68\n- edges[44212] must not be a self-loop",
+  "duration_seconds": 8.183410900000126
+}

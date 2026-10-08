@@ -1,0 +1,80 @@
+{
+  "instance_id": "django__django-13512",
+  "status": "FAILED",
+  "complete": true,
+  "command_argv": [
+    "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-m",
+    "vgar.evaluation.retrieval.worker",
+    "D:\\Project\\CAPSTONES\\VGAR\\results\\retrieval\\20261007T014445273889Z-664d06a6c1c0\\attempts\\django__django-13512\\e8d8ab502db64f558b9f208a06b37cda\\request.json",
+    "D:\\Project\\CAPSTONES\\VGAR\\results\\retrieval\\20261007T014445273889Z-664d06a6c1c0\\attempts\\django__django-13512\\e8d8ab502db64f558b9f208a06b37cda"
+  ],
+  "cwd": "D:\\Project\\CAPSTONES\\VGAR",
+  "interpreter": "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe",
+  "timeout_seconds": 300.0,
+  "started_utc": "2026-10-07T02:27:38.290153+00:00",
+  "phase": "EXTRACT_TREE",
+  "peak_rss_bytes": 194367488,
+  "stages": [
+    {
+      "phase": "TOKENIZER",
+      "duration_seconds": 0.5093233999941731,
+      "peak_rss_bytes": 194367488
+    },
+    {
+      "phase": "LOAD_SOURCE",
+      "duration_seconds": 0.6245672000004561,
+      "peak_rss_bytes": 194367488
+    },
+    {
+      "phase": "EXTRACT_TREE",
+      "duration_seconds": 1.672728300000017,
+      "peak_rss_bytes": 194367488
+    },
+    {
+      "phase": "WRITE",
+      "duration_seconds": 0.0016399999949499033,
+      "peak_rss_bytes": 194367488
+    }
+  ],
+  "error_class": "PermissionError",
+  "error": "[WinError 5] Access is denied: 'D:\\\\Project\\\\CAPSTONES\\\\VGAR\\\\data\\\\repositories\\\\trees\\\\rebuilt\\\\.vgar-tree-partial-bam65wud' -> 'D:\\\\Project\\\\CAPSTONES\\\\VGAR\\\\data\\\\repositories\\\\trees\\\\rebuilt\\\\e9f3fd01d112'",
+  "traceback": "Traceback (most recent call last):\n  File \"D:\\Project\\CAPSTONES\\VGAR\\src\\vgar\\evaluation\\retrieval\\worker.py\", line 147, in main\n    result = run_task(request, stages)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\Project\\CAPSTONES\\VGAR\\src\\vgar\\evaluation\\retrieval\\worker.py\", line 94, in run_task\n    tree_meta = extract_python_tree(provenance[\"cache_path\"], row[\"repo\"], row[\"base_commit\"], tree)\n                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\Project\\CAPSTONES\\VGAR\\src\\vgar\\evaluation\\retrieval\\graph_arm.py\", line 77, in extract_python_tree\n    partial.rename(destination)\n  File \"C:\\Program Files\\Python311\\Lib\\pathlib.py\", line 1175, in rename\n    os.rename(self, target)\nPermissionError: [WinError 5] Access is denied: 'D:\\\\Project\\\\CAPSTONES\\\\VGAR\\\\data\\\\repositories\\\\trees\\\\rebuilt\\\\.vgar-tree-partial-bam65wud' -> 'D:\\\\Project\\\\CAPSTONES\\\\VGAR\\\\data\\\\repositories\\\\trees\\\\rebuilt\\\\e9f3fd01d112'\n",
+  "ended_utc": "2026-10-07T02:27:41.688585+00:00",
+  "duration_seconds": 3.39655700000003,
+  "worker_exit_code": 1,
+  "rss_samples": [
+    {
+      "elapsed_seconds": 0.009029799999552779,
+      "peak_rss_bytes": 2105344
+    },
+    {
+      "elapsed_seconds": 0.5168149000019184,
+      "peak_rss_bytes": 87715840
+    },
+    {
+      "elapsed_seconds": 1.0389204000020982,
+      "peak_rss_bytes": 72192000
+    },
+    {
+      "elapsed_seconds": 1.5583601000034832,
+      "peak_rss_bytes": 95170560
+    },
+    {
+      "elapsed_seconds": 2.072243200003868,
+      "peak_rss_bytes": 87838720
+    },
+    {
+      "elapsed_seconds": 2.597831600003701,
+      "peak_rss_bytes": 88481792
+    },
+    {
+      "elapsed_seconds": 3.1109957000007853,
+      "peak_rss_bytes": 96018432
+    }
+  ],
+  "rss_measurement": "max(worker-reported peak RSS, parent-observed tree RSS at 0.5s intervals); not GPU/virtual memory",
+  "stdout": "",
+  "stderr": ""
+}

@@ -1,0 +1,3380 @@
+{
+  "instance_id": "django__django-12741",
+  "repository": "django/django",
+  "base_commit": "537d422942b53bc0a2b6a51968f379c0de07793c",
+  "status": "SUCCEEDED",
+  "query_hash": "sha256:06e228f603008bf1f807cfa5e10f0e54802d174667e2297d56503df2a19ac25d",
+  "patch_hash": "sha256:4092d481eddfdf2c6cb1201f684edc689699a27af77bfa78590187f92864191a",
+  "corpus_hash": "sha256:8f18923b992ac2e2424981aa58e1a493e55479104a1c1b7f90aaec1259e5fbed",
+  "gold": {
+    "gold_files": [
+      "django/core/management/commands/flush.py",
+      "django/db/backends/base/operations.py"
+    ],
+    "gold_functions": [
+      "django/core/management/commands/flush.py::django.core.management.commands.flush.Command.handle",
+      "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.execute_sql_flush"
+    ],
+    "all_changed_source_files": [
+      "django/core/management/commands/flush.py",
+      "django/db/backends/base/operations.py"
+    ],
+    "unretrievable_files": [],
+    "mapping_events": [
+      {
+        "path": "django/core/management/commands/flush.py",
+        "side": "old",
+        "line": 63,
+        "function_id": "django/core/management/commands/flush.py::django.core.management.commands.flush.Command.handle",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "django/core/management/commands/flush.py",
+        "side": "new",
+        "line": 63,
+        "function_id": "django/core/management/commands/flush.py::django.core.management.commands.flush.Command.handle",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "django/db/backends/base/operations.py",
+        "side": "old",
+        "line": 403,
+        "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.execute_sql_flush",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "django/db/backends/base/operations.py",
+        "side": "old",
+        "line": 405,
+        "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.execute_sql_flush",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "django/db/backends/base/operations.py",
+        "side": "new",
+        "line": 403,
+        "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.execute_sql_flush",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "django/db/backends/base/operations.py",
+        "side": "new",
+        "line": 405,
+        "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.execute_sql_flush",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "django/db/backends/base/operations.py",
+        "side": "new",
+        "line": 406,
+        "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.execute_sql_flush",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "django/db/backends/base/operations.py",
+        "side": "new",
+        "line": 407,
+        "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.execute_sql_flush",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "django/db/backends/base/operations.py",
+        "side": "new",
+        "line": 408,
+        "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.execute_sql_flush",
+        "disposition": "mapped_function"
+      }
+    ],
+    "function_labels_complete": true,
+    "mapping_coverage": 1.0,
+    "file_retrievability_coverage": 1.0,
+    "label_semantics": "developer_changed_code_proxy_not_complete_relevance"
+  },
+  "arms": {
+    "graph": {
+      "rank_hash": "sha256:f1dd2a0ab278a6b27eb99249c059ac6d2d5acd07ad5f671b371ef95ebde1e890",
+      "ranking_total_count": 81,
+      "ranked": [
+        {
+          "rank": 1,
+          "item_id": "vgar:django__django:python:method:django/core/signing.py:django.core.signing.Signer.signature",
+          "path": "django/core/signing.py",
+          "kind": "method",
+          "symbol": "django.core.signing.Signer.signature",
+          "function_id": "django/core/signing.py::django.core.signing.Signer.signature",
+          "score": 0.6470238095238096,
+          "lines": [
+            161,
+            162
+          ],
+          "snippet_sha256": "sha256:0aaca6668ead608c09f0b5c723af8e8817ff750d675738c0e7c605b0324e1d48"
+        },
+        {
+          "rank": 2,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.execute_sql_flush",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.execute_sql_flush",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.execute_sql_flush",
+          "score": 0.6423780487804879,
+          "lines": [
+            403,
+            408
+          ],
+          "snippet_sha256": "sha256:3fd7237e7e3fada7907dcfe8e7ce530b473bbff7287898a5fa5748b2f129f973"
+        },
+        {
+          "rank": 3,
+          "item_id": "vgar:django__django:python:function:django/core/management/sql.py:django.core.management.sql.sql_flush",
+          "path": "django/core/management/sql.py",
+          "kind": "function",
+          "symbol": "django.core.management.sql.sql_flush",
+          "function_id": "django/core/management/sql.py::django.core.management.sql.sql_flush",
+          "score": 0.625,
+          "lines": [
+            5,
+            21
+          ],
+          "snippet_sha256": "sha256:f61caa01940c3a2e939166ad30819fc23fbabc39a7f6b5f6b5952539b60ffc59"
+        },
+        {
+          "rank": 4,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.sql_flush",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.sql_flush",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.sql_flush",
+          "score": 0.5937500000000001,
+          "lines": [
+            385,
+            401
+          ],
+          "snippet_sha256": "sha256:3201fb96db6702e7fc56c581fa3867ddcedbeffd81d510a071789114ad1f8880"
+        },
+        {
+          "rank": 5,
+          "item_id": "vgar:django__django:python:method:django/db/backends/mysql/operations.py:django.db.backends.mysql.operations.DatabaseOperations.sql_flush",
+          "path": "django/db/backends/mysql/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.mysql.operations.DatabaseOperations.sql_flush",
+          "function_id": "django/db/backends/mysql/operations.py::django.db.backends.mysql.operations.DatabaseOperations.sql_flush",
+          "score": 0.5937500000000001,
+          "lines": [
+            196,
+            221
+          ],
+          "snippet_sha256": "sha256:c298ffe602bb60825227d917f8ee29043727d16a891c481ee9b3b29947d5db42"
+        },
+        {
+          "rank": 6,
+          "item_id": "vgar:django__django:python:method:django/db/backends/oracle/operations.py:django.db.backends.oracle.operations.DatabaseOperations.sql_flush",
+          "path": "django/db/backends/oracle/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.oracle.operations.DatabaseOperations.sql_flush",
+          "function_id": "django/db/backends/oracle/operations.py::django.db.backends.oracle.operations.DatabaseOperations.sql_flush",
+          "score": 0.5937500000000001,
+          "lines": [
+            407,
+            458
+          ],
+          "snippet_sha256": "sha256:b32dc614ad1dd0c142689d9da4046082579477c9e456e07136279fb4f6c3c1e4"
+        },
+        {
+          "rank": 7,
+          "item_id": "vgar:django__django:python:method:django/db/backends/postgresql/operations.py:django.db.backends.postgresql.operations.DatabaseOperations.sql_flush",
+          "path": "django/db/backends/postgresql/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.postgresql.operations.DatabaseOperations.sql_flush",
+          "function_id": "django/db/backends/postgresql/operations.py::django.db.backends.postgresql.operations.DatabaseOperations.sql_flush",
+          "score": 0.5937500000000001,
+          "lines": [
+            120,
+            134
+          ],
+          "snippet_sha256": "sha256:3d5760d36ff5d9aae66c9722be3888a468444112394858d5b54c45922e787230"
+        },
+        {
+          "rank": 8,
+          "item_id": "vgar:django__django:python:method:django/db/backends/sqlite3/operations.py:django.db.backends.sqlite3.operations.DatabaseOperations.sql_flush",
+          "path": "django/db/backends/sqlite3/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.sqlite3.operations.DatabaseOperations.sql_flush",
+          "function_id": "django/db/backends/sqlite3/operations.py::django.db.backends.sqlite3.operations.DatabaseOperations.sql_flush",
+          "score": 0.5937500000000001,
+          "lines": [
+            199,
+            210
+          ],
+          "snippet_sha256": "sha256:3d721c0a586399a748e8bd1185a69160ca41fe34a485aaebbd2dd385bdc47148"
+        },
+        {
+          "rank": 9,
+          "item_id": "vgar:django__django:python:method:django/db/models/query.py:django.db.models.query.QuerySet.using",
+          "path": "django/db/models/query.py",
+          "kind": "method",
+          "symbol": "django.db.models.query.QuerySet.using",
+          "function_id": "django/db/models/query.py::django.db.models.query.QuerySet.using",
+          "score": 0.5863095238095238,
+          "lines": [
+            1192,
+            1196
+          ],
+          "snippet_sha256": "sha256:1c809c9d68984faf651447c70470cd3b4684b84d7e01579221f50436812fdbbc"
+        },
+        {
+          "rank": 10,
+          "item_id": "vgar:django__django:python:method:django/db/models/query.py:django.db.models.query.RawQuerySet.using",
+          "path": "django/db/models/query.py",
+          "kind": "method",
+          "symbol": "django.db.models.query.RawQuerySet.using",
+          "function_id": "django/db/models/query.py::django.db.models.query.RawQuerySet.using",
+          "score": 0.5857558139534884,
+          "lines": [
+            1501,
+            1508
+          ],
+          "snippet_sha256": "sha256:6955d91847aade9e28e4cf99154eeac4804ed39a4259a326336c1f87f13f825a"
+        },
+        {
+          "rank": 11,
+          "item_id": "vgar:django__django:python:method:django/db/backends/oracle/operations.py:django.db.backends.oracle.operations.DatabaseOperations.quote_name",
+          "path": "django/db/backends/oracle/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.oracle.operations.DatabaseOperations.quote_name",
+          "function_id": "django/db/backends/oracle/operations.py::django.db.backends.oracle.operations.DatabaseOperations.quote_name",
+          "score": 0.45400641025641025,
+          "lines": [
+            329,
+            340
+          ],
+          "snippet_sha256": "sha256:87110c492ffdd8d5d0d20992d0078d550b8b9f6ad69bc54595813ace71c2cf05"
+        },
+        {
+          "rank": 12,
+          "item_id": "vgar:django__django:python:method:django/db/backends/postgresql/operations.py:django.db.backends.postgresql.operations.DatabaseOperations.quote_name",
+          "path": "django/db/backends/postgresql/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.postgresql.operations.DatabaseOperations.quote_name",
+          "function_id": "django/db/backends/postgresql/operations.py::django.db.backends.postgresql.operations.DatabaseOperations.quote_name",
+          "score": 0.44825581395348846,
+          "lines": [
+            112,
+            115
+          ],
+          "snippet_sha256": "sha256:15fbc65c2196f951fcbcbb8176017b83b58c5db901902b6e3a18b53d342cd737"
+        },
+        {
+          "rank": 13,
+          "item_id": "vgar:django__django:python:function:django/core/signing.py:django.core.signing.base64_hmac",
+          "path": "django/core/signing.py",
+          "kind": "function",
+          "symbol": "django.core.signing.base64_hmac",
+          "function_id": "django/core/signing.py::django.core.signing.base64_hmac",
+          "score": 0.4469858156028369,
+          "lines": [
+            71,
+            72
+          ],
+          "snippet_sha256": "sha256:4cdbe44a1fcb4f9b12ed371eb1f5420b83ad3eb4f53c7eeaedf6bacae351ee66"
+        },
+        {
+          "rank": 14,
+          "item_id": "vgar:django__django:python:method:django/db/backends/mysql/operations.py:django.db.backends.mysql.operations.DatabaseOperations.quote_name",
+          "path": "django/db/backends/mysql/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.mysql.operations.DatabaseOperations.quote_name",
+          "function_id": "django/db/backends/mysql/operations.py::django.db.backends.mysql.operations.DatabaseOperations.quote_name",
+          "score": 0.4451308139534884,
+          "lines": [
+            175,
+            178
+          ],
+          "snippet_sha256": "sha256:c50d3e225fdaa1b49c60c37aaae494e3e69172aedcc6c4edd6d56991fc88a7b7"
+        },
+        {
+          "rank": 15,
+          "item_id": "vgar:django__django:python:method:django/db/backends/oracle/operations.py:django.db.backends.oracle.operations.DatabaseOperations.sequence_reset_by_name_sql",
+          "path": "django/db/backends/oracle/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.oracle.operations.DatabaseOperations.sequence_reset_by_name_sql",
+          "function_id": "django/db/backends/oracle/operations.py::django.db.backends.oracle.operations.DatabaseOperations.sequence_reset_by_name_sql",
+          "score": 0.4388586956521739,
+          "lines": [
+            460,
+            474
+          ],
+          "snippet_sha256": "sha256:a2647c61e1bad526db6e2fb127af1df56e29f5cf86c606ead23ff3984c72fc76"
+        },
+        {
+          "rank": 16,
+          "item_id": "vgar:django__django:python:function:django/views/debug.py:django.views.debug.technical_500_response",
+          "path": "django/views/debug.py",
+          "kind": "function",
+          "symbol": "django.views.debug.technical_500_response",
+          "function_id": "django/views/debug.py::django.views.debug.technical_500_response",
+          "score": 0.43813775510204084,
+          "lines": [
+            45,
+            56
+          ],
+          "snippet_sha256": "sha256:93e51222aca7cdba965aa663983e688dfe75f5db32cf954f220cd1880083f1dc"
+        },
+        {
+          "rank": 17,
+          "item_id": "vgar:django__django:python:method:django/db/backends/sqlite3/operations.py:django.db.backends.sqlite3.operations.DatabaseOperations.quote_name",
+          "path": "django/db/backends/sqlite3/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.sqlite3.operations.DatabaseOperations.quote_name",
+          "function_id": "django/db/backends/sqlite3/operations.py::django.db.backends.sqlite3.operations.DatabaseOperations.quote_name",
+          "score": 0.4295058139534884,
+          "lines": [
+            166,
+            169
+          ],
+          "snippet_sha256": "sha256:15fbc65c2196f951fcbcbb8176017b83b58c5db901902b6e3a18b53d342cd737"
+        },
+        {
+          "rank": 18,
+          "item_id": "vgar:django__django:python:method:django/core/signing.py:django.core.signing.Signer.sign",
+          "path": "django/core/signing.py",
+          "kind": "method",
+          "symbol": "django.core.signing.Signer.sign",
+          "function_id": "django/core/signing.py::django.core.signing.Signer.sign",
+          "score": 0.4116279069767442,
+          "lines": [
+            168,
+            169
+          ],
+          "snippet_sha256": "sha256:3b8c2a3f2924648e77d1b0d853fee1eb9a9fc46343b8f50a15d3c79fe865c00f"
+        },
+        {
+          "rank": 19,
+          "item_id": "vgar:django__django:python:method:django/core/signing.py:django.core.signing.Signer.unsign",
+          "path": "django/core/signing.py",
+          "kind": "method",
+          "symbol": "django.core.signing.Signer.unsign",
+          "function_id": "django/core/signing.py::django.core.signing.Signer.unsign",
+          "score": 0.4113636363636363,
+          "lines": [
+            171,
+            182
+          ],
+          "snippet_sha256": "sha256:663edae41f34c63244e314c6dde66b2266ad671ace357b5dae4f6fec05f7fa64"
+        },
+        {
+          "rank": 20,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.adapt_datefield_value",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.adapt_datefield_value",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.adapt_datefield_value",
+          "score": 0.40189393939393936,
+          "lines": [
+            486,
+            493
+          ],
+          "snippet_sha256": "sha256:e56b03de04c23d1d17a13e2ba0e77804637518c91232971af26e8d7e50cc20ee"
+        },
+        {
+          "rank": 21,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.adapt_datetimefield_value",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.adapt_datetimefield_value",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.adapt_datetimefield_value",
+          "score": 0.40189393939393936,
+          "lines": [
+            495,
+            502
+          ],
+          "snippet_sha256": "sha256:f8580370010af3f29efab5ebbf421af9399c30644885d18ba38aec7ee6d10bd8"
+        },
+        {
+          "rank": 22,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.date_extract_sql",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.date_extract_sql",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.date_extract_sql",
+          "score": 0.3953457446808511,
+          "lines": [
+            95,
+            100
+          ],
+          "snippet_sha256": "sha256:a07efe4607b8bfce948c991c0f268cf716496e5bf78118eb99c7fcd265ebb024"
+        },
+        {
+          "rank": 23,
+          "item_id": "vgar:django__django:python:method:django/core/management/commands/flush.py:django.core.management.commands.flush.Command.handle",
+          "path": "django/core/management/commands/flush.py",
+          "kind": "method",
+          "symbol": "django.core.management.commands.flush.Command.handle",
+          "function_id": "django/core/management/commands/flush.py::django.core.management.commands.flush.Command.handle",
+          "score": 0.3920454545454546,
+          "lines": [
+            27,
+            82
+          ],
+          "snippet_sha256": "sha256:38c9261f2046a25954dee65aa34be827b166146fe1325948d0407df21f4bac5c"
+        },
+        {
+          "rank": 24,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.adapt_timefield_value",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.adapt_timefield_value",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.adapt_timefield_value",
+          "score": 0.39147727272727273,
+          "lines": [
+            504,
+            513
+          ],
+          "snippet_sha256": "sha256:92b377f1614d12db0bfcd77bb52da94de350b14fb5f9cb93d13c02b83dedcf66"
+        },
+        {
+          "rank": 25,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.combine_expression",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.combine_expression",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.combine_expression",
+          "score": 0.3904891304347826,
+          "lines": [
+            592,
+            600
+          ],
+          "snippet_sha256": "sha256:5cbb3b6e7dc7cf3196946e0fbf451fd96b830eae4223783b9e0044b188904a9a"
+        },
+        {
+          "rank": 26,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.adapt_decimalfield_value",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.adapt_decimalfield_value",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.adapt_decimalfield_value",
+          "score": 0.38915816326530617,
+          "lines": [
+            515,
+            520
+          ],
+          "snippet_sha256": "sha256:18e71087475e9269ee6b22329426ca1a7c995e9464dc91459a562ffca6c6ce2e"
+        },
+        {
+          "rank": 27,
+          "item_id": "vgar:django__django:python:method:django/core/management/commands/sqlflush.py:django.core.management.commands.sqlflush.Command.handle",
+          "path": "django/core/management/commands/sqlflush.py",
+          "kind": "method",
+          "symbol": "django.core.management.commands.sqlflush.Command.handle",
+          "function_id": "django/core/management/commands/sqlflush.py::django.core.management.commands.sqlflush.Command.handle",
+          "score": 0.3861111111111111,
+          "lines": [
+            21,
+            25
+          ],
+          "snippet_sha256": "sha256:a541fbc7013d4e4dc457a4a7234b8685d38ee22a614cf3c91f41b6547fb97d6c"
+        },
+        {
+          "rank": 28,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.field_cast_sql",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.field_cast_sql",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.field_cast_sql",
+          "score": 0.3715909090909091,
+          "lines": [
+            187,
+            194
+          ],
+          "snippet_sha256": "sha256:cf8c39efecc20ffb04ee295bbc01a294f1a1929631b1b688dcc0f96c46ac9f2e"
+        },
+        {
+          "rank": 29,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.for_update_sql",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.for_update_sql",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.for_update_sql",
+          "score": 0.3694148936170213,
+          "lines": [
+            203,
+            211
+          ],
+          "snippet_sha256": "sha256:0a8ade52cb32dacbc8b18a7c45a19dc295fb158b0177989eb38f91f5a10b9f22"
+        },
+        {
+          "rank": 30,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.deferrable_sql",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.deferrable_sql",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.deferrable_sql",
+          "score": 0.3672619047619048,
+          "lines": [
+            162,
+            167
+          ],
+          "snippet_sha256": "sha256:2ba3c1ad97aeaf8b929b4e5b7ad8c619815b1eab7087f40955773fdfe5952913"
+        },
+        {
+          "rank": 31,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.autoinc_sql",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.autoinc_sql",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.autoinc_sql",
+          "score": 0.36590909090909096,
+          "lines": [
+            60,
+            67
+          ],
+          "snippet_sha256": "sha256:4aa8804caf79076225d9b5a1206c1909bec944fe6baee5b4a70f68630e7f6f72"
+        },
+        {
+          "rank": 32,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.binary_placeholder_sql",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.binary_placeholder_sql",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.binary_placeholder_sql",
+          "score": 0.36590909090909096,
+          "lines": [
+            605,
+            610
+          ],
+          "snippet_sha256": "sha256:26b14abc9f4c127ac049b93abe6731161701bb9f0be8689edecf8d3f22308fc2"
+        },
+        {
+          "rank": 33,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.cache_key_culling_sql",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.cache_key_culling_sql",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.cache_key_culling_sql",
+          "score": 0.36590909090909096,
+          "lines": [
+            77,
+            85
+          ],
+          "snippet_sha256": "sha256:974bb0dddff1314052bae4fa05f9b21ec519c260c09c6ba3353c602d17617b5f"
+        },
+        {
+          "rank": 34,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.date_interval_sql",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.date_interval_sql",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.date_interval_sql",
+          "score": 0.36590909090909096,
+          "lines": [
+            102,
+            106
+          ],
+          "snippet_sha256": "sha256:c53364c6a512f7cd6306630fe97c9aeb45eea50ba6466f768464a52a77285590"
+        },
+        {
+          "rank": 35,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.distinct_sql",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.distinct_sql",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.distinct_sql",
+          "score": 0.36590909090909096,
+          "lines": [
+            169,
+            178
+          ],
+          "snippet_sha256": "sha256:b6f0aab8b19f26c76455076cf3dc1bfb9000cca4036c4a593c73007d02b17f68"
+        },
+        {
+          "rank": 36,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.max_in_list_size",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.max_in_list_size",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.max_in_list_size",
+          "score": 0.36590909090909096,
+          "lines": [
+            268,
+            273
+          ],
+          "snippet_sha256": "sha256:ddd26dbf22f44e32dea3f94f751cc7df6547478bf2d4ec8e25f8a1f8012030fa"
+        },
+        {
+          "rank": 37,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.convert_durationfield_value",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.convert_durationfield_value",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.convert_durationfield_value",
+          "score": 0.3652777777777778,
+          "lines": [
+            570,
+            572
+          ],
+          "snippet_sha256": "sha256:2e278711d76f149fa3223e5cdb86a3dea70b4f69107f6e8f7c5f73fe822ce95f"
+        },
+        {
+          "rank": 38,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.end_transaction_sql",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.end_transaction_sql",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.end_transaction_sql",
+          "score": 0.3652777777777778,
+          "lines": [
+            434,
+            438
+          ],
+          "snippet_sha256": "sha256:e3b4708220fa10684bd821cbcc564b78d2d01632a758d0e06592869b1a53f7e8"
+        },
+        {
+          "rank": 39,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.ignore_conflicts_suffix_sql",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.ignore_conflicts_suffix_sql",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.ignore_conflicts_suffix_sql",
+          "score": 0.3652777777777778,
+          "lines": [
+            692,
+            693
+          ],
+          "snippet_sha256": "sha256:efb7755e0cf8e93d716003b67652f84c7e13e128cc0f46f051ec462a268f933e"
+        },
+        {
+          "rank": 40,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.integer_field_range",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.integer_field_range",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.integer_field_range",
+          "score": 0.3652777777777778,
+          "lines": [
+            619,
+            625
+          ],
+          "snippet_sha256": "sha256:64f4a10ee6e2749322d1de1b86c751569bc1ecaa16561536a6a030e52db3e019"
+        },
+        {
+          "rank": 41,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.lookup_cast",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.lookup_cast",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.lookup_cast",
+          "score": 0.3652777777777778,
+          "lines": [
+            260,
+            266
+          ],
+          "snippet_sha256": "sha256:7d2f11a8186e2a2ad384e140952557f55843ec2b59a37608f172753d6faccbda"
+        },
+        {
+          "rank": 42,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.last_executed_query",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.last_executed_query",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.last_executed_query",
+          "score": 0.3646739130434783,
+          "lines": [
+            229,
+            249
+          ],
+          "snippet_sha256": "sha256:316afdecb7e87b3094caf23f748350b28dadba4cdc4303a0858577284d3b6910"
+        },
+        {
+          "rank": 43,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.limit_offset_sql",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.limit_offset_sql",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.limit_offset_sql",
+          "score": 0.3646739130434783,
+          "lines": [
+            221,
+            227
+          ],
+          "snippet_sha256": "sha256:e5c020c533926cb21431412497ce0fdac2d55538eea110cff34578d58b42eb62"
+        },
+        {
+          "rank": 44,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.date_trunc_sql",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.date_trunc_sql",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.date_trunc_sql",
+          "score": 0.3640957446808511,
+          "lines": [
+            108,
+            114
+          ],
+          "snippet_sha256": "sha256:4013b26dd90c5c8a5b132674899630da1bcd02cf923087e717740929f7a274ff"
+        },
+        {
+          "rank": 45,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.datetime_cast_date_sql",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.datetime_cast_date_sql",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.datetime_cast_date_sql",
+          "score": 0.3640957446808511,
+          "lines": [
+            116,
+            123
+          ],
+          "snippet_sha256": "sha256:2559b81c126129411640d589508a2678864cc308a62e395f1726536369b1308e"
+        },
+        {
+          "rank": 46,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.datetime_cast_time_sql",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.datetime_cast_time_sql",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.datetime_cast_time_sql",
+          "score": 0.3640957446808511,
+          "lines": [
+            125,
+            129
+          ],
+          "snippet_sha256": "sha256:ef0911f01c014e5bca9cbe1bdf0e8f4736c0a6a634dbd721f564807d6b5e5e6b"
+        },
+        {
+          "rank": 47,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.datetime_extract_sql",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.datetime_extract_sql",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.datetime_extract_sql",
+          "score": 0.3635416666666667,
+          "lines": [
+            131,
+            137
+          ],
+          "snippet_sha256": "sha256:12d88023d67365b6f0e75cce127f7c37643afb1257c99defb5cbcdbed6ffb3ad"
+        },
+        {
+          "rank": 48,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.datetime_trunc_sql",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.datetime_trunc_sql",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.datetime_trunc_sql",
+          "score": 0.3635416666666667,
+          "lines": [
+            139,
+            145
+          ],
+          "snippet_sha256": "sha256:41a73ecc6cc2dbd0d5471c83e83059370ff386561dce7e794245c19126ec0d1f"
+        },
+        {
+          "rank": 49,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.compiler",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.compiler",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.compiler",
+          "score": 0.3607558139534884,
+          "lines": [
+            325,
+            333
+          ],
+          "snippet_sha256": "sha256:7015e16544728e23452a653bf4215ba9c76df29bdb1f992d54cf973ff80dc4a7"
+        },
+        {
+          "rank": 50,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.adapt_ipaddressfield_value",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.adapt_ipaddressfield_value",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.adapt_ipaddressfield_value",
+          "score": 0.36022727272727273,
+          "lines": [
+            522,
+            527
+          ],
+          "snippet_sha256": "sha256:112f786905307bf93d793339bef88de62657a1baaf70c23f2dcdbc543bb5d1fb"
+        },
+        {
+          "rank": 51,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.adapt_unknown_value",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.adapt_unknown_value",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.adapt_unknown_value",
+          "score": 0.36022727272727273,
+          "lines": [
+            467,
+            484
+          ],
+          "snippet_sha256": "sha256:c58be903fa582f067c1507fc8792bfc6428c40d154daabc32db961f267b5f66e"
+        },
+        {
+          "rank": 52,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.check_expression_support",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.check_expression_support",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.check_expression_support",
+          "score": 0.36022727272727273,
+          "lines": [
+            574,
+            583
+          ],
+          "snippet_sha256": "sha256:e82d0f2592be4a3301678e86424ff2ce77cd1e81eff96e87d36dbb0baba7bbd9"
+        },
+        {
+          "rank": 53,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.force_no_ordering",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.force_no_ordering",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.force_no_ordering",
+          "score": 0.36022727272727273,
+          "lines": [
+            196,
+            201
+          ],
+          "snippet_sha256": "sha256:cdcac694581d341dae6e32cf5f94e9c7f9995bd4419010a99e32231d183fbb62"
+        },
+        {
+          "rank": 54,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.get_db_converters",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.get_db_converters",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.get_db_converters",
+          "score": 0.36022727272727273,
+          "lines": [
+            561,
+            568
+          ],
+          "snippet_sha256": "sha256:7aa03e720078cf975085f6a9010a2dd8863f36fa0f79b2ede307bd145b000104"
+        },
+        {
+          "rank": 55,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.max_name_length",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.max_name_length",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.max_name_length",
+          "score": 0.36022727272727273,
+          "lines": [
+            275,
+            280
+          ],
+          "snippet_sha256": "sha256:9e173117e1ec50f683e517b33f0a47a6cc8184fa942ca9d95d972f4f9316f316"
+        },
+        {
+          "rank": 56,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.bulk_batch_size",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.bulk_batch_size",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.bulk_batch_size",
+          "score": 0.3592391304347826,
+          "lines": [
+            69,
+            75
+          ],
+          "snippet_sha256": "sha256:7d01a12e9d6e400671144dc3076d98f3f50ec4f6bcd4150fdfd09755946f2512"
+        },
+        {
+          "rank": 57,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.insert_statement",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.insert_statement",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.insert_statement",
+          "score": 0.3592391304347826,
+          "lines": [
+            689,
+            690
+          ],
+          "snippet_sha256": "sha256:cd20ca26f0d3bd945d69a49e4366e04838daaea7eabcd0379f917334404105a3"
+        },
+        {
+          "rank": 58,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.combine_duration_expression",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.combine_duration_expression",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.combine_duration_expression",
+          "score": 0.35877659574468085,
+          "lines": [
+            602,
+            603
+          ],
+          "snippet_sha256": "sha256:4a36cf8d9c7f3897cf2bb7e08a383ff9cfdab7ce7a1135c0c4f0e0e0429b5b40"
+        },
+        {
+          "rank": 59,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.conditional_expression_supported_in_where_clause",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.conditional_expression_supported_in_where_clause",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.conditional_expression_supported_in_where_clause",
+          "score": 0.35877659574468085,
+          "lines": [
+            585,
+            590
+          ],
+          "snippet_sha256": "sha256:3ac4b4abae0d47c2338509128cc8965f11d0ad144cc523cfb8753e0801153da3"
+        },
+        {
+          "rank": 60,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.explain_query_prefix",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.explain_query_prefix",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.explain_query_prefix",
+          "score": 0.35877659574468085,
+          "lines": [
+            674,
+            687
+          ],
+          "snippet_sha256": "sha256:3aea2715088368f78799d32cd2e5f826dfd1c4dfdb0808dc86799b0dbd9c6b78"
+        },
+        {
+          "rank": 61,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.fetch_returned_insert_columns",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.fetch_returned_insert_columns",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.fetch_returned_insert_columns",
+          "score": 0.35833333333333334,
+          "lines": [
+            180,
+            185
+          ],
+          "snippet_sha256": "sha256:75cf31e10622223529e29270c52d20abce83cf793923d8e5f640228fcbbc51ef"
+        },
+        {
+          "rank": 62,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.last_insert_id",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.last_insert_id",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.last_insert_id",
+          "score": 0.35833333333333334,
+          "lines": [
+            251,
+            258
+          ],
+          "snippet_sha256": "sha256:463db72abcb5c75a5ced096d6db3e752dd45b201f3ee61ed6e44f63300e9a978"
+        },
+        {
+          "rank": 63,
+          "item_id": "vgar:django__django:python:class:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "class",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations",
+          "function_id": null,
+          "score": 0.3496951219512196,
+          "lines": [
+            14,
+            693
+          ],
+          "snippet_sha256": "sha256:2b49c399a1f6c9af8cfead5413dde9a1f7b7db4d76a93cdc4d8f975347b59312"
+        },
+        {
+          "rank": 64,
+          "item_id": "vgar:django__django:python:method:django/db/backends/sqlite3/operations.py:django.db.backends.sqlite3.operations.DatabaseOperations._references_graph",
+          "path": "django/db/backends/sqlite3/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.sqlite3.operations.DatabaseOperations._references_graph",
+          "function_id": "django/db/backends/sqlite3/operations.py::django.db.backends.sqlite3.operations.DatabaseOperations._references_graph",
+          "score": 0.34953703703703715,
+          "lines": [
+            194,
+            197
+          ],
+          "snippet_sha256": "sha256:7de93dc5134c6e33ec95d8fe2c6f0f6393475d1c0d411275b80a6b10a0a298cf"
+        },
+        {
+          "rank": 65,
+          "item_id": "vgar:django__django:python:method:django/db/backends/oracle/operations.py:django.db.backends.oracle.operations.DatabaseOperations._foreign_key_constraints",
+          "path": "django/db/backends/oracle/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.oracle.operations.DatabaseOperations._foreign_key_constraints",
+          "function_id": "django/db/backends/oracle/operations.py::django.db.backends.oracle.operations.DatabaseOperations._foreign_key_constraints",
+          "score": 0.3488636363636364,
+          "lines": [
+            402,
+            405
+          ],
+          "snippet_sha256": "sha256:48b4e46d696b8128f2794fe34215218694e23e9b4d44be181edb9f24062b4a9f"
+        },
+        {
+          "rank": 66,
+          "item_id": "vgar:django__django:python:class:django/core/signing.py:django.core.signing.Signer",
+          "path": "django/core/signing.py",
+          "kind": "class",
+          "symbol": "django.core.signing.Signer",
+          "function_id": null,
+          "score": 0.3375000000000001,
+          "lines": [
+            146,
+            182
+          ],
+          "snippet_sha256": "sha256:2747a276c3a93e8a7ed1171fe0dec306b7b4051a430aea68b0a5dbbe1f5afaa1"
+        },
+        {
+          "rank": 67,
+          "item_id": "vgar:django__django:python:class:django/db/backends/mysql/operations.py:django.db.backends.mysql.operations.DatabaseOperations",
+          "path": "django/db/backends/mysql/operations.py",
+          "kind": "class",
+          "symbol": "django.db.backends.mysql.operations.DatabaseOperations",
+          "function_id": null,
+          "score": 0.3246951219512195,
+          "lines": [
+            10,
+            370
+          ],
+          "snippet_sha256": "sha256:4d76161fec98173a0bc8df3bb8ebea2d7b2b883cd4911ea80f6bf6f0d4226d16"
+        },
+        {
+          "rank": 68,
+          "item_id": "vgar:django__django:python:class:django/db/backends/oracle/operations.py:django.db.backends.oracle.operations.DatabaseOperations",
+          "path": "django/db/backends/oracle/operations.py",
+          "kind": "class",
+          "symbol": "django.db.backends.oracle.operations.DatabaseOperations",
+          "function_id": null,
+          "score": 0.3246951219512195,
+          "lines": [
+            21,
+            652
+          ],
+          "snippet_sha256": "sha256:b041be4d4a3af4ad9a639d18d394fa1c098752cce583351a7e86b0577819b9c9"
+        },
+        {
+          "rank": 69,
+          "item_id": "vgar:django__django:python:class:django/db/backends/postgresql/operations.py:django.db.backends.postgresql.operations.DatabaseOperations",
+          "path": "django/db/backends/postgresql/operations.py",
+          "kind": "class",
+          "symbol": "django.db.backends.postgresql.operations.DatabaseOperations",
+          "function_id": null,
+          "score": 0.3246951219512195,
+          "lines": [
+            7,
+            285
+          ],
+          "snippet_sha256": "sha256:75394102ffbf85757b64df84dd981a6732cc44b6a842d07967ba8c29ff82bc9c"
+        },
+        {
+          "rank": 70,
+          "item_id": "vgar:django__django:python:class:django/db/backends/sqlite3/operations.py:django.db.backends.sqlite3.operations.DatabaseOperations",
+          "path": "django/db/backends/sqlite3/operations.py",
+          "kind": "class",
+          "symbol": "django.db.backends.sqlite3.operations.DatabaseOperations",
+          "function_id": null,
+          "score": 0.3246951219512195,
+          "lines": [
+            18,
+            340
+          ],
+          "snippet_sha256": "sha256:2b3f276b1bd6a6f035ba0165dcaa829a01a9555cc1d0cb13828e967ed0275df0"
+        },
+        {
+          "rank": 71,
+          "item_id": "vgar:django__django:python:method:django/db/models/query.py:django.db.models.query.QuerySet._chain",
+          "path": "django/db/models/query.py",
+          "kind": "method",
+          "symbol": "django.db.models.query.QuerySet._chain",
+          "function_id": "django/db/models/query.py::django.db.models.query.QuerySet._chain",
+          "score": 0.3238636363636364,
+          "lines": [
+            1264,
+            1274
+          ],
+          "snippet_sha256": "sha256:7b1b0f6c8df1a81f8acd93d7519091ee9a2afd307bd7ede347fe4f652ee8ec7b"
+        },
+        {
+          "rank": 72,
+          "item_id": "vgar:django__django:python:module:django/core/management/sql.py:django.core.management.sql",
+          "path": "django/core/management/sql.py",
+          "kind": "module",
+          "symbol": "django.core.management.sql",
+          "function_id": null,
+          "score": 0.31875000000000003,
+          "lines": [
+            1,
+            56
+          ],
+          "snippet_sha256": "sha256:79a7c8766edd30fe2e3f0ba3706b4d640e799a70741fd5f80191f853b42a7fe4"
+        },
+        {
+          "rank": 73,
+          "item_id": "vgar:django__django:python:class:django/db/models/query.py:django.db.models.query.QuerySet",
+          "path": "django/db/models/query.py",
+          "kind": "class",
+          "symbol": "django.db.models.query.QuerySet",
+          "function_id": null,
+          "score": 0.3125,
+          "lines": [
+            184,
+            1369
+          ],
+          "snippet_sha256": "sha256:e3265bdc8f2f323fb5dfbf889ca3ec9999b92bf128610b48e1869c80a9d48363"
+        },
+        {
+          "rank": 74,
+          "item_id": "vgar:django__django:python:class:django/db/models/query.py:django.db.models.query.RawQuerySet",
+          "path": "django/db/models/query.py",
+          "kind": "class",
+          "symbol": "django.db.models.query.RawQuerySet",
+          "function_id": null,
+          "score": 0.3125,
+          "lines": [
+            1387,
+            1536
+          ],
+          "snippet_sha256": "sha256:569b857afd7e44d40b09e32fb713348560f9a941d0d66cc982a089b81a09349e"
+        },
+        {
+          "rank": 75,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.__init__",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.__init__",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.__init__",
+          "score": 0.3047619047619048,
+          "lines": [
+            56,
+            58
+          ],
+          "snippet_sha256": "sha256:a655807558eafb0dfa8690a5a2e42bcd61eba53cea2d96e91874152d5d759bf2"
+        },
+        {
+          "rank": 76,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations._get_limit_offset_params",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations._get_limit_offset_params",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations._get_limit_offset_params",
+          "score": 0.29583333333333334,
+          "lines": [
+            213,
+            219
+          ],
+          "snippet_sha256": "sha256:288d5990853773169e83e330c2445184080ebf1f5d0c63c9eba01eb797a97858"
+        },
+        {
+          "rank": 77,
+          "item_id": "vgar:django__django:python:method:django/core/signing.py:django.core.signing.Signer._legacy_signature",
+          "path": "django/core/signing.py",
+          "kind": "method",
+          "symbol": "django.core.signing.Signer._legacy_signature",
+          "function_id": "django/core/signing.py::django.core.signing.Signer._legacy_signature",
+          "score": 0.29130434782608694,
+          "lines": [
+            164,
+            166
+          ],
+          "snippet_sha256": "sha256:cad5901769dbe36ae87399dd254855fdaf21681349059c76825fedf3e04e4e29"
+        },
+        {
+          "rank": 78,
+          "item_id": "vgar:django__django:python:class:django/db/backends/dummy/base.py:django.db.backends.dummy.base.DatabaseOperations",
+          "path": "django/db/backends/dummy/base.py",
+          "kind": "class",
+          "symbol": "django.db.backends.dummy.base.DatabaseOperations",
+          "function_id": null,
+          "score": 0.28690476190476194,
+          "lines": [
+            29,
+            30
+          ],
+          "snippet_sha256": "sha256:c7715483a433aac03595353ef1ede5508cf60c7b36fcc628be58d1402db0ce5f"
+        },
+        {
+          "rank": 79,
+          "item_id": "vgar:django__django:python:method:django/core/signing.py:django.core.signing.Signer.__init__",
+          "path": "django/core/signing.py",
+          "kind": "method",
+          "symbol": "django.core.signing.Signer.__init__",
+          "function_id": "django/core/signing.py::django.core.signing.Signer.__init__",
+          "score": 0.2854166666666667,
+          "lines": [
+            150,
+            159
+          ],
+          "snippet_sha256": "sha256:d3d04dcb071686ae278dbea8b3aca8199a0b561cb140b8a0ee2408a6e66a3be0"
+        },
+        {
+          "rank": 80,
+          "item_id": "vgar:django__django:python:module:django/core/signing.py:django.core.signing",
+          "path": "django/core/signing.py",
+          "kind": "module",
+          "symbol": "django.core.signing",
+          "function_id": null,
+          "score": 0.27499999999999997,
+          "lines": [
+            1,
+            211
+          ],
+          "snippet_sha256": "sha256:d959ba6acdc4fc01204c674458b35ca2d99fe3a710dd61d75f08fadf33dc9aa5"
+        },
+        {
+          "rank": 81,
+          "item_id": "vgar:django__django:python:class:django/core/signing.py:django.core.signing.TimestampSigner",
+          "path": "django/core/signing.py",
+          "kind": "class",
+          "symbol": "django.core.signing.TimestampSigner",
+          "function_id": null,
+          "score": 0.27499999999999997,
+          "lines": [
+            185,
+            210
+          ],
+          "snippet_sha256": "sha256:90832f2d4d4cf97628b76fd156388df1fb6537ac19995e91a03f99f0f4551b02"
+        }
+      ],
+      "rank_order": [
+        "vgar:django__django:python:method:django/core/signing.py:django.core.signing.Signer.signature",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.execute_sql_flush",
+        "vgar:django__django:python:function:django/core/management/sql.py:django.core.management.sql.sql_flush",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.sql_flush",
+        "vgar:django__django:python:method:django/db/backends/mysql/operations.py:django.db.backends.mysql.operations.DatabaseOperations.sql_flush",
+        "vgar:django__django:python:method:django/db/backends/oracle/operations.py:django.db.backends.oracle.operations.DatabaseOperations.sql_flush",
+        "vgar:django__django:python:method:django/db/backends/postgresql/operations.py:django.db.backends.postgresql.operations.DatabaseOperations.sql_flush",
+        "vgar:django__django:python:method:django/db/backends/sqlite3/operations.py:django.db.backends.sqlite3.operations.DatabaseOperations.sql_flush",
+        "vgar:django__django:python:method:django/db/models/query.py:django.db.models.query.QuerySet.using",
+        "vgar:django__django:python:method:django/db/models/query.py:django.db.models.query.RawQuerySet.using",
+        "vgar:django__django:python:method:django/db/backends/oracle/operations.py:django.db.backends.oracle.operations.DatabaseOperations.quote_name",
+        "vgar:django__django:python:method:django/db/backends/postgresql/operations.py:django.db.backends.postgresql.operations.DatabaseOperations.quote_name",
+        "vgar:django__django:python:function:django/core/signing.py:django.core.signing.base64_hmac",
+        "vgar:django__django:python:method:django/db/backends/mysql/operations.py:django.db.backends.mysql.operations.DatabaseOperations.quote_name",
+        "vgar:django__django:python:method:django/db/backends/oracle/operations.py:django.db.backends.oracle.operations.DatabaseOperations.sequence_reset_by_name_sql",
+        "vgar:django__django:python:function:django/views/debug.py:django.views.debug.technical_500_response",
+        "vgar:django__django:python:method:django/db/backends/sqlite3/operations.py:django.db.backends.sqlite3.operations.DatabaseOperations.quote_name",
+        "vgar:django__django:python:method:django/core/signing.py:django.core.signing.Signer.sign",
+        "vgar:django__django:python:method:django/core/signing.py:django.core.signing.Signer.unsign",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.adapt_datefield_value",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.adapt_datetimefield_value",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.date_extract_sql",
+        "vgar:django__django:python:method:django/core/management/commands/flush.py:django.core.management.commands.flush.Command.handle",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.adapt_timefield_value",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.combine_expression",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.adapt_decimalfield_value",
+        "vgar:django__django:python:method:django/core/management/commands/sqlflush.py:django.core.management.commands.sqlflush.Command.handle",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.field_cast_sql",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.for_update_sql",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.deferrable_sql",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.autoinc_sql",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.binary_placeholder_sql",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.cache_key_culling_sql",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.date_interval_sql",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.distinct_sql",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.max_in_list_size",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.convert_durationfield_value",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.end_transaction_sql",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.ignore_conflicts_suffix_sql",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.integer_field_range",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.lookup_cast",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.last_executed_query",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.limit_offset_sql",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.date_trunc_sql",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.datetime_cast_date_sql",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.datetime_cast_time_sql",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.datetime_extract_sql",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.datetime_trunc_sql",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.compiler",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.adapt_ipaddressfield_value",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.adapt_unknown_value",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.check_expression_support",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.force_no_ordering",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.get_db_converters",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.max_name_length",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.bulk_batch_size",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.insert_statement",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.combine_duration_expression",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.conditional_expression_supported_in_where_clause",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.explain_query_prefix",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.fetch_returned_insert_columns",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.last_insert_id",
+        "vgar:django__django:python:class:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations",
+        "vgar:django__django:python:method:django/db/backends/sqlite3/operations.py:django.db.backends.sqlite3.operations.DatabaseOperations._references_graph",
+        "vgar:django__django:python:method:django/db/backends/oracle/operations.py:django.db.backends.oracle.operations.DatabaseOperations._foreign_key_constraints",
+        "vgar:django__django:python:class:django/core/signing.py:django.core.signing.Signer",
+        "vgar:django__django:python:class:django/db/backends/mysql/operations.py:django.db.backends.mysql.operations.DatabaseOperations",
+        "vgar:django__django:python:class:django/db/backends/oracle/operations.py:django.db.backends.oracle.operations.DatabaseOperations",
+        "vgar:django__django:python:class:django/db/backends/postgresql/operations.py:django.db.backends.postgresql.operations.DatabaseOperations",
+        "vgar:django__django:python:class:django/db/backends/sqlite3/operations.py:django.db.backends.sqlite3.operations.DatabaseOperations",
+        "vgar:django__django:python:method:django/db/models/query.py:django.db.models.query.QuerySet._chain",
+        "vgar:django__django:python:module:django/core/management/sql.py:django.core.management.sql",
+        "vgar:django__django:python:class:django/db/models/query.py:django.db.models.query.QuerySet",
+        "vgar:django__django:python:class:django/db/models/query.py:django.db.models.query.RawQuerySet",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.__init__",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations._get_limit_offset_params",
+        "vgar:django__django:python:method:django/core/signing.py:django.core.signing.Signer._legacy_signature",
+        "vgar:django__django:python:class:django/db/backends/dummy/base.py:django.db.backends.dummy.base.DatabaseOperations",
+        "vgar:django__django:python:method:django/core/signing.py:django.core.signing.Signer.__init__",
+        "vgar:django__django:python:module:django/core/signing.py:django.core.signing",
+        "vgar:django__django:python:class:django/core/signing.py:django.core.signing.TimestampSigner"
+      ],
+      "anchors": [
+        {
+          "node_id": "vgar:django__django:python:method:django/core/signing.py:django.core.signing.Signer.signature",
+          "score": 0.6,
+          "symbol": "django.core.signing.Signer.signature",
+          "type": "Method",
+          "path": "django/core/signing.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.execute_sql_flush",
+          "score": 0.6,
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.execute_sql_flush",
+          "type": "Method",
+          "path": "django/db/backends/base/operations.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/test/html.py:django.test.html.Parser.current",
+          "score": 0.6,
+          "symbol": "django.test.html.Parser.current",
+          "type": "Method",
+          "path": "django/test/html.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:function:django/core/management/sql.py:django.core.management.sql.sql_flush",
+          "score": 0.5,
+          "symbol": "django.core.management.sql.sql_flush",
+          "type": "Function",
+          "path": "django/core/management/sql.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.sql_flush",
+          "score": 0.5,
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.sql_flush",
+          "type": "Method",
+          "path": "django/db/backends/base/operations.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/db/backends/mysql/operations.py:django.db.backends.mysql.operations.DatabaseOperations.sql_flush",
+          "score": 0.5,
+          "symbol": "django.db.backends.mysql.operations.DatabaseOperations.sql_flush",
+          "type": "Method",
+          "path": "django/db/backends/mysql/operations.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/db/backends/oracle/operations.py:django.db.backends.oracle.operations.DatabaseOperations.sql_flush",
+          "score": 0.5,
+          "symbol": "django.db.backends.oracle.operations.DatabaseOperations.sql_flush",
+          "type": "Method",
+          "path": "django/db/backends/oracle/operations.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/db/backends/postgresql/operations.py:django.db.backends.postgresql.operations.DatabaseOperations.sql_flush",
+          "score": 0.5,
+          "symbol": "django.db.backends.postgresql.operations.DatabaseOperations.sql_flush",
+          "type": "Method",
+          "path": "django/db/backends/postgresql/operations.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/db/backends/sqlite3/operations.py:django.db.backends.sqlite3.operations.DatabaseOperations.sql_flush",
+          "score": 0.5,
+          "symbol": "django.db.backends.sqlite3.operations.DatabaseOperations.sql_flush",
+          "type": "Method",
+          "path": "django/db/backends/sqlite3/operations.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/db/models/query.py:django.db.models.query.QuerySet.using",
+          "score": 0.5,
+          "symbol": "django.db.models.query.QuerySet.using",
+          "type": "Method",
+          "path": "django/db/models/query.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/db/models/query.py:django.db.models.query.RawQuerySet.using",
+          "score": 0.5,
+          "symbol": "django.db.models.query.RawQuerySet.using",
+          "type": "Method",
+          "path": "django/db/models/query.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:function:tests/admin_checks/tests.py:tests.admin_checks.tests.SystemChecksTestCase.test_readonly_dynamic_attribute_on_modeladmin.SongAdmin.__getattr__.method",
+          "score": 0.5,
+          "symbol": "tests.admin_checks.tests.SystemChecksTestCase.test_readonly_dynamic_attribute_on_modeladmin.SongAdmin.__getattr__.method",
+          "type": "Function",
+          "path": "tests/admin_checks/tests.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/decorators/tests.py:tests.decorators.tests.MethodDecoratorTests.test_argumented.Test.method",
+          "score": 0.5,
+          "symbol": "tests.decorators.tests.MethodDecoratorTests.test_argumented.Test.method",
+          "type": "Method",
+          "path": "tests/decorators/tests.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/decorators/tests.py:tests.decorators.tests.MethodDecoratorTests.test_bad_iterable.TestIterable.method",
+          "score": 0.5,
+          "symbol": "tests.decorators.tests.MethodDecoratorTests.test_bad_iterable.TestIterable.method",
+          "type": "Method",
+          "path": "tests/decorators/tests.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/decorators/tests.py:tests.decorators.tests.MethodDecoratorTests.test_class_decoration.Test.method",
+          "score": 0.5,
+          "symbol": "tests.decorators.tests.MethodDecoratorTests.test_class_decoration.Test.method",
+          "type": "Method",
+          "path": "tests/decorators/tests.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/decorators/tests.py:tests.decorators.tests.MethodDecoratorTests.test_descriptors.Test.method",
+          "score": 0.5,
+          "symbol": "tests.decorators.tests.MethodDecoratorTests.test_descriptors.Test.method",
+          "type": "Method",
+          "path": "tests/decorators/tests.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/decorators/tests.py:tests.decorators.tests.MethodDecoratorTests.test_new_attribute.MyClass.method",
+          "score": 0.5,
+          "symbol": "tests.decorators.tests.MethodDecoratorTests.test_new_attribute.MyClass.method",
+          "type": "Method",
+          "path": "tests/decorators/tests.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/decorators/tests.py:tests.decorators.tests.MethodDecoratorTests.test_preserve_attributes.TestFunctionIterable.method",
+          "score": 0.5,
+          "symbol": "tests.decorators.tests.MethodDecoratorTests.test_preserve_attributes.TestFunctionIterable.method",
+          "type": "Method",
+          "path": "tests/decorators/tests.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/decorators/tests.py:tests.decorators.tests.MethodDecoratorTests.test_preserve_attributes.TestMethodAndClass.method",
+          "score": 0.5,
+          "symbol": "tests.decorators.tests.MethodDecoratorTests.test_preserve_attributes.TestMethodAndClass.method",
+          "type": "Method",
+          "path": "tests/decorators/tests.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/decorators/tests.py:tests.decorators.tests.MethodDecoratorTests.test_preserve_attributes.TestMethodIterable.method",
+          "score": 0.5,
+          "symbol": "tests.decorators.tests.MethodDecoratorTests.test_preserve_attributes.TestMethodIterable.method",
+          "type": "Method",
+          "path": "tests/decorators/tests.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/decorators/tests.py:tests.decorators.tests.MethodDecoratorTests.test_preserve_attributes.TestPlain.method",
+          "score": 0.5,
+          "symbol": "tests.decorators.tests.MethodDecoratorTests.test_preserve_attributes.TestPlain.method",
+          "type": "Method",
+          "path": "tests/decorators/tests.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/decorators/tests.py:tests.decorators.tests.MethodDecoratorTests.test_tuple_of_decorators.TestFirst.method",
+          "score": 0.5,
+          "symbol": "tests.decorators.tests.MethodDecoratorTests.test_tuple_of_decorators.TestFirst.method",
+          "type": "Method",
+          "path": "tests/decorators/tests.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/decorators/tests.py:tests.decorators.tests.MethodDecoratorTests.test_tuple_of_decorators.TestSecond.method",
+          "score": 0.5,
+          "symbol": "tests.decorators.tests.MethodDecoratorTests.test_tuple_of_decorators.TestSecond.method",
+          "type": "Method",
+          "path": "tests/decorators/tests.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:function:tests/template_tests/syntax_tests/test_setup.py:tests.template_tests.syntax_tests.test_setup.SetupTests.test_setup.method",
+          "score": 0.5,
+          "symbol": "tests.template_tests.syntax_tests.test_setup.SetupTests.test_setup.method",
+          "type": "Function",
+          "path": "tests/template_tests/syntax_tests/test_setup.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/template_tests/utils.py:tests.template_tests.utils.OtherClass.method",
+          "score": 0.5,
+          "symbol": "tests.template_tests.utils.OtherClass.method",
+          "type": "Method",
+          "path": "tests/template_tests/utils.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/template_tests/utils.py:tests.template_tests.utils.SomeClass.method",
+          "score": 0.5,
+          "symbol": "tests.template_tests.utils.SomeClass.method",
+          "type": "Method",
+          "path": "tests/template_tests/utils.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/utils_tests/test_functional.py:tests.utils_tests.test_functional.FunctionalTests.test_lazy_base_class_override.Base.method",
+          "score": 0.5,
+          "symbol": "tests.utils_tests.test_functional.FunctionalTests.test_lazy_base_class_override.Base.method",
+          "type": "Method",
+          "path": "tests/utils_tests/test_functional.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/utils_tests/test_functional.py:tests.utils_tests.test_functional.FunctionalTests.test_lazy_base_class_override.Klazz.method",
+          "score": 0.5,
+          "symbol": "tests.utils_tests.test_functional.FunctionalTests.test_lazy_base_class_override.Klazz.method",
+          "type": "Method",
+          "path": "tests/utils_tests/test_functional.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/view_tests/views.py:tests.view_tests.views.Klass.method",
+          "score": 0.5,
+          "symbol": "tests.view_tests.views.Klass.method",
+          "type": "Method",
+          "path": "tests/view_tests/views.py"
+        }
+      ],
+      "unmapped": [],
+      "excluded": [],
+      "diagnostics": {
+        "m1_native_total_tokens": 6003,
+        "m1_native_items": 71,
+        "m1_native_truncated": true,
+        "traversal_limited": true,
+        "unavailable_features": [
+          "architecture_dependencies",
+          "recent_change_frequency",
+          "failing_test_proximity"
+        ],
+        "omissions": {
+          "overlapping_selected_range": 10
+        },
+        "retrieval_config": {
+          "max_hops": 2,
+          "max_candidates": 100,
+          "min_edge_confidence": 0.6,
+          "weights": {
+            "task_similarity": 0.2,
+            "graph_distance": 0.3,
+            "edge_confidence": 0.2,
+            "failing_test_proximity": 0.2,
+            "public_api_risk": 0.1,
+            "recent_change_frequency": 0.1
+          },
+          "profile": "semantic-context-v1",
+          "active_features": [
+            "task_similarity",
+            "graph_distance",
+            "edge_confidence",
+            "public_api_risk"
+          ],
+          "normalized_weights": {
+            "task_similarity": 0.25000000000000006,
+            "graph_distance": 0.375,
+            "edge_confidence": 0.25000000000000006,
+            "public_api_risk": 0.12500000000000003
+          },
+          "failing_test_traversal_limited": false,
+          "filtered_by_include": 101
+        }
+      },
+      "scoring": {
+        "instance_id": "django__django-12741",
+        "arm": "graph",
+        "scoring_version": "retrieval-scoring-v1",
+        "rank_hash": "sha256:f1dd2a0ab278a6b27eb99249c059ac6d2d5acd07ad5f671b371ef95ebde1e890",
+        "rank": {
+          "metrics": {
+            "file_gold_count": 2,
+            "file_mrr": 0.5,
+            "file_recall@1": 0.0,
+            "file_all_gold@1": 0,
+            "file_recall@3": 0.5,
+            "file_all_gold@3": 0,
+            "file_recall@5": 0.5,
+            "file_all_gold@5": 0,
+            "file_recall@10": 1.0,
+            "file_all_gold@10": 1,
+            "file_recall@20": 1.0,
+            "file_all_gold@20": 1,
+            "function_gold_count": 2,
+            "function_mrr": 0.5,
+            "function_recall@1": 0.0,
+            "function_all_gold@1": 0,
+            "function_recall@3": 0.5,
+            "function_all_gold@3": 0,
+            "function_recall@5": 0.5,
+            "function_all_gold@5": 0,
+            "function_recall@10": 0.5,
+            "function_all_gold@10": 0,
+            "function_recall@20": 0.5,
+            "function_all_gold@20": 0
+          },
+          "reach": {
+            "file": 1.0,
+            "function": 1.0
+          },
+          "size": {
+            "items": 81,
+            "files": 12,
+            "functions": 69
+          }
+        },
+        "packed": {
+          "budget_tokens": 8000,
+          "counter_label": "local-hf:Qwen/Qwen3-4B-Instruct-2507@cdbee75f17c01a7cc42f958dc650907174af0554:sha256=aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4:no-special-tokens",
+          "snippet_policy": {
+            "max_snippet_lines": 80,
+            "header": true,
+            "overlap": "skip_if_overlaps_different_group"
+          },
+          "metrics": {
+            "gold_file_in_context": 1.0,
+            "gold_function_in_context": 1.0,
+            "all_gold_files_in_context": 1,
+            "all_gold_functions_in_context": 1,
+            "total_tokens": 7531,
+            "tokens_to_first_gold_file": 131,
+            "tokens_to_first_gold_function": 131,
+            "items_packed": 71,
+            "skipped": {
+              "token_budget": 0,
+              "overlap": 10
+            },
+            "truncated": false
+          }
+        },
+        "excluded_count": 0,
+        "unmapped": [],
+        "excluded_reasons": {}
+      },
+      "metrics": {
+        "file_gold_count": 2,
+        "file_mrr": 0.5,
+        "file_recall@1": 0.0,
+        "file_all_gold@1": 0,
+        "file_recall@3": 0.5,
+        "file_all_gold@3": 0,
+        "file_recall@5": 0.5,
+        "file_all_gold@5": 0,
+        "file_recall@10": 1.0,
+        "file_all_gold@10": 1,
+        "file_recall@20": 1.0,
+        "file_all_gold@20": 1,
+        "function_gold_count": 2,
+        "function_mrr": 0.5,
+        "function_recall@1": 0.0,
+        "function_all_gold@1": 0,
+        "function_recall@3": 0.5,
+        "function_all_gold@3": 0,
+        "function_recall@5": 0.5,
+        "function_all_gold@5": 0,
+        "function_recall@10": 0.5,
+        "function_all_gold@10": 0,
+        "function_recall@20": 0.5,
+        "function_all_gold@20": 0,
+        "file_reach": 1.0,
+        "function_reach": 1.0,
+        "rank_items": 81,
+        "packed_gold_file_in_context": 1.0,
+        "packed_gold_function_in_context": 1.0,
+        "packed_all_gold_files_in_context": 1,
+        "packed_all_gold_functions_in_context": 1,
+        "context_tokens": 7531,
+        "packed_tokens_to_first_gold_file": 131,
+        "packed_tokens_to_first_gold_function": 131,
+        "packed_items_packed": 71,
+        "packed_skipped_token_budget": 0,
+        "packed_skipped_overlap": 10,
+        "packed_truncated": 0,
+        "unmapped_count": 0,
+        "excluded_count": 0,
+        "anchor_count": 29,
+        "no_anchors": 0,
+        "candidates_in": 81,
+        "retrieve_seconds": 4.226948800001992,
+        "mapping_coverage": 1.0,
+        "file_retrievability_coverage": 1.0
+      }
+    },
+    "graph_f2p": {
+      "rank_hash": "sha256:b425a08eefcc3319087b5efa19d4dd21251be1f15546d53986a39f1f810f36eb",
+      "ranking_total_count": 79,
+      "ranked": [
+        {
+          "rank": 1,
+          "item_id": "vgar:django__django:python:method:django/core/signing.py:django.core.signing.Signer.signature",
+          "path": "django/core/signing.py",
+          "kind": "method",
+          "symbol": "django.core.signing.Signer.signature",
+          "function_id": "django/core/signing.py::django.core.signing.Signer.signature",
+          "score": 0.5176190476190478,
+          "lines": [
+            161,
+            162
+          ],
+          "snippet_sha256": "sha256:0aaca6668ead608c09f0b5c723af8e8817ff750d675738c0e7c605b0324e1d48"
+        },
+        {
+          "rank": 2,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.execute_sql_flush",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.execute_sql_flush",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.execute_sql_flush",
+          "score": 0.5139024390243904,
+          "lines": [
+            403,
+            408
+          ],
+          "snippet_sha256": "sha256:3fd7237e7e3fada7907dcfe8e7ce530b473bbff7287898a5fa5748b2f129f973"
+        },
+        {
+          "rank": 3,
+          "item_id": "vgar:django__django:python:function:django/core/management/sql.py:django.core.management.sql.sql_flush",
+          "path": "django/core/management/sql.py",
+          "kind": "function",
+          "symbol": "django.core.management.sql.sql_flush",
+          "function_id": "django/core/management/sql.py::django.core.management.sql.sql_flush",
+          "score": 0.5,
+          "lines": [
+            5,
+            21
+          ],
+          "snippet_sha256": "sha256:f61caa01940c3a2e939166ad30819fc23fbabc39a7f6b5f6b5952539b60ffc59"
+        },
+        {
+          "rank": 4,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.sql_flush",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.sql_flush",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.sql_flush",
+          "score": 0.4750000000000001,
+          "lines": [
+            385,
+            401
+          ],
+          "snippet_sha256": "sha256:3201fb96db6702e7fc56c581fa3867ddcedbeffd81d510a071789114ad1f8880"
+        },
+        {
+          "rank": 5,
+          "item_id": "vgar:django__django:python:method:django/db/backends/mysql/operations.py:django.db.backends.mysql.operations.DatabaseOperations.sql_flush",
+          "path": "django/db/backends/mysql/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.mysql.operations.DatabaseOperations.sql_flush",
+          "function_id": "django/db/backends/mysql/operations.py::django.db.backends.mysql.operations.DatabaseOperations.sql_flush",
+          "score": 0.4750000000000001,
+          "lines": [
+            196,
+            221
+          ],
+          "snippet_sha256": "sha256:c298ffe602bb60825227d917f8ee29043727d16a891c481ee9b3b29947d5db42"
+        },
+        {
+          "rank": 6,
+          "item_id": "vgar:django__django:python:method:django/db/backends/oracle/operations.py:django.db.backends.oracle.operations.DatabaseOperations.sql_flush",
+          "path": "django/db/backends/oracle/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.oracle.operations.DatabaseOperations.sql_flush",
+          "function_id": "django/db/backends/oracle/operations.py::django.db.backends.oracle.operations.DatabaseOperations.sql_flush",
+          "score": 0.4750000000000001,
+          "lines": [
+            407,
+            458
+          ],
+          "snippet_sha256": "sha256:b32dc614ad1dd0c142689d9da4046082579477c9e456e07136279fb4f6c3c1e4"
+        },
+        {
+          "rank": 7,
+          "item_id": "vgar:django__django:python:method:django/db/backends/postgresql/operations.py:django.db.backends.postgresql.operations.DatabaseOperations.sql_flush",
+          "path": "django/db/backends/postgresql/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.postgresql.operations.DatabaseOperations.sql_flush",
+          "function_id": "django/db/backends/postgresql/operations.py::django.db.backends.postgresql.operations.DatabaseOperations.sql_flush",
+          "score": 0.4750000000000001,
+          "lines": [
+            120,
+            134
+          ],
+          "snippet_sha256": "sha256:3d5760d36ff5d9aae66c9722be3888a468444112394858d5b54c45922e787230"
+        },
+        {
+          "rank": 8,
+          "item_id": "vgar:django__django:python:method:django/db/backends/sqlite3/operations.py:django.db.backends.sqlite3.operations.DatabaseOperations.sql_flush",
+          "path": "django/db/backends/sqlite3/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.sqlite3.operations.DatabaseOperations.sql_flush",
+          "function_id": "django/db/backends/sqlite3/operations.py::django.db.backends.sqlite3.operations.DatabaseOperations.sql_flush",
+          "score": 0.4750000000000001,
+          "lines": [
+            199,
+            210
+          ],
+          "snippet_sha256": "sha256:3d721c0a586399a748e8bd1185a69160ca41fe34a485aaebbd2dd385bdc47148"
+        },
+        {
+          "rank": 9,
+          "item_id": "vgar:django__django:python:function:django/core/management/color.py:django.core.management.color.no_style",
+          "path": "django/core/management/color.py",
+          "kind": "function",
+          "symbol": "django.core.management.color.no_style",
+          "function_id": "django/core/management/color.py::django.core.management.color.no_style",
+          "score": 0.47292702485966326,
+          "lines": [
+            59,
+            63
+          ],
+          "snippet_sha256": "sha256:b5b78de670e844aceb2fc90dfd0390815d7025fb85431caf115bbd2e37cfb925"
+        },
+        {
+          "rank": 10,
+          "item_id": "vgar:django__django:python:method:django/db/models/query.py:django.db.models.query.QuerySet.using",
+          "path": "django/db/models/query.py",
+          "kind": "method",
+          "symbol": "django.db.models.query.QuerySet.using",
+          "function_id": "django/db/models/query.py::django.db.models.query.QuerySet.using",
+          "score": 0.46904761904761905,
+          "lines": [
+            1192,
+            1196
+          ],
+          "snippet_sha256": "sha256:1c809c9d68984faf651447c70470cd3b4684b84d7e01579221f50436812fdbbc"
+        },
+        {
+          "rank": 11,
+          "item_id": "vgar:django__django:python:method:django/db/models/query.py:django.db.models.query.RawQuerySet.using",
+          "path": "django/db/models/query.py",
+          "kind": "method",
+          "symbol": "django.db.models.query.RawQuerySet.using",
+          "function_id": "django/db/models/query.py::django.db.models.query.RawQuerySet.using",
+          "score": 0.4686046511627907,
+          "lines": [
+            1501,
+            1508
+          ],
+          "snippet_sha256": "sha256:6955d91847aade9e28e4cf99154eeac4804ed39a4259a326336c1f87f13f825a"
+        },
+        {
+          "rank": 12,
+          "item_id": "vgar:django__django:python:method:django/core/management/commands/flush.py:django.core.management.commands.flush.Command.handle",
+          "path": "django/core/management/commands/flush.py",
+          "kind": "method",
+          "symbol": "django.core.management.commands.flush.Command.handle",
+          "function_id": "django/core/management/commands/flush.py::django.core.management.commands.flush.Command.handle",
+          "score": 0.38030303030303036,
+          "lines": [
+            27,
+            82
+          ],
+          "snippet_sha256": "sha256:38c9261f2046a25954dee65aa34be827b166146fe1325948d0407df21f4bac5c"
+        },
+        {
+          "rank": 13,
+          "item_id": "vgar:django__django:python:method:django/db/backends/oracle/operations.py:django.db.backends.oracle.operations.DatabaseOperations.quote_name",
+          "path": "django/db/backends/oracle/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.oracle.operations.DatabaseOperations.quote_name",
+          "function_id": "django/db/backends/oracle/operations.py::django.db.backends.oracle.operations.DatabaseOperations.quote_name",
+          "score": 0.36320512820512824,
+          "lines": [
+            329,
+            340
+          ],
+          "snippet_sha256": "sha256:87110c492ffdd8d5d0d20992d0078d550b8b9f6ad69bc54595813ace71c2cf05"
+        },
+        {
+          "rank": 14,
+          "item_id": "vgar:django__django:python:method:django/db/backends/postgresql/operations.py:django.db.backends.postgresql.operations.DatabaseOperations.quote_name",
+          "path": "django/db/backends/postgresql/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.postgresql.operations.DatabaseOperations.quote_name",
+          "function_id": "django/db/backends/postgresql/operations.py::django.db.backends.postgresql.operations.DatabaseOperations.quote_name",
+          "score": 0.3586046511627908,
+          "lines": [
+            112,
+            115
+          ],
+          "snippet_sha256": "sha256:15fbc65c2196f951fcbcbb8176017b83b58c5db901902b6e3a18b53d342cd737"
+        },
+        {
+          "rank": 15,
+          "item_id": "vgar:django__django:python:function:django/core/signing.py:django.core.signing.base64_hmac",
+          "path": "django/core/signing.py",
+          "kind": "function",
+          "symbol": "django.core.signing.base64_hmac",
+          "function_id": "django/core/signing.py::django.core.signing.base64_hmac",
+          "score": 0.35758865248226956,
+          "lines": [
+            71,
+            72
+          ],
+          "snippet_sha256": "sha256:4cdbe44a1fcb4f9b12ed371eb1f5420b83ad3eb4f53c7eeaedf6bacae351ee66"
+        },
+        {
+          "rank": 16,
+          "item_id": "vgar:django__django:python:method:django/db/backends/mysql/operations.py:django.db.backends.mysql.operations.DatabaseOperations.quote_name",
+          "path": "django/db/backends/mysql/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.mysql.operations.DatabaseOperations.quote_name",
+          "function_id": "django/db/backends/mysql/operations.py::django.db.backends.mysql.operations.DatabaseOperations.quote_name",
+          "score": 0.3561046511627908,
+          "lines": [
+            175,
+            178
+          ],
+          "snippet_sha256": "sha256:c50d3e225fdaa1b49c60c37aaae494e3e69172aedcc6c4edd6d56991fc88a7b7"
+        },
+        {
+          "rank": 17,
+          "item_id": "vgar:django__django:python:method:django/db/backends/oracle/operations.py:django.db.backends.oracle.operations.DatabaseOperations.sequence_reset_by_name_sql",
+          "path": "django/db/backends/oracle/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.oracle.operations.DatabaseOperations.sequence_reset_by_name_sql",
+          "function_id": "django/db/backends/oracle/operations.py::django.db.backends.oracle.operations.DatabaseOperations.sequence_reset_by_name_sql",
+          "score": 0.35108695652173916,
+          "lines": [
+            460,
+            474
+          ],
+          "snippet_sha256": "sha256:a2647c61e1bad526db6e2fb127af1df56e29f5cf86c606ead23ff3984c72fc76"
+        },
+        {
+          "rank": 18,
+          "item_id": "vgar:django__django:python:function:django/views/debug.py:django.views.debug.technical_500_response",
+          "path": "django/views/debug.py",
+          "kind": "function",
+          "symbol": "django.views.debug.technical_500_response",
+          "function_id": "django/views/debug.py::django.views.debug.technical_500_response",
+          "score": 0.3505102040816327,
+          "lines": [
+            45,
+            56
+          ],
+          "snippet_sha256": "sha256:93e51222aca7cdba965aa663983e688dfe75f5db32cf954f220cd1880083f1dc"
+        },
+        {
+          "rank": 19,
+          "item_id": "vgar:django__django:python:method:django/db/backends/sqlite3/operations.py:django.db.backends.sqlite3.operations.DatabaseOperations.quote_name",
+          "path": "django/db/backends/sqlite3/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.sqlite3.operations.DatabaseOperations.quote_name",
+          "function_id": "django/db/backends/sqlite3/operations.py::django.db.backends.sqlite3.operations.DatabaseOperations.quote_name",
+          "score": 0.34360465116279076,
+          "lines": [
+            166,
+            169
+          ],
+          "snippet_sha256": "sha256:15fbc65c2196f951fcbcbb8176017b83b58c5db901902b6e3a18b53d342cd737"
+        },
+        {
+          "rank": 20,
+          "item_id": "vgar:django__django:python:method:django/core/signing.py:django.core.signing.Signer.sign",
+          "path": "django/core/signing.py",
+          "kind": "method",
+          "symbol": "django.core.signing.Signer.sign",
+          "function_id": "django/core/signing.py::django.core.signing.Signer.sign",
+          "score": 0.3293023255813954,
+          "lines": [
+            168,
+            169
+          ],
+          "snippet_sha256": "sha256:3b8c2a3f2924648e77d1b0d853fee1eb9a9fc46343b8f50a15d3c79fe865c00f"
+        },
+        {
+          "rank": 21,
+          "item_id": "vgar:django__django:python:method:django/core/signing.py:django.core.signing.Signer.unsign",
+          "path": "django/core/signing.py",
+          "kind": "method",
+          "symbol": "django.core.signing.Signer.unsign",
+          "function_id": "django/core/signing.py::django.core.signing.Signer.unsign",
+          "score": 0.3290909090909091,
+          "lines": [
+            171,
+            182
+          ],
+          "snippet_sha256": "sha256:663edae41f34c63244e314c6dde66b2266ad671ace357b5dae4f6fec05f7fa64"
+        },
+        {
+          "rank": 22,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.adapt_datefield_value",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.adapt_datefield_value",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.adapt_datefield_value",
+          "score": 0.32151515151515153,
+          "lines": [
+            486,
+            493
+          ],
+          "snippet_sha256": "sha256:e56b03de04c23d1d17a13e2ba0e77804637518c91232971af26e8d7e50cc20ee"
+        },
+        {
+          "rank": 23,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.adapt_datetimefield_value",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.adapt_datetimefield_value",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.adapt_datetimefield_value",
+          "score": 0.32151515151515153,
+          "lines": [
+            495,
+            502
+          ],
+          "snippet_sha256": "sha256:f8580370010af3f29efab5ebbf421af9399c30644885d18ba38aec7ee6d10bd8"
+        },
+        {
+          "rank": 24,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.date_extract_sql",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.date_extract_sql",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.date_extract_sql",
+          "score": 0.3162765957446809,
+          "lines": [
+            95,
+            100
+          ],
+          "snippet_sha256": "sha256:a07efe4607b8bfce948c991c0f268cf716496e5bf78118eb99c7fcd265ebb024"
+        },
+        {
+          "rank": 25,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.adapt_timefield_value",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.adapt_timefield_value",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.adapt_timefield_value",
+          "score": 0.31318181818181823,
+          "lines": [
+            504,
+            513
+          ],
+          "snippet_sha256": "sha256:92b377f1614d12db0bfcd77bb52da94de350b14fb5f9cb93d13c02b83dedcf66"
+        },
+        {
+          "rank": 26,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.combine_expression",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.combine_expression",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.combine_expression",
+          "score": 0.31239130434782614,
+          "lines": [
+            592,
+            600
+          ],
+          "snippet_sha256": "sha256:5cbb3b6e7dc7cf3196946e0fbf451fd96b830eae4223783b9e0044b188904a9a"
+        },
+        {
+          "rank": 27,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.adapt_decimalfield_value",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.adapt_decimalfield_value",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.adapt_decimalfield_value",
+          "score": 0.31132653061224497,
+          "lines": [
+            515,
+            520
+          ],
+          "snippet_sha256": "sha256:18e71087475e9269ee6b22329426ca1a7c995e9464dc91459a562ffca6c6ce2e"
+        },
+        {
+          "rank": 28,
+          "item_id": "vgar:django__django:python:method:django/core/management/commands/sqlflush.py:django.core.management.commands.sqlflush.Command.handle",
+          "path": "django/core/management/commands/sqlflush.py",
+          "kind": "method",
+          "symbol": "django.core.management.commands.sqlflush.Command.handle",
+          "function_id": "django/core/management/commands/sqlflush.py::django.core.management.commands.sqlflush.Command.handle",
+          "score": 0.30888888888888894,
+          "lines": [
+            21,
+            25
+          ],
+          "snippet_sha256": "sha256:a541fbc7013d4e4dc457a4a7234b8685d38ee22a614cf3c91f41b6547fb97d6c"
+        },
+        {
+          "rank": 29,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.field_cast_sql",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.field_cast_sql",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.field_cast_sql",
+          "score": 0.2972727272727273,
+          "lines": [
+            187,
+            194
+          ],
+          "snippet_sha256": "sha256:cf8c39efecc20ffb04ee295bbc01a294f1a1929631b1b688dcc0f96c46ac9f2e"
+        },
+        {
+          "rank": 30,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.for_update_sql",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.for_update_sql",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.for_update_sql",
+          "score": 0.2955319148936171,
+          "lines": [
+            203,
+            211
+          ],
+          "snippet_sha256": "sha256:0a8ade52cb32dacbc8b18a7c45a19dc295fb158b0177989eb38f91f5a10b9f22"
+        },
+        {
+          "rank": 31,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.deferrable_sql",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.deferrable_sql",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.deferrable_sql",
+          "score": 0.29380952380952385,
+          "lines": [
+            162,
+            167
+          ],
+          "snippet_sha256": "sha256:2ba3c1ad97aeaf8b929b4e5b7ad8c619815b1eab7087f40955773fdfe5952913"
+        },
+        {
+          "rank": 32,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.autoinc_sql",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.autoinc_sql",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.autoinc_sql",
+          "score": 0.2927272727272728,
+          "lines": [
+            60,
+            67
+          ],
+          "snippet_sha256": "sha256:4aa8804caf79076225d9b5a1206c1909bec944fe6baee5b4a70f68630e7f6f72"
+        },
+        {
+          "rank": 33,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.binary_placeholder_sql",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.binary_placeholder_sql",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.binary_placeholder_sql",
+          "score": 0.2927272727272728,
+          "lines": [
+            605,
+            610
+          ],
+          "snippet_sha256": "sha256:26b14abc9f4c127ac049b93abe6731161701bb9f0be8689edecf8d3f22308fc2"
+        },
+        {
+          "rank": 34,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.cache_key_culling_sql",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.cache_key_culling_sql",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.cache_key_culling_sql",
+          "score": 0.2927272727272728,
+          "lines": [
+            77,
+            85
+          ],
+          "snippet_sha256": "sha256:974bb0dddff1314052bae4fa05f9b21ec519c260c09c6ba3353c602d17617b5f"
+        },
+        {
+          "rank": 35,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.date_interval_sql",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.date_interval_sql",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.date_interval_sql",
+          "score": 0.2927272727272728,
+          "lines": [
+            102,
+            106
+          ],
+          "snippet_sha256": "sha256:c53364c6a512f7cd6306630fe97c9aeb45eea50ba6466f768464a52a77285590"
+        },
+        {
+          "rank": 36,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.distinct_sql",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.distinct_sql",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.distinct_sql",
+          "score": 0.2927272727272728,
+          "lines": [
+            169,
+            178
+          ],
+          "snippet_sha256": "sha256:b6f0aab8b19f26c76455076cf3dc1bfb9000cca4036c4a593c73007d02b17f68"
+        },
+        {
+          "rank": 37,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.convert_durationfield_value",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.convert_durationfield_value",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.convert_durationfield_value",
+          "score": 0.29222222222222227,
+          "lines": [
+            570,
+            572
+          ],
+          "snippet_sha256": "sha256:2e278711d76f149fa3223e5cdb86a3dea70b4f69107f6e8f7c5f73fe822ce95f"
+        },
+        {
+          "rank": 38,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.end_transaction_sql",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.end_transaction_sql",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.end_transaction_sql",
+          "score": 0.29222222222222227,
+          "lines": [
+            434,
+            438
+          ],
+          "snippet_sha256": "sha256:e3b4708220fa10684bd821cbcc564b78d2d01632a758d0e06592869b1a53f7e8"
+        },
+        {
+          "rank": 39,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.ignore_conflicts_suffix_sql",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.ignore_conflicts_suffix_sql",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.ignore_conflicts_suffix_sql",
+          "score": 0.29222222222222227,
+          "lines": [
+            692,
+            693
+          ],
+          "snippet_sha256": "sha256:efb7755e0cf8e93d716003b67652f84c7e13e128cc0f46f051ec462a268f933e"
+        },
+        {
+          "rank": 40,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.integer_field_range",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.integer_field_range",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.integer_field_range",
+          "score": 0.29222222222222227,
+          "lines": [
+            619,
+            625
+          ],
+          "snippet_sha256": "sha256:64f4a10ee6e2749322d1de1b86c751569bc1ecaa16561536a6a030e52db3e019"
+        },
+        {
+          "rank": 41,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.last_executed_query",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.last_executed_query",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.last_executed_query",
+          "score": 0.29173913043478267,
+          "lines": [
+            229,
+            249
+          ],
+          "snippet_sha256": "sha256:316afdecb7e87b3094caf23f748350b28dadba4cdc4303a0858577284d3b6910"
+        },
+        {
+          "rank": 42,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.limit_offset_sql",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.limit_offset_sql",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.limit_offset_sql",
+          "score": 0.29173913043478267,
+          "lines": [
+            221,
+            227
+          ],
+          "snippet_sha256": "sha256:e5c020c533926cb21431412497ce0fdac2d55538eea110cff34578d58b42eb62"
+        },
+        {
+          "rank": 43,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.date_trunc_sql",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.date_trunc_sql",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.date_trunc_sql",
+          "score": 0.2912765957446809,
+          "lines": [
+            108,
+            114
+          ],
+          "snippet_sha256": "sha256:4013b26dd90c5c8a5b132674899630da1bcd02cf923087e717740929f7a274ff"
+        },
+        {
+          "rank": 44,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.datetime_cast_date_sql",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.datetime_cast_date_sql",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.datetime_cast_date_sql",
+          "score": 0.2912765957446809,
+          "lines": [
+            116,
+            123
+          ],
+          "snippet_sha256": "sha256:2559b81c126129411640d589508a2678864cc308a62e395f1726536369b1308e"
+        },
+        {
+          "rank": 45,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.datetime_cast_time_sql",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.datetime_cast_time_sql",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.datetime_cast_time_sql",
+          "score": 0.2912765957446809,
+          "lines": [
+            125,
+            129
+          ],
+          "snippet_sha256": "sha256:ef0911f01c014e5bca9cbe1bdf0e8f4736c0a6a634dbd721f564807d6b5e5e6b"
+        },
+        {
+          "rank": 46,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.datetime_extract_sql",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.datetime_extract_sql",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.datetime_extract_sql",
+          "score": 0.2908333333333334,
+          "lines": [
+            131,
+            137
+          ],
+          "snippet_sha256": "sha256:12d88023d67365b6f0e75cce127f7c37643afb1257c99defb5cbcdbed6ffb3ad"
+        },
+        {
+          "rank": 47,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.datetime_trunc_sql",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.datetime_trunc_sql",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.datetime_trunc_sql",
+          "score": 0.2908333333333334,
+          "lines": [
+            139,
+            145
+          ],
+          "snippet_sha256": "sha256:41a73ecc6cc2dbd0d5471c83e83059370ff386561dce7e794245c19126ec0d1f"
+        },
+        {
+          "rank": 48,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.compiler",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.compiler",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.compiler",
+          "score": 0.2886046511627907,
+          "lines": [
+            325,
+            333
+          ],
+          "snippet_sha256": "sha256:7015e16544728e23452a653bf4215ba9c76df29bdb1f992d54cf973ff80dc4a7"
+        },
+        {
+          "rank": 49,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.adapt_ipaddressfield_value",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.adapt_ipaddressfield_value",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.adapt_ipaddressfield_value",
+          "score": 0.2881818181818182,
+          "lines": [
+            522,
+            527
+          ],
+          "snippet_sha256": "sha256:112f786905307bf93d793339bef88de62657a1baaf70c23f2dcdbc543bb5d1fb"
+        },
+        {
+          "rank": 50,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.adapt_unknown_value",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.adapt_unknown_value",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.adapt_unknown_value",
+          "score": 0.2881818181818182,
+          "lines": [
+            467,
+            484
+          ],
+          "snippet_sha256": "sha256:c58be903fa582f067c1507fc8792bfc6428c40d154daabc32db961f267b5f66e"
+        },
+        {
+          "rank": 51,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.check_expression_support",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.check_expression_support",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.check_expression_support",
+          "score": 0.2881818181818182,
+          "lines": [
+            574,
+            583
+          ],
+          "snippet_sha256": "sha256:e82d0f2592be4a3301678e86424ff2ce77cd1e81eff96e87d36dbb0baba7bbd9"
+        },
+        {
+          "rank": 52,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.force_no_ordering",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.force_no_ordering",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.force_no_ordering",
+          "score": 0.2881818181818182,
+          "lines": [
+            196,
+            201
+          ],
+          "snippet_sha256": "sha256:cdcac694581d341dae6e32cf5f94e9c7f9995bd4419010a99e32231d183fbb62"
+        },
+        {
+          "rank": 53,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.get_db_converters",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.get_db_converters",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.get_db_converters",
+          "score": 0.2881818181818182,
+          "lines": [
+            561,
+            568
+          ],
+          "snippet_sha256": "sha256:7aa03e720078cf975085f6a9010a2dd8863f36fa0f79b2ede307bd145b000104"
+        },
+        {
+          "rank": 54,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.bulk_batch_size",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.bulk_batch_size",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.bulk_batch_size",
+          "score": 0.2873913043478261,
+          "lines": [
+            69,
+            75
+          ],
+          "snippet_sha256": "sha256:7d01a12e9d6e400671144dc3076d98f3f50ec4f6bcd4150fdfd09755946f2512"
+        },
+        {
+          "rank": 55,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.insert_statement",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.insert_statement",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.insert_statement",
+          "score": 0.2873913043478261,
+          "lines": [
+            689,
+            690
+          ],
+          "snippet_sha256": "sha256:cd20ca26f0d3bd945d69a49e4366e04838daaea7eabcd0379f917334404105a3"
+        },
+        {
+          "rank": 56,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.combine_duration_expression",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.combine_duration_expression",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.combine_duration_expression",
+          "score": 0.2870212765957447,
+          "lines": [
+            602,
+            603
+          ],
+          "snippet_sha256": "sha256:4a36cf8d9c7f3897cf2bb7e08a383ff9cfdab7ce7a1135c0c4f0e0e0429b5b40"
+        },
+        {
+          "rank": 57,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.conditional_expression_supported_in_where_clause",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.conditional_expression_supported_in_where_clause",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.conditional_expression_supported_in_where_clause",
+          "score": 0.2870212765957447,
+          "lines": [
+            585,
+            590
+          ],
+          "snippet_sha256": "sha256:3ac4b4abae0d47c2338509128cc8965f11d0ad144cc523cfb8753e0801153da3"
+        },
+        {
+          "rank": 58,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.explain_query_prefix",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.explain_query_prefix",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.explain_query_prefix",
+          "score": 0.2870212765957447,
+          "lines": [
+            674,
+            687
+          ],
+          "snippet_sha256": "sha256:3aea2715088368f78799d32cd2e5f826dfd1c4dfdb0808dc86799b0dbd9c6b78"
+        },
+        {
+          "rank": 59,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.fetch_returned_insert_columns",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.fetch_returned_insert_columns",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.fetch_returned_insert_columns",
+          "score": 0.2866666666666667,
+          "lines": [
+            180,
+            185
+          ],
+          "snippet_sha256": "sha256:75cf31e10622223529e29270c52d20abce83cf793923d8e5f640228fcbbc51ef"
+        },
+        {
+          "rank": 60,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.last_insert_id",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.last_insert_id",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.last_insert_id",
+          "score": 0.2866666666666667,
+          "lines": [
+            251,
+            258
+          ],
+          "snippet_sha256": "sha256:463db72abcb5c75a5ced096d6db3e752dd45b201f3ee61ed6e44f63300e9a978"
+        },
+        {
+          "rank": 61,
+          "item_id": "vgar:django__django:python:class:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "class",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations",
+          "function_id": null,
+          "score": 0.2797560975609757,
+          "lines": [
+            14,
+            693
+          ],
+          "snippet_sha256": "sha256:2b49c399a1f6c9af8cfead5413dde9a1f7b7db4d76a93cdc4d8f975347b59312"
+        },
+        {
+          "rank": 62,
+          "item_id": "vgar:django__django:python:method:django/db/backends/sqlite3/operations.py:django.db.backends.sqlite3.operations.DatabaseOperations._references_graph",
+          "path": "django/db/backends/sqlite3/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.sqlite3.operations.DatabaseOperations._references_graph",
+          "function_id": "django/db/backends/sqlite3/operations.py::django.db.backends.sqlite3.operations.DatabaseOperations._references_graph",
+          "score": 0.27962962962962973,
+          "lines": [
+            194,
+            197
+          ],
+          "snippet_sha256": "sha256:7de93dc5134c6e33ec95d8fe2c6f0f6393475d1c0d411275b80a6b10a0a298cf"
+        },
+        {
+          "rank": 63,
+          "item_id": "vgar:django__django:python:method:django/db/backends/oracle/operations.py:django.db.backends.oracle.operations.DatabaseOperations._foreign_key_constraints",
+          "path": "django/db/backends/oracle/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.oracle.operations.DatabaseOperations._foreign_key_constraints",
+          "function_id": "django/db/backends/oracle/operations.py::django.db.backends.oracle.operations.DatabaseOperations._foreign_key_constraints",
+          "score": 0.2790909090909091,
+          "lines": [
+            402,
+            405
+          ],
+          "snippet_sha256": "sha256:48b4e46d696b8128f2794fe34215218694e23e9b4d44be181edb9f24062b4a9f"
+        },
+        {
+          "rank": 64,
+          "item_id": "vgar:django__django:python:class:django/core/signing.py:django.core.signing.Signer",
+          "path": "django/core/signing.py",
+          "kind": "class",
+          "symbol": "django.core.signing.Signer",
+          "function_id": null,
+          "score": 0.2700000000000001,
+          "lines": [
+            146,
+            182
+          ],
+          "snippet_sha256": "sha256:2747a276c3a93e8a7ed1171fe0dec306b7b4051a430aea68b0a5dbbe1f5afaa1"
+        },
+        {
+          "rank": 65,
+          "item_id": "vgar:django__django:python:class:django/db/backends/mysql/operations.py:django.db.backends.mysql.operations.DatabaseOperations",
+          "path": "django/db/backends/mysql/operations.py",
+          "kind": "class",
+          "symbol": "django.db.backends.mysql.operations.DatabaseOperations",
+          "function_id": null,
+          "score": 0.2597560975609757,
+          "lines": [
+            10,
+            370
+          ],
+          "snippet_sha256": "sha256:4d76161fec98173a0bc8df3bb8ebea2d7b2b883cd4911ea80f6bf6f0d4226d16"
+        },
+        {
+          "rank": 66,
+          "item_id": "vgar:django__django:python:class:django/db/backends/oracle/operations.py:django.db.backends.oracle.operations.DatabaseOperations",
+          "path": "django/db/backends/oracle/operations.py",
+          "kind": "class",
+          "symbol": "django.db.backends.oracle.operations.DatabaseOperations",
+          "function_id": null,
+          "score": 0.2597560975609757,
+          "lines": [
+            21,
+            652
+          ],
+          "snippet_sha256": "sha256:b041be4d4a3af4ad9a639d18d394fa1c098752cce583351a7e86b0577819b9c9"
+        },
+        {
+          "rank": 67,
+          "item_id": "vgar:django__django:python:class:django/db/backends/postgresql/operations.py:django.db.backends.postgresql.operations.DatabaseOperations",
+          "path": "django/db/backends/postgresql/operations.py",
+          "kind": "class",
+          "symbol": "django.db.backends.postgresql.operations.DatabaseOperations",
+          "function_id": null,
+          "score": 0.2597560975609757,
+          "lines": [
+            7,
+            285
+          ],
+          "snippet_sha256": "sha256:75394102ffbf85757b64df84dd981a6732cc44b6a842d07967ba8c29ff82bc9c"
+        },
+        {
+          "rank": 68,
+          "item_id": "vgar:django__django:python:class:django/db/backends/sqlite3/operations.py:django.db.backends.sqlite3.operations.DatabaseOperations",
+          "path": "django/db/backends/sqlite3/operations.py",
+          "kind": "class",
+          "symbol": "django.db.backends.sqlite3.operations.DatabaseOperations",
+          "function_id": null,
+          "score": 0.2597560975609757,
+          "lines": [
+            18,
+            340
+          ],
+          "snippet_sha256": "sha256:2b3f276b1bd6a6f035ba0165dcaa829a01a9555cc1d0cb13828e967ed0275df0"
+        },
+        {
+          "rank": 69,
+          "item_id": "vgar:django__django:python:method:django/db/models/query.py:django.db.models.query.QuerySet._chain",
+          "path": "django/db/models/query.py",
+          "kind": "method",
+          "symbol": "django.db.models.query.QuerySet._chain",
+          "function_id": "django/db/models/query.py::django.db.models.query.QuerySet._chain",
+          "score": 0.25909090909090915,
+          "lines": [
+            1264,
+            1274
+          ],
+          "snippet_sha256": "sha256:7b1b0f6c8df1a81f8acd93d7519091ee9a2afd307bd7ede347fe4f652ee8ec7b"
+        },
+        {
+          "rank": 70,
+          "item_id": "vgar:django__django:python:module:django/core/management/sql.py:django.core.management.sql",
+          "path": "django/core/management/sql.py",
+          "kind": "module",
+          "symbol": "django.core.management.sql",
+          "function_id": null,
+          "score": 0.25500000000000006,
+          "lines": [
+            1,
+            56
+          ],
+          "snippet_sha256": "sha256:79a7c8766edd30fe2e3f0ba3706b4d640e799a70741fd5f80191f853b42a7fe4"
+        },
+        {
+          "rank": 71,
+          "item_id": "vgar:django__django:python:class:django/db/models/query.py:django.db.models.query.QuerySet",
+          "path": "django/db/models/query.py",
+          "kind": "class",
+          "symbol": "django.db.models.query.QuerySet",
+          "function_id": null,
+          "score": 0.25000000000000006,
+          "lines": [
+            184,
+            1369
+          ],
+          "snippet_sha256": "sha256:e3265bdc8f2f323fb5dfbf889ca3ec9999b92bf128610b48e1869c80a9d48363"
+        },
+        {
+          "rank": 72,
+          "item_id": "vgar:django__django:python:class:django/db/models/query.py:django.db.models.query.RawQuerySet",
+          "path": "django/db/models/query.py",
+          "kind": "class",
+          "symbol": "django.db.models.query.RawQuerySet",
+          "function_id": null,
+          "score": 0.25000000000000006,
+          "lines": [
+            1387,
+            1536
+          ],
+          "snippet_sha256": "sha256:569b857afd7e44d40b09e32fb713348560f9a941d0d66cc982a089b81a09349e"
+        },
+        {
+          "rank": 73,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.__init__",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.__init__",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations.__init__",
+          "score": 0.24380952380952384,
+          "lines": [
+            56,
+            58
+          ],
+          "snippet_sha256": "sha256:a655807558eafb0dfa8690a5a2e42bcd61eba53cea2d96e91874152d5d759bf2"
+        },
+        {
+          "rank": 74,
+          "item_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations._get_limit_offset_params",
+          "path": "django/db/backends/base/operations.py",
+          "kind": "method",
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations._get_limit_offset_params",
+          "function_id": "django/db/backends/base/operations.py::django.db.backends.base.operations.BaseDatabaseOperations._get_limit_offset_params",
+          "score": 0.23666666666666666,
+          "lines": [
+            213,
+            219
+          ],
+          "snippet_sha256": "sha256:288d5990853773169e83e330c2445184080ebf1f5d0c63c9eba01eb797a97858"
+        },
+        {
+          "rank": 75,
+          "item_id": "vgar:django__django:python:method:django/core/signing.py:django.core.signing.Signer._legacy_signature",
+          "path": "django/core/signing.py",
+          "kind": "method",
+          "symbol": "django.core.signing.Signer._legacy_signature",
+          "function_id": "django/core/signing.py::django.core.signing.Signer._legacy_signature",
+          "score": 0.23304347826086957,
+          "lines": [
+            164,
+            166
+          ],
+          "snippet_sha256": "sha256:cad5901769dbe36ae87399dd254855fdaf21681349059c76825fedf3e04e4e29"
+        },
+        {
+          "rank": 76,
+          "item_id": "vgar:django__django:python:class:django/db/backends/dummy/base.py:django.db.backends.dummy.base.DatabaseOperations",
+          "path": "django/db/backends/dummy/base.py",
+          "kind": "class",
+          "symbol": "django.db.backends.dummy.base.DatabaseOperations",
+          "function_id": null,
+          "score": 0.22952380952380955,
+          "lines": [
+            29,
+            30
+          ],
+          "snippet_sha256": "sha256:c7715483a433aac03595353ef1ede5508cf60c7b36fcc628be58d1402db0ce5f"
+        },
+        {
+          "rank": 77,
+          "item_id": "vgar:django__django:python:method:django/core/signing.py:django.core.signing.Signer.__init__",
+          "path": "django/core/signing.py",
+          "kind": "method",
+          "symbol": "django.core.signing.Signer.__init__",
+          "function_id": "django/core/signing.py::django.core.signing.Signer.__init__",
+          "score": 0.22833333333333336,
+          "lines": [
+            150,
+            159
+          ],
+          "snippet_sha256": "sha256:d3d04dcb071686ae278dbea8b3aca8199a0b561cb140b8a0ee2408a6e66a3be0"
+        },
+        {
+          "rank": 78,
+          "item_id": "vgar:django__django:python:module:django/core/signing.py:django.core.signing",
+          "path": "django/core/signing.py",
+          "kind": "module",
+          "symbol": "django.core.signing",
+          "function_id": null,
+          "score": 0.22,
+          "lines": [
+            1,
+            211
+          ],
+          "snippet_sha256": "sha256:d959ba6acdc4fc01204c674458b35ca2d99fe3a710dd61d75f08fadf33dc9aa5"
+        },
+        {
+          "rank": 79,
+          "item_id": "vgar:django__django:python:class:django/core/signing.py:django.core.signing.TimestampSigner",
+          "path": "django/core/signing.py",
+          "kind": "class",
+          "symbol": "django.core.signing.TimestampSigner",
+          "function_id": null,
+          "score": 0.22,
+          "lines": [
+            185,
+            210
+          ],
+          "snippet_sha256": "sha256:90832f2d4d4cf97628b76fd156388df1fb6537ac19995e91a03f99f0f4551b02"
+        }
+      ],
+      "rank_order": [
+        "vgar:django__django:python:method:django/core/signing.py:django.core.signing.Signer.signature",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.execute_sql_flush",
+        "vgar:django__django:python:function:django/core/management/sql.py:django.core.management.sql.sql_flush",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.sql_flush",
+        "vgar:django__django:python:method:django/db/backends/mysql/operations.py:django.db.backends.mysql.operations.DatabaseOperations.sql_flush",
+        "vgar:django__django:python:method:django/db/backends/oracle/operations.py:django.db.backends.oracle.operations.DatabaseOperations.sql_flush",
+        "vgar:django__django:python:method:django/db/backends/postgresql/operations.py:django.db.backends.postgresql.operations.DatabaseOperations.sql_flush",
+        "vgar:django__django:python:method:django/db/backends/sqlite3/operations.py:django.db.backends.sqlite3.operations.DatabaseOperations.sql_flush",
+        "vgar:django__django:python:function:django/core/management/color.py:django.core.management.color.no_style",
+        "vgar:django__django:python:method:django/db/models/query.py:django.db.models.query.QuerySet.using",
+        "vgar:django__django:python:method:django/db/models/query.py:django.db.models.query.RawQuerySet.using",
+        "vgar:django__django:python:method:django/core/management/commands/flush.py:django.core.management.commands.flush.Command.handle",
+        "vgar:django__django:python:method:django/db/backends/oracle/operations.py:django.db.backends.oracle.operations.DatabaseOperations.quote_name",
+        "vgar:django__django:python:method:django/db/backends/postgresql/operations.py:django.db.backends.postgresql.operations.DatabaseOperations.quote_name",
+        "vgar:django__django:python:function:django/core/signing.py:django.core.signing.base64_hmac",
+        "vgar:django__django:python:method:django/db/backends/mysql/operations.py:django.db.backends.mysql.operations.DatabaseOperations.quote_name",
+        "vgar:django__django:python:method:django/db/backends/oracle/operations.py:django.db.backends.oracle.operations.DatabaseOperations.sequence_reset_by_name_sql",
+        "vgar:django__django:python:function:django/views/debug.py:django.views.debug.technical_500_response",
+        "vgar:django__django:python:method:django/db/backends/sqlite3/operations.py:django.db.backends.sqlite3.operations.DatabaseOperations.quote_name",
+        "vgar:django__django:python:method:django/core/signing.py:django.core.signing.Signer.sign",
+        "vgar:django__django:python:method:django/core/signing.py:django.core.signing.Signer.unsign",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.adapt_datefield_value",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.adapt_datetimefield_value",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.date_extract_sql",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.adapt_timefield_value",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.combine_expression",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.adapt_decimalfield_value",
+        "vgar:django__django:python:method:django/core/management/commands/sqlflush.py:django.core.management.commands.sqlflush.Command.handle",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.field_cast_sql",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.for_update_sql",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.deferrable_sql",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.autoinc_sql",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.binary_placeholder_sql",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.cache_key_culling_sql",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.date_interval_sql",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.distinct_sql",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.convert_durationfield_value",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.end_transaction_sql",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.ignore_conflicts_suffix_sql",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.integer_field_range",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.last_executed_query",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.limit_offset_sql",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.date_trunc_sql",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.datetime_cast_date_sql",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.datetime_cast_time_sql",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.datetime_extract_sql",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.datetime_trunc_sql",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.compiler",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.adapt_ipaddressfield_value",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.adapt_unknown_value",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.check_expression_support",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.force_no_ordering",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.get_db_converters",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.bulk_batch_size",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.insert_statement",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.combine_duration_expression",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.conditional_expression_supported_in_where_clause",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.explain_query_prefix",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.fetch_returned_insert_columns",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.last_insert_id",
+        "vgar:django__django:python:class:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations",
+        "vgar:django__django:python:method:django/db/backends/sqlite3/operations.py:django.db.backends.sqlite3.operations.DatabaseOperations._references_graph",
+        "vgar:django__django:python:method:django/db/backends/oracle/operations.py:django.db.backends.oracle.operations.DatabaseOperations._foreign_key_constraints",
+        "vgar:django__django:python:class:django/core/signing.py:django.core.signing.Signer",
+        "vgar:django__django:python:class:django/db/backends/mysql/operations.py:django.db.backends.mysql.operations.DatabaseOperations",
+        "vgar:django__django:python:class:django/db/backends/oracle/operations.py:django.db.backends.oracle.operations.DatabaseOperations",
+        "vgar:django__django:python:class:django/db/backends/postgresql/operations.py:django.db.backends.postgresql.operations.DatabaseOperations",
+        "vgar:django__django:python:class:django/db/backends/sqlite3/operations.py:django.db.backends.sqlite3.operations.DatabaseOperations",
+        "vgar:django__django:python:method:django/db/models/query.py:django.db.models.query.QuerySet._chain",
+        "vgar:django__django:python:module:django/core/management/sql.py:django.core.management.sql",
+        "vgar:django__django:python:class:django/db/models/query.py:django.db.models.query.QuerySet",
+        "vgar:django__django:python:class:django/db/models/query.py:django.db.models.query.RawQuerySet",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.__init__",
+        "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations._get_limit_offset_params",
+        "vgar:django__django:python:method:django/core/signing.py:django.core.signing.Signer._legacy_signature",
+        "vgar:django__django:python:class:django/db/backends/dummy/base.py:django.db.backends.dummy.base.DatabaseOperations",
+        "vgar:django__django:python:method:django/core/signing.py:django.core.signing.Signer.__init__",
+        "vgar:django__django:python:module:django/core/signing.py:django.core.signing",
+        "vgar:django__django:python:class:django/core/signing.py:django.core.signing.TimestampSigner"
+      ],
+      "anchors": [
+        {
+          "node_id": "vgar:django__django:python:method:django/core/signing.py:django.core.signing.Signer.signature",
+          "score": 0.6,
+          "symbol": "django.core.signing.Signer.signature",
+          "type": "Method",
+          "path": "django/core/signing.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.execute_sql_flush",
+          "score": 0.6,
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.execute_sql_flush",
+          "type": "Method",
+          "path": "django/db/backends/base/operations.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/test/html.py:django.test.html.Parser.current",
+          "score": 0.6,
+          "symbol": "django.test.html.Parser.current",
+          "type": "Method",
+          "path": "django/test/html.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:test:tests/backends/base/test_operations.py:tests.backends.base.test_operations.SqlFlushTests.test_execute_sql_flush_statements",
+          "score": 0.6,
+          "symbol": "tests.backends.base.test_operations.SqlFlushTests.test_execute_sql_flush_statements",
+          "type": "Test",
+          "path": "tests/backends/base/test_operations.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:test:tests/backends/tests.py:tests.backends.tests.LongNameTest.test_sequence_name_length_limits_flush",
+          "score": 0.6,
+          "symbol": "tests.backends.tests.LongNameTest.test_sequence_name_length_limits_flush",
+          "type": "Test",
+          "path": "tests/backends/tests.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:function:django/core/management/sql.py:django.core.management.sql.sql_flush",
+          "score": 0.5,
+          "symbol": "django.core.management.sql.sql_flush",
+          "type": "Function",
+          "path": "django/core/management/sql.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/db/backends/base/operations.py:django.db.backends.base.operations.BaseDatabaseOperations.sql_flush",
+          "score": 0.5,
+          "symbol": "django.db.backends.base.operations.BaseDatabaseOperations.sql_flush",
+          "type": "Method",
+          "path": "django/db/backends/base/operations.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/db/backends/mysql/operations.py:django.db.backends.mysql.operations.DatabaseOperations.sql_flush",
+          "score": 0.5,
+          "symbol": "django.db.backends.mysql.operations.DatabaseOperations.sql_flush",
+          "type": "Method",
+          "path": "django/db/backends/mysql/operations.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/db/backends/oracle/operations.py:django.db.backends.oracle.operations.DatabaseOperations.sql_flush",
+          "score": 0.5,
+          "symbol": "django.db.backends.oracle.operations.DatabaseOperations.sql_flush",
+          "type": "Method",
+          "path": "django/db/backends/oracle/operations.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/db/backends/postgresql/operations.py:django.db.backends.postgresql.operations.DatabaseOperations.sql_flush",
+          "score": 0.5,
+          "symbol": "django.db.backends.postgresql.operations.DatabaseOperations.sql_flush",
+          "type": "Method",
+          "path": "django/db/backends/postgresql/operations.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/db/backends/sqlite3/operations.py:django.db.backends.sqlite3.operations.DatabaseOperations.sql_flush",
+          "score": 0.5,
+          "symbol": "django.db.backends.sqlite3.operations.DatabaseOperations.sql_flush",
+          "type": "Method",
+          "path": "django/db/backends/sqlite3/operations.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/db/models/query.py:django.db.models.query.QuerySet.using",
+          "score": 0.5,
+          "symbol": "django.db.models.query.QuerySet.using",
+          "type": "Method",
+          "path": "django/db/models/query.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:django/db/models/query.py:django.db.models.query.RawQuerySet.using",
+          "score": 0.5,
+          "symbol": "django.db.models.query.RawQuerySet.using",
+          "type": "Method",
+          "path": "django/db/models/query.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:function:tests/admin_checks/tests.py:tests.admin_checks.tests.SystemChecksTestCase.test_readonly_dynamic_attribute_on_modeladmin.SongAdmin.__getattr__.method",
+          "score": 0.5,
+          "symbol": "tests.admin_checks.tests.SystemChecksTestCase.test_readonly_dynamic_attribute_on_modeladmin.SongAdmin.__getattr__.method",
+          "type": "Function",
+          "path": "tests/admin_checks/tests.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/decorators/tests.py:tests.decorators.tests.MethodDecoratorTests.test_argumented.Test.method",
+          "score": 0.5,
+          "symbol": "tests.decorators.tests.MethodDecoratorTests.test_argumented.Test.method",
+          "type": "Method",
+          "path": "tests/decorators/tests.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/decorators/tests.py:tests.decorators.tests.MethodDecoratorTests.test_bad_iterable.TestIterable.method",
+          "score": 0.5,
+          "symbol": "tests.decorators.tests.MethodDecoratorTests.test_bad_iterable.TestIterable.method",
+          "type": "Method",
+          "path": "tests/decorators/tests.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/decorators/tests.py:tests.decorators.tests.MethodDecoratorTests.test_class_decoration.Test.method",
+          "score": 0.5,
+          "symbol": "tests.decorators.tests.MethodDecoratorTests.test_class_decoration.Test.method",
+          "type": "Method",
+          "path": "tests/decorators/tests.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/decorators/tests.py:tests.decorators.tests.MethodDecoratorTests.test_descriptors.Test.method",
+          "score": 0.5,
+          "symbol": "tests.decorators.tests.MethodDecoratorTests.test_descriptors.Test.method",
+          "type": "Method",
+          "path": "tests/decorators/tests.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/decorators/tests.py:tests.decorators.tests.MethodDecoratorTests.test_new_attribute.MyClass.method",
+          "score": 0.5,
+          "symbol": "tests.decorators.tests.MethodDecoratorTests.test_new_attribute.MyClass.method",
+          "type": "Method",
+          "path": "tests/decorators/tests.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/decorators/tests.py:tests.decorators.tests.MethodDecoratorTests.test_preserve_attributes.TestFunctionIterable.method",
+          "score": 0.5,
+          "symbol": "tests.decorators.tests.MethodDecoratorTests.test_preserve_attributes.TestFunctionIterable.method",
+          "type": "Method",
+          "path": "tests/decorators/tests.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/decorators/tests.py:tests.decorators.tests.MethodDecoratorTests.test_preserve_attributes.TestMethodAndClass.method",
+          "score": 0.5,
+          "symbol": "tests.decorators.tests.MethodDecoratorTests.test_preserve_attributes.TestMethodAndClass.method",
+          "type": "Method",
+          "path": "tests/decorators/tests.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/decorators/tests.py:tests.decorators.tests.MethodDecoratorTests.test_preserve_attributes.TestMethodIterable.method",
+          "score": 0.5,
+          "symbol": "tests.decorators.tests.MethodDecoratorTests.test_preserve_attributes.TestMethodIterable.method",
+          "type": "Method",
+          "path": "tests/decorators/tests.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/decorators/tests.py:tests.decorators.tests.MethodDecoratorTests.test_preserve_attributes.TestPlain.method",
+          "score": 0.5,
+          "symbol": "tests.decorators.tests.MethodDecoratorTests.test_preserve_attributes.TestPlain.method",
+          "type": "Method",
+          "path": "tests/decorators/tests.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/decorators/tests.py:tests.decorators.tests.MethodDecoratorTests.test_tuple_of_decorators.TestFirst.method",
+          "score": 0.5,
+          "symbol": "tests.decorators.tests.MethodDecoratorTests.test_tuple_of_decorators.TestFirst.method",
+          "type": "Method",
+          "path": "tests/decorators/tests.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/decorators/tests.py:tests.decorators.tests.MethodDecoratorTests.test_tuple_of_decorators.TestSecond.method",
+          "score": 0.5,
+          "symbol": "tests.decorators.tests.MethodDecoratorTests.test_tuple_of_decorators.TestSecond.method",
+          "type": "Method",
+          "path": "tests/decorators/tests.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:function:tests/template_tests/syntax_tests/test_setup.py:tests.template_tests.syntax_tests.test_setup.SetupTests.test_setup.method",
+          "score": 0.5,
+          "symbol": "tests.template_tests.syntax_tests.test_setup.SetupTests.test_setup.method",
+          "type": "Function",
+          "path": "tests/template_tests/syntax_tests/test_setup.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/template_tests/utils.py:tests.template_tests.utils.OtherClass.method",
+          "score": 0.5,
+          "symbol": "tests.template_tests.utils.OtherClass.method",
+          "type": "Method",
+          "path": "tests/template_tests/utils.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/template_tests/utils.py:tests.template_tests.utils.SomeClass.method",
+          "score": 0.5,
+          "symbol": "tests.template_tests.utils.SomeClass.method",
+          "type": "Method",
+          "path": "tests/template_tests/utils.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/utils_tests/test_functional.py:tests.utils_tests.test_functional.FunctionalTests.test_lazy_base_class_override.Base.method",
+          "score": 0.5,
+          "symbol": "tests.utils_tests.test_functional.FunctionalTests.test_lazy_base_class_override.Base.method",
+          "type": "Method",
+          "path": "tests/utils_tests/test_functional.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/utils_tests/test_functional.py:tests.utils_tests.test_functional.FunctionalTests.test_lazy_base_class_override.Klazz.method",
+          "score": 0.5,
+          "symbol": "tests.utils_tests.test_functional.FunctionalTests.test_lazy_base_class_override.Klazz.method",
+          "type": "Method",
+          "path": "tests/utils_tests/test_functional.py"
+        },
+        {
+          "node_id": "vgar:django__django:python:method:tests/view_tests/views.py:tests.view_tests.views.Klass.method",
+          "score": 0.5,
+          "symbol": "tests.view_tests.views.Klass.method",
+          "type": "Method",
+          "path": "tests/view_tests/views.py"
+        }
+      ],
+      "unmapped": [],
+      "excluded": [],
+      "diagnostics": {
+        "m1_native_total_tokens": 5888,
+        "m1_native_items": 69,
+        "m1_native_truncated": true,
+        "traversal_limited": true,
+        "unavailable_features": [
+          "architecture_dependencies",
+          "recent_change_frequency"
+        ],
+        "omissions": {
+          "overlapping_selected_range": 10
+        },
+        "retrieval_config": {
+          "max_hops": 2,
+          "max_candidates": 100,
+          "min_edge_confidence": 0.6,
+          "weights": {
+            "task_similarity": 0.2,
+            "graph_distance": 0.3,
+            "edge_confidence": 0.2,
+            "failing_test_proximity": 0.2,
+            "public_api_risk": 0.1,
+            "recent_change_frequency": 0.1
+          },
+          "profile": "semantic-context-v1",
+          "active_features": [
+            "task_similarity",
+            "graph_distance",
+            "edge_confidence",
+            "failing_test_proximity",
+            "public_api_risk"
+          ],
+          "normalized_weights": {
+            "task_similarity": 0.20000000000000004,
+            "graph_distance": 0.30000000000000004,
+            "edge_confidence": 0.20000000000000004,
+            "failing_test_proximity": 0.20000000000000004,
+            "public_api_risk": 0.10000000000000002
+          },
+          "failing_test_traversal_limited": false,
+          "filtered_by_include": 128
+        }
+      },
+      "scoring": {
+        "instance_id": "django__django-12741",
+        "arm": "graph_f2p",
+        "scoring_version": "retrieval-scoring-v1",
+        "rank_hash": "sha256:b425a08eefcc3319087b5efa19d4dd21251be1f15546d53986a39f1f810f36eb",
+        "rank": {
+          "metrics": {
+            "file_gold_count": 2,
+            "file_mrr": 0.5,
+            "file_recall@1": 0.0,
+            "file_all_gold@1": 0,
+            "file_recall@3": 0.5,
+            "file_all_gold@3": 0,
+            "file_recall@5": 0.5,
+            "file_all_gold@5": 0,
+            "file_recall@10": 1.0,
+            "file_all_gold@10": 1,
+            "file_recall@20": 1.0,
+            "file_all_gold@20": 1,
+            "function_gold_count": 2,
+            "function_mrr": 0.5,
+            "function_recall@1": 0.0,
+            "function_all_gold@1": 0,
+            "function_recall@3": 0.5,
+            "function_all_gold@3": 0,
+            "function_recall@5": 0.5,
+            "function_all_gold@5": 0,
+            "function_recall@10": 0.5,
+            "function_all_gold@10": 0,
+            "function_recall@20": 1.0,
+            "function_all_gold@20": 1
+          },
+          "reach": {
+            "file": 1.0,
+            "function": 1.0
+          },
+          "size": {
+            "items": 79,
+            "files": 13,
+            "functions": 67
+          }
+        },
+        "packed": {
+          "budget_tokens": 8000,
+          "counter_label": "local-hf:Qwen/Qwen3-4B-Instruct-2507@cdbee75f17c01a7cc42f958dc650907174af0554:sha256=aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4:no-special-tokens",
+          "snippet_policy": {
+            "max_snippet_lines": 80,
+            "header": true,
+            "overlap": "skip_if_overlaps_different_group"
+          },
+          "metrics": {
+            "gold_file_in_context": 1.0,
+            "gold_function_in_context": 1.0,
+            "all_gold_files_in_context": 1,
+            "all_gold_functions_in_context": 1,
+            "total_tokens": 7362,
+            "tokens_to_first_gold_file": 131,
+            "tokens_to_first_gold_function": 131,
+            "items_packed": 69,
+            "skipped": {
+              "token_budget": 0,
+              "overlap": 10
+            },
+            "truncated": false
+          }
+        },
+        "excluded_count": 0,
+        "unmapped": [],
+        "excluded_reasons": {}
+      },
+      "metrics": {
+        "file_gold_count": 2,
+        "file_mrr": 0.5,
+        "file_recall@1": 0.0,
+        "file_all_gold@1": 0,
+        "file_recall@3": 0.5,
+        "file_all_gold@3": 0,
+        "file_recall@5": 0.5,
+        "file_all_gold@5": 0,
+        "file_recall@10": 1.0,
+        "file_all_gold@10": 1,
+        "file_recall@20": 1.0,
+        "file_all_gold@20": 1,
+        "function_gold_count": 2,
+        "function_mrr": 0.5,
+        "function_recall@1": 0.0,
+        "function_all_gold@1": 0,
+        "function_recall@3": 0.5,
+        "function_all_gold@3": 0,
+        "function_recall@5": 0.5,
+        "function_all_gold@5": 0,
+        "function_recall@10": 0.5,
+        "function_all_gold@10": 0,
+        "function_recall@20": 1.0,
+        "function_all_gold@20": 1,
+        "file_reach": 1.0,
+        "function_reach": 1.0,
+        "rank_items": 79,
+        "packed_gold_file_in_context": 1.0,
+        "packed_gold_function_in_context": 1.0,
+        "packed_all_gold_files_in_context": 1,
+        "packed_all_gold_functions_in_context": 1,
+        "context_tokens": 7362,
+        "packed_tokens_to_first_gold_file": 131,
+        "packed_tokens_to_first_gold_function": 131,
+        "packed_items_packed": 69,
+        "packed_skipped_token_budget": 0,
+        "packed_skipped_overlap": 10,
+        "packed_truncated": 0,
+        "unmapped_count": 0,
+        "excluded_count": 0,
+        "anchor_count": 31,
+        "no_anchors": 0,
+        "candidates_in": 79,
+        "retrieve_seconds": 4.258761400007643,
+        "mapping_coverage": 1.0,
+        "file_retrievability_coverage": 1.0
+      }
+    }
+  },
+  "graph": {
+    "build_seconds": 72.62794799999392,
+    "nodes": 180410,
+    "edges": 231173,
+    "graph_version": "sha256:0344d6b9651c02f2dbe96434375672f9859cebec578d82581b92bd7ac08fbc27",
+    "use_jedi": false,
+    "builder_hash": "62bb14a051c1",
+    "skipped_failed_files": 0,
+    "cache_identity": {
+      "repository": "django/django",
+      "commit": "537d422942b53bc0a2b6a51968f379c0de07793c",
+      "tree_hash": "sha256:14d747ec5fc2debab6210f44119bb20f31c3ebd3c14fa232c6fdde69298b0d99",
+      "use_jedi": false,
+      "builder_hash": "62bb14a051c1",
+      "source_roots": [
+        "src"
+      ],
+      "source_scope": {
+        "excluded_paths": []
+      },
+      "implementation_hashes": {
+        "graph/builder.py": "sha256:62bb14a051c139d13477548457249f1fc05616a787a35843a85b55f6775a3770",
+        "graph/jedi_resolver.py": "sha256:adefa9271aecc11b97f9d8366a3b5bde578d5c870d2481a0ebf066ca9cb59d37",
+        "contracts/schema.py": "sha256:f47965e26cde0edc1e5e1bee379aa04cd5eb5a26ecbe9ba63d6019aa96ff6a9a",
+        "source_scope.py": "sha256:fbfcb5238e42d7ff15475c2038f9af0d728961d32b3d935c689c11ec7ea831ab",
+        "evaluation/retrieval/graph_cache.py": "sha256:54fafe1241089222c2eb11f136ce66b1f60df310f12ef6617c5669708ea4ff7f"
+      },
+      "package_versions": {
+        "tree-sitter": "0.25.2",
+        "tree-sitter-python": "0.25.0",
+        "jedi": "0.20.0"
+      },
+      "python": "3.11"
+    },
+    "cache_key": "dd525012c7328b82b489076619822fa45e79d7129c46f60ec69290122c5650cb",
+    "graph_path": "D:\\Project\\CAPSTONES\\VGAR\\data\\graphs\\django__django-537d422942b53bc0a2b6a51968f379c0de07793c-dd525012c7328b82b489076619822fa45e79d7129c46f60ec69290122c5650cb.json",
+    "graph_hash": "sha256:15ad47a186e4725b9d974bb8f83e95db25c01ac5ce104153ec4450637fcd0e94",
+    "cached": false
+  },
+  "source_tree": {
+    "python_file_count": 2611,
+    "tree_hash": "sha256:14d747ec5fc2debab6210f44119bb20f31c3ebd3c14fa232c6fdde69298b0d99",
+    "path": "D:\\Project\\CAPSTONES\\VGAR\\data\\repositories\\trees\\rebuilt\\bc1ffa11e65c"
+  },
+  "source_provenance": {
+    "source_backend": "github_codeload_commit_archive",
+    "snapshot_commit": "537d422942b53bc0a2b6a51968f379c0de07793c",
+    "commit_validation": "immutable_40_SHA_URL_and_archive_root; not_git_object_hash_validation",
+    "source_file_count": 827,
+    "source_bytes": 4595118,
+    "excluded_sources": [],
+    "url": "https://codeload.github.com/django/django/tar.gz/537d422942b53bc0a2b6a51968f379c0de07793c",
+    "archive_hash": "sha256:874a9e399e833fa5f8461c845bf6445f9eec5ed5b77d6ec9f470ca21c26e7d56",
+    "base_commit": "537d422942b53bc0a2b6a51968f379c0de07793c",
+    "cache_path": "D:\\Project\\CAPSTONES\\VGAR\\data\\repositories\\archives\\django__django-537d422942b53bc0a2b6a51968f379c0de07793c.tar.gz"
+  },
+  "fail_to_pass_count": 2,
+  "inference": "NOT_RUN",
+  "phase": "WRITE",
+  "stages": [
+    {
+      "phase": "TOKENIZER",
+      "duration_seconds": 0.45587639999575913,
+      "peak_rss_bytes": 194478080
+    },
+    {
+      "phase": "LOAD_SOURCE",
+      "duration_seconds": 0.5339402000099653,
+      "peak_rss_bytes": 194478080
+    },
+    {
+      "phase": "EXTRACT_TREE",
+      "duration_seconds": 1.7415061999927275,
+      "peak_rss_bytes": 194478080
+    },
+    {
+      "phase": "BUILD_GRAPH",
+      "duration_seconds": 117.74425790000532,
+      "peak_rss_bytes": 758386688
+    },
+    {
+      "phase": "PREPARE_RETRIEVAL",
+      "duration_seconds": 7.390927699991153,
+      "peak_rss_bytes": 762589184
+    },
+    {
+      "phase": "GROUND",
+      "duration_seconds": 0.5098379999981262,
+      "peak_rss_bytes": 762589184
+    },
+    {
+      "phase": "RETRIEVE",
+      "duration_seconds": 3.657640800010995,
+      "peak_rss_bytes": 775106560
+    },
+    {
+      "phase": "GROUND",
+      "duration_seconds": 0.5627622000029078,
+      "peak_rss_bytes": 775106560
+    },
+    {
+      "phase": "RETRIEVE",
+      "duration_seconds": 3.6862416000076337,
+      "peak_rss_bytes": 778592256
+    },
+    {
+      "phase": "SCORE",
+      "duration_seconds": 0.07686499999545049,
+      "peak_rss_bytes": 778592256
+    },
+    {
+      "phase": "WRITE",
+      "duration_seconds": 0.006396199998562224,
+      "peak_rss_bytes": 778592256
+    }
+  ],
+  "peak_rss_bytes": 778592256,
+  "complete": true,
+  "ended_utc": "2026-10-07T12:13:31.210654+00:00",
+  "duration_seconds": 136.93423600000096
+}

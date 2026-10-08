@@ -1,0 +1,61 @@
+{
+  "phase": "WRITE",
+  "stages": [
+    {
+      "phase": "TOKENIZER",
+      "duration_seconds": 0.5423105000081705,
+      "peak_rss_bytes": 194338816
+    },
+    {
+      "phase": "LOAD_SOURCE",
+      "duration_seconds": 0.634406700002728,
+      "peak_rss_bytes": 194338816
+    },
+    {
+      "phase": "EXTRACT_TREE",
+      "duration_seconds": 2.116007200005697,
+      "peak_rss_bytes": 194338816
+    },
+    {
+      "phase": "BUILD_GRAPH",
+      "duration_seconds": 109.88718530000187,
+      "peak_rss_bytes": 742899712
+    },
+    {
+      "phase": "PREPARE_RETRIEVAL",
+      "duration_seconds": 24.189621099998476,
+      "peak_rss_bytes": 1468997632
+    },
+    {
+      "phase": "GROUND",
+      "duration_seconds": 3.854267400005483,
+      "peak_rss_bytes": 1468997632
+    },
+    {
+      "phase": "RETRIEVE",
+      "duration_seconds": 3.3715386999974726,
+      "peak_rss_bytes": 1468997632
+    },
+    {
+      "phase": "GROUND",
+      "duration_seconds": 3.876736499994877,
+      "peak_rss_bytes": 1468997632
+    },
+    {
+      "phase": "RETRIEVE",
+      "duration_seconds": 3.242999599999166,
+      "peak_rss_bytes": 1468997632
+    },
+    {
+      "phase": "SCORE",
+      "duration_seconds": 0.04968939999525901,
+      "peak_rss_bytes": 1468997632
+    },
+    {
+      "phase": "WRITE",
+      "duration_seconds": 0.008718799988855608,
+      "peak_rss_bytes": 1468997632
+    }
+  ],
+  "peak_rss_bytes": 1468997632
+}

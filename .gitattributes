@@ -1,0 +1,4 @@
+# Evidence/source hashes refer to exact bytes. Never normalize runtime artifacts.
+/artifacts/** -text
+/results/** -text
+/data/** -text

@@ -1,0 +1,7 @@
+{
+  "instance_id": "pydata__xarray-3305",
+  "status": "FAILED",
+  "error_class": "GraphError",
+  "error": "Source file set differs from graph snapshot; rebuild graph",
+  "duration_seconds": 10.064854700000069
+}

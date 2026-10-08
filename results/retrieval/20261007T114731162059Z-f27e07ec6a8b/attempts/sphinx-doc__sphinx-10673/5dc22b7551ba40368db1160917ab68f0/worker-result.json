@@ -1,0 +1,3583 @@
+{
+  "instance_id": "sphinx-doc__sphinx-10673",
+  "repository": "sphinx-doc/sphinx",
+  "base_commit": "f35d2a6cc726f97d0e859ca7a0e1729f7da8a6c8",
+  "status": "SUCCEEDED",
+  "query_hash": "sha256:f455450f1dbed1a4b75c2bcd97f9147d124b866223283f6287bd09ce6eab7d8e",
+  "patch_hash": "sha256:0fc6f76c4f0a0d81c35e62ba53b45c47cb9850195710a9a50c5361c6aff07685",
+  "corpus_hash": "sha256:f2ad8086bd6e9f4d108b6accca539db3438d9f79e180298bcc73685bd9eec5fc",
+  "gold": {
+    "gold_files": [
+      "sphinx/directives/other.py",
+      "sphinx/environment/adapters/toctree.py",
+      "sphinx/environment/collectors/toctree.py"
+    ],
+    "gold_functions": [
+      "sphinx/directives/other.py::sphinx.directives.other.TocTree.parse_content",
+      "sphinx/environment/adapters/toctree.py::sphinx.environment.adapters.toctree.TocTree.resolve",
+      "sphinx/environment/adapters/toctree.py::sphinx.environment.adapters.toctree.TocTree.resolve._entries_from_toctree",
+      "sphinx/environment/collectors/toctree.py::sphinx.environment.collectors.toctree.TocTreeCollector.assign_figure_numbers",
+      "sphinx/environment/collectors/toctree.py::sphinx.environment.collectors.toctree.TocTreeCollector.assign_figure_numbers._walk_doctree"
+    ],
+    "all_changed_source_files": [
+      "sphinx/directives/other.py",
+      "sphinx/environment/adapters/toctree.py",
+      "sphinx/environment/collectors/toctree.py"
+    ],
+    "unretrievable_files": [],
+    "mapping_events": [
+      {
+        "path": "sphinx/directives/other.py",
+        "side": "old",
+        "line": 83,
+        "function_id": "sphinx/directives/other.py::sphinx.directives.other.TocTree.parse_content",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "sphinx/directives/other.py",
+        "side": "new",
+        "line": 80,
+        "function_id": "sphinx/directives/other.py::sphinx.directives.other.TocTree.parse_content",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "sphinx/directives/other.py",
+        "side": "new",
+        "line": 84,
+        "function_id": "sphinx/directives/other.py::sphinx.directives.other.TocTree.parse_content",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "sphinx/directives/other.py",
+        "side": "new",
+        "line": 99,
+        "function_id": "sphinx/directives/other.py::sphinx.directives.other.TocTree.parse_content",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "sphinx/directives/other.py",
+        "side": "new",
+        "line": 100,
+        "function_id": "sphinx/directives/other.py::sphinx.directives.other.TocTree.parse_content",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "sphinx/directives/other.py",
+        "side": "new",
+        "line": 101,
+        "function_id": "sphinx/directives/other.py::sphinx.directives.other.TocTree.parse_content",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "sphinx/directives/other.py",
+        "side": "old",
+        "line": 121,
+        "function_id": "sphinx/directives/other.py::sphinx.directives.other.TocTree.parse_content",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "sphinx/directives/other.py",
+        "side": "new",
+        "line": 125,
+        "function_id": "sphinx/directives/other.py::sphinx.directives.other.TocTree.parse_content",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "sphinx/environment/adapters/toctree.py",
+        "side": "old",
+        "line": 3,
+        "function_id": null,
+        "disposition": "module_edit"
+      },
+      {
+        "path": "sphinx/environment/adapters/toctree.py",
+        "side": "new",
+        "line": 3,
+        "function_id": null,
+        "disposition": "module_edit"
+      },
+      {
+        "path": "sphinx/environment/adapters/toctree.py",
+        "side": "new",
+        "line": 57,
+        "function_id": "sphinx/environment/adapters/toctree.py::sphinx.environment.adapters.toctree.TocTree.resolve",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "sphinx/environment/adapters/toctree.py",
+        "side": "new",
+        "line": 143,
+        "function_id": "sphinx/environment/adapters/toctree.py::sphinx.environment.adapters.toctree.TocTree.resolve._entries_from_toctree",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "sphinx/environment/adapters/toctree.py",
+        "side": "new",
+        "line": 144,
+        "function_id": "sphinx/environment/adapters/toctree.py::sphinx.environment.adapters.toctree.TocTree.resolve._entries_from_toctree",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "sphinx/environment/adapters/toctree.py",
+        "side": "new",
+        "line": 145,
+        "function_id": "sphinx/environment/adapters/toctree.py::sphinx.environment.adapters.toctree.TocTree.resolve._entries_from_toctree",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "sphinx/environment/adapters/toctree.py",
+        "side": "new",
+        "line": 146,
+        "function_id": "sphinx/environment/adapters/toctree.py::sphinx.environment.adapters.toctree.TocTree.resolve._entries_from_toctree",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "sphinx/environment/adapters/toctree.py",
+        "side": "new",
+        "line": 147,
+        "function_id": "sphinx/environment/adapters/toctree.py::sphinx.environment.adapters.toctree.TocTree.resolve._entries_from_toctree",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "sphinx/environment/adapters/toctree.py",
+        "side": "new",
+        "line": 148,
+        "function_id": "sphinx/environment/adapters/toctree.py::sphinx.environment.adapters.toctree.TocTree.resolve._entries_from_toctree",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "sphinx/environment/adapters/toctree.py",
+        "side": "new",
+        "line": 149,
+        "function_id": "sphinx/environment/adapters/toctree.py::sphinx.environment.adapters.toctree.TocTree.resolve._entries_from_toctree",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "sphinx/environment/adapters/toctree.py",
+        "side": "new",
+        "line": 150,
+        "function_id": "sphinx/environment/adapters/toctree.py::sphinx.environment.adapters.toctree.TocTree.resolve._entries_from_toctree",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "sphinx/environment/adapters/toctree.py",
+        "side": "new",
+        "line": 151,
+        "function_id": "sphinx/environment/adapters/toctree.py::sphinx.environment.adapters.toctree.TocTree.resolve._entries_from_toctree",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "sphinx/environment/adapters/toctree.py",
+        "side": "new",
+        "line": 152,
+        "function_id": "sphinx/environment/adapters/toctree.py::sphinx.environment.adapters.toctree.TocTree.resolve._entries_from_toctree",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "sphinx/environment/collectors/toctree.py",
+        "side": "new",
+        "line": 204,
+        "function_id": "sphinx/environment/collectors/toctree.py::sphinx.environment.collectors.toctree.TocTreeCollector.assign_figure_numbers",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "sphinx/environment/collectors/toctree.py",
+        "side": "new",
+        "line": 251,
+        "function_id": "sphinx/environment/collectors/toctree.py::sphinx.environment.collectors.toctree.TocTreeCollector.assign_figure_numbers._walk_doctree",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "sphinx/environment/collectors/toctree.py",
+        "side": "new",
+        "line": 264,
+        "function_id": "sphinx/environment/collectors/toctree.py::sphinx.environment.collectors.toctree.TocTreeCollector.assign_figure_numbers._walk_doctree",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "sphinx/environment/collectors/toctree.py",
+        "side": "new",
+        "line": 265,
+        "function_id": "sphinx/environment/collectors/toctree.py::sphinx.environment.collectors.toctree.TocTreeCollector.assign_figure_numbers._walk_doctree",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "sphinx/environment/collectors/toctree.py",
+        "side": "new",
+        "line": 266,
+        "function_id": "sphinx/environment/collectors/toctree.py::sphinx.environment.collectors.toctree.TocTreeCollector.assign_figure_numbers._walk_doctree",
+        "disposition": "mapped_function"
+      }
+    ],
+    "function_labels_complete": true,
+    "mapping_coverage": 1.0,
+    "file_retrievability_coverage": 1.0,
+    "label_semantics": "developer_changed_code_proxy_not_complete_relevance"
+  },
+  "arms": {
+    "graph": {
+      "rank_hash": "sha256:881771bad4544ee859bfb89fe0a912cc13ec3dc42daa87d1aeedf591360a0e72",
+      "ranking_total_count": 78,
+      "ranked": [
+        {
+          "rank": 1,
+          "item_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/builders/__init__.py:sphinx.builders.Builder.read",
+          "path": "sphinx/builders/__init__.py",
+          "kind": "method",
+          "symbol": "sphinx.builders.Builder.read",
+          "function_id": "sphinx/builders/__init__.py::sphinx.builders.Builder.read",
+          "score": 0.5994318181818182,
+          "lines": [
+            375,
+            437
+          ],
+          "snippet_sha256": "sha256:698aaf071881573c168934a608ef3f534b7b413d438f019960e9bc6fa7380fa9"
+        },
+        {
+          "rank": 2,
+          "item_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/builders/latex/theming.py:sphinx.builders.latex.theming.ThemeFactory.get",
+          "path": "sphinx/builders/latex/theming.py",
+          "kind": "method",
+          "symbol": "sphinx.builders.latex.theming.ThemeFactory.get",
+          "function_id": "sphinx/builders/latex/theming.py::sphinx.builders.latex.theming.ThemeFactory.get",
+          "score": 0.5709269662921348,
+          "lines": [
+            111,
+            119
+          ],
+          "snippet_sha256": "sha256:60cf94d26e36f770bf78ca39fbe43c7a1706abdad184e593c9c50d5cceae0f34"
+        },
+        {
+          "rank": 3,
+          "item_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/io.py:sphinx.io.SphinxStandaloneReader.read",
+          "path": "sphinx/io.py",
+          "kind": "method",
+          "symbol": "sphinx.io.SphinxStandaloneReader.read",
+          "function_id": "sphinx/io.py::sphinx.io.SphinxStandaloneReader.read",
+          "score": 0.5706521739130435,
+          "lines": [
+            98,
+            105
+          ],
+          "snippet_sha256": "sha256:6a78cfcae132eb67fa8f5453fd069b7b141656713f815c4606a31e20ea01ba7f"
+        },
+        {
+          "rank": 4,
+          "item_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/directives/code.py:sphinx.directives.code.LiteralIncludeReader.read",
+          "path": "sphinx/directives/code.py",
+          "kind": "method",
+          "symbol": "sphinx.directives.code.LiteralIncludeReader.read",
+          "function_id": "sphinx/directives/code.py::sphinx.directives.code.LiteralIncludeReader.read",
+          "score": 0.5705645161290324,
+          "lines": [
+            223,
+            238
+          ],
+          "snippet_sha256": "sha256:d3b17bd04bd421dbc3f1b912d773d4f41f6ba6e9d47708284467e2ea8677daa2"
+        },
+        {
+          "rank": 5,
+          "item_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/util/docutils.py:sphinx.util.docutils.sphinx_domains.directive",
+          "path": "sphinx/util/docutils.py",
+          "kind": "method",
+          "symbol": "sphinx.util.docutils.sphinx_domains.directive",
+          "function_id": "sphinx/util/docutils.py::sphinx.util.docutils.sphinx_domains.directive",
+          "score": 0.5702319587628867,
+          "lines": [
+            311,
+            317
+          ],
+          "snippet_sha256": "sha256:c3913476b6523c227a7f8794ee327c2c43a2c6e64ce82d72581b9b8476b3626a"
+        },
+        {
+          "rank": 6,
+          "item_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/util/docutils.py:sphinx.util.docutils.CustomReSTDispatcher.directive",
+          "path": "sphinx/util/docutils.py",
+          "kind": "method",
+          "symbol": "sphinx.util.docutils.CustomReSTDispatcher.directive",
+          "function_id": "sphinx/util/docutils.py::sphinx.util.docutils.CustomReSTDispatcher.directive",
+          "score": 0.5700757575757576,
+          "lines": [
+            259,
+            262
+          ],
+          "snippet_sha256": "sha256:f6813f7a0371ed86b3e7e2183e089cdba44e77d6e769a8b1de1f8e1ff812b1ac"
+        },
+        {
+          "rank": 7,
+          "item_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/util/tags.py:sphinx.util.tags.Tags.add",
+          "path": "sphinx/util/tags.py",
+          "kind": "method",
+          "symbol": "sphinx.util.tags.Tags.add",
+          "function_id": "sphinx/util/tags.py::sphinx.util.tags.Tags.add",
+          "score": 0.5681818181818182,
+          "lines": [
+            49,
+            50
+          ],
+          "snippet_sha256": "sha256:e1e5c5a4fd452b921c2c3c4bdd6a589ee754c1608650b71f718e3e555f0d77c1"
+        },
+        {
+          "rank": 8,
+          "item_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/events.py:sphinx.events.EventManager.add",
+          "path": "sphinx/events.py",
+          "kind": "method",
+          "symbol": "sphinx.events.EventManager.add",
+          "function_id": "sphinx/events.py::sphinx.events.EventManager.add",
+          "score": 0.5681179775280899,
+          "lines": [
+            57,
+            61
+          ],
+          "snippet_sha256": "sha256:c28b133d84266f9346d8f6eeeba52bbe964586dbb607a4b7c74858c60f47ff9e"
+        },
+        {
+          "rank": 9,
+          "item_id": "vgar:sphinx-doc__sphinx:python:function:sphinx/util/requests.py:sphinx.util.requests.get",
+          "path": "sphinx/util/requests.py",
+          "kind": "function",
+          "symbol": "sphinx.util.requests.get",
+          "function_id": "sphinx/util/requests.py::sphinx.util.requests.get",
+          "score": 0.5681179775280899,
+          "lines": [
+            61,
+            74
+          ],
+          "snippet_sha256": "sha256:c8dff15fe8d49b681d94e91494e0dfc799fdb0681bd048401a5c6d1849022992"
+        },
+        {
+          "rank": 10,
+          "item_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/domains/__init__.py:sphinx.domains.Domain.directive",
+          "path": "sphinx/domains/__init__.py",
+          "kind": "method",
+          "symbol": "sphinx.domains.Domain.directive",
+          "function_id": "sphinx/domains/__init__.py::sphinx.domains.Domain.directive",
+          "score": 0.5680555555555555,
+          "lines": [
+            267,
+            283
+          ],
+          "snippet_sha256": "sha256:b64a403433028e1c73dd551ddbd53eec0d343d9662d1c2d0233b05e5c53fb23e"
+        },
+        {
+          "rank": 11,
+          "item_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/ext/napoleon/docstring.py:sphinx.ext.napoleon.docstring.Deque.get",
+          "path": "sphinx/ext/napoleon/docstring.py",
+          "kind": "method",
+          "symbol": "sphinx.ext.napoleon.docstring.Deque.get",
+          "function_id": "sphinx/ext/napoleon/docstring.py::sphinx.ext.napoleon.docstring.Deque.get",
+          "score": 0.5680555555555555,
+          "lines": [
+            57,
+            62
+          ],
+          "snippet_sha256": "sha256:7f20ecf01bfac7b9aec2bf9e3731f9295beb237c09fd389e1c2bd5144865bbcc"
+        },
+        {
+          "rank": 12,
+          "item_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/config.py:sphinx.config.Config.read",
+          "path": "sphinx/config.py",
+          "kind": "method",
+          "symbol": "sphinx.config.Config.read",
+          "function_id": "sphinx/config.py::sphinx.config.Config.read",
+          "score": 0.5679945054945056,
+          "lines": [
+            161,
+            181
+          ],
+          "snippet_sha256": "sha256:b1c47b7e240acffc6111ce97813cc945e6d541ae33e5c6037fb230625ee3b225"
+        },
+        {
+          "rank": 13,
+          "item_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/deprecation.py:sphinx.deprecation.DeprecatedDict.get",
+          "path": "sphinx/deprecation.py",
+          "kind": "method",
+          "symbol": "sphinx.deprecation.DeprecatedDict.get",
+          "function_id": "sphinx/deprecation.py::sphinx.deprecation.DeprecatedDict.get",
+          "score": 0.5679945054945056,
+          "lines": [
+            75,
+            77
+          ],
+          "snippet_sha256": "sha256:b8feff7f2b2093341d8eb0dc815734f4829280037205cb7c34d5aa9a7cf269d5"
+        },
+        {
+          "rank": 14,
+          "item_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/builders/gettext.py:sphinx.builders.gettext.Catalog.add",
+          "path": "sphinx/builders/gettext.py",
+          "kind": "method",
+          "symbol": "sphinx.builders.gettext.Catalog.add",
+          "function_id": "sphinx/builders/gettext.py::sphinx.builders.gettext.Catalog.add",
+          "score": 0.5679347826086957,
+          "lines": [
+            49,
+            60
+          ],
+          "snippet_sha256": "sha256:74d0f0405a1ad236e48cb116ceffd5bb0950b072f2f61a1e1b1f06b34f3a0e76"
+        },
+        {
+          "rank": 15,
+          "item_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/config.py:sphinx.config.Config.add",
+          "path": "sphinx/config.py",
+          "kind": "method",
+          "symbol": "sphinx.config.Config.add",
+          "function_id": "sphinx/config.py::sphinx.config.Config.add",
+          "score": 0.5678763440860215,
+          "lines": [
+            298,
+            302
+          ],
+          "snippet_sha256": "sha256:5429f8275c933838d9843157bb59a360971bc511b360ceaa10078519b2669818"
+        },
+        {
+          "rank": 16,
+          "item_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.document",
+          "path": "sphinx/addnodes.py",
+          "kind": "class",
+          "symbol": "sphinx.addnodes.document",
+          "function_id": null,
+          "score": 0.5310975609756098,
+          "lines": [
+            20,
+            43
+          ],
+          "snippet_sha256": "sha256:9e0b6a0dcd2660f4176d5136c19e267fd00b9b41e26440ffb72bc4f5fcd4b54b"
+        },
+        {
+          "rank": 17,
+          "item_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.index",
+          "path": "sphinx/addnodes.py",
+          "kind": "class",
+          "symbol": "sphinx.addnodes.index",
+          "function_id": null,
+          "score": 0.5310975609756098,
+          "lines": [
+            377,
+            389
+          ],
+          "snippet_sha256": "sha256:7219bcfed64a9c07030f2977b9219a6f3110f76912fb2009d48cb7d0393f7562"
+        },
+        {
+          "rank": 18,
+          "item_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.toctree",
+          "path": "sphinx/addnodes.py",
+          "kind": "class",
+          "symbol": "sphinx.addnodes.toctree",
+          "function_id": null,
+          "score": 0.5310975609756098,
+          "lines": [
+            81,
+            114
+          ],
+          "snippet_sha256": "sha256:8f93e7851177d6a7228913248366fa9dc9c7a89a6c9f7763a01b7568c476396d"
+        },
+        {
+          "rank": 19,
+          "item_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/builders/__init__.py:sphinx.builders.Builder.build",
+          "path": "sphinx/builders/__init__.py",
+          "kind": "method",
+          "symbol": "sphinx.builders.Builder.build",
+          "function_id": "sphinx/builders/__init__.py::sphinx.builders.Builder.build",
+          "score": 0.4245065789473685,
+          "lines": [
+            305,
+            373
+          ],
+          "snippet_sha256": "sha256:0b130a628f93df826b34a43a0e961a1cf061aecffffba4818de5da1902f16803"
+        },
+        {
+          "rank": 20,
+          "item_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/directives/code.py:sphinx.directives.code.LiteralIncludeReader.read_file",
+          "path": "sphinx/directives/code.py",
+          "kind": "method",
+          "symbol": "sphinx.directives.code.LiteralIncludeReader.read_file",
+          "function_id": "sphinx/directives/code.py::sphinx.directives.code.LiteralIncludeReader.read_file",
+          "score": 0.42447916666666663,
+          "lines": [
+            205,
+            221
+          ],
+          "snippet_sha256": "sha256:d75009b688334276d93ee0ded81bff8a059cfc20981f85ef561f30da14413694"
+        },
+        {
+          "rank": 21,
+          "item_id": "vgar:sphinx-doc__sphinx:python:function:sphinx/util/requests.py:sphinx.util.requests.ignore_insecure_warning",
+          "path": "sphinx/util/requests.py",
+          "kind": "function",
+          "symbol": "sphinx.util.requests.ignore_insecure_warning",
+          "function_id": "sphinx/util/requests.py::sphinx.util.requests.ignore_insecure_warning",
+          "score": 0.4222222222222223,
+          "lines": [
+            20,
+            25
+          ],
+          "snippet_sha256": "sha256:cdda5b2146307df5599d02306a34695689467ff5c3e1c802579deb8dea3ed176"
+        },
+        {
+          "rank": 22,
+          "item_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/util/docutils.py:sphinx.util.docutils.sphinx_domains.lookup_domain_element",
+          "path": "sphinx/util/docutils.py",
+          "kind": "method",
+          "symbol": "sphinx.util.docutils.sphinx_domains.lookup_domain_element",
+          "function_id": "sphinx/util/docutils.py::sphinx.util.docutils.sphinx_domains.lookup_domain_element",
+          "score": 0.41935483870967744,
+          "lines": [
+            281,
+            309
+          ],
+          "snippet_sha256": "sha256:364c76a0a469a8d3fc1b929e66af9c82ea54cf589e6639cccfb8ac83369778d4"
+        },
+        {
+          "rank": 23,
+          "item_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/io.py:sphinx.io.SphinxStandaloneReader.read_source",
+          "path": "sphinx/io.py",
+          "kind": "method",
+          "symbol": "sphinx.io.SphinxStandaloneReader.read_source",
+          "function_id": "sphinx/io.py::sphinx.io.SphinxStandaloneReader.read_source",
+          "score": 0.41174450549450553,
+          "lines": [
+            107,
+            114
+          ],
+          "snippet_sha256": "sha256:f373b6adf474a787376b2c4deb1673fd0ec497166bf13265871d16a276dfd015"
+        },
+        {
+          "rank": 24,
+          "item_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/builders/latex/theming.py:sphinx.builders.latex.theming.ThemeFactory.find_user_theme",
+          "path": "sphinx/builders/latex/theming.py",
+          "kind": "method",
+          "symbol": "sphinx.builders.latex.theming.ThemeFactory.find_user_theme",
+          "function_id": "sphinx/builders/latex/theming.py::sphinx.builders.latex.theming.ThemeFactory.find_user_theme",
+          "score": 0.4116847826086957,
+          "lines": [
+            121,
+            131
+          ],
+          "snippet_sha256": "sha256:6ad4fcd5853361831d92836d41c53bbb780abddb268ce7450c747b7d2b19a889"
+        },
+        {
+          "rank": 25,
+          "item_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/directives/code.py:sphinx.directives.code.LiteralIncludeReader.show_diff",
+          "path": "sphinx/directives/code.py",
+          "kind": "method",
+          "symbol": "sphinx.directives.code.LiteralIncludeReader.show_diff",
+          "function_id": "sphinx/directives/code.py::sphinx.directives.code.LiteralIncludeReader.show_diff",
+          "score": 0.41145833333333337,
+          "lines": [
+            240,
+            245
+          ],
+          "snippet_sha256": "sha256:3e37adc3b69c874e934bbeba3f0ae1bca7bc1a1670553384cf03be3ba690ef2d"
+        },
+        {
+          "rank": 26,
+          "item_id": "vgar:sphinx-doc__sphinx:python:function:sphinx/config.py:sphinx.config.eval_config_file",
+          "path": "sphinx/config.py",
+          "kind": "function",
+          "symbol": "sphinx.config.eval_config_file",
+          "function_id": "sphinx/config.py::sphinx.config.eval_config_file",
+          "score": 0.4089972527472528,
+          "lines": [
+            336,
+            362
+          ],
+          "snippet_sha256": "sha256:e9602260ee4b340056c3df7245ef4cfd69c13fcdc0d92e909e8640420704dbbb"
+        },
+        {
+          "rank": 27,
+          "item_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/addnodes.py:sphinx.addnodes.toctree.extract_original_messages",
+          "path": "sphinx/addnodes.py",
+          "kind": "method",
+          "symbol": "sphinx.addnodes.toctree.extract_original_messages",
+          "function_id": "sphinx/addnodes.py::sphinx.addnodes.toctree.extract_original_messages",
+          "score": 0.40561797752808987,
+          "lines": [
+            105,
+            114
+          ],
+          "snippet_sha256": "sha256:72095b2764e62be103feafdf3365581beca1c62db45c2dac53132e32da5f8e58"
+        },
+        {
+          "rank": 28,
+          "item_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/addnodes.py:sphinx.addnodes.toctree.preserve_original_messages",
+          "path": "sphinx/addnodes.py",
+          "kind": "method",
+          "symbol": "sphinx.addnodes.toctree.preserve_original_messages",
+          "function_id": "sphinx/addnodes.py::sphinx.addnodes.toctree.preserve_original_messages",
+          "score": 0.40561797752808987,
+          "lines": [
+            84,
+            93
+          ],
+          "snippet_sha256": "sha256:f2e30b24d9fb7a322f8cf21a96ae574b40cb363d1d224f655db3aad514fb96ab"
+        },
+        {
+          "rank": 29,
+          "item_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/addnodes.py:sphinx.addnodes.toctree.apply_translated_message",
+          "path": "sphinx/addnodes.py",
+          "kind": "method",
+          "symbol": "sphinx.addnodes.toctree.apply_translated_message",
+          "function_id": "sphinx/addnodes.py::sphinx.addnodes.toctree.apply_translated_message",
+          "score": 0.4054945054945055,
+          "lines": [
+            95,
+            103
+          ],
+          "snippet_sha256": "sha256:7879a3949fdbc2d35bdd647b9a7f3daca60daf0c6f72f51b318a2c408d9aae5b"
+        },
+        {
+          "rank": 30,
+          "item_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/addnodes.py:sphinx.addnodes.document.set_id",
+          "path": "sphinx/addnodes.py",
+          "kind": "method",
+          "symbol": "sphinx.addnodes.document.set_id",
+          "function_id": "sphinx/addnodes.py::sphinx.addnodes.document.set_id",
+          "score": 0.40531914893617027,
+          "lines": [
+            30,
+            43
+          ],
+          "snippet_sha256": "sha256:6f7b572d8ce6521c9bee54638c7d2c32d7b08e7a83736b2f033cca98a9e531a7"
+        },
+        {
+          "rank": 31,
+          "item_id": "vgar:sphinx-doc__sphinx:python:module:sphinx/addnodes.py:sphinx.addnodes",
+          "path": "sphinx/addnodes.py",
+          "kind": "module",
+          "symbol": "sphinx.addnodes",
+          "function_id": null,
+          "score": 0.34054878048780496,
+          "lines": [
+            1,
+            580
+          ],
+          "snippet_sha256": "sha256:10e36924f0341f491ac429c5fa0a71e00c6901ab19c017c6fe25b808a972a049"
+        },
+        {
+          "rank": 32,
+          "item_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.translatable",
+          "path": "sphinx/addnodes.py",
+          "kind": "class",
+          "symbol": "sphinx.addnodes.translatable",
+          "function_id": null,
+          "score": 0.3405120481927711,
+          "lines": [
+            46,
+            73
+          ],
+          "snippet_sha256": "sha256:dc0cc136ede198fad4afaf37f081779473d5fe5b6ae455390ab2d382e9c9d175"
+        },
+        {
+          "rank": 33,
+          "item_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/addnodes.py:sphinx.addnodes.translatable.preserve_original_messages",
+          "path": "sphinx/addnodes.py",
+          "kind": "method",
+          "symbol": "sphinx.addnodes.translatable.preserve_original_messages",
+          "function_id": "sphinx/addnodes.py::sphinx.addnodes.translatable.preserve_original_messages",
+          "score": 0.340308988764045,
+          "lines": [
+            60,
+            62
+          ],
+          "snippet_sha256": "sha256:2724fe1210ed2d3aa6ce9a870bcb03b846a4a28e12c8828c2481b08442c43a00"
+        },
+        {
+          "rank": 34,
+          "item_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/addnodes.py:sphinx.addnodes.translatable.extract_original_messages",
+          "path": "sphinx/addnodes.py",
+          "kind": "method",
+          "symbol": "sphinx.addnodes.translatable.extract_original_messages",
+          "function_id": "sphinx/addnodes.py::sphinx.addnodes.translatable.extract_original_messages",
+          "score": 0.3402777777777778,
+          "lines": [
+            68,
+            73
+          ],
+          "snippet_sha256": "sha256:574d96355f87e5db3443e1d0ce90b0c85041dced37cdd150fe55c0e94bd53373"
+        },
+        {
+          "rank": 35,
+          "item_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/addnodes.py:sphinx.addnodes.translatable.apply_translated_message",
+          "path": "sphinx/addnodes.py",
+          "kind": "method",
+          "symbol": "sphinx.addnodes.translatable.apply_translated_message",
+          "function_id": "sphinx/addnodes.py::sphinx.addnodes.translatable.apply_translated_message",
+          "score": 0.3402472527472528,
+          "lines": [
+            64,
+            66
+          ],
+          "snippet_sha256": "sha256:b7a7f8c44b028f33f4da1be069ca4cc21a4f95c7d56b22506f538b7569ad277c"
+        },
+        {
+          "rank": 36,
+          "item_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/errors.py:sphinx.errors.SphinxError",
+          "path": "sphinx/errors.py",
+          "kind": "class",
+          "symbol": "sphinx.errors.SphinxError",
+          "function_id": null,
+          "score": 0.31859756097560976,
+          "lines": [
+            6,
+            26
+          ],
+          "snippet_sha256": "sha256:29a60c85f2a2364b0d31b59090d4eb5df7bac3cbc0b9915d1a60167aa2b435eb"
+        },
+        {
+          "rank": 37,
+          "item_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/errors.py:sphinx.errors.ConfigError",
+          "path": "sphinx/errors.py",
+          "kind": "class",
+          "symbol": "sphinx.errors.ConfigError",
+          "function_id": null,
+          "score": 0.31852409638554224,
+          "lines": [
+            75,
+            77
+          ],
+          "snippet_sha256": "sha256:93f278ea5184b42eb7e056342bee33e5413999fcc824414e283756a1d180cafc"
+        },
+        {
+          "rank": 38,
+          "item_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/errors.py:sphinx.errors.ExtensionError",
+          "path": "sphinx/errors.py",
+          "kind": "class",
+          "symbol": "sphinx.errors.ExtensionError",
+          "function_id": null,
+          "score": 0.31852409638554224,
+          "lines": [
+            39,
+            67
+          ],
+          "snippet_sha256": "sha256:00f70d533fca9bbfc2658dffb0f1a66cfb88fa6c6bb051ff5ef6a107eecf7b3d"
+        },
+        {
+          "rank": 39,
+          "item_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/builders/latex/theming.py:sphinx.builders.latex.theming.Theme",
+          "path": "sphinx/builders/latex/theming.py",
+          "kind": "class",
+          "symbol": "sphinx.builders.latex.theming.Theme",
+          "function_id": null,
+          "score": 0.31845238095238093,
+          "lines": [
+            16,
+            40
+          ],
+          "snippet_sha256": "sha256:9297e3274d9b8551b1cd3d4c8a0afb7f3e1e902502d0eea7dd116e66e0527d58"
+        },
+        {
+          "rank": 40,
+          "item_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/builders/latex/theming.py:sphinx.builders.latex.theming.ThemeFactory",
+          "path": "sphinx/builders/latex/theming.py",
+          "kind": "class",
+          "symbol": "sphinx.builders.latex.theming.ThemeFactory",
+          "function_id": null,
+          "score": 0.3183823529411765,
+          "lines": [
+            97,
+            131
+          ],
+          "snippet_sha256": "sha256:9d75fffbf61932cab8850a4fe12e6165de90dff5ebcfb82cb5c5baa3d9c0e003"
+        },
+        {
+          "rank": 41,
+          "item_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/directives/code.py:sphinx.directives.code.LiteralIncludeReader",
+          "path": "sphinx/directives/code.py",
+          "kind": "class",
+          "symbol": "sphinx.directives.code.LiteralIncludeReader",
+          "function_id": null,
+          "score": 0.3183823529411765,
+          "lines": [
+            174,
+            379
+          ],
+          "snippet_sha256": "sha256:d08aedc8a4fbcd0e878eb68ba9d628d39673feb3105b95e6281a32473dbe67ef"
+        },
+        {
+          "rank": 42,
+          "item_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/domains/__init__.py:sphinx.domains.Domain.directive.DirectiveAdapter",
+          "path": "sphinx/domains/__init__.py",
+          "kind": "class",
+          "symbol": "sphinx.domains.Domain.directive.DirectiveAdapter",
+          "function_id": null,
+          "score": 0.3183823529411765,
+          "lines": [
+            278,
+            281
+          ],
+          "snippet_sha256": "sha256:d240ee24afd7234aa43e7a2d54ac22cbd7d3c27163d0d4cb4d72e94d08568f5f"
+        },
+        {
+          "rank": 43,
+          "item_id": "vgar:sphinx-doc__sphinx:python:function:sphinx/util/requests.py:sphinx.util.requests._get_user_agent",
+          "path": "sphinx/util/requests.py",
+          "kind": "function",
+          "symbol": "sphinx.util.requests._get_user_agent",
+          "function_id": "sphinx/util/requests.py::sphinx.util.requests._get_user_agent",
+          "score": 0.3181818181818182,
+          "lines": [
+            50,
+            58
+          ],
+          "snippet_sha256": "sha256:ce0994d089fb4142b05dacf88a48953a9fb3dc880c5633ce438a03158f6e6594"
+        },
+        {
+          "rank": 44,
+          "item_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/builders/__init__.py:sphinx.builders.Builder._read_serial",
+          "path": "sphinx/builders/__init__.py",
+          "kind": "method",
+          "symbol": "sphinx.builders.Builder._read_serial",
+          "function_id": "sphinx/builders/__init__.py::sphinx.builders.Builder._read_serial",
+          "score": 0.3179945054945055,
+          "lines": [
+            439,
+            445
+          ],
+          "snippet_sha256": "sha256:eef9c0fb2d28b71eaf10bf9666bf948ef6e83bee3b69cfc20dd3feee7424db15"
+        },
+        {
+          "rank": 45,
+          "item_id": "vgar:sphinx-doc__sphinx:python:function:sphinx/util/requests.py:sphinx.util.requests._get_tls_cacert",
+          "path": "sphinx/util/requests.py",
+          "kind": "function",
+          "symbol": "sphinx.util.requests._get_tls_cacert",
+          "function_id": "sphinx/util/requests.py::sphinx.util.requests._get_tls_cacert",
+          "score": 0.3179945054945055,
+          "lines": [
+            28,
+            47
+          ],
+          "snippet_sha256": "sha256:2a048a1f7b26a8535f8ea1306e440f9191e7b06d7bccc7c849be63e6e5aa5627"
+        },
+        {
+          "rank": 46,
+          "item_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/builders/__init__.py:sphinx.builders.Builder._read_parallel",
+          "path": "sphinx/builders/__init__.py",
+          "kind": "method",
+          "symbol": "sphinx.builders.Builder._read_parallel",
+          "function_id": "sphinx/builders/__init__.py::sphinx.builders.Builder._read_parallel",
+          "score": 0.3178763440860215,
+          "lines": [
+            447,
+            479
+          ],
+          "snippet_sha256": "sha256:9fb808eab517ac1e0cd98cb658b2b68019f8ac47ec7fa0c24d2b7b3b4aac3de2"
+        },
+        {
+          "rank": 47,
+          "item_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/config.py:sphinx.config.Config",
+          "path": "sphinx/config.py",
+          "kind": "class",
+          "symbol": "sphinx.config.Config",
+          "function_id": null,
+          "score": 0.3155487804878049,
+          "lines": [
+            66,
+            333
+          ],
+          "snippet_sha256": "sha256:9f3a28103748e3636f029689c82b35f1c474e517812a770b624860724d02bf5d"
+        },
+        {
+          "rank": 48,
+          "item_id": "vgar:sphinx-doc__sphinx:python:module:sphinx/util/requests.py:sphinx.util.requests",
+          "path": "sphinx/util/requests.py",
+          "kind": "module",
+          "symbol": "sphinx.util.requests",
+          "function_id": null,
+          "score": 0.31551204819277107,
+          "lines": [
+            1,
+            91
+          ],
+          "snippet_sha256": "sha256:095539dce021abe020b8ae2a303c83369208eef27050a136722039b16eb8d0ed"
+        },
+        {
+          "rank": 49,
+          "item_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/util/tags.py:sphinx.util.tags.Tags",
+          "path": "sphinx/util/tags.py",
+          "kind": "class",
+          "symbol": "sphinx.util.tags.Tags",
+          "function_id": null,
+          "score": 0.31551204819277107,
+          "lines": [
+            37,
+            79
+          ],
+          "snippet_sha256": "sha256:3d2399005d608be5b340227895e806791e23d08f5aad5fe6594b9ff3494d65df"
+        },
+        {
+          "rank": 50,
+          "item_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/builders/__init__.py:sphinx.builders.Builder",
+          "path": "sphinx/builders/__init__.py",
+          "kind": "class",
+          "symbol": "sphinx.builders.Builder",
+          "function_id": null,
+          "score": 0.31547619047619047,
+          "lines": [
+            47,
+            651
+          ],
+          "snippet_sha256": "sha256:065976d7d750778c3ef7f9125684cfc2dd0864723dd67c89f9f3a46bbcdbdc59"
+        },
+        {
+          "rank": 51,
+          "item_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/builders/gettext.py:sphinx.builders.gettext.Catalog",
+          "path": "sphinx/builders/gettext.py",
+          "kind": "class",
+          "symbol": "sphinx.builders.gettext.Catalog",
+          "function_id": null,
+          "score": 0.31547619047619047,
+          "lines": [
+            40,
+            67
+          ],
+          "snippet_sha256": "sha256:e3a2f85c49b2a7e1f7e852a8daa013af0c0447d7e2d4cfe9ebc50af5a907fe1e"
+        },
+        {
+          "rank": 52,
+          "item_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/deprecation.py:sphinx.deprecation.DeprecatedDict",
+          "path": "sphinx/deprecation.py",
+          "kind": "class",
+          "symbol": "sphinx.deprecation.DeprecatedDict",
+          "function_id": null,
+          "score": 0.31547619047619047,
+          "lines": [
+            55,
+            81
+          ],
+          "snippet_sha256": "sha256:f935f984f84fb58e95ca8d9381a0de5d8c2a629aac79c8328b308cdba0f4ab3d"
+        },
+        {
+          "rank": 53,
+          "item_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/domains/__init__.py:sphinx.domains.Domain",
+          "path": "sphinx/domains/__init__.py",
+          "kind": "class",
+          "symbol": "sphinx.domains.Domain",
+          "function_id": null,
+          "score": 0.31547619047619047,
+          "lines": [
+            151,
+            398
+          ],
+          "snippet_sha256": "sha256:66a369e86c786dfbdeacfd59ee5943bf52b749ebd43c862653bf2b9908deb132"
+        },
+        {
+          "rank": 54,
+          "item_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/events.py:sphinx.events.EventManager",
+          "path": "sphinx/events.py",
+          "kind": "class",
+          "symbol": "sphinx.events.EventManager",
+          "function_id": null,
+          "score": 0.31547619047619047,
+          "lines": [
+            48,
+            118
+          ],
+          "snippet_sha256": "sha256:d382820f2a7076278a29b9efba2ceb1aa66c872650a7b73a0f5c417d9ff7d186"
+        },
+        {
+          "rank": 55,
+          "item_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/io.py:sphinx.io.SphinxStandaloneReader",
+          "path": "sphinx/io.py",
+          "kind": "class",
+          "symbol": "sphinx.io.SphinxStandaloneReader",
+          "function_id": null,
+          "score": 0.31547619047619047,
+          "lines": [
+            89,
+            114
+          ],
+          "snippet_sha256": "sha256:60367b45d2d739cbcfad124898b3e0c2acd3787c6534a5490ce2032b4eaf5403"
+        },
+        {
+          "rank": 56,
+          "item_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/util/docutils.py:sphinx.util.docutils.sphinx_domains",
+          "path": "sphinx/util/docutils.py",
+          "kind": "class",
+          "symbol": "sphinx.util.docutils.sphinx_domains",
+          "function_id": null,
+          "score": 0.31547619047619047,
+          "lines": [
+            273,
+            324
+          ],
+          "snippet_sha256": "sha256:d7d4b9ce8256380d7e900f9ecfb4c1952c34d9ca488fa8786eb1e03040db96ef"
+        },
+        {
+          "rank": 57,
+          "item_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/ext/napoleon/docstring.py:sphinx.ext.napoleon.docstring.Deque",
+          "path": "sphinx/ext/napoleon/docstring.py",
+          "kind": "class",
+          "symbol": "sphinx.ext.napoleon.docstring.Deque",
+          "function_id": null,
+          "score": 0.3154411764705882,
+          "lines": [
+            48,
+            68
+          ],
+          "snippet_sha256": "sha256:ce1f8829fe32d69242ffbf7276c8f0d7efea3c6ea20c400e178eb1e2cd5e29f8"
+        },
+        {
+          "rank": 58,
+          "item_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/util/docutils.py:sphinx.util.docutils.CustomReSTDispatcher",
+          "path": "sphinx/util/docutils.py",
+          "kind": "class",
+          "symbol": "sphinx.util.docutils.CustomReSTDispatcher",
+          "function_id": null,
+          "score": 0.31540697674418605,
+          "lines": [
+            231,
+            266
+          ],
+          "snippet_sha256": "sha256:259e357e0fac19c55807614effef51daa98c0c60fbf2715765120419b7387f4d"
+        },
+        {
+          "rank": 59,
+          "item_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.acks",
+          "path": "sphinx/addnodes.py",
+          "kind": "class",
+          "symbol": "sphinx.addnodes.acks",
+          "function_id": null,
+          "score": 0.2780120481927711,
+          "lines": [
+            396,
+            397
+          ],
+          "snippet_sha256": "sha256:6b1584d998a1246b6012ab124a4ef1e05941324e42222d15bbced6bbca3adfe0"
+        },
+        {
+          "rank": 60,
+          "item_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.centered",
+          "path": "sphinx/addnodes.py",
+          "kind": "class",
+          "symbol": "sphinx.addnodes.centered",
+          "function_id": null,
+          "score": 0.2780120481927711,
+          "lines": [
+            392,
+            393
+          ],
+          "snippet_sha256": "sha256:1a762a1bf548d8d5df9ea9d3d863d1dcc09a7bf41f10f9c4b3c70e7904ec96af"
+        },
+        {
+          "rank": 61,
+          "item_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.desc",
+          "path": "sphinx/addnodes.py",
+          "kind": "class",
+          "symbol": "sphinx.addnodes.desc",
+          "function_id": null,
+          "score": 0.2780120481927711,
+          "lines": [
+            137,
+            150
+          ],
+          "snippet_sha256": "sha256:0fbb24a661459837682b5b76eb5cf3f83a1d487489c88f5a5bef32c963e98f72"
+        },
+        {
+          "rank": 62,
+          "item_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.compact_paragraph",
+          "path": "sphinx/addnodes.py",
+          "kind": "class",
+          "symbol": "sphinx.addnodes.compact_paragraph",
+          "function_id": null,
+          "score": 0.2779761904761905,
+          "lines": [
+            410,
+            411
+          ],
+          "snippet_sha256": "sha256:d81dfade8a5c2fc5cc041fa58a275fb25f2ad2d067fbcddf48013fbfb03aa381"
+        },
+        {
+          "rank": 63,
+          "item_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.desc_addname",
+          "path": "sphinx/addnodes.py",
+          "kind": "class",
+          "symbol": "sphinx.addnodes.desc_addname",
+          "function_id": null,
+          "score": 0.2779761904761905,
+          "lines": [
+            221,
+            230
+          ],
+          "snippet_sha256": "sha256:e70a3fa4d8b344045fb5c800711760758ac8abfa6a048b4abf13b9a2beb6118b"
+        },
+        {
+          "rank": 64,
+          "item_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.desc_annotation",
+          "path": "sphinx/addnodes.py",
+          "kind": "class",
+          "symbol": "sphinx.addnodes.desc_annotation",
+          "function_id": null,
+          "score": 0.2779761904761905,
+          "lines": [
+            268,
+            269
+          ],
+          "snippet_sha256": "sha256:893cf2aa9a9f360a3537c6f86c50515f6113a9778968d9e143d8d1315aa04c01"
+        },
+        {
+          "rank": 65,
+          "item_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.desc_content",
+          "path": "sphinx/addnodes.py",
+          "kind": "class",
+          "symbol": "sphinx.addnodes.desc_content",
+          "function_id": null,
+          "score": 0.2779761904761905,
+          "lines": [
+            183,
+            187
+          ],
+          "snippet_sha256": "sha256:b079cc5f21a5b7851f4d214949a56639c326a180e7ed2eb832dfb3b6e2d9bcd4"
+        },
+        {
+          "rank": 66,
+          "item_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.desc_inline",
+          "path": "sphinx/addnodes.py",
+          "kind": "class",
+          "symbol": "sphinx.addnodes.desc_inline",
+          "function_id": null,
+          "score": 0.2779761904761905,
+          "lines": [
+            190,
+            202
+          ],
+          "snippet_sha256": "sha256:076fd244876b79cd6d5e2acc63a88aa60323a373fedf9b043d5193172346f76b"
+        },
+        {
+          "rank": 67,
+          "item_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.desc_name",
+          "path": "sphinx/addnodes.py",
+          "kind": "class",
+          "symbol": "sphinx.addnodes.desc_name",
+          "function_id": null,
+          "score": 0.2779761904761905,
+          "lines": [
+            210,
+            218
+          ],
+          "snippet_sha256": "sha256:b36c8883f8282dc9e7ecc89d16ae0b4a1f59701a2d00477f1c0c9a6ca1caf9fa"
+        },
+        {
+          "rank": 68,
+          "item_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.desc_optional",
+          "path": "sphinx/addnodes.py",
+          "kind": "class",
+          "symbol": "sphinx.addnodes.desc_optional",
+          "function_id": null,
+          "score": 0.2779761904761905,
+          "lines": [
+            260,
+            265
+          ],
+          "snippet_sha256": "sha256:88a395773bfeba3f4cba6fb90326ff81c59eb209b1b95bd3d5e28aabe6808adc"
+        },
+        {
+          "rank": 69,
+          "item_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.desc_parameter",
+          "path": "sphinx/addnodes.py",
+          "kind": "class",
+          "symbol": "sphinx.addnodes.desc_parameter",
+          "function_id": null,
+          "score": 0.2779761904761905,
+          "lines": [
+            256,
+            257
+          ],
+          "snippet_sha256": "sha256:f8d23a71d1f21aea69471f861f2ac6c8fa69c013aac949ec34eff9b633edcb08"
+        },
+        {
+          "rank": 70,
+          "item_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.desc_parameterlist",
+          "path": "sphinx/addnodes.py",
+          "kind": "class",
+          "symbol": "sphinx.addnodes.desc_parameterlist",
+          "function_id": null,
+          "score": 0.2779761904761905,
+          "lines": [
+            248,
+            253
+          ],
+          "snippet_sha256": "sha256:f5283d49fd325af19c9f930edaa591f1fee376209479590d62ac9e8e471167f0"
+        },
+        {
+          "rank": 71,
+          "item_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.desc_returns",
+          "path": "sphinx/addnodes.py",
+          "kind": "class",
+          "symbol": "sphinx.addnodes.desc_returns",
+          "function_id": null,
+          "score": 0.2779761904761905,
+          "lines": [
+            241,
+            245
+          ],
+          "snippet_sha256": "sha256:90c5d5d9aead274f17571ce5a362adc719ab70481cd8bcdf9705f6ffd2b88d74"
+        },
+        {
+          "rank": 72,
+          "item_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes._desc_classes_injector",
+          "path": "sphinx/addnodes.py",
+          "kind": "class",
+          "symbol": "sphinx.addnodes._desc_classes_injector",
+          "function_id": null,
+          "score": 0.27794117647058825,
+          "lines": [
+            121,
+            131
+          ],
+          "snippet_sha256": "sha256:bf376c20a1f6badcbbd5a281435c8f84a8631bc436ba29f7406db65cd8363731"
+        },
+        {
+          "rank": 73,
+          "item_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.desc_sig_element",
+          "path": "sphinx/addnodes.py",
+          "kind": "class",
+          "symbol": "sphinx.addnodes.desc_sig_element",
+          "function_id": null,
+          "score": 0.27794117647058825,
+          "lines": [
+            279,
+            286
+          ],
+          "snippet_sha256": "sha256:09c6300d9fc5f724e99b35a448cb6a375c5a4b81d48315e1db566782f3df7df9"
+        },
+        {
+          "rank": 74,
+          "item_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.desc_sig_keyword",
+          "path": "sphinx/addnodes.py",
+          "kind": "class",
+          "symbol": "sphinx.addnodes.desc_sig_keyword",
+          "function_id": null,
+          "score": 0.27794117647058825,
+          "lines": [
+            316,
+            318
+          ],
+          "snippet_sha256": "sha256:fbab5124ab9892284ec206b9d730a2a43745cac367487bc9b18749c121685597"
+        },
+        {
+          "rank": 75,
+          "item_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.desc_sig_keyword_type",
+          "path": "sphinx/addnodes.py",
+          "kind": "class",
+          "symbol": "sphinx.addnodes.desc_sig_keyword_type",
+          "function_id": null,
+          "score": 0.2779069767441861,
+          "lines": [
+            321,
+            323
+          ],
+          "snippet_sha256": "sha256:4103f0de59b64db2dadf9306b7b9c5bdd94a759f0d9a8bc8ca2ae61e14b28760"
+        },
+        {
+          "rank": 76,
+          "item_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.desc_sig_literal_char",
+          "path": "sphinx/addnodes.py",
+          "kind": "class",
+          "symbol": "sphinx.addnodes.desc_sig_literal_char",
+          "function_id": null,
+          "score": 0.2779069767441861,
+          "lines": [
+            336,
+            338
+          ],
+          "snippet_sha256": "sha256:301623c6bd51c7def896cb97e9384b5a9b80d35ca1fbdc3483eec5fa24bf29e3"
+        },
+        {
+          "rank": 77,
+          "item_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.desc_sig_literal_number",
+          "path": "sphinx/addnodes.py",
+          "kind": "class",
+          "symbol": "sphinx.addnodes.desc_sig_literal_number",
+          "function_id": null,
+          "score": 0.2779069767441861,
+          "lines": [
+            326,
+            328
+          ],
+          "snippet_sha256": "sha256:5fb22a77d3edf6f8b19af0cebd3c9d62142b7d0aa042dc88dc8d89bc75a662b5"
+        },
+        {
+          "rank": 78,
+          "item_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.desc_sig_literal_string",
+          "path": "sphinx/addnodes.py",
+          "kind": "class",
+          "symbol": "sphinx.addnodes.desc_sig_literal_string",
+          "function_id": null,
+          "score": 0.2779069767441861,
+          "lines": [
+            331,
+            333
+          ],
+          "snippet_sha256": "sha256:eaf2c9d4bb2714e2a30780cebaa7bebfed2b60b34dfbd857168e2019d0907feb"
+        }
+      ],
+      "rank_order": [
+        "vgar:sphinx-doc__sphinx:python:method:sphinx/builders/__init__.py:sphinx.builders.Builder.read",
+        "vgar:sphinx-doc__sphinx:python:method:sphinx/builders/latex/theming.py:sphinx.builders.latex.theming.ThemeFactory.get",
+        "vgar:sphinx-doc__sphinx:python:method:sphinx/io.py:sphinx.io.SphinxStandaloneReader.read",
+        "vgar:sphinx-doc__sphinx:python:method:sphinx/directives/code.py:sphinx.directives.code.LiteralIncludeReader.read",
+        "vgar:sphinx-doc__sphinx:python:method:sphinx/util/docutils.py:sphinx.util.docutils.sphinx_domains.directive",
+        "vgar:sphinx-doc__sphinx:python:method:sphinx/util/docutils.py:sphinx.util.docutils.CustomReSTDispatcher.directive",
+        "vgar:sphinx-doc__sphinx:python:method:sphinx/util/tags.py:sphinx.util.tags.Tags.add",
+        "vgar:sphinx-doc__sphinx:python:method:sphinx/events.py:sphinx.events.EventManager.add",
+        "vgar:sphinx-doc__sphinx:python:function:sphinx/util/requests.py:sphinx.util.requests.get",
+        "vgar:sphinx-doc__sphinx:python:method:sphinx/domains/__init__.py:sphinx.domains.Domain.directive",
+        "vgar:sphinx-doc__sphinx:python:method:sphinx/ext/napoleon/docstring.py:sphinx.ext.napoleon.docstring.Deque.get",
+        "vgar:sphinx-doc__sphinx:python:method:sphinx/config.py:sphinx.config.Config.read",
+        "vgar:sphinx-doc__sphinx:python:method:sphinx/deprecation.py:sphinx.deprecation.DeprecatedDict.get",
+        "vgar:sphinx-doc__sphinx:python:method:sphinx/builders/gettext.py:sphinx.builders.gettext.Catalog.add",
+        "vgar:sphinx-doc__sphinx:python:method:sphinx/config.py:sphinx.config.Config.add",
+        "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.document",
+        "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.index",
+        "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.toctree",
+        "vgar:sphinx-doc__sphinx:python:method:sphinx/builders/__init__.py:sphinx.builders.Builder.build",
+        "vgar:sphinx-doc__sphinx:python:method:sphinx/directives/code.py:sphinx.directives.code.LiteralIncludeReader.read_file",
+        "vgar:sphinx-doc__sphinx:python:function:sphinx/util/requests.py:sphinx.util.requests.ignore_insecure_warning",
+        "vgar:sphinx-doc__sphinx:python:method:sphinx/util/docutils.py:sphinx.util.docutils.sphinx_domains.lookup_domain_element",
+        "vgar:sphinx-doc__sphinx:python:method:sphinx/io.py:sphinx.io.SphinxStandaloneReader.read_source",
+        "vgar:sphinx-doc__sphinx:python:method:sphinx/builders/latex/theming.py:sphinx.builders.latex.theming.ThemeFactory.find_user_theme",
+        "vgar:sphinx-doc__sphinx:python:method:sphinx/directives/code.py:sphinx.directives.code.LiteralIncludeReader.show_diff",
+        "vgar:sphinx-doc__sphinx:python:function:sphinx/config.py:sphinx.config.eval_config_file",
+        "vgar:sphinx-doc__sphinx:python:method:sphinx/addnodes.py:sphinx.addnodes.toctree.extract_original_messages",
+        "vgar:sphinx-doc__sphinx:python:method:sphinx/addnodes.py:sphinx.addnodes.toctree.preserve_original_messages",
+        "vgar:sphinx-doc__sphinx:python:method:sphinx/addnodes.py:sphinx.addnodes.toctree.apply_translated_message",
+        "vgar:sphinx-doc__sphinx:python:method:sphinx/addnodes.py:sphinx.addnodes.document.set_id",
+        "vgar:sphinx-doc__sphinx:python:module:sphinx/addnodes.py:sphinx.addnodes",
+        "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.translatable",
+        "vgar:sphinx-doc__sphinx:python:method:sphinx/addnodes.py:sphinx.addnodes.translatable.preserve_original_messages",
+        "vgar:sphinx-doc__sphinx:python:method:sphinx/addnodes.py:sphinx.addnodes.translatable.extract_original_messages",
+        "vgar:sphinx-doc__sphinx:python:method:sphinx/addnodes.py:sphinx.addnodes.translatable.apply_translated_message",
+        "vgar:sphinx-doc__sphinx:python:class:sphinx/errors.py:sphinx.errors.SphinxError",
+        "vgar:sphinx-doc__sphinx:python:class:sphinx/errors.py:sphinx.errors.ConfigError",
+        "vgar:sphinx-doc__sphinx:python:class:sphinx/errors.py:sphinx.errors.ExtensionError",
+        "vgar:sphinx-doc__sphinx:python:class:sphinx/builders/latex/theming.py:sphinx.builders.latex.theming.Theme",
+        "vgar:sphinx-doc__sphinx:python:class:sphinx/builders/latex/theming.py:sphinx.builders.latex.theming.ThemeFactory",
+        "vgar:sphinx-doc__sphinx:python:class:sphinx/directives/code.py:sphinx.directives.code.LiteralIncludeReader",
+        "vgar:sphinx-doc__sphinx:python:class:sphinx/domains/__init__.py:sphinx.domains.Domain.directive.DirectiveAdapter",
+        "vgar:sphinx-doc__sphinx:python:function:sphinx/util/requests.py:sphinx.util.requests._get_user_agent",
+        "vgar:sphinx-doc__sphinx:python:method:sphinx/builders/__init__.py:sphinx.builders.Builder._read_serial",
+        "vgar:sphinx-doc__sphinx:python:function:sphinx/util/requests.py:sphinx.util.requests._get_tls_cacert",
+        "vgar:sphinx-doc__sphinx:python:method:sphinx/builders/__init__.py:sphinx.builders.Builder._read_parallel",
+        "vgar:sphinx-doc__sphinx:python:class:sphinx/config.py:sphinx.config.Config",
+        "vgar:sphinx-doc__sphinx:python:module:sphinx/util/requests.py:sphinx.util.requests",
+        "vgar:sphinx-doc__sphinx:python:class:sphinx/util/tags.py:sphinx.util.tags.Tags",
+        "vgar:sphinx-doc__sphinx:python:class:sphinx/builders/__init__.py:sphinx.builders.Builder",
+        "vgar:sphinx-doc__sphinx:python:class:sphinx/builders/gettext.py:sphinx.builders.gettext.Catalog",
+        "vgar:sphinx-doc__sphinx:python:class:sphinx/deprecation.py:sphinx.deprecation.DeprecatedDict",
+        "vgar:sphinx-doc__sphinx:python:class:sphinx/domains/__init__.py:sphinx.domains.Domain",
+        "vgar:sphinx-doc__sphinx:python:class:sphinx/events.py:sphinx.events.EventManager",
+        "vgar:sphinx-doc__sphinx:python:class:sphinx/io.py:sphinx.io.SphinxStandaloneReader",
+        "vgar:sphinx-doc__sphinx:python:class:sphinx/util/docutils.py:sphinx.util.docutils.sphinx_domains",
+        "vgar:sphinx-doc__sphinx:python:class:sphinx/ext/napoleon/docstring.py:sphinx.ext.napoleon.docstring.Deque",
+        "vgar:sphinx-doc__sphinx:python:class:sphinx/util/docutils.py:sphinx.util.docutils.CustomReSTDispatcher",
+        "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.acks",
+        "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.centered",
+        "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.desc",
+        "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.compact_paragraph",
+        "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.desc_addname",
+        "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.desc_annotation",
+        "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.desc_content",
+        "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.desc_inline",
+        "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.desc_name",
+        "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.desc_optional",
+        "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.desc_parameter",
+        "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.desc_parameterlist",
+        "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.desc_returns",
+        "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes._desc_classes_injector",
+        "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.desc_sig_element",
+        "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.desc_sig_keyword",
+        "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.desc_sig_keyword_type",
+        "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.desc_sig_literal_char",
+        "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.desc_sig_literal_number",
+        "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.desc_sig_literal_string"
+      ],
+      "anchors": [
+        {
+          "node_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.document",
+          "score": 0.6,
+          "symbol": "sphinx.addnodes.document",
+          "type": "Class",
+          "path": "sphinx/addnodes.py"
+        },
+        {
+          "node_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.index",
+          "score": 0.6,
+          "symbol": "sphinx.addnodes.index",
+          "type": "Class",
+          "path": "sphinx/addnodes.py"
+        },
+        {
+          "node_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.toctree",
+          "score": 0.6,
+          "symbol": "sphinx.addnodes.toctree",
+          "type": "Class",
+          "path": "sphinx/addnodes.py"
+        },
+        {
+          "node_id": "vgar:sphinx-doc__sphinx:python:function:sphinx/testing/fixtures.py:sphinx.testing.fixtures.make_app.make",
+          "score": 0.6,
+          "symbol": "sphinx.testing.fixtures.make_app.make",
+          "type": "Function",
+          "path": "sphinx/testing/fixtures.py"
+        },
+        {
+          "node_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/builders/__init__.py:sphinx.builders.Builder.read",
+          "score": 0.5,
+          "symbol": "sphinx.builders.Builder.read",
+          "type": "Method",
+          "path": "sphinx/builders/__init__.py"
+        },
+        {
+          "node_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/builders/gettext.py:sphinx.builders.gettext.Catalog.add",
+          "score": 0.5,
+          "symbol": "sphinx.builders.gettext.Catalog.add",
+          "type": "Method",
+          "path": "sphinx/builders/gettext.py"
+        },
+        {
+          "node_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/builders/latex/theming.py:sphinx.builders.latex.theming.ThemeFactory.get",
+          "score": 0.5,
+          "symbol": "sphinx.builders.latex.theming.ThemeFactory.get",
+          "type": "Method",
+          "path": "sphinx/builders/latex/theming.py"
+        },
+        {
+          "node_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/config.py:sphinx.config.Config.add",
+          "score": 0.5,
+          "symbol": "sphinx.config.Config.add",
+          "type": "Method",
+          "path": "sphinx/config.py"
+        },
+        {
+          "node_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/config.py:sphinx.config.Config.read",
+          "score": 0.5,
+          "symbol": "sphinx.config.Config.read",
+          "type": "Method",
+          "path": "sphinx/config.py"
+        },
+        {
+          "node_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/deprecation.py:sphinx.deprecation.DeprecatedDict.get",
+          "score": 0.5,
+          "symbol": "sphinx.deprecation.DeprecatedDict.get",
+          "type": "Method",
+          "path": "sphinx/deprecation.py"
+        },
+        {
+          "node_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/directives/code.py:sphinx.directives.code.LiteralIncludeReader.read",
+          "score": 0.5,
+          "symbol": "sphinx.directives.code.LiteralIncludeReader.read",
+          "type": "Method",
+          "path": "sphinx/directives/code.py"
+        },
+        {
+          "node_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/domains/__init__.py:sphinx.domains.Domain.directive",
+          "score": 0.5,
+          "symbol": "sphinx.domains.Domain.directive",
+          "type": "Method",
+          "path": "sphinx/domains/__init__.py"
+        },
+        {
+          "node_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/events.py:sphinx.events.EventManager.add",
+          "score": 0.5,
+          "symbol": "sphinx.events.EventManager.add",
+          "type": "Method",
+          "path": "sphinx/events.py"
+        },
+        {
+          "node_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/ext/napoleon/docstring.py:sphinx.ext.napoleon.docstring.Deque.get",
+          "score": 0.5,
+          "symbol": "sphinx.ext.napoleon.docstring.Deque.get",
+          "type": "Method",
+          "path": "sphinx/ext/napoleon/docstring.py"
+        },
+        {
+          "node_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/io.py:sphinx.io.SphinxStandaloneReader.read",
+          "score": 0.5,
+          "symbol": "sphinx.io.SphinxStandaloneReader.read",
+          "type": "Method",
+          "path": "sphinx/io.py"
+        },
+        {
+          "node_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/util/docutils.py:sphinx.util.docutils.CustomReSTDispatcher.directive",
+          "score": 0.5,
+          "symbol": "sphinx.util.docutils.CustomReSTDispatcher.directive",
+          "type": "Method",
+          "path": "sphinx/util/docutils.py"
+        },
+        {
+          "node_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/util/docutils.py:sphinx.util.docutils.sphinx_domains.directive",
+          "score": 0.5,
+          "symbol": "sphinx.util.docutils.sphinx_domains.directive",
+          "type": "Method",
+          "path": "sphinx/util/docutils.py"
+        },
+        {
+          "node_id": "vgar:sphinx-doc__sphinx:python:function:sphinx/util/requests.py:sphinx.util.requests.get",
+          "score": 0.5,
+          "symbol": "sphinx.util.requests.get",
+          "type": "Function",
+          "path": "sphinx/util/requests.py"
+        },
+        {
+          "node_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/util/tags.py:sphinx.util.tags.Tags.add",
+          "score": 0.5,
+          "symbol": "sphinx.util.tags.Tags.add",
+          "type": "Method",
+          "path": "sphinx/util/tags.py"
+        },
+        {
+          "node_id": "vgar:sphinx-doc__sphinx:python:function:tests/roots/test-directive-code/target.py:tests.roots.test-directive-code.target.bar",
+          "score": 0.5,
+          "symbol": "tests.roots.test-directive-code.target.bar",
+          "type": "Function",
+          "path": "tests/roots/test-directive-code/target.py"
+        },
+        {
+          "node_id": "vgar:sphinx-doc__sphinx:python:class:tests/roots/test-ext-autodoc/target/autoclass_content.py:tests.roots.test-ext-autodoc.target.autoclass_content.A",
+          "score": 0.5,
+          "symbol": "tests.roots.test-ext-autodoc.target.autoclass_content.A",
+          "type": "Class",
+          "path": "tests/roots/test-ext-autodoc/target/autoclass_content.py"
+        },
+        {
+          "node_id": "vgar:sphinx-doc__sphinx:python:function:tests/roots/test-ext-autodoc/target/autodoc_type_aliases.py:tests.roots.test-ext-autodoc.target.autodoc_type_aliases.read",
+          "score": 0.5,
+          "symbol": "tests.roots.test-ext-autodoc.target.autodoc_type_aliases.read",
+          "type": "Function",
+          "path": "tests/roots/test-ext-autodoc/target/autodoc_type_aliases.py"
+        },
+        {
+          "node_id": "vgar:sphinx-doc__sphinx:python:function:tests/roots/test-ext-autodoc/target/canonical/original.py:tests.roots.test-ext-autodoc.target.canonical.original.bar",
+          "score": 0.5,
+          "symbol": "tests.roots.test-ext-autodoc.target.canonical.original.bar",
+          "type": "Function",
+          "path": "tests/roots/test-ext-autodoc/target/canonical/original.py"
+        },
+        {
+          "node_id": "vgar:sphinx-doc__sphinx:python:class:tests/roots/test-ext-autodoc/target/docstring_signature.py:tests.roots.test-ext-autodoc.target.docstring_signature.A",
+          "score": 0.5,
+          "symbol": "tests.roots.test-ext-autodoc.target.docstring_signature.A",
+          "type": "Class",
+          "path": "tests/roots/test-ext-autodoc/target/docstring_signature.py"
+        },
+        {
+          "node_id": "vgar:sphinx-doc__sphinx:python:function:tests/roots/test-ext-autodoc/target/empty_all.py:tests.roots.test-ext-autodoc.target.empty_all.bar",
+          "score": 0.5,
+          "symbol": "tests.roots.test-ext-autodoc.target.empty_all.bar",
+          "type": "Function",
+          "path": "tests/roots/test-ext-autodoc/target/empty_all.py"
+        },
+        {
+          "node_id": "vgar:sphinx-doc__sphinx:python:class:tests/roots/test-ext-autodoc/target/generic_class.py:tests.roots.test-ext-autodoc.target.generic_class.A",
+          "score": 0.5,
+          "symbol": "tests.roots.test-ext-autodoc.target.generic_class.A",
+          "type": "Class",
+          "path": "tests/roots/test-ext-autodoc/target/generic_class.py"
+        },
+        {
+          "node_id": "vgar:sphinx-doc__sphinx:python:class:tests/roots/test-ext-autodoc/target/name_conflict/foo.py:tests.roots.test-ext-autodoc.target.name_conflict.foo.bar",
+          "score": 0.5,
+          "symbol": "tests.roots.test-ext-autodoc.target.name_conflict.foo.bar",
+          "type": "Class",
+          "path": "tests/roots/test-ext-autodoc/target/name_conflict/foo.py"
+        },
+        {
+          "node_id": "vgar:sphinx-doc__sphinx:python:function:tests/roots/test-ext-autodoc/target/pep570.py:tests.roots.test-ext-autodoc.target.pep570.bar",
+          "score": 0.5,
+          "symbol": "tests.roots.test-ext-autodoc.target.pep570.bar",
+          "type": "Function",
+          "path": "tests/roots/test-ext-autodoc/target/pep570.py"
+        },
+        {
+          "node_id": "vgar:sphinx-doc__sphinx:python:method:tests/roots/test-ext-autosummary-filename-map/autosummary_dummy_module.py:tests.roots.test-ext-autosummary-filename-map.autosummary_dummy_module.Foo.bar",
+          "score": 0.5,
+          "symbol": "tests.roots.test-ext-autosummary-filename-map.autosummary_dummy_module.Foo.bar",
+          "type": "Method",
+          "path": "tests/roots/test-ext-autosummary-filename-map/autosummary_dummy_module.py"
+        },
+        {
+          "node_id": "vgar:sphinx-doc__sphinx:python:function:tests/roots/test-ext-autosummary-filename-map/autosummary_dummy_module.py:tests.roots.test-ext-autosummary-filename-map.autosummary_dummy_module.bar",
+          "score": 0.5,
+          "symbol": "tests.roots.test-ext-autosummary-filename-map.autosummary_dummy_module.bar",
+          "type": "Function",
+          "path": "tests/roots/test-ext-autosummary-filename-map/autosummary_dummy_module.py"
+        },
+        {
+          "node_id": "vgar:sphinx-doc__sphinx:python:method:tests/roots/test-ext-autosummary-recursive/package/module.py:tests.roots.test-ext-autosummary-recursive.package.module.Foo.bar",
+          "score": 0.5,
+          "symbol": "tests.roots.test-ext-autosummary-recursive.package.module.Foo.bar",
+          "type": "Method",
+          "path": "tests/roots/test-ext-autosummary-recursive/package/module.py"
+        },
+        {
+          "node_id": "vgar:sphinx-doc__sphinx:python:method:tests/roots/test-ext-autosummary-recursive/package/package/module.py:tests.roots.test-ext-autosummary-recursive.package.package.module.Foo.bar",
+          "score": 0.5,
+          "symbol": "tests.roots.test-ext-autosummary-recursive.package.package.module.Foo.bar",
+          "type": "Method",
+          "path": "tests/roots/test-ext-autosummary-recursive/package/package/module.py"
+        },
+        {
+          "node_id": "vgar:sphinx-doc__sphinx:python:method:tests/roots/test-ext-autosummary-recursive/package2/module.py:tests.roots.test-ext-autosummary-recursive.package2.module.Foo.bar",
+          "score": 0.5,
+          "symbol": "tests.roots.test-ext-autosummary-recursive.package2.module.Foo.bar",
+          "type": "Method",
+          "path": "tests/roots/test-ext-autosummary-recursive/package2/module.py"
+        },
+        {
+          "node_id": "vgar:sphinx-doc__sphinx:python:method:tests/roots/test-ext-autosummary/autosummary_dummy_module.py:tests.roots.test-ext-autosummary.autosummary_dummy_module.Foo.bar",
+          "score": 0.5,
+          "symbol": "tests.roots.test-ext-autosummary.autosummary_dummy_module.Foo.bar",
+          "type": "Method",
+          "path": "tests/roots/test-ext-autosummary/autosummary_dummy_module.py"
+        },
+        {
+          "node_id": "vgar:sphinx-doc__sphinx:python:function:tests/roots/test-ext-autosummary/autosummary_dummy_module.py:tests.roots.test-ext-autosummary.autosummary_dummy_module.bar",
+          "score": 0.5,
+          "symbol": "tests.roots.test-ext-autosummary.autosummary_dummy_module.bar",
+          "type": "Function",
+          "path": "tests/roots/test-ext-autosummary/autosummary_dummy_module.py"
+        },
+        {
+          "node_id": "vgar:sphinx-doc__sphinx:python:class:tests/roots/test-inheritance/dummy/test.py:tests.roots.test-inheritance.dummy.test.A",
+          "score": 0.5,
+          "symbol": "tests.roots.test-inheritance.dummy.test.A",
+          "type": "Class",
+          "path": "tests/roots/test-inheritance/dummy/test.py"
+        },
+        {
+          "node_id": "vgar:sphinx-doc__sphinx:python:class:tests/roots/test-inheritance/dummy/test_nested.py:tests.roots.test-inheritance.dummy.test_nested.A",
+          "score": 0.5,
+          "symbol": "tests.roots.test-inheritance.dummy.test_nested.A",
+          "type": "Class",
+          "path": "tests/roots/test-inheritance/dummy/test_nested.py"
+        },
+        {
+          "node_id": "vgar:sphinx-doc__sphinx:python:class:tests/test_config.py:tests.test_config.A",
+          "score": 0.5,
+          "symbol": "tests.test_config.A",
+          "type": "Class",
+          "path": "tests/test_config.py"
+        },
+        {
+          "node_id": "vgar:sphinx-doc__sphinx:python:function:tests/test_markup.py:tests.test_markup.get_verifier.get",
+          "score": 0.5,
+          "symbol": "tests.test_markup.get_verifier.get",
+          "type": "Function",
+          "path": "tests/test_markup.py"
+        },
+        {
+          "node_id": "vgar:sphinx-doc__sphinx:python:method:tests/test_util_inspect.py:tests.test_util_inspect.test_safe_getattr_with_property_exception.Foo.bar",
+          "score": 0.5,
+          "symbol": "tests.test_util_inspect.test_safe_getattr_with_property_exception.Foo.bar",
+          "type": "Method",
+          "path": "tests/test_util_inspect.py"
+        }
+      ],
+      "unmapped": [],
+      "excluded": [],
+      "diagnostics": {
+        "m1_native_total_tokens": 6356,
+        "m1_native_items": 55,
+        "m1_native_truncated": true,
+        "traversal_limited": true,
+        "unavailable_features": [
+          "architecture_dependencies",
+          "recent_change_frequency",
+          "failing_test_proximity"
+        ],
+        "omissions": {
+          "overlapping_selected_range": 23
+        },
+        "retrieval_config": {
+          "max_hops": 2,
+          "max_candidates": 100,
+          "min_edge_confidence": 0.6,
+          "weights": {
+            "task_similarity": 0.2,
+            "graph_distance": 0.3,
+            "edge_confidence": 0.2,
+            "failing_test_proximity": 0.2,
+            "public_api_risk": 0.1,
+            "recent_change_frequency": 0.1
+          },
+          "profile": "semantic-context-v1",
+          "active_features": [
+            "task_similarity",
+            "graph_distance",
+            "edge_confidence",
+            "public_api_risk"
+          ],
+          "normalized_weights": {
+            "task_similarity": 0.25000000000000006,
+            "graph_distance": 0.375,
+            "edge_confidence": 0.25000000000000006,
+            "public_api_risk": 0.12500000000000003
+          },
+          "failing_test_traversal_limited": false,
+          "filtered_by_include": 200
+        }
+      },
+      "scoring": {
+        "instance_id": "sphinx-doc__sphinx-10673",
+        "arm": "graph",
+        "scoring_version": "retrieval-scoring-v1",
+        "rank_hash": "sha256:881771bad4544ee859bfb89fe0a912cc13ec3dc42daa87d1aeedf591360a0e72",
+        "rank": {
+          "metrics": {
+            "file_gold_count": 3,
+            "file_mrr": 0,
+            "file_recall@1": 0.0,
+            "file_all_gold@1": 0,
+            "file_recall@3": 0.0,
+            "file_all_gold@3": 0,
+            "file_recall@5": 0.0,
+            "file_all_gold@5": 0,
+            "file_recall@10": 0.0,
+            "file_all_gold@10": 0,
+            "file_recall@20": 0.0,
+            "file_all_gold@20": 0,
+            "function_gold_count": 5,
+            "function_mrr": 0,
+            "function_recall@1": 0.0,
+            "function_all_gold@1": 0,
+            "function_recall@3": 0.0,
+            "function_all_gold@3": 0,
+            "function_recall@5": 0.0,
+            "function_all_gold@5": 0,
+            "function_recall@10": 0.0,
+            "function_all_gold@10": 0,
+            "function_recall@20": 0.0,
+            "function_all_gold@20": 0
+          },
+          "reach": {
+            "file": 0.0,
+            "function": 0.0
+          },
+          "size": {
+            "items": 78,
+            "files": 15,
+            "functions": 34
+          }
+        },
+        "packed": {
+          "budget_tokens": 8000,
+          "counter_label": "local-hf:Qwen/Qwen3-4B-Instruct-2507@cdbee75f17c01a7cc42f958dc650907174af0554:sha256=aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4:no-special-tokens",
+          "snippet_policy": {
+            "max_snippet_lines": 80,
+            "header": true,
+            "overlap": "skip_if_overlaps_different_group"
+          },
+          "metrics": {
+            "gold_file_in_context": 0.0,
+            "gold_function_in_context": 0.0,
+            "all_gold_files_in_context": 0,
+            "all_gold_functions_in_context": 0,
+            "total_tokens": 7217,
+            "tokens_to_first_gold_file": null,
+            "tokens_to_first_gold_function": null,
+            "items_packed": 55,
+            "skipped": {
+              "token_budget": 0,
+              "overlap": 23
+            },
+            "truncated": false
+          }
+        },
+        "excluded_count": 0,
+        "unmapped": [],
+        "excluded_reasons": {}
+      },
+      "metrics": {
+        "file_gold_count": 3,
+        "file_mrr": 0,
+        "file_recall@1": 0.0,
+        "file_all_gold@1": 0,
+        "file_recall@3": 0.0,
+        "file_all_gold@3": 0,
+        "file_recall@5": 0.0,
+        "file_all_gold@5": 0,
+        "file_recall@10": 0.0,
+        "file_all_gold@10": 0,
+        "file_recall@20": 0.0,
+        "file_all_gold@20": 0,
+        "function_gold_count": 5,
+        "function_mrr": 0,
+        "function_recall@1": 0.0,
+        "function_all_gold@1": 0,
+        "function_recall@3": 0.0,
+        "function_all_gold@3": 0,
+        "function_recall@5": 0.0,
+        "function_all_gold@5": 0,
+        "function_recall@10": 0.0,
+        "function_all_gold@10": 0,
+        "function_recall@20": 0.0,
+        "function_all_gold@20": 0,
+        "file_reach": 0.0,
+        "function_reach": 0.0,
+        "rank_items": 78,
+        "packed_gold_file_in_context": 0.0,
+        "packed_gold_function_in_context": 0.0,
+        "packed_all_gold_files_in_context": 0,
+        "packed_all_gold_functions_in_context": 0,
+        "context_tokens": 7217,
+        "packed_tokens_to_first_gold_file": null,
+        "packed_tokens_to_first_gold_function": null,
+        "packed_items_packed": 55,
+        "packed_skipped_token_budget": 0,
+        "packed_skipped_overlap": 23,
+        "packed_truncated": 0,
+        "unmapped_count": 0,
+        "excluded_count": 0,
+        "anchor_count": 40,
+        "no_anchors": 0,
+        "candidates_in": 78,
+        "retrieve_seconds": 1.131246100005228,
+        "mapping_coverage": 1.0,
+        "file_retrievability_coverage": 1.0
+      }
+    },
+    "graph_f2p": {
+      "rank_hash": "sha256:881771bad4544ee859bfb89fe0a912cc13ec3dc42daa87d1aeedf591360a0e72",
+      "ranking_total_count": 78,
+      "ranked": [
+        {
+          "rank": 1,
+          "item_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/builders/__init__.py:sphinx.builders.Builder.read",
+          "path": "sphinx/builders/__init__.py",
+          "kind": "method",
+          "symbol": "sphinx.builders.Builder.read",
+          "function_id": "sphinx/builders/__init__.py::sphinx.builders.Builder.read",
+          "score": 0.5994318181818182,
+          "lines": [
+            375,
+            437
+          ],
+          "snippet_sha256": "sha256:698aaf071881573c168934a608ef3f534b7b413d438f019960e9bc6fa7380fa9"
+        },
+        {
+          "rank": 2,
+          "item_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/builders/latex/theming.py:sphinx.builders.latex.theming.ThemeFactory.get",
+          "path": "sphinx/builders/latex/theming.py",
+          "kind": "method",
+          "symbol": "sphinx.builders.latex.theming.ThemeFactory.get",
+          "function_id": "sphinx/builders/latex/theming.py::sphinx.builders.latex.theming.ThemeFactory.get",
+          "score": 0.5709269662921348,
+          "lines": [
+            111,
+            119
+          ],
+          "snippet_sha256": "sha256:60cf94d26e36f770bf78ca39fbe43c7a1706abdad184e593c9c50d5cceae0f34"
+        },
+        {
+          "rank": 3,
+          "item_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/io.py:sphinx.io.SphinxStandaloneReader.read",
+          "path": "sphinx/io.py",
+          "kind": "method",
+          "symbol": "sphinx.io.SphinxStandaloneReader.read",
+          "function_id": "sphinx/io.py::sphinx.io.SphinxStandaloneReader.read",
+          "score": 0.5706521739130435,
+          "lines": [
+            98,
+            105
+          ],
+          "snippet_sha256": "sha256:6a78cfcae132eb67fa8f5453fd069b7b141656713f815c4606a31e20ea01ba7f"
+        },
+        {
+          "rank": 4,
+          "item_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/directives/code.py:sphinx.directives.code.LiteralIncludeReader.read",
+          "path": "sphinx/directives/code.py",
+          "kind": "method",
+          "symbol": "sphinx.directives.code.LiteralIncludeReader.read",
+          "function_id": "sphinx/directives/code.py::sphinx.directives.code.LiteralIncludeReader.read",
+          "score": 0.5705645161290324,
+          "lines": [
+            223,
+            238
+          ],
+          "snippet_sha256": "sha256:d3b17bd04bd421dbc3f1b912d773d4f41f6ba6e9d47708284467e2ea8677daa2"
+        },
+        {
+          "rank": 5,
+          "item_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/util/docutils.py:sphinx.util.docutils.sphinx_domains.directive",
+          "path": "sphinx/util/docutils.py",
+          "kind": "method",
+          "symbol": "sphinx.util.docutils.sphinx_domains.directive",
+          "function_id": "sphinx/util/docutils.py::sphinx.util.docutils.sphinx_domains.directive",
+          "score": 0.5702319587628867,
+          "lines": [
+            311,
+            317
+          ],
+          "snippet_sha256": "sha256:c3913476b6523c227a7f8794ee327c2c43a2c6e64ce82d72581b9b8476b3626a"
+        },
+        {
+          "rank": 6,
+          "item_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/util/docutils.py:sphinx.util.docutils.CustomReSTDispatcher.directive",
+          "path": "sphinx/util/docutils.py",
+          "kind": "method",
+          "symbol": "sphinx.util.docutils.CustomReSTDispatcher.directive",
+          "function_id": "sphinx/util/docutils.py::sphinx.util.docutils.CustomReSTDispatcher.directive",
+          "score": 0.5700757575757576,
+          "lines": [
+            259,
+            262
+          ],
+          "snippet_sha256": "sha256:f6813f7a0371ed86b3e7e2183e089cdba44e77d6e769a8b1de1f8e1ff812b1ac"
+        },
+        {
+          "rank": 7,
+          "item_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/util/tags.py:sphinx.util.tags.Tags.add",
+          "path": "sphinx/util/tags.py",
+          "kind": "method",
+          "symbol": "sphinx.util.tags.Tags.add",
+          "function_id": "sphinx/util/tags.py::sphinx.util.tags.Tags.add",
+          "score": 0.5681818181818182,
+          "lines": [
+            49,
+            50
+          ],
+          "snippet_sha256": "sha256:e1e5c5a4fd452b921c2c3c4bdd6a589ee754c1608650b71f718e3e555f0d77c1"
+        },
+        {
+          "rank": 8,
+          "item_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/events.py:sphinx.events.EventManager.add",
+          "path": "sphinx/events.py",
+          "kind": "method",
+          "symbol": "sphinx.events.EventManager.add",
+          "function_id": "sphinx/events.py::sphinx.events.EventManager.add",
+          "score": 0.5681179775280899,
+          "lines": [
+            57,
+            61
+          ],
+          "snippet_sha256": "sha256:c28b133d84266f9346d8f6eeeba52bbe964586dbb607a4b7c74858c60f47ff9e"
+        },
+        {
+          "rank": 9,
+          "item_id": "vgar:sphinx-doc__sphinx:python:function:sphinx/util/requests.py:sphinx.util.requests.get",
+          "path": "sphinx/util/requests.py",
+          "kind": "function",
+          "symbol": "sphinx.util.requests.get",
+          "function_id": "sphinx/util/requests.py::sphinx.util.requests.get",
+          "score": 0.5681179775280899,
+          "lines": [
+            61,
+            74
+          ],
+          "snippet_sha256": "sha256:c8dff15fe8d49b681d94e91494e0dfc799fdb0681bd048401a5c6d1849022992"
+        },
+        {
+          "rank": 10,
+          "item_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/domains/__init__.py:sphinx.domains.Domain.directive",
+          "path": "sphinx/domains/__init__.py",
+          "kind": "method",
+          "symbol": "sphinx.domains.Domain.directive",
+          "function_id": "sphinx/domains/__init__.py::sphinx.domains.Domain.directive",
+          "score": 0.5680555555555555,
+          "lines": [
+            267,
+            283
+          ],
+          "snippet_sha256": "sha256:b64a403433028e1c73dd551ddbd53eec0d343d9662d1c2d0233b05e5c53fb23e"
+        },
+        {
+          "rank": 11,
+          "item_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/ext/napoleon/docstring.py:sphinx.ext.napoleon.docstring.Deque.get",
+          "path": "sphinx/ext/napoleon/docstring.py",
+          "kind": "method",
+          "symbol": "sphinx.ext.napoleon.docstring.Deque.get",
+          "function_id": "sphinx/ext/napoleon/docstring.py::sphinx.ext.napoleon.docstring.Deque.get",
+          "score": 0.5680555555555555,
+          "lines": [
+            57,
+            62
+          ],
+          "snippet_sha256": "sha256:7f20ecf01bfac7b9aec2bf9e3731f9295beb237c09fd389e1c2bd5144865bbcc"
+        },
+        {
+          "rank": 12,
+          "item_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/config.py:sphinx.config.Config.read",
+          "path": "sphinx/config.py",
+          "kind": "method",
+          "symbol": "sphinx.config.Config.read",
+          "function_id": "sphinx/config.py::sphinx.config.Config.read",
+          "score": 0.5679945054945056,
+          "lines": [
+            161,
+            181
+          ],
+          "snippet_sha256": "sha256:b1c47b7e240acffc6111ce97813cc945e6d541ae33e5c6037fb230625ee3b225"
+        },
+        {
+          "rank": 13,
+          "item_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/deprecation.py:sphinx.deprecation.DeprecatedDict.get",
+          "path": "sphinx/deprecation.py",
+          "kind": "method",
+          "symbol": "sphinx.deprecation.DeprecatedDict.get",
+          "function_id": "sphinx/deprecation.py::sphinx.deprecation.DeprecatedDict.get",
+          "score": 0.5679945054945056,
+          "lines": [
+            75,
+            77
+          ],
+          "snippet_sha256": "sha256:b8feff7f2b2093341d8eb0dc815734f4829280037205cb7c34d5aa9a7cf269d5"
+        },
+        {
+          "rank": 14,
+          "item_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/builders/gettext.py:sphinx.builders.gettext.Catalog.add",
+          "path": "sphinx/builders/gettext.py",
+          "kind": "method",
+          "symbol": "sphinx.builders.gettext.Catalog.add",
+          "function_id": "sphinx/builders/gettext.py::sphinx.builders.gettext.Catalog.add",
+          "score": 0.5679347826086957,
+          "lines": [
+            49,
+            60
+          ],
+          "snippet_sha256": "sha256:74d0f0405a1ad236e48cb116ceffd5bb0950b072f2f61a1e1b1f06b34f3a0e76"
+        },
+        {
+          "rank": 15,
+          "item_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/config.py:sphinx.config.Config.add",
+          "path": "sphinx/config.py",
+          "kind": "method",
+          "symbol": "sphinx.config.Config.add",
+          "function_id": "sphinx/config.py::sphinx.config.Config.add",
+          "score": 0.5678763440860215,
+          "lines": [
+            298,
+            302
+          ],
+          "snippet_sha256": "sha256:5429f8275c933838d9843157bb59a360971bc511b360ceaa10078519b2669818"
+        },
+        {
+          "rank": 16,
+          "item_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.document",
+          "path": "sphinx/addnodes.py",
+          "kind": "class",
+          "symbol": "sphinx.addnodes.document",
+          "function_id": null,
+          "score": 0.5310975609756098,
+          "lines": [
+            20,
+            43
+          ],
+          "snippet_sha256": "sha256:9e0b6a0dcd2660f4176d5136c19e267fd00b9b41e26440ffb72bc4f5fcd4b54b"
+        },
+        {
+          "rank": 17,
+          "item_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.index",
+          "path": "sphinx/addnodes.py",
+          "kind": "class",
+          "symbol": "sphinx.addnodes.index",
+          "function_id": null,
+          "score": 0.5310975609756098,
+          "lines": [
+            377,
+            389
+          ],
+          "snippet_sha256": "sha256:7219bcfed64a9c07030f2977b9219a6f3110f76912fb2009d48cb7d0393f7562"
+        },
+        {
+          "rank": 18,
+          "item_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.toctree",
+          "path": "sphinx/addnodes.py",
+          "kind": "class",
+          "symbol": "sphinx.addnodes.toctree",
+          "function_id": null,
+          "score": 0.5310975609756098,
+          "lines": [
+            81,
+            114
+          ],
+          "snippet_sha256": "sha256:8f93e7851177d6a7228913248366fa9dc9c7a89a6c9f7763a01b7568c476396d"
+        },
+        {
+          "rank": 19,
+          "item_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/builders/__init__.py:sphinx.builders.Builder.build",
+          "path": "sphinx/builders/__init__.py",
+          "kind": "method",
+          "symbol": "sphinx.builders.Builder.build",
+          "function_id": "sphinx/builders/__init__.py::sphinx.builders.Builder.build",
+          "score": 0.4245065789473685,
+          "lines": [
+            305,
+            373
+          ],
+          "snippet_sha256": "sha256:0b130a628f93df826b34a43a0e961a1cf061aecffffba4818de5da1902f16803"
+        },
+        {
+          "rank": 20,
+          "item_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/directives/code.py:sphinx.directives.code.LiteralIncludeReader.read_file",
+          "path": "sphinx/directives/code.py",
+          "kind": "method",
+          "symbol": "sphinx.directives.code.LiteralIncludeReader.read_file",
+          "function_id": "sphinx/directives/code.py::sphinx.directives.code.LiteralIncludeReader.read_file",
+          "score": 0.42447916666666663,
+          "lines": [
+            205,
+            221
+          ],
+          "snippet_sha256": "sha256:d75009b688334276d93ee0ded81bff8a059cfc20981f85ef561f30da14413694"
+        },
+        {
+          "rank": 21,
+          "item_id": "vgar:sphinx-doc__sphinx:python:function:sphinx/util/requests.py:sphinx.util.requests.ignore_insecure_warning",
+          "path": "sphinx/util/requests.py",
+          "kind": "function",
+          "symbol": "sphinx.util.requests.ignore_insecure_warning",
+          "function_id": "sphinx/util/requests.py::sphinx.util.requests.ignore_insecure_warning",
+          "score": 0.4222222222222223,
+          "lines": [
+            20,
+            25
+          ],
+          "snippet_sha256": "sha256:cdda5b2146307df5599d02306a34695689467ff5c3e1c802579deb8dea3ed176"
+        },
+        {
+          "rank": 22,
+          "item_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/util/docutils.py:sphinx.util.docutils.sphinx_domains.lookup_domain_element",
+          "path": "sphinx/util/docutils.py",
+          "kind": "method",
+          "symbol": "sphinx.util.docutils.sphinx_domains.lookup_domain_element",
+          "function_id": "sphinx/util/docutils.py::sphinx.util.docutils.sphinx_domains.lookup_domain_element",
+          "score": 0.41935483870967744,
+          "lines": [
+            281,
+            309
+          ],
+          "snippet_sha256": "sha256:364c76a0a469a8d3fc1b929e66af9c82ea54cf589e6639cccfb8ac83369778d4"
+        },
+        {
+          "rank": 23,
+          "item_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/io.py:sphinx.io.SphinxStandaloneReader.read_source",
+          "path": "sphinx/io.py",
+          "kind": "method",
+          "symbol": "sphinx.io.SphinxStandaloneReader.read_source",
+          "function_id": "sphinx/io.py::sphinx.io.SphinxStandaloneReader.read_source",
+          "score": 0.41174450549450553,
+          "lines": [
+            107,
+            114
+          ],
+          "snippet_sha256": "sha256:f373b6adf474a787376b2c4deb1673fd0ec497166bf13265871d16a276dfd015"
+        },
+        {
+          "rank": 24,
+          "item_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/builders/latex/theming.py:sphinx.builders.latex.theming.ThemeFactory.find_user_theme",
+          "path": "sphinx/builders/latex/theming.py",
+          "kind": "method",
+          "symbol": "sphinx.builders.latex.theming.ThemeFactory.find_user_theme",
+          "function_id": "sphinx/builders/latex/theming.py::sphinx.builders.latex.theming.ThemeFactory.find_user_theme",
+          "score": 0.4116847826086957,
+          "lines": [
+            121,
+            131
+          ],
+          "snippet_sha256": "sha256:6ad4fcd5853361831d92836d41c53bbb780abddb268ce7450c747b7d2b19a889"
+        },
+        {
+          "rank": 25,
+          "item_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/directives/code.py:sphinx.directives.code.LiteralIncludeReader.show_diff",
+          "path": "sphinx/directives/code.py",
+          "kind": "method",
+          "symbol": "sphinx.directives.code.LiteralIncludeReader.show_diff",
+          "function_id": "sphinx/directives/code.py::sphinx.directives.code.LiteralIncludeReader.show_diff",
+          "score": 0.41145833333333337,
+          "lines": [
+            240,
+            245
+          ],
+          "snippet_sha256": "sha256:3e37adc3b69c874e934bbeba3f0ae1bca7bc1a1670553384cf03be3ba690ef2d"
+        },
+        {
+          "rank": 26,
+          "item_id": "vgar:sphinx-doc__sphinx:python:function:sphinx/config.py:sphinx.config.eval_config_file",
+          "path": "sphinx/config.py",
+          "kind": "function",
+          "symbol": "sphinx.config.eval_config_file",
+          "function_id": "sphinx/config.py::sphinx.config.eval_config_file",
+          "score": 0.4089972527472528,
+          "lines": [
+            336,
+            362
+          ],
+          "snippet_sha256": "sha256:e9602260ee4b340056c3df7245ef4cfd69c13fcdc0d92e909e8640420704dbbb"
+        },
+        {
+          "rank": 27,
+          "item_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/addnodes.py:sphinx.addnodes.toctree.extract_original_messages",
+          "path": "sphinx/addnodes.py",
+          "kind": "method",
+          "symbol": "sphinx.addnodes.toctree.extract_original_messages",
+          "function_id": "sphinx/addnodes.py::sphinx.addnodes.toctree.extract_original_messages",
+          "score": 0.40561797752808987,
+          "lines": [
+            105,
+            114
+          ],
+          "snippet_sha256": "sha256:72095b2764e62be103feafdf3365581beca1c62db45c2dac53132e32da5f8e58"
+        },
+        {
+          "rank": 28,
+          "item_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/addnodes.py:sphinx.addnodes.toctree.preserve_original_messages",
+          "path": "sphinx/addnodes.py",
+          "kind": "method",
+          "symbol": "sphinx.addnodes.toctree.preserve_original_messages",
+          "function_id": "sphinx/addnodes.py::sphinx.addnodes.toctree.preserve_original_messages",
+          "score": 0.40561797752808987,
+          "lines": [
+            84,
+            93
+          ],
+          "snippet_sha256": "sha256:f2e30b24d9fb7a322f8cf21a96ae574b40cb363d1d224f655db3aad514fb96ab"
+        },
+        {
+          "rank": 29,
+          "item_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/addnodes.py:sphinx.addnodes.toctree.apply_translated_message",
+          "path": "sphinx/addnodes.py",
+          "kind": "method",
+          "symbol": "sphinx.addnodes.toctree.apply_translated_message",
+          "function_id": "sphinx/addnodes.py::sphinx.addnodes.toctree.apply_translated_message",
+          "score": 0.4054945054945055,
+          "lines": [
+            95,
+            103
+          ],
+          "snippet_sha256": "sha256:7879a3949fdbc2d35bdd647b9a7f3daca60daf0c6f72f51b318a2c408d9aae5b"
+        },
+        {
+          "rank": 30,
+          "item_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/addnodes.py:sphinx.addnodes.document.set_id",
+          "path": "sphinx/addnodes.py",
+          "kind": "method",
+          "symbol": "sphinx.addnodes.document.set_id",
+          "function_id": "sphinx/addnodes.py::sphinx.addnodes.document.set_id",
+          "score": 0.40531914893617027,
+          "lines": [
+            30,
+            43
+          ],
+          "snippet_sha256": "sha256:6f7b572d8ce6521c9bee54638c7d2c32d7b08e7a83736b2f033cca98a9e531a7"
+        },
+        {
+          "rank": 31,
+          "item_id": "vgar:sphinx-doc__sphinx:python:module:sphinx/addnodes.py:sphinx.addnodes",
+          "path": "sphinx/addnodes.py",
+          "kind": "module",
+          "symbol": "sphinx.addnodes",
+          "function_id": null,
+          "score": 0.34054878048780496,
+          "lines": [
+            1,
+            580
+          ],
+          "snippet_sha256": "sha256:10e36924f0341f491ac429c5fa0a71e00c6901ab19c017c6fe25b808a972a049"
+        },
+        {
+          "rank": 32,
+          "item_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.translatable",
+          "path": "sphinx/addnodes.py",
+          "kind": "class",
+          "symbol": "sphinx.addnodes.translatable",
+          "function_id": null,
+          "score": 0.3405120481927711,
+          "lines": [
+            46,
+            73
+          ],
+          "snippet_sha256": "sha256:dc0cc136ede198fad4afaf37f081779473d5fe5b6ae455390ab2d382e9c9d175"
+        },
+        {
+          "rank": 33,
+          "item_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/addnodes.py:sphinx.addnodes.translatable.preserve_original_messages",
+          "path": "sphinx/addnodes.py",
+          "kind": "method",
+          "symbol": "sphinx.addnodes.translatable.preserve_original_messages",
+          "function_id": "sphinx/addnodes.py::sphinx.addnodes.translatable.preserve_original_messages",
+          "score": 0.340308988764045,
+          "lines": [
+            60,
+            62
+          ],
+          "snippet_sha256": "sha256:2724fe1210ed2d3aa6ce9a870bcb03b846a4a28e12c8828c2481b08442c43a00"
+        },
+        {
+          "rank": 34,
+          "item_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/addnodes.py:sphinx.addnodes.translatable.extract_original_messages",
+          "path": "sphinx/addnodes.py",
+          "kind": "method",
+          "symbol": "sphinx.addnodes.translatable.extract_original_messages",
+          "function_id": "sphinx/addnodes.py::sphinx.addnodes.translatable.extract_original_messages",
+          "score": 0.3402777777777778,
+          "lines": [
+            68,
+            73
+          ],
+          "snippet_sha256": "sha256:574d96355f87e5db3443e1d0ce90b0c85041dced37cdd150fe55c0e94bd53373"
+        },
+        {
+          "rank": 35,
+          "item_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/addnodes.py:sphinx.addnodes.translatable.apply_translated_message",
+          "path": "sphinx/addnodes.py",
+          "kind": "method",
+          "symbol": "sphinx.addnodes.translatable.apply_translated_message",
+          "function_id": "sphinx/addnodes.py::sphinx.addnodes.translatable.apply_translated_message",
+          "score": 0.3402472527472528,
+          "lines": [
+            64,
+            66
+          ],
+          "snippet_sha256": "sha256:b7a7f8c44b028f33f4da1be069ca4cc21a4f95c7d56b22506f538b7569ad277c"
+        },
+        {
+          "rank": 36,
+          "item_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/errors.py:sphinx.errors.SphinxError",
+          "path": "sphinx/errors.py",
+          "kind": "class",
+          "symbol": "sphinx.errors.SphinxError",
+          "function_id": null,
+          "score": 0.31859756097560976,
+          "lines": [
+            6,
+            26
+          ],
+          "snippet_sha256": "sha256:29a60c85f2a2364b0d31b59090d4eb5df7bac3cbc0b9915d1a60167aa2b435eb"
+        },
+        {
+          "rank": 37,
+          "item_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/errors.py:sphinx.errors.ConfigError",
+          "path": "sphinx/errors.py",
+          "kind": "class",
+          "symbol": "sphinx.errors.ConfigError",
+          "function_id": null,
+          "score": 0.31852409638554224,
+          "lines": [
+            75,
+            77
+          ],
+          "snippet_sha256": "sha256:93f278ea5184b42eb7e056342bee33e5413999fcc824414e283756a1d180cafc"
+        },
+        {
+          "rank": 38,
+          "item_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/errors.py:sphinx.errors.ExtensionError",
+          "path": "sphinx/errors.py",
+          "kind": "class",
+          "symbol": "sphinx.errors.ExtensionError",
+          "function_id": null,
+          "score": 0.31852409638554224,
+          "lines": [
+            39,
+            67
+          ],
+          "snippet_sha256": "sha256:00f70d533fca9bbfc2658dffb0f1a66cfb88fa6c6bb051ff5ef6a107eecf7b3d"
+        },
+        {
+          "rank": 39,
+          "item_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/builders/latex/theming.py:sphinx.builders.latex.theming.Theme",
+          "path": "sphinx/builders/latex/theming.py",
+          "kind": "class",
+          "symbol": "sphinx.builders.latex.theming.Theme",
+          "function_id": null,
+          "score": 0.31845238095238093,
+          "lines": [
+            16,
+            40
+          ],
+          "snippet_sha256": "sha256:9297e3274d9b8551b1cd3d4c8a0afb7f3e1e902502d0eea7dd116e66e0527d58"
+        },
+        {
+          "rank": 40,
+          "item_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/builders/latex/theming.py:sphinx.builders.latex.theming.ThemeFactory",
+          "path": "sphinx/builders/latex/theming.py",
+          "kind": "class",
+          "symbol": "sphinx.builders.latex.theming.ThemeFactory",
+          "function_id": null,
+          "score": 0.3183823529411765,
+          "lines": [
+            97,
+            131
+          ],
+          "snippet_sha256": "sha256:9d75fffbf61932cab8850a4fe12e6165de90dff5ebcfb82cb5c5baa3d9c0e003"
+        },
+        {
+          "rank": 41,
+          "item_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/directives/code.py:sphinx.directives.code.LiteralIncludeReader",
+          "path": "sphinx/directives/code.py",
+          "kind": "class",
+          "symbol": "sphinx.directives.code.LiteralIncludeReader",
+          "function_id": null,
+          "score": 0.3183823529411765,
+          "lines": [
+            174,
+            379
+          ],
+          "snippet_sha256": "sha256:d08aedc8a4fbcd0e878eb68ba9d628d39673feb3105b95e6281a32473dbe67ef"
+        },
+        {
+          "rank": 42,
+          "item_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/domains/__init__.py:sphinx.domains.Domain.directive.DirectiveAdapter",
+          "path": "sphinx/domains/__init__.py",
+          "kind": "class",
+          "symbol": "sphinx.domains.Domain.directive.DirectiveAdapter",
+          "function_id": null,
+          "score": 0.3183823529411765,
+          "lines": [
+            278,
+            281
+          ],
+          "snippet_sha256": "sha256:d240ee24afd7234aa43e7a2d54ac22cbd7d3c27163d0d4cb4d72e94d08568f5f"
+        },
+        {
+          "rank": 43,
+          "item_id": "vgar:sphinx-doc__sphinx:python:function:sphinx/util/requests.py:sphinx.util.requests._get_user_agent",
+          "path": "sphinx/util/requests.py",
+          "kind": "function",
+          "symbol": "sphinx.util.requests._get_user_agent",
+          "function_id": "sphinx/util/requests.py::sphinx.util.requests._get_user_agent",
+          "score": 0.3181818181818182,
+          "lines": [
+            50,
+            58
+          ],
+          "snippet_sha256": "sha256:ce0994d089fb4142b05dacf88a48953a9fb3dc880c5633ce438a03158f6e6594"
+        },
+        {
+          "rank": 44,
+          "item_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/builders/__init__.py:sphinx.builders.Builder._read_serial",
+          "path": "sphinx/builders/__init__.py",
+          "kind": "method",
+          "symbol": "sphinx.builders.Builder._read_serial",
+          "function_id": "sphinx/builders/__init__.py::sphinx.builders.Builder._read_serial",
+          "score": 0.3179945054945055,
+          "lines": [
+            439,
+            445
+          ],
+          "snippet_sha256": "sha256:eef9c0fb2d28b71eaf10bf9666bf948ef6e83bee3b69cfc20dd3feee7424db15"
+        },
+        {
+          "rank": 45,
+          "item_id": "vgar:sphinx-doc__sphinx:python:function:sphinx/util/requests.py:sphinx.util.requests._get_tls_cacert",
+          "path": "sphinx/util/requests.py",
+          "kind": "function",
+          "symbol": "sphinx.util.requests._get_tls_cacert",
+          "function_id": "sphinx/util/requests.py::sphinx.util.requests._get_tls_cacert",
+          "score": 0.3179945054945055,
+          "lines": [
+            28,
+            47
+          ],
+          "snippet_sha256": "sha256:2a048a1f7b26a8535f8ea1306e440f9191e7b06d7bccc7c849be63e6e5aa5627"
+        },
+        {
+          "rank": 46,
+          "item_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/builders/__init__.py:sphinx.builders.Builder._read_parallel",
+          "path": "sphinx/builders/__init__.py",
+          "kind": "method",
+          "symbol": "sphinx.builders.Builder._read_parallel",
+          "function_id": "sphinx/builders/__init__.py::sphinx.builders.Builder._read_parallel",
+          "score": 0.3178763440860215,
+          "lines": [
+            447,
+            479
+          ],
+          "snippet_sha256": "sha256:9fb808eab517ac1e0cd98cb658b2b68019f8ac47ec7fa0c24d2b7b3b4aac3de2"
+        },
+        {
+          "rank": 47,
+          "item_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/config.py:sphinx.config.Config",
+          "path": "sphinx/config.py",
+          "kind": "class",
+          "symbol": "sphinx.config.Config",
+          "function_id": null,
+          "score": 0.3155487804878049,
+          "lines": [
+            66,
+            333
+          ],
+          "snippet_sha256": "sha256:9f3a28103748e3636f029689c82b35f1c474e517812a770b624860724d02bf5d"
+        },
+        {
+          "rank": 48,
+          "item_id": "vgar:sphinx-doc__sphinx:python:module:sphinx/util/requests.py:sphinx.util.requests",
+          "path": "sphinx/util/requests.py",
+          "kind": "module",
+          "symbol": "sphinx.util.requests",
+          "function_id": null,
+          "score": 0.31551204819277107,
+          "lines": [
+            1,
+            91
+          ],
+          "snippet_sha256": "sha256:095539dce021abe020b8ae2a303c83369208eef27050a136722039b16eb8d0ed"
+        },
+        {
+          "rank": 49,
+          "item_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/util/tags.py:sphinx.util.tags.Tags",
+          "path": "sphinx/util/tags.py",
+          "kind": "class",
+          "symbol": "sphinx.util.tags.Tags",
+          "function_id": null,
+          "score": 0.31551204819277107,
+          "lines": [
+            37,
+            79
+          ],
+          "snippet_sha256": "sha256:3d2399005d608be5b340227895e806791e23d08f5aad5fe6594b9ff3494d65df"
+        },
+        {
+          "rank": 50,
+          "item_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/builders/__init__.py:sphinx.builders.Builder",
+          "path": "sphinx/builders/__init__.py",
+          "kind": "class",
+          "symbol": "sphinx.builders.Builder",
+          "function_id": null,
+          "score": 0.31547619047619047,
+          "lines": [
+            47,
+            651
+          ],
+          "snippet_sha256": "sha256:065976d7d750778c3ef7f9125684cfc2dd0864723dd67c89f9f3a46bbcdbdc59"
+        },
+        {
+          "rank": 51,
+          "item_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/builders/gettext.py:sphinx.builders.gettext.Catalog",
+          "path": "sphinx/builders/gettext.py",
+          "kind": "class",
+          "symbol": "sphinx.builders.gettext.Catalog",
+          "function_id": null,
+          "score": 0.31547619047619047,
+          "lines": [
+            40,
+            67
+          ],
+          "snippet_sha256": "sha256:e3a2f85c49b2a7e1f7e852a8daa013af0c0447d7e2d4cfe9ebc50af5a907fe1e"
+        },
+        {
+          "rank": 52,
+          "item_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/deprecation.py:sphinx.deprecation.DeprecatedDict",
+          "path": "sphinx/deprecation.py",
+          "kind": "class",
+          "symbol": "sphinx.deprecation.DeprecatedDict",
+          "function_id": null,
+          "score": 0.31547619047619047,
+          "lines": [
+            55,
+            81
+          ],
+          "snippet_sha256": "sha256:f935f984f84fb58e95ca8d9381a0de5d8c2a629aac79c8328b308cdba0f4ab3d"
+        },
+        {
+          "rank": 53,
+          "item_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/domains/__init__.py:sphinx.domains.Domain",
+          "path": "sphinx/domains/__init__.py",
+          "kind": "class",
+          "symbol": "sphinx.domains.Domain",
+          "function_id": null,
+          "score": 0.31547619047619047,
+          "lines": [
+            151,
+            398
+          ],
+          "snippet_sha256": "sha256:66a369e86c786dfbdeacfd59ee5943bf52b749ebd43c862653bf2b9908deb132"
+        },
+        {
+          "rank": 54,
+          "item_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/events.py:sphinx.events.EventManager",
+          "path": "sphinx/events.py",
+          "kind": "class",
+          "symbol": "sphinx.events.EventManager",
+          "function_id": null,
+          "score": 0.31547619047619047,
+          "lines": [
+            48,
+            118
+          ],
+          "snippet_sha256": "sha256:d382820f2a7076278a29b9efba2ceb1aa66c872650a7b73a0f5c417d9ff7d186"
+        },
+        {
+          "rank": 55,
+          "item_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/io.py:sphinx.io.SphinxStandaloneReader",
+          "path": "sphinx/io.py",
+          "kind": "class",
+          "symbol": "sphinx.io.SphinxStandaloneReader",
+          "function_id": null,
+          "score": 0.31547619047619047,
+          "lines": [
+            89,
+            114
+          ],
+          "snippet_sha256": "sha256:60367b45d2d739cbcfad124898b3e0c2acd3787c6534a5490ce2032b4eaf5403"
+        },
+        {
+          "rank": 56,
+          "item_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/util/docutils.py:sphinx.util.docutils.sphinx_domains",
+          "path": "sphinx/util/docutils.py",
+          "kind": "class",
+          "symbol": "sphinx.util.docutils.sphinx_domains",
+          "function_id": null,
+          "score": 0.31547619047619047,
+          "lines": [
+            273,
+            324
+          ],
+          "snippet_sha256": "sha256:d7d4b9ce8256380d7e900f9ecfb4c1952c34d9ca488fa8786eb1e03040db96ef"
+        },
+        {
+          "rank": 57,
+          "item_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/ext/napoleon/docstring.py:sphinx.ext.napoleon.docstring.Deque",
+          "path": "sphinx/ext/napoleon/docstring.py",
+          "kind": "class",
+          "symbol": "sphinx.ext.napoleon.docstring.Deque",
+          "function_id": null,
+          "score": 0.3154411764705882,
+          "lines": [
+            48,
+            68
+          ],
+          "snippet_sha256": "sha256:ce1f8829fe32d69242ffbf7276c8f0d7efea3c6ea20c400e178eb1e2cd5e29f8"
+        },
+        {
+          "rank": 58,
+          "item_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/util/docutils.py:sphinx.util.docutils.CustomReSTDispatcher",
+          "path": "sphinx/util/docutils.py",
+          "kind": "class",
+          "symbol": "sphinx.util.docutils.CustomReSTDispatcher",
+          "function_id": null,
+          "score": 0.31540697674418605,
+          "lines": [
+            231,
+            266
+          ],
+          "snippet_sha256": "sha256:259e357e0fac19c55807614effef51daa98c0c60fbf2715765120419b7387f4d"
+        },
+        {
+          "rank": 59,
+          "item_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.acks",
+          "path": "sphinx/addnodes.py",
+          "kind": "class",
+          "symbol": "sphinx.addnodes.acks",
+          "function_id": null,
+          "score": 0.2780120481927711,
+          "lines": [
+            396,
+            397
+          ],
+          "snippet_sha256": "sha256:6b1584d998a1246b6012ab124a4ef1e05941324e42222d15bbced6bbca3adfe0"
+        },
+        {
+          "rank": 60,
+          "item_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.centered",
+          "path": "sphinx/addnodes.py",
+          "kind": "class",
+          "symbol": "sphinx.addnodes.centered",
+          "function_id": null,
+          "score": 0.2780120481927711,
+          "lines": [
+            392,
+            393
+          ],
+          "snippet_sha256": "sha256:1a762a1bf548d8d5df9ea9d3d863d1dcc09a7bf41f10f9c4b3c70e7904ec96af"
+        },
+        {
+          "rank": 61,
+          "item_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.desc",
+          "path": "sphinx/addnodes.py",
+          "kind": "class",
+          "symbol": "sphinx.addnodes.desc",
+          "function_id": null,
+          "score": 0.2780120481927711,
+          "lines": [
+            137,
+            150
+          ],
+          "snippet_sha256": "sha256:0fbb24a661459837682b5b76eb5cf3f83a1d487489c88f5a5bef32c963e98f72"
+        },
+        {
+          "rank": 62,
+          "item_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.compact_paragraph",
+          "path": "sphinx/addnodes.py",
+          "kind": "class",
+          "symbol": "sphinx.addnodes.compact_paragraph",
+          "function_id": null,
+          "score": 0.2779761904761905,
+          "lines": [
+            410,
+            411
+          ],
+          "snippet_sha256": "sha256:d81dfade8a5c2fc5cc041fa58a275fb25f2ad2d067fbcddf48013fbfb03aa381"
+        },
+        {
+          "rank": 63,
+          "item_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.desc_addname",
+          "path": "sphinx/addnodes.py",
+          "kind": "class",
+          "symbol": "sphinx.addnodes.desc_addname",
+          "function_id": null,
+          "score": 0.2779761904761905,
+          "lines": [
+            221,
+            230
+          ],
+          "snippet_sha256": "sha256:e70a3fa4d8b344045fb5c800711760758ac8abfa6a048b4abf13b9a2beb6118b"
+        },
+        {
+          "rank": 64,
+          "item_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.desc_annotation",
+          "path": "sphinx/addnodes.py",
+          "kind": "class",
+          "symbol": "sphinx.addnodes.desc_annotation",
+          "function_id": null,
+          "score": 0.2779761904761905,
+          "lines": [
+            268,
+            269
+          ],
+          "snippet_sha256": "sha256:893cf2aa9a9f360a3537c6f86c50515f6113a9778968d9e143d8d1315aa04c01"
+        },
+        {
+          "rank": 65,
+          "item_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.desc_content",
+          "path": "sphinx/addnodes.py",
+          "kind": "class",
+          "symbol": "sphinx.addnodes.desc_content",
+          "function_id": null,
+          "score": 0.2779761904761905,
+          "lines": [
+            183,
+            187
+          ],
+          "snippet_sha256": "sha256:b079cc5f21a5b7851f4d214949a56639c326a180e7ed2eb832dfb3b6e2d9bcd4"
+        },
+        {
+          "rank": 66,
+          "item_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.desc_inline",
+          "path": "sphinx/addnodes.py",
+          "kind": "class",
+          "symbol": "sphinx.addnodes.desc_inline",
+          "function_id": null,
+          "score": 0.2779761904761905,
+          "lines": [
+            190,
+            202
+          ],
+          "snippet_sha256": "sha256:076fd244876b79cd6d5e2acc63a88aa60323a373fedf9b043d5193172346f76b"
+        },
+        {
+          "rank": 67,
+          "item_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.desc_name",
+          "path": "sphinx/addnodes.py",
+          "kind": "class",
+          "symbol": "sphinx.addnodes.desc_name",
+          "function_id": null,
+          "score": 0.2779761904761905,
+          "lines": [
+            210,
+            218
+          ],
+          "snippet_sha256": "sha256:b36c8883f8282dc9e7ecc89d16ae0b4a1f59701a2d00477f1c0c9a6ca1caf9fa"
+        },
+        {
+          "rank": 68,
+          "item_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.desc_optional",
+          "path": "sphinx/addnodes.py",
+          "kind": "class",
+          "symbol": "sphinx.addnodes.desc_optional",
+          "function_id": null,
+          "score": 0.2779761904761905,
+          "lines": [
+            260,
+            265
+          ],
+          "snippet_sha256": "sha256:88a395773bfeba3f4cba6fb90326ff81c59eb209b1b95bd3d5e28aabe6808adc"
+        },
+        {
+          "rank": 69,
+          "item_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.desc_parameter",
+          "path": "sphinx/addnodes.py",
+          "kind": "class",
+          "symbol": "sphinx.addnodes.desc_parameter",
+          "function_id": null,
+          "score": 0.2779761904761905,
+          "lines": [
+            256,
+            257
+          ],
+          "snippet_sha256": "sha256:f8d23a71d1f21aea69471f861f2ac6c8fa69c013aac949ec34eff9b633edcb08"
+        },
+        {
+          "rank": 70,
+          "item_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.desc_parameterlist",
+          "path": "sphinx/addnodes.py",
+          "kind": "class",
+          "symbol": "sphinx.addnodes.desc_parameterlist",
+          "function_id": null,
+          "score": 0.2779761904761905,
+          "lines": [
+            248,
+            253
+          ],
+          "snippet_sha256": "sha256:f5283d49fd325af19c9f930edaa591f1fee376209479590d62ac9e8e471167f0"
+        },
+        {
+          "rank": 71,
+          "item_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.desc_returns",
+          "path": "sphinx/addnodes.py",
+          "kind": "class",
+          "symbol": "sphinx.addnodes.desc_returns",
+          "function_id": null,
+          "score": 0.2779761904761905,
+          "lines": [
+            241,
+            245
+          ],
+          "snippet_sha256": "sha256:90c5d5d9aead274f17571ce5a362adc719ab70481cd8bcdf9705f6ffd2b88d74"
+        },
+        {
+          "rank": 72,
+          "item_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes._desc_classes_injector",
+          "path": "sphinx/addnodes.py",
+          "kind": "class",
+          "symbol": "sphinx.addnodes._desc_classes_injector",
+          "function_id": null,
+          "score": 0.27794117647058825,
+          "lines": [
+            121,
+            131
+          ],
+          "snippet_sha256": "sha256:bf376c20a1f6badcbbd5a281435c8f84a8631bc436ba29f7406db65cd8363731"
+        },
+        {
+          "rank": 73,
+          "item_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.desc_sig_element",
+          "path": "sphinx/addnodes.py",
+          "kind": "class",
+          "symbol": "sphinx.addnodes.desc_sig_element",
+          "function_id": null,
+          "score": 0.27794117647058825,
+          "lines": [
+            279,
+            286
+          ],
+          "snippet_sha256": "sha256:09c6300d9fc5f724e99b35a448cb6a375c5a4b81d48315e1db566782f3df7df9"
+        },
+        {
+          "rank": 74,
+          "item_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.desc_sig_keyword",
+          "path": "sphinx/addnodes.py",
+          "kind": "class",
+          "symbol": "sphinx.addnodes.desc_sig_keyword",
+          "function_id": null,
+          "score": 0.27794117647058825,
+          "lines": [
+            316,
+            318
+          ],
+          "snippet_sha256": "sha256:fbab5124ab9892284ec206b9d730a2a43745cac367487bc9b18749c121685597"
+        },
+        {
+          "rank": 75,
+          "item_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.desc_sig_keyword_type",
+          "path": "sphinx/addnodes.py",
+          "kind": "class",
+          "symbol": "sphinx.addnodes.desc_sig_keyword_type",
+          "function_id": null,
+          "score": 0.2779069767441861,
+          "lines": [
+            321,
+            323
+          ],
+          "snippet_sha256": "sha256:4103f0de59b64db2dadf9306b7b9c5bdd94a759f0d9a8bc8ca2ae61e14b28760"
+        },
+        {
+          "rank": 76,
+          "item_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.desc_sig_literal_char",
+          "path": "sphinx/addnodes.py",
+          "kind": "class",
+          "symbol": "sphinx.addnodes.desc_sig_literal_char",
+          "function_id": null,
+          "score": 0.2779069767441861,
+          "lines": [
+            336,
+            338
+          ],
+          "snippet_sha256": "sha256:301623c6bd51c7def896cb97e9384b5a9b80d35ca1fbdc3483eec5fa24bf29e3"
+        },
+        {
+          "rank": 77,
+          "item_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.desc_sig_literal_number",
+          "path": "sphinx/addnodes.py",
+          "kind": "class",
+          "symbol": "sphinx.addnodes.desc_sig_literal_number",
+          "function_id": null,
+          "score": 0.2779069767441861,
+          "lines": [
+            326,
+            328
+          ],
+          "snippet_sha256": "sha256:5fb22a77d3edf6f8b19af0cebd3c9d62142b7d0aa042dc88dc8d89bc75a662b5"
+        },
+        {
+          "rank": 78,
+          "item_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.desc_sig_literal_string",
+          "path": "sphinx/addnodes.py",
+          "kind": "class",
+          "symbol": "sphinx.addnodes.desc_sig_literal_string",
+          "function_id": null,
+          "score": 0.2779069767441861,
+          "lines": [
+            331,
+            333
+          ],
+          "snippet_sha256": "sha256:eaf2c9d4bb2714e2a30780cebaa7bebfed2b60b34dfbd857168e2019d0907feb"
+        }
+      ],
+      "rank_order": [
+        "vgar:sphinx-doc__sphinx:python:method:sphinx/builders/__init__.py:sphinx.builders.Builder.read",
+        "vgar:sphinx-doc__sphinx:python:method:sphinx/builders/latex/theming.py:sphinx.builders.latex.theming.ThemeFactory.get",
+        "vgar:sphinx-doc__sphinx:python:method:sphinx/io.py:sphinx.io.SphinxStandaloneReader.read",
+        "vgar:sphinx-doc__sphinx:python:method:sphinx/directives/code.py:sphinx.directives.code.LiteralIncludeReader.read",
+        "vgar:sphinx-doc__sphinx:python:method:sphinx/util/docutils.py:sphinx.util.docutils.sphinx_domains.directive",
+        "vgar:sphinx-doc__sphinx:python:method:sphinx/util/docutils.py:sphinx.util.docutils.CustomReSTDispatcher.directive",
+        "vgar:sphinx-doc__sphinx:python:method:sphinx/util/tags.py:sphinx.util.tags.Tags.add",
+        "vgar:sphinx-doc__sphinx:python:method:sphinx/events.py:sphinx.events.EventManager.add",
+        "vgar:sphinx-doc__sphinx:python:function:sphinx/util/requests.py:sphinx.util.requests.get",
+        "vgar:sphinx-doc__sphinx:python:method:sphinx/domains/__init__.py:sphinx.domains.Domain.directive",
+        "vgar:sphinx-doc__sphinx:python:method:sphinx/ext/napoleon/docstring.py:sphinx.ext.napoleon.docstring.Deque.get",
+        "vgar:sphinx-doc__sphinx:python:method:sphinx/config.py:sphinx.config.Config.read",
+        "vgar:sphinx-doc__sphinx:python:method:sphinx/deprecation.py:sphinx.deprecation.DeprecatedDict.get",
+        "vgar:sphinx-doc__sphinx:python:method:sphinx/builders/gettext.py:sphinx.builders.gettext.Catalog.add",
+        "vgar:sphinx-doc__sphinx:python:method:sphinx/config.py:sphinx.config.Config.add",
+        "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.document",
+        "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.index",
+        "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.toctree",
+        "vgar:sphinx-doc__sphinx:python:method:sphinx/builders/__init__.py:sphinx.builders.Builder.build",
+        "vgar:sphinx-doc__sphinx:python:method:sphinx/directives/code.py:sphinx.directives.code.LiteralIncludeReader.read_file",
+        "vgar:sphinx-doc__sphinx:python:function:sphinx/util/requests.py:sphinx.util.requests.ignore_insecure_warning",
+        "vgar:sphinx-doc__sphinx:python:method:sphinx/util/docutils.py:sphinx.util.docutils.sphinx_domains.lookup_domain_element",
+        "vgar:sphinx-doc__sphinx:python:method:sphinx/io.py:sphinx.io.SphinxStandaloneReader.read_source",
+        "vgar:sphinx-doc__sphinx:python:method:sphinx/builders/latex/theming.py:sphinx.builders.latex.theming.ThemeFactory.find_user_theme",
+        "vgar:sphinx-doc__sphinx:python:method:sphinx/directives/code.py:sphinx.directives.code.LiteralIncludeReader.show_diff",
+        "vgar:sphinx-doc__sphinx:python:function:sphinx/config.py:sphinx.config.eval_config_file",
+        "vgar:sphinx-doc__sphinx:python:method:sphinx/addnodes.py:sphinx.addnodes.toctree.extract_original_messages",
+        "vgar:sphinx-doc__sphinx:python:method:sphinx/addnodes.py:sphinx.addnodes.toctree.preserve_original_messages",
+        "vgar:sphinx-doc__sphinx:python:method:sphinx/addnodes.py:sphinx.addnodes.toctree.apply_translated_message",
+        "vgar:sphinx-doc__sphinx:python:method:sphinx/addnodes.py:sphinx.addnodes.document.set_id",
+        "vgar:sphinx-doc__sphinx:python:module:sphinx/addnodes.py:sphinx.addnodes",
+        "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.translatable",
+        "vgar:sphinx-doc__sphinx:python:method:sphinx/addnodes.py:sphinx.addnodes.translatable.preserve_original_messages",
+        "vgar:sphinx-doc__sphinx:python:method:sphinx/addnodes.py:sphinx.addnodes.translatable.extract_original_messages",
+        "vgar:sphinx-doc__sphinx:python:method:sphinx/addnodes.py:sphinx.addnodes.translatable.apply_translated_message",
+        "vgar:sphinx-doc__sphinx:python:class:sphinx/errors.py:sphinx.errors.SphinxError",
+        "vgar:sphinx-doc__sphinx:python:class:sphinx/errors.py:sphinx.errors.ConfigError",
+        "vgar:sphinx-doc__sphinx:python:class:sphinx/errors.py:sphinx.errors.ExtensionError",
+        "vgar:sphinx-doc__sphinx:python:class:sphinx/builders/latex/theming.py:sphinx.builders.latex.theming.Theme",
+        "vgar:sphinx-doc__sphinx:python:class:sphinx/builders/latex/theming.py:sphinx.builders.latex.theming.ThemeFactory",
+        "vgar:sphinx-doc__sphinx:python:class:sphinx/directives/code.py:sphinx.directives.code.LiteralIncludeReader",
+        "vgar:sphinx-doc__sphinx:python:class:sphinx/domains/__init__.py:sphinx.domains.Domain.directive.DirectiveAdapter",
+        "vgar:sphinx-doc__sphinx:python:function:sphinx/util/requests.py:sphinx.util.requests._get_user_agent",
+        "vgar:sphinx-doc__sphinx:python:method:sphinx/builders/__init__.py:sphinx.builders.Builder._read_serial",
+        "vgar:sphinx-doc__sphinx:python:function:sphinx/util/requests.py:sphinx.util.requests._get_tls_cacert",
+        "vgar:sphinx-doc__sphinx:python:method:sphinx/builders/__init__.py:sphinx.builders.Builder._read_parallel",
+        "vgar:sphinx-doc__sphinx:python:class:sphinx/config.py:sphinx.config.Config",
+        "vgar:sphinx-doc__sphinx:python:module:sphinx/util/requests.py:sphinx.util.requests",
+        "vgar:sphinx-doc__sphinx:python:class:sphinx/util/tags.py:sphinx.util.tags.Tags",
+        "vgar:sphinx-doc__sphinx:python:class:sphinx/builders/__init__.py:sphinx.builders.Builder",
+        "vgar:sphinx-doc__sphinx:python:class:sphinx/builders/gettext.py:sphinx.builders.gettext.Catalog",
+        "vgar:sphinx-doc__sphinx:python:class:sphinx/deprecation.py:sphinx.deprecation.DeprecatedDict",
+        "vgar:sphinx-doc__sphinx:python:class:sphinx/domains/__init__.py:sphinx.domains.Domain",
+        "vgar:sphinx-doc__sphinx:python:class:sphinx/events.py:sphinx.events.EventManager",
+        "vgar:sphinx-doc__sphinx:python:class:sphinx/io.py:sphinx.io.SphinxStandaloneReader",
+        "vgar:sphinx-doc__sphinx:python:class:sphinx/util/docutils.py:sphinx.util.docutils.sphinx_domains",
+        "vgar:sphinx-doc__sphinx:python:class:sphinx/ext/napoleon/docstring.py:sphinx.ext.napoleon.docstring.Deque",
+        "vgar:sphinx-doc__sphinx:python:class:sphinx/util/docutils.py:sphinx.util.docutils.CustomReSTDispatcher",
+        "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.acks",
+        "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.centered",
+        "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.desc",
+        "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.compact_paragraph",
+        "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.desc_addname",
+        "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.desc_annotation",
+        "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.desc_content",
+        "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.desc_inline",
+        "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.desc_name",
+        "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.desc_optional",
+        "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.desc_parameter",
+        "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.desc_parameterlist",
+        "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.desc_returns",
+        "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes._desc_classes_injector",
+        "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.desc_sig_element",
+        "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.desc_sig_keyword",
+        "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.desc_sig_keyword_type",
+        "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.desc_sig_literal_char",
+        "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.desc_sig_literal_number",
+        "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.desc_sig_literal_string"
+      ],
+      "anchors": [
+        {
+          "node_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.document",
+          "score": 0.6,
+          "symbol": "sphinx.addnodes.document",
+          "type": "Class",
+          "path": "sphinx/addnodes.py"
+        },
+        {
+          "node_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.index",
+          "score": 0.6,
+          "symbol": "sphinx.addnodes.index",
+          "type": "Class",
+          "path": "sphinx/addnodes.py"
+        },
+        {
+          "node_id": "vgar:sphinx-doc__sphinx:python:class:sphinx/addnodes.py:sphinx.addnodes.toctree",
+          "score": 0.6,
+          "symbol": "sphinx.addnodes.toctree",
+          "type": "Class",
+          "path": "sphinx/addnodes.py"
+        },
+        {
+          "node_id": "vgar:sphinx-doc__sphinx:python:function:sphinx/testing/fixtures.py:sphinx.testing.fixtures.make_app.make",
+          "score": 0.6,
+          "symbol": "sphinx.testing.fixtures.make_app.make",
+          "type": "Function",
+          "path": "sphinx/testing/fixtures.py"
+        },
+        {
+          "node_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/builders/__init__.py:sphinx.builders.Builder.read",
+          "score": 0.5,
+          "symbol": "sphinx.builders.Builder.read",
+          "type": "Method",
+          "path": "sphinx/builders/__init__.py"
+        },
+        {
+          "node_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/builders/gettext.py:sphinx.builders.gettext.Catalog.add",
+          "score": 0.5,
+          "symbol": "sphinx.builders.gettext.Catalog.add",
+          "type": "Method",
+          "path": "sphinx/builders/gettext.py"
+        },
+        {
+          "node_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/builders/latex/theming.py:sphinx.builders.latex.theming.ThemeFactory.get",
+          "score": 0.5,
+          "symbol": "sphinx.builders.latex.theming.ThemeFactory.get",
+          "type": "Method",
+          "path": "sphinx/builders/latex/theming.py"
+        },
+        {
+          "node_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/config.py:sphinx.config.Config.add",
+          "score": 0.5,
+          "symbol": "sphinx.config.Config.add",
+          "type": "Method",
+          "path": "sphinx/config.py"
+        },
+        {
+          "node_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/config.py:sphinx.config.Config.read",
+          "score": 0.5,
+          "symbol": "sphinx.config.Config.read",
+          "type": "Method",
+          "path": "sphinx/config.py"
+        },
+        {
+          "node_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/deprecation.py:sphinx.deprecation.DeprecatedDict.get",
+          "score": 0.5,
+          "symbol": "sphinx.deprecation.DeprecatedDict.get",
+          "type": "Method",
+          "path": "sphinx/deprecation.py"
+        },
+        {
+          "node_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/directives/code.py:sphinx.directives.code.LiteralIncludeReader.read",
+          "score": 0.5,
+          "symbol": "sphinx.directives.code.LiteralIncludeReader.read",
+          "type": "Method",
+          "path": "sphinx/directives/code.py"
+        },
+        {
+          "node_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/domains/__init__.py:sphinx.domains.Domain.directive",
+          "score": 0.5,
+          "symbol": "sphinx.domains.Domain.directive",
+          "type": "Method",
+          "path": "sphinx/domains/__init__.py"
+        },
+        {
+          "node_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/events.py:sphinx.events.EventManager.add",
+          "score": 0.5,
+          "symbol": "sphinx.events.EventManager.add",
+          "type": "Method",
+          "path": "sphinx/events.py"
+        },
+        {
+          "node_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/ext/napoleon/docstring.py:sphinx.ext.napoleon.docstring.Deque.get",
+          "score": 0.5,
+          "symbol": "sphinx.ext.napoleon.docstring.Deque.get",
+          "type": "Method",
+          "path": "sphinx/ext/napoleon/docstring.py"
+        },
+        {
+          "node_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/io.py:sphinx.io.SphinxStandaloneReader.read",
+          "score": 0.5,
+          "symbol": "sphinx.io.SphinxStandaloneReader.read",
+          "type": "Method",
+          "path": "sphinx/io.py"
+        },
+        {
+          "node_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/util/docutils.py:sphinx.util.docutils.CustomReSTDispatcher.directive",
+          "score": 0.5,
+          "symbol": "sphinx.util.docutils.CustomReSTDispatcher.directive",
+          "type": "Method",
+          "path": "sphinx/util/docutils.py"
+        },
+        {
+          "node_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/util/docutils.py:sphinx.util.docutils.sphinx_domains.directive",
+          "score": 0.5,
+          "symbol": "sphinx.util.docutils.sphinx_domains.directive",
+          "type": "Method",
+          "path": "sphinx/util/docutils.py"
+        },
+        {
+          "node_id": "vgar:sphinx-doc__sphinx:python:function:sphinx/util/requests.py:sphinx.util.requests.get",
+          "score": 0.5,
+          "symbol": "sphinx.util.requests.get",
+          "type": "Function",
+          "path": "sphinx/util/requests.py"
+        },
+        {
+          "node_id": "vgar:sphinx-doc__sphinx:python:method:sphinx/util/tags.py:sphinx.util.tags.Tags.add",
+          "score": 0.5,
+          "symbol": "sphinx.util.tags.Tags.add",
+          "type": "Method",
+          "path": "sphinx/util/tags.py"
+        },
+        {
+          "node_id": "vgar:sphinx-doc__sphinx:python:function:tests/roots/test-directive-code/target.py:tests.roots.test-directive-code.target.bar",
+          "score": 0.5,
+          "symbol": "tests.roots.test-directive-code.target.bar",
+          "type": "Function",
+          "path": "tests/roots/test-directive-code/target.py"
+        },
+        {
+          "node_id": "vgar:sphinx-doc__sphinx:python:class:tests/roots/test-ext-autodoc/target/autoclass_content.py:tests.roots.test-ext-autodoc.target.autoclass_content.A",
+          "score": 0.5,
+          "symbol": "tests.roots.test-ext-autodoc.target.autoclass_content.A",
+          "type": "Class",
+          "path": "tests/roots/test-ext-autodoc/target/autoclass_content.py"
+        },
+        {
+          "node_id": "vgar:sphinx-doc__sphinx:python:function:tests/roots/test-ext-autodoc/target/autodoc_type_aliases.py:tests.roots.test-ext-autodoc.target.autodoc_type_aliases.read",
+          "score": 0.5,
+          "symbol": "tests.roots.test-ext-autodoc.target.autodoc_type_aliases.read",
+          "type": "Function",
+          "path": "tests/roots/test-ext-autodoc/target/autodoc_type_aliases.py"
+        },
+        {
+          "node_id": "vgar:sphinx-doc__sphinx:python:function:tests/roots/test-ext-autodoc/target/canonical/original.py:tests.roots.test-ext-autodoc.target.canonical.original.bar",
+          "score": 0.5,
+          "symbol": "tests.roots.test-ext-autodoc.target.canonical.original.bar",
+          "type": "Function",
+          "path": "tests/roots/test-ext-autodoc/target/canonical/original.py"
+        },
+        {
+          "node_id": "vgar:sphinx-doc__sphinx:python:class:tests/roots/test-ext-autodoc/target/docstring_signature.py:tests.roots.test-ext-autodoc.target.docstring_signature.A",
+          "score": 0.5,
+          "symbol": "tests.roots.test-ext-autodoc.target.docstring_signature.A",
+          "type": "Class",
+          "path": "tests/roots/test-ext-autodoc/target/docstring_signature.py"
+        },
+        {
+          "node_id": "vgar:sphinx-doc__sphinx:python:function:tests/roots/test-ext-autodoc/target/empty_all.py:tests.roots.test-ext-autodoc.target.empty_all.bar",
+          "score": 0.5,
+          "symbol": "tests.roots.test-ext-autodoc.target.empty_all.bar",
+          "type": "Function",
+          "path": "tests/roots/test-ext-autodoc/target/empty_all.py"
+        },
+        {
+          "node_id": "vgar:sphinx-doc__sphinx:python:class:tests/roots/test-ext-autodoc/target/generic_class.py:tests.roots.test-ext-autodoc.target.generic_class.A",
+          "score": 0.5,
+          "symbol": "tests.roots.test-ext-autodoc.target.generic_class.A",
+          "type": "Class",
+          "path": "tests/roots/test-ext-autodoc/target/generic_class.py"
+        },
+        {
+          "node_id": "vgar:sphinx-doc__sphinx:python:class:tests/roots/test-ext-autodoc/target/name_conflict/foo.py:tests.roots.test-ext-autodoc.target.name_conflict.foo.bar",
+          "score": 0.5,
+          "symbol": "tests.roots.test-ext-autodoc.target.name_conflict.foo.bar",
+          "type": "Class",
+          "path": "tests/roots/test-ext-autodoc/target/name_conflict/foo.py"
+        },
+        {
+          "node_id": "vgar:sphinx-doc__sphinx:python:function:tests/roots/test-ext-autodoc/target/pep570.py:tests.roots.test-ext-autodoc.target.pep570.bar",
+          "score": 0.5,
+          "symbol": "tests.roots.test-ext-autodoc.target.pep570.bar",
+          "type": "Function",
+          "path": "tests/roots/test-ext-autodoc/target/pep570.py"
+        },
+        {
+          "node_id": "vgar:sphinx-doc__sphinx:python:method:tests/roots/test-ext-autosummary-filename-map/autosummary_dummy_module.py:tests.roots.test-ext-autosummary-filename-map.autosummary_dummy_module.Foo.bar",
+          "score": 0.5,
+          "symbol": "tests.roots.test-ext-autosummary-filename-map.autosummary_dummy_module.Foo.bar",
+          "type": "Method",
+          "path": "tests/roots/test-ext-autosummary-filename-map/autosummary_dummy_module.py"
+        },
+        {
+          "node_id": "vgar:sphinx-doc__sphinx:python:function:tests/roots/test-ext-autosummary-filename-map/autosummary_dummy_module.py:tests.roots.test-ext-autosummary-filename-map.autosummary_dummy_module.bar",
+          "score": 0.5,
+          "symbol": "tests.roots.test-ext-autosummary-filename-map.autosummary_dummy_module.bar",
+          "type": "Function",
+          "path": "tests/roots/test-ext-autosummary-filename-map/autosummary_dummy_module.py"
+        },
+        {
+          "node_id": "vgar:sphinx-doc__sphinx:python:method:tests/roots/test-ext-autosummary-recursive/package/module.py:tests.roots.test-ext-autosummary-recursive.package.module.Foo.bar",
+          "score": 0.5,
+          "symbol": "tests.roots.test-ext-autosummary-recursive.package.module.Foo.bar",
+          "type": "Method",
+          "path": "tests/roots/test-ext-autosummary-recursive/package/module.py"
+        },
+        {
+          "node_id": "vgar:sphinx-doc__sphinx:python:method:tests/roots/test-ext-autosummary-recursive/package/package/module.py:tests.roots.test-ext-autosummary-recursive.package.package.module.Foo.bar",
+          "score": 0.5,
+          "symbol": "tests.roots.test-ext-autosummary-recursive.package.package.module.Foo.bar",
+          "type": "Method",
+          "path": "tests/roots/test-ext-autosummary-recursive/package/package/module.py"
+        },
+        {
+          "node_id": "vgar:sphinx-doc__sphinx:python:method:tests/roots/test-ext-autosummary-recursive/package2/module.py:tests.roots.test-ext-autosummary-recursive.package2.module.Foo.bar",
+          "score": 0.5,
+          "symbol": "tests.roots.test-ext-autosummary-recursive.package2.module.Foo.bar",
+          "type": "Method",
+          "path": "tests/roots/test-ext-autosummary-recursive/package2/module.py"
+        },
+        {
+          "node_id": "vgar:sphinx-doc__sphinx:python:method:tests/roots/test-ext-autosummary/autosummary_dummy_module.py:tests.roots.test-ext-autosummary.autosummary_dummy_module.Foo.bar",
+          "score": 0.5,
+          "symbol": "tests.roots.test-ext-autosummary.autosummary_dummy_module.Foo.bar",
+          "type": "Method",
+          "path": "tests/roots/test-ext-autosummary/autosummary_dummy_module.py"
+        },
+        {
+          "node_id": "vgar:sphinx-doc__sphinx:python:function:tests/roots/test-ext-autosummary/autosummary_dummy_module.py:tests.roots.test-ext-autosummary.autosummary_dummy_module.bar",
+          "score": 0.5,
+          "symbol": "tests.roots.test-ext-autosummary.autosummary_dummy_module.bar",
+          "type": "Function",
+          "path": "tests/roots/test-ext-autosummary/autosummary_dummy_module.py"
+        },
+        {
+          "node_id": "vgar:sphinx-doc__sphinx:python:class:tests/roots/test-inheritance/dummy/test.py:tests.roots.test-inheritance.dummy.test.A",
+          "score": 0.5,
+          "symbol": "tests.roots.test-inheritance.dummy.test.A",
+          "type": "Class",
+          "path": "tests/roots/test-inheritance/dummy/test.py"
+        },
+        {
+          "node_id": "vgar:sphinx-doc__sphinx:python:class:tests/roots/test-inheritance/dummy/test_nested.py:tests.roots.test-inheritance.dummy.test_nested.A",
+          "score": 0.5,
+          "symbol": "tests.roots.test-inheritance.dummy.test_nested.A",
+          "type": "Class",
+          "path": "tests/roots/test-inheritance/dummy/test_nested.py"
+        },
+        {
+          "node_id": "vgar:sphinx-doc__sphinx:python:class:tests/test_config.py:tests.test_config.A",
+          "score": 0.5,
+          "symbol": "tests.test_config.A",
+          "type": "Class",
+          "path": "tests/test_config.py"
+        },
+        {
+          "node_id": "vgar:sphinx-doc__sphinx:python:function:tests/test_markup.py:tests.test_markup.get_verifier.get",
+          "score": 0.5,
+          "symbol": "tests.test_markup.get_verifier.get",
+          "type": "Function",
+          "path": "tests/test_markup.py"
+        },
+        {
+          "node_id": "vgar:sphinx-doc__sphinx:python:method:tests/test_util_inspect.py:tests.test_util_inspect.test_safe_getattr_with_property_exception.Foo.bar",
+          "score": 0.5,
+          "symbol": "tests.test_util_inspect.test_safe_getattr_with_property_exception.Foo.bar",
+          "type": "Method",
+          "path": "tests/test_util_inspect.py"
+        }
+      ],
+      "unmapped": [],
+      "excluded": [],
+      "diagnostics": {
+        "m1_native_total_tokens": 6356,
+        "m1_native_items": 55,
+        "m1_native_truncated": true,
+        "traversal_limited": true,
+        "unavailable_features": [
+          "architecture_dependencies",
+          "recent_change_frequency",
+          "failing_test_proximity"
+        ],
+        "omissions": {
+          "overlapping_selected_range": 23
+        },
+        "retrieval_config": {
+          "max_hops": 2,
+          "max_candidates": 100,
+          "min_edge_confidence": 0.6,
+          "weights": {
+            "task_similarity": 0.2,
+            "graph_distance": 0.3,
+            "edge_confidence": 0.2,
+            "failing_test_proximity": 0.2,
+            "public_api_risk": 0.1,
+            "recent_change_frequency": 0.1
+          },
+          "profile": "semantic-context-v1",
+          "active_features": [
+            "task_similarity",
+            "graph_distance",
+            "edge_confidence",
+            "public_api_risk"
+          ],
+          "normalized_weights": {
+            "task_similarity": 0.25000000000000006,
+            "graph_distance": 0.375,
+            "edge_confidence": 0.25000000000000006,
+            "public_api_risk": 0.12500000000000003
+          },
+          "failing_test_traversal_limited": false,
+          "filtered_by_include": 200
+        }
+      },
+      "scoring": {
+        "instance_id": "sphinx-doc__sphinx-10673",
+        "arm": "graph_f2p",
+        "scoring_version": "retrieval-scoring-v1",
+        "rank_hash": "sha256:881771bad4544ee859bfb89fe0a912cc13ec3dc42daa87d1aeedf591360a0e72",
+        "rank": {
+          "metrics": {
+            "file_gold_count": 3,
+            "file_mrr": 0,
+            "file_recall@1": 0.0,
+            "file_all_gold@1": 0,
+            "file_recall@3": 0.0,
+            "file_all_gold@3": 0,
+            "file_recall@5": 0.0,
+            "file_all_gold@5": 0,
+            "file_recall@10": 0.0,
+            "file_all_gold@10": 0,
+            "file_recall@20": 0.0,
+            "file_all_gold@20": 0,
+            "function_gold_count": 5,
+            "function_mrr": 0,
+            "function_recall@1": 0.0,
+            "function_all_gold@1": 0,
+            "function_recall@3": 0.0,
+            "function_all_gold@3": 0,
+            "function_recall@5": 0.0,
+            "function_all_gold@5": 0,
+            "function_recall@10": 0.0,
+            "function_all_gold@10": 0,
+            "function_recall@20": 0.0,
+            "function_all_gold@20": 0
+          },
+          "reach": {
+            "file": 0.0,
+            "function": 0.0
+          },
+          "size": {
+            "items": 78,
+            "files": 15,
+            "functions": 34
+          }
+        },
+        "packed": {
+          "budget_tokens": 8000,
+          "counter_label": "local-hf:Qwen/Qwen3-4B-Instruct-2507@cdbee75f17c01a7cc42f958dc650907174af0554:sha256=aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4:no-special-tokens",
+          "snippet_policy": {
+            "max_snippet_lines": 80,
+            "header": true,
+            "overlap": "skip_if_overlaps_different_group"
+          },
+          "metrics": {
+            "gold_file_in_context": 0.0,
+            "gold_function_in_context": 0.0,
+            "all_gold_files_in_context": 0,
+            "all_gold_functions_in_context": 0,
+            "total_tokens": 7217,
+            "tokens_to_first_gold_file": null,
+            "tokens_to_first_gold_function": null,
+            "items_packed": 55,
+            "skipped": {
+              "token_budget": 0,
+              "overlap": 23
+            },
+            "truncated": false
+          }
+        },
+        "excluded_count": 0,
+        "unmapped": [],
+        "excluded_reasons": {}
+      },
+      "metrics": {
+        "file_gold_count": 3,
+        "file_mrr": 0,
+        "file_recall@1": 0.0,
+        "file_all_gold@1": 0,
+        "file_recall@3": 0.0,
+        "file_all_gold@3": 0,
+        "file_recall@5": 0.0,
+        "file_all_gold@5": 0,
+        "file_recall@10": 0.0,
+        "file_all_gold@10": 0,
+        "file_recall@20": 0.0,
+        "file_all_gold@20": 0,
+        "function_gold_count": 5,
+        "function_mrr": 0,
+        "function_recall@1": 0.0,
+        "function_all_gold@1": 0,
+        "function_recall@3": 0.0,
+        "function_all_gold@3": 0,
+        "function_recall@5": 0.0,
+        "function_all_gold@5": 0,
+        "function_recall@10": 0.0,
+        "function_all_gold@10": 0,
+        "function_recall@20": 0.0,
+        "function_all_gold@20": 0,
+        "file_reach": 0.0,
+        "function_reach": 0.0,
+        "rank_items": 78,
+        "packed_gold_file_in_context": 0.0,
+        "packed_gold_function_in_context": 0.0,
+        "packed_all_gold_files_in_context": 0,
+        "packed_all_gold_functions_in_context": 0,
+        "context_tokens": 7217,
+        "packed_tokens_to_first_gold_file": null,
+        "packed_tokens_to_first_gold_function": null,
+        "packed_items_packed": 55,
+        "packed_skipped_token_budget": 0,
+        "packed_skipped_overlap": 23,
+        "packed_truncated": 0,
+        "unmapped_count": 0,
+        "excluded_count": 0,
+        "anchor_count": 40,
+        "no_anchors": 0,
+        "candidates_in": 78,
+        "retrieve_seconds": 1.2952530000038678,
+        "mapping_coverage": 1.0,
+        "file_retrievability_coverage": 1.0
+      }
+    }
+  },
+  "graph": {
+    "build_seconds": 7.6262558000016725,
+    "nodes": 40003,
+    "edges": 52088,
+    "graph_version": "sha256:663a5e5bb05de0e6e05455854e8d0fbf02d368de394575765466664d2a9f1e43",
+    "use_jedi": false,
+    "builder_hash": "62bb14a051c1",
+    "skipped_failed_files": 0,
+    "cache_identity": {
+      "repository": "sphinx-doc/sphinx",
+      "commit": "f35d2a6cc726f97d0e859ca7a0e1729f7da8a6c8",
+      "tree_hash": "sha256:157cd583aa87b51481993de557405a1ca1d24359bbb8fcde118f35b5a08f266a",
+      "use_jedi": false,
+      "builder_hash": "62bb14a051c1",
+      "source_roots": [
+        "src"
+      ],
+      "source_scope": {
+        "excluded_paths": []
+      },
+      "implementation_hashes": {
+        "graph/builder.py": "sha256:62bb14a051c139d13477548457249f1fc05616a787a35843a85b55f6775a3770",
+        "graph/jedi_resolver.py": "sha256:adefa9271aecc11b97f9d8366a3b5bde578d5c870d2481a0ebf066ca9cb59d37",
+        "contracts/schema.py": "sha256:f47965e26cde0edc1e5e1bee379aa04cd5eb5a26ecbe9ba63d6019aa96ff6a9a",
+        "source_scope.py": "sha256:fbfcb5238e42d7ff15475c2038f9af0d728961d32b3d935c689c11ec7ea831ab",
+        "evaluation/retrieval/graph_cache.py": "sha256:54fafe1241089222c2eb11f136ce66b1f60df310f12ef6617c5669708ea4ff7f"
+      },
+      "package_versions": {
+        "tree-sitter": "0.25.2",
+        "tree-sitter-python": "0.25.0",
+        "jedi": "0.20.0"
+      },
+      "python": "3.11"
+    },
+    "cache_key": "be1c15df23c40b0d441c98ffc79a3536b9e2095b56a482cdfcb8c49bd0f632fc",
+    "graph_path": "D:\\Project\\CAPSTONES\\VGAR\\data\\graphs\\sphinx-doc__sphinx-f35d2a6cc726f97d0e859ca7a0e1729f7da8a6c8-be1c15df23c40b0d441c98ffc79a3536b9e2095b56a482cdfcb8c49bd0f632fc.json",
+    "graph_hash": "sha256:2f03cf7f18ad5b96d3c09f2f217c06c809bd7f598ed26a4a200857a7571bdfb2",
+    "cached": false
+  },
+  "source_tree": {
+    "python_file_count": 555,
+    "tree_hash": "sha256:157cd583aa87b51481993de557405a1ca1d24359bbb8fcde118f35b5a08f266a",
+    "path": "D:\\Project\\CAPSTONES\\VGAR\\data\\repositories\\trees\\rebuilt\\680f3f2d0ef9"
+  },
+  "source_provenance": {
+    "source_backend": "github_codeload_commit_archive",
+    "snapshot_commit": "f35d2a6cc726f97d0e859ca7a0e1729f7da8a6c8",
+    "commit_validation": "immutable_40_SHA_URL_and_archive_root; not_git_object_hash_validation",
+    "source_file_count": 172,
+    "source_bytes": 2520578,
+    "excluded_sources": [],
+    "url": "https://codeload.github.com/sphinx-doc/sphinx/tar.gz/f35d2a6cc726f97d0e859ca7a0e1729f7da8a6c8",
+    "archive_hash": "sha256:fc3e60f8db03a578fa4ca825364538180fbf2c8a296e4583dad60a7d26207cba",
+    "base_commit": "f35d2a6cc726f97d0e859ca7a0e1729f7da8a6c8",
+    "cache_path": "D:\\Project\\CAPSTONES\\VGAR\\data\\repositories\\archives\\sphinx-doc__sphinx-f35d2a6cc726f97d0e859ca7a0e1729f7da8a6c8.tar.gz"
+  },
+  "fail_to_pass_count": 1,
+  "inference": "NOT_RUN",
+  "phase": "WRITE",
+  "stages": [
+    {
+      "phase": "TOKENIZER",
+      "duration_seconds": 0.4794685000088066,
+      "peak_rss_bytes": 194170880
+    },
+    {
+      "phase": "LOAD_SOURCE",
+      "duration_seconds": 0.18964089998917188,
+      "peak_rss_bytes": 194170880
+    },
+    {
+      "phase": "EXTRACT_TREE",
+      "duration_seconds": 0.3508358999970369,
+      "peak_rss_bytes": 194170880
+    },
+    {
+      "phase": "BUILD_GRAPH",
+      "duration_seconds": 21.826458999988972,
+      "peak_rss_bytes": 230260736
+    },
+    {
+      "phase": "PREPARE_RETRIEVAL",
+      "duration_seconds": 2.6091204000113066,
+      "peak_rss_bytes": 239611904
+    },
+    {
+      "phase": "GROUND",
+      "duration_seconds": 0.25510039999790024,
+      "peak_rss_bytes": 239611904
+    },
+    {
+      "phase": "RETRIEVE",
+      "duration_seconds": 0.8592657999979565,
+      "peak_rss_bytes": 239611904
+    },
+    {
+      "phase": "GROUND",
+      "duration_seconds": 0.3952696000051219,
+      "peak_rss_bytes": 239611904
+    },
+    {
+      "phase": "RETRIEVE",
+      "duration_seconds": 0.891267599989078,
+      "peak_rss_bytes": 239611904
+    },
+    {
+      "phase": "SCORE",
+      "duration_seconds": 0.09515880000253674,
+      "peak_rss_bytes": 239611904
+    },
+    {
+      "phase": "WRITE",
+      "duration_seconds": 0.011080999989644624,
+      "peak_rss_bytes": 239611904
+    }
+  ],
+  "peak_rss_bytes": 239611904,
+  "complete": true,
+  "ended_utc": "2026-10-07T11:53:13.323907+00:00",
+  "duration_seconds": 28.30201240000315
+}

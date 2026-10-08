@@ -1,0 +1,7 @@
+{
+  "instance_id": "pydata__xarray-3305",
+  "status": "FAILED",
+  "error_class": "GraphValidationError",
+  "error": "Invalid graph document:\n- duplicate edge id: sha256:f7641283681dff8430492ac014879df874a1905438dcbc38e8c5644b244bb292\n- duplicate edge id: sha256:30eea86f9c5c0bb67143c335a6a8f4c5a74b43b33880c44222f1fba286922073\n- duplicate edge id: sha256:30eea86f9c5c0bb67143c335a6a8f4c5a74b43b33880c44222f1fba286922073",
+  "duration_seconds": 4.386657799999739
+}

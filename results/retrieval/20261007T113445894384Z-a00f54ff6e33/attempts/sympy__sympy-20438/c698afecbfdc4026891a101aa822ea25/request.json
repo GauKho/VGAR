@@ -1,0 +1,80 @@
+{
+  "root": "D:\\Project\\CAPSTONES\\VGAR",
+  "row": {
+    "instance_id": "sympy__sympy-20438",
+    "repo": "sympy/sympy",
+    "base_commit": "33b47e4bd60e2302e42616141e76285038b724d6",
+    "problem_statement": "`is_subset` gives wrong results\n@sylee957 Current status on `master`,\r\n```python\r\n>>> a = FiniteSet(1, 2)\r\n>>> b = ProductSet(a, a)\r\n>>> c = FiniteSet((1, 1), (1, 2), (2, 1), (2, 2))\r\n>>> b.intersection(c) == c.intersection(b)\r\nTrue\r\n>>> b.is_subset(c)\r\n>>> c.is_subset(b)\r\nTrue\r\n>>> Eq(b, c).simplify()\r\nTraceback (most recent call last):\r\n  File \"/usr/lib/python3.6/code.py\", line 91, in runcode\r\n    exec(code, self.locals)\r\n  File \"<console>\", line 1, in <module>\r\n  File \"/home/czgdp1807ssd/sympy_project/sympy/sympy/core/basic.py\", line 1655, in simplify\r\n    return simplify(self, **kwargs)\r\n  File \"/home/czgdp1807ssd/sympy_project/sympy/sympy/simplify/simplify.py\", line 559, in simplify\r\n    return _eval_simplify(**kwargs)\r\n  File \"/home/czgdp1807ssd/sympy_project/sympy/sympy/core/relational.py\", line 646, in _eval_simplify\r\n    e = super(Equality, self)._eval_simplify(**kwargs)\r\n  File \"/home/czgdp1807ssd/sympy_project/sympy/sympy/core/relational.py\", line 308, in _eval_simplify\r\n    elif dif.equals(0):  # XXX this is expensive\r\nAttributeError: 'Complement' object has no attribute 'equals'\r\n>>> b.rewrite(FiniteSet)\r\n      2\r\n{1, 2} \r\n>>> \r\n```\r\n\r\n_Originally posted by @czgdp1807 in https://github.com/sympy/sympy/pull/16764#issuecomment-592606532_\n",
+    "difficulty": "15 min - 1 hour",
+    "query_hash": "sha256:ab48dc1dc9b89443d93044930f964e8d4dfe25706fceb03dddf2295c060d339a",
+    "patch_hash": "sha256:a877856d45e00af4f24956d9a7b6b4d92cb3412c23a16f64f1058684a10ca380",
+    "gold_patch_path": "data/gold/patches/sympy__sympy-20438.patch",
+    "changed_source_files": [
+      "sympy/core/relational.py",
+      "sympy/sets/handlers/comparison.py",
+      "sympy/sets/handlers/issubset.py"
+    ],
+    "split": "dev",
+    "is_multi_file": true
+  },
+  "config": {
+    "manifest_hash": "sha256:33ddf233c44832c87abfeb7b62b1aef9fc1e4e8f89f67653fc5e7dc20cc86708",
+    "budget_tokens": 8000,
+    "scoring_version": "retrieval-scoring-v1",
+    "counter_label": "local-hf:Qwen/Qwen3-4B-Instruct-2507@cdbee75f17c01a7cc42f958dc650907174af0554:sha256=aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4:no-special-tokens",
+    "counter_is_fallback": false,
+    "snippet_policy": {
+      "max_snippet_lines": 80,
+      "header": true,
+      "overlap": "skip_if_overlaps_different_group"
+    },
+    "arms": {
+      "graph": {
+        "uses_fail_to_pass": false
+      },
+      "graph_f2p": {
+        "uses_fail_to_pass": true
+      }
+    },
+    "graph": {
+      "use_jedi": false,
+      "builder_hash": "62bb14a051c1",
+      "source_roots": [
+        "src"
+      ]
+    },
+    "retrieval": {
+      "max_hops": 2,
+      "max_candidates": 100,
+      "min_edge_confidence": 0.6,
+      "weights": {
+        "task_similarity": 0.2,
+        "graph_distance": 0.3,
+        "edge_confidence": 0.2,
+        "failing_test_proximity": 0.2,
+        "public_api_risk": 0.1,
+        "recent_change_frequency": 0.1
+      },
+      "include": "make_include(corpus): not Test and path in is_source corpus"
+    },
+    "limit": null,
+    "task_ids": [
+      "sympy__sympy-17318",
+      "sympy__sympy-20438"
+    ],
+    "execution": {
+      "task_timeout_seconds": 300.0,
+      "offline": true,
+      "rebuild_graphs": false,
+      "rebuild_trees": true
+    }
+  },
+  "failing_tests": [
+    "test_Eq",
+    "test_issue_19378"
+  ],
+  "offline": true,
+  "rebuild_graphs": false,
+  "rebuild_trees": true,
+  "tokenizer_manifest": "D:\\Project\\CAPSTONES\\VGAR\\artifacts\\m1\\tokenizer-acceptance\\tokenizer_manifest.json"
+}

@@ -1,0 +1,7 @@
+{
+  "instance_id": "sphinx-doc__sphinx-10673",
+  "status": "FAILED",
+  "error_class": "GraphValidationError",
+  "error": "Invalid graph document:\n- edges[43513] must not be a self-loop",
+  "duration_seconds": 4.830904499999633
+}

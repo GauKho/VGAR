@@ -1,0 +1,7 @@
+{
+  "instance_id": "sphinx-doc__sphinx-8120",
+  "status": "FAILED",
+  "error_class": "GraphValidationError",
+  "error": "Invalid graph document:\n- duplicate edge id: sha256:22bf46c8ce5d8cc5672f41a880216695468ac3e61da3fda84014bf73bd21b6a9\n- duplicate edge id: sha256:fc5352f80f58fdc47cba056e4dc856ebb7c737788783744d3aaca37727a0e845\n- duplicate edge id: sha256:ee24c16e6949cb50fa5efdebd698b2a02872c57087a12ca60002b9fa68a5954c\n- duplicate edge id: sha256:5d7fe816a5f84e0bf0e21a80226d1a42a2c0b06d6596f01b946be406b5af7606\n- duplicate edge id: sha256:ffda06d15800d7f035ad1c1083408a25ee0d5f23ef372760200350e902235b68\n- duplicate edge id: sha256:ffda06d15800d7f035ad1c1083408a25ee0d5f23ef372760200350e902235b68\n- duplicate edge id: sha256:ffda06d15800d7f035ad1c1083408a25ee0d5f23ef372760200350e902235b68\n- duplicate edge id: sha256:ffda06d15800d7f035ad1c1083408a25ee0d5f23ef372760200350e902235b68\n- duplicate edge id: sha256:dd3fbacfadf0b4f0d7f52c1eff9850b5902879786e9290508ad6a9d01201fbef\n- duplicate edge id: sha256:20e867dec971309d01c172bbec31d89a9ff915380d22b39407d31ced4f28b6d2\n- edges[40853] must not be a self-loop",
+  "duration_seconds": 7.777174900000318
+}

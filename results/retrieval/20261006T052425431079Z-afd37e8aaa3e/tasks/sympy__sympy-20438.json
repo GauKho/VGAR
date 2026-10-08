@@ -1,0 +1,7 @@
+{
+  "instance_id": "sympy__sympy-20438",
+  "status": "FAILED",
+  "error_class": "GraphError",
+  "error": "Source file set differs from graph snapshot; rebuild graph",
+  "duration_seconds": 310.9612126000002
+}

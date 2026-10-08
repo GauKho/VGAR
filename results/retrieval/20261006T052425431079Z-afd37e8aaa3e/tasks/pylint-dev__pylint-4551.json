@@ -1,0 +1,7 @@
+{
+  "instance_id": "pylint-dev__pylint-4551",
+  "status": "FAILED",
+  "error_class": "GraphError",
+  "error": "Source file set differs from graph snapshot; rebuild graph",
+  "duration_seconds": 7.761519700000463
+}

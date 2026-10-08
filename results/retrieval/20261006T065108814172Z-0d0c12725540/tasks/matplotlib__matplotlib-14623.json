@@ -1,0 +1,4068 @@
+{
+  "instance_id": "matplotlib__matplotlib-14623",
+  "repository": "matplotlib/matplotlib",
+  "base_commit": "d65c9ca20ddf81ef91199e6d819f9d3506ef477c",
+  "status": "SUCCEEDED",
+  "query_hash": "sha256:464f0388f374a7b9d35c4376287b032364fc63e51dfb872fbd0806154dbbc152",
+  "patch_hash": "sha256:bf6c58aeace23b251199ff653b448e26c5b916eabbe9f7972cd16fbb81bfbf03",
+  "corpus_hash": "sha256:7219776a94ec98a78785de103232177bdd7874ccaf0cb843e02540a2edc2dc3a",
+  "gold": {
+    "gold_files": [
+      "lib/matplotlib/axes/_base.py",
+      "lib/matplotlib/ticker.py",
+      "lib/mpl_toolkits/mplot3d/axes3d.py"
+    ],
+    "gold_functions": [
+      "lib/matplotlib/axes/_base.py::lib.matplotlib.axes._base._AxesBase.set_xlim",
+      "lib/matplotlib/axes/_base.py::lib.matplotlib.axes._base._AxesBase.set_ylim",
+      "lib/matplotlib/ticker.py::lib.matplotlib.ticker.Locator.nonsingular",
+      "lib/mpl_toolkits/mplot3d/axes3d.py::lib.mpl_toolkits.mplot3d.axes3d.Axes3D.set_xlim3d",
+      "lib/mpl_toolkits/mplot3d/axes3d.py::lib.mpl_toolkits.mplot3d.axes3d.Axes3D.set_ylim3d",
+      "lib/mpl_toolkits/mplot3d/axes3d.py::lib.mpl_toolkits.mplot3d.axes3d.Axes3D.set_zlim3d"
+    ],
+    "all_changed_source_files": [
+      "lib/matplotlib/axes/_base.py",
+      "lib/matplotlib/ticker.py",
+      "lib/mpl_toolkits/mplot3d/axes3d.py"
+    ],
+    "unretrievable_files": [],
+    "mapping_events": [
+      {
+        "path": "lib/matplotlib/axes/_base.py",
+        "disposition": "hunk_relocated",
+        "offset_lines": 2,
+        "function_id": null
+      },
+      {
+        "path": "lib/matplotlib/axes/_base.py",
+        "side": "new",
+        "line": 3267,
+        "function_id": "lib/matplotlib/axes/_base.py::lib.matplotlib.axes._base._AxesBase.set_xlim",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "lib/matplotlib/axes/_base.py",
+        "side": "new",
+        "line": 3270,
+        "function_id": "lib/matplotlib/axes/_base.py::lib.matplotlib.axes._base._AxesBase.set_xlim",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "lib/matplotlib/axes/_base.py",
+        "side": "new",
+        "line": 3271,
+        "function_id": "lib/matplotlib/axes/_base.py::lib.matplotlib.axes._base._AxesBase.set_xlim",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "lib/matplotlib/axes/_base.py",
+        "disposition": "hunk_relocated",
+        "offset_lines": 2,
+        "function_id": null
+      },
+      {
+        "path": "lib/matplotlib/axes/_base.py",
+        "side": "new",
+        "line": 3650,
+        "function_id": "lib/matplotlib/axes/_base.py::lib.matplotlib.axes._base._AxesBase.set_ylim",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "lib/matplotlib/axes/_base.py",
+        "side": "new",
+        "line": 3653,
+        "function_id": "lib/matplotlib/axes/_base.py::lib.matplotlib.axes._base._AxesBase.set_ylim",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "lib/matplotlib/axes/_base.py",
+        "side": "new",
+        "line": 3654,
+        "function_id": "lib/matplotlib/axes/_base.py::lib.matplotlib.axes._base._AxesBase.set_ylim",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "lib/matplotlib/ticker.py",
+        "side": "old",
+        "line": 1524,
+        "function_id": "lib/matplotlib/ticker.py::lib.matplotlib.ticker.Locator.nonsingular",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "lib/matplotlib/ticker.py",
+        "side": "old",
+        "line": 1525,
+        "function_id": "lib/matplotlib/ticker.py::lib.matplotlib.ticker.Locator.nonsingular",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "lib/matplotlib/ticker.py",
+        "side": "new",
+        "line": 1524,
+        "function_id": "lib/matplotlib/ticker.py::lib.matplotlib.ticker.Locator.nonsingular",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "lib/matplotlib/ticker.py",
+        "side": "new",
+        "line": 1525,
+        "function_id": "lib/matplotlib/ticker.py::lib.matplotlib.ticker.Locator.nonsingular",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "lib/mpl_toolkits/mplot3d/axes3d.py",
+        "side": "new",
+        "line": 626,
+        "function_id": "lib/mpl_toolkits/mplot3d/axes3d.py::lib.mpl_toolkits.mplot3d.axes3d.Axes3D.set_xlim3d",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "lib/mpl_toolkits/mplot3d/axes3d.py",
+        "side": "new",
+        "line": 629,
+        "function_id": "lib/mpl_toolkits/mplot3d/axes3d.py::lib.mpl_toolkits.mplot3d.axes3d.Axes3D.set_xlim3d",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "lib/mpl_toolkits/mplot3d/axes3d.py",
+        "side": "new",
+        "line": 630,
+        "function_id": "lib/mpl_toolkits/mplot3d/axes3d.py::lib.mpl_toolkits.mplot3d.axes3d.Axes3D.set_xlim3d",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "lib/mpl_toolkits/mplot3d/axes3d.py",
+        "side": "new",
+        "line": 687,
+        "function_id": "lib/mpl_toolkits/mplot3d/axes3d.py::lib.mpl_toolkits.mplot3d.axes3d.Axes3D.set_ylim3d",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "lib/mpl_toolkits/mplot3d/axes3d.py",
+        "side": "new",
+        "line": 690,
+        "function_id": "lib/mpl_toolkits/mplot3d/axes3d.py::lib.mpl_toolkits.mplot3d.axes3d.Axes3D.set_ylim3d",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "lib/mpl_toolkits/mplot3d/axes3d.py",
+        "side": "new",
+        "line": 691,
+        "function_id": "lib/mpl_toolkits/mplot3d/axes3d.py::lib.mpl_toolkits.mplot3d.axes3d.Axes3D.set_ylim3d",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "lib/mpl_toolkits/mplot3d/axes3d.py",
+        "side": "new",
+        "line": 748,
+        "function_id": "lib/mpl_toolkits/mplot3d/axes3d.py::lib.mpl_toolkits.mplot3d.axes3d.Axes3D.set_zlim3d",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "lib/mpl_toolkits/mplot3d/axes3d.py",
+        "side": "new",
+        "line": 751,
+        "function_id": "lib/mpl_toolkits/mplot3d/axes3d.py::lib.mpl_toolkits.mplot3d.axes3d.Axes3D.set_zlim3d",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "lib/mpl_toolkits/mplot3d/axes3d.py",
+        "side": "new",
+        "line": 752,
+        "function_id": "lib/mpl_toolkits/mplot3d/axes3d.py::lib.mpl_toolkits.mplot3d.axes3d.Axes3D.set_zlim3d",
+        "disposition": "mapped_function"
+      }
+    ],
+    "function_labels_complete": true,
+    "mapping_coverage": 1.0,
+    "file_retrievability_coverage": 1.0,
+    "label_semantics": "developer_changed_code_proxy_not_complete_relevance"
+  },
+  "arms": {
+    "graph": {
+      "rank_hash": "sha256:2213e12244eecf63d8f29a087558648a0fa2de043c85f4075865f3ed8bb363ac",
+      "ranking_total_count": 94,
+      "ranked": [
+        {
+          "rank": 1,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/table.py:lib.matplotlib.table.Table.scale",
+          "path": "lib/matplotlib/table.py",
+          "kind": "method",
+          "symbol": "lib.matplotlib.table.Table.scale",
+          "function_id": "lib/matplotlib/table.py::lib.matplotlib.table.Table.scale",
+          "score": 0.6018145161290324,
+          "lines": [
+            547,
+            551
+          ],
+          "snippet_sha256": "sha256:c6870e6d70c66c2b76021332c496f1f3e5fe8dbec09479468fb257616bfbfcec"
+        },
+        {
+          "rank": 2,
+          "item_id": "vgar:matplotlib__matplotlib:python:function:lib/matplotlib/pyplot.py:lib.matplotlib.pyplot.yscale.setter",
+          "path": "lib/matplotlib/pyplot.py",
+          "kind": "function",
+          "symbol": "lib.matplotlib.pyplot.yscale",
+          "function_id": "lib/matplotlib/pyplot.py::lib.matplotlib.pyplot.yscale",
+          "score": 0.5956521739130435,
+          "lines": [
+            3087,
+            3088
+          ],
+          "snippet_sha256": "sha256:71481937f26e1b7b82c918b56f20b1d5b99152ce51d8c3b05aa517c83bbcce47"
+        },
+        {
+          "rank": 3,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/widgets.py:lib.matplotlib.widgets.ToolHandles.x",
+          "path": "lib/matplotlib/widgets.py",
+          "kind": "method",
+          "symbol": "lib.matplotlib.widgets.ToolHandles.x",
+          "function_id": "lib/matplotlib/widgets.py::lib.matplotlib.widgets.ToolHandles.x",
+          "score": 0.5928191489361703,
+          "lines": [
+            1941,
+            1942
+          ],
+          "snippet_sha256": "sha256:3c12e66b23723dff521f001b858381a4da90c8fae962ec33346da2dbc576d354"
+        },
+        {
+          "rank": 4,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/widgets.py:lib.matplotlib.widgets.ToolHandles.y",
+          "path": "lib/matplotlib/widgets.py",
+          "kind": "method",
+          "symbol": "lib.matplotlib.widgets.ToolHandles.y",
+          "function_id": "lib/matplotlib/widgets.py::lib.matplotlib.widgets.ToolHandles.y",
+          "score": 0.5928191489361703,
+          "lines": [
+            1945,
+            1946
+          ],
+          "snippet_sha256": "sha256:af9444a77593c924820b835e042b8ab9e4864618d1583fd435b05fa49c62c80e"
+        },
+        {
+          "rank": 5,
+          "item_id": "vgar:matplotlib__matplotlib:python:function:tools/github_stats.py:tools.github_stats.report",
+          "path": "tools/github_stats.py",
+          "kind": "function",
+          "symbol": "tools.github_stats.report",
+          "function_id": "tools/github_stats.py::tools.github_stats.report",
+          "score": 0.5901041666666667,
+          "lines": [
+            94,
+            103
+          ],
+          "snippet_sha256": "sha256:f295273f69f2fa95af5ab3e77d2f1902cc5f8d81698c5b9a693dcb9f651cb6d8"
+        },
+        {
+          "rank": 6,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/scale.py:lib.matplotlib.scale.InvertedLogTransform.inverted",
+          "path": "lib/matplotlib/scale.py",
+          "kind": "method",
+          "symbol": "lib.matplotlib.scale.InvertedLogTransform.inverted",
+          "function_id": "lib/matplotlib/scale.py::lib.matplotlib.scale.InvertedLogTransform.inverted",
+          "score": 0.5733695652173914,
+          "lines": [
+            336,
+            337
+          ],
+          "snippet_sha256": "sha256:b23fdea37c822bc462003934e592559e7135ff5cf3cb9942b35bccae45476d08"
+        },
+        {
+          "rank": 7,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/scale.py:lib.matplotlib.scale.LogTransform.inverted",
+          "path": "lib/matplotlib/scale.py",
+          "kind": "method",
+          "symbol": "lib.matplotlib.scale.LogTransform.inverted",
+          "function_id": "lib/matplotlib/scale.py::lib.matplotlib.scale.LogTransform.inverted",
+          "score": 0.5733695652173914,
+          "lines": [
+            316,
+            317
+          ],
+          "snippet_sha256": "sha256:e703084cefff8d9a0e03f2ddb6670446b5ffb60dc5f29c9b1188f127fc21afa8"
+        },
+        {
+          "rank": 8,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/scale.py:lib.matplotlib.scale.InvertedNaturalLogTransform.inverted",
+          "path": "lib/matplotlib/scale.py",
+          "kind": "method",
+          "symbol": "lib.matplotlib.scale.InvertedNaturalLogTransform.inverted",
+          "function_id": "lib/matplotlib/scale.py::lib.matplotlib.scale.InvertedNaturalLogTransform.inverted",
+          "score": 0.573252688172043,
+          "lines": [
+            275,
+            276
+          ],
+          "snippet_sha256": "sha256:3639a0a8ded76ccc68b537f6f9907ba1f1e773058104fc723b7d19363723a0e8"
+        },
+        {
+          "rank": 9,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/scale.py:lib.matplotlib.scale.InvertedSymmetricalLogTransform.inverted",
+          "path": "lib/matplotlib/scale.py",
+          "kind": "method",
+          "symbol": "lib.matplotlib.scale.InvertedSymmetricalLogTransform.inverted",
+          "function_id": "lib/matplotlib/scale.py::lib.matplotlib.scale.InvertedSymmetricalLogTransform.inverted",
+          "score": 0.573252688172043,
+          "lines": [
+            528,
+            530
+          ],
+          "snippet_sha256": "sha256:2b747ab377bc31fc939ca846142913d359d1fca2d80258f9c6ad3d9587f14d0b"
+        },
+        {
+          "rank": 10,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/scale.py:lib.matplotlib.scale.NaturalLogTransform.inverted",
+          "path": "lib/matplotlib/scale.py",
+          "kind": "method",
+          "symbol": "lib.matplotlib.scale.NaturalLogTransform.inverted",
+          "function_id": "lib/matplotlib/scale.py::lib.matplotlib.scale.NaturalLogTransform.inverted",
+          "score": 0.573252688172043,
+          "lines": [
+            267,
+            268
+          ],
+          "snippet_sha256": "sha256:97884a82c8033990998b648858fad1da61ee2e76407967971b805024455cbf69"
+        },
+        {
+          "rank": 11,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/scale.py:lib.matplotlib.scale.SymmetricalLogTransform.inverted",
+          "path": "lib/matplotlib/scale.py",
+          "kind": "method",
+          "symbol": "lib.matplotlib.scale.SymmetricalLogTransform.inverted",
+          "function_id": "lib/matplotlib/scale.py::lib.matplotlib.scale.SymmetricalLogTransform.inverted",
+          "score": 0.573252688172043,
+          "lines": [
+            498,
+            500
+          ],
+          "snippet_sha256": "sha256:ad69b0b163d3e4a932341d4d3d13dcfc21450c9850fc1ef656871dff5a2dc6f6"
+        },
+        {
+          "rank": 12,
+          "item_id": "vgar:matplotlib__matplotlib:python:function:lib/matplotlib/pyplot.py:lib.matplotlib.pyplot.axis.setter",
+          "path": "lib/matplotlib/pyplot.py",
+          "kind": "function",
+          "symbol": "lib.matplotlib.pyplot.axis",
+          "function_id": "lib/matplotlib/pyplot.py::lib.matplotlib.pyplot.axis",
+          "score": 0.5706521739130435,
+          "lines": [
+            2417,
+            2418
+          ],
+          "snippet_sha256": "sha256:e74bedf9d5e7c28839bcbf27de4697e80a7e871cfcff544d4e1f0990a9f9b50f"
+        },
+        {
+          "rank": 13,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/scale.py:lib.matplotlib.scale.InvertedLog10Transform.inverted",
+          "path": "lib/matplotlib/scale.py",
+          "kind": "method",
+          "symbol": "lib.matplotlib.scale.InvertedLog10Transform.inverted",
+          "function_id": "lib/matplotlib/scale.py::lib.matplotlib.scale.InvertedLog10Transform.inverted",
+          "score": 0.5706521739130435,
+          "lines": [
+            243,
+            244
+          ],
+          "snippet_sha256": "sha256:c98d4f9fe0f47c804b6fbaea827fe83e748852b7d75602dad3000551017dc1fd"
+        },
+        {
+          "rank": 14,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/scale.py:lib.matplotlib.scale.InvertedLog2Transform.inverted",
+          "path": "lib/matplotlib/scale.py",
+          "kind": "method",
+          "symbol": "lib.matplotlib.scale.InvertedLog2Transform.inverted",
+          "function_id": "lib/matplotlib/scale.py::lib.matplotlib.scale.InvertedLog2Transform.inverted",
+          "score": 0.5706521739130435,
+          "lines": [
+            259,
+            260
+          ],
+          "snippet_sha256": "sha256:ab2015b4ae7536319453dfdfa7e187e6d674c399bcd9917dbbdac8d245505e29"
+        },
+        {
+          "rank": 15,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/scale.py:lib.matplotlib.scale.Log10Transform.inverted",
+          "path": "lib/matplotlib/scale.py",
+          "kind": "method",
+          "symbol": "lib.matplotlib.scale.Log10Transform.inverted",
+          "function_id": "lib/matplotlib/scale.py::lib.matplotlib.scale.Log10Transform.inverted",
+          "score": 0.5706521739130435,
+          "lines": [
+            235,
+            236
+          ],
+          "snippet_sha256": "sha256:89419fe57c1fe4db0f1e582ce9c6e98d2699e5521d72cc34d6a4bd14283c3e70"
+        },
+        {
+          "rank": 16,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/scale.py:lib.matplotlib.scale.Log2Transform.inverted",
+          "path": "lib/matplotlib/scale.py",
+          "kind": "method",
+          "symbol": "lib.matplotlib.scale.Log2Transform.inverted",
+          "function_id": "lib/matplotlib/scale.py::lib.matplotlib.scale.Log2Transform.inverted",
+          "score": 0.5706521739130435,
+          "lines": [
+            251,
+            252
+          ],
+          "snippet_sha256": "sha256:541703538e00552a0fcb20b4fa7c0fba77a2371a030ee77a26d65580da3d4aea"
+        },
+        {
+          "rank": 17,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/scale.py:lib.matplotlib.scale.FuncTransform.inverted",
+          "path": "lib/matplotlib/scale.py",
+          "kind": "method",
+          "symbol": "lib.matplotlib.scale.FuncTransform.inverted",
+          "function_id": "lib/matplotlib/scale.py::lib.matplotlib.scale.FuncTransform.inverted",
+          "score": 0.5705645161290324,
+          "lines": [
+            146,
+            147
+          ],
+          "snippet_sha256": "sha256:3c1d28ed0c0fab2bd0e0472591863094a8775b1546a5abeb5e5c15c42fc9ee65"
+        },
+        {
+          "rank": 18,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/scale.py:lib.matplotlib.scale.LogisticTransform.inverted",
+          "path": "lib/matplotlib/scale.py",
+          "kind": "method",
+          "symbol": "lib.matplotlib.scale.LogisticTransform.inverted",
+          "function_id": "lib/matplotlib/scale.py::lib.matplotlib.scale.LogisticTransform.inverted",
+          "score": 0.5705645161290324,
+          "lines": [
+            658,
+            659
+          ],
+          "snippet_sha256": "sha256:5c0e8c7e3225e64add6b15adf8835b2f2fe1855b8a269e9a4c6896dceb9cb613"
+        },
+        {
+          "rank": 19,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/scale.py:lib.matplotlib.scale.LogitTransform.inverted",
+          "path": "lib/matplotlib/scale.py",
+          "kind": "method",
+          "symbol": "lib.matplotlib.scale.LogitTransform.inverted",
+          "function_id": "lib/matplotlib/scale.py::lib.matplotlib.scale.LogitTransform.inverted",
+          "score": 0.5705645161290324,
+          "lines": [
+            636,
+            637
+          ],
+          "snippet_sha256": "sha256:598dc1806e7d3d7037e507ce6e733785227d04d7f8be72879e5dd1d349f9b023"
+        },
+        {
+          "rank": 20,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/transforms.py:lib.matplotlib.transforms.Transform.inverted",
+          "path": "lib/matplotlib/transforms.py",
+          "kind": "method",
+          "symbol": "lib.matplotlib.transforms.Transform.inverted",
+          "function_id": "lib/matplotlib/transforms.py::lib.matplotlib.transforms.Transform.inverted",
+          "score": 0.5678763440860215,
+          "lines": [
+            1574,
+            1584
+          ],
+          "snippet_sha256": "sha256:f7182934000bf571bf4f85c183852c126eac22d2f30395c97f3134e6f1a16f82"
+        },
+        {
+          "rank": 21,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/axes/_base.py:lib.matplotlib.axes._base._AxesBase.axis",
+          "path": "lib/matplotlib/axes/_base.py",
+          "kind": "method",
+          "symbol": "lib.matplotlib.axes._base._AxesBase.axis",
+          "function_id": "lib/matplotlib/axes/_base.py::lib.matplotlib.axes._base._AxesBase.axis",
+          "score": 0.5677631578947369,
+          "lines": [
+            1597,
+            1739
+          ],
+          "snippet_sha256": "sha256:5e9c6f6b6204361825d7e52d924898d9624b056f882d6568e0a6a98bf4992d0d"
+        },
+        {
+          "rank": 22,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/transforms.py:lib.matplotlib.transforms.Affine2DBase.inverted",
+          "path": "lib/matplotlib/transforms.py",
+          "kind": "method",
+          "symbol": "lib.matplotlib.transforms.Affine2DBase.inverted",
+          "function_id": "lib/matplotlib/transforms.py::lib.matplotlib.transforms.Affine2DBase.inverted",
+          "score": 0.5677631578947369,
+          "lines": [
+            1802,
+            1811
+          ],
+          "snippet_sha256": "sha256:2fa40fa39cde17707f3892bf6d152eb705b0e10c3dae0252a41b6bce593130ff"
+        },
+        {
+          "rank": 23,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:examples/scales/custom_scale.py:examples.scales.custom_scale.MercatorLatitudeScale.InvertedMercatorLatitudeTransform.inverted",
+          "path": "examples/scales/custom_scale.py",
+          "kind": "method",
+          "symbol": "examples.scales.custom_scale.MercatorLatitudeScale.InvertedMercatorLatitudeTransform.inverted",
+          "function_id": "examples/scales/custom_scale.py::examples.scales.custom_scale.MercatorLatitudeScale.InvertedMercatorLatitudeTransform.inverted",
+          "score": 0.5677083333333334,
+          "lines": [
+            165,
+            166
+          ],
+          "snippet_sha256": "sha256:3088fce220230f02c689689f17bf72433ac486ef2afba2e6a9d733e33095746e"
+        },
+        {
+          "rank": 24,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:examples/scales/custom_scale.py:examples.scales.custom_scale.MercatorLatitudeScale.MercatorLatitudeTransform.inverted",
+          "path": "examples/scales/custom_scale.py",
+          "kind": "method",
+          "symbol": "examples.scales.custom_scale.MercatorLatitudeScale.MercatorLatitudeTransform.inverted",
+          "function_id": "examples/scales/custom_scale.py::examples.scales.custom_scale.MercatorLatitudeScale.MercatorLatitudeTransform.inverted",
+          "score": 0.5677083333333334,
+          "lines": [
+            144,
+            150
+          ],
+          "snippet_sha256": "sha256:a83d7118ffa1b2dcd5fff8bbe8426b5f86651f3c7a8c223dc056d6dd5a971a34"
+        },
+        {
+          "rank": 25,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/projections/polar.py:lib.matplotlib.projections.polar.InvertedPolarTransform.inverted",
+          "path": "lib/matplotlib/projections/polar.py",
+          "kind": "method",
+          "symbol": "lib.matplotlib.projections.polar.InvertedPolarTransform.inverted",
+          "function_id": "lib/matplotlib/projections/polar.py::lib.matplotlib.projections.polar.InvertedPolarTransform.inverted",
+          "score": 0.5677083333333334,
+          "lines": [
+            157,
+            160
+          ],
+          "snippet_sha256": "sha256:838f9611a7c3af250b58f2b3691464f326b3b3c4aef9e04a6e51332ef179586b"
+        },
+        {
+          "rank": 26,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/projections/polar.py:lib.matplotlib.projections.polar.PolarTransform.inverted",
+          "path": "lib/matplotlib/projections/polar.py",
+          "kind": "method",
+          "symbol": "lib.matplotlib.projections.polar.PolarTransform.inverted",
+          "function_id": "lib/matplotlib/projections/polar.py::lib.matplotlib.projections.polar.PolarTransform.inverted",
+          "score": 0.5677083333333334,
+          "lines": [
+            66,
+            69
+          ],
+          "snippet_sha256": "sha256:6485dfa113bc4bddc67d6d232dbbcdf7373ac0c0696d5e8d44b0b4165257dd9b"
+        },
+        {
+          "rank": 27,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/transforms.py:lib.matplotlib.transforms.Affine2D.scale",
+          "path": "lib/matplotlib/transforms.py",
+          "kind": "method",
+          "symbol": "lib.matplotlib.transforms.Affine2D.scale",
+          "function_id": "lib/matplotlib/transforms.py::lib.matplotlib.transforms.Affine2D.scale",
+          "score": 0.5677083333333334,
+          "lines": [
+            1976,
+            1993
+          ],
+          "snippet_sha256": "sha256:d1a7455552df0339fa436e3c335c9c9f250b96dad4a477dfd446886283e105df"
+        },
+        {
+          "rank": 28,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/transforms.py:lib.matplotlib.transforms.IdentityTransform.inverted",
+          "path": "lib/matplotlib/transforms.py",
+          "kind": "method",
+          "symbol": "lib.matplotlib.transforms.IdentityTransform.inverted",
+          "function_id": "lib/matplotlib/transforms.py::lib.matplotlib.transforms.IdentityTransform.inverted",
+          "score": 0.5677083333333334,
+          "lines": [
+            2075,
+            2077
+          ],
+          "snippet_sha256": "sha256:e6db42ee602e2454257f253ac9603de120db9c55aec70bd3bafde9150c76080c"
+        },
+        {
+          "rank": 29,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/transforms.py:lib.matplotlib.transforms.BlendedGenericTransform.inverted",
+          "path": "lib/matplotlib/transforms.py",
+          "kind": "method",
+          "symbol": "lib.matplotlib.transforms.BlendedGenericTransform.inverted",
+          "function_id": "lib/matplotlib/transforms.py::lib.matplotlib.transforms.BlendedGenericTransform.inverted",
+          "score": 0.5676546391752578,
+          "lines": [
+            2177,
+            2179
+          ],
+          "snippet_sha256": "sha256:3e422a64940a4ca216364a832f3d2120dd9eaf46fde9cb3de29fef0171076361"
+        },
+        {
+          "rank": 30,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/transforms.py:lib.matplotlib.transforms.CompositeGenericTransform.inverted",
+          "path": "lib/matplotlib/transforms.py",
+          "kind": "method",
+          "symbol": "lib.matplotlib.transforms.CompositeGenericTransform.inverted",
+          "function_id": "lib/matplotlib/transforms.py::lib.matplotlib.transforms.CompositeGenericTransform.inverted",
+          "score": 0.5676546391752578,
+          "lines": [
+            2403,
+            2405
+          ],
+          "snippet_sha256": "sha256:c759c4bd18f52b6b7b539a1eb5aab6a96eaae279644712fba5dc8c5f713be1e3"
+        },
+        {
+          "rank": 31,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/projections/geo.py:lib.matplotlib.projections.geo.AitoffAxes.AitoffTransform.inverted",
+          "path": "lib/matplotlib/projections/geo.py",
+          "kind": "method",
+          "symbol": "lib.matplotlib.projections.geo.AitoffAxes.AitoffTransform.inverted",
+          "function_id": "lib/matplotlib/projections/geo.py::lib.matplotlib.projections.geo.AitoffAxes.AitoffTransform.inverted",
+          "score": 0.5676020408163265,
+          "lines": [
+            286,
+            288
+          ],
+          "snippet_sha256": "sha256:76592357fbb396f976e1806cd6919d4f03c9658b5e86a1702756940e6718957a"
+        },
+        {
+          "rank": 32,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/projections/geo.py:lib.matplotlib.projections.geo.AitoffAxes.InvertedAitoffTransform.inverted",
+          "path": "lib/matplotlib/projections/geo.py",
+          "kind": "method",
+          "symbol": "lib.matplotlib.projections.geo.AitoffAxes.InvertedAitoffTransform.inverted",
+          "function_id": "lib/matplotlib/projections/geo.py::lib.matplotlib.projections.geo.AitoffAxes.InvertedAitoffTransform.inverted",
+          "score": 0.5676020408163265,
+          "lines": [
+            297,
+            299
+          ],
+          "snippet_sha256": "sha256:b4a5b7c08ea888af5096d9e948a9c8a539c04a6c7514b06edb72906bd030e9a6"
+        },
+        {
+          "rank": 33,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/projections/geo.py:lib.matplotlib.projections.geo.HammerAxes.HammerTransform.inverted",
+          "path": "lib/matplotlib/projections/geo.py",
+          "kind": "method",
+          "symbol": "lib.matplotlib.projections.geo.HammerAxes.HammerTransform.inverted",
+          "function_id": "lib/matplotlib/projections/geo.py::lib.matplotlib.projections.geo.HammerAxes.HammerTransform.inverted",
+          "score": 0.5676020408163265,
+          "lines": [
+            332,
+            334
+          ],
+          "snippet_sha256": "sha256:3d8504f645fc27ea0316d43200160337ff6e32f9086f01e805ccb1d670d19415"
+        },
+        {
+          "rank": 34,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/projections/geo.py:lib.matplotlib.projections.geo.HammerAxes.InvertedHammerTransform.inverted",
+          "path": "lib/matplotlib/projections/geo.py",
+          "kind": "method",
+          "symbol": "lib.matplotlib.projections.geo.HammerAxes.InvertedHammerTransform.inverted",
+          "function_id": "lib/matplotlib/projections/geo.py::lib.matplotlib.projections.geo.HammerAxes.InvertedHammerTransform.inverted",
+          "score": 0.5676020408163265,
+          "lines": [
+            346,
+            348
+          ],
+          "snippet_sha256": "sha256:ec0e657eaabacd6682c5b3a62279ed2b6a675a236f85ee62b83acc9f8c4ad3e1"
+        },
+        {
+          "rank": 35,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/projections/geo.py:lib.matplotlib.projections.geo.LambertAxes.InvertedLambertTransform.inverted",
+          "path": "lib/matplotlib/projections/geo.py",
+          "kind": "method",
+          "symbol": "lib.matplotlib.projections.geo.LambertAxes.InvertedLambertTransform.inverted",
+          "function_id": "lib/matplotlib/projections/geo.py::lib.matplotlib.projections.geo.LambertAxes.InvertedLambertTransform.inverted",
+          "score": 0.5676020408163265,
+          "lines": [
+            502,
+            507
+          ],
+          "snippet_sha256": "sha256:3a0af7abde376b6e5e5ccc9d05a600ccb53b278fa3d37743e31a01faca1bbf1b"
+        },
+        {
+          "rank": 36,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/projections/geo.py:lib.matplotlib.projections.geo.LambertAxes.LambertTransform.inverted",
+          "path": "lib/matplotlib/projections/geo.py",
+          "kind": "method",
+          "symbol": "lib.matplotlib.projections.geo.LambertAxes.LambertTransform.inverted",
+          "function_id": "lib/matplotlib/projections/geo.py::lib.matplotlib.projections.geo.LambertAxes.LambertTransform.inverted",
+          "score": 0.5676020408163265,
+          "lines": [
+            470,
+            475
+          ],
+          "snippet_sha256": "sha256:49e1a5e7d31a11d8086027e3485b4a7102125394097ed478538f0d2c142232be"
+        },
+        {
+          "rank": 37,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/projections/geo.py:lib.matplotlib.projections.geo.MollweideAxes.InvertedMollweideTransform.inverted",
+          "path": "lib/matplotlib/projections/geo.py",
+          "kind": "method",
+          "symbol": "lib.matplotlib.projections.geo.MollweideAxes.InvertedMollweideTransform.inverted",
+          "function_id": "lib/matplotlib/projections/geo.py::lib.matplotlib.projections.geo.MollweideAxes.InvertedMollweideTransform.inverted",
+          "score": 0.5676020408163265,
+          "lines": [
+            420,
+            422
+          ],
+          "snippet_sha256": "sha256:6608dd96cae78ca8088dafde7894918070de2cfcc782d7751b9d946e83446e85"
+        },
+        {
+          "rank": 38,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/projections/geo.py:lib.matplotlib.projections.geo.MollweideAxes.MollweideTransform.inverted",
+          "path": "lib/matplotlib/projections/geo.py",
+          "kind": "method",
+          "symbol": "lib.matplotlib.projections.geo.MollweideAxes.MollweideTransform.inverted",
+          "function_id": "lib/matplotlib/projections/geo.py::lib.matplotlib.projections.geo.MollweideAxes.MollweideTransform.inverted",
+          "score": 0.5676020408163265,
+          "lines": [
+            401,
+            403
+          ],
+          "snippet_sha256": "sha256:b9d3782810e1c093ec0d18ea0c15107e09284b4e114ed38f4dc619b1c62e6500"
+        },
+        {
+          "rank": 39,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/mpl_toolkits/axes_grid1/mpl_axes.py:lib.mpl_toolkits.axes_grid1.mpl_axes.Axes.axis",
+          "path": "lib/mpl_toolkits/axes_grid1/mpl_axes.py",
+          "kind": "method",
+          "symbol": "lib.mpl_toolkits.axes_grid1.mpl_axes.Axes.axis",
+          "function_id": "lib/mpl_toolkits/axes_grid1/mpl_axes.py::lib.mpl_toolkits.axes_grid1.mpl_axes.Axes.axis",
+          "score": 0.5651315789473684,
+          "lines": [
+            54,
+            55
+          ],
+          "snippet_sha256": "sha256:4cb5b642a2f0c7acc62ecac347348de3a10cfd3835851324309c5525a345b4cc"
+        },
+        {
+          "rank": 40,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/mpl_toolkits/axisartist/axislines.py:lib.mpl_toolkits.axisartist.axislines.Axes.axis",
+          "path": "lib/mpl_toolkits/axisartist/axislines.py",
+          "kind": "method",
+          "symbol": "lib.mpl_toolkits.axisartist.axislines.Axes.axis",
+          "function_id": "lib/mpl_toolkits/axisartist/axislines.py::lib.mpl_toolkits.axisartist.axislines.Axes.axis",
+          "score": 0.5651041666666667,
+          "lines": [
+            558,
+            559
+          ],
+          "snippet_sha256": "sha256:4cb5b642a2f0c7acc62ecac347348de3a10cfd3835851324309c5525a345b4cc"
+        },
+        {
+          "rank": 41,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:examples/misc/custom_projection.py:examples.misc.custom_projection.HammerAxes.HammerTransform.inverted",
+          "path": "examples/misc/custom_projection.py",
+          "kind": "method",
+          "symbol": "examples.misc.custom_projection.HammerAxes.HammerTransform.inverted",
+          "function_id": "examples/misc/custom_projection.py::examples.misc.custom_projection.HammerAxes.HammerTransform.inverted",
+          "score": 0.565077319587629,
+          "lines": [
+            415,
+            416
+          ],
+          "snippet_sha256": "sha256:189ead6ce73d895f36eb09d0e8a31c8a94afdaeae1900ff984f10abcfff6aec6"
+        },
+        {
+          "rank": 42,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:examples/misc/custom_projection.py:examples.misc.custom_projection.HammerAxes.InvertedHammerTransform.inverted",
+          "path": "examples/misc/custom_projection.py",
+          "kind": "method",
+          "symbol": "examples.misc.custom_projection.HammerAxes.InvertedHammerTransform.inverted",
+          "function_id": "examples/misc/custom_projection.py::examples.misc.custom_projection.HammerAxes.InvertedHammerTransform.inverted",
+          "score": 0.565077319587629,
+          "lines": [
+            434,
+            435
+          ],
+          "snippet_sha256": "sha256:917653c40a04fd8f22c3782e55d3a54d204dd8e93ae972da5ecdc59ca90a139a"
+        },
+        {
+          "rank": 43,
+          "item_id": "vgar:matplotlib__matplotlib:python:class:setupext.py:setupext.Matplotlib",
+          "path": "setupext.py",
+          "kind": "class",
+          "symbol": "setupext.Matplotlib",
+          "function_id": null,
+          "score": 0.5278089887640449,
+          "lines": [
+            528,
+            560
+          ],
+          "snippet_sha256": "sha256:6b7a3c33c991468d61e6c0342a6fe62ef5867f86acf8826f73b0752d3dc5369c"
+        },
+        {
+          "rank": 44,
+          "item_id": "vgar:matplotlib__matplotlib:python:class:setupext.py:setupext.Python",
+          "path": "setupext.py",
+          "kind": "class",
+          "symbol": "setupext.Python",
+          "function_id": null,
+          "score": 0.5278089887640449,
+          "lines": [
+            515,
+            519
+          ],
+          "snippet_sha256": "sha256:ec556c3264f7582eb3a16f4ad7b3ca1ecff369a1ebd5625662c923cb1a941c7c"
+        },
+        {
+          "rank": 45,
+          "item_id": "vgar:matplotlib__matplotlib:python:function:lib/matplotlib/pyplot.py:lib.matplotlib.pyplot.gca",
+          "path": "lib/matplotlib/pyplot.py",
+          "kind": "function",
+          "symbol": "lib.matplotlib.pyplot.gca",
+          "function_id": "lib/matplotlib/pyplot.py::lib.matplotlib.pyplot.gca",
+          "score": 0.4672245553359684,
+          "lines": [
+            908,
+            926
+          ],
+          "snippet_sha256": "sha256:ebeab657f452eedbbb989acab2f727a89f93aac9e87d41467e16e8d42b43ed3e"
+        },
+        {
+          "rank": 46,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/axes/_base.py:lib.matplotlib.axes._base._AxesBase.set_ylim",
+          "path": "lib/matplotlib/axes/_base.py",
+          "kind": "method",
+          "symbol": "lib.matplotlib.axes._base._AxesBase.set_ylim",
+          "function_id": "lib/matplotlib/axes/_base.py::lib.matplotlib.axes._base._AxesBase.set_ylim",
+          "score": 0.43592436974789917,
+          "lines": [
+            3540,
+            3664
+          ],
+          "snippet_sha256": "sha256:9a56d72aac25ed7f18ce317157686dd7663b5a87a68ea689efb94cb6d753d686"
+        },
+        {
+          "rank": 47,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/axes/_base.py:lib.matplotlib.axes._base._AxesBase.set_xlim",
+          "path": "lib/matplotlib/axes/_base.py",
+          "kind": "method",
+          "symbol": "lib.matplotlib.axes._base._AxesBase.set_xlim",
+          "function_id": "lib/matplotlib/axes/_base.py::lib.matplotlib.axes._base._AxesBase.set_xlim",
+          "score": 0.43342579750346744,
+          "lines": [
+            3161,
+            3284
+          ],
+          "snippet_sha256": "sha256:df0325f93af2794270607b96d30ef6ff93864350b70f9bad220ac5ad3d744fcd"
+        },
+        {
+          "rank": 48,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/axes/_base.py:lib.matplotlib.axes._base._AxesBase.get_ylim",
+          "path": "lib/matplotlib/axes/_base.py",
+          "kind": "method",
+          "symbol": "lib.matplotlib.axes._base._AxesBase.get_ylim",
+          "function_id": "lib/matplotlib/axes/_base.py::lib.matplotlib.axes._base._AxesBase.get_ylim",
+          "score": 0.4324024822695036,
+          "lines": [
+            3517,
+            3538
+          ],
+          "snippet_sha256": "sha256:602bf3645e12e35abb94c9d7eca4b43370c45eb48d7032b00ffba49006582639"
+        },
+        {
+          "rank": 49,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/axes/_base.py:lib.matplotlib.axes._base._AxesBase.autoscale_view",
+          "path": "lib/matplotlib/axes/_base.py",
+          "kind": "method",
+          "symbol": "lib.matplotlib.axes._base._AxesBase.autoscale_view",
+          "function_id": "lib/matplotlib/axes/_base.py::lib.matplotlib.axes._base._AxesBase.autoscale_view",
+          "score": 0.43218750000000006,
+          "lines": [
+            2388,
+            2498
+          ],
+          "snippet_sha256": "sha256:97b8bae5a032fe4fea843b059e9dd1c2f59659dd1bc48f80565572f1d6d4f5ee"
+        },
+        {
+          "rank": 50,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/axes/_base.py:lib.matplotlib.axes._base._AxesBase.get_xlim",
+          "path": "lib/matplotlib/axes/_base.py",
+          "kind": "method",
+          "symbol": "lib.matplotlib.axes._base._AxesBase.get_xlim",
+          "function_id": "lib/matplotlib/axes/_base.py::lib.matplotlib.axes._base._AxesBase.get_xlim",
+          "score": 0.4297149122807018,
+          "lines": [
+            3120,
+            3141
+          ],
+          "snippet_sha256": "sha256:f1150c20412de2e798a1ce3b35c692384cb7d86e5ac335e446feba2d40d29b13"
+        },
+        {
+          "rank": 51,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/axes/_base.py:lib.matplotlib.axes._base._AxesBase.set_axis_on",
+          "path": "lib/matplotlib/axes/_base.py",
+          "kind": "method",
+          "symbol": "lib.matplotlib.axes._base._AxesBase.set_axis_on",
+          "function_id": "lib/matplotlib/axes/_base.py::lib.matplotlib.axes._base._AxesBase.set_axis_on",
+          "score": 0.424645390070922,
+          "lines": [
+            3027,
+            3034
+          ],
+          "snippet_sha256": "sha256:4d221c0b3f671f265f304c5fa71a6dd849b652ff1d81c3bd7539b2d36c11add6"
+        },
+        {
+          "rank": 52,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/axes/_base.py:lib.matplotlib.axes._base._AxesBase.set_axis_off",
+          "path": "lib/matplotlib/axes/_base.py",
+          "kind": "method",
+          "symbol": "lib.matplotlib.axes._base._AxesBase.set_axis_off",
+          "function_id": "lib/matplotlib/axes/_base.py::lib.matplotlib.axes._base._AxesBase.set_axis_off",
+          "score": 0.4142287234042554,
+          "lines": [
+            3018,
+            3025
+          ],
+          "snippet_sha256": "sha256:6b2bf4a871ef4162e5dcea794e30eab9e9e2ccb9fd7ae67d017a30f56d9ce409"
+        },
+        {
+          "rank": 53,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/axes/_base.py:lib.matplotlib.axes._base._AxesBase.set_autoscale_on",
+          "path": "lib/matplotlib/axes/_base.py",
+          "kind": "method",
+          "symbol": "lib.matplotlib.axes._base._AxesBase.set_autoscale_on",
+          "function_id": "lib/matplotlib/axes/_base.py::lib.matplotlib.axes._base._AxesBase.set_autoscale_on",
+          "score": 0.41145833333333337,
+          "lines": [
+            2154,
+            2163
+          ],
+          "snippet_sha256": "sha256:c728b54a09e32fb65183a09f2f57b535515ce5644bc4d0c6d09e82e9f812cc89"
+        },
+        {
+          "rank": 54,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/axes/_base.py:lib.matplotlib.axes._base._AxesBase.set_aspect",
+          "path": "lib/matplotlib/axes/_base.py",
+          "kind": "method",
+          "symbol": "lib.matplotlib.axes._base._AxesBase.set_aspect",
+          "function_id": "lib/matplotlib/axes/_base.py::lib.matplotlib.axes._base._AxesBase.set_aspect",
+          "score": 0.41130050505050514,
+          "lines": [
+            1222,
+            1299
+          ],
+          "snippet_sha256": "sha256:3ba50b92c8aa35865b0dec67f1cd81f813dfe52c0e8089061afa6bd50f18af82"
+        },
+        {
+          "rank": 55,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:setupext.py:setupext.Matplotlib.check",
+          "path": "setupext.py",
+          "kind": "method",
+          "symbol": "setupext.Matplotlib.check",
+          "function_id": "setupext.py::setupext.Matplotlib.check",
+          "score": 0.40271739130434786,
+          "lines": [
+            531,
+            532
+          ],
+          "snippet_sha256": "sha256:a094bb588edeb292e525a5303b6ab14cc81d854ce9f4118d5b8297fe3ddbe259"
+        },
+        {
+          "rank": 56,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:setupext.py:setupext.Python.check",
+          "path": "setupext.py",
+          "kind": "method",
+          "symbol": "setupext.Python.check",
+          "function_id": "setupext.py::setupext.Python.check",
+          "score": 0.40271739130434786,
+          "lines": [
+            518,
+            519
+          ],
+          "snippet_sha256": "sha256:3f1e732071fdf15b4726c2f78569fa2190146e7a8bb17e15a7cc9876d939e416"
+        },
+        {
+          "rank": 57,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:setupext.py:setupext.Matplotlib.get_packages",
+          "path": "setupext.py",
+          "kind": "method",
+          "symbol": "setupext.Matplotlib.get_packages",
+          "function_id": "setupext.py::setupext.Matplotlib.get_packages",
+          "score": 0.4026881720430107,
+          "lines": [
+            534,
+            535
+          ],
+          "snippet_sha256": "sha256:2e87caa92b243ec7ed4ba9fd29e2a3b033fe304cdb0e84b8c56b42a1e59df414"
+        },
+        {
+          "rank": 58,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:setupext.py:setupext.Matplotlib.get_py_modules",
+          "path": "setupext.py",
+          "kind": "method",
+          "symbol": "setupext.Matplotlib.get_py_modules",
+          "function_id": "setupext.py::setupext.Matplotlib.get_py_modules",
+          "score": 0.4026881720430107,
+          "lines": [
+            540,
+            541
+          ],
+          "snippet_sha256": "sha256:4cb12147f53067f93d0dc472279446157a4bf94b92861e4e21c7e478be9804bd"
+        },
+        {
+          "rank": 59,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:setupext.py:setupext.Matplotlib.get_install_requires",
+          "path": "setupext.py",
+          "kind": "method",
+          "symbol": "setupext.Matplotlib.get_install_requires",
+          "function_id": "setupext.py::setupext.Matplotlib.get_install_requires",
+          "score": 0.4026595744680851,
+          "lines": [
+            554,
+            560
+          ],
+          "snippet_sha256": "sha256:224a2fbd456d003c1130763d11e7c615c868f7e777d14b91e4a12d6d37a4f5e2"
+        },
+        {
+          "rank": 60,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:setupext.py:setupext.Matplotlib.get_namespace_packages",
+          "path": "setupext.py",
+          "kind": "method",
+          "symbol": "setupext.Matplotlib.get_namespace_packages",
+          "function_id": "setupext.py::setupext.Matplotlib.get_namespace_packages",
+          "score": 0.4026595744680851,
+          "lines": [
+            537,
+            538
+          ],
+          "snippet_sha256": "sha256:f4ff616a55849c09c88b0db4a1c7327326069a3de2e61286ffef67bbad1a33ee"
+        },
+        {
+          "rank": 61,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:setupext.py:setupext.Matplotlib.get_package_data",
+          "path": "setupext.py",
+          "kind": "method",
+          "symbol": "setupext.Matplotlib.get_package_data",
+          "function_id": "setupext.py::setupext.Matplotlib.get_package_data",
+          "score": 0.4026595744680851,
+          "lines": [
+            543,
+            552
+          ],
+          "snippet_sha256": "sha256:ccb8dc90ed0c51c4bbd55fabc8ed01d81ec70098afae72834f58f527e78e8e11"
+        },
+        {
+          "rank": 62,
+          "item_id": "vgar:matplotlib__matplotlib:python:module:lib/matplotlib/pyplot.py:lib.matplotlib.pyplot",
+          "path": "lib/matplotlib/pyplot.py",
+          "kind": "module",
+          "symbol": "lib.matplotlib.pyplot",
+          "function_id": null,
+          "score": 0.3431179775280899,
+          "lines": [
+            1,
+            3300
+          ],
+          "snippet_sha256": "sha256:b837475fe817996f8b5413141de289c95f2ffa3a32ded047e6f2556e80514ae8"
+        },
+        {
+          "rank": 63,
+          "item_id": "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/widgets.py:lib.matplotlib.widgets.ToolHandles",
+          "path": "lib/matplotlib/widgets.py",
+          "kind": "class",
+          "symbol": "lib.matplotlib.widgets.ToolHandles",
+          "function_id": null,
+          "score": 0.34021739130434786,
+          "lines": [
+            1915,
+            1971
+          ],
+          "snippet_sha256": "sha256:8c54270a0947e5b80a5e2016a396897d6d90464d43cd03834311d3a0fdf0ae4b"
+        },
+        {
+          "rank": 64,
+          "item_id": "vgar:matplotlib__matplotlib:python:module:setupext.py:setupext",
+          "path": "setupext.py",
+          "kind": "module",
+          "symbol": "setupext",
+          "function_id": null,
+          "score": 0.3375000000000001,
+          "lines": [
+            1,
+            1038
+          ],
+          "snippet_sha256": "sha256:2a367adaae1980c88c9e1bba61f46cdf9cffe20953ae40566063697a27a84639"
+        },
+        {
+          "rank": 65,
+          "item_id": "vgar:matplotlib__matplotlib:python:class:setupext.py:setupext.SetupPackage",
+          "path": "setupext.py",
+          "kind": "class",
+          "symbol": "setupext.SetupPackage",
+          "function_id": null,
+          "score": 0.3375000000000001,
+          "lines": [
+            303,
+            435
+          ],
+          "snippet_sha256": "sha256:b985452ec0646b3a337b673ecd46d81c38710e7921c8615229d1aa4a9578caf7"
+        },
+        {
+          "rank": 66,
+          "item_id": "vgar:matplotlib__matplotlib:python:module:tools/github_stats.py:tools.github_stats",
+          "path": "tools/github_stats.py",
+          "kind": "module",
+          "symbol": "tools.github_stats",
+          "function_id": null,
+          "score": 0.3375000000000001,
+          "lines": [
+            1,
+            243
+          ],
+          "snippet_sha256": "sha256:75fa0b9bdbc812aeec86bfcce116d0bc2b9d8dc4f6785ae33f336e06f0f935e0"
+        },
+        {
+          "rank": 67,
+          "item_id": "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/scale.py:lib.matplotlib.scale.InvertedLogTransform",
+          "path": "lib/matplotlib/scale.py",
+          "kind": "class",
+          "symbol": "lib.matplotlib.scale.InvertedLogTransform",
+          "function_id": null,
+          "score": 0.3236111111111111,
+          "lines": [
+            320,
+            337
+          ],
+          "snippet_sha256": "sha256:b94a19f96e6cefbedb078ab873bdaf9ddd37c07c1ebecbc2a90f39923b785d57"
+        },
+        {
+          "rank": 68,
+          "item_id": "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/scale.py:lib.matplotlib.scale.InvertedNaturalLogTransform",
+          "path": "lib/matplotlib/scale.py",
+          "kind": "class",
+          "symbol": "lib.matplotlib.scale.InvertedNaturalLogTransform",
+          "function_id": null,
+          "score": 0.32348901098901095,
+          "lines": [
+            272,
+            276
+          ],
+          "snippet_sha256": "sha256:41bdb35d9a3969d525ceacce1e693a94f5afdbaa2f43067a73373333ef87dee4"
+        },
+        {
+          "rank": 69,
+          "item_id": "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/scale.py:lib.matplotlib.scale.InvertedSymmetricalLogTransform",
+          "path": "lib/matplotlib/scale.py",
+          "kind": "class",
+          "symbol": "lib.matplotlib.scale.InvertedSymmetricalLogTransform",
+          "function_id": null,
+          "score": 0.32348901098901095,
+          "lines": [
+            503,
+            530
+          ],
+          "snippet_sha256": "sha256:1a62396a8345a6302b025a887fda033cc16483ae225b635edbc23c7f93419cbd"
+        },
+        {
+          "rank": 70,
+          "item_id": "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/scale.py:lib.matplotlib.scale.InvertedLog10Transform",
+          "path": "lib/matplotlib/scale.py",
+          "kind": "class",
+          "symbol": "lib.matplotlib.scale.InvertedLog10Transform",
+          "function_id": null,
+          "score": 0.32083333333333336,
+          "lines": [
+            240,
+            244
+          ],
+          "snippet_sha256": "sha256:ecbccbca45c991ca65a64df77f0c2d7986d4189a6d8a1c46f38cc7992c954985"
+        },
+        {
+          "rank": 71,
+          "item_id": "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/scale.py:lib.matplotlib.scale.InvertedLog2Transform",
+          "path": "lib/matplotlib/scale.py",
+          "kind": "class",
+          "symbol": "lib.matplotlib.scale.InvertedLog2Transform",
+          "function_id": null,
+          "score": 0.32083333333333336,
+          "lines": [
+            256,
+            260
+          ],
+          "snippet_sha256": "sha256:56c347a88aa18b7162899e8f2dba1df885f445a0157ccc87ec897028cd33d51a"
+        },
+        {
+          "rank": 72,
+          "item_id": "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/scale.py:lib.matplotlib.scale.LogTransform",
+          "path": "lib/matplotlib/scale.py",
+          "kind": "class",
+          "symbol": "lib.matplotlib.scale.LogTransform",
+          "function_id": null,
+          "score": 0.32083333333333336,
+          "lines": [
+            279,
+            317
+          ],
+          "snippet_sha256": "sha256:1a316f011feaceae18720b416e9279a85e5f54c4947f812f4ec8d495446b76a6"
+        },
+        {
+          "rank": 73,
+          "item_id": "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/scale.py:lib.matplotlib.scale.NaturalLogTransform",
+          "path": "lib/matplotlib/scale.py",
+          "kind": "class",
+          "symbol": "lib.matplotlib.scale.NaturalLogTransform",
+          "function_id": null,
+          "score": 0.3207417582417582,
+          "lines": [
+            264,
+            268
+          ],
+          "snippet_sha256": "sha256:1db2f40db20aa275456ff919ef4b0f196d5f92129052f59d221b5a762a6fd8a9"
+        },
+        {
+          "rank": 74,
+          "item_id": "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/scale.py:lib.matplotlib.scale.SymmetricalLogTransform",
+          "path": "lib/matplotlib/scale.py",
+          "kind": "class",
+          "symbol": "lib.matplotlib.scale.SymmetricalLogTransform",
+          "function_id": null,
+          "score": 0.3207417582417582,
+          "lines": [
+            474,
+            500
+          ],
+          "snippet_sha256": "sha256:83ab0f49799dc266eb20156d3c3e4c457959513873d2ad6b8ae0f69451054f38"
+        },
+        {
+          "rank": 75,
+          "item_id": "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/scale.py:lib.matplotlib.scale.Log10Transform",
+          "path": "lib/matplotlib/scale.py",
+          "kind": "class",
+          "symbol": "lib.matplotlib.scale.Log10Transform",
+          "function_id": null,
+          "score": 0.3180555555555556,
+          "lines": [
+            232,
+            236
+          ],
+          "snippet_sha256": "sha256:1903d1fd88fc4a62634f4398696d99b82a482bc8fcfd667db6ac3b4f29fb61d5"
+        },
+        {
+          "rank": 76,
+          "item_id": "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/scale.py:lib.matplotlib.scale.Log2Transform",
+          "path": "lib/matplotlib/scale.py",
+          "kind": "class",
+          "symbol": "lib.matplotlib.scale.Log2Transform",
+          "function_id": null,
+          "score": 0.3180555555555556,
+          "lines": [
+            248,
+            252
+          ],
+          "snippet_sha256": "sha256:eb0fe1d3b07cd09bfce2e93e32e8b932dda363df04b4530a62ad649e61acdcc4"
+        },
+        {
+          "rank": 77,
+          "item_id": "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/scale.py:lib.matplotlib.scale.FuncTransform",
+          "path": "lib/matplotlib/scale.py",
+          "kind": "class",
+          "symbol": "lib.matplotlib.scale.FuncTransform",
+          "function_id": null,
+          "score": 0.3179945054945055,
+          "lines": [
+            109,
+            147
+          ],
+          "snippet_sha256": "sha256:91c0f92cbb67470e16486fa829fe330437a3713911899f0c8b0cf60a2859487d"
+        },
+        {
+          "rank": 78,
+          "item_id": "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/scale.py:lib.matplotlib.scale.LogisticTransform",
+          "path": "lib/matplotlib/scale.py",
+          "kind": "class",
+          "symbol": "lib.matplotlib.scale.LogisticTransform",
+          "function_id": null,
+          "score": 0.3179945054945055,
+          "lines": [
+            644,
+            662
+          ],
+          "snippet_sha256": "sha256:0b08c34f74c52d118d398d5fe1957109baa1aff66c48f04dd7cedbcb5060f212"
+        },
+        {
+          "rank": 79,
+          "item_id": "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/scale.py:lib.matplotlib.scale.LogitTransform",
+          "path": "lib/matplotlib/scale.py",
+          "kind": "class",
+          "symbol": "lib.matplotlib.scale.LogitTransform",
+          "function_id": null,
+          "score": 0.3179945054945055,
+          "lines": [
+            616,
+            641
+          ],
+          "snippet_sha256": "sha256:0160ac96b02831709079c641872bc081f4b37f72080bfa81e89edf778aba0f19"
+        },
+        {
+          "rank": 80,
+          "item_id": "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/projections/polar.py:lib.matplotlib.projections.polar.InvertedPolarTransform",
+          "path": "lib/matplotlib/projections/polar.py",
+          "kind": "class",
+          "symbol": "lib.matplotlib.projections.polar.InvertedPolarTransform",
+          "function_id": null,
+          "score": 0.3179347826086956,
+          "lines": [
+            111,
+            160
+          ],
+          "snippet_sha256": "sha256:0a64d44f57394b19791d9b341bf77bd06c750aea6ab1c37df386cf1248758f53"
+        },
+        {
+          "rank": 81,
+          "item_id": "vgar:matplotlib__matplotlib:python:class:examples/scales/custom_scale.py:examples.scales.custom_scale.MercatorLatitudeScale.InvertedMercatorLatitudeTransform",
+          "path": "examples/scales/custom_scale.py",
+          "kind": "class",
+          "symbol": "examples.scales.custom_scale.MercatorLatitudeScale.InvertedMercatorLatitudeTransform",
+          "function_id": null,
+          "score": 0.31781914893617025,
+          "lines": [
+            152,
+            166
+          ],
+          "snippet_sha256": "sha256:52590019955d5acd8b8b7dadcc5cffa2590d31d1ccd58955af8033429e428c61"
+        },
+        {
+          "rank": 82,
+          "item_id": "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/projections/geo.py:lib.matplotlib.projections.geo.AitoffAxes.InvertedAitoffTransform",
+          "path": "lib/matplotlib/projections/geo.py",
+          "kind": "class",
+          "symbol": "lib.matplotlib.projections.geo.AitoffAxes.InvertedAitoffTransform",
+          "function_id": null,
+          "score": 0.31781914893617025,
+          "lines": [
+            290,
+            299
+          ],
+          "snippet_sha256": "sha256:760058fa0e2099e99cd2c94bcef696ad0317c9a7e3276979dc113f48066e6070"
+        },
+        {
+          "rank": 83,
+          "item_id": "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/projections/geo.py:lib.matplotlib.projections.geo.HammerAxes.InvertedHammerTransform",
+          "path": "lib/matplotlib/projections/geo.py",
+          "kind": "class",
+          "symbol": "lib.matplotlib.projections.geo.HammerAxes.InvertedHammerTransform",
+          "function_id": null,
+          "score": 0.31781914893617025,
+          "lines": [
+            336,
+            348
+          ],
+          "snippet_sha256": "sha256:5896b6c55f48141b45bd0c0e70ae6a50bd57787293608e6b51557371d77bfaf3"
+        },
+        {
+          "rank": 84,
+          "item_id": "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/projections/geo.py:lib.matplotlib.projections.geo.LambertAxes.InvertedLambertTransform",
+          "path": "lib/matplotlib/projections/geo.py",
+          "kind": "class",
+          "symbol": "lib.matplotlib.projections.geo.LambertAxes.InvertedLambertTransform",
+          "function_id": null,
+          "score": 0.31781914893617025,
+          "lines": [
+            477,
+            507
+          ],
+          "snippet_sha256": "sha256:a10678a84109c8f18aa8ebadeaeb693a47c75039bc07f69449c7fd00db46dec3"
+        },
+        {
+          "rank": 85,
+          "item_id": "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/projections/geo.py:lib.matplotlib.projections.geo.MollweideAxes.InvertedMollweideTransform",
+          "path": "lib/matplotlib/projections/geo.py",
+          "kind": "class",
+          "symbol": "lib.matplotlib.projections.geo.MollweideAxes.InvertedMollweideTransform",
+          "function_id": null,
+          "score": 0.31781914893617025,
+          "lines": [
+            405,
+            422
+          ],
+          "snippet_sha256": "sha256:65f81b05c0837553c75a54f9652455ba85b58934bbb9669ea195c761fc03400f"
+        },
+        {
+          "rank": 86,
+          "item_id": "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/axes/_base.py:lib.matplotlib.axes._base._AxesBase",
+          "path": "lib/matplotlib/axes/_base.py",
+          "kind": "class",
+          "symbol": "lib.matplotlib.axes._base._AxesBase",
+          "function_id": null,
+          "score": 0.31524725274725274,
+          "lines": [
+            410,
+            4479
+          ],
+          "snippet_sha256": "sha256:3b1166489d07a529e64b31c03c95911b1af89110fd2e32023327b509b5b19528"
+        },
+        {
+          "rank": 87,
+          "item_id": "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/projections/polar.py:lib.matplotlib.projections.polar.PolarTransform",
+          "path": "lib/matplotlib/projections/polar.py",
+          "kind": "class",
+          "symbol": "lib.matplotlib.projections.polar.PolarTransform",
+          "function_id": null,
+          "score": 0.31521739130434784,
+          "lines": [
+            17,
+            69
+          ],
+          "snippet_sha256": "sha256:6cd77c1288b208aa3035792257e86a46d4d4a9052ce326defca8f9805324fd0c"
+        },
+        {
+          "rank": 88,
+          "item_id": "vgar:matplotlib__matplotlib:python:class:examples/scales/custom_scale.py:examples.scales.custom_scale.MercatorLatitudeScale.MercatorLatitudeTransform",
+          "path": "examples/scales/custom_scale.py",
+          "kind": "class",
+          "symbol": "examples.scales.custom_scale.MercatorLatitudeScale.MercatorLatitudeTransform",
+          "function_id": null,
+          "score": 0.3151595744680851,
+          "lines": [
+            108,
+            150
+          ],
+          "snippet_sha256": "sha256:a265cb564baa81333c28a61f58dbbb84bc2b69af6ffbc43b8ddcb3e48122c433"
+        },
+        {
+          "rank": 89,
+          "item_id": "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/projections/geo.py:lib.matplotlib.projections.geo.AitoffAxes.AitoffTransform",
+          "path": "lib/matplotlib/projections/geo.py",
+          "kind": "class",
+          "symbol": "lib.matplotlib.projections.geo.AitoffAxes.AitoffTransform",
+          "function_id": null,
+          "score": 0.3151595744680851,
+          "lines": [
+            263,
+            288
+          ],
+          "snippet_sha256": "sha256:9405c595dcd2b7255a0d66fbc484f7a232ccbad054c832a943c775955c964bd0"
+        },
+        {
+          "rank": 90,
+          "item_id": "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/projections/geo.py:lib.matplotlib.projections.geo.HammerAxes.HammerTransform",
+          "path": "lib/matplotlib/projections/geo.py",
+          "kind": "class",
+          "symbol": "lib.matplotlib.projections.geo.HammerAxes.HammerTransform",
+          "function_id": null,
+          "score": 0.3151595744680851,
+          "lines": [
+            314,
+            334
+          ],
+          "snippet_sha256": "sha256:b7a1c098f47a373b7d0516871824a789f19a618c737a016ed5ba3276c9d53ae2"
+        },
+        {
+          "rank": 91,
+          "item_id": "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/projections/geo.py:lib.matplotlib.projections.geo.LambertAxes.LambertTransform",
+          "path": "lib/matplotlib/projections/geo.py",
+          "kind": "class",
+          "symbol": "lib.matplotlib.projections.geo.LambertAxes.LambertTransform",
+          "function_id": null,
+          "score": 0.3151595744680851,
+          "lines": [
+            437,
+            475
+          ],
+          "snippet_sha256": "sha256:2249b12b51e74a42f178c0ce3c18b15c2534ab8eccf0f3a533e2353156daa30c"
+        },
+        {
+          "rank": 92,
+          "item_id": "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/projections/geo.py:lib.matplotlib.projections.geo.MollweideAxes.MollweideTransform",
+          "path": "lib/matplotlib/projections/geo.py",
+          "kind": "class",
+          "symbol": "lib.matplotlib.projections.geo.MollweideAxes.MollweideTransform",
+          "function_id": null,
+          "score": 0.3151595744680851,
+          "lines": [
+            363,
+            403
+          ],
+          "snippet_sha256": "sha256:e734f5f2846e19cbf1ad640a72c1fbdf8bb6643132f83266f976782d7ef4211e"
+        },
+        {
+          "rank": 93,
+          "item_id": "vgar:matplotlib__matplotlib:python:class:examples/misc/custom_projection.py:examples.misc.custom_projection.HammerAxes.InvertedHammerTransform",
+          "path": "examples/misc/custom_projection.py",
+          "kind": "class",
+          "symbol": "examples.misc.custom_projection.HammerAxes.InvertedHammerTransform",
+          "function_id": null,
+          "score": 0.31513157894736843,
+          "lines": [
+            418,
+            435
+          ],
+          "snippet_sha256": "sha256:a279c430702c019e40311dfa15d6652fc3d541ebfdc06977fcc45cea70a819a7"
+        },
+        {
+          "rank": 94,
+          "item_id": "vgar:matplotlib__matplotlib:python:class:examples/misc/custom_projection.py:examples.misc.custom_projection.HammerAxes.HammerTransform",
+          "path": "examples/misc/custom_projection.py",
+          "kind": "class",
+          "symbol": "examples.misc.custom_projection.HammerAxes.HammerTransform",
+          "function_id": null,
+          "score": 0.3125,
+          "lines": [
+            380,
+            416
+          ],
+          "snippet_sha256": "sha256:891c7010b17710271ae6ff7d62b2bf578184458d8692a16e5feff4b26d9bde65"
+        }
+      ],
+      "rank_order": [
+        "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/table.py:lib.matplotlib.table.Table.scale",
+        "vgar:matplotlib__matplotlib:python:function:lib/matplotlib/pyplot.py:lib.matplotlib.pyplot.yscale.setter",
+        "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/widgets.py:lib.matplotlib.widgets.ToolHandles.x",
+        "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/widgets.py:lib.matplotlib.widgets.ToolHandles.y",
+        "vgar:matplotlib__matplotlib:python:function:tools/github_stats.py:tools.github_stats.report",
+        "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/scale.py:lib.matplotlib.scale.InvertedLogTransform.inverted",
+        "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/scale.py:lib.matplotlib.scale.LogTransform.inverted",
+        "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/scale.py:lib.matplotlib.scale.InvertedNaturalLogTransform.inverted",
+        "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/scale.py:lib.matplotlib.scale.InvertedSymmetricalLogTransform.inverted",
+        "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/scale.py:lib.matplotlib.scale.NaturalLogTransform.inverted",
+        "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/scale.py:lib.matplotlib.scale.SymmetricalLogTransform.inverted",
+        "vgar:matplotlib__matplotlib:python:function:lib/matplotlib/pyplot.py:lib.matplotlib.pyplot.axis.setter",
+        "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/scale.py:lib.matplotlib.scale.InvertedLog10Transform.inverted",
+        "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/scale.py:lib.matplotlib.scale.InvertedLog2Transform.inverted",
+        "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/scale.py:lib.matplotlib.scale.Log10Transform.inverted",
+        "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/scale.py:lib.matplotlib.scale.Log2Transform.inverted",
+        "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/scale.py:lib.matplotlib.scale.FuncTransform.inverted",
+        "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/scale.py:lib.matplotlib.scale.LogisticTransform.inverted",
+        "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/scale.py:lib.matplotlib.scale.LogitTransform.inverted",
+        "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/transforms.py:lib.matplotlib.transforms.Transform.inverted",
+        "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/axes/_base.py:lib.matplotlib.axes._base._AxesBase.axis",
+        "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/transforms.py:lib.matplotlib.transforms.Affine2DBase.inverted",
+        "vgar:matplotlib__matplotlib:python:method:examples/scales/custom_scale.py:examples.scales.custom_scale.MercatorLatitudeScale.InvertedMercatorLatitudeTransform.inverted",
+        "vgar:matplotlib__matplotlib:python:method:examples/scales/custom_scale.py:examples.scales.custom_scale.MercatorLatitudeScale.MercatorLatitudeTransform.inverted",
+        "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/projections/polar.py:lib.matplotlib.projections.polar.InvertedPolarTransform.inverted",
+        "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/projections/polar.py:lib.matplotlib.projections.polar.PolarTransform.inverted",
+        "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/transforms.py:lib.matplotlib.transforms.Affine2D.scale",
+        "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/transforms.py:lib.matplotlib.transforms.IdentityTransform.inverted",
+        "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/transforms.py:lib.matplotlib.transforms.BlendedGenericTransform.inverted",
+        "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/transforms.py:lib.matplotlib.transforms.CompositeGenericTransform.inverted",
+        "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/projections/geo.py:lib.matplotlib.projections.geo.AitoffAxes.AitoffTransform.inverted",
+        "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/projections/geo.py:lib.matplotlib.projections.geo.AitoffAxes.InvertedAitoffTransform.inverted",
+        "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/projections/geo.py:lib.matplotlib.projections.geo.HammerAxes.HammerTransform.inverted",
+        "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/projections/geo.py:lib.matplotlib.projections.geo.HammerAxes.InvertedHammerTransform.inverted",
+        "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/projections/geo.py:lib.matplotlib.projections.geo.LambertAxes.InvertedLambertTransform.inverted",
+        "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/projections/geo.py:lib.matplotlib.projections.geo.LambertAxes.LambertTransform.inverted",
+        "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/projections/geo.py:lib.matplotlib.projections.geo.MollweideAxes.InvertedMollweideTransform.inverted",
+        "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/projections/geo.py:lib.matplotlib.projections.geo.MollweideAxes.MollweideTransform.inverted",
+        "vgar:matplotlib__matplotlib:python:method:lib/mpl_toolkits/axes_grid1/mpl_axes.py:lib.mpl_toolkits.axes_grid1.mpl_axes.Axes.axis",
+        "vgar:matplotlib__matplotlib:python:method:lib/mpl_toolkits/axisartist/axislines.py:lib.mpl_toolkits.axisartist.axislines.Axes.axis",
+        "vgar:matplotlib__matplotlib:python:method:examples/misc/custom_projection.py:examples.misc.custom_projection.HammerAxes.HammerTransform.inverted",
+        "vgar:matplotlib__matplotlib:python:method:examples/misc/custom_projection.py:examples.misc.custom_projection.HammerAxes.InvertedHammerTransform.inverted",
+        "vgar:matplotlib__matplotlib:python:class:setupext.py:setupext.Matplotlib",
+        "vgar:matplotlib__matplotlib:python:class:setupext.py:setupext.Python",
+        "vgar:matplotlib__matplotlib:python:function:lib/matplotlib/pyplot.py:lib.matplotlib.pyplot.gca",
+        "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/axes/_base.py:lib.matplotlib.axes._base._AxesBase.set_ylim",
+        "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/axes/_base.py:lib.matplotlib.axes._base._AxesBase.set_xlim",
+        "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/axes/_base.py:lib.matplotlib.axes._base._AxesBase.get_ylim",
+        "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/axes/_base.py:lib.matplotlib.axes._base._AxesBase.autoscale_view",
+        "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/axes/_base.py:lib.matplotlib.axes._base._AxesBase.get_xlim",
+        "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/axes/_base.py:lib.matplotlib.axes._base._AxesBase.set_axis_on",
+        "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/axes/_base.py:lib.matplotlib.axes._base._AxesBase.set_axis_off",
+        "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/axes/_base.py:lib.matplotlib.axes._base._AxesBase.set_autoscale_on",
+        "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/axes/_base.py:lib.matplotlib.axes._base._AxesBase.set_aspect",
+        "vgar:matplotlib__matplotlib:python:method:setupext.py:setupext.Matplotlib.check",
+        "vgar:matplotlib__matplotlib:python:method:setupext.py:setupext.Python.check",
+        "vgar:matplotlib__matplotlib:python:method:setupext.py:setupext.Matplotlib.get_packages",
+        "vgar:matplotlib__matplotlib:python:method:setupext.py:setupext.Matplotlib.get_py_modules",
+        "vgar:matplotlib__matplotlib:python:method:setupext.py:setupext.Matplotlib.get_install_requires",
+        "vgar:matplotlib__matplotlib:python:method:setupext.py:setupext.Matplotlib.get_namespace_packages",
+        "vgar:matplotlib__matplotlib:python:method:setupext.py:setupext.Matplotlib.get_package_data",
+        "vgar:matplotlib__matplotlib:python:module:lib/matplotlib/pyplot.py:lib.matplotlib.pyplot",
+        "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/widgets.py:lib.matplotlib.widgets.ToolHandles",
+        "vgar:matplotlib__matplotlib:python:module:setupext.py:setupext",
+        "vgar:matplotlib__matplotlib:python:class:setupext.py:setupext.SetupPackage",
+        "vgar:matplotlib__matplotlib:python:module:tools/github_stats.py:tools.github_stats",
+        "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/scale.py:lib.matplotlib.scale.InvertedLogTransform",
+        "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/scale.py:lib.matplotlib.scale.InvertedNaturalLogTransform",
+        "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/scale.py:lib.matplotlib.scale.InvertedSymmetricalLogTransform",
+        "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/scale.py:lib.matplotlib.scale.InvertedLog10Transform",
+        "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/scale.py:lib.matplotlib.scale.InvertedLog2Transform",
+        "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/scale.py:lib.matplotlib.scale.LogTransform",
+        "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/scale.py:lib.matplotlib.scale.NaturalLogTransform",
+        "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/scale.py:lib.matplotlib.scale.SymmetricalLogTransform",
+        "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/scale.py:lib.matplotlib.scale.Log10Transform",
+        "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/scale.py:lib.matplotlib.scale.Log2Transform",
+        "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/scale.py:lib.matplotlib.scale.FuncTransform",
+        "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/scale.py:lib.matplotlib.scale.LogisticTransform",
+        "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/scale.py:lib.matplotlib.scale.LogitTransform",
+        "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/projections/polar.py:lib.matplotlib.projections.polar.InvertedPolarTransform",
+        "vgar:matplotlib__matplotlib:python:class:examples/scales/custom_scale.py:examples.scales.custom_scale.MercatorLatitudeScale.InvertedMercatorLatitudeTransform",
+        "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/projections/geo.py:lib.matplotlib.projections.geo.AitoffAxes.InvertedAitoffTransform",
+        "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/projections/geo.py:lib.matplotlib.projections.geo.HammerAxes.InvertedHammerTransform",
+        "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/projections/geo.py:lib.matplotlib.projections.geo.LambertAxes.InvertedLambertTransform",
+        "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/projections/geo.py:lib.matplotlib.projections.geo.MollweideAxes.InvertedMollweideTransform",
+        "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/axes/_base.py:lib.matplotlib.axes._base._AxesBase",
+        "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/projections/polar.py:lib.matplotlib.projections.polar.PolarTransform",
+        "vgar:matplotlib__matplotlib:python:class:examples/scales/custom_scale.py:examples.scales.custom_scale.MercatorLatitudeScale.MercatorLatitudeTransform",
+        "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/projections/geo.py:lib.matplotlib.projections.geo.AitoffAxes.AitoffTransform",
+        "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/projections/geo.py:lib.matplotlib.projections.geo.HammerAxes.HammerTransform",
+        "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/projections/geo.py:lib.matplotlib.projections.geo.LambertAxes.LambertTransform",
+        "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/projections/geo.py:lib.matplotlib.projections.geo.MollweideAxes.MollweideTransform",
+        "vgar:matplotlib__matplotlib:python:class:examples/misc/custom_projection.py:examples.misc.custom_projection.HammerAxes.InvertedHammerTransform",
+        "vgar:matplotlib__matplotlib:python:class:examples/misc/custom_projection.py:examples.misc.custom_projection.HammerAxes.HammerTransform"
+      ],
+      "anchors": [
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:function:lib/matplotlib/pyplot.py:lib.matplotlib.pyplot.yscale.setter",
+          "score": 0.6,
+          "symbol": "lib.matplotlib.pyplot.yscale",
+          "type": "Function",
+          "path": "lib/matplotlib/pyplot.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:function:lib/matplotlib/tests/test_category.py:lib.matplotlib.tests.test_category.ax.setter",
+          "score": 0.6,
+          "symbol": "lib.matplotlib.tests.test_category.ax",
+          "type": "Function",
+          "path": "lib/matplotlib/tests/test_category.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/tests/test_units.py:lib.matplotlib.tests.test_units.Quantity.to",
+          "score": 0.6,
+          "symbol": "lib.matplotlib.tests.test_units.Quantity.to",
+          "type": "Method",
+          "path": "lib/matplotlib/tests/test_units.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/widgets.py:lib.matplotlib.widgets.ToolHandles.x",
+          "score": 0.6,
+          "symbol": "lib.matplotlib.widgets.ToolHandles.x",
+          "type": "Method",
+          "path": "lib/matplotlib/widgets.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/widgets.py:lib.matplotlib.widgets.ToolHandles.y",
+          "score": 0.6,
+          "symbol": "lib.matplotlib.widgets.ToolHandles.y",
+          "type": "Method",
+          "path": "lib/matplotlib/widgets.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:class:setupext.py:setupext.Matplotlib",
+          "score": 0.6,
+          "symbol": "setupext.Matplotlib",
+          "type": "Class",
+          "path": "setupext.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:class:setupext.py:setupext.Python",
+          "score": 0.6,
+          "symbol": "setupext.Python",
+          "type": "Class",
+          "path": "setupext.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:function:tools/github_stats.py:tools.github_stats.report",
+          "score": 0.6,
+          "symbol": "tools.github_stats.report",
+          "type": "Function",
+          "path": "tools/github_stats.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:method:examples/misc/custom_projection.py:examples.misc.custom_projection.HammerAxes.HammerTransform.inverted",
+          "score": 0.5,
+          "symbol": "examples.misc.custom_projection.HammerAxes.HammerTransform.inverted",
+          "type": "Method",
+          "path": "examples/misc/custom_projection.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:method:examples/misc/custom_projection.py:examples.misc.custom_projection.HammerAxes.InvertedHammerTransform.inverted",
+          "score": 0.5,
+          "symbol": "examples.misc.custom_projection.HammerAxes.InvertedHammerTransform.inverted",
+          "type": "Method",
+          "path": "examples/misc/custom_projection.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:method:examples/scales/custom_scale.py:examples.scales.custom_scale.MercatorLatitudeScale.InvertedMercatorLatitudeTransform.inverted",
+          "score": 0.5,
+          "symbol": "examples.scales.custom_scale.MercatorLatitudeScale.InvertedMercatorLatitudeTransform.inverted",
+          "type": "Method",
+          "path": "examples/scales/custom_scale.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:method:examples/scales/custom_scale.py:examples.scales.custom_scale.MercatorLatitudeScale.MercatorLatitudeTransform.inverted",
+          "score": 0.5,
+          "symbol": "examples.scales.custom_scale.MercatorLatitudeScale.MercatorLatitudeTransform.inverted",
+          "type": "Method",
+          "path": "examples/scales/custom_scale.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/axes/_base.py:lib.matplotlib.axes._base._AxesBase.axis",
+          "score": 0.5,
+          "symbol": "lib.matplotlib.axes._base._AxesBase.axis",
+          "type": "Method",
+          "path": "lib/matplotlib/axes/_base.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/projections/geo.py:lib.matplotlib.projections.geo.AitoffAxes.AitoffTransform.inverted",
+          "score": 0.5,
+          "symbol": "lib.matplotlib.projections.geo.AitoffAxes.AitoffTransform.inverted",
+          "type": "Method",
+          "path": "lib/matplotlib/projections/geo.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/projections/geo.py:lib.matplotlib.projections.geo.AitoffAxes.InvertedAitoffTransform.inverted",
+          "score": 0.5,
+          "symbol": "lib.matplotlib.projections.geo.AitoffAxes.InvertedAitoffTransform.inverted",
+          "type": "Method",
+          "path": "lib/matplotlib/projections/geo.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/projections/geo.py:lib.matplotlib.projections.geo.HammerAxes.HammerTransform.inverted",
+          "score": 0.5,
+          "symbol": "lib.matplotlib.projections.geo.HammerAxes.HammerTransform.inverted",
+          "type": "Method",
+          "path": "lib/matplotlib/projections/geo.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/projections/geo.py:lib.matplotlib.projections.geo.HammerAxes.InvertedHammerTransform.inverted",
+          "score": 0.5,
+          "symbol": "lib.matplotlib.projections.geo.HammerAxes.InvertedHammerTransform.inverted",
+          "type": "Method",
+          "path": "lib/matplotlib/projections/geo.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/projections/geo.py:lib.matplotlib.projections.geo.LambertAxes.InvertedLambertTransform.inverted",
+          "score": 0.5,
+          "symbol": "lib.matplotlib.projections.geo.LambertAxes.InvertedLambertTransform.inverted",
+          "type": "Method",
+          "path": "lib/matplotlib/projections/geo.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/projections/geo.py:lib.matplotlib.projections.geo.LambertAxes.LambertTransform.inverted",
+          "score": 0.5,
+          "symbol": "lib.matplotlib.projections.geo.LambertAxes.LambertTransform.inverted",
+          "type": "Method",
+          "path": "lib/matplotlib/projections/geo.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/projections/geo.py:lib.matplotlib.projections.geo.MollweideAxes.InvertedMollweideTransform.inverted",
+          "score": 0.5,
+          "symbol": "lib.matplotlib.projections.geo.MollweideAxes.InvertedMollweideTransform.inverted",
+          "type": "Method",
+          "path": "lib/matplotlib/projections/geo.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/projections/geo.py:lib.matplotlib.projections.geo.MollweideAxes.MollweideTransform.inverted",
+          "score": 0.5,
+          "symbol": "lib.matplotlib.projections.geo.MollweideAxes.MollweideTransform.inverted",
+          "type": "Method",
+          "path": "lib/matplotlib/projections/geo.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/projections/polar.py:lib.matplotlib.projections.polar.InvertedPolarTransform.inverted",
+          "score": 0.5,
+          "symbol": "lib.matplotlib.projections.polar.InvertedPolarTransform.inverted",
+          "type": "Method",
+          "path": "lib/matplotlib/projections/polar.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/projections/polar.py:lib.matplotlib.projections.polar.PolarTransform.inverted",
+          "score": 0.5,
+          "symbol": "lib.matplotlib.projections.polar.PolarTransform.inverted",
+          "type": "Method",
+          "path": "lib/matplotlib/projections/polar.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:function:lib/matplotlib/pyplot.py:lib.matplotlib.pyplot.axis.setter",
+          "score": 0.5,
+          "symbol": "lib.matplotlib.pyplot.axis",
+          "type": "Function",
+          "path": "lib/matplotlib/pyplot.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/scale.py:lib.matplotlib.scale.FuncTransform.inverted",
+          "score": 0.5,
+          "symbol": "lib.matplotlib.scale.FuncTransform.inverted",
+          "type": "Method",
+          "path": "lib/matplotlib/scale.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/scale.py:lib.matplotlib.scale.InvertedLog10Transform.inverted",
+          "score": 0.5,
+          "symbol": "lib.matplotlib.scale.InvertedLog10Transform.inverted",
+          "type": "Method",
+          "path": "lib/matplotlib/scale.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/scale.py:lib.matplotlib.scale.InvertedLog2Transform.inverted",
+          "score": 0.5,
+          "symbol": "lib.matplotlib.scale.InvertedLog2Transform.inverted",
+          "type": "Method",
+          "path": "lib/matplotlib/scale.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/scale.py:lib.matplotlib.scale.InvertedLogTransform.inverted",
+          "score": 0.5,
+          "symbol": "lib.matplotlib.scale.InvertedLogTransform.inverted",
+          "type": "Method",
+          "path": "lib/matplotlib/scale.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/scale.py:lib.matplotlib.scale.InvertedNaturalLogTransform.inverted",
+          "score": 0.5,
+          "symbol": "lib.matplotlib.scale.InvertedNaturalLogTransform.inverted",
+          "type": "Method",
+          "path": "lib/matplotlib/scale.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/scale.py:lib.matplotlib.scale.InvertedSymmetricalLogTransform.inverted",
+          "score": 0.5,
+          "symbol": "lib.matplotlib.scale.InvertedSymmetricalLogTransform.inverted",
+          "type": "Method",
+          "path": "lib/matplotlib/scale.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/scale.py:lib.matplotlib.scale.Log10Transform.inverted",
+          "score": 0.5,
+          "symbol": "lib.matplotlib.scale.Log10Transform.inverted",
+          "type": "Method",
+          "path": "lib/matplotlib/scale.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/scale.py:lib.matplotlib.scale.Log2Transform.inverted",
+          "score": 0.5,
+          "symbol": "lib.matplotlib.scale.Log2Transform.inverted",
+          "type": "Method",
+          "path": "lib/matplotlib/scale.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/scale.py:lib.matplotlib.scale.LogTransform.inverted",
+          "score": 0.5,
+          "symbol": "lib.matplotlib.scale.LogTransform.inverted",
+          "type": "Method",
+          "path": "lib/matplotlib/scale.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/scale.py:lib.matplotlib.scale.LogisticTransform.inverted",
+          "score": 0.5,
+          "symbol": "lib.matplotlib.scale.LogisticTransform.inverted",
+          "type": "Method",
+          "path": "lib/matplotlib/scale.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/scale.py:lib.matplotlib.scale.LogitTransform.inverted",
+          "score": 0.5,
+          "symbol": "lib.matplotlib.scale.LogitTransform.inverted",
+          "type": "Method",
+          "path": "lib/matplotlib/scale.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/scale.py:lib.matplotlib.scale.NaturalLogTransform.inverted",
+          "score": 0.5,
+          "symbol": "lib.matplotlib.scale.NaturalLogTransform.inverted",
+          "type": "Method",
+          "path": "lib/matplotlib/scale.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/scale.py:lib.matplotlib.scale.SymmetricalLogTransform.inverted",
+          "score": 0.5,
+          "symbol": "lib.matplotlib.scale.SymmetricalLogTransform.inverted",
+          "type": "Method",
+          "path": "lib/matplotlib/scale.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/table.py:lib.matplotlib.table.Table.scale",
+          "score": 0.5,
+          "symbol": "lib.matplotlib.table.Table.scale",
+          "type": "Method",
+          "path": "lib/matplotlib/table.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:function:lib/matplotlib/tests/test_axes.py:lib.matplotlib.tests.test_axes.test_secondary_resize.invert",
+          "score": 0.5,
+          "symbol": "lib.matplotlib.tests.test_axes.test_secondary_resize.invert",
+          "type": "Function",
+          "path": "lib/matplotlib/tests/test_axes.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:function:lib/matplotlib/tests/test_axes.py:lib.matplotlib.tests.test_axes.test_secondary_xy.invert",
+          "score": 0.5,
+          "symbol": "lib.matplotlib.tests.test_axes.test_secondary_xy.invert",
+          "type": "Function",
+          "path": "lib/matplotlib/tests/test_axes.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/transforms.py:lib.matplotlib.transforms.Affine2D.scale",
+          "score": 0.5,
+          "symbol": "lib.matplotlib.transforms.Affine2D.scale",
+          "type": "Method",
+          "path": "lib/matplotlib/transforms.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/transforms.py:lib.matplotlib.transforms.Affine2DBase.inverted",
+          "score": 0.5,
+          "symbol": "lib.matplotlib.transforms.Affine2DBase.inverted",
+          "type": "Method",
+          "path": "lib/matplotlib/transforms.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/transforms.py:lib.matplotlib.transforms.BlendedGenericTransform.inverted",
+          "score": 0.5,
+          "symbol": "lib.matplotlib.transforms.BlendedGenericTransform.inverted",
+          "type": "Method",
+          "path": "lib/matplotlib/transforms.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/transforms.py:lib.matplotlib.transforms.CompositeGenericTransform.inverted",
+          "score": 0.5,
+          "symbol": "lib.matplotlib.transforms.CompositeGenericTransform.inverted",
+          "type": "Method",
+          "path": "lib/matplotlib/transforms.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/transforms.py:lib.matplotlib.transforms.IdentityTransform.inverted",
+          "score": 0.5,
+          "symbol": "lib.matplotlib.transforms.IdentityTransform.inverted",
+          "type": "Method",
+          "path": "lib/matplotlib/transforms.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/transforms.py:lib.matplotlib.transforms.Transform.inverted",
+          "score": 0.5,
+          "symbol": "lib.matplotlib.transforms.Transform.inverted",
+          "type": "Method",
+          "path": "lib/matplotlib/transforms.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:method:lib/mpl_toolkits/axes_grid1/mpl_axes.py:lib.mpl_toolkits.axes_grid1.mpl_axes.Axes.axis",
+          "score": 0.5,
+          "symbol": "lib.mpl_toolkits.axes_grid1.mpl_axes.Axes.axis",
+          "type": "Method",
+          "path": "lib/mpl_toolkits/axes_grid1/mpl_axes.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:method:lib/mpl_toolkits/axisartist/axislines.py:lib.mpl_toolkits.axisartist.axislines.Axes.axis",
+          "score": 0.5,
+          "symbol": "lib.mpl_toolkits.axisartist.axislines.Axes.axis",
+          "type": "Method",
+          "path": "lib/mpl_toolkits/axisartist/axislines.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:method:lib/mpl_toolkits/tests/test_axisartist_grid_helper_curvelinear.py:lib.mpl_toolkits.tests.test_axisartist_grid_helper_curvelinear.test_custom_transform.MyTransform.inverted",
+          "score": 0.5,
+          "symbol": "lib.mpl_toolkits.tests.test_axisartist_grid_helper_curvelinear.test_custom_transform.MyTransform.inverted",
+          "type": "Method",
+          "path": "lib/mpl_toolkits/tests/test_axisartist_grid_helper_curvelinear.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:method:lib/mpl_toolkits/tests/test_axisartist_grid_helper_curvelinear.py:lib.mpl_toolkits.tests.test_axisartist_grid_helper_curvelinear.test_custom_transform.MyTransformInv.inverted",
+          "score": 0.5,
+          "symbol": "lib.mpl_toolkits.tests.test_axisartist_grid_helper_curvelinear.test_custom_transform.MyTransformInv.inverted",
+          "type": "Method",
+          "path": "lib/mpl_toolkits/tests/test_axisartist_grid_helper_curvelinear.py"
+        }
+      ],
+      "unmapped": [],
+      "excluded": [],
+      "diagnostics": {
+        "m1_native_total_tokens": 7937,
+        "m1_native_items": 55,
+        "m1_native_truncated": true,
+        "traversal_limited": true,
+        "unavailable_features": [
+          "architecture_dependencies",
+          "recent_change_frequency",
+          "failing_test_proximity"
+        ],
+        "omissions": {
+          "overlapping_selected_range": 39
+        },
+        "retrieval_config": {
+          "max_hops": 2,
+          "max_candidates": 100,
+          "min_edge_confidence": 0.6,
+          "weights": {
+            "task_similarity": 0.2,
+            "graph_distance": 0.3,
+            "edge_confidence": 0.2,
+            "failing_test_proximity": 0.2,
+            "public_api_risk": 0.1,
+            "recent_change_frequency": 0.1
+          },
+          "profile": "semantic-context-v1",
+          "active_features": [
+            "task_similarity",
+            "graph_distance",
+            "edge_confidence",
+            "public_api_risk"
+          ],
+          "normalized_weights": {
+            "task_similarity": 0.25000000000000006,
+            "graph_distance": 0.375,
+            "edge_confidence": 0.25000000000000006,
+            "public_api_risk": 0.12500000000000003
+          },
+          "failing_test_traversal_limited": false,
+          "filtered_by_include": 41
+        }
+      },
+      "scoring": {
+        "instance_id": "matplotlib__matplotlib-14623",
+        "arm": "graph",
+        "scoring_version": "retrieval-scoring-v1",
+        "rank_hash": "sha256:2213e12244eecf63d8f29a087558648a0fa2de043c85f4075865f3ed8bb363ac",
+        "rank": {
+          "metrics": {
+            "file_gold_count": 3,
+            "file_mrr": 0.14285714285714285,
+            "file_recall@1": 0.0,
+            "file_all_gold@1": 0,
+            "file_recall@3": 0.0,
+            "file_all_gold@3": 0,
+            "file_recall@5": 0.0,
+            "file_all_gold@5": 0,
+            "file_recall@10": 0.3333333333333333,
+            "file_all_gold@10": 0,
+            "file_recall@20": 0.3333333333333333,
+            "file_all_gold@20": 0,
+            "function_gold_count": 6,
+            "function_mrr": 0.022727272727272728,
+            "function_recall@1": 0.0,
+            "function_all_gold@1": 0,
+            "function_recall@3": 0.0,
+            "function_all_gold@3": 0,
+            "function_recall@5": 0.0,
+            "function_all_gold@5": 0,
+            "function_recall@10": 0.0,
+            "function_all_gold@10": 0,
+            "function_recall@20": 0.0,
+            "function_all_gold@20": 0
+          },
+          "reach": {
+            "file": 0.3333333333333333,
+            "function": 0.3333333333333333
+          },
+          "size": {
+            "items": 94,
+            "files": 14,
+            "functions": 59
+          }
+        },
+        "packed": {
+          "budget_tokens": 8000,
+          "counter_label": "local-hf:Qwen/Qwen3-4B-Instruct-2507@cdbee75f17c01a7cc42f958dc650907174af0554:sha256=aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4:no-special-tokens",
+          "snippet_policy": {
+            "max_snippet_lines": 80,
+            "header": true,
+            "overlap": "skip_if_overlaps_different_group"
+          },
+          "metrics": {
+            "gold_file_in_context": 0.3333333333333333,
+            "gold_function_in_context": 0.3333333333333333,
+            "all_gold_files_in_context": 0,
+            "all_gold_functions_in_context": 0,
+            "total_tokens": 6953,
+            "tokens_to_first_gold_file": 1536,
+            "tokens_to_first_gold_function": 3842,
+            "items_packed": 55,
+            "skipped": {
+              "token_budget": 0,
+              "overlap": 39
+            },
+            "truncated": false
+          }
+        },
+        "excluded_count": 0,
+        "unmapped": [],
+        "excluded_reasons": {}
+      },
+      "metrics": {
+        "file_gold_count": 3,
+        "file_mrr": 0.14285714285714285,
+        "file_recall@1": 0.0,
+        "file_all_gold@1": 0,
+        "file_recall@3": 0.0,
+        "file_all_gold@3": 0,
+        "file_recall@5": 0.0,
+        "file_all_gold@5": 0,
+        "file_recall@10": 0.3333333333333333,
+        "file_all_gold@10": 0,
+        "file_recall@20": 0.3333333333333333,
+        "file_all_gold@20": 0,
+        "function_gold_count": 6,
+        "function_mrr": 0.022727272727272728,
+        "function_recall@1": 0.0,
+        "function_all_gold@1": 0,
+        "function_recall@3": 0.0,
+        "function_all_gold@3": 0,
+        "function_recall@5": 0.0,
+        "function_all_gold@5": 0,
+        "function_recall@10": 0.0,
+        "function_all_gold@10": 0,
+        "function_recall@20": 0.0,
+        "function_all_gold@20": 0,
+        "file_reach": 0.3333333333333333,
+        "function_reach": 0.3333333333333333,
+        "rank_items": 94,
+        "packed_gold_file_in_context": 0.3333333333333333,
+        "packed_gold_function_in_context": 0.3333333333333333,
+        "packed_all_gold_files_in_context": 0,
+        "packed_all_gold_functions_in_context": 0,
+        "context_tokens": 6953,
+        "packed_tokens_to_first_gold_file": 1536,
+        "packed_tokens_to_first_gold_function": 3842,
+        "packed_items_packed": 55,
+        "packed_skipped_token_budget": 0,
+        "packed_skipped_overlap": 39,
+        "packed_truncated": 0,
+        "unmapped_count": 0,
+        "excluded_count": 0,
+        "anchor_count": 50,
+        "no_anchors": 0,
+        "candidates_in": 94,
+        "retrieve_seconds": 3.5123521000004985,
+        "mapping_coverage": 1.0,
+        "file_retrievability_coverage": 1.0
+      }
+    },
+    "graph_f2p": {
+      "rank_hash": "sha256:02c7a7102633332d8c3e284c3094bc3ace39b2410a226ca310576ad448d85453",
+      "ranking_total_count": 93,
+      "ranked": [
+        {
+          "rank": 1,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/table.py:lib.matplotlib.table.Table.scale",
+          "path": "lib/matplotlib/table.py",
+          "kind": "method",
+          "symbol": "lib.matplotlib.table.Table.scale",
+          "function_id": "lib/matplotlib/table.py::lib.matplotlib.table.Table.scale",
+          "score": 0.4814516129032259,
+          "lines": [
+            547,
+            551
+          ],
+          "snippet_sha256": "sha256:c6870e6d70c66c2b76021332c496f1f3e5fe8dbec09479468fb257616bfbfcec"
+        },
+        {
+          "rank": 2,
+          "item_id": "vgar:matplotlib__matplotlib:python:function:lib/matplotlib/pyplot.py:lib.matplotlib.pyplot.yscale.setter",
+          "path": "lib/matplotlib/pyplot.py",
+          "kind": "function",
+          "symbol": "lib.matplotlib.pyplot.yscale",
+          "function_id": "lib/matplotlib/pyplot.py::lib.matplotlib.pyplot.yscale",
+          "score": 0.47652173913043483,
+          "lines": [
+            3087,
+            3088
+          ],
+          "snippet_sha256": "sha256:71481937f26e1b7b82c918b56f20b1d5b99152ce51d8c3b05aa517c83bbcce47"
+        },
+        {
+          "rank": 3,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/widgets.py:lib.matplotlib.widgets.ToolHandles.x",
+          "path": "lib/matplotlib/widgets.py",
+          "kind": "method",
+          "symbol": "lib.matplotlib.widgets.ToolHandles.x",
+          "function_id": "lib/matplotlib/widgets.py::lib.matplotlib.widgets.ToolHandles.x",
+          "score": 0.4742553191489362,
+          "lines": [
+            1941,
+            1942
+          ],
+          "snippet_sha256": "sha256:3c12e66b23723dff521f001b858381a4da90c8fae962ec33346da2dbc576d354"
+        },
+        {
+          "rank": 4,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/widgets.py:lib.matplotlib.widgets.ToolHandles.y",
+          "path": "lib/matplotlib/widgets.py",
+          "kind": "method",
+          "symbol": "lib.matplotlib.widgets.ToolHandles.y",
+          "function_id": "lib/matplotlib/widgets.py::lib.matplotlib.widgets.ToolHandles.y",
+          "score": 0.4742553191489362,
+          "lines": [
+            1945,
+            1946
+          ],
+          "snippet_sha256": "sha256:af9444a77593c924820b835e042b8ab9e4864618d1583fd435b05fa49c62c80e"
+        },
+        {
+          "rank": 5,
+          "item_id": "vgar:matplotlib__matplotlib:python:function:tools/github_stats.py:tools.github_stats.report",
+          "path": "tools/github_stats.py",
+          "kind": "function",
+          "symbol": "tools.github_stats.report",
+          "function_id": "tools/github_stats.py::tools.github_stats.report",
+          "score": 0.47208333333333335,
+          "lines": [
+            94,
+            103
+          ],
+          "snippet_sha256": "sha256:f295273f69f2fa95af5ab3e77d2f1902cc5f8d81698c5b9a693dcb9f651cb6d8"
+        },
+        {
+          "rank": 6,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/scale.py:lib.matplotlib.scale.InvertedLogTransform.inverted",
+          "path": "lib/matplotlib/scale.py",
+          "kind": "method",
+          "symbol": "lib.matplotlib.scale.InvertedLogTransform.inverted",
+          "function_id": "lib/matplotlib/scale.py::lib.matplotlib.scale.InvertedLogTransform.inverted",
+          "score": 0.45869565217391306,
+          "lines": [
+            336,
+            337
+          ],
+          "snippet_sha256": "sha256:b23fdea37c822bc462003934e592559e7135ff5cf3cb9942b35bccae45476d08"
+        },
+        {
+          "rank": 7,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/scale.py:lib.matplotlib.scale.LogTransform.inverted",
+          "path": "lib/matplotlib/scale.py",
+          "kind": "method",
+          "symbol": "lib.matplotlib.scale.LogTransform.inverted",
+          "function_id": "lib/matplotlib/scale.py::lib.matplotlib.scale.LogTransform.inverted",
+          "score": 0.45869565217391306,
+          "lines": [
+            316,
+            317
+          ],
+          "snippet_sha256": "sha256:e703084cefff8d9a0e03f2ddb6670446b5ffb60dc5f29c9b1188f127fc21afa8"
+        },
+        {
+          "rank": 8,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/scale.py:lib.matplotlib.scale.InvertedNaturalLogTransform.inverted",
+          "path": "lib/matplotlib/scale.py",
+          "kind": "method",
+          "symbol": "lib.matplotlib.scale.InvertedNaturalLogTransform.inverted",
+          "function_id": "lib/matplotlib/scale.py::lib.matplotlib.scale.InvertedNaturalLogTransform.inverted",
+          "score": 0.4586021505376344,
+          "lines": [
+            275,
+            276
+          ],
+          "snippet_sha256": "sha256:3639a0a8ded76ccc68b537f6f9907ba1f1e773058104fc723b7d19363723a0e8"
+        },
+        {
+          "rank": 9,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/scale.py:lib.matplotlib.scale.InvertedSymmetricalLogTransform.inverted",
+          "path": "lib/matplotlib/scale.py",
+          "kind": "method",
+          "symbol": "lib.matplotlib.scale.InvertedSymmetricalLogTransform.inverted",
+          "function_id": "lib/matplotlib/scale.py::lib.matplotlib.scale.InvertedSymmetricalLogTransform.inverted",
+          "score": 0.4586021505376344,
+          "lines": [
+            528,
+            530
+          ],
+          "snippet_sha256": "sha256:2b747ab377bc31fc939ca846142913d359d1fca2d80258f9c6ad3d9587f14d0b"
+        },
+        {
+          "rank": 10,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/scale.py:lib.matplotlib.scale.NaturalLogTransform.inverted",
+          "path": "lib/matplotlib/scale.py",
+          "kind": "method",
+          "symbol": "lib.matplotlib.scale.NaturalLogTransform.inverted",
+          "function_id": "lib/matplotlib/scale.py::lib.matplotlib.scale.NaturalLogTransform.inverted",
+          "score": 0.4586021505376344,
+          "lines": [
+            267,
+            268
+          ],
+          "snippet_sha256": "sha256:97884a82c8033990998b648858fad1da61ee2e76407967971b805024455cbf69"
+        },
+        {
+          "rank": 11,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/scale.py:lib.matplotlib.scale.SymmetricalLogTransform.inverted",
+          "path": "lib/matplotlib/scale.py",
+          "kind": "method",
+          "symbol": "lib.matplotlib.scale.SymmetricalLogTransform.inverted",
+          "function_id": "lib/matplotlib/scale.py::lib.matplotlib.scale.SymmetricalLogTransform.inverted",
+          "score": 0.4586021505376344,
+          "lines": [
+            498,
+            500
+          ],
+          "snippet_sha256": "sha256:ad69b0b163d3e4a932341d4d3d13dcfc21450c9850fc1ef656871dff5a2dc6f6"
+        },
+        {
+          "rank": 12,
+          "item_id": "vgar:matplotlib__matplotlib:python:function:lib/matplotlib/pyplot.py:lib.matplotlib.pyplot.axis.setter",
+          "path": "lib/matplotlib/pyplot.py",
+          "kind": "function",
+          "symbol": "lib.matplotlib.pyplot.axis",
+          "function_id": "lib/matplotlib/pyplot.py::lib.matplotlib.pyplot.axis",
+          "score": 0.4565217391304348,
+          "lines": [
+            2417,
+            2418
+          ],
+          "snippet_sha256": "sha256:e74bedf9d5e7c28839bcbf27de4697e80a7e871cfcff544d4e1f0990a9f9b50f"
+        },
+        {
+          "rank": 13,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/scale.py:lib.matplotlib.scale.InvertedLog10Transform.inverted",
+          "path": "lib/matplotlib/scale.py",
+          "kind": "method",
+          "symbol": "lib.matplotlib.scale.InvertedLog10Transform.inverted",
+          "function_id": "lib/matplotlib/scale.py::lib.matplotlib.scale.InvertedLog10Transform.inverted",
+          "score": 0.4565217391304348,
+          "lines": [
+            243,
+            244
+          ],
+          "snippet_sha256": "sha256:c98d4f9fe0f47c804b6fbaea827fe83e748852b7d75602dad3000551017dc1fd"
+        },
+        {
+          "rank": 14,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/scale.py:lib.matplotlib.scale.InvertedLog2Transform.inverted",
+          "path": "lib/matplotlib/scale.py",
+          "kind": "method",
+          "symbol": "lib.matplotlib.scale.InvertedLog2Transform.inverted",
+          "function_id": "lib/matplotlib/scale.py::lib.matplotlib.scale.InvertedLog2Transform.inverted",
+          "score": 0.4565217391304348,
+          "lines": [
+            259,
+            260
+          ],
+          "snippet_sha256": "sha256:ab2015b4ae7536319453dfdfa7e187e6d674c399bcd9917dbbdac8d245505e29"
+        },
+        {
+          "rank": 15,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/scale.py:lib.matplotlib.scale.Log10Transform.inverted",
+          "path": "lib/matplotlib/scale.py",
+          "kind": "method",
+          "symbol": "lib.matplotlib.scale.Log10Transform.inverted",
+          "function_id": "lib/matplotlib/scale.py::lib.matplotlib.scale.Log10Transform.inverted",
+          "score": 0.4565217391304348,
+          "lines": [
+            235,
+            236
+          ],
+          "snippet_sha256": "sha256:89419fe57c1fe4db0f1e582ce9c6e98d2699e5521d72cc34d6a4bd14283c3e70"
+        },
+        {
+          "rank": 16,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/scale.py:lib.matplotlib.scale.Log2Transform.inverted",
+          "path": "lib/matplotlib/scale.py",
+          "kind": "method",
+          "symbol": "lib.matplotlib.scale.Log2Transform.inverted",
+          "function_id": "lib/matplotlib/scale.py::lib.matplotlib.scale.Log2Transform.inverted",
+          "score": 0.4565217391304348,
+          "lines": [
+            251,
+            252
+          ],
+          "snippet_sha256": "sha256:541703538e00552a0fcb20b4fa7c0fba77a2371a030ee77a26d65580da3d4aea"
+        },
+        {
+          "rank": 17,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/scale.py:lib.matplotlib.scale.FuncTransform.inverted",
+          "path": "lib/matplotlib/scale.py",
+          "kind": "method",
+          "symbol": "lib.matplotlib.scale.FuncTransform.inverted",
+          "function_id": "lib/matplotlib/scale.py::lib.matplotlib.scale.FuncTransform.inverted",
+          "score": 0.4564516129032259,
+          "lines": [
+            146,
+            147
+          ],
+          "snippet_sha256": "sha256:3c1d28ed0c0fab2bd0e0472591863094a8775b1546a5abeb5e5c15c42fc9ee65"
+        },
+        {
+          "rank": 18,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/scale.py:lib.matplotlib.scale.LogisticTransform.inverted",
+          "path": "lib/matplotlib/scale.py",
+          "kind": "method",
+          "symbol": "lib.matplotlib.scale.LogisticTransform.inverted",
+          "function_id": "lib/matplotlib/scale.py::lib.matplotlib.scale.LogisticTransform.inverted",
+          "score": 0.4564516129032259,
+          "lines": [
+            658,
+            659
+          ],
+          "snippet_sha256": "sha256:5c0e8c7e3225e64add6b15adf8835b2f2fe1855b8a269e9a4c6896dceb9cb613"
+        },
+        {
+          "rank": 19,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/scale.py:lib.matplotlib.scale.LogitTransform.inverted",
+          "path": "lib/matplotlib/scale.py",
+          "kind": "method",
+          "symbol": "lib.matplotlib.scale.LogitTransform.inverted",
+          "function_id": "lib/matplotlib/scale.py::lib.matplotlib.scale.LogitTransform.inverted",
+          "score": 0.4564516129032259,
+          "lines": [
+            636,
+            637
+          ],
+          "snippet_sha256": "sha256:598dc1806e7d3d7037e507ce6e733785227d04d7f8be72879e5dd1d349f9b023"
+        },
+        {
+          "rank": 20,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/transforms.py:lib.matplotlib.transforms.Transform.inverted",
+          "path": "lib/matplotlib/transforms.py",
+          "kind": "method",
+          "symbol": "lib.matplotlib.transforms.Transform.inverted",
+          "function_id": "lib/matplotlib/transforms.py::lib.matplotlib.transforms.Transform.inverted",
+          "score": 0.45430107526881724,
+          "lines": [
+            1574,
+            1584
+          ],
+          "snippet_sha256": "sha256:f7182934000bf571bf4f85c183852c126eac22d2f30395c97f3134e6f1a16f82"
+        },
+        {
+          "rank": 21,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/axes/_base.py:lib.matplotlib.axes._base._AxesBase.axis",
+          "path": "lib/matplotlib/axes/_base.py",
+          "kind": "method",
+          "symbol": "lib.matplotlib.axes._base._AxesBase.axis",
+          "function_id": "lib/matplotlib/axes/_base.py::lib.matplotlib.axes._base._AxesBase.axis",
+          "score": 0.4542105263157895,
+          "lines": [
+            1597,
+            1739
+          ],
+          "snippet_sha256": "sha256:5e9c6f6b6204361825d7e52d924898d9624b056f882d6568e0a6a98bf4992d0d"
+        },
+        {
+          "rank": 22,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/transforms.py:lib.matplotlib.transforms.Affine2DBase.inverted",
+          "path": "lib/matplotlib/transforms.py",
+          "kind": "method",
+          "symbol": "lib.matplotlib.transforms.Affine2DBase.inverted",
+          "function_id": "lib/matplotlib/transforms.py::lib.matplotlib.transforms.Affine2DBase.inverted",
+          "score": 0.4542105263157895,
+          "lines": [
+            1802,
+            1811
+          ],
+          "snippet_sha256": "sha256:2fa40fa39cde17707f3892bf6d152eb705b0e10c3dae0252a41b6bce593130ff"
+        },
+        {
+          "rank": 23,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:examples/scales/custom_scale.py:examples.scales.custom_scale.MercatorLatitudeScale.InvertedMercatorLatitudeTransform.inverted",
+          "path": "examples/scales/custom_scale.py",
+          "kind": "method",
+          "symbol": "examples.scales.custom_scale.MercatorLatitudeScale.InvertedMercatorLatitudeTransform.inverted",
+          "function_id": "examples/scales/custom_scale.py::examples.scales.custom_scale.MercatorLatitudeScale.InvertedMercatorLatitudeTransform.inverted",
+          "score": 0.4541666666666667,
+          "lines": [
+            165,
+            166
+          ],
+          "snippet_sha256": "sha256:3088fce220230f02c689689f17bf72433ac486ef2afba2e6a9d733e33095746e"
+        },
+        {
+          "rank": 24,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:examples/scales/custom_scale.py:examples.scales.custom_scale.MercatorLatitudeScale.MercatorLatitudeTransform.inverted",
+          "path": "examples/scales/custom_scale.py",
+          "kind": "method",
+          "symbol": "examples.scales.custom_scale.MercatorLatitudeScale.MercatorLatitudeTransform.inverted",
+          "function_id": "examples/scales/custom_scale.py::examples.scales.custom_scale.MercatorLatitudeScale.MercatorLatitudeTransform.inverted",
+          "score": 0.4541666666666667,
+          "lines": [
+            144,
+            150
+          ],
+          "snippet_sha256": "sha256:a83d7118ffa1b2dcd5fff8bbe8426b5f86651f3c7a8c223dc056d6dd5a971a34"
+        },
+        {
+          "rank": 25,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/projections/polar.py:lib.matplotlib.projections.polar.InvertedPolarTransform.inverted",
+          "path": "lib/matplotlib/projections/polar.py",
+          "kind": "method",
+          "symbol": "lib.matplotlib.projections.polar.InvertedPolarTransform.inverted",
+          "function_id": "lib/matplotlib/projections/polar.py::lib.matplotlib.projections.polar.InvertedPolarTransform.inverted",
+          "score": 0.4541666666666667,
+          "lines": [
+            157,
+            160
+          ],
+          "snippet_sha256": "sha256:838f9611a7c3af250b58f2b3691464f326b3b3c4aef9e04a6e51332ef179586b"
+        },
+        {
+          "rank": 26,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/projections/polar.py:lib.matplotlib.projections.polar.PolarTransform.inverted",
+          "path": "lib/matplotlib/projections/polar.py",
+          "kind": "method",
+          "symbol": "lib.matplotlib.projections.polar.PolarTransform.inverted",
+          "function_id": "lib/matplotlib/projections/polar.py::lib.matplotlib.projections.polar.PolarTransform.inverted",
+          "score": 0.4541666666666667,
+          "lines": [
+            66,
+            69
+          ],
+          "snippet_sha256": "sha256:6485dfa113bc4bddc67d6d232dbbcdf7373ac0c0696d5e8d44b0b4165257dd9b"
+        },
+        {
+          "rank": 27,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/transforms.py:lib.matplotlib.transforms.Affine2D.scale",
+          "path": "lib/matplotlib/transforms.py",
+          "kind": "method",
+          "symbol": "lib.matplotlib.transforms.Affine2D.scale",
+          "function_id": "lib/matplotlib/transforms.py::lib.matplotlib.transforms.Affine2D.scale",
+          "score": 0.4541666666666667,
+          "lines": [
+            1976,
+            1993
+          ],
+          "snippet_sha256": "sha256:d1a7455552df0339fa436e3c335c9c9f250b96dad4a477dfd446886283e105df"
+        },
+        {
+          "rank": 28,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/transforms.py:lib.matplotlib.transforms.IdentityTransform.inverted",
+          "path": "lib/matplotlib/transforms.py",
+          "kind": "method",
+          "symbol": "lib.matplotlib.transforms.IdentityTransform.inverted",
+          "function_id": "lib/matplotlib/transforms.py::lib.matplotlib.transforms.IdentityTransform.inverted",
+          "score": 0.4541666666666667,
+          "lines": [
+            2075,
+            2077
+          ],
+          "snippet_sha256": "sha256:e6db42ee602e2454257f253ac9603de120db9c55aec70bd3bafde9150c76080c"
+        },
+        {
+          "rank": 29,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/transforms.py:lib.matplotlib.transforms.BlendedGenericTransform.inverted",
+          "path": "lib/matplotlib/transforms.py",
+          "kind": "method",
+          "symbol": "lib.matplotlib.transforms.BlendedGenericTransform.inverted",
+          "function_id": "lib/matplotlib/transforms.py::lib.matplotlib.transforms.BlendedGenericTransform.inverted",
+          "score": 0.45412371134020624,
+          "lines": [
+            2177,
+            2179
+          ],
+          "snippet_sha256": "sha256:3e422a64940a4ca216364a832f3d2120dd9eaf46fde9cb3de29fef0171076361"
+        },
+        {
+          "rank": 30,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/transforms.py:lib.matplotlib.transforms.CompositeGenericTransform.inverted",
+          "path": "lib/matplotlib/transforms.py",
+          "kind": "method",
+          "symbol": "lib.matplotlib.transforms.CompositeGenericTransform.inverted",
+          "function_id": "lib/matplotlib/transforms.py::lib.matplotlib.transforms.CompositeGenericTransform.inverted",
+          "score": 0.45412371134020624,
+          "lines": [
+            2403,
+            2405
+          ],
+          "snippet_sha256": "sha256:c759c4bd18f52b6b7b539a1eb5aab6a96eaae279644712fba5dc8c5f713be1e3"
+        },
+        {
+          "rank": 31,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/projections/geo.py:lib.matplotlib.projections.geo.AitoffAxes.AitoffTransform.inverted",
+          "path": "lib/matplotlib/projections/geo.py",
+          "kind": "method",
+          "symbol": "lib.matplotlib.projections.geo.AitoffAxes.AitoffTransform.inverted",
+          "function_id": "lib/matplotlib/projections/geo.py::lib.matplotlib.projections.geo.AitoffAxes.AitoffTransform.inverted",
+          "score": 0.45408163265306123,
+          "lines": [
+            286,
+            288
+          ],
+          "snippet_sha256": "sha256:76592357fbb396f976e1806cd6919d4f03c9658b5e86a1702756940e6718957a"
+        },
+        {
+          "rank": 32,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/projections/geo.py:lib.matplotlib.projections.geo.AitoffAxes.InvertedAitoffTransform.inverted",
+          "path": "lib/matplotlib/projections/geo.py",
+          "kind": "method",
+          "symbol": "lib.matplotlib.projections.geo.AitoffAxes.InvertedAitoffTransform.inverted",
+          "function_id": "lib/matplotlib/projections/geo.py::lib.matplotlib.projections.geo.AitoffAxes.InvertedAitoffTransform.inverted",
+          "score": 0.45408163265306123,
+          "lines": [
+            297,
+            299
+          ],
+          "snippet_sha256": "sha256:b4a5b7c08ea888af5096d9e948a9c8a539c04a6c7514b06edb72906bd030e9a6"
+        },
+        {
+          "rank": 33,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/projections/geo.py:lib.matplotlib.projections.geo.HammerAxes.HammerTransform.inverted",
+          "path": "lib/matplotlib/projections/geo.py",
+          "kind": "method",
+          "symbol": "lib.matplotlib.projections.geo.HammerAxes.HammerTransform.inverted",
+          "function_id": "lib/matplotlib/projections/geo.py::lib.matplotlib.projections.geo.HammerAxes.HammerTransform.inverted",
+          "score": 0.45408163265306123,
+          "lines": [
+            332,
+            334
+          ],
+          "snippet_sha256": "sha256:3d8504f645fc27ea0316d43200160337ff6e32f9086f01e805ccb1d670d19415"
+        },
+        {
+          "rank": 34,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/projections/geo.py:lib.matplotlib.projections.geo.HammerAxes.InvertedHammerTransform.inverted",
+          "path": "lib/matplotlib/projections/geo.py",
+          "kind": "method",
+          "symbol": "lib.matplotlib.projections.geo.HammerAxes.InvertedHammerTransform.inverted",
+          "function_id": "lib/matplotlib/projections/geo.py::lib.matplotlib.projections.geo.HammerAxes.InvertedHammerTransform.inverted",
+          "score": 0.45408163265306123,
+          "lines": [
+            346,
+            348
+          ],
+          "snippet_sha256": "sha256:ec0e657eaabacd6682c5b3a62279ed2b6a675a236f85ee62b83acc9f8c4ad3e1"
+        },
+        {
+          "rank": 35,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/projections/geo.py:lib.matplotlib.projections.geo.LambertAxes.InvertedLambertTransform.inverted",
+          "path": "lib/matplotlib/projections/geo.py",
+          "kind": "method",
+          "symbol": "lib.matplotlib.projections.geo.LambertAxes.InvertedLambertTransform.inverted",
+          "function_id": "lib/matplotlib/projections/geo.py::lib.matplotlib.projections.geo.LambertAxes.InvertedLambertTransform.inverted",
+          "score": 0.45408163265306123,
+          "lines": [
+            502,
+            507
+          ],
+          "snippet_sha256": "sha256:3a0af7abde376b6e5e5ccc9d05a600ccb53b278fa3d37743e31a01faca1bbf1b"
+        },
+        {
+          "rank": 36,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/projections/geo.py:lib.matplotlib.projections.geo.LambertAxes.LambertTransform.inverted",
+          "path": "lib/matplotlib/projections/geo.py",
+          "kind": "method",
+          "symbol": "lib.matplotlib.projections.geo.LambertAxes.LambertTransform.inverted",
+          "function_id": "lib/matplotlib/projections/geo.py::lib.matplotlib.projections.geo.LambertAxes.LambertTransform.inverted",
+          "score": 0.45408163265306123,
+          "lines": [
+            470,
+            475
+          ],
+          "snippet_sha256": "sha256:49e1a5e7d31a11d8086027e3485b4a7102125394097ed478538f0d2c142232be"
+        },
+        {
+          "rank": 37,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/projections/geo.py:lib.matplotlib.projections.geo.MollweideAxes.InvertedMollweideTransform.inverted",
+          "path": "lib/matplotlib/projections/geo.py",
+          "kind": "method",
+          "symbol": "lib.matplotlib.projections.geo.MollweideAxes.InvertedMollweideTransform.inverted",
+          "function_id": "lib/matplotlib/projections/geo.py::lib.matplotlib.projections.geo.MollweideAxes.InvertedMollweideTransform.inverted",
+          "score": 0.45408163265306123,
+          "lines": [
+            420,
+            422
+          ],
+          "snippet_sha256": "sha256:6608dd96cae78ca8088dafde7894918070de2cfcc782d7751b9d946e83446e85"
+        },
+        {
+          "rank": 38,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/projections/geo.py:lib.matplotlib.projections.geo.MollweideAxes.MollweideTransform.inverted",
+          "path": "lib/matplotlib/projections/geo.py",
+          "kind": "method",
+          "symbol": "lib.matplotlib.projections.geo.MollweideAxes.MollweideTransform.inverted",
+          "function_id": "lib/matplotlib/projections/geo.py::lib.matplotlib.projections.geo.MollweideAxes.MollweideTransform.inverted",
+          "score": 0.45408163265306123,
+          "lines": [
+            401,
+            403
+          ],
+          "snippet_sha256": "sha256:b9d3782810e1c093ec0d18ea0c15107e09284b4e114ed38f4dc619b1c62e6500"
+        },
+        {
+          "rank": 39,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/mpl_toolkits/axes_grid1/mpl_axes.py:lib.mpl_toolkits.axes_grid1.mpl_axes.Axes.axis",
+          "path": "lib/mpl_toolkits/axes_grid1/mpl_axes.py",
+          "kind": "method",
+          "symbol": "lib.mpl_toolkits.axes_grid1.mpl_axes.Axes.axis",
+          "function_id": "lib/mpl_toolkits/axes_grid1/mpl_axes.py::lib.mpl_toolkits.axes_grid1.mpl_axes.Axes.axis",
+          "score": 0.4521052631578948,
+          "lines": [
+            54,
+            55
+          ],
+          "snippet_sha256": "sha256:4cb5b642a2f0c7acc62ecac347348de3a10cfd3835851324309c5525a345b4cc"
+        },
+        {
+          "rank": 40,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/mpl_toolkits/axisartist/axislines.py:lib.mpl_toolkits.axisartist.axislines.Axes.axis",
+          "path": "lib/mpl_toolkits/axisartist/axislines.py",
+          "kind": "method",
+          "symbol": "lib.mpl_toolkits.axisartist.axislines.Axes.axis",
+          "function_id": "lib/mpl_toolkits/axisartist/axislines.py::lib.mpl_toolkits.axisartist.axislines.Axes.axis",
+          "score": 0.4520833333333334,
+          "lines": [
+            558,
+            559
+          ],
+          "snippet_sha256": "sha256:4cb5b642a2f0c7acc62ecac347348de3a10cfd3835851324309c5525a345b4cc"
+        },
+        {
+          "rank": 41,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:examples/misc/custom_projection.py:examples.misc.custom_projection.HammerAxes.HammerTransform.inverted",
+          "path": "examples/misc/custom_projection.py",
+          "kind": "method",
+          "symbol": "examples.misc.custom_projection.HammerAxes.HammerTransform.inverted",
+          "function_id": "examples/misc/custom_projection.py::examples.misc.custom_projection.HammerAxes.HammerTransform.inverted",
+          "score": 0.45206185567010315,
+          "lines": [
+            415,
+            416
+          ],
+          "snippet_sha256": "sha256:189ead6ce73d895f36eb09d0e8a31c8a94afdaeae1900ff984f10abcfff6aec6"
+        },
+        {
+          "rank": 42,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:examples/misc/custom_projection.py:examples.misc.custom_projection.HammerAxes.InvertedHammerTransform.inverted",
+          "path": "examples/misc/custom_projection.py",
+          "kind": "method",
+          "symbol": "examples.misc.custom_projection.HammerAxes.InvertedHammerTransform.inverted",
+          "function_id": "examples/misc/custom_projection.py::examples.misc.custom_projection.HammerAxes.InvertedHammerTransform.inverted",
+          "score": 0.45206185567010315,
+          "lines": [
+            434,
+            435
+          ],
+          "snippet_sha256": "sha256:917653c40a04fd8f22c3782e55d3a54d204dd8e93ae972da5ecdc59ca90a139a"
+        },
+        {
+          "rank": 43,
+          "item_id": "vgar:matplotlib__matplotlib:python:class:setupext.py:setupext.Matplotlib",
+          "path": "setupext.py",
+          "kind": "class",
+          "symbol": "setupext.Matplotlib",
+          "function_id": null,
+          "score": 0.422247191011236,
+          "lines": [
+            528,
+            560
+          ],
+          "snippet_sha256": "sha256:6b7a3c33c991468d61e6c0342a6fe62ef5867f86acf8826f73b0752d3dc5369c"
+        },
+        {
+          "rank": 44,
+          "item_id": "vgar:matplotlib__matplotlib:python:class:setupext.py:setupext.Python",
+          "path": "setupext.py",
+          "kind": "class",
+          "symbol": "setupext.Python",
+          "function_id": null,
+          "score": 0.422247191011236,
+          "lines": [
+            515,
+            519
+          ],
+          "snippet_sha256": "sha256:ec556c3264f7582eb3a16f4ad7b3ca1ecff369a1ebd5625662c923cb1a941c7c"
+        },
+        {
+          "rank": 45,
+          "item_id": "vgar:matplotlib__matplotlib:python:function:lib/matplotlib/pyplot.py:lib.matplotlib.pyplot.gca",
+          "path": "lib/matplotlib/pyplot.py",
+          "kind": "function",
+          "symbol": "lib.matplotlib.pyplot.gca",
+          "function_id": "lib/matplotlib/pyplot.py::lib.matplotlib.pyplot.gca",
+          "score": 0.37377964426877475,
+          "lines": [
+            908,
+            926
+          ],
+          "snippet_sha256": "sha256:ebeab657f452eedbbb989acab2f727a89f93aac9e87d41467e16e8d42b43ed3e"
+        },
+        {
+          "rank": 46,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/axes/_base.py:lib.matplotlib.axes._base._AxesBase.set_ylim",
+          "path": "lib/matplotlib/axes/_base.py",
+          "kind": "method",
+          "symbol": "lib.matplotlib.axes._base._AxesBase.set_ylim",
+          "function_id": "lib/matplotlib/axes/_base.py::lib.matplotlib.axes._base._AxesBase.set_ylim",
+          "score": 0.34873949579831937,
+          "lines": [
+            3540,
+            3664
+          ],
+          "snippet_sha256": "sha256:9a56d72aac25ed7f18ce317157686dd7663b5a87a68ea689efb94cb6d753d686"
+        },
+        {
+          "rank": 47,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/axes/_base.py:lib.matplotlib.axes._base._AxesBase.set_xlim",
+          "path": "lib/matplotlib/axes/_base.py",
+          "kind": "method",
+          "symbol": "lib.matplotlib.axes._base._AxesBase.set_xlim",
+          "function_id": "lib/matplotlib/axes/_base.py::lib.matplotlib.axes._base._AxesBase.set_xlim",
+          "score": 0.346740638002774,
+          "lines": [
+            3161,
+            3284
+          ],
+          "snippet_sha256": "sha256:df0325f93af2794270607b96d30ef6ff93864350b70f9bad220ac5ad3d744fcd"
+        },
+        {
+          "rank": 48,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/axes/_base.py:lib.matplotlib.axes._base._AxesBase.get_ylim",
+          "path": "lib/matplotlib/axes/_base.py",
+          "kind": "method",
+          "symbol": "lib.matplotlib.axes._base._AxesBase.get_ylim",
+          "function_id": "lib/matplotlib/axes/_base.py::lib.matplotlib.axes._base._AxesBase.get_ylim",
+          "score": 0.3459219858156029,
+          "lines": [
+            3517,
+            3538
+          ],
+          "snippet_sha256": "sha256:602bf3645e12e35abb94c9d7eca4b43370c45eb48d7032b00ffba49006582639"
+        },
+        {
+          "rank": 49,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/axes/_base.py:lib.matplotlib.axes._base._AxesBase.autoscale_view",
+          "path": "lib/matplotlib/axes/_base.py",
+          "kind": "method",
+          "symbol": "lib.matplotlib.axes._base._AxesBase.autoscale_view",
+          "function_id": "lib/matplotlib/axes/_base.py::lib.matplotlib.axes._base._AxesBase.autoscale_view",
+          "score": 0.34575000000000006,
+          "lines": [
+            2388,
+            2498
+          ],
+          "snippet_sha256": "sha256:97b8bae5a032fe4fea843b059e9dd1c2f59659dd1bc48f80565572f1d6d4f5ee"
+        },
+        {
+          "rank": 50,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/axes/_base.py:lib.matplotlib.axes._base._AxesBase.get_xlim",
+          "path": "lib/matplotlib/axes/_base.py",
+          "kind": "method",
+          "symbol": "lib.matplotlib.axes._base._AxesBase.get_xlim",
+          "function_id": "lib/matplotlib/axes/_base.py::lib.matplotlib.axes._base._AxesBase.get_xlim",
+          "score": 0.34377192982456145,
+          "lines": [
+            3120,
+            3141
+          ],
+          "snippet_sha256": "sha256:f1150c20412de2e798a1ce3b35c692384cb7d86e5ac335e446feba2d40d29b13"
+        },
+        {
+          "rank": 51,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/axes/_base.py:lib.matplotlib.axes._base._AxesBase.set_axis_on",
+          "path": "lib/matplotlib/axes/_base.py",
+          "kind": "method",
+          "symbol": "lib.matplotlib.axes._base._AxesBase.set_axis_on",
+          "function_id": "lib/matplotlib/axes/_base.py::lib.matplotlib.axes._base._AxesBase.set_axis_on",
+          "score": 0.33971631205673763,
+          "lines": [
+            3027,
+            3034
+          ],
+          "snippet_sha256": "sha256:4d221c0b3f671f265f304c5fa71a6dd849b652ff1d81c3bd7539b2d36c11add6"
+        },
+        {
+          "rank": 52,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/axes/_base.py:lib.matplotlib.axes._base._AxesBase.set_axis_off",
+          "path": "lib/matplotlib/axes/_base.py",
+          "kind": "method",
+          "symbol": "lib.matplotlib.axes._base._AxesBase.set_axis_off",
+          "function_id": "lib/matplotlib/axes/_base.py::lib.matplotlib.axes._base._AxesBase.set_axis_off",
+          "score": 0.33138297872340433,
+          "lines": [
+            3018,
+            3025
+          ],
+          "snippet_sha256": "sha256:6b2bf4a871ef4162e5dcea794e30eab9e9e2ccb9fd7ae67d017a30f56d9ce409"
+        },
+        {
+          "rank": 53,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/axes/_base.py:lib.matplotlib.axes._base._AxesBase.set_autoscale_on",
+          "path": "lib/matplotlib/axes/_base.py",
+          "kind": "method",
+          "symbol": "lib.matplotlib.axes._base._AxesBase.set_autoscale_on",
+          "function_id": "lib/matplotlib/axes/_base.py::lib.matplotlib.axes._base._AxesBase.set_autoscale_on",
+          "score": 0.3291666666666667,
+          "lines": [
+            2154,
+            2163
+          ],
+          "snippet_sha256": "sha256:c728b54a09e32fb65183a09f2f57b535515ce5644bc4d0c6d09e82e9f812cc89"
+        },
+        {
+          "rank": 54,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/axes/_base.py:lib.matplotlib.axes._base._AxesBase.set_aspect",
+          "path": "lib/matplotlib/axes/_base.py",
+          "kind": "method",
+          "symbol": "lib.matplotlib.axes._base._AxesBase.set_aspect",
+          "function_id": "lib/matplotlib/axes/_base.py::lib.matplotlib.axes._base._AxesBase.set_aspect",
+          "score": 0.32904040404040413,
+          "lines": [
+            1222,
+            1299
+          ],
+          "snippet_sha256": "sha256:3ba50b92c8aa35865b0dec67f1cd81f813dfe52c0e8089061afa6bd50f18af82"
+        },
+        {
+          "rank": 55,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:setupext.py:setupext.Matplotlib.check",
+          "path": "setupext.py",
+          "kind": "method",
+          "symbol": "setupext.Matplotlib.check",
+          "function_id": "setupext.py::setupext.Matplotlib.check",
+          "score": 0.3221739130434783,
+          "lines": [
+            531,
+            532
+          ],
+          "snippet_sha256": "sha256:a094bb588edeb292e525a5303b6ab14cc81d854ce9f4118d5b8297fe3ddbe259"
+        },
+        {
+          "rank": 56,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:setupext.py:setupext.Python.check",
+          "path": "setupext.py",
+          "kind": "method",
+          "symbol": "setupext.Python.check",
+          "function_id": "setupext.py::setupext.Python.check",
+          "score": 0.3221739130434783,
+          "lines": [
+            518,
+            519
+          ],
+          "snippet_sha256": "sha256:3f1e732071fdf15b4726c2f78569fa2190146e7a8bb17e15a7cc9876d939e416"
+        },
+        {
+          "rank": 57,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:setupext.py:setupext.Matplotlib.get_packages",
+          "path": "setupext.py",
+          "kind": "method",
+          "symbol": "setupext.Matplotlib.get_packages",
+          "function_id": "setupext.py::setupext.Matplotlib.get_packages",
+          "score": 0.3221505376344086,
+          "lines": [
+            534,
+            535
+          ],
+          "snippet_sha256": "sha256:2e87caa92b243ec7ed4ba9fd29e2a3b033fe304cdb0e84b8c56b42a1e59df414"
+        },
+        {
+          "rank": 58,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:setupext.py:setupext.Matplotlib.get_py_modules",
+          "path": "setupext.py",
+          "kind": "method",
+          "symbol": "setupext.Matplotlib.get_py_modules",
+          "function_id": "setupext.py::setupext.Matplotlib.get_py_modules",
+          "score": 0.3221505376344086,
+          "lines": [
+            540,
+            541
+          ],
+          "snippet_sha256": "sha256:4cb12147f53067f93d0dc472279446157a4bf94b92861e4e21c7e478be9804bd"
+        },
+        {
+          "rank": 59,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:setupext.py:setupext.Matplotlib.get_install_requires",
+          "path": "setupext.py",
+          "kind": "method",
+          "symbol": "setupext.Matplotlib.get_install_requires",
+          "function_id": "setupext.py::setupext.Matplotlib.get_install_requires",
+          "score": 0.3221276595744681,
+          "lines": [
+            554,
+            560
+          ],
+          "snippet_sha256": "sha256:224a2fbd456d003c1130763d11e7c615c868f7e777d14b91e4a12d6d37a4f5e2"
+        },
+        {
+          "rank": 60,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:setupext.py:setupext.Matplotlib.get_namespace_packages",
+          "path": "setupext.py",
+          "kind": "method",
+          "symbol": "setupext.Matplotlib.get_namespace_packages",
+          "function_id": "setupext.py::setupext.Matplotlib.get_namespace_packages",
+          "score": 0.3221276595744681,
+          "lines": [
+            537,
+            538
+          ],
+          "snippet_sha256": "sha256:f4ff616a55849c09c88b0db4a1c7327326069a3de2e61286ffef67bbad1a33ee"
+        },
+        {
+          "rank": 61,
+          "item_id": "vgar:matplotlib__matplotlib:python:method:setupext.py:setupext.Matplotlib.get_package_data",
+          "path": "setupext.py",
+          "kind": "method",
+          "symbol": "setupext.Matplotlib.get_package_data",
+          "function_id": "setupext.py::setupext.Matplotlib.get_package_data",
+          "score": 0.3221276595744681,
+          "lines": [
+            543,
+            552
+          ],
+          "snippet_sha256": "sha256:ccb8dc90ed0c51c4bbd55fabc8ed01d81ec70098afae72834f58f527e78e8e11"
+        },
+        {
+          "rank": 62,
+          "item_id": "vgar:matplotlib__matplotlib:python:module:lib/matplotlib/pyplot.py:lib.matplotlib.pyplot",
+          "path": "lib/matplotlib/pyplot.py",
+          "kind": "module",
+          "symbol": "lib.matplotlib.pyplot",
+          "function_id": null,
+          "score": 0.27449438202247195,
+          "lines": [
+            1,
+            3300
+          ],
+          "snippet_sha256": "sha256:b837475fe817996f8b5413141de289c95f2ffa3a32ded047e6f2556e80514ae8"
+        },
+        {
+          "rank": 63,
+          "item_id": "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/widgets.py:lib.matplotlib.widgets.ToolHandles",
+          "path": "lib/matplotlib/widgets.py",
+          "kind": "class",
+          "symbol": "lib.matplotlib.widgets.ToolHandles",
+          "function_id": null,
+          "score": 0.2721739130434783,
+          "lines": [
+            1915,
+            1971
+          ],
+          "snippet_sha256": "sha256:8c54270a0947e5b80a5e2016a396897d6d90464d43cd03834311d3a0fdf0ae4b"
+        },
+        {
+          "rank": 64,
+          "item_id": "vgar:matplotlib__matplotlib:python:module:setupext.py:setupext",
+          "path": "setupext.py",
+          "kind": "module",
+          "symbol": "setupext",
+          "function_id": null,
+          "score": 0.2700000000000001,
+          "lines": [
+            1,
+            1038
+          ],
+          "snippet_sha256": "sha256:2a367adaae1980c88c9e1bba61f46cdf9cffe20953ae40566063697a27a84639"
+        },
+        {
+          "rank": 65,
+          "item_id": "vgar:matplotlib__matplotlib:python:class:setupext.py:setupext.SetupPackage",
+          "path": "setupext.py",
+          "kind": "class",
+          "symbol": "setupext.SetupPackage",
+          "function_id": null,
+          "score": 0.2700000000000001,
+          "lines": [
+            303,
+            435
+          ],
+          "snippet_sha256": "sha256:b985452ec0646b3a337b673ecd46d81c38710e7921c8615229d1aa4a9578caf7"
+        },
+        {
+          "rank": 66,
+          "item_id": "vgar:matplotlib__matplotlib:python:module:tools/github_stats.py:tools.github_stats",
+          "path": "tools/github_stats.py",
+          "kind": "module",
+          "symbol": "tools.github_stats",
+          "function_id": null,
+          "score": 0.2700000000000001,
+          "lines": [
+            1,
+            243
+          ],
+          "snippet_sha256": "sha256:75fa0b9bdbc812aeec86bfcce116d0bc2b9d8dc4f6785ae33f336e06f0f935e0"
+        },
+        {
+          "rank": 67,
+          "item_id": "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/scale.py:lib.matplotlib.scale.InvertedLogTransform",
+          "path": "lib/matplotlib/scale.py",
+          "kind": "class",
+          "symbol": "lib.matplotlib.scale.InvertedLogTransform",
+          "function_id": null,
+          "score": 0.25888888888888895,
+          "lines": [
+            320,
+            337
+          ],
+          "snippet_sha256": "sha256:b94a19f96e6cefbedb078ab873bdaf9ddd37c07c1ebecbc2a90f39923b785d57"
+        },
+        {
+          "rank": 68,
+          "item_id": "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/scale.py:lib.matplotlib.scale.InvertedNaturalLogTransform",
+          "path": "lib/matplotlib/scale.py",
+          "kind": "class",
+          "symbol": "lib.matplotlib.scale.InvertedNaturalLogTransform",
+          "function_id": null,
+          "score": 0.2587912087912088,
+          "lines": [
+            272,
+            276
+          ],
+          "snippet_sha256": "sha256:41bdb35d9a3969d525ceacce1e693a94f5afdbaa2f43067a73373333ef87dee4"
+        },
+        {
+          "rank": 69,
+          "item_id": "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/scale.py:lib.matplotlib.scale.InvertedSymmetricalLogTransform",
+          "path": "lib/matplotlib/scale.py",
+          "kind": "class",
+          "symbol": "lib.matplotlib.scale.InvertedSymmetricalLogTransform",
+          "function_id": null,
+          "score": 0.2587912087912088,
+          "lines": [
+            503,
+            530
+          ],
+          "snippet_sha256": "sha256:1a62396a8345a6302b025a887fda033cc16483ae225b635edbc23c7f93419cbd"
+        },
+        {
+          "rank": 70,
+          "item_id": "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/scale.py:lib.matplotlib.scale.InvertedLog10Transform",
+          "path": "lib/matplotlib/scale.py",
+          "kind": "class",
+          "symbol": "lib.matplotlib.scale.InvertedLog10Transform",
+          "function_id": null,
+          "score": 0.2566666666666667,
+          "lines": [
+            240,
+            244
+          ],
+          "snippet_sha256": "sha256:ecbccbca45c991ca65a64df77f0c2d7986d4189a6d8a1c46f38cc7992c954985"
+        },
+        {
+          "rank": 71,
+          "item_id": "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/scale.py:lib.matplotlib.scale.InvertedLog2Transform",
+          "path": "lib/matplotlib/scale.py",
+          "kind": "class",
+          "symbol": "lib.matplotlib.scale.InvertedLog2Transform",
+          "function_id": null,
+          "score": 0.2566666666666667,
+          "lines": [
+            256,
+            260
+          ],
+          "snippet_sha256": "sha256:56c347a88aa18b7162899e8f2dba1df885f445a0157ccc87ec897028cd33d51a"
+        },
+        {
+          "rank": 72,
+          "item_id": "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/scale.py:lib.matplotlib.scale.LogTransform",
+          "path": "lib/matplotlib/scale.py",
+          "kind": "class",
+          "symbol": "lib.matplotlib.scale.LogTransform",
+          "function_id": null,
+          "score": 0.2566666666666667,
+          "lines": [
+            279,
+            317
+          ],
+          "snippet_sha256": "sha256:1a316f011feaceae18720b416e9279a85e5f54c4947f812f4ec8d495446b76a6"
+        },
+        {
+          "rank": 73,
+          "item_id": "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/scale.py:lib.matplotlib.scale.NaturalLogTransform",
+          "path": "lib/matplotlib/scale.py",
+          "kind": "class",
+          "symbol": "lib.matplotlib.scale.NaturalLogTransform",
+          "function_id": null,
+          "score": 0.2565934065934066,
+          "lines": [
+            264,
+            268
+          ],
+          "snippet_sha256": "sha256:1db2f40db20aa275456ff919ef4b0f196d5f92129052f59d221b5a762a6fd8a9"
+        },
+        {
+          "rank": 74,
+          "item_id": "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/scale.py:lib.matplotlib.scale.SymmetricalLogTransform",
+          "path": "lib/matplotlib/scale.py",
+          "kind": "class",
+          "symbol": "lib.matplotlib.scale.SymmetricalLogTransform",
+          "function_id": null,
+          "score": 0.2565934065934066,
+          "lines": [
+            474,
+            500
+          ],
+          "snippet_sha256": "sha256:83ab0f49799dc266eb20156d3c3e4c457959513873d2ad6b8ae0f69451054f38"
+        },
+        {
+          "rank": 75,
+          "item_id": "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/scale.py:lib.matplotlib.scale.Log10Transform",
+          "path": "lib/matplotlib/scale.py",
+          "kind": "class",
+          "symbol": "lib.matplotlib.scale.Log10Transform",
+          "function_id": null,
+          "score": 0.25444444444444453,
+          "lines": [
+            232,
+            236
+          ],
+          "snippet_sha256": "sha256:1903d1fd88fc4a62634f4398696d99b82a482bc8fcfd667db6ac3b4f29fb61d5"
+        },
+        {
+          "rank": 76,
+          "item_id": "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/scale.py:lib.matplotlib.scale.Log2Transform",
+          "path": "lib/matplotlib/scale.py",
+          "kind": "class",
+          "symbol": "lib.matplotlib.scale.Log2Transform",
+          "function_id": null,
+          "score": 0.25444444444444453,
+          "lines": [
+            248,
+            252
+          ],
+          "snippet_sha256": "sha256:eb0fe1d3b07cd09bfce2e93e32e8b932dda363df04b4530a62ad649e61acdcc4"
+        },
+        {
+          "rank": 77,
+          "item_id": "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/scale.py:lib.matplotlib.scale.FuncTransform",
+          "path": "lib/matplotlib/scale.py",
+          "kind": "class",
+          "symbol": "lib.matplotlib.scale.FuncTransform",
+          "function_id": null,
+          "score": 0.25439560439560444,
+          "lines": [
+            109,
+            147
+          ],
+          "snippet_sha256": "sha256:91c0f92cbb67470e16486fa829fe330437a3713911899f0c8b0cf60a2859487d"
+        },
+        {
+          "rank": 78,
+          "item_id": "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/scale.py:lib.matplotlib.scale.LogisticTransform",
+          "path": "lib/matplotlib/scale.py",
+          "kind": "class",
+          "symbol": "lib.matplotlib.scale.LogisticTransform",
+          "function_id": null,
+          "score": 0.25439560439560444,
+          "lines": [
+            644,
+            662
+          ],
+          "snippet_sha256": "sha256:0b08c34f74c52d118d398d5fe1957109baa1aff66c48f04dd7cedbcb5060f212"
+        },
+        {
+          "rank": 79,
+          "item_id": "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/projections/polar.py:lib.matplotlib.projections.polar.InvertedPolarTransform",
+          "path": "lib/matplotlib/projections/polar.py",
+          "kind": "class",
+          "symbol": "lib.matplotlib.projections.polar.InvertedPolarTransform",
+          "function_id": null,
+          "score": 0.25434782608695655,
+          "lines": [
+            111,
+            160
+          ],
+          "snippet_sha256": "sha256:0a64d44f57394b19791d9b341bf77bd06c750aea6ab1c37df386cf1248758f53"
+        },
+        {
+          "rank": 80,
+          "item_id": "vgar:matplotlib__matplotlib:python:class:examples/scales/custom_scale.py:examples.scales.custom_scale.MercatorLatitudeScale.InvertedMercatorLatitudeTransform",
+          "path": "examples/scales/custom_scale.py",
+          "kind": "class",
+          "symbol": "examples.scales.custom_scale.MercatorLatitudeScale.InvertedMercatorLatitudeTransform",
+          "function_id": null,
+          "score": 0.25425531914893623,
+          "lines": [
+            152,
+            166
+          ],
+          "snippet_sha256": "sha256:52590019955d5acd8b8b7dadcc5cffa2590d31d1ccd58955af8033429e428c61"
+        },
+        {
+          "rank": 81,
+          "item_id": "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/projections/geo.py:lib.matplotlib.projections.geo.AitoffAxes.InvertedAitoffTransform",
+          "path": "lib/matplotlib/projections/geo.py",
+          "kind": "class",
+          "symbol": "lib.matplotlib.projections.geo.AitoffAxes.InvertedAitoffTransform",
+          "function_id": null,
+          "score": 0.25425531914893623,
+          "lines": [
+            290,
+            299
+          ],
+          "snippet_sha256": "sha256:760058fa0e2099e99cd2c94bcef696ad0317c9a7e3276979dc113f48066e6070"
+        },
+        {
+          "rank": 82,
+          "item_id": "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/projections/geo.py:lib.matplotlib.projections.geo.HammerAxes.InvertedHammerTransform",
+          "path": "lib/matplotlib/projections/geo.py",
+          "kind": "class",
+          "symbol": "lib.matplotlib.projections.geo.HammerAxes.InvertedHammerTransform",
+          "function_id": null,
+          "score": 0.25425531914893623,
+          "lines": [
+            336,
+            348
+          ],
+          "snippet_sha256": "sha256:5896b6c55f48141b45bd0c0e70ae6a50bd57787293608e6b51557371d77bfaf3"
+        },
+        {
+          "rank": 83,
+          "item_id": "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/projections/geo.py:lib.matplotlib.projections.geo.LambertAxes.InvertedLambertTransform",
+          "path": "lib/matplotlib/projections/geo.py",
+          "kind": "class",
+          "symbol": "lib.matplotlib.projections.geo.LambertAxes.InvertedLambertTransform",
+          "function_id": null,
+          "score": 0.25425531914893623,
+          "lines": [
+            477,
+            507
+          ],
+          "snippet_sha256": "sha256:a10678a84109c8f18aa8ebadeaeb693a47c75039bc07f69449c7fd00db46dec3"
+        },
+        {
+          "rank": 84,
+          "item_id": "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/projections/geo.py:lib.matplotlib.projections.geo.MollweideAxes.InvertedMollweideTransform",
+          "path": "lib/matplotlib/projections/geo.py",
+          "kind": "class",
+          "symbol": "lib.matplotlib.projections.geo.MollweideAxes.InvertedMollweideTransform",
+          "function_id": null,
+          "score": 0.25425531914893623,
+          "lines": [
+            405,
+            422
+          ],
+          "snippet_sha256": "sha256:65f81b05c0837553c75a54f9652455ba85b58934bbb9669ea195c761fc03400f"
+        },
+        {
+          "rank": 85,
+          "item_id": "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/axes/_base.py:lib.matplotlib.axes._base._AxesBase",
+          "path": "lib/matplotlib/axes/_base.py",
+          "kind": "class",
+          "symbol": "lib.matplotlib.axes._base._AxesBase",
+          "function_id": null,
+          "score": 0.25219780219780225,
+          "lines": [
+            410,
+            4479
+          ],
+          "snippet_sha256": "sha256:3b1166489d07a529e64b31c03c95911b1af89110fd2e32023327b509b5b19528"
+        },
+        {
+          "rank": 86,
+          "item_id": "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/projections/polar.py:lib.matplotlib.projections.polar.PolarTransform",
+          "path": "lib/matplotlib/projections/polar.py",
+          "kind": "class",
+          "symbol": "lib.matplotlib.projections.polar.PolarTransform",
+          "function_id": null,
+          "score": 0.2521739130434783,
+          "lines": [
+            17,
+            69
+          ],
+          "snippet_sha256": "sha256:6cd77c1288b208aa3035792257e86a46d4d4a9052ce326defca8f9805324fd0c"
+        },
+        {
+          "rank": 87,
+          "item_id": "vgar:matplotlib__matplotlib:python:class:examples/scales/custom_scale.py:examples.scales.custom_scale.MercatorLatitudeScale.MercatorLatitudeTransform",
+          "path": "examples/scales/custom_scale.py",
+          "kind": "class",
+          "symbol": "examples.scales.custom_scale.MercatorLatitudeScale.MercatorLatitudeTransform",
+          "function_id": null,
+          "score": 0.25212765957446814,
+          "lines": [
+            108,
+            150
+          ],
+          "snippet_sha256": "sha256:a265cb564baa81333c28a61f58dbbb84bc2b69af6ffbc43b8ddcb3e48122c433"
+        },
+        {
+          "rank": 88,
+          "item_id": "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/projections/geo.py:lib.matplotlib.projections.geo.AitoffAxes.AitoffTransform",
+          "path": "lib/matplotlib/projections/geo.py",
+          "kind": "class",
+          "symbol": "lib.matplotlib.projections.geo.AitoffAxes.AitoffTransform",
+          "function_id": null,
+          "score": 0.25212765957446814,
+          "lines": [
+            263,
+            288
+          ],
+          "snippet_sha256": "sha256:9405c595dcd2b7255a0d66fbc484f7a232ccbad054c832a943c775955c964bd0"
+        },
+        {
+          "rank": 89,
+          "item_id": "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/projections/geo.py:lib.matplotlib.projections.geo.HammerAxes.HammerTransform",
+          "path": "lib/matplotlib/projections/geo.py",
+          "kind": "class",
+          "symbol": "lib.matplotlib.projections.geo.HammerAxes.HammerTransform",
+          "function_id": null,
+          "score": 0.25212765957446814,
+          "lines": [
+            314,
+            334
+          ],
+          "snippet_sha256": "sha256:b7a1c098f47a373b7d0516871824a789f19a618c737a016ed5ba3276c9d53ae2"
+        },
+        {
+          "rank": 90,
+          "item_id": "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/projections/geo.py:lib.matplotlib.projections.geo.LambertAxes.LambertTransform",
+          "path": "lib/matplotlib/projections/geo.py",
+          "kind": "class",
+          "symbol": "lib.matplotlib.projections.geo.LambertAxes.LambertTransform",
+          "function_id": null,
+          "score": 0.25212765957446814,
+          "lines": [
+            437,
+            475
+          ],
+          "snippet_sha256": "sha256:2249b12b51e74a42f178c0ce3c18b15c2534ab8eccf0f3a533e2353156daa30c"
+        },
+        {
+          "rank": 91,
+          "item_id": "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/projections/geo.py:lib.matplotlib.projections.geo.MollweideAxes.MollweideTransform",
+          "path": "lib/matplotlib/projections/geo.py",
+          "kind": "class",
+          "symbol": "lib.matplotlib.projections.geo.MollweideAxes.MollweideTransform",
+          "function_id": null,
+          "score": 0.25212765957446814,
+          "lines": [
+            363,
+            403
+          ],
+          "snippet_sha256": "sha256:e734f5f2846e19cbf1ad640a72c1fbdf8bb6643132f83266f976782d7ef4211e"
+        },
+        {
+          "rank": 92,
+          "item_id": "vgar:matplotlib__matplotlib:python:class:examples/misc/custom_projection.py:examples.misc.custom_projection.HammerAxes.InvertedHammerTransform",
+          "path": "examples/misc/custom_projection.py",
+          "kind": "class",
+          "symbol": "examples.misc.custom_projection.HammerAxes.InvertedHammerTransform",
+          "function_id": null,
+          "score": 0.2521052631578948,
+          "lines": [
+            418,
+            435
+          ],
+          "snippet_sha256": "sha256:a279c430702c019e40311dfa15d6652fc3d541ebfdc06977fcc45cea70a819a7"
+        },
+        {
+          "rank": 93,
+          "item_id": "vgar:matplotlib__matplotlib:python:class:examples/misc/custom_projection.py:examples.misc.custom_projection.HammerAxes.HammerTransform",
+          "path": "examples/misc/custom_projection.py",
+          "kind": "class",
+          "symbol": "examples.misc.custom_projection.HammerAxes.HammerTransform",
+          "function_id": null,
+          "score": 0.25000000000000006,
+          "lines": [
+            380,
+            416
+          ],
+          "snippet_sha256": "sha256:891c7010b17710271ae6ff7d62b2bf578184458d8692a16e5feff4b26d9bde65"
+        }
+      ],
+      "rank_order": [
+        "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/table.py:lib.matplotlib.table.Table.scale",
+        "vgar:matplotlib__matplotlib:python:function:lib/matplotlib/pyplot.py:lib.matplotlib.pyplot.yscale.setter",
+        "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/widgets.py:lib.matplotlib.widgets.ToolHandles.x",
+        "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/widgets.py:lib.matplotlib.widgets.ToolHandles.y",
+        "vgar:matplotlib__matplotlib:python:function:tools/github_stats.py:tools.github_stats.report",
+        "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/scale.py:lib.matplotlib.scale.InvertedLogTransform.inverted",
+        "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/scale.py:lib.matplotlib.scale.LogTransform.inverted",
+        "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/scale.py:lib.matplotlib.scale.InvertedNaturalLogTransform.inverted",
+        "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/scale.py:lib.matplotlib.scale.InvertedSymmetricalLogTransform.inverted",
+        "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/scale.py:lib.matplotlib.scale.NaturalLogTransform.inverted",
+        "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/scale.py:lib.matplotlib.scale.SymmetricalLogTransform.inverted",
+        "vgar:matplotlib__matplotlib:python:function:lib/matplotlib/pyplot.py:lib.matplotlib.pyplot.axis.setter",
+        "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/scale.py:lib.matplotlib.scale.InvertedLog10Transform.inverted",
+        "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/scale.py:lib.matplotlib.scale.InvertedLog2Transform.inverted",
+        "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/scale.py:lib.matplotlib.scale.Log10Transform.inverted",
+        "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/scale.py:lib.matplotlib.scale.Log2Transform.inverted",
+        "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/scale.py:lib.matplotlib.scale.FuncTransform.inverted",
+        "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/scale.py:lib.matplotlib.scale.LogisticTransform.inverted",
+        "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/scale.py:lib.matplotlib.scale.LogitTransform.inverted",
+        "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/transforms.py:lib.matplotlib.transforms.Transform.inverted",
+        "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/axes/_base.py:lib.matplotlib.axes._base._AxesBase.axis",
+        "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/transforms.py:lib.matplotlib.transforms.Affine2DBase.inverted",
+        "vgar:matplotlib__matplotlib:python:method:examples/scales/custom_scale.py:examples.scales.custom_scale.MercatorLatitudeScale.InvertedMercatorLatitudeTransform.inverted",
+        "vgar:matplotlib__matplotlib:python:method:examples/scales/custom_scale.py:examples.scales.custom_scale.MercatorLatitudeScale.MercatorLatitudeTransform.inverted",
+        "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/projections/polar.py:lib.matplotlib.projections.polar.InvertedPolarTransform.inverted",
+        "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/projections/polar.py:lib.matplotlib.projections.polar.PolarTransform.inverted",
+        "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/transforms.py:lib.matplotlib.transforms.Affine2D.scale",
+        "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/transforms.py:lib.matplotlib.transforms.IdentityTransform.inverted",
+        "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/transforms.py:lib.matplotlib.transforms.BlendedGenericTransform.inverted",
+        "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/transforms.py:lib.matplotlib.transforms.CompositeGenericTransform.inverted",
+        "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/projections/geo.py:lib.matplotlib.projections.geo.AitoffAxes.AitoffTransform.inverted",
+        "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/projections/geo.py:lib.matplotlib.projections.geo.AitoffAxes.InvertedAitoffTransform.inverted",
+        "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/projections/geo.py:lib.matplotlib.projections.geo.HammerAxes.HammerTransform.inverted",
+        "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/projections/geo.py:lib.matplotlib.projections.geo.HammerAxes.InvertedHammerTransform.inverted",
+        "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/projections/geo.py:lib.matplotlib.projections.geo.LambertAxes.InvertedLambertTransform.inverted",
+        "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/projections/geo.py:lib.matplotlib.projections.geo.LambertAxes.LambertTransform.inverted",
+        "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/projections/geo.py:lib.matplotlib.projections.geo.MollweideAxes.InvertedMollweideTransform.inverted",
+        "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/projections/geo.py:lib.matplotlib.projections.geo.MollweideAxes.MollweideTransform.inverted",
+        "vgar:matplotlib__matplotlib:python:method:lib/mpl_toolkits/axes_grid1/mpl_axes.py:lib.mpl_toolkits.axes_grid1.mpl_axes.Axes.axis",
+        "vgar:matplotlib__matplotlib:python:method:lib/mpl_toolkits/axisartist/axislines.py:lib.mpl_toolkits.axisartist.axislines.Axes.axis",
+        "vgar:matplotlib__matplotlib:python:method:examples/misc/custom_projection.py:examples.misc.custom_projection.HammerAxes.HammerTransform.inverted",
+        "vgar:matplotlib__matplotlib:python:method:examples/misc/custom_projection.py:examples.misc.custom_projection.HammerAxes.InvertedHammerTransform.inverted",
+        "vgar:matplotlib__matplotlib:python:class:setupext.py:setupext.Matplotlib",
+        "vgar:matplotlib__matplotlib:python:class:setupext.py:setupext.Python",
+        "vgar:matplotlib__matplotlib:python:function:lib/matplotlib/pyplot.py:lib.matplotlib.pyplot.gca",
+        "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/axes/_base.py:lib.matplotlib.axes._base._AxesBase.set_ylim",
+        "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/axes/_base.py:lib.matplotlib.axes._base._AxesBase.set_xlim",
+        "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/axes/_base.py:lib.matplotlib.axes._base._AxesBase.get_ylim",
+        "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/axes/_base.py:lib.matplotlib.axes._base._AxesBase.autoscale_view",
+        "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/axes/_base.py:lib.matplotlib.axes._base._AxesBase.get_xlim",
+        "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/axes/_base.py:lib.matplotlib.axes._base._AxesBase.set_axis_on",
+        "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/axes/_base.py:lib.matplotlib.axes._base._AxesBase.set_axis_off",
+        "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/axes/_base.py:lib.matplotlib.axes._base._AxesBase.set_autoscale_on",
+        "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/axes/_base.py:lib.matplotlib.axes._base._AxesBase.set_aspect",
+        "vgar:matplotlib__matplotlib:python:method:setupext.py:setupext.Matplotlib.check",
+        "vgar:matplotlib__matplotlib:python:method:setupext.py:setupext.Python.check",
+        "vgar:matplotlib__matplotlib:python:method:setupext.py:setupext.Matplotlib.get_packages",
+        "vgar:matplotlib__matplotlib:python:method:setupext.py:setupext.Matplotlib.get_py_modules",
+        "vgar:matplotlib__matplotlib:python:method:setupext.py:setupext.Matplotlib.get_install_requires",
+        "vgar:matplotlib__matplotlib:python:method:setupext.py:setupext.Matplotlib.get_namespace_packages",
+        "vgar:matplotlib__matplotlib:python:method:setupext.py:setupext.Matplotlib.get_package_data",
+        "vgar:matplotlib__matplotlib:python:module:lib/matplotlib/pyplot.py:lib.matplotlib.pyplot",
+        "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/widgets.py:lib.matplotlib.widgets.ToolHandles",
+        "vgar:matplotlib__matplotlib:python:module:setupext.py:setupext",
+        "vgar:matplotlib__matplotlib:python:class:setupext.py:setupext.SetupPackage",
+        "vgar:matplotlib__matplotlib:python:module:tools/github_stats.py:tools.github_stats",
+        "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/scale.py:lib.matplotlib.scale.InvertedLogTransform",
+        "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/scale.py:lib.matplotlib.scale.InvertedNaturalLogTransform",
+        "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/scale.py:lib.matplotlib.scale.InvertedSymmetricalLogTransform",
+        "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/scale.py:lib.matplotlib.scale.InvertedLog10Transform",
+        "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/scale.py:lib.matplotlib.scale.InvertedLog2Transform",
+        "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/scale.py:lib.matplotlib.scale.LogTransform",
+        "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/scale.py:lib.matplotlib.scale.NaturalLogTransform",
+        "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/scale.py:lib.matplotlib.scale.SymmetricalLogTransform",
+        "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/scale.py:lib.matplotlib.scale.Log10Transform",
+        "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/scale.py:lib.matplotlib.scale.Log2Transform",
+        "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/scale.py:lib.matplotlib.scale.FuncTransform",
+        "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/scale.py:lib.matplotlib.scale.LogisticTransform",
+        "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/projections/polar.py:lib.matplotlib.projections.polar.InvertedPolarTransform",
+        "vgar:matplotlib__matplotlib:python:class:examples/scales/custom_scale.py:examples.scales.custom_scale.MercatorLatitudeScale.InvertedMercatorLatitudeTransform",
+        "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/projections/geo.py:lib.matplotlib.projections.geo.AitoffAxes.InvertedAitoffTransform",
+        "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/projections/geo.py:lib.matplotlib.projections.geo.HammerAxes.InvertedHammerTransform",
+        "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/projections/geo.py:lib.matplotlib.projections.geo.LambertAxes.InvertedLambertTransform",
+        "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/projections/geo.py:lib.matplotlib.projections.geo.MollweideAxes.InvertedMollweideTransform",
+        "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/axes/_base.py:lib.matplotlib.axes._base._AxesBase",
+        "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/projections/polar.py:lib.matplotlib.projections.polar.PolarTransform",
+        "vgar:matplotlib__matplotlib:python:class:examples/scales/custom_scale.py:examples.scales.custom_scale.MercatorLatitudeScale.MercatorLatitudeTransform",
+        "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/projections/geo.py:lib.matplotlib.projections.geo.AitoffAxes.AitoffTransform",
+        "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/projections/geo.py:lib.matplotlib.projections.geo.HammerAxes.HammerTransform",
+        "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/projections/geo.py:lib.matplotlib.projections.geo.LambertAxes.LambertTransform",
+        "vgar:matplotlib__matplotlib:python:class:lib/matplotlib/projections/geo.py:lib.matplotlib.projections.geo.MollweideAxes.MollweideTransform",
+        "vgar:matplotlib__matplotlib:python:class:examples/misc/custom_projection.py:examples.misc.custom_projection.HammerAxes.InvertedHammerTransform",
+        "vgar:matplotlib__matplotlib:python:class:examples/misc/custom_projection.py:examples.misc.custom_projection.HammerAxes.HammerTransform"
+      ],
+      "anchors": [
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:test:lib/matplotlib/tests/test_axes.py:lib.matplotlib.tests.test_axes.test_inverted_limits",
+          "score": 1.0,
+          "symbol": "lib.matplotlib.tests.test_axes.test_inverted_limits",
+          "type": "Test",
+          "path": "lib/matplotlib/tests/test_axes.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:function:lib/matplotlib/pyplot.py:lib.matplotlib.pyplot.yscale.setter",
+          "score": 0.6,
+          "symbol": "lib.matplotlib.pyplot.yscale",
+          "type": "Function",
+          "path": "lib/matplotlib/pyplot.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:function:lib/matplotlib/tests/test_category.py:lib.matplotlib.tests.test_category.ax.setter",
+          "score": 0.6,
+          "symbol": "lib.matplotlib.tests.test_category.ax",
+          "type": "Function",
+          "path": "lib/matplotlib/tests/test_category.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/tests/test_units.py:lib.matplotlib.tests.test_units.Quantity.to",
+          "score": 0.6,
+          "symbol": "lib.matplotlib.tests.test_units.Quantity.to",
+          "type": "Method",
+          "path": "lib/matplotlib/tests/test_units.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/widgets.py:lib.matplotlib.widgets.ToolHandles.x",
+          "score": 0.6,
+          "symbol": "lib.matplotlib.widgets.ToolHandles.x",
+          "type": "Method",
+          "path": "lib/matplotlib/widgets.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/widgets.py:lib.matplotlib.widgets.ToolHandles.y",
+          "score": 0.6,
+          "symbol": "lib.matplotlib.widgets.ToolHandles.y",
+          "type": "Method",
+          "path": "lib/matplotlib/widgets.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:class:setupext.py:setupext.Matplotlib",
+          "score": 0.6,
+          "symbol": "setupext.Matplotlib",
+          "type": "Class",
+          "path": "setupext.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:class:setupext.py:setupext.Python",
+          "score": 0.6,
+          "symbol": "setupext.Python",
+          "type": "Class",
+          "path": "setupext.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:function:tools/github_stats.py:tools.github_stats.report",
+          "score": 0.6,
+          "symbol": "tools.github_stats.report",
+          "type": "Function",
+          "path": "tools/github_stats.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:method:examples/misc/custom_projection.py:examples.misc.custom_projection.HammerAxes.HammerTransform.inverted",
+          "score": 0.5,
+          "symbol": "examples.misc.custom_projection.HammerAxes.HammerTransform.inverted",
+          "type": "Method",
+          "path": "examples/misc/custom_projection.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:method:examples/misc/custom_projection.py:examples.misc.custom_projection.HammerAxes.InvertedHammerTransform.inverted",
+          "score": 0.5,
+          "symbol": "examples.misc.custom_projection.HammerAxes.InvertedHammerTransform.inverted",
+          "type": "Method",
+          "path": "examples/misc/custom_projection.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:method:examples/scales/custom_scale.py:examples.scales.custom_scale.MercatorLatitudeScale.InvertedMercatorLatitudeTransform.inverted",
+          "score": 0.5,
+          "symbol": "examples.scales.custom_scale.MercatorLatitudeScale.InvertedMercatorLatitudeTransform.inverted",
+          "type": "Method",
+          "path": "examples/scales/custom_scale.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:method:examples/scales/custom_scale.py:examples.scales.custom_scale.MercatorLatitudeScale.MercatorLatitudeTransform.inverted",
+          "score": 0.5,
+          "symbol": "examples.scales.custom_scale.MercatorLatitudeScale.MercatorLatitudeTransform.inverted",
+          "type": "Method",
+          "path": "examples/scales/custom_scale.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/axes/_base.py:lib.matplotlib.axes._base._AxesBase.axis",
+          "score": 0.5,
+          "symbol": "lib.matplotlib.axes._base._AxesBase.axis",
+          "type": "Method",
+          "path": "lib/matplotlib/axes/_base.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/projections/geo.py:lib.matplotlib.projections.geo.AitoffAxes.AitoffTransform.inverted",
+          "score": 0.5,
+          "symbol": "lib.matplotlib.projections.geo.AitoffAxes.AitoffTransform.inverted",
+          "type": "Method",
+          "path": "lib/matplotlib/projections/geo.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/projections/geo.py:lib.matplotlib.projections.geo.AitoffAxes.InvertedAitoffTransform.inverted",
+          "score": 0.5,
+          "symbol": "lib.matplotlib.projections.geo.AitoffAxes.InvertedAitoffTransform.inverted",
+          "type": "Method",
+          "path": "lib/matplotlib/projections/geo.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/projections/geo.py:lib.matplotlib.projections.geo.HammerAxes.HammerTransform.inverted",
+          "score": 0.5,
+          "symbol": "lib.matplotlib.projections.geo.HammerAxes.HammerTransform.inverted",
+          "type": "Method",
+          "path": "lib/matplotlib/projections/geo.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/projections/geo.py:lib.matplotlib.projections.geo.HammerAxes.InvertedHammerTransform.inverted",
+          "score": 0.5,
+          "symbol": "lib.matplotlib.projections.geo.HammerAxes.InvertedHammerTransform.inverted",
+          "type": "Method",
+          "path": "lib/matplotlib/projections/geo.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/projections/geo.py:lib.matplotlib.projections.geo.LambertAxes.InvertedLambertTransform.inverted",
+          "score": 0.5,
+          "symbol": "lib.matplotlib.projections.geo.LambertAxes.InvertedLambertTransform.inverted",
+          "type": "Method",
+          "path": "lib/matplotlib/projections/geo.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/projections/geo.py:lib.matplotlib.projections.geo.LambertAxes.LambertTransform.inverted",
+          "score": 0.5,
+          "symbol": "lib.matplotlib.projections.geo.LambertAxes.LambertTransform.inverted",
+          "type": "Method",
+          "path": "lib/matplotlib/projections/geo.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/projections/geo.py:lib.matplotlib.projections.geo.MollweideAxes.InvertedMollweideTransform.inverted",
+          "score": 0.5,
+          "symbol": "lib.matplotlib.projections.geo.MollweideAxes.InvertedMollweideTransform.inverted",
+          "type": "Method",
+          "path": "lib/matplotlib/projections/geo.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/projections/geo.py:lib.matplotlib.projections.geo.MollweideAxes.MollweideTransform.inverted",
+          "score": 0.5,
+          "symbol": "lib.matplotlib.projections.geo.MollweideAxes.MollweideTransform.inverted",
+          "type": "Method",
+          "path": "lib/matplotlib/projections/geo.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/projections/polar.py:lib.matplotlib.projections.polar.InvertedPolarTransform.inverted",
+          "score": 0.5,
+          "symbol": "lib.matplotlib.projections.polar.InvertedPolarTransform.inverted",
+          "type": "Method",
+          "path": "lib/matplotlib/projections/polar.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/projections/polar.py:lib.matplotlib.projections.polar.PolarTransform.inverted",
+          "score": 0.5,
+          "symbol": "lib.matplotlib.projections.polar.PolarTransform.inverted",
+          "type": "Method",
+          "path": "lib/matplotlib/projections/polar.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:function:lib/matplotlib/pyplot.py:lib.matplotlib.pyplot.axis.setter",
+          "score": 0.5,
+          "symbol": "lib.matplotlib.pyplot.axis",
+          "type": "Function",
+          "path": "lib/matplotlib/pyplot.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/scale.py:lib.matplotlib.scale.FuncTransform.inverted",
+          "score": 0.5,
+          "symbol": "lib.matplotlib.scale.FuncTransform.inverted",
+          "type": "Method",
+          "path": "lib/matplotlib/scale.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/scale.py:lib.matplotlib.scale.InvertedLog10Transform.inverted",
+          "score": 0.5,
+          "symbol": "lib.matplotlib.scale.InvertedLog10Transform.inverted",
+          "type": "Method",
+          "path": "lib/matplotlib/scale.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/scale.py:lib.matplotlib.scale.InvertedLog2Transform.inverted",
+          "score": 0.5,
+          "symbol": "lib.matplotlib.scale.InvertedLog2Transform.inverted",
+          "type": "Method",
+          "path": "lib/matplotlib/scale.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/scale.py:lib.matplotlib.scale.InvertedLogTransform.inverted",
+          "score": 0.5,
+          "symbol": "lib.matplotlib.scale.InvertedLogTransform.inverted",
+          "type": "Method",
+          "path": "lib/matplotlib/scale.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/scale.py:lib.matplotlib.scale.InvertedNaturalLogTransform.inverted",
+          "score": 0.5,
+          "symbol": "lib.matplotlib.scale.InvertedNaturalLogTransform.inverted",
+          "type": "Method",
+          "path": "lib/matplotlib/scale.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/scale.py:lib.matplotlib.scale.InvertedSymmetricalLogTransform.inverted",
+          "score": 0.5,
+          "symbol": "lib.matplotlib.scale.InvertedSymmetricalLogTransform.inverted",
+          "type": "Method",
+          "path": "lib/matplotlib/scale.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/scale.py:lib.matplotlib.scale.Log10Transform.inverted",
+          "score": 0.5,
+          "symbol": "lib.matplotlib.scale.Log10Transform.inverted",
+          "type": "Method",
+          "path": "lib/matplotlib/scale.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/scale.py:lib.matplotlib.scale.Log2Transform.inverted",
+          "score": 0.5,
+          "symbol": "lib.matplotlib.scale.Log2Transform.inverted",
+          "type": "Method",
+          "path": "lib/matplotlib/scale.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/scale.py:lib.matplotlib.scale.LogTransform.inverted",
+          "score": 0.5,
+          "symbol": "lib.matplotlib.scale.LogTransform.inverted",
+          "type": "Method",
+          "path": "lib/matplotlib/scale.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/scale.py:lib.matplotlib.scale.LogisticTransform.inverted",
+          "score": 0.5,
+          "symbol": "lib.matplotlib.scale.LogisticTransform.inverted",
+          "type": "Method",
+          "path": "lib/matplotlib/scale.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/scale.py:lib.matplotlib.scale.LogitTransform.inverted",
+          "score": 0.5,
+          "symbol": "lib.matplotlib.scale.LogitTransform.inverted",
+          "type": "Method",
+          "path": "lib/matplotlib/scale.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/scale.py:lib.matplotlib.scale.NaturalLogTransform.inverted",
+          "score": 0.5,
+          "symbol": "lib.matplotlib.scale.NaturalLogTransform.inverted",
+          "type": "Method",
+          "path": "lib/matplotlib/scale.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/scale.py:lib.matplotlib.scale.SymmetricalLogTransform.inverted",
+          "score": 0.5,
+          "symbol": "lib.matplotlib.scale.SymmetricalLogTransform.inverted",
+          "type": "Method",
+          "path": "lib/matplotlib/scale.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/table.py:lib.matplotlib.table.Table.scale",
+          "score": 0.5,
+          "symbol": "lib.matplotlib.table.Table.scale",
+          "type": "Method",
+          "path": "lib/matplotlib/table.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:function:lib/matplotlib/tests/test_axes.py:lib.matplotlib.tests.test_axes.test_secondary_resize.invert",
+          "score": 0.5,
+          "symbol": "lib.matplotlib.tests.test_axes.test_secondary_resize.invert",
+          "type": "Function",
+          "path": "lib/matplotlib/tests/test_axes.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:function:lib/matplotlib/tests/test_axes.py:lib.matplotlib.tests.test_axes.test_secondary_xy.invert",
+          "score": 0.5,
+          "symbol": "lib.matplotlib.tests.test_axes.test_secondary_xy.invert",
+          "type": "Function",
+          "path": "lib/matplotlib/tests/test_axes.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/transforms.py:lib.matplotlib.transforms.Affine2D.scale",
+          "score": 0.5,
+          "symbol": "lib.matplotlib.transforms.Affine2D.scale",
+          "type": "Method",
+          "path": "lib/matplotlib/transforms.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/transforms.py:lib.matplotlib.transforms.Affine2DBase.inverted",
+          "score": 0.5,
+          "symbol": "lib.matplotlib.transforms.Affine2DBase.inverted",
+          "type": "Method",
+          "path": "lib/matplotlib/transforms.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/transforms.py:lib.matplotlib.transforms.BlendedGenericTransform.inverted",
+          "score": 0.5,
+          "symbol": "lib.matplotlib.transforms.BlendedGenericTransform.inverted",
+          "type": "Method",
+          "path": "lib/matplotlib/transforms.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/transforms.py:lib.matplotlib.transforms.CompositeGenericTransform.inverted",
+          "score": 0.5,
+          "symbol": "lib.matplotlib.transforms.CompositeGenericTransform.inverted",
+          "type": "Method",
+          "path": "lib/matplotlib/transforms.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/transforms.py:lib.matplotlib.transforms.IdentityTransform.inverted",
+          "score": 0.5,
+          "symbol": "lib.matplotlib.transforms.IdentityTransform.inverted",
+          "type": "Method",
+          "path": "lib/matplotlib/transforms.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:method:lib/matplotlib/transforms.py:lib.matplotlib.transforms.Transform.inverted",
+          "score": 0.5,
+          "symbol": "lib.matplotlib.transforms.Transform.inverted",
+          "type": "Method",
+          "path": "lib/matplotlib/transforms.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:method:lib/mpl_toolkits/axes_grid1/mpl_axes.py:lib.mpl_toolkits.axes_grid1.mpl_axes.Axes.axis",
+          "score": 0.5,
+          "symbol": "lib.mpl_toolkits.axes_grid1.mpl_axes.Axes.axis",
+          "type": "Method",
+          "path": "lib/mpl_toolkits/axes_grid1/mpl_axes.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:method:lib/mpl_toolkits/axisartist/axislines.py:lib.mpl_toolkits.axisartist.axislines.Axes.axis",
+          "score": 0.5,
+          "symbol": "lib.mpl_toolkits.axisartist.axislines.Axes.axis",
+          "type": "Method",
+          "path": "lib/mpl_toolkits/axisartist/axislines.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:method:lib/mpl_toolkits/tests/test_axisartist_grid_helper_curvelinear.py:lib.mpl_toolkits.tests.test_axisartist_grid_helper_curvelinear.test_custom_transform.MyTransform.inverted",
+          "score": 0.5,
+          "symbol": "lib.mpl_toolkits.tests.test_axisartist_grid_helper_curvelinear.test_custom_transform.MyTransform.inverted",
+          "type": "Method",
+          "path": "lib/mpl_toolkits/tests/test_axisartist_grid_helper_curvelinear.py"
+        },
+        {
+          "node_id": "vgar:matplotlib__matplotlib:python:method:lib/mpl_toolkits/tests/test_axisartist_grid_helper_curvelinear.py:lib.mpl_toolkits.tests.test_axisartist_grid_helper_curvelinear.test_custom_transform.MyTransformInv.inverted",
+          "score": 0.5,
+          "symbol": "lib.mpl_toolkits.tests.test_axisartist_grid_helper_curvelinear.test_custom_transform.MyTransformInv.inverted",
+          "type": "Method",
+          "path": "lib/mpl_toolkits/tests/test_axisartist_grid_helper_curvelinear.py"
+        }
+      ],
+      "unmapped": [],
+      "excluded": [],
+      "diagnostics": {
+        "m1_native_total_tokens": 7937,
+        "m1_native_items": 55,
+        "m1_native_truncated": true,
+        "traversal_limited": true,
+        "unavailable_features": [
+          "architecture_dependencies",
+          "recent_change_frequency"
+        ],
+        "omissions": {
+          "overlapping_selected_range": 38
+        },
+        "retrieval_config": {
+          "max_hops": 2,
+          "max_candidates": 100,
+          "min_edge_confidence": 0.6,
+          "weights": {
+            "task_similarity": 0.2,
+            "graph_distance": 0.3,
+            "edge_confidence": 0.2,
+            "failing_test_proximity": 0.2,
+            "public_api_risk": 0.1,
+            "recent_change_frequency": 0.1
+          },
+          "profile": "semantic-context-v1",
+          "active_features": [
+            "task_similarity",
+            "graph_distance",
+            "edge_confidence",
+            "failing_test_proximity",
+            "public_api_risk"
+          ],
+          "normalized_weights": {
+            "task_similarity": 0.20000000000000004,
+            "graph_distance": 0.30000000000000004,
+            "edge_confidence": 0.20000000000000004,
+            "failing_test_proximity": 0.20000000000000004,
+            "public_api_risk": 0.10000000000000002
+          },
+          "failing_test_traversal_limited": true,
+          "filtered_by_include": 307
+        }
+      },
+      "scoring": {
+        "instance_id": "matplotlib__matplotlib-14623",
+        "arm": "graph_f2p",
+        "scoring_version": "retrieval-scoring-v1",
+        "rank_hash": "sha256:02c7a7102633332d8c3e284c3094bc3ace39b2410a226ca310576ad448d85453",
+        "rank": {
+          "metrics": {
+            "file_gold_count": 3,
+            "file_mrr": 0.14285714285714285,
+            "file_recall@1": 0.0,
+            "file_all_gold@1": 0,
+            "file_recall@3": 0.0,
+            "file_all_gold@3": 0,
+            "file_recall@5": 0.0,
+            "file_all_gold@5": 0,
+            "file_recall@10": 0.3333333333333333,
+            "file_all_gold@10": 0,
+            "file_recall@20": 0.3333333333333333,
+            "file_all_gold@20": 0,
+            "function_gold_count": 6,
+            "function_mrr": 0.022727272727272728,
+            "function_recall@1": 0.0,
+            "function_all_gold@1": 0,
+            "function_recall@3": 0.0,
+            "function_all_gold@3": 0,
+            "function_recall@5": 0.0,
+            "function_all_gold@5": 0,
+            "function_recall@10": 0.0,
+            "function_all_gold@10": 0,
+            "function_recall@20": 0.0,
+            "function_all_gold@20": 0
+          },
+          "reach": {
+            "file": 0.3333333333333333,
+            "function": 0.3333333333333333
+          },
+          "size": {
+            "items": 93,
+            "files": 14,
+            "functions": 59
+          }
+        },
+        "packed": {
+          "budget_tokens": 8000,
+          "counter_label": "local-hf:Qwen/Qwen3-4B-Instruct-2507@cdbee75f17c01a7cc42f958dc650907174af0554:sha256=aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4:no-special-tokens",
+          "snippet_policy": {
+            "max_snippet_lines": 80,
+            "header": true,
+            "overlap": "skip_if_overlaps_different_group"
+          },
+          "metrics": {
+            "gold_file_in_context": 0.3333333333333333,
+            "gold_function_in_context": 0.3333333333333333,
+            "all_gold_files_in_context": 0,
+            "all_gold_functions_in_context": 0,
+            "total_tokens": 6953,
+            "tokens_to_first_gold_file": 1536,
+            "tokens_to_first_gold_function": 3842,
+            "items_packed": 55,
+            "skipped": {
+              "token_budget": 0,
+              "overlap": 38
+            },
+            "truncated": false
+          }
+        },
+        "excluded_count": 0,
+        "unmapped": [],
+        "excluded_reasons": {}
+      },
+      "metrics": {
+        "file_gold_count": 3,
+        "file_mrr": 0.14285714285714285,
+        "file_recall@1": 0.0,
+        "file_all_gold@1": 0,
+        "file_recall@3": 0.0,
+        "file_all_gold@3": 0,
+        "file_recall@5": 0.0,
+        "file_all_gold@5": 0,
+        "file_recall@10": 0.3333333333333333,
+        "file_all_gold@10": 0,
+        "file_recall@20": 0.3333333333333333,
+        "file_all_gold@20": 0,
+        "function_gold_count": 6,
+        "function_mrr": 0.022727272727272728,
+        "function_recall@1": 0.0,
+        "function_all_gold@1": 0,
+        "function_recall@3": 0.0,
+        "function_all_gold@3": 0,
+        "function_recall@5": 0.0,
+        "function_all_gold@5": 0,
+        "function_recall@10": 0.0,
+        "function_all_gold@10": 0,
+        "function_recall@20": 0.0,
+        "function_all_gold@20": 0,
+        "file_reach": 0.3333333333333333,
+        "function_reach": 0.3333333333333333,
+        "rank_items": 93,
+        "packed_gold_file_in_context": 0.3333333333333333,
+        "packed_gold_function_in_context": 0.3333333333333333,
+        "packed_all_gold_files_in_context": 0,
+        "packed_all_gold_functions_in_context": 0,
+        "context_tokens": 6953,
+        "packed_tokens_to_first_gold_file": 1536,
+        "packed_tokens_to_first_gold_function": 3842,
+        "packed_items_packed": 55,
+        "packed_skipped_token_budget": 0,
+        "packed_skipped_overlap": 38,
+        "packed_truncated": 0,
+        "unmapped_count": 0,
+        "excluded_count": 0,
+        "anchor_count": 51,
+        "no_anchors": 0,
+        "candidates_in": 93,
+        "retrieve_seconds": 3.335829999999987,
+        "mapping_coverage": 1.0,
+        "file_retrievability_coverage": 1.0
+      }
+    }
+  },
+  "graph": {
+    "build_seconds": 9.191465699999753,
+    "nodes": 61517,
+    "edges": 73392,
+    "graph_version": "sha256:86c0833ef6e4ef157419314b636b575d32bbcffcc2cd62f63d69795839caf429",
+    "use_jedi": false,
+    "builder_hash": "1b89a2339f28",
+    "skipped_failed_files": 0,
+    "cached": true
+  },
+  "source_tree": {
+    "python_file_count": 860,
+    "tree_hash": "sha256:84f39785ada171700e5e6165f2ac4ebf279d553f6fa147e920f024236325aad6"
+  },
+  "source_provenance": {
+    "source_backend": "github_codeload_commit_archive",
+    "snapshot_commit": "d65c9ca20ddf81ef91199e6d819f9d3506ef477c",
+    "commit_validation": "immutable_40_SHA_URL_and_archive_root; not_git_object_hash_validation",
+    "source_file_count": 740,
+    "source_bytes": 6369667,
+    "excluded_sources": [],
+    "url": "https://codeload.github.com/matplotlib/matplotlib/tar.gz/d65c9ca20ddf81ef91199e6d819f9d3506ef477c",
+    "archive_hash": "sha256:058aacbbbfc3c800c503cd3768b5a11212e7e5845fff7c3c5ce4f2d6e00088e7",
+    "base_commit": "d65c9ca20ddf81ef91199e6d819f9d3506ef477c",
+    "cache_path": "data\\repositories\\archives\\matplotlib__matplotlib-d65c9ca20ddf81ef91199e6d819f9d3506ef477c.tar.gz"
+  },
+  "fail_to_pass_count": 1,
+  "duration_seconds": 23.791208700000425
+}

@@ -1,0 +1,103 @@
+{
+  "root": "D:\\Project\\CAPSTONES\\VGAR",
+  "row": {
+    "instance_id": "django__django-13344",
+    "repo": "django/django",
+    "base_commit": "e39e727ded673e74016b5d3658d23cbe20234d11",
+    "problem_statement": "Coroutine passed to the first middleware's process_response() instead of HttpResponse.\nDescription\n\t\nLike the title says, using ASGI (+ uvicorn in my case), the first middleware (according to the list in settings.py) receives a coroutine as its response parameter, while all other middlewares down the line receive a django.http.response.HttpResponse object.\nThis seems to have caused an issue in the django-cors-headers package which is often placed first in order:\n​https://github.com/adamchainz/django-cors-headers/issues/558\nHow to reproduce:\nSet up a django 3.1 project with an async server (uvicorn in my case)\nCreate a dummy class-based middleware that prints the types of arguments it receives in its process_response method:\nclass DummyMiddleware(MiddlewareMixin):\n\tdef process_response(self, request, response):\n\t\tprint(request.__class__, response.__class__)\nSet up the middleware as the first one in settings.py:\nMIDDLEWARE = [\n\t'django_uvicorn_test.middleware.DummyMiddleware',\n\t'django.middleware.security.SecurityMiddleware',\n ...\nLaunch the server and perform any request, observe console output:\n <class 'django.core.handlers.asgi.ASGIRequest'> <class 'coroutine'> \nMove the middleware down on the list, restart the server and perform a request again:\n <class 'django.core.handlers.asgi.ASGIRequest'> <class 'django.http.response.HttpResponse'>\n",
+    "difficulty": "1-4 hours",
+    "query_hash": "sha256:fa0d64caaae3c17b9e52c447593c2c8ac3354046b1df2ceb293645b293b06090",
+    "patch_hash": "sha256:cd4ce142ef39fd702719df87d61b4d6c21d40a39985baf48a469c3fa9248459a",
+    "gold_patch_path": "data/gold/patches/django__django-13344.patch",
+    "changed_source_files": [
+      "django/contrib/sessions/middleware.py",
+      "django/middleware/cache.py",
+      "django/middleware/security.py"
+    ],
+    "split": "dev",
+    "is_multi_file": true
+  },
+  "config": {
+    "manifest_hash": "sha256:33ddf233c44832c87abfeb7b62b1aef9fc1e4e8f89f67653fc5e7dc20cc86708",
+    "budget_tokens": 8000,
+    "scoring_version": "retrieval-scoring-v1",
+    "counter_label": "local-hf:Qwen/Qwen3-4B-Instruct-2507@cdbee75f17c01a7cc42f958dc650907174af0554:sha256=aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4:no-special-tokens",
+    "counter_is_fallback": false,
+    "snippet_policy": {
+      "max_snippet_lines": 80,
+      "header": true,
+      "overlap": "skip_if_overlaps_different_group"
+    },
+    "arms": {
+      "graph": {
+        "uses_fail_to_pass": false
+      },
+      "graph_f2p": {
+        "uses_fail_to_pass": true
+      }
+    },
+    "graph": {
+      "use_jedi": false,
+      "builder_hash": "62bb14a051c1",
+      "source_roots": [
+        "src"
+      ]
+    },
+    "retrieval": {
+      "max_hops": 2,
+      "max_candidates": 100,
+      "min_edge_confidence": 0.6,
+      "weights": {
+        "task_similarity": 0.2,
+        "graph_distance": 0.3,
+        "edge_confidence": 0.2,
+        "failing_test_proximity": 0.2,
+        "public_api_risk": 0.1,
+        "recent_change_frequency": 0.1
+      },
+      "include": "make_include(corpus): not Test and path in is_source corpus"
+    },
+    "limit": null,
+    "task_ids": [
+      "astropy__astropy-13398",
+      "django__django-11138",
+      "matplotlib__matplotlib-14623",
+      "pydata__xarray-3305",
+      "pylint-dev__pylint-4551",
+      "sphinx-doc__sphinx-10673",
+      "sympy__sympy-16597",
+      "astropy__astropy-8707",
+      "django__django-11734",
+      "pydata__xarray-3993",
+      "pylint-dev__pylint-4604",
+      "sphinx-doc__sphinx-8120",
+      "sympy__sympy-17318",
+      "django__django-11885",
+      "pydata__xarray-6992",
+      "pylint-dev__pylint-6386",
+      "sphinx-doc__sphinx-8548",
+      "sympy__sympy-20438",
+      "django__django-12155",
+      "django__django-12325",
+      "django__django-12741",
+      "django__django-13195",
+      "django__django-13212",
+      "django__django-13344",
+      "django__django-13512"
+    ],
+    "execution": {
+      "task_timeout_seconds": 300.0,
+      "offline": true,
+      "rebuild_graphs": false,
+      "rebuild_trees": true
+    }
+  },
+  "failing_tests": [
+    "test_coroutine (deprecation.test_middleware_mixin.MiddlewareMixinTests)",
+    "test_deprecation (deprecation.test_middleware_mixin.MiddlewareMixinTests)"
+  ],
+  "offline": true,
+  "rebuild_graphs": false,
+  "rebuild_trees": true,
+  "tokenizer_manifest": "D:\\Project\\CAPSTONES\\VGAR\\artifacts\\m1\\tokenizer-acceptance\\tokenizer_manifest.json"
+}

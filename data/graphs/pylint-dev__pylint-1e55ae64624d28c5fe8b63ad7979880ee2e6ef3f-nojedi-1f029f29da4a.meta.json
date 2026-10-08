@@ -1,9 +1,0 @@
-{
-  "build_seconds": 11.698094900006254,
-  "nodes": 21709,
-  "edges": 26301,
-  "graph_version": "sha256:5ae313b3f4cdf222c06fc733c4c92487a1c303774d471c818f7635451f20c0a0",
-  "use_jedi": false,
-  "builder_hash": "1f029f29da4a",
-  "skipped_failed_files": 6
-}

@@ -1,0 +1,34 @@
+{
+  "instance_id": "django__django-13512",
+  "status": "FAILED",
+  "error_class": "PermissionError",
+  "error": "[WinError 5] Access is denied: 'D:\\\\Project\\\\CAPSTONES\\\\VGAR\\\\data\\\\repositories\\\\trees\\\\rebuilt\\\\.vgar-tree-partial-bam65wud' -> 'D:\\\\Project\\\\CAPSTONES\\\\VGAR\\\\data\\\\repositories\\\\trees\\\\rebuilt\\\\e9f3fd01d112'",
+  "traceback": "Traceback (most recent call last):\n  File \"D:\\Project\\CAPSTONES\\VGAR\\src\\vgar\\evaluation\\retrieval\\worker.py\", line 147, in main\n    result = run_task(request, stages)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\Project\\CAPSTONES\\VGAR\\src\\vgar\\evaluation\\retrieval\\worker.py\", line 94, in run_task\n    tree_meta = extract_python_tree(provenance[\"cache_path\"], row[\"repo\"], row[\"base_commit\"], tree)\n                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\Project\\CAPSTONES\\VGAR\\src\\vgar\\evaluation\\retrieval\\graph_arm.py\", line 77, in extract_python_tree\n    partial.rename(destination)\n  File \"C:\\Program Files\\Python311\\Lib\\pathlib.py\", line 1175, in rename\n    os.rename(self, target)\nPermissionError: [WinError 5] Access is denied: 'D:\\\\Project\\\\CAPSTONES\\\\VGAR\\\\data\\\\repositories\\\\trees\\\\rebuilt\\\\.vgar-tree-partial-bam65wud' -> 'D:\\\\Project\\\\CAPSTONES\\\\VGAR\\\\data\\\\repositories\\\\trees\\\\rebuilt\\\\e9f3fd01d112'\n",
+  "phase": "EXTRACT_TREE",
+  "stages": [
+    {
+      "phase": "TOKENIZER",
+      "duration_seconds": 0.5093233999941731,
+      "peak_rss_bytes": 194367488
+    },
+    {
+      "phase": "LOAD_SOURCE",
+      "duration_seconds": 0.6245672000004561,
+      "peak_rss_bytes": 194367488
+    },
+    {
+      "phase": "EXTRACT_TREE",
+      "duration_seconds": 1.672728300000017,
+      "peak_rss_bytes": 194367488
+    },
+    {
+      "phase": "WRITE",
+      "duration_seconds": 0.0016399999949499033,
+      "peak_rss_bytes": 194367488
+    }
+  ],
+  "peak_rss_bytes": 194367488,
+  "complete": true,
+  "ended_utc": "2026-10-07T02:27:41.591959+00:00",
+  "duration_seconds": 3.118276200002583
+}
