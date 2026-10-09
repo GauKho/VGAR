@@ -74,15 +74,11 @@ def create_local_chat_model(
     model_generation_config.top_p = 1.0
     model_generation_config.top_k = 50
 
-    construction_config = deepcopy(
-        model_generation_config
-    )
-
+    
     generation_pipeline = pipeline(
         task="text-generation",
         model=model,
         tokenizer=tokenizer,
-        generation_config=construction_config,
         return_full_text=False,
         clean_up_tokenization_spaces=False,
     )

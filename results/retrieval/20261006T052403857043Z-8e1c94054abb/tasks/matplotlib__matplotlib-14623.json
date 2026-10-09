@@ -1,7 +1,0 @@
-{
-  "instance_id": "matplotlib__matplotlib-14623",
-  "status": "FAILED",
-  "error_class": "GraphError",
-  "error": "Source file set differs from graph snapshot; rebuild graph",
-  "duration_seconds": 17.945056000000477
-}

@@ -1,8 +1,10 @@
 from __future__ import annotations
 
 from vgar.agents.state import VGARState
+from vgar.observability.instrumentation import instrument_node
 
 
+@instrument_node("initialize")
 def initialize_task(state: VGARState) -> dict:
     task_id = state.get("task_id")
     repo_path = state.get("repo_path")

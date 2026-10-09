@@ -1,7 +1,0 @@
-{
-  "instance_id": "pylint-dev__pylint-6386",
-  "status": "FAILED",
-  "error_class": "GraphValidationError",
-  "error": "Invalid graph document:\n- duplicate edge id: sha256:8ebedb794e2918e78ab0c78081a7c418e1c244d9dda54940e642110a39465fe7",
-  "duration_seconds": 10.403591799999958
-}

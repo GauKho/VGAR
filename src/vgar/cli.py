@@ -23,7 +23,10 @@ from contextlib import contextmanager
 from dataclasses import replace
 from pathlib import Path
 
+from vgar.observability.phase_logger import emit, new_run_id, phase, summarize
+
 from langchain_core.messages import AIMessage, BaseMessage, HumanMessage, ToolMessage
+from langchain_core.callbacks import BaseCallbackHandler
 
 from vgar.agents.runtime import index_repo
 from vgar.config.settings import Settings, get_settings
@@ -31,18 +34,41 @@ from vgar.config.settings import Settings, get_settings
 
 # ----------------------------------------------------------------- shared helpers
 @contextmanager
-def sandbox(repo: Path, settings: Settings, keep: bool = False):
+def sandbox(
+    repo: Path,
+    settings: Settings,
+    keep: bool = False,
+    *,
+    run_id: str | None = None,
+):
     """Index `repo`, copy it to a disposable workspace, yield (settings, lease)."""
     from vgar.repair.workspace import create_workspace
 
+    run_id = run_id or new_run_id()
     work = Path(tempfile.mkdtemp(prefix="vgar-cli-"))
     try:
-        nodes = index_repo(repo, work / "graph.db")
-        print(f"[index] {nodes} nodes -> {work / 'graph.db'}")
+        with phase(
+            "index_repository",
+            run_id,
+            {"repo": str(repo), "graph_db": str(work / "graph.db")},
+        ) as log_output:
+            nodes = index_repo(repo, work / "graph.db")
+            print(f"[index] {nodes} nodes -> {work / 'graph.db'}", flush=True)
+            log_output({"node_count": nodes, "graph_db": str(work / "graph.db")})
+
         sandboxed = replace(settings, graph=replace(settings.graph, backend="sqlite", database=work / "graph.db"))
-        with create_workspace(repo, work / "ws") as lease:
-            print(f"[workspace] {lease.path}")
-            yield sandboxed, lease
+        with phase(
+            "create_workspace",
+            run_id,
+            {"source_repo": str(repo), "workspace_root": str(work / "ws")},
+        ) as log_output:
+            with create_workspace(repo, work / "ws") as lease:
+                print(f"[workspace] {lease.path}", flush=True)
+                log_output({
+                    "workspace": str(lease.path),
+                    "source_hash_before": getattr(lease, "source_hash_before", None),
+                })
+                yield sandboxed, lease
     finally:
         if keep:
             print(f"[kept] {work}")
@@ -50,9 +76,70 @@ def sandbox(repo: Path, settings: Settings, keep: bool = False):
             shutil.rmtree(work, ignore_errors=True)
 
 
-async def build_agent(settings: Settings):
+async def build_agent(settings: Settings, *, run_id: str | None = None):
     from vgar.agents.core import create_core_agent
-    return await create_core_agent(settings)
+    run_id = run_id or new_run_id()
+    with phase("build_agent", run_id, {"settings_type": type(settings).__name__}) as log_output:
+        agent = await create_core_agent(settings, run_id=run_id)
+        log_output({"agent_type": type(agent).__name__})
+        return agent
+
+
+class AgentDebugCallback(BaseCallbackHandler):
+    """Duck-typed LangChain callback handler; logs LLM/tool lifecycle live."""
+    def __init__(self, run_id: str):
+        self.run_id = run_id
+
+    def on_llm_start(self, serialized, prompts, **kwargs):
+        emit(
+            "LLM_START",
+            run_id=self.run_id,
+            phase="model_call",
+            model=(serialized or {}).get("name") or (serialized or {}).get("id"),
+            prompt_count=len(prompts or []),
+            prompt_chars=[len(p) for p in (prompts or [])],
+        )
+
+    def on_chat_model_start(self, serialized, messages, **kwargs):
+        emit(
+            "LLM_START",
+            run_id=self.run_id,
+            phase="model_call",
+            model=(serialized or {}).get("name") or (serialized or {}).get("id"),
+            message_batches=len(messages or []),
+            message_counts=[len(batch) for batch in (messages or [])],
+        )
+
+    def on_llm_end(self, response, **kwargs):
+        emit("LLM_END", run_id=self.run_id, phase="model_call", status="OK")
+
+    def on_llm_error(self, error, **kwargs):
+        emit(
+            "LLM_ERROR", run_id=self.run_id, phase="model_call",
+            error_type=type(error).__name__, error_message=str(error),
+        )
+
+    def on_tool_start(self, serialized, input_str, **kwargs):
+        emit(
+            "TOOL_START",
+            run_id=self.run_id,
+            phase=(serialized or {}).get("name", "tool"),
+            input_contract={"input": input_str[:500]},
+        )
+
+    def on_tool_end(self, output, **kwargs):
+        emit(
+            "TOOL_END",
+            run_id=self.run_id,
+            phase="tool",
+            output_contract={"output": str(output)[:500]},
+        )
+
+    def on_tool_error(self, error, **kwargs):
+        emit(
+            "TOOL_ERROR", run_id=self.run_id, phase="tool",
+            error_type=type(error).__name__, error_message=str(error),
+        )
 
 
 def task_prompt(query: str, workspace: Path, selector: str | None) -> str:
@@ -109,31 +196,83 @@ async def cmd_run(args: argparse.Namespace) -> int:
     from vgar.repair.test_runner import run_tests
     from vgar.repair.workspace import fingerprint_source
 
+    run_id = new_run_id()
     repo = Path(args.repo).resolve()
     settings = get_settings()
-    before = fingerprint_source(repo)
-    with sandbox(repo, settings, args.keep) as (s, lease):
-        agent = await build_agent(s)
-        result = await agent.ainvoke(
-            {"messages": [HumanMessage(content=task_prompt(args.query, lease.path, args.selector))]},
-            config={"recursion_limit": s.agent.recursion_limit},
-        )
-        messages = result["messages"]
-        print("\n--- tool trace ---")
+    with phase("fingerprint_source_before", run_id, {"repo": str(repo)}) as log_output:
+        before = fingerprint_source(repo)
+        log_output({"fingerprint_available": before is not None})
+
+    with sandbox(repo, settings, args.keep, run_id=run_id) as (s, lease):
+        agent = await build_agent(s, run_id=run_id)
+        callback = AgentDebugCallback(run_id)
+        prompt = task_prompt(args.query, lease.path, args.selector)
+        with phase(
+            "agent_ainvoke",
+            run_id,
+            {
+                "query": args.query,
+                "repo": str(lease.path),
+                "selector": args.selector,
+                "prompt_chars": len(prompt),
+                "recursion_limit": s.agent.recursion_limit,
+            },
+        ) as log_output:
+            result = await agent.ainvoke(
+                {"messages": [HumanMessage(content=prompt)]},
+                config={
+                    "recursion_limit": s.agent.recursion_limit,
+                    "callbacks": [callback],
+                    "metadata": {"vgar_run_id": run_id},
+                },
+            )
+            messages = result["messages"]
+            log_output({
+                "message_count": len(messages),
+                "message_types": [type(m).__name__ for m in messages],
+                "final_answer_chars": len(final_text(messages)),
+            })
+
+        print("\n--- tool trace ---", flush=True)
         calls = print_trace(messages)
-        print(f"\nagent says: {final_text(messages)[:500]}")
+        print(f"\nagent says: {final_text(messages)[:500]}", flush=True)
 
         ok = True
         if calls > s.agent.max_tool_calls:
-            print(f"[WARN] {calls} tool calls > budget {s.agent.max_tool_calls}")
+            print(f"[WARN] {calls} tool calls > budget {s.agent.max_tool_calls}", flush=True)
         if args.selector:  # never trust the agent's own claim
-            verdict = run_tests(lease.path, (args.selector,), 120)
-            ok = verdict.status == "PASS"
-            print(f"[verify] independent pytest: {verdict.status}")
-        changed = fingerprint_source(lease.path) != lease.source_hash_before
-        print(f"[verify] workspace modified: {changed}")
-    untouched = fingerprint_source(repo) == before
-    print(f"[verify] source repo untouched: {untouched}")
+            with phase(
+                "independent_verification",
+                run_id,
+                {"workspace": str(lease.path), "selectors": [args.selector], "timeout_seconds": 120},
+            ) as log_output:
+                verdict = run_tests(lease.path, (args.selector,), 120)
+                ok = verdict.status == "PASS"
+                log_output({
+                    "status": verdict.status,
+                    "passed": getattr(verdict, "passed", None),
+                    "failed": getattr(verdict, "failed", None),
+                    "exit_code": getattr(verdict, "returncode", None),
+                })
+                print(f"[verify] independent pytest: {verdict.status}", flush=True)
+
+        with phase("workspace_change_check", run_id, {"workspace": str(lease.path)}) as log_output:
+            changed = fingerprint_source(lease.path) != lease.source_hash_before
+            log_output({"workspace_modified": changed})
+            print(f"[verify] workspace modified: {changed}", flush=True)
+
+    with phase("source_repo_integrity_check", run_id, {"repo": str(repo)}) as log_output:
+        untouched = fingerprint_source(repo) == before
+        log_output({"source_repo_untouched": untouched})
+        print(f"[verify] source repo untouched: {untouched}", flush=True)
+    emit(
+        "RUN_END",
+        run_id=run_id,
+        phase="run",
+        status="OK" if ok and untouched else "FAILED",
+        verified=ok,
+        source_repo_untouched=untouched,
+    )
     return 0 if ok and untouched else 1
 
 
@@ -142,14 +281,32 @@ async def cmd_solve(args: argparse.Namespace) -> int:
     from vgar.agents.runtime import Runtime
     from vgar.agents.workflow import run_task
 
-    state = await run_task(
-        repo=Path(args.repo).resolve(),
-        issue_text=args.query,
-        selectors=args.selector,
-        runtime=Runtime(keep_workspace=args.keep),
-    )
+    run_id = new_run_id()
+    with phase(
+        "solve_workflow",
+        run_id,
+        {
+            "repo": str(Path(args.repo).resolve()),
+            "query": args.query,
+            "selectors": args.selector,
+            "keep_workspace": args.keep,
+        },
+    ) as log_output:
+        state = await run_task(
+            repo=Path(args.repo).resolve(),
+            issue_text=args.query,
+            selectors=args.selector,
+            runtime=Runtime(keep_workspace=args.keep),
+        )
+        log_output({
+            "status": state.get("status"),
+            "attempts": state.get("attempts", 0),
+            "tool_call_count": state.get("tool_call_count", 0),
+            "evidence_keys": list((state.get("evidence") or {}).keys()),
+            "failure_reason": state.get("failure_reason"),
+        })
     print(f"[status] {state['status']} after {state.get('attempts', 0)} attempt(s), "
-          f"{state.get('tool_call_count', 0)} tool call(s)")
+          f"{state.get('tool_call_count', 0)} tool call(s)", flush=True)
     print(json.dumps(state.get("evidence", {}), indent=2, ensure_ascii=False, default=str))
     if state.get("failure_reason"):
         print(f"[reason] {state['failure_reason']}")

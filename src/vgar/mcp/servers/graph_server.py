@@ -6,6 +6,8 @@ from typing import Any
 
 from mcp.server.fastmcp import FastMCP
 
+from vgar.observability.instrumentation import instrument_mcp_tool
+
 from vgar.graph.factory import create_graph_service
 from vgar.mcp.audit import AuditLogger
 from vgar.mcp.tooling import audit_resource, run_tool
@@ -40,6 +42,7 @@ def _resource(resource: str, **fields: Any):
 
 
 @mcp.tool()
+@instrument_mcp_tool("search_symbols")
 def search_symbols(query: str, limit: int = 20) -> dict[str, Any]:
     """Search repository symbols. Returns the VGAR envelope; data = {query, limit, symbols}."""
 
@@ -59,6 +62,7 @@ def search_symbols(query: str, limit: int = 20) -> dict[str, Any]:
 
 
 @mcp.tool()
+@instrument_mcp_tool("get_callers")
 def get_callers(symbol_id: str, depth: int = 1) -> dict[str, Any]:
     """Return direct callers of a symbol. depth is reserved for W5-W6 traversal (only 1 is applied)."""
 
@@ -78,6 +82,7 @@ def get_callers(symbol_id: str, depth: int = 1) -> dict[str, Any]:
 
 
 @mcp.tool()
+@instrument_mcp_tool("get_callees")
 def get_callees(symbol_id: str, depth: int = 1) -> dict[str, Any]:
     """Return direct callees of a symbol. depth is reserved for W5-W6 traversal (only 1 is applied)."""
 

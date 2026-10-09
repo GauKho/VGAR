@@ -14,6 +14,9 @@ python-dotenv>=1.0
 tree-sitter==0.25.2
 tree-sitter-python==0.25.0
 pyarrow==23.0.1
+datasets==4.8.5
+peft<1,>=0.18
+trl<1,>=0.24
 
 [dev]
 pytest<9,>=8

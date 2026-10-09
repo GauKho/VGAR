@@ -8,6 +8,8 @@ from typing import Any
 
 from mcp.server.fastmcp import FastMCP
 
+from vgar.observability.instrumentation import instrument_mcp_tool
+
 mcp = FastMCP("vgar-execution")
 
 
@@ -19,11 +21,13 @@ def _root(repo_path: str) -> Path:
 
 
 @mcp.tool()
+@instrument_mcp_tool("health")
 def health() -> dict[str, Any]:
     return {"status": "OK", "server": "execution", "phase": "W3-W4-repair"}
 
 
 @mcp.tool()
+@instrument_mcp_tool("run_pytest")
 def run_pytest(repo_path: str, selector: str, timeout_seconds: int = 30) -> dict[str, Any]:
     """Run one bounded pytest selector inside the supplied disposable workspace."""
     if not selector or selector.startswith("-") or "\n" in selector or "\r" in selector:

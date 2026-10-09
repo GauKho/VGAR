@@ -4,6 +4,7 @@ from pathlib import Path
 
 from vgar.agents.runtime import Runtime
 from vgar.agents.state import VGARState
+from vgar.observability.instrumentation import instrument_node
 from vgar.repair.test_runner import run_tests
 from vgar.repair.workspace import fingerprint_source
 
@@ -14,6 +15,7 @@ def _not_run() -> dict:
     return {"status": "NOT_RUN"}
 
 
+@instrument_node("verify")
 def verify(state: VGARState, runtime: Runtime) -> dict:
     """Independent evidence: never trusts what the agent says about its own patch."""
     workspace = Path(state["workspace_path"])

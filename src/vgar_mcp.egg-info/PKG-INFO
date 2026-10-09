@@ -18,5 +18,8 @@ Requires-Dist: python-dotenv>=1.0
 Requires-Dist: tree-sitter==0.25.2
 Requires-Dist: tree-sitter-python==0.25.0
 Requires-Dist: pyarrow==23.0.1
+Requires-Dist: datasets==4.8.5
+Requires-Dist: peft<1,>=0.18
+Requires-Dist: trl<1,>=0.24
 Provides-Extra: dev
 Requires-Dist: pytest<9,>=8; extra == "dev"

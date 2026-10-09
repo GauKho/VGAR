@@ -6,6 +6,7 @@ from langchain_core.messages import AIMessage, HumanMessage
 
 from vgar.agents.runtime import Runtime
 from vgar.agents.state import VGARState
+from vgar.observability.instrumentation import instrument_node
 
 
 def _first_prompt(state: VGARState) -> str:
@@ -41,6 +42,7 @@ def _count_tool_calls(messages: list) -> int:
     return sum(len(m.tool_calls or []) for m in messages if isinstance(m, AIMessage))
 
 
+@instrument_node("repair")
 async def repair(state: VGARState, runtime: Runtime) -> dict:
     """The only LLM node: one agent run (possibly several tool calls)."""
     attempt = state.get("attempts", 0) + 1

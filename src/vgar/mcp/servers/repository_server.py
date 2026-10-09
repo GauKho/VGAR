@@ -6,6 +6,8 @@ from typing import Any
 
 from mcp.server.fastmcp import FastMCP
 
+from vgar.observability.instrumentation import instrument_mcp_tool
+
 from vgar.repair.workspace import safe_relative_path
 
 mcp = FastMCP("vgar-repository")
@@ -19,11 +21,13 @@ def _root(repo_path: str) -> Path:
 
 
 @mcp.tool()
+@instrument_mcp_tool("health")
 def health() -> dict[str, Any]:
     return {"status": "OK", "server": "repository", "phase": "W3-W4-repair"}
 
 
 @mcp.tool()
+@instrument_mcp_tool("read_file")
 def read_file(repo_path: str, path: str) -> dict[str, Any]:
     root = _root(repo_path)
     relative = safe_relative_path(path)
@@ -36,6 +40,7 @@ def read_file(repo_path: str, path: str) -> dict[str, Any]:
 
 
 @mcp.tool()
+@instrument_mcp_tool("apply_patch")
 def apply_patch(repo_path: str, path: str, old_text: str, new_text: str) -> dict[str, Any]:
     """Apply one exact textual edit. This is intentionally narrower than arbitrary shell editing."""
     root = _root(repo_path)

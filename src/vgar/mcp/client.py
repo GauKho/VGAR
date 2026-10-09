@@ -7,6 +7,7 @@ from typing import Any
 from langchain_mcp_adapters.client import MultiServerMCPClient
 
 from vgar.config.settings import SECRET_KEYS, Settings, get_settings
+from vgar.observability.instrumentation import current_run_id
 
 SERVER_NAMES = ("graph", "repository", "execution")
 
@@ -21,6 +22,10 @@ def _child_env(settings: Settings) -> dict[str, str]:
 def create_mcp_client(settings: Settings | None = None) -> MultiServerMCPClient:
     settings = settings or get_settings()
     env = _child_env(settings)
+    # Bind MCP subprocess logs to the workflow invocation that created the agent.
+    run_id = current_run_id()
+    if run_id:
+        env["VGAR_TRACE_RUN_ID"] = run_id
 
     connections = {
         name: {

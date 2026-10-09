@@ -11,6 +11,8 @@ never depends on what the agent claims.
 from __future__ import annotations
 
 from pathlib import Path
+import time
+import uuid
 
 from langgraph.graph import END, START, StateGraph
 
@@ -25,6 +27,7 @@ from vgar.agents.nodes import (
 from vgar.agents.routes import route_after_repair, route_after_verify
 from vgar.agents.runtime import Runtime, cleanup_work_dir, new_work_dir
 from vgar.agents.state import VGARState
+from vgar.observability.instrumentation import emit, trace_run
 
 
 def build_workflow(runtime: Runtime | None = None):
@@ -75,21 +78,56 @@ async def run_task(
     runtime = runtime or Runtime()
     max_iterations = runtime.base_settings().agent.max_iterations
     work_dir = new_work_dir()
+    run_id = uuid.uuid4().hex
+    started = time.perf_counter()
+    initial_state = {
+        "task_id": task_id,
+        "repo_path": str(Path(repo).resolve()),
+        "issue_text": issue_text,
+        "failing_tests": list(selectors),
+        "max_iterations": max_iterations,
+        "work_dir": str(work_dir),
+    }
+    emit(
+        "WORKFLOW_START",
+        run_id=run_id,
+        task_id=task_id,
+        repo_path=str(Path(repo).resolve()),
+        failing_tests=list(selectors),
+        max_iterations=max_iterations,
+        initial_state=initial_state,
+    )
     try:
-        return await build_workflow(runtime).ainvoke(
-            {
-                "task_id": task_id,
-                "repo_path": str(Path(repo).resolve()),
-                "issue_text": issue_text,
-                "failing_tests": list(selectors),
-                "max_iterations": max_iterations,
-                "work_dir": str(work_dir),
-            },
-            # initialize + prepare + (repair + verify) * N + final, with headroom
-            config={"recursion_limit": 6 + 2 * max_iterations},
+        with trace_run(run_id):
+            result = await build_workflow(runtime).ainvoke(
+                initial_state,
+                # initialize + prepare + (repair + verify) * N + final, with headroom
+                config={"recursion_limit": 6 + 2 * max_iterations},
+            )
+        emit(
+            "WORKFLOW_END",
+            run_id=run_id,
+            duration_ms=round((time.perf_counter() - started) * 1000),
+            status=result.get("status"),
+            attempts=result.get("attempts"),
+            tool_call_count=result.get("tool_call_count"),
+            evidence=result.get("evidence"),
+            failure_reason=result.get("failure_reason"),
         )
+        return result
+    except Exception as exc:
+        emit(
+            "WORKFLOW_ERROR",
+            run_id=run_id,
+            duration_ms=round((time.perf_counter() - started) * 1000),
+            exception=type(exc).__name__,
+            message=str(exc),
+        )
+        raise
     finally:
+        emit("WORKFLOW_CLEANUP_START", run_id=run_id, work_dir=str(work_dir), keep=runtime.keep_workspace)
         cleanup_work_dir(work_dir, runtime.keep_workspace)
+        emit("WORKFLOW_CLEANUP_END", run_id=run_id, duration_ms=round((time.perf_counter() - started) * 1000))
 
 
 app = build_workflow()

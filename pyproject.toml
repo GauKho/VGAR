@@ -29,6 +29,9 @@ dependencies = [
     "tree-sitter-python==0.25.0",
 
     "pyarrow==23.0.1",
+    "datasets==4.8.5",
+    "peft>=0.18,<1",
+    "trl>=0.24,<1",
 ]
 
 [project.scripts]

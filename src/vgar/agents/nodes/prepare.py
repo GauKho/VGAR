@@ -5,9 +5,11 @@ from pathlib import Path
 
 from vgar.agents.runtime import Runtime, index_repo
 from vgar.agents.state import VGARState
+from vgar.observability.instrumentation import instrument_node
 from vgar.repair.workspace import create_workspace
 
 
+@instrument_node("prepare_workspace")
 def prepare_workspace(state: VGARState, runtime: Runtime) -> dict:
     """Index the source repo and copy it to a disposable workspace.
 
