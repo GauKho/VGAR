@@ -1,24 +1,24 @@
 # M1 graph contract
 
-Milestone 1 update: 2026-10-03. The user approved this current graph reference
-for the integrated checkout; baseline approval is tracked in
+Graph reference for M1. Earlier milestone decisions are tracked in
 [M1 decision log](m1_contract_decision_log.md). Historical documents in the
 sibling docs/plans directory remain evidence of earlier checkpoints.
 
 Implementation: `src/vgar/contracts/schema.py`, `src/vgar/graph/builder.py` and
-`src/vgar/graph/sqlite_store.py`. This document describes the integrated tree as
-of 2026-10-01. M1 owns graph construction, persistence, queries and retrieval;
-M3 consumes graph DTOs and owns MCP transport. Endpoint additions for nested
-definitions inside tests are recorded below for shared-contract review.
+`src/vgar/graph/sqlite_store.py`. M1 owns graph construction, persistence,
+queries and retrieval; M3 consumes graph DTOs and owns MCP transport.
+Endpoint additions for nested definitions inside tests are recorded below
+for shared-contract review.
 
 ## Snapshot and fields
 
 A graph document has `repo_key`, `repository_revision`, `graph_version`,
 `nodes`, `edges` and `statistics`. There is no public `schema_version`.
 `graph_version` identifies a snapshot: SHA-256 over repo key, supplied revision,
-resolver mode/profile, sorted repository-relative Python paths and source bytes.
-The lexical resolver profile is `lexical-v2`; `--no-jedi` produces a different
-snapshot from the Jedi-enabled configuration. It is not a schema version.
+resolver/range profiles, source roots, sorted repository-relative Python paths
+and source bytes. The resolver profile is `tree-sitter+python-static-v2` and the
+file-range profile is `full-bytes-v1`. The builder does not use Jedi. These
+profiles are not schema versions.
 For an uncommitted checkout, record the base commit and dirty status alongside
 the supplied revision rather than presenting the revision as a clean commit.
 
@@ -28,6 +28,9 @@ Source-backed ranges contain `start_line`, `start_col`, `end_line`, `end_col`,
 `start_byte` and `end_byte`: lines are one-based; columns and byte offsets are
 zero-based UTF-8 offsets; the end is exclusive. Paths use repository-relative
 POSIX separators. An external module has no source path/range/hash.
+
+File and source-backed Module ranges cover the full file bytes, including
+leading whitespace, and their content hashes cover the same bytes.
 
 Each edge contains `id`, `type`, `source_id`, `target_id`, `confidence`,
 `resolution`, `provenance`, `properties` and `graph_version`. Provenance records
@@ -46,7 +49,7 @@ heuristic strength, not a calibrated probability.
 | Class | Class definition, bases, decorators, abstract flag |
 | Function | Function outside a class, including nested functions |
 | Method | Function directly inside a class; owner ID and method kind |
-| Test | `test_*` function directly in a module/class; framework and command hint |
+| Test | `test_*` function directly in a module/class in a test path; framework and command hint |
 | Import | Module-level import item, imported name, alias and resolution status |
 | CallSite | Call inside a function/method/test, callee expression and candidate count |
 | Issue | Task-local sidecar emitted by M1 TaskOverlayBuilder; not added to base snapshot |
@@ -54,7 +57,7 @@ heuristic strength, not a calibrated probability.
 Test detection remains name-based and assumes pytest; a `test_*` helper nested
 inside a callable is a Function. Imports inside functions are not extracted as
 Import nodes yet, but their lexical bindings block incorrect module-name
-resolution and Jedi may resolve their calls.
+resolution; their calls may remain unresolved.
 
 | Edge | Endpoint semantics |
 |---|---|
@@ -81,13 +84,16 @@ This does not measure runtime coverage.
 - Module: `vgar:{repo_key}:python:module:{path}:{module_name}`; external modules
   use `vgar:{repo_key}:python:module:external:{module_name}`.
 - Class/Function/Method/Test: `vgar:{repo_key}:python:{kind}:{path}:{qualified_name}`.
+- Repeated definitions and property accessors may have additional ID suffixes
+  to distinguish nodes with the same qualified name.
 - Import and CallSite IDs additionally encode source location/occurrence using
   the builder's deterministic rules. These occurrence IDs may change after
   edits within a function or import statement.
 - Edge ID: SHA-256 of edge type, source ID, target ID and rule ID, separated by NUL.
 
-Named symbol IDs survive body-only edits while path/name remain unchanged;
-rename/move changes identity. IDs are scoped by repo key. Source roots default
+Named symbol IDs without occurrence suffixes survive body-only edits while
+path/name remain unchanged; rename/move changes identity. IDs are scoped by
+repo key. Source roots default
 to `src`; qualified names remove that prefix and package `__init__` suffix.
 
 ## Resolution and validation
@@ -95,8 +101,9 @@ to `src`; qualified names remove that prefix and package `__init__` suffix.
 The resolver consults Python lexical symbol tables before module definitions.
 Nested callable/class definitions can shadow globals; parameters, assignments
 and local imports prevent a confident same-name module fallback. Closure
-lookup skips class namespaces. Jedi is consulted for unresolved candidates and
-must map to one internal graph symbol. Unresolved calls remain CallSite nodes
+lookup skips class namespaces. Explicit parameter annotations can resolve
+method calls when they map to an internal class and the parameter is not
+reassigned. Unresolved calls remain CallSite nodes
 with `candidate_count=0`; no fabricated target node is created.
 
 | Binding | Confidence |
@@ -105,7 +112,7 @@ with `candidate_count=0`; no fabricated target node is created.
 | Same lexical/module scope, direct import, known constructor | 0.95 |
 | Dotted import | 0.9 |
 | Inheritance | 0.9 |
-| Jedi target | 0.85 |
+| Method on an explicitly typed internal-class parameter | 0.85 |
 | `self`/`cls` method | 0.8 |
 | Unique top-level repository-name fallback | 0.6 |
 
@@ -128,8 +135,15 @@ relationship and filter confidence (store default 0.60). Importers similarly
 project `Module → Import → Module`.
 
 Raw subgraph depth counts stored edges, not semantic caller/callee hops. Current
-subgraph limits are depth 0–5 and node limit 1–1000. MCP depth semantics belong
-to M3 and have not been changed by this fix.
+subgraph limits are depth 0–5 and node limit 1–1000. MCP caller/callee tools
+return direct relationships; their depth argument does not enable multi-hop
+queries.
+
+Task grounding and context retrieval take an explicit `graph_version` and
+`task_id`. Task overlays are request-local. Context retrieval uses semantic
+hops, verifies source bytes against the snapshot and requires a repository
+root and a verified local tokenizer. Legacy SQLite snapshots without stored
+source ranges must be rebuilt before context retrieval.
 
 Graph query errors use the existing shared error classes/fixtures, including
 invalid query/limit, unknown symbol/node and graph-not-ready outcomes.
@@ -177,6 +191,8 @@ validity and stability for that run, not graph precision/recall.
 Task grounding and task-local overlays are implemented in `vgar.graph.grounding`
 and `vgar.graph.task_overlay`; see `docs/retrieval_design.md`. M1 semantic retrieval
 and source-verified packing now live in `vgar.graph.retrieval`; see
-[method](m1_retrieval_method.md). Standalone official tokenizer configuration/
-token accounting has passed [acceptance](m1_tokenizer_acceptance.md) with 95 tests.
-Benchmark retrieval evaluation and M2/M3 integration remain subsequent work.
+[method](m1_retrieval_method.md). Standalone tokenizer configuration and token
+accounting are described in [acceptance](m1_tokenizer_acceptance.md).
+MCP exposes task grounding and budgeted context retrieval through graph tools.
+Benchmark scripts compare graph retrieval with BM25; results depend on the
+selected task population and repository snapshot.

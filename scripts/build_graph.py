@@ -15,17 +15,12 @@ def main() -> None:
     parser.add_argument("output", help="Destination graph JSON")
     parser.add_argument("--repo-key", required=True)
     parser.add_argument("--revision", required=True)
-    parser.add_argument(
-        "--no-jedi",
-        action="store_true",
-        help="Disable optional Jedi static-analysis enrichment.",
-    )
     args = parser.parse_args()
 
     builder = PythonGraphBuilder(
         repo_key=args.repo_key,
         repository_revision=args.revision,
-        use_jedi=not args.no_jedi,
+
     )
     document = builder.build(args.repository)
 

@@ -1,0 +1,11 @@
+# Standalone W5-W6 runtime; install with pip -r, without the full model stack.
+tree-sitter==0.25.2
+tree-sitter-python==0.25.0
+tokenizers==0.22.1
+pydantic==2.14.0
+python-dotenv==1.2.4
+mcp==1.30.0
+langchain-core==1.6.9
+langchain-mcp-adapters==0.3.2
+pytest==8.4.2
+pyarrow==23.0.1

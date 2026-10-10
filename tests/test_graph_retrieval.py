@@ -30,7 +30,7 @@ class GraphRetrievalTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.graph = PythonGraphBuilder(repo_key="demo/retrieval", repository_revision="fixture",
-                                       use_jedi=False).build(SAMPLE)
+                                       ).build(SAMPLE)
 
     def retriever(self, graph=None, root=SAMPLE, **kwargs):
         return GraphContextRetriever(graph or self.graph, root,
@@ -131,7 +131,7 @@ class GraphRetrievalTests(unittest.TestCase):
             root = Path(directory)
             (root / "demo.py").write_text(
                 "def a():\n    b()\n\ndef b():\n    c()\n\ndef c():\n    a()\n", encoding="utf-8")
-            graph = PythonGraphBuilder(repo_key="demo/cycle", repository_revision="fixture", use_jedi=False).build(root)
+            graph = PythonGraphBuilder(repo_key="demo/cycle", repository_revision="fixture").build(root)
             result = self.retriever(graph, root, config=RetrievalConfig(max_hops=1)).retrieve([self.node_id("a", graph=graph)], 1000)
             self.assertEqual(len({item["node_id"] for item in result.candidates}), len(result.candidates))
             self.assertTrue(all(item["graph_distance"] <= 1 for item in result.candidates))
@@ -166,6 +166,81 @@ class GraphRetrievalTests(unittest.TestCase):
         self.assertEqual(exact.items[0].snippet, full.items[0].snippet)
         ContextPayload.model_validate_json(exact.model_dump_json())
 
+    def test_many_anchors_leave_room_for_a_callee(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "demo.py").write_text(
+                "def a(): return z_target()\ndef z_target(): return 1\n"
+                + "".join(f"def noise_{i}(): pass\n" for i in range(8)), encoding="utf-8",
+            )
+            graph = PythonGraphBuilder(repo_key="demo/quota", repository_revision="fixture").build(root)
+            starts = [node["id"] for node in graph["nodes"] if node["type"] == "Function"
+                      and node["name"] != "z_target"]
+            retriever = self.retriever(graph, root, config=RetrievalConfig(max_candidates=4, max_hops=1))
+            include = lambda node: node["type"] == "Function"
+            result = retriever.retrieve(starts, 1000, include=include)
+            target = next(item for item in result.candidates if item["symbol"] == "demo.z_target")
+            self.assertEqual(target["graph_distance"], 1)
+            self.assertTrue(any("CALLS:" in reason for reason in target["graph_rationale"]))
+            self.assertLessEqual(len(result.candidates), 4)
+            self.assertTrue(result.traversal_limited)
+            reverse = retriever.retrieve(list(reversed(starts)), 1000, include=include)
+            self.assertEqual(asdict(result), asdict(reverse))
+
+    def test_file_anchor_reaches_class_methods_in_one_semantic_hop(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "app.py").write_text(
+                "class Service:\n    def convert_date(self): return 1\n", encoding="utf-8")
+            graph = PythonGraphBuilder(repo_key="demo/file-scope", repository_revision="fixture").build(root)
+            file_id = self.node_id("app.py", "File", graph)
+            result = self.retriever(graph, root, config=RetrievalConfig(max_hops=1)).retrieve(
+                [file_id], 1000, include=lambda node: node["type"] == "Method")
+            self.assertEqual([c["symbol"] for c in result.candidates], ["app.Service.convert_date"])
+            self.assertEqual(result.candidates[0]["graph_distance"], 1)
+            self.assertTrue(any("SOURCE_CONTAINS:" in r for r in result.candidates[0]["graph_rationale"]))
+
+    def test_weak_anchor_distance_credit_and_issue_template_invariance(self) -> None:
+        overlay = TaskOverlayBuilder(self.graph).build("weak", "login fails")
+        result = self.retriever().retrieve([self.node_id("login")], 1000, overlay=overlay)
+        login = next(c for c in result.candidates if c["node_id"] == self.node_id("login"))
+        self.assertEqual(login["features"]["graph_distance"], 0.4)
+        first = self.retriever().retrieve([self.node_id("login")], 1000, issue_text="login")
+        second = self.retriever().retrieve([self.node_id("login")], 1000,
+            issue_text="login <!-- unrelated narrative template --> https://example.com/login_handler")
+        self.assertEqual(first.candidates, second.candidates)
+
+    def test_filtered_test_anchor_does_not_consume_the_only_candidate_slot(self) -> None:
+        retriever = self.retriever(config=RetrievalConfig(max_candidates=1, max_hops=1))
+        result = retriever.retrieve([self.node_id("test_login", "Test")], 1000,
+                                   include=lambda node: node["type"] == "Function")
+        self.assertEqual([item["node_id"] for item in result.candidates], [self.node_id("login")])
+        self.assertEqual(result.candidates[0]["graph_distance"], 1)
+        self.assertEqual(result.context.items[0].symbol, "auth.service.login")
+
+    def test_test_namespace_filter_also_applies_to_seed_quota(self) -> None:
+        retriever = self.retriever(config=RetrievalConfig(max_candidates=1, max_hops=1))
+        result = retriever.retrieve([self.node_id("test_login", "Test")], 1000, include=lambda node: True)
+        self.assertEqual([item["node_id"] for item in result.candidates], [self.node_id("login")])
+
+    def test_zero_hops_uses_full_quota_for_anchors(self) -> None:
+        starts = [self.node_id("login"), self.node_id("login_handler")]
+        result = self.retriever(config=RetrievalConfig(max_candidates=2, max_hops=0)).retrieve(starts, 1000)
+        self.assertEqual({item["node_id"] for item in result.candidates}, set(starts))
+        self.assertFalse(result.traversal_limited)
+
+    def test_excluded_bridge_nodes_still_have_a_hard_limit(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "demo.py").write_text("".join(f"def f_{i}(): pass\n" for i in range(20)), encoding="utf-8")
+            graph = PythonGraphBuilder(repo_key="demo/bridges", repository_revision="fixture").build(root)
+            starts = [node["id"] for node in graph["nodes"] if node["type"] == "Function"]
+            retriever = self.retriever(graph, root, config=RetrievalConfig(max_candidates=1))
+            states, limited = retriever._walk(starts, {}, include=lambda node: False)
+            self.assertLessEqual(len(states), 4)
+            self.assertTrue(limited)
+            self.assertEqual(retriever.retrieve(starts, 1000, include=lambda node: False).context.items, [])
+
     def test_oversized_candidate_does_not_block_later_smaller_candidate(self) -> None:
         result = self.retriever(count_tokens=lambda text: 10000 if "return bool(username" in text else 1).retrieve(
             [self.node_id("login")], 2)
@@ -188,11 +263,26 @@ class GraphRetrievalTests(unittest.TestCase):
             root = Path(directory)
             data = 'def café():\r\n    return "xin chào 👋"\r\n'.encode("utf-8")
             (root / "unicode.py").write_bytes(data)
-            graph = PythonGraphBuilder(repo_key="demo/unicode", repository_revision="fixture", use_jedi=False).build(root)
+            graph = PythonGraphBuilder(repo_key="demo/unicode", repository_revision="fixture").build(root)
             result = self.retriever(graph, root, config=RetrievalConfig(max_hops=0)).retrieve([self.node_id("café", graph=graph)], 1000)
             item = result.context.items[0]
             node = next(node for node in graph["nodes"] if node["id"] == item.node_id)
             self.assertEqual(item.snippet.encode("utf-8"), data[node["range"]["start_byte"]:node["range"]["end_byte"]])
+
+    def test_file_and_module_ranges_cover_leading_whitespace_and_full_hash(self) -> None:
+        for data in (b"\n\ndef login(): return 1\n", "\r\n\r\ndef café(): return 1\r\n".encode(), b"\n\n", b""):
+            with self.subTest(data=data), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                (root / "app.py").write_bytes(data)
+                graph = PythonGraphBuilder(repo_key="demo/full-file", repository_revision="fixture").build(root)
+                retriever = self.retriever(graph, root, config=RetrievalConfig(max_hops=0))
+                for node in graph["nodes"]:
+                    if node["type"] not in {"File", "Module"}:
+                        continue
+                    self.assertEqual(node["range"]["start_byte"], 0)
+                    self.assertEqual(node["range"]["end_byte"], len(data))
+                    result = retriever.retrieve([node["id"]], 1000)
+                    self.assertEqual(result.context.items[0].snippet.encode("utf-8"), data)
 
     def test_changed_deleted_and_added_sources_require_snapshot_refresh(self) -> None:
         for change in ("edit", "delete", "add"):

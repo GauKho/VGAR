@@ -12,7 +12,7 @@ def _build(root: Path) -> dict:
         repo_key="t/repo",
         repository_revision="rev",
         source_roots=("src",),
-        use_jedi=False,
+
     ).build(root)
 
 
@@ -78,8 +78,8 @@ def test_failing_file_is_isolated_and_rolled_back(
     assert stats["failed_file_count"] == 1
     assert stats["failed_files"][0]["path"] == "src/pkg/bad.py"
     assert stats["failed_files"][0]["error_type"] == "RuntimeError"
-    paths = {n["path"] for n in document["nodes"] if n["path"]}
-    assert paths == {"src/pkg/good.py"}  # no partial nodes from the failed file
+    paths = {n["path"] for n in document["nodes"] if n["path"] and n["type"] != "File"}
+    assert paths == {"src/pkg/good.py"}  # no partial symbols from the failed file
 
 
 def test_helpers_nested_in_tests_do_not_break_contract(tmp_path: Path) -> None:
@@ -122,7 +122,7 @@ def test_orphaned_class_from_failed_module_does_not_crash(
 
     assert document["statistics"]["failed_file_count"] == 1
     assert any("bad.py" in f["path"] for f in document["statistics"]["failed_files"])
-    paths = {n["path"] for n in document["nodes"] if n.get("path")}
+    paths = {n["path"] for n in document["nodes"] if n.get("path") and n["type"] != "File"}
     assert paths == {"src/pkg/good.py"}
     classes = [n for n in document["nodes"] if n["type"] == "Class"]
     class_names = {n["name"] for n in classes}
@@ -150,7 +150,104 @@ def test_orphaned_call_from_failed_module_does_not_crash(
     document = _build(tmp_path)
 
     assert document["statistics"]["failed_file_count"] == 1
-    paths = {n["path"] for n in document["nodes"] if n.get("path")}
+    paths = {n["path"] for n in document["nodes"] if n.get("path") and n["type"] != "File"}
     assert paths == {"src/pkg/good.py"}
     call_edges = [e for e in document["edges"] if e["type"] == "CALLS"]
     assert len(call_edges) >= 1
+
+
+def test_dotted_decorator_is_not_a_property_setter(tmp_path):
+    _write(tmp_path, "src/app.py", "@api.route('/login')\ndef login(): return 1\n")
+    document = _build(tmp_path)
+    function = next(n for n in document["nodes"] if n["type"] == "Function")
+    assert function["id"].endswith(":app.login")
+    assert document["statistics"]["renamed_duplicate_count"] == 0
+
+
+def test_commented_overloads_and_duplicate_definitions_keep_source_ranges(tmp_path):
+    _write(tmp_path, "src/app.py",
+           "from typing import overload\n@overload  # typing stub\ndef f(a: int): ...\n"
+           "def f(a): return 1\ndef f(a): return 2\n")
+    document = _build(tmp_path)
+    functions = [n for n in document["nodes"] if n["type"] == "Function"]
+    assert len(functions) == 2
+    assert len({n["id"] for n in functions}) == 2
+    assert document["statistics"]["skipped_overload_count"] == 1
+    assert document["statistics"]["failed_file_count"] == 0
+
+
+def test_failed_file_keeps_inventory_without_leaking_recorded_symbols(tmp_path, monkeypatch):
+    _write(tmp_path, "src/bad.py", "class Broken:\n    def run(self): return target()\n")
+    _write(tmp_path, "src/good.py", "def target(): return 1\ndef caller(): return target()\n")
+    original = PythonGraphBuilder._extract_call
+    def fail_after_record(self, node, source, module, *args, **kwargs):
+        original(self, node, source, module, *args, **kwargs)
+        if module.path.endswith('bad.py'):
+            raise RuntimeError("after call was recorded")
+    monkeypatch.setattr(PythonGraphBuilder, '_extract_call', fail_after_record)
+    builder = PythonGraphBuilder(repo_key='t/repo', repository_revision='rev')
+    document = builder.build(tmp_path)
+    assert not any('Broken' in key for key in builder.symbols_by_qualified_name)
+    assert all(call.path == 'src/good.py' for call in builder.calls)
+    failed = next(n for n in document['nodes'] if n['type'] == 'File' and n['path'] == 'src/bad.py')
+    assert failed['properties']['parse_status'] == 'failed'
+    from vgar.graph.retrieval import GraphContextRetriever
+    anchor = next(n['id'] for n in document['nodes'] if n['name'] == 'caller')
+    result = GraphContextRetriever(document, tmp_path, count_tokens=len, counter_label='test:chars').retrieve([anchor], 1000)
+    assert result.context.items
+
+
+def test_typed_receiver_reassignment_and_union_are_not_guessed(tmp_path):
+    _write(tmp_path, 'src/app.py',
+           'class Worker:\n    def execute(self): pass\n'
+           'def changed(worker: Worker):\n    worker = unknown\n    worker.execute()\n'
+           'def union(worker: Worker | None):\n    worker.execute()\n')
+    document = _build(tmp_path)
+    assert not [e for e in document['edges'] if e['type'] == 'CALLS']
+
+
+def test_shadowing_external_base_does_not_create_inheritance_self_loop(tmp_path):
+    _write(tmp_path, 'src/app.py', 'from external.parsers import Parser\nclass Parser(Parser):\n    pass\n')
+    document = _build(tmp_path)
+    assert document['statistics']['failed_file_count'] == 0
+    assert all(e['source_id'] != e['target_id'] for e in document['edges'])
+    assert not [e for e in document['edges'] if e['type'] == 'INHERITS']
+
+
+def test_shadowing_internal_base_uses_imported_class(tmp_path):
+    _write(tmp_path, 'src/base.py', 'class Parser: pass\n')
+    _write(tmp_path, 'src/app.py', 'from base import Parser\nclass Parser(Parser): pass\n')
+    document = _build(tmp_path)
+    nodes = {n['id']: n for n in document['nodes']}
+    edge = next(e for e in document['edges'] if e['type'] == 'INHERITS')
+    assert nodes[edge['source_id']]['qualified_name'] == 'app.Parser'
+    assert nodes[edge['target_id']]['qualified_name'] == 'base.Parser'
+
+
+def test_scope_indexing_failure_is_rolled_back(tmp_path, monkeypatch):
+    _write(tmp_path, 'src/a_bad.py', 'class Broken: pass\n')
+    _write(tmp_path, 'src/b_good.py', 'def work(): return 1\n')
+    original = PythonGraphBuilder._index_scopes
+    def fail_after_index(self, source, module):
+        original(self, source, module)
+        if module.path.endswith('a_bad.py'):
+            raise RuntimeError('scope index failure')
+    monkeypatch.setattr(PythonGraphBuilder, '_index_scopes', fail_after_index)
+    builder = PythonGraphBuilder(repo_key='t/repo', repository_revision='rev')
+    document = builder.build(tmp_path)
+    assert document['statistics']['failed_file_count'] == 1
+    assert not any('a_bad' in key for key in builder.scope_tables)
+    assert not any('a_bad' in key for key in builder.typed_parameters)
+
+
+def test_duplicate_base_example_preserves_occurrences_without_duplicate_edges(tmp_path):
+    _write(tmp_path, 'src/example.py',
+           'class Animal: pass\nclass Cat(Animal, Animal): pass\n')
+    document = _build(tmp_path)
+    edges = [edge for edge in document['edges'] if edge['type'] == 'INHERITS']
+    assert len(edges) == 1
+    assert document['statistics']['failed_file_count'] == 0
+    assert edges[0]['properties']['base_occurrences'] == [
+        {'base_expression': 'Animal', 'mro_position': 1},
+        {'base_expression': 'Animal', 'mro_position': 2},
+    ]

@@ -1,7 +1,7 @@
 """Graph arm, M2 side: M1 ``RetrievalResult.candidates`` -> RankRecord -> the SAME two-mode scoring as BM25.
 
 Stdlib + sibling M2 modules only (no import of vgar.graph / pydantic): M1 objects are injected as plain dicts by
-``scripts/run_graph_retrieval.py``, so this module is unit-testable without tree-sitter/jedi.
+``scripts/run_graph_retrieval.py``, so this module is unit-testable without tree-sitter.
 """
 from __future__ import annotations
 
@@ -9,6 +9,7 @@ import hashlib
 import json
 import shutil
 import tarfile
+import time
 from pathlib import Path
 from typing import Any, Callable, Mapping
 
@@ -72,7 +73,16 @@ def extract_python_tree(archive_path, repo: str, commit: str, destination) -> di
     meta = {"repo": repo, "commit": commit, "python_file_count": len(files), "skipped": skipped,
             "tree_hash": sha256(json.dumps(files, sort_keys=True))}
     (partial / TREE_MARKER).write_text(json.dumps(meta, indent=2) + "\n", encoding="utf-8")
-    partial.rename(destination)
+    # File scanners can briefly hold a new directory open on Windows.
+    # Retry only sharing/access errors, with a small bounded delay.
+    for attempt in range(6):
+        try:
+            partial.rename(destination)
+            break
+        except PermissionError as error:
+            if getattr(error, "winerror", None) not in {5, 32, 33} or attempt == 5:
+                raise
+            time.sleep(0.2 * (attempt + 1))
     return meta
 
 

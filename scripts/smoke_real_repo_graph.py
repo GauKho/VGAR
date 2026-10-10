@@ -32,10 +32,6 @@ def main() -> None:
         default="artifacts/real_repo_graph.db",
     )
 
-    parser.add_argument(
-        "--no-jedi",
-        action="store_true",
-    )
 
     args = parser.parse_args()
 
@@ -46,7 +42,7 @@ def main() -> None:
     builder = PythonGraphBuilder(
         repo_key=args.repo_key,
         repository_revision=args.revision,
-        use_jedi=not args.no_jedi,
+
     )
 
     document = builder.build(repository)

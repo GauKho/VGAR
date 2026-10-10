@@ -21,7 +21,7 @@ class TaskOverlayTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.document = PythonGraphBuilder(
-            repo_key="demo/overlay", repository_revision="fixture", use_jedi=False,
+            repo_key="demo/overlay", repository_revision="fixture",
         ).build(ROOT / "tests" / "fixtures" / "sample_repo")
 
     def test_issue_mentions_and_reported_failure_use_existing_endpoints(self) -> None:
@@ -160,7 +160,7 @@ class TaskOverlayTests(unittest.TestCase):
             for filename in ("test_one.py", "test_two.py"):
                 (root / "tests" / filename).write_text("def test_same():\n    pass\n", encoding="utf-8")
             return PythonGraphBuilder(
-                repo_key="demo/ambiguous-tests", repository_revision="fixture", use_jedi=False,
+                repo_key="demo/ambiguous-tests", repository_revision="fixture",
             ).build(root)
 
 

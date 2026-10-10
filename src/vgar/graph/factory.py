@@ -30,7 +30,13 @@ def create_graph_service() -> GraphService:
             graph_version=graph_version,
         )
         store.resolve_graph_version()
-        return SQLiteGraphService(store)
+        manifest = os.getenv("VGAR_TOKENIZER_MANIFEST", "").strip()
+        counter = None
+        if manifest:
+            from vgar.graph.token_counter import LocalTokenizerCounter
+            counter = LocalTokenizerCounter(manifest)
+        return SQLiteGraphService(store, repository_root=os.getenv("VGAR_REPOSITORY_ROOT", "").strip() or None,
+                                  count_tokens=counter, counter_label=counter.counter_label if counter else "")
 
     raise RuntimeError(
         f"Unsupported VGAR_GRAPH_BACKEND: {backend!r}; "

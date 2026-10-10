@@ -15,7 +15,7 @@ from typing import Any
 from vgar.contracts.context import ContextItem, ContextPayload, SourceRange
 from vgar.contracts.error import GraphError, InvalidLimitError, InvalidQueryError, NodeNotFoundError
 from vgar.contracts.schema import validate_graph_document
-from vgar.graph.builder import IGNORED_DIRECTORY_NAMES
+from vgar.graph.builder import discover_python_files
 from vgar.graph.task_overlay import TaskOverlay
 
 
@@ -134,9 +134,9 @@ class GraphContextRetriever:
         weight_sum = sum(self.config.weights[name] for name in available)
         if weight_sum <= 0:
             raise InvalidQueryError("active ranking features must have positive total weight")
-        states, limited = self._walk(anchors, anchor_scores, include)
+        task_words = _words(re.sub(r"<!--.*?-->|https?://[^\s<>`]+", " ", issue_text, flags=re.DOTALL))
+        states, limited = self._walk(anchors, anchor_scores, include, task_words=task_words)
         test_states, test_limited = self._walk(failing_tests, {})
-        task_words = _words(issue_text)
         history_max = max(self.change_counts.values(), default=0) if self.change_counts is not None else 0
         candidates = []
         filtered_by_include = 0
@@ -145,13 +145,13 @@ class GraphContextRetriever:
             if include is not None and (not include(node) or node["qualified_name"].startswith("tests.")):
                 filtered_by_include += 1
                 continue
-            words = _words(" ".join((node["name"], node["qualified_name"], node["path"],
-                                    node["properties"].get("signature", ""))))
             public = node["properties"].get("visibility") == "public"
             fanin = len(self.callers[node_id])
             features = {
-                "task_similarity": len(words & task_words) / max(1, len(words | task_words)),
-                "graph_distance": 1 / (1 + distance), "edge_confidence": confidence,
+                "task_similarity": self._task_similarity(node, task_words),
+                # A weak prose seed must not gain full distance credit merely
+                # because it is at hop zero.
+                "graph_distance": confidence / (1 + distance), "edge_confidence": confidence,
                 "failing_test_proximity": (1 / (1 + test_states[node_id][0])
                                            if node_id in test_states else 0.0) if failing_tests else None,
                 "public_api_risk": (0.5 + 0.5 * fanin / (1 + fanin)) if public else 0.0,
@@ -211,7 +211,11 @@ class GraphContextRetriever:
                                 items=items, total_token_count=total,
                                 token_budget=budget_tokens, truncated=truncated)
         diagnostics = asdict(self.config)
-        diagnostics.update({"profile": "semantic-context-v1", "active_features": available,
+        diagnostics.update({"profile": "semantic-context-v3", "active_features": available,
+                            "distance_uses_anchor_confidence": True,
+                            "file_scope_folding": True,
+                            "anchor_seed_limit": self._anchor_seed_limit(),
+                            "excluded_nodes_use_candidate_quota": False,
                             "normalized_weights": {name: self.config.weights[name] / weight_sum for name in available},
                             "failing_test_traversal_limited": test_limited,
                             "filtered_by_include": filtered_by_include})
@@ -249,32 +253,69 @@ class GraphContextRetriever:
                 connect(source, target, confidence, edge["type"],
                         {"CONTAINS": "CONTAINED_BY", "TESTS": "TESTED_BY",
                          "INHERITS": "SUBCLASS", "REFERENCES": "REFERENCED_BY"}[edge["type"]])
+        # File -> Module -> Class -> Method is representational nesting,
+        # not three semantic dependencies. Fold verified containment only.
+        for node in self.nodes.values():
+            if node["type"] not in {"Function", "Method", "Test"}:
+                continue
+            current = node["id"]
+            confidence = 1.0
+            seen = set()
+            while current in parents and current not in seen:
+                seen.add(current)
+                edge = parents[current]
+                confidence = min(confidence, edge["confidence"])
+                current = edge["source_id"]
+                if self.nodes[current]["type"] == "File":
+                    connect(current, node["id"], confidence, "SOURCE_CONTAINS", "SOURCE_FILE")
+                    break
         for node_id in self.adjacency:
-            self.adjacency[node_id] = sorted(set(self.adjacency[node_id]))
+            # Prefer semantic neighbors before broad container/sibling expansion.
+            self.adjacency[node_id] = sorted(set(self.adjacency[node_id]), key=lambda item: (
+                0 if item[2] in {"CALLS", "CALLERS", "TESTS", "TESTED_BY"} else
+                2 if item[2] in {"CONTAINS", "CONTAINED_BY"} else 1,
+                -item[1], item[0], item[2],
+            ))
+
+    def _anchor_seed_limit(self) -> int:
+        # Reserve half the candidate quota for expansion when traversal is enabled.
+        return (max(1, self.config.max_candidates // 2) if self.config.max_hops
+                else self.config.max_candidates)
 
     def _walk(
         self, starts: list[str], scores: dict[str, float],
         include: Callable[[dict[str, Any]], bool] | None = None,
+        *, task_words: set[str] | None = None,
     ) -> tuple[dict[str, tuple[int, float, tuple[str, ...]]], bool]:
         def counts(node_id: str) -> bool:
-            return include is None or include(self.nodes[node_id])
+            node = self.nodes[node_id]
+            return include is None or (include(node) and not node["qualified_name"].startswith("tests."))
 
         hard_cap = self.config.max_candidates * 4
         kept = 0
         states: dict[str, tuple[int, float, tuple[str, ...]]] = {}
         queue = []
         ordered = sorted(set(starts), key=lambda node_id: (-scores.get(node_id, 1.0), node_id))
-        limited = len(ordered) > self.config.max_candidates
-        for node_id in ordered[:self.config.max_candidates]:
+        limited = False
+        for node_id in ordered:
+            counted = counts(node_id)
+            if (counted and kept >= self._anchor_seed_limit()) or len(states) >= hard_cap:
+                limited = True
+                continue
             confidence = scores.get(node_id, 1.0)
             states[node_id] = (0, confidence, ("TASK_ANCHOR",))
-            kept += 1
+            kept += int(counted)
             heapq.heappush(queue, (0, -confidence, node_id, ("TASK_ANCHOR",)))
         while queue:
             distance, negative, node_id, rationale = heapq.heappop(queue)
             if states[node_id] != (distance, -negative, rationale) or distance >= self.config.max_hops:
                 continue
-            for target, edge_confidence, relation in self.adjacency[node_id]:
+            neighbors = self.adjacency[node_id]
+            if task_words:
+                neighbors = sorted(neighbors, key=lambda item: (
+                    0 if item[2] in {"CALLS", "CALLERS", "TESTS", "TESTED_BY"} else 1,
+                    -self._task_similarity(self.nodes[item[0]], task_words), -item[1], item[0], item[2]))
+            for target, edge_confidence, relation in neighbors:
                 path = rationale + (f"{relation}:{node_id}->{target}",)
                 candidate = (distance + 1, min(-negative, edge_confidence), path)
                 existing = states.get(target)
@@ -295,9 +336,17 @@ class GraphContextRetriever:
                 heapq.heappush(queue, (candidate[0], -candidate[1], target, candidate[2]))
         return states, limited
 
+    @staticmethod
+    def _task_similarity(node: dict[str, Any], task_words: set[str]) -> float:
+        # Normalize by the candidate's vocabulary: long issue templates must
+        # not dilute an explicit member name. Names carry more than paths.
+        names = _words(node["name"])
+        context = _words(node["qualified_name"] + " " + node["path"])
+        return (0.7 * len(names & task_words) / max(1, len(names))
+                + 0.3 * len(context & task_words) / max(1, len(context)))
+
     def _verify_snapshot(self) -> dict[str, bytes]:
-        actual = {path.relative_to(self.root).as_posix() for path in self.root.rglob("*.py")
-                  if not any(part in IGNORED_DIRECTORY_NAMES for part in path.parts)}
+        actual = {path.relative_to(self.root).as_posix() for path in discover_python_files(self.root)}
         if actual != set(self.files):
             raise GraphError("Source file set differs from graph snapshot; rebuild graph",
                              details={"reason": "source_snapshot_mismatch",

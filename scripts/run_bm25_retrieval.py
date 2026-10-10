@@ -23,6 +23,7 @@ def main() -> int:
     group = parser.add_mutually_exclusive_group(required=True)
     group.add_argument("--tokenizer-manifest", type=Path, help="M1 LocalTokenizerCounter manifest (official counter)")
     group.add_argument("--allow-fallback-counter", action="store_true", help="bytes/4; dev only, flagged in the report")
+    parser.add_argument("--no-report", action="store_true", help="Write raw JSON results only")
     args = parser.parse_args()
     counter = label = None
     if args.tokenizer_manifest:
@@ -32,7 +33,7 @@ def main() -> int:
     directory, record = evaluate_manifest(args.root, args.manifest, limit=args.limit, budget_tokens=args.budget_tokens,
                                           offline=args.offline, resume=args.resume, counter=counter, counter_label=label,
                                           allow_heldout=args.allow_heldout)
-    print(write_report(directory))
+    print(directory if args.no_report else write_report(directory))
     return record["exit_code"]
 
 

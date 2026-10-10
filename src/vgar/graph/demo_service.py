@@ -1,6 +1,7 @@
 from __future__ import annotations
 
-from vgar.contracts.error import NodeNotFoundError
+from vgar.contracts.error import NodeNotFoundError, GraphNotReadyError
+from typing import Any
 from vgar.contracts.graph import (
     GraphEdgeRef,
     GraphNodeRef,
@@ -17,6 +18,14 @@ class DemoGraphService:
     """Deterministic fallback backend used for transport smoke tests."""
 
     backend_name = "demo"
+
+    def find_task_anchors(self, issue_text: str, failing_tests: list[str] | None = None, *,
+                          graph_version: str, task_id: str) -> dict[str, Any]:
+        raise GraphNotReadyError("Task retrieval requires a SQLite repository snapshot")
+
+    def get_related_context(self, anchor_ids: list[str], budget_tokens: int, *, graph_version: str,
+                            task_id: str, issue_text: str = "", failing_tests: list[str] | None = None) -> dict[str, Any]:
+        raise GraphNotReadyError("Task retrieval requires a SQLite repository snapshot")
 
     def __init__(self) -> None:
         self._symbols = [

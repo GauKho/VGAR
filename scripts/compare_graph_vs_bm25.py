@@ -21,9 +21,10 @@ def main() -> int:
     parser.add_argument("graph_run", type=Path)
     parser.add_argument("--bm25-cap", type=int, default=100, help="BM25 rank re-scored on its top-N chunks (Graph keeps <=100 nodes)")
     parser.add_argument("--seed", type=int, default=0, help="bootstrap seed for the 95%% CI")
+    parser.add_argument("--no-report", action="store_true", help="Write raw JSON results only")
     args = parser.parse_args()
     directory, report = compare_runs(args.bm25_run, args.graph_run, args.root / "results" / "retrieval", cap=args.bm25_cap, seed=args.seed)
-    print(write_report(args.bm25_run, comparison=directory, destination=directory / "REPORT.md"))
+    print(directory if args.no_report else write_report(args.bm25_run, comparison=directory, destination=directory / "REPORT.md"))
     return report["exit_code"]
 
 

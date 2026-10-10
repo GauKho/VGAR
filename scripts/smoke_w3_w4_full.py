@@ -1,7 +1,7 @@
 """W3-W4 full-system smoke test (deterministic, NO LLM).
 
 Flow:
-  [1] M1  build graph (tree-sitter + Jedi) -> JSON -> SQLite
+  [1] M1  build graph (tree-sitter + Python static bindings) -> JSON -> SQLite
   [2] M3  MCP client loads graph/repository/execution tools
   [3] M1->M3  graph tools + resources (search / callers / callees / summary / node / subgraph)
   [4] M2  disposable workspace + baseline pytest (must FAIL) + source hash
@@ -87,7 +87,7 @@ async def run(query: str, keep: bool, strict_resources: bool) -> None:
     # ------------------------------------------------------------ [1] graph
     stage("1. M1 graph build -> SQLite")
     document = PythonGraphBuilder(
-        repo_key="smoke/sample-repo", repository_revision="smoke-rev", use_jedi=True
+        repo_key="smoke/sample-repo", repository_revision="smoke-rev"
     ).build(SAMPLE_REPO)
     json_path.write_text(json.dumps(document, ensure_ascii=False, indent=2), encoding="utf-8")
     store = SQLiteGraphStore(db_path)

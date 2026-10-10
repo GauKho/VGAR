@@ -108,6 +108,30 @@ def repo_summary() -> str:
         return result.model_dump_json(indent=2)
 
 
+@mcp.tool()
+@instrument_mcp_tool("find_task_anchors")
+def find_task_anchors(issue_text: str, graph_version: str, task_id: str,
+                      failing_tests: list[str] | None = None) -> dict[str, Any]:
+    """Ground an issue and reported failing tests on one explicit repository snapshot."""
+    return _tool("find_task_anchors", lambda: graph_service.find_task_anchors(
+        issue_text, failing_tests, graph_version=graph_version, task_id=task_id),
+        {"graph_version": graph_version, "task_id": task_id},
+        lambda data: {"anchor_count": len(data["anchors"])})
+
+
+@mcp.tool()
+@instrument_mcp_tool("get_related_context")
+def get_related_context(anchor_ids: list[str], budget_tokens: int, graph_version: str,
+                        task_id: str, issue_text: str = "", failing_tests: list[str] | None = None) -> dict[str, Any]:
+    """Retrieve and pack graph context under a verified token budget; task inputs are request-local."""
+    return _tool("get_related_context", lambda: graph_service.get_related_context(
+        anchor_ids, budget_tokens, graph_version=graph_version, task_id=task_id,
+        issue_text=issue_text, failing_tests=failing_tests),
+        {"graph_version": graph_version, "task_id": task_id, "budget_tokens": budget_tokens},
+        lambda data: {"item_count": len(data["context"]["items"]),
+                      "total_token_count": data["context"]["total_token_count"]})
+
+
 @mcp.resource("vgar://graph/node/{node_id}")
 def graph_node(node_id: str) -> str:
     with _resource("vgar://graph/node/{node_id}", node_id=node_id):

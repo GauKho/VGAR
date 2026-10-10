@@ -22,7 +22,7 @@ def index_repo(repo: Path, db: Path) -> int:
     from vgar.graph.builder import PythonGraphBuilder
     from vgar.graph.sqlite_store import SQLiteGraphStore
 
-    doc = PythonGraphBuilder(repo_key=repo.name, repository_revision="cli", use_jedi=True).build(repo)
+    doc = PythonGraphBuilder(repo_key=repo.name, repository_revision="cli").build(repo)
     db.parent.mkdir(parents=True, exist_ok=True)
     SQLiteGraphStore(db).ingest(doc)
     return len(doc["nodes"])

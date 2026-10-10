@@ -13,7 +13,7 @@ class TaskAnchorTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.finder = TaskAnchorFinder(PythonGraphBuilder(
-            repo_key="demo/anchors", repository_revision="fixture", use_jedi=False,
+            repo_key="demo/anchors", repository_revision="fixture",
         ).build(Path(__file__).parent / "fixtures" / "sample_repo"))
 
     def test_exact_path_is_file_anchor(self) -> None:
@@ -54,6 +54,32 @@ class TaskAnchorTests(unittest.TestCase):
         self.assertEqual(len(result.ambiguous_matches[0].candidate_ids), 3)
         self.assertTrue(all(item.score == 0.5 for item in result.anchors))
 
+    def test_module_suffix_symbol_and_unknown_receiver(self) -> None:
+        result = self.finder.find_task_anchors("service.login fails")
+        self.assertEqual([item.symbol for item in result.anchors], ["auth.service.login"])
+        self.assertEqual(result.anchors[0].score, 0.8)
+        self.assertEqual(self.finder.find_task_anchors("unknown.login").anchors, [])
+
+    def test_class_method_suffix_preserves_ambiguity_and_exact_priority(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            for name in ("first", "second"):
+                (root / f"{name}.py").write_text(
+                    "class Header:\n    def fromstring(self):\n        pass\n",
+                    encoding="utf-8",
+                )
+            finder = TaskAnchorFinder(PythonGraphBuilder(
+                repo_key="demo/suffix", repository_revision="fixture",
+            ).build(root))
+        result = finder.find_task_anchors("Header.fromstring fails")
+        self.assertEqual([item.symbol for item in result.anchors],
+                         ["first.Header.fromstring", "second.Header.fromstring"])
+        self.assertEqual(len(result.ambiguous_matches), 1)
+        self.assertTrue(all(item.score == 0.5 for item in result.anchors))
+        result = finder.find_task_anchors("first.Header.fromstring fails")
+        self.assertEqual([item.symbol for item in result.anchors], ["first.Header.fromstring"])
+        self.assertEqual(result.ambiguous_matches, [])
+
     def test_unknown_invalid_line_and_traversal_do_not_create_nodes(self) -> None:
         for text in (
             "unknown.py:5", "src/auth/service.py:999", "src/auth/service.py:0",
@@ -84,7 +110,7 @@ class TaskAnchorTests(unittest.TestCase):
             root = Path(directory)
             (root / "demo.py").write_text("def before():\n    pass\n\n", encoding="utf-8")
             graph = PythonGraphBuilder(
-                repo_key="demo/ranges", repository_revision="fixture", use_jedi=False,
+                repo_key="demo/ranges", repository_revision="fixture",
             ).build(root)
         # Exercise an end at column zero, as emitted for files and multiline ranges.
         function = next(node for node in graph["nodes"] if node["type"] == "Function")
@@ -102,7 +128,7 @@ class TaskAnchorTests(unittest.TestCase):
             folder.mkdir(parents=True)
             (folder / "service.py").write_text("def unique_handler():\n    pass\n", encoding="utf-8")
             finder = TaskAnchorFinder(PythonGraphBuilder(
-                repo_key="demo/spaces", repository_revision="fixture", use_jedi=False,
+                repo_key="demo/spaces", repository_revision="fixture",
             ).build(root))
         for text in ('"src/my package/service.py":2', 'File "src/my package/service.py", line 2, in unique_handler'):
             with self.subTest(text=text):
@@ -137,6 +163,100 @@ class TaskAnchorTests(unittest.TestCase):
         second = self.finder.find_task_anchors("login", list(reversed(reports)) + reports)
         self.assertEqual(asdict(first), asdict(second))
 
+    def test_common_prose_does_not_dilute_an_explicit_symbol(self) -> None:
+        finder = self._prose_finder()
+        result = finder.find_task_anchors("Please read and search; use the default. `login` fails.")
+        self.assertEqual([item.symbol for item in result.anchors], ["app.login"])
+        self.assertEqual(result.anchors[0].score, 0.75)
+
+    def test_source_link_keeps_file_evidence_without_historical_line_guess(self) -> None:
+        result = self.finder.find_task_anchors(
+            "https://github.com/demo/repo/blob/stable/1.x/src/auth/service.py#L999")
+        self.assertEqual([item.symbol for item in result.anchors], ["src/auth/service.py"])
+        self.assertEqual(result.anchors[0].evidence[0].kind, "source_link")
+        self.assertEqual(self.finder.find_task_anchors(
+            "<!-- https://github.com/demo/repo/blob/main/src/auth/service.py -->").anchors, [])
+        self.assertEqual(self.finder.find_task_anchors(
+            "https://example.com/src/auth/service.py").anchors, [])
+
+    def test_unknown_receiver_call_is_a_weak_hint_with_all_member_matches(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "app.py").write_text(
+                "class First:\n    def process(self): pass\n"
+                "class Second:\n    def process(self): pass\n", encoding="utf-8")
+            finder = TaskAnchorFinder(PythonGraphBuilder(
+                repo_key="demo/member", repository_revision="fixture").build(root))
+        result = finder.find_task_anchors("obj.process() fails")
+        self.assertEqual([a.symbol for a in result.anchors], ["app.First.process", "app.Second.process"])
+        self.assertEqual(len(result.ambiguous_matches), 1)
+        self.assertTrue(all(a.score == 0.45 and a.evidence[0].kind == "receiver_member"
+                            for a in result.anchors))
+        self.assertEqual(finder.find_task_anchors("obj.process fails").anchors, [])
+        exact = finder.find_task_anchors("First.process() fails")
+        self.assertEqual([a.symbol for a in exact.anchors], ["app.First.process"])
+        self.assertEqual(exact.anchors[0].score, 0.8)
+
+    def test_common_names_remain_valid_in_code_and_narrative_fallback(self) -> None:
+        finder = self._prose_finder()
+        for text in ("`read` fails", "``read`` fails", "read() fails",
+                     "```python\nread()\n```", "~~~python\nread()\n~~~"):
+            with self.subTest(text=text):
+                result = finder.find_task_anchors(text)
+                self.assertEqual([item.symbol for item in result.anchors], ["app.read"])
+                self.assertEqual(result.anchors[0].score, 0.75)
+        fallback = finder.find_task_anchors("read fails")
+        self.assertEqual([item.symbol for item in fallback.anchors], ["app.read"])
+        self.assertLess(fallback.anchors[0].score, 0.4)
+
+    def test_comments_and_links_do_not_supply_issue_symbols(self) -> None:
+        finder = self._prose_finder()
+        result = finder.find_task_anchors(
+            "<!-- app.search read() --> https://example.com/app.default `login` fails",
+        )
+        self.assertEqual([item.symbol for item in result.anchors], ["app.login"])
+
+    def test_explicit_ambiguous_symbol_retains_candidates(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            for name in ("first", "second"):
+                (root / f"{name}.py").write_text("def search(): pass\n", encoding="utf-8")
+            finder = TaskAnchorFinder(PythonGraphBuilder(
+                repo_key="demo/prose-ambiguity", repository_revision="fixture",
+            ).build(root))
+        result = finder.find_task_anchors("`search` fails")
+        self.assertEqual(len(result.anchors), 2)
+        self.assertEqual(len(result.ambiguous_matches), 1)
+        self.assertTrue(all(item.score == 0.5 for item in result.anchors))
+        result = finder.find_task_anchors("", ["search"])
+        self.assertEqual(len(result.anchors), 2)
+        self.assertEqual(len(result.ambiguous_matches), 1)
+
+    def test_plain_ambiguous_mentions_have_lower_priority_than_code(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            for name in ("first", "second"):
+                (root / f"{name}.py").write_text("def process(): pass\n", encoding="utf-8")
+            finder = TaskAnchorFinder(PythonGraphBuilder(
+                repo_key="demo/prose-priority", repository_revision="fixture",
+            ).build(root))
+        plain = finder.find_task_anchors("process fails")
+        explicit = finder.find_task_anchors("`process` fails")
+        self.assertEqual(len(plain.anchors), 2)
+        self.assertLess(plain.anchors[0].score, explicit.anchors[0].score)
+
+    @staticmethod
+    def _prose_finder() -> TaskAnchorFinder:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "app.py").write_text(
+                "def read(): pass\ndef search(): pass\ndef default(): pass\ndef login(): pass\n",
+                encoding="utf-8",
+            )
+            return TaskAnchorFinder(PythonGraphBuilder(
+                repo_key="demo/prose", repository_revision="fixture",
+            ).build(root))
+
     @staticmethod
     def _route_finder() -> TaskAnchorFinder:
         with tempfile.TemporaryDirectory() as directory:
@@ -149,7 +269,7 @@ class TaskAnchorTests(unittest.TestCase):
                 encoding="utf-8",
             )
             return TaskAnchorFinder(PythonGraphBuilder(
-                repo_key="demo/routes", repository_revision="fixture", use_jedi=False,
+                repo_key="demo/routes", repository_revision="fixture",
             ).build(root))
 
 

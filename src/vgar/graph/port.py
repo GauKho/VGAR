@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Protocol
+from typing import Protocol, Any
 
 from vgar.contracts.graph import (
     GraphNodeRef,
@@ -23,6 +23,14 @@ class GraphService(Protocol):
         query: str,
         limit: int = 20,
     ) -> SearchSymbolsResult:
+        ...
+
+    def find_task_anchors(self, issue_text: str, failing_tests: list[str] | None = None, *,
+                          graph_version: str, task_id: str) -> dict[str, Any]:
+        ...
+
+    def get_related_context(self, anchor_ids: list[str], budget_tokens: int, *, graph_version: str,
+                            task_id: str, issue_text: str = "", failing_tests: list[str] | None = None) -> dict[str, Any]:
         ...
 
     def get_callers(

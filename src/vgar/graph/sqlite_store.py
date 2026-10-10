@@ -10,6 +10,7 @@ from pathlib import Path
 from typing import Any
 
 from vgar.contracts.error import (
+    GraphError,
     GraphNotReadyError,
     InvalidLimitError,
     InvalidQueryError,
@@ -137,6 +138,11 @@ class SQLiteGraphStore:
                     ON edges(graph_version, target_id, type);
                 """
             )
+            # W3 databases remain queryable; W5 retrieval needs exact source ranges.
+            columns = {row["name"] for row in connection.execute("PRAGMA table_info(nodes)")}
+            for column in ("language", "range_json"):
+                if column not in columns:
+                    connection.execute(f"ALTER TABLE nodes ADD COLUMN {column} TEXT")
 
     def ingest(self, document: Mapping[str, Any]) -> None:
         validate_graph_document(document)
@@ -187,8 +193,8 @@ class SQLiteGraphStore:
                     INSERT INTO nodes (
                         graph_version, id, type, repo_key, name,
                         qualified_name, path, start_line, start_col,
-                        end_line, end_col, content_hash, properties_json
-                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                        end_line, end_col, content_hash, properties_json, language, range_json
+                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                     """,
                     (
                         graph_version,
@@ -208,6 +214,8 @@ class SQLiteGraphStore:
                             ensure_ascii=False,
                             sort_keys=True,
                         ),
+                        node.get("language"),
+                        json.dumps(node.get("range"), sort_keys=True),
                     ),
                 )
 
@@ -249,6 +257,42 @@ class SQLiteGraphStore:
                 """,
                 (graph_version,),
             )
+
+    def load_document(self, graph_version: str) -> dict[str, Any]:
+        """Restore one ready snapshot without losing byte offsets or provenance."""
+        if not isinstance(graph_version, str) or not graph_version.strip():
+            raise InvalidQueryError("graph_version must be supplied for task retrieval")
+        self.initialize()
+        with self._connect() as connection:
+            metadata = connection.execute(
+                "SELECT metadata_json FROM graph_metadata WHERE graph_version = ? AND status = 'ready'",
+                (graph_version,),
+            ).fetchone()
+            if metadata is None:
+                raise GraphNotReadyError(graph_version)
+            rows = connection.execute("SELECT * FROM nodes WHERE graph_version = ? ORDER BY rowid",
+                                      (graph_version,)).fetchall()
+            edge_rows = connection.execute("SELECT * FROM edges WHERE graph_version = ? ORDER BY rowid",
+                                           (graph_version,)).fetchall()
+        if any(row["range_json"] is None for row in rows):
+            raise GraphError("Legacy snapshot has no byte ranges; rebuild graph before retrieval",
+                             details={"reason": "legacy_snapshot_requires_rebuild"})
+        document = json.loads(metadata["metadata_json"])
+        document["nodes"] = [
+            {"id": row["id"], "type": row["type"], "repo_key": row["repo_key"],
+             "name": row["name"], "qualified_name": row["qualified_name"], "path": row["path"],
+             "language": row["language"], "range": json.loads(row["range_json"]),
+             "content_hash": row["content_hash"], "properties": json.loads(row["properties_json"]),
+             "graph_version": graph_version} for row in rows
+        ]
+        document["edges"] = [
+            {"id": row["id"], "type": row["type"], "source_id": row["source_id"],
+             "target_id": row["target_id"], "confidence": row["confidence"], "resolution": row["resolution"],
+             "provenance": json.loads(row["provenance_json"]), "properties": json.loads(row["properties_json"]),
+             "graph_version": graph_version} for row in edge_rows
+        ]
+        validate_graph_document(document)
+        return document
 
     def search_symbols(self, query: str, limit: int) -> list[StoredSymbol]:
         normalized_query = query.strip()

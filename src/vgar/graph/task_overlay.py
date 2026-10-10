@@ -42,7 +42,7 @@ class TaskOverlayBuilder:
         overlay_id = _digest({
             "graph_version": grounding.graph_version, "task_id": task_id,
             "issue_text": issue_text, "failing_tests": reports,
-            "profile": "task-overlay-v1",
+            "profile": "task-overlay-v4",
         })
         issue_id = f"vgar:{self._document['repo_key']}:issue:{task_hash}"
         if issue_id in self._nodes:

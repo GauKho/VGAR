@@ -2,8 +2,10 @@ from __future__ import annotations
 
 import ast
 import re
+from collections import defaultdict
 from dataclasses import dataclass, field
 from typing import Any
+from urllib.parse import unquote, urlsplit
 
 from vgar.contracts.schema import validate_graph_document
 
@@ -31,6 +33,19 @@ _ROUTE = re.compile(
 )
 _SYMBOL = re.compile(r"\b[A-Za-z_]\w*(?:\.[A-Za-z_]\w*)*\b")
 _SYMBOL_TYPES = {"Class", "Function", "Method", "Test"}
+_IGNORED_PROSE = re.compile(r"<!--.*?-->|https?://[^\s<>`]+", re.DOTALL)
+_CODE = re.compile(
+    r"(?P<fence>`{3,}|~{3,})[^\r\n]*\r?\n.*?(?P=fence)"
+    r"|(?P<ticks>`{1,2})(?!`)[^`\r\n]+(?P=ticks)", re.DOTALL,
+)
+# These are still valid code names. Only unmarked narrative uses are weak.
+_COMMON_PROSE_NAMES = frozenset({
+    "a", "an", "and", "as", "at", "be", "by", "can", "class", "default",
+    "error", "for", "from", "get", "in", "is", "it", "main", "make",
+    "module", "name", "new", "not", "of", "on", "or", "read", "return",
+    "search", "self", "set", "str", "string", "test", "the", "this", "to",
+    "type", "use", "used", "using", "value", "with",
+})
 
 
 @dataclass(frozen=True)
@@ -77,8 +92,15 @@ class TaskAnchorFinder:
             key=lambda node: node["id"],
         )
         self.files = {node["path"]: node for node in self.nodes if node["type"] == "File"}
+        self._nodes_by_path: dict[str, list[dict[str, Any]]] = defaultdict(list)
+        self._symbols_by_name: dict[str, list[dict[str, Any]]] = defaultdict(list)
+        self._symbols_by_qualified_name: dict[str, list[dict[str, Any]]] = defaultdict(list)
         self.routes: dict[str, list[tuple[dict[str, Any], frozenset[str]]]] = {}
         for node in self.nodes:
+            self._nodes_by_path[node["path"]].append(node)
+            if node["type"] in _SYMBOL_TYPES:
+                self._symbols_by_name[node["name"]].append(node)
+                self._symbols_by_qualified_name[node["qualified_name"]].append(node)
             if node["type"] not in {"Function", "Method"}:
                 continue
             for decorator in node["properties"].get("decorators", []):
@@ -100,6 +122,7 @@ class TaskAnchorFinder:
         anchors: dict[str, TaskAnchor] = {}
         ambiguous: dict[tuple[str, tuple[str, ...]], AmbiguousMatch] = {}
         unmatched: set[str] = set()
+        prose_fallbacks: list[tuple[list[dict[str, Any]], AnchorEvidence]] = []
 
         def add(matches: list[dict[str, Any]], evidence: AnchorEvidence, score: float) -> None:
             ids = sorted({node["id"] for node in matches})
@@ -116,6 +139,24 @@ class TaskAnchorFinder:
 
         texts = [("issue", issue_text)] + [("failing_test", text) for text in sorted(set(failing_tests or []))]
         for source, text in texts:
+            if source == "issue":
+                # Repository links are file evidence, not prose tokens. Their line
+                # numbers refer to another revision, so do not infer a local range.
+                visible = re.sub(r"<!--.*?-->", "", text, flags=re.DOTALL)
+                for link in re.finditer(r"https?://[^\s<>`]+", visible):
+                    url = urlsplit(link.group().rstrip(".,)"))
+                    if url.hostname not in {"github.com", "raw.githubusercontent.com"}:
+                        continue
+                    if url.hostname == "github.com" and "/blob/" not in url.path:
+                        continue
+                    path = unquote(url.path)
+                    matches = [node for relative, node in self.files.items()
+                               if path.endswith("/" + relative)]
+                    if matches:
+                        add(matches, AnchorEvidence("source_link", link.group(), source), 0.7)
+                # Keep offsets stable so evidence still refers to the input text.
+                text = _IGNORED_PROSE.sub(lambda match: " " * len(match.group()), text)
+            code_spans = [match.span() for match in _CODE.finditer(text)]
             consumed: list[tuple[int, int]] = []
             # Tracebacks carry their line number after a comma, rather than a colon.
             for pattern in (_TRACEBACK, _QUOTED_LOCATION, _LOCATION):
@@ -129,7 +170,7 @@ class TaskAnchorFinder:
                     line = int(match.group("line")) if match.group("line") else None
                     matches = []
                     for matched_path in paths:
-                        candidates = [node for node in self.nodes if node["path"] == matched_path]
+                        candidates = self._nodes_by_path[matched_path]
                         if selector:
                             suffix = selector.replace("::", ".")
                             candidates = [
@@ -176,12 +217,45 @@ class TaskAnchorFinder:
                 if any(start <= match.start() < end for start, end in consumed):
                     continue
                 token = match.group()
-                matches = [
-                    node for node in self.nodes if node["type"] in _SYMBOL_TYPES
-                    and (node["qualified_name"] == token if "." in token else node["name"] == token)
-                ]
+                qualified = "." in token
+                explicit = (source == "failing_test"
+                            or any(start <= match.start() < end for start, end in code_spans)
+                            or bool(re.match(r"\s*\(", text[match.end():])))
+                matches = (self._symbols_by_qualified_name.get(token, []) if qualified
+                           else self._symbols_by_name.get(token, []))
+                if not matches and "." in token:
+                    # Issues commonly name Class.method without its module prefix.
+                    # Keep all suffix matches; never guess an arbitrary receiver.
+                    matches = [
+                        node for node in self._symbols_by_name.get(token.rsplit(".", 1)[-1], [])
+                        if node["qualified_name"].endswith("." + token)
+                    ]
+                receiver_fallback = False
+                if not matches and qualified and explicit and source == "issue":
+                    # An unknown receiver supplies a member-name hint, never a
+                    # resolved call or a claim about the receiver's type.
+                    matches = [node for node in self._symbols_by_name.get(token.rsplit(".", 1)[-1], [])
+                               if node["type"] in {"Function", "Method", "Class"}]
+                    receiver_fallback = bool(matches)
                 if matches:
-                    add(matches, AnchorEvidence("symbol", token, source), 0.8 if "." in token else 0.6)
+                    evidence = AnchorEvidence("receiver_member" if receiver_fallback else "symbol", token, source)
+                    if not qualified and not explicit and token.lower() in _COMMON_PROSE_NAMES:
+                        prose_fallbacks.append((matches, evidence))
+                        continue
+                    code_like = "_" in token or any(char.isupper() for char in token)
+                    score = (0.8 if qualified else 0.6 if source == "failing_test"
+                             else 0.75 if explicit else 0.6 if code_like else 0.4)
+                    if receiver_fallback:
+                        score = 0.45
+                    if not qualified and not explicit and len(matches) > 1:
+                        score = min(score, 0.25)
+                    add(matches, evidence, score)
+
+        # A narrative-only request such as "read fails" must still be usable.
+        # Common prose words cannot dilute more specific path/API/code evidence.
+        if not anchors:
+            for matches, evidence in prose_fallbacks:
+                add(matches, evidence, 0.15)
 
         return AnchorResult(
             self.graph_version,

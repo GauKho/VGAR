@@ -155,7 +155,7 @@ async def run(args: argparse.Namespace) -> None:
     from vgar.repair.workspace import create_workspace, fingerprint_source
 
     print("\n== 1. Index the repository (graph snapshot of the base revision)")
-    doc = PythonGraphBuilder(repo_key="smoke/agent", repository_revision="smoke-rev", use_jedi=True).build(FAILING_REPO)
+    doc = PythonGraphBuilder(repo_key="smoke/agent", repository_revision="smoke-rev").build(FAILING_REPO)
     SQLiteGraphStore(work / "graph.db").ingest(doc)
     check("graph indexed", len(doc["nodes"]) > 0, f"nodes={len(doc['nodes'])}")
 

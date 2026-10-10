@@ -2,8 +2,8 @@
 
 Fairness rules enforced (comparison refuses to run otherwise): same dataset revision, budget, counter, scoring version,
 snippet policy; per task same query_hash and corpus_hash; neither run uses the bytes/4 fallback counter.
-Graph keeps at most ``max_candidates`` (100) ranked nodes while BM25 ranks every chunk, so the PRIMARY BM25 column is
-re-scored on its top-``cap`` chunks (``bm25``); the untouched full ranking stays as ``bm25_uncapped`` for reference.
+The primary BM25 column uses its full ranking. A top-cap ablation is recorded separately.
+The issue-only graph arm is primary; the FAIL_TO_PASS arm is an oracle diagnostic.
 """
 from __future__ import annotations
 
@@ -20,7 +20,7 @@ from .metrics import aggregate_metrics, evaluate_ranking
 DELTA_METRICS = ("file_recall@3", "file_recall@5", "file_recall@10", "function_recall@3", "function_recall@5",
                  "function_recall@10", "file_mrr", "function_mrr", "packed_gold_file_in_context",
                  "packed_gold_function_in_context", "context_tokens")
-SAME_CONFIG = ("budget_tokens", "counter_label", "scoring_version", "snippet_policy")
+SAME_CONFIG = ("manifest_hash", "budget_tokens", "counter_label", "scoring_version", "snippet_policy")
 GRAPH_ARMS = ("graph", "graph_f2p")
 
 
@@ -36,18 +36,12 @@ def _validate_graph_run(record: dict[str, Any], run_label: str) -> None:
     tasks = [t for t in record.get("task_results", []) if t.get("status") == "SUCCEEDED"]
     if not tasks:
         raise ValueError(f"{run_label}: no succeeded tasks found")
-    arms = {t.get("arm") for t in tasks} - {None}
-    if not arms:
+    arms = {arm for task in tasks for arm in task.get("arms", {})}
+    if not arms or any(set(task.get("arms", {})) != set(GRAPH_ARMS) for task in tasks):
         # No arm field at all -> this run has no per-task arm metadata.
         raise ValueError(
-            f"{run_label} has no per-task arm data (field 'arm' missing from task results). "
+            f"{run_label} has incomplete per-task arm data (field 'arms' must contain both graph arms). "
             "This is a BM25-style run, not a graph run. "
-            "Use scripts/run_graph_retrieval.py to produce the graph arm first, "
-            "then pass its result dir as the second argument."
-        )
-    if arms == {"bm25"}:
-        raise ValueError(
-            f"{run_label} is a BM25 run (arm=bm25), not a graph run. "
             "Use scripts/run_graph_retrieval.py to produce the graph arm first, "
             "then pass its result dir as the second argument."
         )
@@ -105,10 +99,14 @@ def paired_stats(base: dict[str, dict], other: dict[str, dict], seed: int = 0) -
 
 
 def compare_runs(bm25_run, graph_run, results_root, cap: int = 100, seed: int = 0, allow_fallback: bool = False):
+    if isinstance(cap, bool) or not isinstance(cap, int) or cap < 1:
+        raise ValueError("BM25 diagnostic cap must be a positive integer")
     bm25_run, graph_run = Path(bm25_run), Path(graph_run)
     bm, gr = _load(bm25_run), _load(graph_run)
-    if bm["dataset_revision"] != gr["dataset_revision"]:
+    if bm["dataset_revision"] != gr["dataset_revision"] or bm["dataset_id"] != gr["dataset_id"]:
         raise ValueError("Different dataset revisions")
+    if {row["instance_id"] for row in bm["task_results"]} != {row["instance_id"] for row in gr["task_results"]}:
+        raise ValueError("Different task populations")
     for key in SAME_CONFIG:
         if bm["config"][key] != gr["config"][key]:
             raise ValueError(f"Config mismatch on {key}: {bm['config'][key]!r} vs {gr['config'][key]!r}")
@@ -116,7 +114,7 @@ def compare_runs(bm25_run, graph_run, results_root, cap: int = 100, seed: int = 
         raise ValueError("A run used the bytes/4 fallback counter; not valid for the official comparison")
     _validate_graph_run(gr, "graph_run")
     graph_summaries = {s["instance_id"]: s for s in gr["task_results"]}
-    per_task: dict[str, dict[str, dict]] = {a: {} for a in ("bm25", "bm25_uncapped", *GRAPH_ARMS)}
+    per_task: dict[str, dict[str, dict]] = {a: {} for a in ("bm25", "bm25_capped", *GRAPH_ARMS)}
     info: dict[str, dict] = {}
     skipped = []
     for summary in bm["task_results"]:
@@ -129,8 +127,8 @@ def compare_runs(bm25_run, graph_run, results_root, cap: int = 100, seed: int = 
         for key in ("query_hash", "corpus_hash", "base_commit"):
             if b[key] != g[key]:
                 raise ValueError(f"{iid}: {key} differs between runs")
-        per_task["bm25"][iid] = cap_bm25(b, cap)
-        per_task["bm25_uncapped"][iid] = b["metrics"]
+        per_task["bm25"][iid] = b["metrics"]
+        per_task["bm25_capped"][iid] = cap_bm25(b, cap)
         for arm in GRAPH_ARMS:
             per_task[arm][iid] = g["arms"][arm]["metrics"]
         info[iid] = {"repository": b["repository"], "graph_build_seconds": other["graph_build_seconds"],
@@ -165,6 +163,8 @@ def compare_runs(bm25_run, graph_run, results_root, cap: int = 100, seed: int = 
                   bm25_run_hash=sha256((bm25_run / "result.json").read_bytes()), graph_run_hash=sha256((graph_run / "result.json").read_bytes()),
                   status="COMPARED" if ids else "NO_PAIRED_TASKS", paired_tasks=len(ids), eligible_bm25_tasks=bm["summary"]["completed_tasks"],
                   scoring_version=bm["config"]["scoring_version"], bm25_cap=cap, bootstrap_seed=seed, skipped=skipped,
+                  primary_comparison={"baseline": "bm25", "graph": "graph", "bm25_rank": "full"},
+                  diagnostic_arms={"bm25_capped": "top-cap ablation", "graph_f2p": "FAIL_TO_PASS oracle"},
                   summaries=summaries, paired=paired, by_repo=repo_rows, graph_diagnostics=diagnostics, inspection=inspection,
                   per_task={arm: {i: {m: per_task[arm][i].get(m) for m in ("file_recall@5", "function_recall@5", "function_mrr",
                                                                               "packed_gold_function_in_context")} for i in ids}

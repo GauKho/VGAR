@@ -12,6 +12,9 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import multiprocessing as mp
+import math
+import traceback
 import sys
 import time
 from pathlib import Path
@@ -35,24 +38,122 @@ def key_of(row: dict) -> str:
     return f"{row['repo'].replace('/', '__')}-{row['base_commit']}"
 
 
-def load_or_build_graph(root: Path, row: dict, tree: Path, *, use_jedi: bool, rebuild: bool, builder_hash: str):
+def load_or_build_graph(root: Path, row: dict, tree: Path, *, rebuild: bool, builder_hash: str, cache: bool = False):
     """Graph cache key includes the builder source hash: when M1 patches builder.py the cache invalidates itself."""
     from vgar.graph.builder import PythonGraphBuilder
-    name = f"{key_of(row)}-{'jedi' if use_jedi else 'nojedi'}-{builder_hash}"
+    name = f"{key_of(row)}-python-static-v2-{builder_hash}"
     graph_path = root / "data" / "graphs" / f"{name}.json"
     meta_path = graph_path.with_suffix(".meta.json")
     if graph_path.exists() and meta_path.exists() and not rebuild:
         return json.loads(graph_path.read_text(encoding="utf-8")), json.loads(meta_path.read_text(encoding="utf-8")) | {"cached": True}
     started = time.perf_counter()
-    builder = PythonGraphBuilder(repo_key=row["repo"].replace("/", "__"), repository_revision=row["base_commit"], use_jedi=use_jedi)
+    builder = PythonGraphBuilder(repo_key=row["repo"].replace("/", "__"), repository_revision=row["base_commit"])
     document = builder.build(tree)
     meta = {"build_seconds": time.perf_counter() - started, "nodes": len(document["nodes"]), "edges": len(document["edges"]),
-            "graph_version": document["graph_version"], "use_jedi": use_jedi, "builder_hash": builder_hash,
+            "graph_version": document["graph_version"], "resolver": "tree-sitter+python-static-v2", "builder_hash": builder_hash,
             "skipped_failed_files": len(getattr(builder, "skipped_failed_files", []) or [])}
-    graph_path.parent.mkdir(parents=True, exist_ok=True)
-    graph_path.write_text(json.dumps(document, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
-    write_json(meta_path, meta)
+    if cache:
+        graph_path.parent.mkdir(parents=True, exist_ok=True)
+        graph_path.write_text(json.dumps(document, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+        write_json(meta_path, meta)
     return document, meta | {"cached": False}
+
+
+def evaluate_one(root, row, fail_to_pass, args, builder_hash):
+    """One bounded task. Each worker owns its graph, parser and tokenizer."""
+    from vgar.graph.retrieval import GraphContextRetriever, RetrievalConfig
+    from vgar.graph.task_overlay import TaskOverlayBuilder
+    if args.tokenizer_manifest:
+        from vgar.graph.token_counter import LocalTokenizerCounter
+        counter = LocalTokenizerCounter(args.tokenizer_manifest)
+        label = counter.counter_label
+    else:
+        counter, label = bytes_div4_counter, FALLBACK_COUNTER_LABEL
+    task_start = time.perf_counter()
+    retrieval_config = RetrievalConfig(max_hops=args.max_hops, max_candidates=args.max_candidates)
+    patch_path = (root / row["gold_patch_path"]).resolve()
+    if not patch_path.is_relative_to(root.resolve() / "data" / "gold"):
+        raise ValueError("Gold patch path outside data/gold")
+    patch = patch_path.read_text(encoding="utf-8")
+    if sha256(patch) != row["patch_hash"] or sha256(row["problem_statement"]) != row["query_hash"]:
+        raise ValueError("Manifest patch/query hash mismatch")
+    sources, provenance = read_repository_sources(row, root / "data" / "repositories", network=not args.offline)
+    tree = root / "data" / "repositories" / "trees" / key_of(row)
+    tree_meta = extract_python_tree(provenance["cache_path"], row["repo"], row["base_commit"], tree)
+    document, graph_meta = load_or_build_graph(root, row, tree, rebuild=args.rebuild_graphs,
+                                               builder_hash=builder_hash, cache=args.cache_graphs)
+    corpus = CorpusIndex(sources)
+    include = make_include(corpus)
+    overlays = TaskOverlayBuilder(document)
+    retriever = GraphContextRetriever(document, tree, count_tokens=counter, counter_label=label, config=retrieval_config)
+    outputs = {}
+    for arm, uses_f2p in ARMS.items():
+        arm_start = time.perf_counter()
+        overlay = overlays.build(f"{row['instance_id']}:{arm}", row["problem_statement"],
+                                 list(fail_to_pass) if uses_f2p else None)
+        anchors = [{"node_id": a.node_id, "score": a.score, "symbol": retriever.nodes[a.node_id]["qualified_name"],
+                    "type": retriever.nodes[a.node_id]["type"], "path": retriever.nodes[a.node_id]["path"]}
+                   for a in overlay.grounding.anchors]
+        result = retriever.retrieve([a["node_id"] for a in anchors], args.budget_tokens,
+                                    issue_text=row["problem_statement"], overlay=overlay, include=include)
+        reasons: dict[str, int] = {}
+        for omission in result.omissions:
+            reasons[omission["reason"]] = reasons.get(omission["reason"], 0) + 1
+        outputs[arm] = {"candidates": result.candidates, "anchors": anchors, "seconds": time.perf_counter() - arm_start,
+                        "diagnostics": {"m1_native_total_tokens": result.context.total_token_count,
+                                        "m1_native_items": len(result.context.items),
+                                        "m1_native_truncated": result.context.truncated,
+                                        "traversal_limited": result.traversal_limited,
+                                        "unavailable_features": result.unavailable_features,
+                                        "omissions": reasons, "retrieval_config": result.config}}
+    result = evaluate_graph_task(dict(row, patch=patch), sources, corpus, retriever.nodes, outputs,
+                                 budget_tokens=args.budget_tokens, counter=counter, counter_label=label)
+    result.update(graph=graph_meta, source_tree={k: tree_meta[k] for k in ("python_file_count", "tree_hash")},
+                  source_provenance=provenance, fail_to_pass_count=len(fail_to_pass),
+                  duration_seconds=time.perf_counter() - task_start)
+    return result
+
+
+def task_worker(sender, root, row, fail_to_pass, args, builder_hash):
+    try:
+        sender.send({"result": evaluate_one(root, row, fail_to_pass, args, builder_hash)})
+    except BaseException as error:
+        sender.send({"error_class": type(error).__name__, "error": str(error), "traceback": traceback.format_exc()})
+    finally:
+        sender.close()
+
+
+def run_bounded_task(root, row, fail_to_pass, args, builder_hash):
+    context = mp.get_context("spawn")
+    receiver, sender = context.Pipe(duplex=False)
+    process = context.Process(target=task_worker, args=(sender, root, row, fail_to_pass, args, builder_hash))
+    started = time.perf_counter()
+    try:
+        process.start()
+        sender.close()
+        if not receiver.poll(args.task_timeout):
+            return {"instance_id": row["instance_id"], "status": "FAILED", "error_class": "TimeoutError",
+                    "error": f"Task exceeded {args.task_timeout}s", "timeout_seconds": args.task_timeout,
+                    "duration_seconds": time.perf_counter() - started}
+        try:
+            message = receiver.recv()
+        except EOFError:
+            message = {"error_class": "WorkerExited", "error": "Worker exited without a result"}
+        if "result" in message:
+            return message["result"]
+        return {"instance_id": row["instance_id"], "status": "FAILED", **message,
+                "duration_seconds": time.perf_counter() - started}
+    finally:
+        sender.close()
+        receiver.close()
+        if process.pid is not None:
+            process.join(timeout=2)
+            if process.is_alive():
+                process.terminate()
+                process.join(timeout=5)
+            if process.is_alive():
+                process.kill()
+                process.join()
 
 
 def main() -> int:
@@ -64,9 +165,10 @@ def main() -> int:
     parser.add_argument("manifest", type=Path)
     parser.add_argument("--budget-tokens", type=int, default=DEFAULT_BUDGET_TOKENS)
     parser.add_argument("--limit", type=int)
+    parser.add_argument("--task-timeout", type=float, default=300, help="Per-task worker deadline in seconds")
     parser.add_argument("--offline", action="store_true")
-    parser.add_argument("--no-jedi", action="store_true", help="tree-sitter only (faster, weaker CALLS); recorded in config")
     parser.add_argument("--rebuild-graphs", action="store_true")
+    parser.add_argument("--cache-graphs", action="store_true", help="Opt in to saving full graph JSON; existing caches can be reused")
     parser.add_argument("--max-hops", type=int, default=2)
     parser.add_argument("--max-candidates", type=int, default=100)
     parser.add_argument("--allow-heldout", action="store_true", help="FINAL evaluation only; never use while tuning")
@@ -74,6 +176,8 @@ def main() -> int:
     group.add_argument("--tokenizer-manifest", type=Path)
     group.add_argument("--allow-fallback-counter", action="store_true")
     args = parser.parse_args()
+    if not math.isfinite(args.task_timeout) or args.task_timeout <= 0 or (args.limit is not None and args.limit <= 0):
+        parser.error("task-timeout and limit must be positive")
 
     from vgar.graph.retrieval import GraphContextRetriever, RetrievalConfig
     from vgar.graph.task_overlay import TaskOverlayBuilder
@@ -85,7 +189,7 @@ def main() -> int:
         counter, label, fallback = bytes_div4_counter, FALLBACK_COUNTER_LABEL, True
         print("WARNING: fallback bytes/4 counter; NOT comparable with the BM25 baseline run", flush=True)
 
-    root = args.root
+    root = args.root.resolve()
     manifest_bytes = args.manifest.read_bytes()
     manifest = json.loads(manifest_bytes)
     for task in manifest["tasks"]:
@@ -100,10 +204,10 @@ def main() -> int:
               "counter_label": label, "counter_is_fallback": fallback,
               "snippet_policy": {"max_snippet_lines": DEFAULT_SNIPPET_LINES, "header": True, "overlap": "skip_if_overlaps_different_group"},
               "arms": {arm: {"uses_fail_to_pass": uses} for arm, uses in ARMS.items()},
-              "graph": {"use_jedi": not args.no_jedi, "builder_hash": builder_hash, "source_roots": ["src"]},
+              "graph": {"resolver": "tree-sitter+python-static-v2", "builder_hash": builder_hash, "source_roots": ["src"]},
               "retrieval": {"max_hops": args.max_hops, "max_candidates": args.max_candidates,
                             "min_edge_confidence": retrieval_config.min_edge_confidence, "weights": retrieval_config.weights,
-                            "include": "make_include(corpus): not Test and path in is_source corpus"}, "limit": args.limit}
+                            "include": "make_include(corpus): not Test and path in is_source corpus"}, "limit": args.limit, "task_timeout_seconds": args.task_timeout}
     directory, record = new_run(root / "results" / "retrieval", "retrieval_graph")
     record.update(config=config, source=source_fingerprint(root), dataset_id=manifest["dataset_id"],
                   dataset_revision=manifest["dataset_revision"], manifest_path=str(args.manifest.resolve()),
@@ -115,53 +219,21 @@ def main() -> int:
     for number, row in enumerate(tasks, 1):
         task_start = time.perf_counter()
         try:
-            patch_path = (root / row["gold_patch_path"]).resolve()
-            if not patch_path.is_relative_to(root.resolve() / "data" / "gold"):
-                raise ValueError("Gold patch path outside data/gold")
-            patch = patch_path.read_text(encoding="utf-8")
-            if sha256(patch) != row["patch_hash"] or sha256(row["problem_statement"]) != row["query_hash"]:
-                raise ValueError("Manifest patch/query hash mismatch")
-            sources, provenance = read_repository_sources(row, root / "data" / "repositories", network=not args.offline)
-            tree = root / "data" / "repositories" / "trees" / key_of(row)
-            tree_meta = extract_python_tree(provenance["cache_path"], row["repo"], row["base_commit"], tree)
-            document, graph_meta = load_or_build_graph(root, row, tree, use_jedi=not args.no_jedi, rebuild=args.rebuild_graphs,
-                                                       builder_hash=builder_hash)
-            corpus = CorpusIndex(sources)
-            include = make_include(corpus)
-            overlays = TaskOverlayBuilder(document)
-            retriever = GraphContextRetriever(document, tree, count_tokens=counter, counter_label=label, config=retrieval_config)
-            outputs = {}
-            for arm, uses_f2p in ARMS.items():
-                arm_start = time.perf_counter()
-                overlay = overlays.build(f"{row['instance_id']}:{arm}", row["problem_statement"],
-                                         list(fail_to_pass[row["instance_id"]]) if uses_f2p else None)
-                anchors = [{"node_id": a.node_id, "score": a.score, "symbol": retriever.nodes[a.node_id]["qualified_name"],
-                            "type": retriever.nodes[a.node_id]["type"], "path": retriever.nodes[a.node_id]["path"]}
-                           for a in overlay.grounding.anchors]
-                result = retriever.retrieve([a["node_id"] for a in anchors], args.budget_tokens,
-                                            issue_text=row["problem_statement"], overlay=overlay, include=include)
-                reasons: dict[str, int] = {}
-                for omission in result.omissions:
-                    reasons[omission["reason"]] = reasons.get(omission["reason"], 0) + 1
-                outputs[arm] = {"candidates": result.candidates, "anchors": anchors, "seconds": time.perf_counter() - arm_start,
-                                "diagnostics": {"m1_native_total_tokens": result.context.total_token_count,
-                                                "m1_native_items": len(result.context.items),
-                                                "m1_native_truncated": result.context.truncated,
-                                                "traversal_limited": result.traversal_limited,
-                                                "unavailable_features": result.unavailable_features,
-                                                "omissions": reasons, "retrieval_config": result.config}}
-            result = evaluate_graph_task(dict(row, patch=patch), sources, corpus, retriever.nodes, outputs,
-                                         budget_tokens=args.budget_tokens, counter=counter, counter_label=label)
-            result.update(graph=graph_meta, source_tree={k: tree_meta[k] for k in ("python_file_count", "tree_hash")},
-                          source_provenance=provenance, fail_to_pass_count=len(fail_to_pass[row["instance_id"]]),
-                          duration_seconds=time.perf_counter() - task_start)
-            for arm, data in result["arms"].items():
-                per_arm[arm].append({"instance_id": row["instance_id"], "status": "SUCCEEDED", "metrics": data["metrics"]})
-            summary_row = {"instance_id": row["instance_id"], "status": "SUCCEEDED", "duration_seconds": result["duration_seconds"],
-                           "graph_build_seconds": graph_meta["build_seconds"], "graph_cached": graph_meta["cached"],
-                           "graph_nodes": graph_meta["nodes"], "graph_edges": graph_meta["edges"],
-                           "corpus_hash": result["corpus_hash"], "query_hash": result["query_hash"],
-                           "arms": {arm: {k: data["metrics"].get(k) for k in KEY_METRICS} for arm, data in result["arms"].items()}}
+            result = run_bounded_task(root, row, fail_to_pass[row["instance_id"]], args, builder_hash)
+            if result["status"] != "SUCCEEDED":
+                for arm in ARMS:
+                    per_arm[arm].append({"instance_id": row["instance_id"], "status": "FAILED", "metrics": {}})
+                record["stderr"] += f"{row['instance_id']}: {result['error_class']}: {result['error']}\n"
+                summary_row = {key: value for key, value in result.items() if key != "traceback"}
+            else:
+                graph_meta = result["graph"]
+                for arm, data in result["arms"].items():
+                    per_arm[arm].append({"instance_id": row["instance_id"], "status": "SUCCEEDED", "metrics": data["metrics"]})
+                summary_row = {"instance_id": row["instance_id"], "status": "SUCCEEDED", "duration_seconds": result["duration_seconds"],
+                               "graph_build_seconds": graph_meta["build_seconds"], "graph_cached": graph_meta["cached"],
+                               "graph_nodes": graph_meta["nodes"], "graph_edges": graph_meta["edges"],
+                               "corpus_hash": result["corpus_hash"], "query_hash": result["query_hash"],
+                               "arms": {arm: {k: data["metrics"].get(k) for k in KEY_METRICS} for arm, data in result["arms"].items()}}
         except Exception as exc:                                      # one bad task never kills the run
             result = {"instance_id": row["instance_id"], "status": "FAILED", "error_class": type(exc).__name__, "error": str(exc),
                       "duration_seconds": time.perf_counter() - task_start}

@@ -33,11 +33,22 @@ copy .env.example .env      # rồi điền HF_TOKEN
 
 Sau `pip install -e .` có lệnh `vgar`. Nếu chưa muốn cài entry point: `python -m vgar.cli <lệnh>`.
 
+Nếu chỉ chạy graph/retrieval M1, có thể dùng môi trường riêng với Python 3.11:
+
+```powershell
+py -3.11 -m venv .venv-m1
+.\.venv-m1\Scripts\Activate.ps1
+python -m pip install -r scripts\requirements_m1.txt
+$env:PYTHONPATH = (Resolve-Path .\src).Path
+```
+
+Môi trường này dùng cho các script và test M1, không cần GPU hay model weights.
+
 ---
 
 ## 2. Cấu hình (`.env`)
 
-Toàn bộ cấu hình nằm ở `src/vgar/config/settings.py` và được nạp từ `.env`. Không còn YAML (`configs/*.yaml` không được đọc nữa).
+Cấu hình chung nằm ở `src/vgar/config/settings.py` và được nạp từ `.env`. Không còn YAML (`configs/*.yaml` không được đọc nữa).
 
 **Thứ tự ưu tiên:** biến môi trường thật > `.env` > giá trị mặc định trong code.
 
@@ -59,8 +70,12 @@ Ví dụ đặt tạm một biến cho một phiên shell: `$env:MAX_NEW_TOKENS 
 | `VGAR_GRAPH_BACKEND` | `demo` | `demo` hoặc `sqlite` |
 | `VGAR_GRAPH_DATABASE` | – | Bắt buộc khi backend là `sqlite`; đường dẫn tương đối tính từ thư mục gốc project |
 | `VGAR_GRAPH_VERSION` | – | Ghim một snapshot; để trống = snapshot ready mới nhất |
+| `VGAR_REPOSITORY_ROOT` | – | Thư mục repo nguồn tương ứng với snapshot, dùng khi lấy context M1 |
+| `VGAR_TOKENIZER_MANIFEST` | – | Manifest tokenizer local để kiểm tra assets và đếm token cho context M1 |
 | `VGAR_MCP_AUDIT_LOG` | `logs/mcp_audit.jsonl` | File audit của MCP server |
 | `VGAR_M2_TEMP_ROOT` | `<cha của repo>/m2-temp` | Thư mục workspace tạm của script M2 (chưa nằm trong `Settings`, đọc trực tiếp bởi script) |
+
+`VGAR_REPOSITORY_ROOT` và `VGAR_TOKENIZER_MANIFEST` được graph backend đọc trực tiếp từ môi trường; cần đặt khi dùng `get_related_context` với backend `sqlite`.
 
 Quy tắc cần nhớ:
 
@@ -82,7 +97,7 @@ s.model.model_id, s.agent.max_tool_calls, s.graph.backend
 
 ```powershell
 vgar doctor                # in settings đã resolve, không load model
-vgar tools                 # dựng 3 MCP server, liệt kê 8 tool
+vgar tools                 # dựng 3 MCP server, liệt kê tool
 vgar index tests/fixtures/m2/failing_repo --db artifacts/graph.db
 vgar run "Fix the failing test" --repo tests/fixtures/m2/failing_repo `
     --selector tests/test_demo.py::test_answer
@@ -92,7 +107,7 @@ vgar chat --repo tests/fixtures/m2/failing_repo        # REPL, giữ lịch sử
 | Lệnh | Việc làm | Cần model |
 |---|---|---|
 | `vgar doctor` | In settings đã resolve và cho biết `HF_TOKEN` có được đặt không | không |
-| `vgar tools` | Spawn graph/repository/execution server và liệt kê tool (kỳ vọng: 8) | không |
+| `vgar tools` | Spawn graph/repository/execution server và liệt kê tool | không |
 | `vgar index REPO --db PATH` | Build graph snapshot của REPO vào SQLite (mặc định `artifacts/graph.db`) | không |
 | `vgar run "<task>" --repo REPO` | Chạy agent một lượt | có |
 | `vgar chat --repo REPO` | Chạy agent nhiều lượt; dòng trống hoặc Ctrl-D để thoát | có |
@@ -139,13 +154,27 @@ python -m pytest -q
 
 `tests/test_settings.py` bao phủ: giá trị mặc định, override qua env, lỗi parse, từ chối provider/temperature sai, và việc server con không nhận secret.
 
+Chạy riêng bộ test M1:
+
+```powershell
+python scripts\run_m1_tests.py
+```
+
+Smoke test W5–6 kiểm tra luồng issue → anchors → context qua MCP, không gọi model. Thay đường dẫn manifest bằng tokenizer local đã provision:
+
+```powershell
+python scripts\smoke_w5_w6_retrieval.py --tokenizer-manifest path\to\tokenizer_manifest.json
+```
+
+Manifest được tạo bằng `scripts/provision_m1_tokenizer.py`; dùng `--help` để xem các tham số.
+
 ---
 
 ## 5. Graph (M1)
 
 Graph builder extract `Repository`, `File`, `Module`, `Class`, `Function`, `Method`, `Test`, `Import`, `CallSite`. Ngoài ra nó tạo containment, resolve import nội bộ/ngoại bộ, kế thừa cơ bản và các call trực tiếp/qua import/qua `self`.
 
-Jedi 0.20.0 là tầng static-analysis bổ sung cho các call còn unresolved, chỉ chấp nhận kết quả map ngược được về symbol nội bộ. Call không resolve được vẫn được giữ dưới dạng `CallSite` có `candidate_count=0`.
+Builder dùng Tree-sitter để extract cú pháp và Python `ast`/`symtable` để phân giải symbol theo scope, không dùng Jedi. Một số method call có thể resolve từ annotation của tham số khi xác định được class nội bộ. Call không resolve được vẫn được giữ dưới dạng `CallSite` có `candidate_count=0`; lời gọi động hoặc mơ hồ có thể còn unresolved.
 
 Build thủ công qua JSON rồi nạp vào SQLite:
 
@@ -156,7 +185,9 @@ python scripts\build_graph.py tests\fixtures\sample_repo artifacts\sample_graph.
 python scripts\load_graph_fixture.py artifacts\sample_graph.json artifacts\sample_graph.db
 ```
 
-Thêm `--no-jedi` vào `build_graph.py` để đo baseline Tree-sitter/resolver nội bộ.
+Task grounding tìm anchors từ issue, đường dẫn, symbol, stack trace và failing-test report. Task overlay giữ node `Issue` cùng các liên kết `MENTIONS`/`REPRODUCES` riêng cho từng task; không ghi vào snapshot repo.
+
+Retrieval duyệt các quan hệ graph từ anchors, xếp hạng và đóng gói source snippets theo ngân sách token. API nhận `graph_version` và `task_id` tường minh; nội dung nguồn được kiểm tra với snapshot trước khi trả context. Failing-test report là đầu vào được cung cấp, không phải kết quả chạy test của graph service.
 
 Dùng graph SQLite với MCP server:
 
@@ -173,7 +204,7 @@ Ghi chú hợp đồng:
 - MCP server chỉ gọi `GraphService`; không copy SQLite schema hay query logic vào server. `sqlite_service.py` import DTO từ `vgar.contracts.graph`, đây là ranh giới tương thích, không nhân bản contract.
 - Backend `demo` vẫn là mặc định, nên các smoke flow cũ không bị phá.
 
-Số liệu đo gần nhất trên repo VGAR (trước khi thêm CLI): 227 nodes, 263 edges, 19 call edge resolved (review thủ công: 19/19 đúng đích), 57 call site unresolved.
+Số liệu tham khảo từ snapshot repo VGAR trước khi thêm CLI: 227 nodes, 263 edges, 19 call edge resolved (review thủ công: 19/19 đúng đích), 57 call site unresolved. Các số liệu này chỉ áp dụng cho snapshot đã đo.
 
 ---
 
@@ -183,9 +214,11 @@ Tên tool có prefix theo server (`tool_name_prefix=True`):
 
 | Server | Tool |
 |---|---|
-| graph | `graph_search_symbols`, `graph_get_callers`, `graph_get_callees` |
+| graph | `graph_search_symbols`, `graph_get_callers`, `graph_get_callees`, `graph_find_task_anchors`, `graph_get_related_context` |
 | repository | `repository_health`, `repository_read_file`, `repository_apply_patch` |
 | execution | `execution_health`, `execution_run_pytest` |
+
+Graph server cũng cung cấp các resource `vgar://repo/summary`, `vgar://graph/node/{node_id}` và `vgar://graph/subgraph/{node_id}`. `get_callers`/`get_callees` trả quan hệ gọi trực tiếp; duyệt nhiều hop để lấy context nằm trong `get_related_context`.
 
 Server được dựng trong `src/vgar/mcp/client.py` bằng `sys.executable -m vgar.mcp.servers.<name>_server`, nên luôn dùng cùng Python/venv với tiến trình gọi. Mọi tool call của graph server được ghi vào `VGAR_MCP_AUDIT_LOG`. Xem `docs/mcp_tool_contract.md` cho schema chi tiết.
 

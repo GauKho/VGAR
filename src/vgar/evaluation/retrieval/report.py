@@ -32,14 +32,14 @@ def _single_table(metrics, names):
     return lines
 
 
-ARM_LABELS = {"bm25_uncapped": "bm25 (full rank)", "bm25": "bm25@cap", "graph": "graph", "graph_f2p": "graph+F2P"}
+ARM_LABELS = {"bm25": "bm25 (full rank)", "bm25_capped": "bm25@cap (diagnostic)", "graph": "graph", "graph_f2p": "graph+F2P"}
 DELTA_ROWS = ("file_recall@3", "file_recall@5", "file_recall@10", "function_recall@3", "function_recall@5",
               "function_recall@10", "file_mrr", "function_mrr", "packed_gold_file_in_context",
               "packed_gold_function_in_context", "context_tokens")
 
 
 def _paired_table(summaries, names):
-    arms = [a for a in ("bm25_uncapped", "bm25", "graph", "graph_f2p") if a in summaries]
+    arms = [a for a in ("bm25", "bm25_capped", "graph", "graph_f2p") if a in summaries]
     lines = ["| Metric | " + " | ".join(ARM_LABELS[a] for a in arms) + " |", "|---|" + "---:|" * len(arms)]
     for name in names:
         cells = []
@@ -53,7 +53,7 @@ def _paired_table(summaries, names):
 def _delta_table(paired):
     lines = []
     for arm, stats in paired.items():
-        lines += [f"**{ARM_LABELS[arm]} − bm25@cap** (cùng task, bootstrap 95% CI của mean delta)", "",
+        lines += [f"**{ARM_LABELS[arm]} − BM25 full rank** (cùng task, bootstrap 95% CI của mean delta)", "",
                   "| Metric | n | Mean Δ | 95% CI | Thắng / Hòa / Thua |", "|---|---:|---:|---|---:|"]
         for name in DELTA_ROWS:
             row = stats.get(name, {"n": 0})
@@ -85,7 +85,7 @@ def _comparison_extras(pair):
             lines.append(f"| {repo} | {row['n']} | " + " | ".join(cells) + " |")
         lines.append("")
     if pair.get("inspection"):
-        lines += ["### Task cần kiểm tay (Δ = Δfile R@5 + Δfunction R@5 so với bm25@cap)", ""]
+        lines += ["### Task cần kiểm tay (Δ = Δfile R@5 + Δfunction R@5 so với BM25 full rank)", ""]
         for arm, groups in pair["inspection"].items():
             for title, key in (("Graph thua", "graph_loses"), ("Graph thắng", "graph_wins")):
                 for item in groups[key]:
@@ -126,7 +126,7 @@ def write_report(run, comparison=None, destination=None):
         lines += [f"Comparison status: **{pair['status']}**; paired tasks: {pair['paired_tasks']}/{pair['eligible_bm25_tasks']}.", ""]
         if pair["paired_tasks"] and pair.get("scoring_version") == config["scoring_version"]:
             lines += [f"`bm25@cap` = BM25 chấm lại trên top-{pair.get('bm25_cap', 100)} chunk (Graph tối đa 100 node); "
-                      "`bm25 (full rank)` giữ nguyên để tham khảo, `*_reach` của nó không so được với Graph.", ""]
+                      "đây là ablation phụ. Baseline chính là `bm25 (full rank)`; `graph+F2P` là oracle chẩn đoán.", ""]
             lines += ["### Rank đầy đủ (chính)", ""] + _paired_table(pair["summaries"], RANK_ROWS)
             lines += ["", "### Context đóng gói (phụ)", ""] + _paired_table(pair["summaries"], PACKED_ROWS)
             lines += [""] + _comparison_extras(pair)

@@ -61,7 +61,7 @@ def main() -> None:
         tiny_root = Path(directory)
         (tiny_root / "unicode.py").write_bytes('def café():\r\n    return "đếm 世界 🐻"\r\n'.encode("utf-8"))
         tiny_graph = PythonGraphBuilder(repo_key="tokenizer-boundary", repository_revision="fixture",
-                                        use_jedi=False).build(tiny_root)
+                                        ).build(tiny_root)
         anchor = next(node for node in tiny_graph["nodes"] if node["type"] == "Function" and node["name"] == "café")
         raw = (tiny_root / "unicode.py").read_bytes()
         snippet = raw[anchor["range"]["start_byte"]:anchor["range"]["end_byte"]].decode("utf-8")
@@ -82,7 +82,7 @@ def main() -> None:
     base_commit = subprocess.check_output(git + ["rev-parse", "HEAD"], text=True).strip()
     dirty = bool(subprocess.check_output(git + ["status", "--porcelain"], text=True).strip())
     graph = PythonGraphBuilder(repo_key="GauKho/VGAR", repository_revision=f"{base_commit}-worktree-m1-tokenizer",
-                               use_jedi=False).build(ROOT)
+                               ).build(ROOT)
     write(args.graph_output, graph)
     graph_hash = hashlib.sha256(args.graph_output.read_bytes()).hexdigest()
     retriever = GraphContextRetriever(graph, ROOT, count_tokens=counter, counter_label=counter.counter_label)
@@ -126,7 +126,7 @@ def main() -> None:
     write(args.output_directory / "manifest.json", {
         "date": "2026-10-03", "base_commit": base_commit, "working_tree_dirty": dirty,
         "graph_artifact": str(args.graph_output.resolve()), "graph_version": graph["graph_version"],
-        "graph_json_sha256": graph_hash, "statistics": graph["statistics"], "use_jedi": False,
+        "graph_json_sha256": graph_hash, "statistics": graph["statistics"], "resolver": "tree-sitter+python-static-v2",
         "tokenizer_provenance": counter.provenance, "snippet_only_budget": True,
         "native_count_comparison": True, "sample_counts": sample_counts,
         "boundary": {"exact_fit_tokens": cost, "one_token_short_budget": cost - 1, "checks_passed": True},

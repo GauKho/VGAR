@@ -115,7 +115,7 @@ class LocalTokenizerCounterTests(unittest.TestCase):
         (repository / "sample.py").write_text('def hello():\n    return "世界"\n', encoding="utf-8")
         graph_path = self.root / "graph.json"
         graph_path.write_text(json.dumps(PythonGraphBuilder(repo_key="counter-test", repository_revision="fixture",
-                                                           use_jedi=False).build(repository)), encoding="utf-8")
+                                                           ).build(repository)), encoding="utf-8")
         command = [sys.executable, str(Path(__file__).resolve().parents[1] / "scripts/get_related_context.py"),
                    str(graph_path), str(repository), "--budget-tokens", "8000", "--issue-text", "sample.py:1",
                    "--tokenizer-manifest", str(self.path)]

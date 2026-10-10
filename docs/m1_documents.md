@@ -7,12 +7,13 @@ VGAR checkout; consumer sign-off remains separate in the M1 decision log.
 
 | Purpose | Reference |
 |---|---|
+| Current M1 W5–W6 implementation, evaluation and handoff — 10/10/2026 | [m1_w5_w6_handoff_2026-10-10.md](m1_w5_w6_handoff_2026-10-10.md) |
 | Graph shapes, IDs, endpoints, queries/errors and DTO mapping | [graph_schema.md](graph_schema.md) |
 | Context models, validation and approved M1 producer principles | [context_payload_contract.md](context_payload_contract.md) |
 | User-approved Milestone 1 baseline decisions | [m1_contract_decision_log.md](m1_contract_decision_log.md) |
 | Approval state and remaining sign-off | [m1_contract_decision_log.md](m1_contract_decision_log.md) |
 | Direct module boundaries and shared effects on M2/M3 | [m1_change_scope_2026-10-03.md](m1_change_scope_2026-10-03.md) |
-| Current deliverables, setup and graph handoff | [m1_handoff_2026-10-03.md](m1_handoff_2026-10-03.md) |
+| Earlier 03/10 checkpoint: deliverables, setup and graph handoff | [m1_handoff_2026-10-03.md](m1_handoff_2026-10-03.md) |
 | 01/10 build/source-review evidence | [graph_quality_report.md](graph_quality_report.md) |
 | Implemented grounding and remaining retrieval work | [retrieval_design.md](retrieval_design.md) |
 | Milestone 2 task overlay checkpoint evidence | [task-grounding manifest](../artifacts/m1/task-grounding/manifest.json) |

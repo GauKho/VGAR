@@ -112,7 +112,7 @@ def finish_run(directory, kind, task_results, summary_key, summary, config):
 
 
 def test_compare_runs_end_to_end_and_report(tmp_path):
-    config = {"budget_tokens": 200, "counter_label": "fake-words", "scoring_version": "retrieval-scoring-v1",
+    config = {"manifest_hash": "fixture-manifest", "budget_tokens": 200, "counter_label": "fake-words", "scoring_version": "retrieval-scoring-v1",
               "snippet_policy": {"max_snippet_lines": 80}, "counter_is_fallback": False, "snippet": 1}
     bm_dir, gr_dir = tmp_path / "bm", tmp_path / "gr"
     bm = evaluate_task(TASK, SOURCES, 200, counter=words, counter_label="fake-words")
@@ -121,15 +121,17 @@ def test_compare_runs_end_to_end_and_report(tmp_path):
     finish_run(bm_dir, "retrieval", [bm_row], "summary", aggregate_metrics([bm_row]) | {"completed_tasks": 1}, config)
     gr = run_task()
     write_json(gr_dir / "tasks" / "t-2.json", gr)
-    gr_row = {"instance_id": "t-2", "status": "SUCCEEDED", "arm": "graph",
+    gr_row = {"instance_id": "t-2", "status": "SUCCEEDED",
               "graph_build_seconds": 1.5, "artifact_hash": sha256((gr_dir / "tasks" / "t-2.json").read_bytes()),
               "arms": {a: {"metrics": {k: d["metrics"].get(k)} for k in ("file_recall@5", "function_recall@5")}
                        for a, d in gr["arms"].items()}}
     finish_run(gr_dir, "retrieval_graph", [gr_row], "summary_by_arm", {}, config)
 
-    directory, report = compare_runs(bm_dir, gr_dir, tmp_path / "out")
+    directory, report = compare_runs(bm_dir, gr_dir, tmp_path / "out", cap=1)
     assert report["status"] == "COMPARED" and report["paired_tasks"] == 1
-    assert set(report["summaries"]) == {"bm25", "bm25_uncapped", "graph", "graph_f2p"}
+    assert set(report["summaries"]) == {"bm25", "bm25_capped", "graph", "graph_f2p"}
+    assert report["summaries"]["bm25"]["metrics"]["file_recall@5"]["mean"] == bm["metrics"]["file_recall@5"]
+    assert report["primary_comparison"]["bm25_rank"] == "full"
     assert report["graph_diagnostics"]["graph_f2p"]["no_anchor_tasks"] == 1
     text = write_report(bm_dir, comparison=directory, destination=directory / "REPORT.md").read_text(encoding="utf-8")
     assert "graph+F2P" in text and "Delta theo cặp task" in text and "Task cần kiểm tay" in text and "AWAITING_GRAPH" not in text
@@ -140,3 +142,22 @@ def test_compare_runs_end_to_end_and_report(tmp_path):
     write_json(gr_dir / "result.json", bad)
     with pytest.raises(ValueError, match="budget_tokens"):
         compare_runs(bm_dir, gr_dir, tmp_path / "out2")
+
+
+def test_source_tree_publication_retries_windows_sharing_error(tmp_path, monkeypatch):
+    from pathlib import Path
+    make_tar(tmp_path / 'a.tar.gz', {'src/a.py': b'def f(): return 1\n'})
+    original = Path.rename
+    attempts = []
+    def temporarily_locked(self, target):
+        attempts.append(self)
+        if len(attempts) < 3:
+            error = PermissionError('scanner has the directory open')
+            error.winerror = 32
+            raise error
+        return original(self, target)
+    monkeypatch.setattr(Path, 'rename', temporarily_locked)
+    monkeypatch.setattr('vgar.evaluation.retrieval.graph_arm.time.sleep', lambda _: None)
+    meta = extract_python_tree(tmp_path / 'a.tar.gz', 'o/r', SHA, tmp_path / 'tree')
+    assert meta['python_file_count'] == 1
+    assert len(attempts) == 3
