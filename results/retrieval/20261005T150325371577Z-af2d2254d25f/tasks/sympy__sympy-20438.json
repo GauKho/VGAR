@@ -1,7 +1,0 @@
-{
-  "instance_id": "sympy__sympy-20438",
-  "status": "FAILED",
-  "error_class": "KeyError",
-  "error": "WindowsPath('D:/kltn/vgar_mcp_mvp_demo/data/repositories/trees/sympy__sympy-33b47e4bd60e2302e42616141e76285038b724d6/sympy/combinatorics/pc_groups.py')",
-  "duration_seconds": 722.8166412999999
-}

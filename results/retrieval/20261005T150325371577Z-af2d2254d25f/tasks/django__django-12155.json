@@ -1,7 +1,0 @@
-{
-  "instance_id": "django__django-12155",
-  "status": "FAILED",
-  "error_class": "KeyError",
-  "error": "WindowsPath('D:/kltn/vgar_mcp_mvp_demo/data/repositories/trees/django__django-e8fcdaad5c428878d0a5d6ba820d957013f75595/django/contrib/admin/templatetags/base.py')",
-  "duration_seconds": 124.31725670000014
-}

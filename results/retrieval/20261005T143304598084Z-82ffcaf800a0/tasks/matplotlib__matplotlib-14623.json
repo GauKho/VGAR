@@ -1,7 +1,0 @@
-{
-  "instance_id": "matplotlib__matplotlib-14623",
-  "status": "FAILED",
-  "error_class": "KeyError",
-  "error": "'vgar:matplotlib__matplotlib:python:class:lib/matplotlib/backends/backend_qt5.py:lib.matplotlib.backends.backend_qt5.FigureCanvasQT'",
-  "duration_seconds": 10.250830099997984
-}

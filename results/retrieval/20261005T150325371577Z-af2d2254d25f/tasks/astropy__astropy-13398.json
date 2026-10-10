@@ -1,7 +1,0 @@
-{
-  "instance_id": "astropy__astropy-13398",
-  "status": "FAILED",
-  "error_class": "KeyError",
-  "error": "WindowsPath('C:/Users/nlhnh/AppData/Roaming/Python/Python311/site-packages/networkx/exception.py')",
-  "duration_seconds": 433.816688400002
-}

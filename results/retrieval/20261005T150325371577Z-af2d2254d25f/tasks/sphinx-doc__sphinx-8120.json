@@ -1,7 +1,0 @@
-{
-  "instance_id": "sphinx-doc__sphinx-8120",
-  "status": "FAILED",
-  "error_class": "KeyError",
-  "error": "WindowsPath('D:/kltn/vgar_mcp_mvp_demo/data/repositories/trees/sphinx-doc__sphinx-795747bdb6b8fb7d717d5bbfc2c3316869e66a73/sphinx/directives/__init__.py')",
-  "duration_seconds": 13.65694269999949
-}

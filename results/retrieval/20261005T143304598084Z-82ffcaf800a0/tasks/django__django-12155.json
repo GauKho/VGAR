@@ -1,7 +1,0 @@
-{
-  "instance_id": "django__django-12155",
-  "status": "FAILED",
-  "error_class": "KeyError",
-  "error": "WindowsPath('C:/Users/nlhnh/AppData/Roaming/Python/Python311/site-packages/numpy/_core/__init__.py')",
-  "duration_seconds": 132.2854806999967
-}

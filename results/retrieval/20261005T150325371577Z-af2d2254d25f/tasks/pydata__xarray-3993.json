@@ -1,7 +1,0 @@
-{
-  "instance_id": "pydata__xarray-3993",
-  "status": "FAILED",
-  "error_class": "KeyError",
-  "error": "WindowsPath('C:/Users/nlhnh/AppData/Roaming/Python/Python311/site-packages/pandas/core/series.py')",
-  "duration_seconds": 21.964949199995317
-}

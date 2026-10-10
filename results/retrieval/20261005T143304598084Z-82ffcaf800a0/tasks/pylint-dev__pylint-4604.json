@@ -1,7 +1,0 @@
-{
-  "instance_id": "pylint-dev__pylint-4604",
-  "status": "FAILED",
-  "error_class": "KeyError",
-  "error": "WindowsPath('C:/Users/nlhnh/AppData/Roaming/Python/Python311/site-packages/setuptools/_distutils/sysconfig.py')",
-  "duration_seconds": 23.06611690000136
-}

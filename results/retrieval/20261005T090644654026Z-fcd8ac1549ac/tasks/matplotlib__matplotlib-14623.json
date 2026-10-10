@@ -1,7 +1,0 @@
-{
-  "instance_id": "matplotlib__matplotlib-14623",
-  "status": "FAILED",
-  "error_class": "KeyError",
-  "error": "'lib.matplotlib.backends.backend_qt5'",
-  "duration_seconds": 16.984226799999306
-}

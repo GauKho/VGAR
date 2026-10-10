@@ -1,7 +1,0 @@
-{
-  "instance_id": "sphinx-doc__sphinx-8548",
-  "status": "FAILED",
-  "error_class": "KeyError",
-  "error": "WindowsPath('C:/Program Files/Python311/Lib/platform.py')",
-  "duration_seconds": 10.15131079999992
-}

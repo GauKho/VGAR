@@ -1,7 +1,0 @@
-{
-  "instance_id": "pylint-dev__pylint-4551",
-  "status": "FAILED",
-  "error_class": "MemoryError",
-  "error": "",
-  "duration_seconds": 16.75655650000408
-}

@@ -1,7 +1,0 @@
-{
-  "instance_id": "sphinx-doc__sphinx-10673",
-  "status": "FAILED",
-  "error_class": "KeyError",
-  "error": "WindowsPath('C:/Users/nlhnh/AppData/Roaming/Python/Python311/site-packages/requests/structures.py')",
-  "duration_seconds": 30.695902300001762
-}

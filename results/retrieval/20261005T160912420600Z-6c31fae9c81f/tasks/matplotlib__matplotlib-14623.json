@@ -1,7 +1,0 @@
-{
-  "instance_id": "matplotlib__matplotlib-14623",
-  "status": "FAILED",
-  "error_class": "AttributeError",
-  "error": "'PurePosixPath' object has no attribute 'type'",
-  "duration_seconds": 0.08185940000112168
-}

@@ -1,7 +1,0 @@
-{
-  "instance_id": "pylint-dev__pylint-4551",
-  "status": "FAILED",
-  "error_class": "KeyError",
-  "error": "'tests.functional.f.function_redefined'",
-  "duration_seconds": 10.391714600000341
-}

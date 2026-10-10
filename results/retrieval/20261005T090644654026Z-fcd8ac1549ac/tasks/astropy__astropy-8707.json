@@ -1,7 +1,0 @@
-{
-  "instance_id": "astropy__astropy-8707",
-  "status": "FAILED",
-  "error_class": "KeyError",
-  "error": "'astropy.io.fits.card'",
-  "duration_seconds": 31.13693509999939
-}

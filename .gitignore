@@ -19,3 +19,27 @@ fine_tuning_qwen_3_4b.ipynb
 data/graphs/
 results/
 *.zip
+
+.venv-m1/
+
+.m1-test-tmp*/
+artifacts/m1/w5-w6/
+
+# Generated Python metadata and caches.
+*.egg-info/
+.pytest_cache/
+*.py[cod]
+
+# Generated databases; retain the graph fixture used by tests.
+/artifacts/*.db
+!/artifacts/sample_graph.db
+/artifacts/*.db-wal
+/artifacts/*.db-shm
+/artifacts/*.db-journal
+
+# Script outputs.
+/artifacts/real_repo_graph.json
+/artifacts/m2/test-runs/
+
+# Saved local diff.
+/tore -- README.md pyproject.toml

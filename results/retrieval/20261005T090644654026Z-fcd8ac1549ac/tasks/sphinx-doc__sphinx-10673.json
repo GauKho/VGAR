@@ -1,7 +1,0 @@
-{
-  "instance_id": "sphinx-doc__sphinx-10673",
-  "status": "FAILED",
-  "error_class": "KeyError",
-  "error": "'tests.test_build_epub'",
-  "duration_seconds": 9.918212900000071
-}
