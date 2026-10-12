@@ -6,7 +6,7 @@ from dataclasses import asdict
 from pathlib import Path
 
 from vgar.graph.builder import PythonGraphBuilder
-from vgar.graph.grounding import TaskAnchorFinder
+from vgar.graph.grounding import TaskAnchorFinder, issue_symbol_text, issue_topic_text
 
 
 class TaskAnchorTests(unittest.TestCase):
@@ -256,6 +256,106 @@ class TaskAnchorTests(unittest.TestCase):
             return TaskAnchorFinder(PythonGraphBuilder(
                 repo_key="demo/prose", repository_revision="fixture",
             ).build(root))
+
+    def test_reproduction_variables_are_not_repository_symbols(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "app.py").write_text(
+                "def x(): pass\ndef y(): pass\ndef mode(): pass\ndef process(): pass\n", encoding="utf-8")
+            finder = TaskAnchorFinder(PythonGraphBuilder(repo_key="demo/locals", repository_revision="fixture").build(root))
+        result = finder.find_task_anchors("```python\nx = 1\ny = x\nfor mode in ('fast',):\n    obj.process(x, y)\n```")
+        self.assertEqual([a.symbol for a in result.anchors], ["app.process"])
+        # Explicit repository function calls and identifiers outside the snippet remain usable.
+        self.assertEqual([a.symbol for a in finder.find_task_anchors("`x()` fails").anchors], ["app.x"])
+        self.assertEqual([a.symbol for a in finder.find_task_anchors("```python\nx = 1\n```\napp.x fails").anchors], ["app.x"])
+
+    def test_import_alias_resolves_module_and_external_import_does_not_guess_member(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "src").mkdir()
+            (root / "src" / "api.py").write_text("def process(): pass\n", encoding="utf-8")
+            (root / "other.py").write_text("def process(): pass\n", encoding="utf-8")
+            finder = TaskAnchorFinder(PythonGraphBuilder(repo_key="demo/imports", repository_revision="fixture").build(root))
+        for snippet in ("import api as a\na.process()", "from api import process as p\np()"):
+            result = finder.find_task_anchors("```python\n" + snippet + "\n```")
+            self.assertEqual([a.symbol for a in result.anchors], ["api.process"])
+            self.assertEqual(result.ambiguous_matches, [])
+        result = finder.find_task_anchors("```python\nimport external as a\na.process()\n```")
+        self.assertEqual(result.anchors, [])
+
+    def test_invalid_reproduction_keeps_lexical_fallback(self) -> None:
+        result = self._prose_finder().find_task_anchors("```python\nif ???\nobj.login()\n```")
+        self.assertEqual([a.symbol for a in result.anchors], ["app.login"])
+
+    def test_topic_excludes_reproduction_syntax_and_preserves_literal_names(self) -> None:
+        issue = 'Timeout handling\n```python\nclass Demo:\n    def method(self):\n        return None\n```'
+        visible = issue_symbol_text(issue)
+        self.assertEqual(len(visible), len(issue))
+        self.assertNotIn('Demo', visible)
+        self.assertNotIn('method', visible)
+        self.assertIn('None', visible)
+        self.assertEqual(issue_topic_text(issue), 'Timeout handling')
+        self.assertEqual(issue_topic_text('```python\nclass Demo: pass\n```\n`fetch()` fails'), '`fetch()` fails')
+
+    def test_narrative_help_does_not_override_explicit_code_evidence(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root/'app.py').write_text('def help(): pass\ndef handle(): pass\n', encoding='utf-8')
+            finder = TaskAnchorFinder(PythonGraphBuilder(repo_key='demo/help-prose', repository_revision='fixture').build(root))
+        self.assertEqual([a.symbol for a in finder.find_task_anchors('`handle()` does not help').anchors], ['app.handle'])
+        for issue in ('help fails', '`help()` fails'):
+            self.assertEqual([a.symbol for a in finder.find_task_anchors(issue).anchors], ['app.help'])
+
+    def test_reproduction_definitions_and_arguments_do_not_seed_repository_code(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / 'app.py').write_text('class Example:\n    def __init__(self): pass\ndef value(): pass\ndef external(): pass\n', encoding='utf-8')
+            finder = TaskAnchorFinder(PythonGraphBuilder(repo_key='demo/definitions', repository_revision='fixture').build(root))
+        issue = '```python\nclass Example:\n    def __init__(self, value):\n        external()\n        self.value = value\n```'
+        result = finder.find_task_anchors(issue)
+        self.assertEqual([a.symbol for a in result.anchors], ['app.external'])
+        result = finder.find_task_anchors(issue + '\n`Example.__init__()` fails')
+        self.assertIn('app.Example.__init__', [a.symbol for a in result.anchors])
+
+    def test_environment_versions_and_language_prose_do_not_seed_setup_classes(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root/'app.py').write_text('class Python: pass\nclass Widget: pass\ndef repair_target(): pass\n', encoding='utf-8')
+            finder = TaskAnchorFinder(PythonGraphBuilder(repo_key='demo/metadata', repository_revision='fixture').build(root))
+            issue = 'repair_target fails\n**Widget version**\r\r\n * Widget version: 1.0\r\r\n * Python version: 3.11\nPython was installed locally.'
+            self.assertEqual([a.symbol for a in finder.find_task_anchors(issue).anchors], ['app.repair_target'])
+            self.assertEqual([a.symbol for a in finder.find_task_anchors('`Python()` fails').anchors], ['app.Python'])
+
+    def test_version_report_section_is_not_bug_evidence_and_preserves_next_section(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root/'app.py').write_text('def repair_target(): pass\ndef show_versions(): pass\ndef another_failure(): pass\n', encoding='utf-8')
+            finder = TaskAnchorFinder(PythonGraphBuilder(repo_key='demo/report-sections', repository_revision='fixture').build(root))
+            for heading, report in (
+                ('#### Output of ``pkg.show_versions()``', '<details>\n# Paste show_versions() here\nshow_versions()\n</details>'),
+                ('#### Installed versions', 'show_versions: 1.0'),
+                ('#### Output of `tool --version`', 'show_versions: 1.0'),
+                ('#### tool --version output', 'show_versions: 1.0'),
+            ):
+                issue = f'`repair_target()` fails\n{heading}\n{report}\n#### Actual failure\n`another_failure()` fails\n'
+                with self.subTest(heading=heading):
+                    self.assertEqual({a.symbol for a in finder.find_task_anchors(issue).anchors},
+                                     {'app.repair_target', 'app.another_failure'})
+                    normalized = issue_symbol_text(issue)
+                    self.assertNotIn('show_versions', normalized)
+                    self.assertEqual(len(normalized), len(issue))
+                    self.assertEqual(normalized.index('another_failure'), issue.index('another_failure'))
+
+    def test_diagnostic_function_as_the_reported_bug_is_preserved(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root/'app.py').write_text('def show_versions(): pass\n', encoding='utf-8')
+            finder = TaskAnchorFinder(PythonGraphBuilder(repo_key='demo/diagnostic-bug', repository_revision='fixture').build(root))
+            for issue in ('`show_versions()` returns the wrong output',
+                          '#### Output of `show_versions()` is wrong\n`show_versions()` fails',
+                          '```python\n# Output of show_versions()\nshow_versions()\n```'):
+                with self.subTest(issue=issue):
+                    self.assertEqual([a.symbol for a in finder.find_task_anchors(issue).anchors], ['app.show_versions'])
 
     @staticmethod
     def _route_finder() -> TaskAnchorFinder:

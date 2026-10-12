@@ -20,6 +20,12 @@ PATTERNS = (
     "test_graph_retrieval.py",
     "test_token_counter.py",
     "test_w5_w6_mcp.py",
+    "test_scip_enrichment.py",
+    "test_lsp_enrichment.py",
+    "test_method_aliases.py",
+    "test_source_evidence.py",
+    "test_w7_w8_m1.py",
+    "test_m1_handoff.py",
 )
 
 

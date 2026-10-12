@@ -72,3 +72,80 @@ Baseline retrieval/packing nội bộ M1 đã triển khai và kiểm thử ở 
 Official tokenizer/revision và 8000 snippet budget đã được duyệt/nghiệm thu
 standalone M1: [tokenizer acceptance](m1_tokenizer_acceptance.md). Dev evaluation,
 model/prompt runtime M3 và consumer integration còn riêng; D05/D09 trong decision log.
+
+## Gói bàn giao cho M2 tuần 7–8
+
+`vgar.graph.handoff.create_context_handoff` nhận graph và data wrapper từ
+`get_related_context`, kiểm node/path/symbol/range với graph cùng snapshot,
+source thực và token counter. `write_context_handoff` ghi vào thư mục mới,
+không ghi đè gói cũ:
+
+| File | Nội dung |
+|---|---|
+| `context.json` | Chính `ContextPayload` hiện có, không thêm fields |
+| `context_manifest.json` | Repo key/revision/graph version, context hash, Python source inventory/hash, bindings của từng item, quy ước range và token counter |
+| `test_links.json` | Mapping path/node ID → pytest selectors, lý do/giới hạn traversal, failing selectors và fallback scope |
+| `repair-context.txt` | Phần context có path/symbol/range để ghép vào prompt của M2 |
+
+`source_metadata.content_hash` trong retrieval wrapper là hash của node/snippet,
+không mặc định là hash toàn file. Manifest dùng `files[path]` cho SHA256 toàn
+file và `items[node_id].snippet_sha256` cho đúng byte slice. `source_digest` là
+SHA256 của JSON canonical chứa mapping file hashes. Manifest dùng nhãn riêng
+`vgar.m1-handoff.v1`; không thêm public `schema_version` vào shared DTO.
+
+Scope hiện chỉ gồm `.py` theo inventory của builder; danh sách excluded directory
+names được ghi rõ, không follow filesystem links. Đây không phải kiểm tra hash
+toàn repo, tests/config ngoài scope hoặc bằng chứng toàn W7–8 đã hoàn tất.
+Snippet giữ nguyên UTF-8/CRLF, không có wrapper trong nội dung và không clipping
+giữa symbol; `truncated` báo omitted items do budget, không báo snippet bị cắt.
+
+Export từ kết quả smoke đã lưu, dùng cùng tokenizer đã provision:
+
+```powershell
+python scripts\export_m1_handoff.py `
+    --graph artifacts\m1\w7-w8\smoke\graph.json `
+    --context-response artifacts\m1\w7-w8\smoke\context.json `
+    --repository tests\fixtures\sample_repo `
+    --tokenizer-manifest artifacts\m1\tokenizer-acceptance\tokenizer_manifest.json `
+    --changed-path src/auth/service.py `
+    --failing-test tests/test_auth.py::test_login --selected-test tests
+```
+
+Mỗi invocation có output directory riêng và `result.json`, kể cả input validation
+ERROR. `PASS` của exporter chỉ nói gói M1 đã được kiểm, không nói LLM/patch/tests
+đã thành công. CLI in absolute output path. Artifacts nằm dưới thư mục ignored
+`artifacts/m1/w7-w8/`.
+
+Phía nhận dùng snapshot identity từ task/config được duyệt, không lấy các giá
+trị expected một cách ngầm định từ chính manifest đang kiểm:
+
+```python
+from vgar.contracts.handoff import validate_context_handoff, adapt_test_hints
+from vgar.contracts.prompt_context import render_context_for_repair
+
+context = validate_context_handoff(
+    payload_json, manifest_json, original_snapshot_root,
+    expected_graph_version=task_graph_version,
+    expected_repo_key=task_repo_key, expected_revision=task_revision,
+    count_tokens=approved_snippet_counter, counter_label=approved_counter_label,
+)
+context_text = render_context_for_repair(context)
+test_inputs = adapt_test_hints(test_links_json, manifest_json, original_snapshot_root)
+# test_inputs: test_links, failing_selectors, fallback_scope; values are tuples.
+```
+
+Consumer checks không import graph builder/MCP/model runtime. Có thể nhận gói
+trên clone ở đường dẫn khác nếu đúng source snapshot. Empty context, file set/hash
+mismatch, range/snippet mismatch hoặc token count sai bị từ chối trước prompt.
+Hash giúp phát hiện sai lệch dữ liệu, không phải chữ ký chứng thực producer.
+Token counter này kiểm ngân sách snippets; M2 tính lại toàn chat template bằng
+tokenizer của backend được duyệt, không suy từ `total_token_count`.
+
+Test hints được xác thực trên **original snapshot trước patch**, rồi truyền mapping
+vào bước chọn test của M2 sau khi có changed files. Targets mặc định là paths và
+packed node IDs; file/symbol ngoài mapping cần fallback hoặc query bổ sung từ
+graph gốc. Explicit failing selectors được giữ riêng, fallback scope không bị
+cắt theo graph limit. Selector existence/path được kiểm, nhưng tên testcase,
+parameterization và khả năng collect còn do M2 xác thực bằng pytest trên worktree.
+Các cờ `collection_verified=false`, `coverage_verified=false` giữ giới hạn đó rõ
+ràng; thiếu links không chặn M2 chạy failing tests hoặc toàn scope đã chọn.

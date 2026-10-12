@@ -15,6 +15,12 @@ cho evaluation; không dùng làm đầu vào grounding để tránh rò rỉ đ
 
 ## Grounding đã triển khai
 
+Với fenced Python parse được, finder bỏ tên biến được gán hoặc dùng làm biến
+vòng lặp trong snippet, giữ các đề cập API và đối chiếu alias import với symbol
+của repository. Import ngoài repository không tạo member-name fallback. Việc
+đối chiếu này chỉ đọc cú pháp, không xác định runtime type của biến nhận kết quả
+trả về. Snippet lỗi cú pháp tiếp tục dùng lexical fallback.
+
 | Đầu vào | Kết quả | Điểm heuristic khi không mơ hồ |
 |---|---|---|
 | Relative `.py` path | File; suffix/basename giữ mọi file khớp | 0.7 |

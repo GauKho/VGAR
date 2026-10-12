@@ -39,6 +39,11 @@ class GraphService(Protocol):
     ) -> SymbolRelationsResult:
         ...
 
+    def get_related_tests(self, symbol_ids: list[str], *, graph_version: str,
+                          changed_paths: list[str] | None = None, failing_tests: list[str] | None = None,
+                          selected_tests: list[str] | None = None, max_hops: int = 2, limit: int = 50) -> dict[str, Any]:
+        ...
+
     def get_callees(
         self,
         symbol_id: str,

@@ -126,7 +126,7 @@ def main() -> None:
     write(args.output_directory / "manifest.json", {
         "date": "2026-10-03", "base_commit": base_commit, "working_tree_dirty": dirty,
         "graph_artifact": str(args.graph_output.resolve()), "graph_version": graph["graph_version"],
-        "graph_json_sha256": graph_hash, "statistics": graph["statistics"], "resolver": "tree-sitter+python-static-v2",
+        "graph_json_sha256": graph_hash, "statistics": graph["statistics"], "resolver": "tree-sitter+python-static-v3-method-aliases",
         "tokenizer_provenance": counter.provenance, "snippet_only_budget": True,
         "native_count_comparison": True, "sample_counts": sample_counts,
         "boundary": {"exact_fit_tokens": cost, "one_token_short_budget": cost - 1, "checks_passed": True},

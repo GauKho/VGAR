@@ -7,6 +7,9 @@ from typing import Callable, Any
 from vgar.contracts.error import GraphNotReadyError
 from vgar.graph.retrieval import GraphContextRetriever
 from vgar.graph.task_overlay import TaskOverlayBuilder
+from vgar.graph.test_selection import select_related_tests
+from vgar.contracts.prompt_context import CONTEXT_FORMAT
+from vgar.observability.graph_trace import GraphTrace
 
 from vgar.contracts.graph import (
     GraphEdgeRef,
@@ -38,6 +41,12 @@ class SQLiteGraphService:
         self.count_tokens = count_tokens
         self.counter_label = counter_label
 
+    def get_related_tests(self, symbol_ids: list[str], *, graph_version: str,
+                          changed_paths: list[str] | None = None, failing_tests: list[str] | None = None,
+                          selected_tests: list[str] | None = None, max_hops: int = 2, limit: int = 50) -> dict[str, Any]:
+        return select_related_tests(self.store.load_document(graph_version), symbol_ids, changed_paths=changed_paths,
+                                    failing_tests=failing_tests, selected_tests=selected_tests, max_hops=max_hops, limit=limit)
+
     def find_task_anchors(self, issue_text: str, failing_tests: list[str] | None = None, *,
                           graph_version: str, task_id: str) -> dict[str, Any]:
         document = self.store.load_document(graph_version)
@@ -53,11 +62,20 @@ class SQLiteGraphService:
         overlay = TaskOverlayBuilder(document).build(task_id, issue_text, failing_tests)
         retriever = GraphContextRetriever(document, self.repository_root, count_tokens=self.count_tokens,
                                           counter_label=self.counter_label)
-        result = retriever.retrieve(anchor_ids, budget_tokens, issue_text=issue_text, overlay=overlay)
+        try:
+            result = retriever.retrieve(anchor_ids, budget_tokens, issue_text=issue_text, overlay=overlay)
+        except Exception as error:
+            retriever.trace.emit("retrieval_error", graph_version=graph_version, task_id=task_id,
+                                 error_type=type(error).__name__, reason=str(error))
+            raise
         return {"graph_version": graph_version, "task_id": task_id, "overlay_id": overlay.overlay_id,
+                "context_format": CONTEXT_FORMAT, "repository_revision": document["repository_revision"],
+                "source_metadata": {item.node_id: {"content_hash": retriever.nodes[item.node_id]["content_hash"],
+                                                    "range_encoding": "utf-8-bytes"} for item in result.context.items},
                 "context": result.context.model_dump(mode="json"), "counter_label": result.counter_label,
                 "diagnostics": {"config": result.config, "omissions": result.omissions,
-                                "unavailable_features": result.unavailable_features}}
+                                "unavailable_features": result.unavailable_features,
+                                "candidates": result.candidates, "traversal_limited": result.traversal_limited}}
 
     def search_symbols(self, query: str, limit: int = 20) -> SearchSymbolsResult:
         symbols = self.store.search_symbols(query, limit)

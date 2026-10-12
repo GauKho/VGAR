@@ -10,10 +10,11 @@ Per task: one graph build (cached), then TWO arms from the same retriever:
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
 import multiprocessing as mp
 import math
+import os
+import subprocess
 import traceback
 import sys
 import time
@@ -27,6 +28,7 @@ from vgar.evaluation.retrieval.evaluation import DEFAULT_BUDGET_TOKENS, DEFAULT_
 from vgar.evaluation.retrieval.evidence import new_run, sha256, source_fingerprint, utc_now, write_json
 from vgar.evaluation.retrieval.graph_arm import (ARMS, evaluate_graph_task, extract_python_tree, load_fail_to_pass)
 from vgar.evaluation.retrieval.metrics import aggregate_metrics
+from vgar.evaluation.retrieval.resolver_comparison import native_context_metrics, resolver_cache_key
 from vgar.evaluation.retrieval.scoring import (FALLBACK_COUNTER_LABEL, SCORING_VERSION, CorpusIndex, bytes_div4_counter,
                                                make_include)
 
@@ -38,23 +40,50 @@ def key_of(row: dict) -> str:
     return f"{row['repo'].replace('/', '__')}-{row['base_commit']}"
 
 
-def load_or_build_graph(root: Path, row: dict, tree: Path, *, rebuild: bool, builder_hash: str, cache: bool = False):
-    """Graph cache key includes the builder source hash: when M1 patches builder.py the cache invalidates itself."""
+def load_or_build_graph(root: Path, row: dict, tree: Path, *, rebuild: bool, builder_hash: str, cache: bool = False,
+                        resolver="static", scip_config=None, resolver_profile=None, cache_root=None, trace=None):
+    """Cache is bound to every graph source and the resolver's implementation/runtime profile."""
     from vgar.graph.builder import PythonGraphBuilder
-    name = f"{key_of(row)}-python-static-v2-{builder_hash}"
-    graph_path = root / "data" / "graphs" / f"{name}.json"
+    from vgar.graph.scip_resolver import current_fingerprint
+    from vgar.graph.scip_profile import auxiliary_fingerprint
+    from vgar.contracts.schema import validate_graph_document
+    profile = resolver_profile or {"resolver": resolver}
+    source_digest = sha256(json.dumps(current_fingerprint(tree), sort_keys=True))
+    auxiliary_digest = sha256(json.dumps(auxiliary_fingerprint(tree), sort_keys=True))
+    identity = resolver_cache_key(row["repo"], row["base_commit"], source_digest, builder_hash,
+                                  dict(profile, auxiliary_digest=auxiliary_digest))
+    graph_path = (cache_root or root / "data" / "graphs") / f"{identity}.json"
     meta_path = graph_path.with_suffix(".meta.json")
+    cache_started = time.perf_counter()
     if graph_path.exists() and meta_path.exists() and not rebuild:
-        return json.loads(graph_path.read_text(encoding="utf-8")), json.loads(meta_path.read_text(encoding="utf-8")) | {"cached": True}
+        document = json.loads(graph_path.read_text(encoding="utf-8"))
+        meta = json.loads(meta_path.read_text(encoding="utf-8"))
+        if meta.get("cache_identity") != identity or meta.get("graph_hash") != sha256(graph_path.read_bytes()):
+            raise ValueError("Graph cache identity/checksum mismatch")
+        validate_graph_document(document)
+        if document["repo_key"] != row["repo"].replace("/", "__") or document["repository_revision"] != row["base_commit"]:
+            raise ValueError("Graph cache repository/revision mismatch")
+        if resolver == "scip" and document["statistics"]["resolver"]["active"] != "scip":
+            raise ValueError("SCIP cache contains a static fallback")
+        return document, meta | {"cached": True, "cache_read_seconds": time.perf_counter() - cache_started}
     started = time.perf_counter()
-    builder = PythonGraphBuilder(repo_key=row["repo"].replace("/", "__"), repository_revision=row["base_commit"])
+    builder = PythonGraphBuilder(repo_key=row["repo"].replace("/", "__"), repository_revision=row["base_commit"],
+                                 scip=scip_config, trace=trace)
     document = builder.build(tree)
+    if source_digest != sha256(json.dumps(current_fingerprint(tree), sort_keys=True)):
+        raise ValueError("Source tree changed while building graph")
+    if auxiliary_digest != sha256(json.dumps(auxiliary_fingerprint(tree), sort_keys=True)):
+        raise ValueError("Config/stubs changed while building graph")
     meta = {"build_seconds": time.perf_counter() - started, "nodes": len(document["nodes"]), "edges": len(document["edges"]),
-            "graph_version": document["graph_version"], "resolver": "tree-sitter+python-static-v2", "builder_hash": builder_hash,
+            "graph_version": document["graph_version"], "resolver": resolver, "builder_hash": builder_hash,
+            "cache_identity": identity, "source_digest": source_digest, "resolver_profile": profile,
+            "auxiliary_digest": auxiliary_digest,
+            "resolver_report": document["statistics"]["resolver"], "statistics": document["statistics"],
             "skipped_failed_files": len(getattr(builder, "skipped_failed_files", []) or [])}
     if cache:
         graph_path.parent.mkdir(parents=True, exist_ok=True)
         graph_path.write_text(json.dumps(document, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+        meta["graph_hash"] = sha256(graph_path.read_bytes())
         write_json(meta_path, meta)
     return document, meta | {"cached": False}
 
@@ -63,6 +92,8 @@ def evaluate_one(root, row, fail_to_pass, args, builder_hash):
     """One bounded task. Each worker owns its graph, parser and tokenizer."""
     from vgar.graph.retrieval import GraphContextRetriever, RetrievalConfig
     from vgar.graph.task_overlay import TaskOverlayBuilder
+    from vgar.graph.scip_resolver import ScipConfig
+    from vgar.observability.graph_trace import GraphTrace
     if args.tokenizer_manifest:
         from vgar.graph.token_counter import LocalTokenizerCounter
         counter = LocalTokenizerCounter(args.tokenizer_manifest)
@@ -78,15 +109,34 @@ def evaluate_one(root, row, fail_to_pass, args, builder_hash):
     if sha256(patch) != row["patch_hash"] or sha256(row["problem_statement"]) != row["query_hash"]:
         raise ValueError("Manifest patch/query hash mismatch")
     sources, provenance = read_repository_sources(row, root / "data" / "repositories", network=not args.offline)
-    tree = root / "data" / "repositories" / "trees" / key_of(row)
-    tree_meta = extract_python_tree(provenance["cache_path"], row["repo"], row["base_commit"], tree)
+    include_scip_inputs = getattr(args, "include_scip_inputs", False)
+    tree = root / "data" / "repositories" / "trees" / (key_of(row) + ("-scip-inputs-v1" if include_scip_inputs else ""))
+    tree_meta = extract_python_tree(provenance["cache_path"], row["repo"], row["base_commit"], tree,
+                                    include_scip_inputs=include_scip_inputs)
+    resolver = getattr(args, "resolver", "static")
+    trace = GraphTrace(getattr(args, "debug_log", None))
+    scip = None
+    if resolver == "scip":
+        scip = ScipConfig(command=args.scip_command, output_directory=args.scip_output,
+                          bundle=getattr(args, "scip_bundle", None),
+                          timeout_seconds=args.scip_timeout, strict=True,
+                          environment_file=args.scip_environment,
+                          configure_imports=not getattr(args, "scip_native_config", False),
+                          import_roots=tuple(getattr(args, "scip_import_roots", ("src", "lib"))),
+                          target_only=getattr(args, "scip_target_only", None),
+                          python_executable=getattr(args, "scip_python", None))
     document, graph_meta = load_or_build_graph(root, row, tree, rebuild=args.rebuild_graphs,
-                                               builder_hash=builder_hash, cache=args.cache_graphs)
+                                               builder_hash=builder_hash, cache=args.cache_graphs,
+                                               resolver=resolver, scip_config=scip, trace=trace,
+                                               resolver_profile=getattr(args, "resolver_profile", None),
+                                               cache_root=getattr(args, "graph_cache_root", None))
     corpus = CorpusIndex(sources)
     include = make_include(corpus)
     overlays = TaskOverlayBuilder(document)
-    retriever = GraphContextRetriever(document, tree, count_tokens=counter, counter_label=label, config=retrieval_config)
+    retriever = GraphContextRetriever(document, tree, count_tokens=counter, counter_label=label, config=retrieval_config,
+                                     trace=trace)
     outputs = {}
+    contexts = {}
     for arm, uses_f2p in ARMS.items():
         arm_start = time.perf_counter()
         overlay = overlays.build(f"{row['instance_id']}:{arm}", row["problem_statement"],
@@ -96,6 +146,7 @@ def evaluate_one(root, row, fail_to_pass, args, builder_hash):
                    for a in overlay.grounding.anchors]
         result = retriever.retrieve([a["node_id"] for a in anchors], args.budget_tokens,
                                     issue_text=row["problem_statement"], overlay=overlay, include=include)
+        contexts[arm] = result.context.model_dump(mode="json")
         reasons: dict[str, int] = {}
         for omission in result.omissions:
             reasons[omission["reason"]] = reasons.get(omission["reason"], 0) + 1
@@ -108,19 +159,58 @@ def evaluate_one(root, row, fail_to_pass, args, builder_hash):
                                         "omissions": reasons, "retrieval_config": result.config}}
     result = evaluate_graph_task(dict(row, patch=patch), sources, corpus, retriever.nodes, outputs,
                                  budget_tokens=args.budget_tokens, counter=counter, counter_label=label)
+    for arm, context_payload in contexts.items():
+        result["arms"][arm]["metrics"].update(native_context_metrics(context_payload, result["gold"], corpus))
+        if getattr(args, "persist_context", False):
+            result["arms"][arm]["native_context"] = context_payload
     result.update(graph=graph_meta, source_tree={k: tree_meta[k] for k in ("python_file_count", "tree_hash")},
                   source_provenance=provenance, fail_to_pass_count=len(fail_to_pass),
                   duration_seconds=time.perf_counter() - task_start)
+    if getattr(args, "comparison_binding", None):
+        result["comparison_binding"] = args.comparison_binding
     return result
 
 
 def task_worker(sender, root, row, fail_to_pass, args, builder_hash):
     try:
-        sender.send({"result": evaluate_one(root, row, fail_to_pass, args, builder_hash)})
+        if os.name != "nt":
+            os.setsid()
+        result = evaluate_one(root, row, fail_to_pass, args, builder_hash)
+        result["memory"] = worker_peak_memory()
+        sender.send({"result": result})
     except BaseException as error:
         sender.send({"error_class": type(error).__name__, "error": str(error), "traceback": traceback.format_exc()})
     finally:
         sender.close()
+
+
+def worker_peak_memory():
+    """OS high-water RSS for this Python worker only; Node/indexer memory is excluded."""
+    try:
+        if os.name == "nt":
+            import ctypes
+            from ctypes import wintypes
+            class Counters(ctypes.Structure):
+                _fields_ = [("cb", wintypes.DWORD), ("PageFaultCount", wintypes.DWORD)] + [
+                    (name, ctypes.c_size_t) for name in ("PeakWorkingSetSize", "WorkingSetSize", "QuotaPeakPagedPoolUsage",
+                    "QuotaPagedPoolUsage", "QuotaPeakNonPagedPoolUsage", "QuotaNonPagedPoolUsage", "PagefileUsage", "PeakPagefileUsage")]
+            kernel = ctypes.WinDLL("kernel32", use_last_error=True)
+            kernel.GetCurrentProcess.restype = wintypes.HANDLE
+            psapi = ctypes.WinDLL("psapi", use_last_error=True)
+            psapi.GetProcessMemoryInfo.argtypes = [wintypes.HANDLE, ctypes.POINTER(Counters), wintypes.DWORD]
+            psapi.GetProcessMemoryInfo.restype = wintypes.BOOL
+            counters = Counters()
+            counters.cb = ctypes.sizeof(counters)
+            if not psapi.GetProcessMemoryInfo(kernel.GetCurrentProcess(), ctypes.byref(counters), counters.cb):
+                raise OSError(ctypes.get_last_error(), "GetProcessMemoryInfo failed")
+            peak = counters.PeakWorkingSetSize
+        else:
+            import resource
+            peak = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss * (1 if sys.platform == "darwin" else 1024)
+        return {"python_worker_peak_rss_bytes": peak, "indexer_peak_rss_bytes": None,
+                "scope": "Python worker only; excludes Node and parent; not total pipeline memory"}
+    except (ImportError, OSError):
+        return {"python_worker_peak_rss_bytes": None, "indexer_peak_rss_bytes": None, "scope": "Unavailable"}
 
 
 def run_bounded_task(root, row, fail_to_pass, args, builder_hash):
@@ -149,7 +239,12 @@ def run_bounded_task(root, row, fail_to_pass, args, builder_hash):
         if process.pid is not None:
             process.join(timeout=2)
             if process.is_alive():
-                process.terminate()
+                if os.name == "nt":
+                    subprocess.run(["taskkill", "/PID", str(process.pid), "/T", "/F"],
+                                   stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=False)
+                else:
+                    import signal
+                    os.killpg(process.pid, signal.SIGKILL)
                 process.join(timeout=5)
             if process.is_alive():
                 process.kill()
@@ -197,14 +292,14 @@ def main() -> int:
     require_split(manifest, allowed=("dev", "heldout") if args.allow_heldout else ("dev",))
     tasks = manifest["tasks"][:args.limit] if args.limit else manifest["tasks"]
     fail_to_pass = load_fail_to_pass(root, manifest)
-    builder_hash = hashlib.sha256((ROOT / "src" / "vgar" / "graph" / "builder.py").read_bytes()).hexdigest()[:12]
+    builder_hash = source_fingerprint(ROOT)["digest"]
     retrieval_config = RetrievalConfig(max_hops=args.max_hops, max_candidates=args.max_candidates)
 
     config = {"manifest_hash": sha256(manifest_bytes), "budget_tokens": args.budget_tokens, "scoring_version": SCORING_VERSION,
               "counter_label": label, "counter_is_fallback": fallback,
               "snippet_policy": {"max_snippet_lines": DEFAULT_SNIPPET_LINES, "header": True, "overlap": "skip_if_overlaps_different_group"},
               "arms": {arm: {"uses_fail_to_pass": uses} for arm, uses in ARMS.items()},
-              "graph": {"resolver": "tree-sitter+python-static-v2", "builder_hash": builder_hash, "source_roots": ["src"]},
+              "graph": {"resolver": "tree-sitter+python-static-v3-method-aliases", "builder_hash": builder_hash, "source_roots": ["src"]},
               "retrieval": {"max_hops": args.max_hops, "max_candidates": args.max_candidates,
                             "min_edge_confidence": retrieval_config.min_edge_confidence, "weights": retrieval_config.weights,
                             "include": "make_include(corpus): not Test and path in is_source corpus"}, "limit": args.limit, "task_timeout_seconds": args.task_timeout}

@@ -139,6 +139,19 @@ def graph_node(node_id: str) -> str:
         return result.model_dump_json(indent=2)
 
 
+@mcp.tool()
+@instrument_mcp_tool("get_related_tests")
+def get_related_tests(symbol_ids: list[str], graph_version: str, changed_paths: list[str] | None = None,
+                      failing_tests: list[str] | None = None, selected_tests: list[str] | None = None,
+                      max_hops: int = 2, limit: int = 50) -> dict[str, Any]:
+    """Select static test candidates; keep failing tests, fall back to supplied tests when links are absent."""
+    return _tool("get_related_tests", lambda: graph_service.get_related_tests(
+        symbol_ids, graph_version=graph_version, changed_paths=changed_paths, failing_tests=failing_tests,
+        selected_tests=selected_tests, max_hops=max_hops, limit=limit),
+        {"graph_version": graph_version, "symbol_ids": symbol_ids, "max_hops": max_hops, "limit": limit},
+        lambda data: {"test_count": len(data["tests"]), "selection_mode": data["selection_mode"]})
+
+
 @mcp.resource("vgar://graph/subgraph/{node_id}")
 def graph_subgraph(node_id: str) -> str:
     with _resource("vgar://graph/subgraph/{node_id}", node_id=node_id, depth=2) as out:

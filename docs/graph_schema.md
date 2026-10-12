@@ -16,9 +16,53 @@ A graph document has `repo_key`, `repository_revision`, `graph_version`,
 `nodes`, `edges` and `statistics`. There is no public `schema_version`.
 `graph_version` identifies a snapshot: SHA-256 over repo key, supplied revision,
 resolver/range profiles, source roots, sorted repository-relative Python paths
-and source bytes. The resolver profile is `tree-sitter+python-static-v2` and the
+and source bytes. The resolver profile is `tree-sitter+python-static-v3-method-aliases` and the
 file-range profile is `full-bytes-v1`. The builder does not use Jedi. These
 profiles are not schema versions.
+Direct, unambiguous class method aliases are stored in the implementation's
+`properties.symbol_aliases`, with qualified names and assignment-token ranges.
+They map API names to the original implementation, without duplicate nodes.
+Optional SCIP enrichment adds `scip-enrichment-v5-subset-root` and a root-independent digest
+of indexed occurrences to the snapshot identity. The exact binary index and
+source inventory are bound by a checksummed bundle; stale bundles are rejected.
+When `target_only` indexing emits the configured subset as its index root,
+document paths are rebased to the repository. The subset must be explicitly
+recorded and match that root; traversal, absolute paths and foreign roots are
+rejected. Full source/config snapshot checks still apply to partial indexes.
+`scip-python` 0.6.6 uses legacy UTF-16 columns and native Windows separators;
+the adapter converts these to repository-relative POSIX paths and UTF-8 bytes.
+Non-UTF-8 documents are omitted from SCIP mapping without transcoding source;
+other documents remain usable. `definition_mapping.skipped_documents` and
+`resolver_document_skipped` events record the affected paths and reason. This
+does not add non-UTF-8 snippet support to the graph contract.
+SCIP CALLS edges have `binding_kind="scip"`, confidence 0.98 and indexer provenance.
+Indexer failure/no occurrence uses the static fallback with recorded reasons.
+External/ambiguous bindings remain unresolved. A classmethod `cls()` parameter
+may use a conservative static constructor fallback at 0.80 when not reassigned.
+The W5–W6 resolver extension also supports direct LSP definition requests via
+Pyright 1.1.414. `LspConfig` enables this in the builder; CLI modes are `lsp` and
+`scip-lsp`. Only missing or weak static bindings are queried, within request and
+time limits. Verified SCIP bindings, including external/ambiguous bindings,
+are not overridden. LSP targets must match internal declaration or alias name
+tokens in the unchanged source/config/stub snapshot. External, non-callable or
+ambiguous answers remain unresolved; absent answers or infrastructure failure
+allow static fallback. LSP CALLS edges have `binding_kind="lsp"`, policy
+confidence 0.95 and server provenance. `candidate_count` still counts CALLS
+edges; unresolved alternatives use `lsp_candidate_count`, not CALLS edges.
+The `lsp-definition-v1` snapshot profile includes actual answers and runtime
+hashes. `statistics.resolver.lsp` records server, statuses, limits and failures;
+JSONL has `lsp_start`, `lsp_ready`, `lsp_call_result`, `lsp_fallback` and
+`lsp_complete`. LSP stderr is saved separately. These diagnostics do not write
+source text to MCP stdout. Plot tracking distinguishes LSP from SCIP/static.
+LSP does not execute target code or verify runtime dispatch, and controlled
+fixture results do not establish benchmark-wide precision or retrieval gains.
+When a chained member has no SCIP occurrence but its inner getter is resolved,
+source return annotations or a simple getter backed by an `isinstance`-guarded
+setter can produce `REFERENCES` hints to the declared type and known overrides.
+These hints have heuristic confidence 0.65, source evidence and
+`runtime_dispatch_verified=false`. They leave the CallSite unresolved and do
+not create CALLS or TESTS edges. Conflicting writes, shadowed guards, unknown
+types and more than 16 candidate methods disable the hint.
 For an uncommitted checkout, record the base commit and dirty status alongside
 the supplied revision rather than presenting the revision as a clean commit.
 
@@ -66,7 +110,7 @@ resolution; their calls may remain unresolved.
 | INHERITS | Class → Class; internal resolved bases |
 | CALLS | CallSite → Function/Method/Class |
 | TESTS | Test → File/Module/Class/Function/Method; builder emits direct-call target links |
-| REFERENCES | Module/Class/Function/Method/Test/Import/CallSite → File/Module/Class/Function/Method; not emitted yet |
+| REFERENCES | Module/Class/Function/Method/Test/Import/CallSite → File/Module/Class/Function/Method; source-backed return-contract hints from unresolved chained CallSites |
 | MENTIONS | Issue → File/Module/Class/Function/Method/Test; task overlay emits links to grounded anchors |
 | REPRODUCES | Test → Issue; task overlay emits unambiguous reported failing-test links, not runtime verification |
 
@@ -153,6 +197,21 @@ Context classes are defined once in `vgar.contracts.context` and re-exported
 from `vgar.graph.context` for M1 import compatibility. The 2026-10-03 consolidation
 keeps JSON schemas unchanged. See [context contract](context_payload_contract.md)
 for actual model constraints and proposed producer/token policies.
+
+The MCP context response wrapper labels this shape as `vgar.context.v1` through
+`context_format`; it also carries `repository_revision` and per-node
+`source_metadata` (content hash and range encoding). These are sidecar fields,
+not extra properties on the frozen ContextPayload. The M2 prompt adapter is
+`vgar.contracts.prompt_context.render_context_for_repair`. Prompt headers and
+instructions are outside the snippet-only token budget.
+
+`get_related_tests` takes explicit `graph_version`, symbol IDs and/or changed
+paths. Direct TESTS links can be followed through reverse CALLS, with bounded
+hops/visited nodes. Returned selectors include static evidence/confidence,
+truncation and traversal flags. Supplied failing tests are retained; without
+links the selector uses failing tests, then supplied selected tests. With none
+it returns `requires_full_suite=true`. This API selects candidates only: M2
+owns test execution, suite policy and verification. It does not claim coverage.
 
 ### Portable document to query DTO mapping
 

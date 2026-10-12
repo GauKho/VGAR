@@ -30,7 +30,7 @@ def corpus_fingerprint(sources: Mapping[str, str]) -> str:
     return sha256(json.dumps({path: sha256(source) for path, source in sorted(sources.items())}, sort_keys=True))
 
 
-def extract_python_tree(archive_path, repo: str, commit: str, destination) -> dict[str, Any]:
+def extract_python_tree(archive_path, repo: str, commit: str, destination, *, include_scip_inputs=False) -> dict[str, Any]:
     """Extract EVERY .py (tests included, they are graph traversal material) from the pinned codeload archive.
     Bytes are written untouched so M1 byte offsets match what it hashed. Idempotent; atomic via a .partial dir."""
     destination = Path(destination)
@@ -39,6 +39,8 @@ def extract_python_tree(archive_path, repo: str, commit: str, destination) -> di
         meta = json.loads(marker.read_text(encoding="utf-8"))
         if meta.get("commit") != commit or meta.get("repo") != repo:
             raise ValueError("Cached source tree belongs to a different repo/commit")
+        if bool(meta.get("include_scip_inputs", False)) != include_scip_inputs:
+            raise ValueError("Cached source extraction policy differs; use a new destination")
         return meta
     partial = destination.with_name(destination.name + ".partial")
     if partial.exists():
@@ -46,6 +48,7 @@ def extract_python_tree(archive_path, repo: str, commit: str, destination) -> di
     partial.mkdir(parents=True)
     prefix = repo.split("/")[-1] + "-" + commit + "/"
     files: dict[str, str] = {}
+    auxiliary: dict[str, str] = {}
     skipped: list[dict[str, str]] = []
     with tarfile.open(archive_path, "r|gz") as bundle:
         for member in bundle:
@@ -56,22 +59,26 @@ def extract_python_tree(archive_path, repo: str, commit: str, destination) -> di
             if not member.isfile():
                 continue
             rel = normalize_path(member.name[len(prefix):])
-            if not rel.endswith(".py"):
+            is_python = rel.endswith(".py")
+            is_auxiliary = include_scip_inputs and (rel.endswith(".pyi") or
+                Path(rel).name in {"pyproject.toml", "pyrightconfig.json", "scip-pyrightconfig.json"})
+            if not is_python and not is_auxiliary:
                 continue
             if member.size > MAX_PY_BYTES:
                 skipped.append({"path": rel, "reason": "file_over_2MB"})
                 continue
-            if len(files) >= MAX_PY_FILES:
+            if len(files) + len(auxiliary) >= MAX_PY_FILES:
                 raise ValueError("Archive has too many Python files")
             data = bundle.extractfile(member).read()
             target = partial / rel
             target.parent.mkdir(parents=True, exist_ok=True)
             target.write_bytes(data)
-            files[rel] = hashlib.sha256(data).hexdigest()
+            (files if is_python else auxiliary)[rel] = hashlib.sha256(data).hexdigest()
     if not files:
         raise ValueError("Archive contains no Python files")
     meta = {"repo": repo, "commit": commit, "python_file_count": len(files), "skipped": skipped,
-            "tree_hash": sha256(json.dumps(files, sort_keys=True))}
+            "tree_hash": sha256(json.dumps(files, sort_keys=True)), "include_scip_inputs": include_scip_inputs,
+            "auxiliary_file_count": len(auxiliary), "auxiliary_tree_hash": sha256(json.dumps(auxiliary, sort_keys=True))}
     (partial / TREE_MARKER).write_text(json.dumps(meta, indent=2) + "\n", encoding="utf-8")
     # File scanners can briefly hold a new directory open on Windows.
     # Retry only sharing/access errors, with a small bounded delay.

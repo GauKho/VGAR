@@ -1,4 +1,91 @@
-# M1 retrieval method — semantic-context-v1
+# M1 retrieval method — semantic-context-v10-source-cache
+
+## Profile hiện tại (12/10/2026)
+
+`semantic-context-v10-source-cache` lọc tên biến, định nghĩa hàm/class, tham số và
+thuộc tính được gán cục bộ trong đoạn Python tái hiện trước khi
+grounding/ranking. Alias import được đối chiếu với module trong graph; import
+ngoài repository không được đoán thành method nội bộ. Đoạn code không parse
+được tiếp tục dùng lexical fallback; không import hoặc chạy code từ issue.
+Điểm relevance mặc định giữ cách tính của v9. Cache similarity có tối đa
+8192 entry, phân biệt query và đầu vào
+diagnostic/source; cache hit/miss chỉ ghi trong debug trace. `use_topic_evidence`
+thử tập trung vào dòng mô tả đầu tiên, nhưng mặc định tắt vì thử nghiệm hiện tại
+chưa cải thiện ổn định chất lượng context.
+Các dòng báo phiên bản môi trường không được dùng làm tên symbol; tên Python
+được viết rõ trong code vẫn có thể làm anchor.
+Phần báo phiên bản có heading rõ ràng (`Installed versions`, `Version information`,
+`Output of …show_versions()`, `Output of …--version` hoặc `… --version output`) cũng được loại khỏi
+grounding/ranking. Phần tái hiện lỗi và các heading tiếp theo vẫn được giữ;
+đề cập `show_versions()` bên ngoài phần báo môi trường vẫn là bằng chứng code.
+
+Bí danh phương thức gán trực tiếp trong cùng class được đối chiếu với hàm
+thực thi. Grounding/ranking nhận cả tên alias và tên hàm; ContextPayload giữ
+range và snippet của hàm gốc. Alias bị ghi đè, xóa hoặc phụ thuộc nhánh điều
+kiện không được tự suy đoán.
+
+Tên API được chấm theo độ hiếm trong tập symbol (IDF) và mức khớp với issue.
+Với Function/Method/Test có source parse được, task similarity gồm 80% điểm
+tên API và 20% độ khớp token trong code thực thi, dùng IDF của tập hàm. Không
+lấy docstring, comment, tên biến cục bộ hoặc nội dung scope lồng làm bằng chứng
+cho hàm ngoài. Source không parse được dùng điểm tên/path như trước; paths này
+được ghi trong diagnostics. Cache có giới hạn theo snapshot và query; source
+vẫn được kiểm hash mỗi lượt retrieval. `use_source_evidence=False` tắt tín hiệu này.
+
+Dòng có nhãn WARNING/ERROR/CRITICAL hoặc tên exception được đối chiếu với
+chuỗi tĩnh tại lệnh ghi log/raise trong source đã kiểm hash. Fragment phải có
+ít nhất bốn từ; placeholder không được suy diễn. Hàm khớp là source hint,
+không phải binding runtime: confidence 0.85 khi có một hàm, 0.50 khi có nhiều
+hàm. Điểm task similarity giữ mức khớp này nếu lớn hơn điểm tên/code thông thường.
+Docstring và chuỗi không dùng tại log/raise không tạo message hint.
+`use_diagnostic_evidence=False` tắt tính năng.
+
+Tên thư mục nguồn được nhắc trong issue có thể bổ sung seed khi anchor hiện
+có nằm ngoài thư mục đó. Thư mục chứa quá nửa số hàm đủ điều kiện không được
+dùng để thu hẹp scope. Chỉ chọn hàm có token code khớp issue, theo source
+similarity; tối đa 10 seed và không quá một phần năm quota seed (tối thiểu 1).
+Confidence của component hint là 0.45; `use_component_seeds=False` tắt tính năng.
+Các hint dùng chung giới hạn traversal/token budget, không tạo edge trong graph.
+ContextPayload ghi tập anchor thực tế gồm đầu vào và seed bổ sung. Sidecar,
+graph rationale và JSONL ghi `SOURCE_DIAGNOSTIC`/`SOURCE_COMPONENT`, fragment
+hoặc tên component cùng các seed được cân nhắc.
+
+Trọng số mặc định hiện tại: task similarity 0.50, graph distance 0.20, edge
+confidence 0.10, failing-test proximity 0.20, public API risk 0.00, history 0.10.
+Weights vẫn được chuẩn hóa theo các feature có đầu vào. Public API risk tiếp
+tục xuất trong diagnostics và có thể cấu hình, nhưng mặc định không tăng điểm
+retrieval chỉ vì một hàm có nhiều caller.
+
+Khoảng cách từ failing test chỉ đi qua CALLS/CALLERS/TESTS/TESTED_BY. Quan hệ
+chứa file/class và reference hint không được coi là liên kết test thực thi.
+Khi có issue, điểm proximity của code ngoài Test được nhân với mức khớp issue
+trực tiếp để hạn chế ưu tiên setup/cleanup chỉ vì chúng cùng được gọi trong test.
+Test được báo lỗi và truy vấn chỉ có failing tests giữ điểm proximity gốc.
+`gate_failing_test_evidence=False` tắt phép nhân; diagnostics giữ
+`raw_failing_test_proximity`, `failing_test_rationale` và điểm sau điều chỉnh.
+
+Relevance có thể truyền từ anchor sang dependency qua CALLS/TESTS hoặc tham
+chiếu member có bằng chứng source, giảm theo hệ số 0.7 mỗi hop. Quan hệ chứa
+file/class không truyền relevance này. Diagnostics giữ cả mức khớp tên trực
+tiếp và score sau khi xét dependency; tham chiếu không được coi là runtime call.
+
+Native context packing có thể dành tối đa 20% budget cho các implementation
+của kiểu trả về đã khai báo, khi hàm gọi nằm trong ba anchor đứng đầu và đã
+được chọn vào context. Các snippet này được pack ngay sau hàm gọi; phần còn
+lại theo ranking. `reference_budget_fraction=0` tắt ưu tiên này. Ranking vẫn
+giữ nguyên; packing dùng chung của benchmark có thể khác native ContextPayload,
+nên hai loại coverage phải được báo cáo riêng.
+
+Frontier được chọn theo relevance trên các nhánh đang chờ; neighbor chỉ dùng
+candidate quota khi được chọn. Giới hạn hops/candidates, uncertainty của anchor,
+source verification và token budget vẫn áp dụng. Đây là heuristic phát triển,
+chưa được xác nhận trên toàn bộ benchmark; không dùng gold labels để retrieve.
+Khi có issue, đường cùng số hop được chọn theo relevance trước confidence,
+tránh đường chứa file/class che đường dependency liên quan hơn. Không có issue
+vẫn chọn confidence trước; `prefer_relevant_paths=False` tắt ưu tiên relevance.
+
+Các mục dưới đây mô tả baseline `semantic-context-v1` ngày 03/10/2026; tham số
+và cách duyệt hiện tại dùng profile phía trên.
 
 Ngày: 03/10/2026. Baseline implementation sau khi người dùng yêu cầu triển khai
 theo [proposal, mục 9.2](../../docs/proposal_vgar_mcp_final_corrected.md).
@@ -6,6 +93,19 @@ Tham số/trọng số dưới đây là heuristic khởi đầu có thể cấu
 hoặc xác nhận bằng evaluation. Không dùng developer patch/gold labels để retrieve.
 
 ## API và phạm vi
+
+Đóng gói ngày 12/10/2026 giữ ranking/packing baseline v10. Thử nghiệm BM25
+fusion và ưu tiên snippet hàm đã được tách khỏi core/CLI vì gây regression ở
+một số development cases. Code thử nghiệm và evidence được giữ local trong
+thư mục ignored; chúng không thuộc gói bàn giao.
+
+Lượt đánh giá gồm 7 dev cases, 19/21 resolver variants có kết quả; hai lượt SCIP
+và SCIP+LSP của Xarray-3993 timeout ở 120 giây. Với ranking baseline, SCIP tăng
+coverage native Matplotlib từ 2/6 lên 3/6 hàm; các case thành công khác không
+cải thiện coverage. LSP thêm 16 CALLS nhưng chưa cải thiện retrieval so với SCIP
+trong lượt bounded này (200 requests). Static là mặc định; SCIP/LSP tùy chọn.
+Coverage từ class/file không đồng nghĩa từng hàm được chọn trực tiếp. Các số
+liệu là kiểm chứng retrieval trên dev, không phải repair success hoặc held-out.
 
 ```python
 retriever = GraphContextRetriever(

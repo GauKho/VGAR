@@ -1,0 +1,2 @@
+# Optional plotting dependency; the graph/MCP runtime does not require it.
+matplotlib==3.11.2

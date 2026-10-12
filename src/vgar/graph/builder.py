@@ -14,6 +14,9 @@ import tree_sitter_python
 from tree_sitter import Language, Node, Parser
 
 from vgar.contracts.schema import validate_graph_document
+from vgar.graph.scip_resolver import ScipConfig, ScipResolver, prepare_scip, current_fingerprint
+from vgar.graph.lsp_resolver import LspConfig, resolve_lsp_calls
+from vgar.observability.graph_trace import GraphTrace
 
 
 IGNORED_DIRECTORY_NAMES = {
@@ -87,6 +90,9 @@ class PythonGraphBuilder:
         repo_key: str,
         repository_revision: str,
         source_roots: tuple[str, ...] = ("src",),
+        scip: ScipConfig | None = None,
+        lsp: LspConfig | None = None,
+        trace: GraphTrace | None = None,
     ) -> None:
         if not repo_key.strip():
             raise ValueError("repo_key must not be empty")
@@ -96,6 +102,12 @@ class PythonGraphBuilder:
         self.repo_key = repo_key.strip()
         self.repository_revision = repository_revision.strip()
         self.source_roots = source_roots
+        self.scip_config = scip
+        self.lsp_config = lsp
+        self.lsp_results: dict[str, tuple[str, list[str]]] = {}
+        self.trace = trace or GraphTrace()
+        self.scip_resolver: ScipResolver | None = None
+        self.resolver_report = {"requested": "static", "active": "static", "status": "ready"}
         self.parser = Parser(Language(tree_sitter_python.language()))
         self.repository_root: Path | None = None
 
@@ -110,6 +122,7 @@ class PythonGraphBuilder:
         self.scope_tables: dict[str, symtable.SymbolTable] = {}
         self.scope_parents: dict[str, str] = {}
         self.typed_parameters: dict[str, dict[str, str]] = {}
+        self.unmodified_parameters: dict[str, set[str]] = {}
         self._index_changes: list[tuple[dict, str, Any]] | None = None
         self.graph_version = ""
         self.skipped_overload_count: int = 0
@@ -126,6 +139,14 @@ class PythonGraphBuilder:
             raise ValueError("Use a new PythonGraphBuilder for each graph snapshot")
 
         python_files = self._discover_python_files(root)
+        lsp_sources = current_fingerprint(root) if self.lsp_config is not None else None
+        if self.lsp_config is not None:
+            from vgar.graph.scip_profile import auxiliary_fingerprint
+            lsp_inputs = auxiliary_fingerprint(root)
+        self.trace.emit("build_start", repo_key=self.repo_key, source_count=len(python_files))
+        scip_index = None
+        if self.scip_config is not None:
+            scip_index, self.resolver_report = prepare_scip(root, python_files, self.scip_config, self.trace)
         self.graph_version = self._calculate_graph_version(root, python_files)
 
         repository_id = f"vgar:{self.repo_key}:repository"
@@ -152,10 +173,52 @@ class PythonGraphBuilder:
         for file_path in python_files:
             self._extract_file(root, file_path, repository_id)
 
+        from vgar.graph.method_aliases import annotate_method_aliases
+        for qualified, target in annotate_method_aliases(root, self.nodes):
+            self.symbols_by_qualified_name[qualified] = target
         self._build_unique_symbol_index()
         self._link_imports()
         self._link_inheritance()
+        if scip_index is not None:
+            try:
+                self.scip_resolver = ScipResolver(scip_index, root, self.nodes, trace=self.trace)
+                self.resolver_report["definition_mapping"] = self.scip_resolver.statistics
+            except (OSError, ValueError, UnicodeError) as error:
+                self.resolver_report.update(active="static", status="fallback", reason=str(error),
+                                            error_type=type(error).__name__)
+                self.trace.emit("resolver_fallback", **self.resolver_report)
+                if self.scip_config.strict:
+                    raise
+        if self.lsp_config is not None:
+            if current_fingerprint(root) != lsp_sources or auxiliary_fingerprint(root) != lsp_inputs:
+                raise ValueError("Repository changed before LSP resolution")
+            eligible = self._lsp_eligible_calls()
+            self.lsp_results, lsp_report = resolve_lsp_calls(root, self.nodes, eligible, self.lsp_config, self.trace)
+            self.resolver_report["lsp"] = lsp_report
+            if self.scip_config is None:
+                self.resolver_report.update(requested="lsp", active=lsp_report["active"],
+                    status=lsp_report["status"], reason=lsp_report["reason"])
+            # LSP answers are known after extraction. IDs are source-derived;
+            # update the snapshot on every existing node/edge before linking calls.
+            self.graph_version = self._calculate_graph_version(root, python_files)
+            for item in [*self.nodes, *self.edges]:
+                item["graph_version"] = self.graph_version
         self._resolve_calls()
+        if self.scip_resolver is not None:
+            self._link_chain_references()
+        call_edges = [edge for edge in self.edges if edge["type"] == "CALLS"]
+        self.resolver_report.update(scip_call_count=sum(edge["properties"]["binding_kind"] == "scip" for edge in call_edges),
+                                    static_call_count=sum(edge["properties"]["binding_kind"] not in {"scip", "lsp"} for edge in call_edges))
+        if self.lsp_config is not None:
+            self.resolver_report["lsp_call_count"] = sum(edge["properties"]["binding_kind"] == "lsp" for edge in call_edges)
+            if current_fingerprint(root) != lsp_sources or auxiliary_fingerprint(root) != lsp_inputs:
+                raise ValueError("Repository changed during LSP graph construction")
+        if scip_index is not None and current_fingerprint(root) != scip_index["source_fingerprint"]:
+            raise ValueError("Repository changed during SCIP graph construction; rebuild the snapshot")
+        if scip_index is not None:
+            from vgar.graph.scip_profile import auxiliary_fingerprint
+            if auxiliary_fingerprint(root) != scip_index["auxiliary_inputs"]:
+                raise ValueError("SCIP config/stubs changed during graph construction")
 
         document = {
             "graph_version": self.graph_version,
@@ -166,6 +229,10 @@ class PythonGraphBuilder:
             "statistics": self._statistics(started_at),
         }
         validate_graph_document(document)
+        document["statistics"]["resolver"] = self.resolver_report
+        self.trace.emit("build_complete", graph_version=self.graph_version, node_count=len(self.nodes),
+                        edge_count=len(self.edges), unresolved_call_count=document["statistics"]["unresolved_call_count"],
+                        resolver=self.resolver_report)
         return document
 
     def _discover_python_files(self, root: Path) -> list[Path]:
@@ -181,7 +248,13 @@ class PythonGraphBuilder:
         digest.update(b"\0")
         digest.update(self.repository_revision.encode("utf-8"))
         digest.update(b"\0resolver:")
-        digest.update(b"tree-sitter+python-static-v2")
+        digest.update(b"tree-sitter+python-static-v3-method-aliases")
+        if self.scip_config is not None:
+            digest.update(b"\0scip-enrichment-v5-subset-root:")
+            digest.update(self.resolver_report.get("semantic_sha256", self.resolver_report.get("error_type", "unavailable")).encode())
+        if self.lsp_config is not None:
+            digest.update(b"\0lsp-definition-v1:")
+            digest.update(self.resolver_report.get("lsp", {}).get("semantic_sha256", "pending").encode())
         digest.update(b"\0file-range:full-bytes-v1")
         digest.update(b"\0source-roots:")
         digest.update(repr(self.source_roots).encode("utf-8"))
@@ -339,6 +412,7 @@ class PythonGraphBuilder:
             else:
                 self.modules[module_name] = previous_module
             self.skipped_failed_files.append({"path": relative_path, "error_type": type(exc).__name__, "error": str(exc)})
+            self.trace.emit("file_parse_error", path=relative_path, error_type=type(exc).__name__, reason=str(exc))
         finally:
             self._index_changes = None
 
@@ -893,14 +967,68 @@ class PythonGraphBuilder:
                 )
                 linked_bases[target_id] = self.edges[-1]
 
+    def _lsp_eligible_calls(self) -> list[_CallRecord]:
+        """Use LSP for missing/weak bindings; preserve authoritative SCIP answers."""
+        eligible = []
+        for call in self.calls:
+            if call.module_name not in self.modules:
+                continue
+            if self.scip_resolver is not None:
+                status, _ = self.scip_resolver.resolve(call.path, call.line, call.column)
+                if status in {"resolved", "ambiguous", "external_or_non_callable", "local_non_callable"}:
+                    continue
+            module = self.modules[call.module_name]
+            bound, target = self._resolve_lexical_binding(call)
+            if target is None and not bound:
+                target = self._resolve_symbol(module, call.callee_text, owner_class_name=call.owner_class_name)
+            if target is None:
+                target = self._resolve_typed_receiver(call)
+            imported = module.imported_symbols.get(call.callee_text)
+            exact_import = self.symbols_by_qualified_name.get(f"{imported[0]}.{imported[1]}") if imported else None
+            weak = (self.unique_symbols_by_name.get(call.callee_text) == target
+                    and call.callee_text not in module.definitions and exact_import != target)
+            if target is None or weak:
+                eligible.append(call)
+        return sorted(eligible, key=lambda c: (c.path, c.line, c.column, c.node_id))
+
     def _resolve_calls(self) -> None:
         test_targets: dict[tuple[str, str], float] = {}
+        statuses: dict[str, int] = {}
+        self.resolver_report["call_binding_statuses"] = statuses
         for call in self.calls:
             if call.module_name not in self.modules:
                 continue
             module = self.modules[call.module_name]
-            has_lexical_binding, target_id = self._resolve_lexical_binding(call)
-            if not has_lexical_binding:
+            target_id = None
+            scip_status, scip_targets = (self.scip_resolver.resolve(call.path, call.line, call.column)
+                                       if self.scip_resolver is not None else ("unavailable", []))
+            statuses[scip_status] = statuses.get(scip_status, 0) + 1
+            if scip_status == "resolved":
+                target_id = scip_targets[0]
+            elif scip_status == "local_non_callable" and call.callee_text == "cls" and call.owner_class_name:
+                caller = self.nodes_by_id[call.caller_id]
+                scope = self._scope_key(caller["qualified_name"], caller["range"]["start_line"])
+                if caller["properties"].get("method_kind") == "class" and "cls" in self.unmodified_parameters.get(scope, set()):
+                    scip_status = "classmethod_parameter"
+            if scip_status in {"ambiguous", "external_or_non_callable", "local_non_callable"}:
+                # An authoritative external/ambiguous binding must not become a guessed internal edge.
+                self.nodes_by_id[call.node_id]["properties"]["resolution_reason"] = scip_status
+                self.trace.emit("call_unresolved", node_id=call.node_id, path=call.path, reason=scip_status,
+                                candidate_count=len(scip_targets), resolver="scip")
+                continue
+            lsp_status, lsp_targets = self.lsp_results.get(call.node_id, ("not_needed", []))
+            if target_id is None and lsp_status == "resolved":
+                target_id = lsp_targets[0]
+            elif target_id is None and lsp_status in {"ambiguous", "external_or_non_callable"}:
+                call_node = self.nodes_by_id[call.node_id]
+                call_node["properties"].update(resolution_reason=lsp_status, resolver="lsp", lsp_candidate_count=len(lsp_targets))
+                self.trace.emit("call_unresolved", node_id=call.node_id, path=call.path,
+                                reason=lsp_status, candidate_count=len(lsp_targets), resolver="lsp")
+                continue
+            has_lexical_binding = False
+            if target_id is None:
+                has_lexical_binding, target_id = self._resolve_lexical_binding(call)
+            if target_id is None and not has_lexical_binding:
                 target_id = self._resolve_symbol(
                     module,
                     call.callee_text,
@@ -913,6 +1041,10 @@ class PythonGraphBuilder:
                 continue
             call_node = self.nodes_by_id[call.node_id]
             if target_id is None:
+                if self.lsp_config is not None:
+                    call_node["properties"].update(resolver="static", lsp_fallback_reason=lsp_status)
+                self.trace.emit("call_unresolved", node_id=call.node_id, path=call.path, reason="static_no_target",
+                                resolver="static", scip_status=scip_status, lsp_status=lsp_status)
                 continue
 
             if target_id not in self.nodes_by_id:
@@ -933,7 +1065,17 @@ class PythonGraphBuilder:
                 and exact_import_target != target_id
             )
 
-            if typed_target is not None:
+            if scip_status == "resolved":
+                binding_kind = "scip"
+                confidence = 0.98
+            elif lsp_status == "resolved":
+                binding_kind = "lsp"
+                confidence = 0.95
+            elif scip_status == "classmethod_parameter":
+                binding_kind = "classmethod_constructor"
+                confidence = 0.80
+                call_node["properties"]["dispatch_kind"] = "constructor"
+            elif typed_target is not None:
                 binding_kind = "typed_parameter"
                 confidence = 0.85
             elif target["type"] == "Class":
@@ -962,20 +1104,41 @@ class PythonGraphBuilder:
                 target_id,
                 confidence=confidence,
                 resolution="analyzer",
-                rule_id="python.call.static.resolve.v1",
+                rule_id="python.call.scip.resolve.v1" if scip_status == "resolved" else
+                        "python.call.lsp.definition.v1" if lsp_status == "resolved" else "python.call.static.resolve.v1",
                 properties={
                     "binding_kind": binding_kind,
                     "argument_match": None,
                     "candidate_rank": 1,
                     "confidence_reason": (
+                        "SCIP occurrence matched one internal definition" if scip_status == "resolved" else
+                        "LSP definition matched one verified internal declaration" if lsp_status == "resolved" else
                         "Explicit parameter annotation matched an internal class method"
                         if typed_target is not None
                         else "Unique deterministic symbol match"
                     ),
                 },
             )
+            if scip_status == "resolved":
+                self.edges[-1]["provenance"].update(source_tool=self.resolver_report["tool"],
+                                                    source_tool_version=self.resolver_report["tool_version"])
+            if binding_kind == "lsp":
+                info = self.resolver_report["lsp"]["server_info"]
+                self.edges[-1]["provenance"].update(source_tool=info.get("name", "lsp"),
+                                                  source_tool_version=info.get("version", "unknown"))
+            active_resolver = binding_kind if binding_kind in {"scip", "lsp"} else "static"
+            self.trace.emit("call_resolved", node_id=call.node_id, target_id=target_id, path=call.path,
+                            resolver=active_resolver, binding_kind=binding_kind,
+                            fallback_reason=scip_status if self.scip_config and scip_status != "resolved" else None,
+                            lsp_fallback_reason=lsp_status if self.lsp_config and binding_kind != "lsp" else None,
+                            confidence=confidence)
             call_node["properties"]["resolution_status"] = "resolved"
             call_node["properties"]["candidate_count"] = 1
+            call_node["properties"]["resolver"] = active_resolver
+            if self.lsp_config is not None and active_resolver == "static":
+                call_node["properties"]["lsp_fallback_reason"] = lsp_status
+            if self.scip_config is not None and scip_status != "resolved":
+                call_node["properties"]["fallback_reason"] = scip_status
 
             if call.caller_type == "Test":
                 key = (call.caller_id, target_id)
@@ -992,6 +1155,53 @@ class PythonGraphBuilder:
                 rule_id="python.test.direct_call.v1",
                 properties={"link_method": "direct_call", "coverage_count": None},
             )
+
+    def _link_chain_references(self) -> None:
+        """Keep source-supported dispatch possibilities separate from CALLS."""
+        from vgar.graph.return_contracts import ReturnContracts
+        contracts = ReturnContracts(self.repository_root, self.nodes, self.edges, self.modules)
+        reasons: dict[str, int] = {}
+        hints = 0
+        for call in self.calls:
+            call_node = self.nodes_by_id[call.node_id]
+            if call_node["properties"]["resolution_status"] == "resolved" or "(" not in call.callee_text:
+                continue
+            status, _ = self.scip_resolver.resolve(call.path, call.line, call.column)
+            if status != "no_occurrence":
+                continue  # An authoritative external/local/ambiguous result is never overridden.
+            try:
+                expression = ast.parse(call.callee_text, mode="eval").body
+            except (SyntaxError, ValueError):
+                continue
+            if not isinstance(expression, ast.Attribute) or not isinstance(expression.value, ast.Call):
+                continue
+            inner = expression.value.func
+            span = call_node["range"]
+            line = span["start_line"] + inner.end_lineno - 1
+            column = inner.end_col_offset + (span["start_col"] if inner.end_lineno == 1 else 0)
+            inner_status, getters = self.scip_resolver.resolve(call.path, line, column)
+            if inner_status != "resolved" or self.nodes_by_id[getters[0]]["type"] not in {"Function", "Method"}:
+                reason, targets, evidence = "inner_getter_not_resolved", [], {}
+            else:
+                targets, evidence = contracts.candidates(getters[0], expression.attr)
+                reason = evidence["reason"] if targets else evidence.get("reason", "no_internal_member")
+                if not targets and reason == "source_return_contract":
+                    reason = "no_internal_member"
+            reasons[reason] = reasons.get(reason, 0) + 1
+            if not targets:
+                self.trace.emit("chain_reference_skipped", node_id=call.node_id, path=call.path, reason=reason)
+                continue
+            call_node["properties"].update(reference_candidate_count=len(targets), reference_reason="source_return_contract")
+            for target_id in targets:
+                self._add_edge("REFERENCES", call.node_id, target_id, confidence=0.65,
+                               resolution="heuristic", rule_id="python.call.return_contract.reference.v1",
+                               properties={"binding_kind": "return_contract_hint", "runtime_dispatch_verified": False,
+                                           "scip_status": status, "evidence": evidence})
+                hints += 1
+            self.trace.emit("call_reference_hint", node_id=call.node_id, path=call.path, candidate_ids=targets,
+                            reason="source_return_contract", evidence=evidence, confidence=0.65,
+                            runtime_dispatch_verified=False)
+        self.resolver_report.update(chain_reference_count=hints, chain_reference_statuses=reasons)
 
     def _index_scopes(self, source: bytes, module: _ModuleState) -> None:
         try:
@@ -1023,6 +1233,8 @@ class PythonGraphBuilder:
                         modified = {item.id for item in ast.walk(child) if isinstance(item, ast.Name)
                                     and isinstance(item.ctx, (ast.Store, ast.Del))}
                         types = {}
+                        self._set_index(self.unmodified_parameters, self._scope_key(name, child.lineno),
+                                        {arg.arg for arg in args if arg.arg not in modified})
                         for arg in args:
                             if arg.annotation is not None and arg.arg not in modified:
                                 text = (arg.annotation.value if isinstance(arg.annotation, ast.Constant)

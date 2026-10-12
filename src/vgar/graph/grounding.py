@@ -44,8 +44,133 @@ _COMMON_PROSE_NAMES = frozenset({
     "error", "for", "from", "get", "in", "is", "it", "main", "make",
     "module", "name", "new", "not", "of", "on", "or", "read", "return",
     "search", "self", "set", "str", "string", "test", "the", "this", "to",
-    "type", "use", "used", "using", "value", "with",
+    "type", "use", "used", "using", "value", "with", "python", "version", "help",
 })
+
+_ENVIRONMENT_VERSION = re.compile(
+    r"^[ \t]*(?:[*+-][ \t]+|#{1,6}[ \t]+)?(?:\*\*)?"
+    r"[A-Za-z][A-Za-z0-9_. /()+-]*[ \t]+versions?(?:\*\*)?[ \t]*"
+    r"(?::[^\r\n]*|=[^\r\n]*|(?=\r*$))", re.IGNORECASE | re.MULTILINE,
+)
+_HEADING = re.compile(r'^[ \t]*(?P<level>#{1,6})[ \t]+(?P<title>[^\r\n]*)', re.MULTILINE)
+_ENVIRONMENT_TITLE = re.compile(
+    r'(?:installed versions|version information|output of .*(?:show_versions\s*\(\s*\)|--version)|[\w. -]+\s+--version\s+output)',
+    re.IGNORECASE,
+)
+_DETAILS = re.compile(r'<details\b[^>]*>.*?</details\s*>', re.IGNORECASE | re.DOTALL)
+
+
+def _mask_environment(text):
+    code = list(_CODE.finditer(text))
+    spans = [match.span() for match in code]
+    fences = [match.span() for match in code if match.group('fence')]
+    headings = [match for match in _HEADING.finditer(text)
+                if not any(start <= match.start() < end for start, end in fences)]
+    details = list(_DETAILS.finditer(text))
+    sections = []
+    for index, heading in enumerate(headings):
+        title = heading.group('title').replace('`', '').strip(' #*')
+        if not _ENVIRONMENT_TITLE.fullmatch(title):
+            continue
+        # A template's details block can contain '# Paste output here' and
+        # fenced logs. Bound the section by the closing tag, not those lines.
+        block = next((block for block in details if block.start() >= heading.end()
+                      and not text[heading.end():block.start()].strip()), None)
+        end = block.end() if block else next(
+            (next_heading.start() for next_heading in headings[index+1:]
+             if len(next_heading.group('level')) <= len(heading.group('level'))), len(text))
+        sections.append((heading.start(), end))
+    for start, end in reversed(sections):
+        text = text[:start] + re.sub(r'[^\r\n]', ' ', text[start:end]) + text[end:]
+    return _ENVIRONMENT_VERSION.sub(
+        lambda match: match.group() if any(start <= match.start() < end for start, end in spans)
+        else ' ' * len(match.group()), text)
+
+
+def _symbol_names(node):
+    return [node['qualified_name'], *[alias['qualified_name']
+            for alias in node['properties'].get('symbol_aliases', [])]]
+
+
+@dataclass(frozen=True)
+class _CodeScope:
+    start: int
+    end: int
+    bound: frozenset[str]
+    aliases: dict[str, str]
+    import_spans: tuple[tuple[int, int], ...]
+
+
+def _code_scopes(text: str) -> list[_CodeScope]:
+    """Interpret fenced Python as data; malformed snippets keep lexical fallback."""
+    scopes = []
+    for match in _CODE.finditer(text):
+        fence = match.group("fence")
+        if not fence:
+            continue
+        body = match.group().split("\n", 1)[1].rsplit(fence, 1)[0]
+        body_start = match.start() + match.group().index("\n") + 1
+        try:
+            tree = ast.parse(body)
+        except (SyntaxError, ValueError, RecursionError):
+            continue
+        bound = {node.id for node in ast.walk(tree)
+                 if isinstance(node, ast.Name) and isinstance(node.ctx, ast.Store)}
+        # Definitions and arguments belong to the reproduction, just like
+        # assigned variables. A local __init__ must not seed every constructor
+        # in the repository. Member calls remain available as weak hints.
+        bound.update(node.name for node in ast.walk(tree)
+                     if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)))
+        bound.update(node.arg for node in ast.walk(tree) if isinstance(node, ast.arg))
+        bound.update(ast.unparse(node) for node in ast.walk(tree)
+                     if isinstance(node, ast.Attribute) and isinstance(node.ctx, ast.Store))
+        aliases = {}
+        import_spans = []
+        lines = body.splitlines(keepends=True)
+        def offset(line: int, byte_column: int) -> int:
+            return body_start + sum(len(value) for value in lines[:line - 1]) + len(
+                lines[line - 1].encode("utf-8")[:byte_column].decode("utf-8"))
+        # Nested-scope imports cannot resolve a receiver in the outer snippet.
+        for node in tree.body:
+            if isinstance(node, (ast.Import, ast.ImportFrom)):
+                import_spans.append((offset(node.lineno, node.col_offset), offset(node.end_lineno, node.end_col_offset)))
+            if isinstance(node, ast.Import):
+                for alias in node.names:
+                    aliases[alias.asname or alias.name.split(".")[0]] = (
+                        alias.name if alias.asname else alias.name.split(".")[0])
+            elif isinstance(node, ast.ImportFrom) and node.module and not node.level:
+                for alias in node.names:
+                    if alias.name != "*":
+                        aliases[alias.asname or alias.name] = node.module + "." + alias.name
+        aliases = {name: target for name, target in aliases.items() if name not in bound}
+        scopes.append(_CodeScope(match.start(), match.end(), frozenset(bound), aliases, tuple(import_spans)))
+    return scopes
+
+
+def issue_symbol_text(text: str) -> str:
+    """Remove snippet-local bare variables from lexical ranking, preserving members."""
+    text = _IGNORED_PROSE.sub(lambda match: " " * len(match.group()), text)
+    text = _mask_environment(text)
+    scopes = _code_scopes(text)
+    code_spans = [match.span() for match in _CODE.finditer(text)]
+    def replace(match: re.Match) -> str:
+        token = match.group()
+        scope = next((s for s in scopes if s.start <= match.start() < s.end), None)
+        if scope and any(start <= match.start() < end for start, end in scope.import_spans):
+            return " " * len(token)
+        if scope and (token in scope.bound or ('.' not in token and token in scope.aliases)):
+            return " " * len(token)
+        if token.lower() in {'python', 'version'} and not any(start <= match.start() < end for start, end in code_spans):
+            return ' ' * len(token)
+        return token
+    return _SYMBOL.sub(replace, text)
+
+
+def issue_topic_text(text: str) -> str:
+    """First narrative line supplies focus; reproduction syntax cannot be a title."""
+    visible = issue_symbol_text(text)
+    visible = _CODE.sub(lambda match: ' ' * len(match.group()) if match.group('fence') else match.group(), visible)
+    return next((line.strip(' #*') for line in visible.splitlines() if line.strip(' #*')), '')
 
 
 @dataclass(frozen=True)
@@ -101,6 +226,9 @@ class TaskAnchorFinder:
             if node["type"] in _SYMBOL_TYPES:
                 self._symbols_by_name[node["name"]].append(node)
                 self._symbols_by_qualified_name[node["qualified_name"]].append(node)
+                for alias in node['properties'].get('symbol_aliases', []):
+                    self._symbols_by_name[alias['name']].append(node)
+                    self._symbols_by_qualified_name[alias['qualified_name']].append(node)
             if node["type"] not in {"Function", "Method"}:
                 continue
             for decorator in node["properties"].get("decorators", []):
@@ -156,7 +284,9 @@ class TaskAnchorFinder:
                         add(matches, AnchorEvidence("source_link", link.group(), source), 0.7)
                 # Keep offsets stable so evidence still refers to the input text.
                 text = _IGNORED_PROSE.sub(lambda match: " " * len(match.group()), text)
+                text = _mask_environment(text)
             code_spans = [match.span() for match in _CODE.finditer(text)]
+            code_scopes = _code_scopes(text) if source == "issue" else []
             consumed: list[tuple[int, int]] = []
             # Tracebacks carry their line number after a comma, rather than a colon.
             for pattern in (_TRACEBACK, _QUOTED_LOCATION, _LOCATION):
@@ -175,7 +305,7 @@ class TaskAnchorFinder:
                             suffix = selector.replace("::", ".")
                             candidates = [
                                 node for node in candidates if node["type"] == "Test"
-                                and node["qualified_name"].endswith(suffix)
+                                and any(name.endswith(suffix) for name in _symbol_names(node))
                                 and (line is None or _contains_line(node["range"], line))
                             ]
                         elif line is not None:
@@ -217,21 +347,33 @@ class TaskAnchorFinder:
                 if any(start <= match.start() < end for start, end in consumed):
                     continue
                 token = match.group()
+                scope = next((s for s in code_scopes if s.start <= match.start() < s.end), None)
+                if scope and any(start <= match.start() < end for start, end in scope.import_spans):
+                    continue
+                if scope and token in scope.bound:
+                    continue
+                canonical = token
+                imported = False
+                if scope:
+                    receiver, dot, member = token.partition(".")
+                    if receiver in scope.aliases:
+                        canonical = scope.aliases[receiver] + (dot + member if dot else "")
+                        imported = True
                 qualified = "." in token
                 explicit = (source == "failing_test"
                             or any(start <= match.start() < end for start, end in code_spans)
                             or bool(re.match(r"\s*\(", text[match.end():])))
-                matches = (self._symbols_by_qualified_name.get(token, []) if qualified
+                matches = (self._symbols_by_qualified_name.get(canonical, []) if qualified or imported
                            else self._symbols_by_name.get(token, []))
-                if not matches and "." in token:
+                if not matches and "." in canonical:
                     # Issues commonly name Class.method without its module prefix.
                     # Keep all suffix matches; never guess an arbitrary receiver.
                     matches = [
-                        node for node in self._symbols_by_name.get(token.rsplit(".", 1)[-1], [])
-                        if node["qualified_name"].endswith("." + token)
+                        node for node in self._symbols_by_name.get(canonical.rsplit(".", 1)[-1], [])
+                        if any(name.endswith("." + canonical) for name in _symbol_names(node))
                     ]
                 receiver_fallback = False
-                if not matches and qualified and explicit and source == "issue":
+                if not matches and qualified and explicit and source == "issue" and not imported:
                     # An unknown receiver supplies a member-name hint, never a
                     # resolved call or a claim about the receiver's type.
                     matches = [node for node in self._symbols_by_name.get(token.rsplit(".", 1)[-1], [])
@@ -243,7 +385,7 @@ class TaskAnchorFinder:
                         prose_fallbacks.append((matches, evidence))
                         continue
                     code_like = "_" in token or any(char.isupper() for char in token)
-                    score = (0.8 if qualified else 0.6 if source == "failing_test"
+                    score = (0.8 if qualified or imported else 0.6 if source == "failing_test"
                              else 0.75 if explicit else 0.6 if code_like else 0.4)
                     if receiver_fallback:
                         score = 0.45

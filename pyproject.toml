@@ -38,6 +38,7 @@ vgar = "vgar.cli:main"
 
 [project.optional-dependencies]
 dev = ["pytest>=8,<9"]
+plot = ["matplotlib>=3.9,<4"]
 
 
 [tool.setuptools.packages.find]

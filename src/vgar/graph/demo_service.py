@@ -19,6 +19,11 @@ class DemoGraphService:
 
     backend_name = "demo"
 
+    def get_related_tests(self, symbol_ids: list[str], *, graph_version: str,
+                          changed_paths: list[str] | None = None, failing_tests: list[str] | None = None,
+                          selected_tests: list[str] | None = None, max_hops: int = 2, limit: int = 50) -> dict[str, Any]:
+        raise GraphNotReadyError("Test selection requires a SQLite repository snapshot")
+
     def find_task_anchors(self, issue_text: str, failing_tests: list[str] | None = None, *,
                           graph_version: str, task_id: str) -> dict[str, Any]:
         raise GraphNotReadyError("Task retrieval requires a SQLite repository snapshot")

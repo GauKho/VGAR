@@ -44,6 +44,18 @@ $env:PYTHONPATH = (Resolve-Path .\src).Path
 
 Môi trường này dùng cho các script và test M1, không cần GPU hay model weights.
 
+Đóng gói source hiện tại, gồm các thay đổi chưa commit:
+
+```powershell
+python scripts\package_m1.py --list   # xem danh sách file trước
+python scripts\package_m1.py          # tạo ZIP mới trong dist/
+```
+
+Gói gồm source, tests, configs, docs, graph fixtures và evidence nền tảng đã lưu
+trong repository. Runtime Node, môi trường Python, tokenizer assets và kết quả
+chạy local không đi kèm. Manifest trong ZIP ghi hash từng file; đây là gói source,
+không phải môi trường chạy đã cài sẵn.
+
 ---
 
 ## 2. Cấu hình (`.env`)
@@ -174,7 +186,38 @@ Manifest được tạo bằng `scripts/provision_m1_tokenizer.py`; dùng `--hel
 
 Graph builder extract `Repository`, `File`, `Module`, `Class`, `Function`, `Method`, `Test`, `Import`, `CallSite`. Ngoài ra nó tạo containment, resolve import nội bộ/ngoại bộ, kế thừa cơ bản và các call trực tiếp/qua import/qua `self`.
 
-Builder dùng Tree-sitter để extract cú pháp và Python `ast`/`symtable` để phân giải symbol theo scope, không dùng Jedi. Một số method call có thể resolve từ annotation của tham số khi xác định được class nội bộ. Call không resolve được vẫn được giữ dưới dạng `CallSite` có `candidate_count=0`; lời gọi động hoặc mơ hồ có thể còn unresolved.
+Builder mặc định dùng Tree-sitter để extract cú pháp và Python `ast`/`symtable` để phân giải symbol theo scope, không dùng Jedi. Một số method call có thể resolve từ annotation của tham số khi xác định được class nội bộ. Call không resolve được vẫn được giữ dưới dạng `CallSite` có `candidate_count=0`; lời gọi động hoặc mơ hồ có thể còn unresolved.
+
+Có thể bật SCIP enrichment bằng `scip-python` (dựa trên Pyright). Runtime Node được cài riêng; graph/retrieval Python không cần model weights:
+
+```powershell
+.\scripts\install_scip_runtime.ps1
+$env:PYTHONPATH = 'src'
+python scripts\build_graph.py tests\fixtures\sample_repo artifacts\m1\w7-w8\graph.json `
+    --repo-key "demo/vgar-fixture" --revision "fixture-revision" --resolver scip `
+    --debug-log artifacts\m1\w7-w8\debug.jsonl
+```
+
+SCIP ưu tiên symbol có định nghĩa nội bộ. Nếu indexer lỗi, timeout hoặc không có occurrence phù hợp, builder dùng resolver tĩnh và ghi lý do fallback; `--strict-resolver` yêu cầu dừng khi index không dùng được. Index gắn với hash source; bundle cũ hoặc sai checksum không được dùng. Symbol ngoài repo hoặc mơ hồ không được nối thành edge nội bộ bằng phỏng đoán.
+
+Phần resolver W5–W6 có thêm client LSP dùng Pyright. `--resolver lsp` dùng LSP cùng static; `--resolver scip-lsp` ưu tiên SCIP và tra LSP cho các call còn thiếu hoặc có binding static yếu. LSP không ghi đè binding SCIP đã xác định:
+
+```powershell
+.\scripts\install_lsp_runtime.ps1
+python scripts\build_graph.py tests\fixtures\sample_repo artifacts\m1\w5-w6\graph.json `
+    --repo-key "demo/vgar-fixture" --revision "fixture-revision" --resolver scip-lsp `
+    --lsp-timeout 30 --lsp-max-requests 200 --debug-log artifacts\m1\w5-w6\debug.jsonl
+```
+
+Pyright được ghim qua package lock. Khi server lỗi hoặc hết giới hạn, các call chưa có kết quả dùng static fallback; kết quả ngoài repo hoặc mơ hồ giữ unresolved. Có thể kiểm tra runtime thật bằng `python scripts\smoke_w5_w6_resolvers.py`. Đây là kiểm chứng tích hợp trên fixture, chưa chứng minh cải thiện retrieval trên toàn bộ benchmark.
+
+`VGAR_GRAPH_DEBUG_LOG` bật log JSONL cho resolver, retrieval và test selection; `VGAR_GRAPH_DEBUG_RUN_ID` liên kết các bước cùng một run. Có thể vẽ plot trực tiếp bằng `vgar.graph.visualization.plot_graph_tracking(document)`; hàm trả Matplotlib figure, dùng `plt.show()` hoặc `figure.savefig(...)` khi cần:
+
+```powershell
+python -m pip install -r scripts\requirements_m1_plot.txt
+python scripts\visualize_graph.py artifacts\m1\w7-w8\graph.json --show `
+    --debug-log artifacts\m1\w7-w8\debug.jsonl
+```
 
 Build thủ công qua JSON rồi nạp vào SQLite:
 
@@ -188,6 +231,31 @@ python scripts\load_graph_fixture.py artifacts\sample_graph.json artifacts\sampl
 Task grounding tìm anchors từ issue, đường dẫn, symbol, stack trace và failing-test report. Task overlay giữ node `Issue` cùng các liên kết `MENTIONS`/`REPRODUCES` riêng cho từng task; không ghi vào snapshot repo.
 
 Retrieval duyệt các quan hệ graph từ anchors, xếp hạng và đóng gói source snippets theo ngân sách token. API nhận `graph_version` và `task_id` tường minh; nội dung nguồn được kiểm tra với snapshot trước khi trả context. Failing-test report là đầu vào được cung cấp, không phải kết quả chạy test của graph service.
+
+Response context có nhãn `context_format="vgar.context.v1"`, revision và source hashes ở wrapper; shape `ContextPayload` giữ nguyên. `vgar.contracts.prompt_context.render_context_for_repair` chuyển payload thành phần context cho prompt M2, giữ path/symbol/range. Token budget chỉ tính snippets, chưa bao gồm phần hướng dẫn và prompt hoàn chỉnh.
+
+`get_related_tests` nhận symbol IDs hoặc `changed_paths`, tìm test qua liên kết trực tiếp và caller trung gian có giới hạn. Nếu thiếu link, dùng failing tests hoặc danh sách `selected_tests` được cung cấp; nếu cả hai trống, response báo cần chọn suite. Đây là lựa chọn test tĩnh, không phải bằng chứng coverage. Smoke M1 W7–8 mặc định dùng static, kiểm tra graph → MCP context/test selection và gói bàn giao, không gọi LLM:
+
+```powershell
+python scripts\smoke_w7_w8_m1.py --tokenizer-manifest path\to\tokenizer_manifest.json
+```
+
+Thêm `--resolver scip` khi muốn kiểm tra SCIP sau khi cài runtime riêng.
+
+Gói bàn giao M1 gồm `context.json`, `context_manifest.json`, `test_links.json` và phần context cho prompt. Manifest tách hash toàn file khỏi hash snippet, khai báo phạm vi Python sources và giữ nguyên byte/range. `vgar.contracts.handoff.validate_context_handoff` kiểm snapshot/source/token counts trước prompt; `adapt_test_hints` trả mapping và selectors dạng tuple cho M2. Cách export và nhận gói ở [context contract](docs/context_payload_contract.md). M2 vẫn kiểm tổng prompt budget, pytest collection và verification sau patch.
+
+So sánh static và SCIP trên cùng dev manifest:
+
+```powershell
+python scripts\compare_static_vs_scip.py . data\manifests\verified-c104f840cc67-dev-25.json `
+    --tokenizer-manifest artifacts\m1\tokenizer-acceptance\tokenizer_manifest.json --limit 5
+```
+
+Mỗi lần chạy lưu JSON, context và debug logs trong `results/retrieval/`. Runner giữ cùng task, token counter và cấu hình retrieval; ghi riêng lỗi/timeout của SCIP và không thay bằng kết quả static. Snapshot giữ Python, stubs và cấu hình project/Pyright; chưa cài dependencies riêng của target. Số liệu chỉ phục vụ đánh giá retrieval trên dev, không đo khả năng sửa lỗi của LLM.
+
+SCIP dùng cấu hình tại target và thêm import roots `src`/`lib` khi có các thư mục này. Cấu hình JSON có sẵn được giữ nguyên. Có thể chọn task bằng `--instance-id`, hoặc giới hạn indexing bằng `--scip-target-only`; index theo một thư mục chỉ cung cấp thông tin cho phạm vi đó, các phần thiếu occurrence dùng static fallback.
+
+Indexer mặc định dùng Python của tiến trình M1. Khi dùng môi trường target riêng, truyền `--scip-python` cùng `--scip-environment` của môi trường đó.
 
 Dùng graph SQLite với MCP server:
 
@@ -214,7 +282,7 @@ Tên tool có prefix theo server (`tool_name_prefix=True`):
 
 | Server | Tool |
 |---|---|
-| graph | `graph_search_symbols`, `graph_get_callers`, `graph_get_callees`, `graph_find_task_anchors`, `graph_get_related_context` |
+| graph | `graph_search_symbols`, `graph_get_callers`, `graph_get_callees`, `graph_find_task_anchors`, `graph_get_related_context`, `graph_get_related_tests` |
 | repository | `repository_health`, `repository_read_file`, `repository_apply_patch` |
 | execution | `execution_health`, `execution_run_pytest` |
 

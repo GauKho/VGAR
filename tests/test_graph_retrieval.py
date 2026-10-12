@@ -64,7 +64,9 @@ class GraphRetrievalTests(unittest.TestCase):
         test = next(item for item in result.candidates if item["symbol"] == "tests.test_auth.test_login")
         login = next(item for item in result.candidates if item["node_id"] == self.node_id("login"))
         self.assertEqual(test["features"]["failing_test_proximity"], 1)
-        self.assertEqual(login["features"]["failing_test_proximity"], 0.5)
+        self.assertEqual(login["raw_failing_test_proximity"], 0.5)
+        self.assertEqual(login["features"]["failing_test_proximity"], 0.5 * login['direct_task_similarity'])
+        self.assertTrue(any(step.startswith(('CALLS:', 'TESTS:')) for step in login['failing_test_rationale']))
         self.assertEqual(result.overlay_id, overlay.overlay_id)
         self.assertNotIn("failing_test_proximity", result.unavailable_features)
 
@@ -82,7 +84,8 @@ class GraphRetrievalTests(unittest.TestCase):
         self.assertEqual(plain.config["filtered_by_include"], 0)
         # Test nodes still serve failing_test_proximity of the remaining candidates.
         kept = next(c for c in filtered.candidates if c["node_id"] == login)
-        self.assertEqual(kept["features"]["failing_test_proximity"], 0.5)
+        self.assertEqual(kept["raw_failing_test_proximity"], 0.5)
+        self.assertEqual(kept["features"]["failing_test_proximity"], 0.5 * kept['direct_task_similarity'])
         # include=None keeps the legacy behaviour exactly.
         self.assertEqual([c["node_id"] for c in plain.candidates],
                          [c["node_id"] for c in retriever.retrieve([login], 1000, overlay=overlay).candidates])
@@ -101,11 +104,124 @@ class GraphRetrievalTests(unittest.TestCase):
         self.assertEqual(login["features"]["recent_change_frequency"], 1)
         self.assertEqual(result.history_label, "test-only:2 commits")
 
+    def test_test_bonus_discriminates_issue_code_from_cleanup_and_file_siblings(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root/'test_app.py').write_text('''def repair_target(): return 1
+def cleanup(): return None
+def same_file_only(): return None
+def test_repair():
+    repair_target()
+    cleanup()
+''', encoding='utf-8')
+            graph = PythonGraphBuilder(repo_key='demo/test-evidence', repository_revision='fixture').build(root)
+            target = self.node_id('repair_target', graph=graph)
+            overlay = TaskOverlayBuilder(graph).build('repair', 'repair_target fails', ['test_app.py::test_repair'])
+            retriever = self.retriever(graph, root)
+            result = retriever.retrieve([target], 1000, overlay=overlay)
+            candidates = {c['symbol']:c for c in result.candidates}
+            repair, cleanup = candidates['test_app.repair_target'], candidates['test_app.cleanup']
+            self.assertEqual(repair['raw_failing_test_proximity'], .5)
+            self.assertEqual(cleanup['raw_failing_test_proximity'], .5)
+            self.assertGreater(repair['features']['failing_test_proximity'], 0)
+            self.assertEqual(cleanup['features']['failing_test_proximity'], 0)
+            self.assertEqual(candidates['test_app.same_file_only']['raw_failing_test_proximity'], 0)
+            self.assertEqual(candidates['test_app.test_repair']['features']['failing_test_proximity'], 1)
+            # Failing-test-only fallback and explicit ablation retain raw evidence.
+            empty = TaskOverlayBuilder(graph).build('no-issue', '', ['test_app.py::test_repair'])
+            for config, task in ((RetrievalConfig(), empty),
+                                 (RetrievalConfig(gate_failing_test_evidence=False), overlay)):
+                ungated = self.retriever(graph, root, config=config).retrieve([target], 1000, overlay=task)
+                c = next(c for c in ungated.candidates if c['symbol']=='test_app.cleanup')
+                self.assertEqual(c['features']['failing_test_proximity'], .5)
+
+    def test_evidence_configuration_flags_require_booleans(self) -> None:
+        for flag in ('use_source_evidence', 'prefer_relevant_paths', 'gate_failing_test_evidence'):
+            with self.subTest(flag=flag), self.assertRaises(InvalidQueryError):
+                RetrievalConfig(**{flag: 1})
+
     def test_task_similarity_can_rank_a_related_symbol_above_the_anchor(self) -> None:
         weights = {name: float(name == "task_similarity") for name in RetrievalConfig().weights}
         result = self.retriever(config=RetrievalConfig(weights=weights)).retrieve(
             [self.node_id("login")], 1000, issue_text="login_handler")
         self.assertEqual(result.candidates[0]["node_id"], self.node_id("login_handler"))
+
+    def test_dependency_can_inherit_issue_relevance_but_file_membership_cannot(self) -> None:
+        result = self.retriever(config=RetrievalConfig(max_hops=1, use_source_evidence=False)).retrieve(
+            [self.node_id("login")], 1000, issue_text="login")
+        caller = next(c for c in result.candidates if c['symbol'] == 'web.routes.login_handler')
+        self.assertGreater(caller['features']['task_similarity'], caller['direct_task_similarity'])
+        file = next(c for c in result.candidates if c['path'] == 'src/auth/service.py' and c['node_id'] != self.node_id('login'))
+        self.assertEqual(file['features']['task_similarity'], file['direct_task_similarity'])
+
+    def test_same_hop_dependency_evidence_is_not_hidden_by_containment(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root/'app.py').write_text('class Container:\n    def helper(self): return 1\ndef repair_entry(): Container.helper(None)\n', encoding='utf-8')
+            graph = PythonGraphBuilder(repo_key='demo/paths', repository_revision='fixture').build(root)
+            entry = self.node_id('repair_entry', graph=graph)
+            container = self.node_id('Container', kind='Class', graph=graph)
+            helper = self.node_id('helper', kind='Method', graph=graph)
+            retriever = self.retriever(graph, root, config=RetrievalConfig(max_hops=1, use_source_evidence=False))
+            states, _ = retriever._walk([container, entry], {container:.9, entry:.45}, task_words={'repair', 'entry'})
+            self.assertEqual(states[helper][0], 1)
+            self.assertEqual(states[helper][1], .45)
+            self.assertTrue(any(step.startswith('CALLS:') for step in states[helper][2]))
+            plain, _ = retriever._walk([container, entry], {container:.9, entry:.45})
+            self.assertEqual(plain[helper][1], .9)
+
+    def test_executable_evidence_discriminates_same_api_without_docstring_noise(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root/'app.py').write_text('''class Actual:
+    def handle(self, client):
+        return client.timeout
+class Noise:
+    def handle(self, client):
+        """timeout timeout timeout"""
+        # timeout
+        return None
+''', encoding='utf-8')
+            graph = PythonGraphBuilder(repo_key='demo/source', repository_revision='fixture').build(root)
+            ids = [self.node_id(name, kind='Method', graph=graph) for name in ('app.Actual.handle', 'app.Noise.handle')]
+            retriever = self.retriever(graph, root, config=RetrievalConfig(max_hops=0))
+            result = retriever.retrieve(ids, 1000, issue_text='handle timeout')
+            self.assertEqual(result.candidates[0]['symbol'], 'app.Actual.handle')
+            self.assertGreater(result.candidates[0]['source_task_similarity'], 0)
+            self.assertEqual(result.candidates[1]['source_task_similarity'], 0)
+            self.assertEqual(asdict(result), asdict(retriever.retrieve(list(reversed(ids)), 1000, issue_text='handle timeout')))
+
+    def test_popular_api_cannot_win_by_caller_count_alone(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "app.py").write_text(
+                "def helper(): pass\ndef repair_target(): pass\n"
+                + "".join(f"def caller_{i}(): helper()\n" for i in range(12)), encoding="utf-8")
+            graph = PythonGraphBuilder(repo_key="demo/popularity", repository_revision="fixture").build(root)
+            ids = [self.node_id(name, graph=graph) for name in ("helper", "repair_target")]
+            retriever = self.retriever(graph, root, config=RetrievalConfig(max_hops=0))
+            result = retriever.retrieve(ids, 1000, issue_text="repair_target fails")
+            self.assertEqual(result.candidates[0]["symbol"], "app.repair_target")
+            self.assertEqual(result.config["normalized_weights"]["public_api_risk"], 0)
+            popular = next(c for c in result.candidates if c["symbol"] == "app.helper")
+            self.assertGreater(popular["features"]["public_api_risk"], 0.5)
+
+    def test_global_frontier_leaves_room_for_relevant_callee_from_later_anchor(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "app.py").write_text(
+                "def a_generic():\n" + "".join(f"    noise_{i}()\n" for i in range(10))
+                + "def z_entry(): repair_target()\ndef repair_target(): pass\n"
+                + "".join(f"def noise_{i}(): pass\n" for i in range(10)), encoding="utf-8")
+            graph = PythonGraphBuilder(repo_key="demo/frontier", repository_revision="fixture").build(root)
+            ids = [self.node_id(name, graph=graph) for name in ("a_generic", "z_entry")]
+            retriever = self.retriever(graph, root, config=RetrievalConfig(max_hops=1, max_candidates=4))
+            result = retriever.retrieve(ids, 1000, issue_text="repair_target", include=lambda n: n["type"] == "Function")
+            self.assertIn("app.repair_target", [c["symbol"] for c in result.candidates])
+            self.assertLessEqual(len(result.candidates), 4)
+            self.assertTrue(result.traversal_limited)
+            self.assertEqual(asdict(result), asdict(retriever.retrieve(list(reversed(ids)), 1000,
+                issue_text="repair_target", include=lambda n: n["type"] == "Function")))
 
     def test_supplied_history_affects_ranking_without_being_invented(self) -> None:
         test_id = self.node_id("test_login", "Test")
@@ -302,14 +418,15 @@ class GraphRetrievalTests(unittest.TestCase):
                 self.assertEqual(error.exception.code, "GRAPH_ERROR")
 
     def test_source_changed_during_token_counting_is_not_returned(self) -> None:
-        with tempfile.TemporaryDirectory() as directory:
-            root = Path(directory) / "repo"
-            shutil.copytree(SAMPLE, root)
-            def mutate(text):
-                (root / "new.py").write_text("# added during retrieval\n", encoding="utf-8")
-                return counter(text)
-            with self.assertRaises(GraphError):
-                self.retriever(root=root, count_tokens=mutate).retrieve([self.node_id("login")], 1000)
+        for issue in ('', 'login'):
+            with self.subTest(issue=issue), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory) / "repo"
+                shutil.copytree(SAMPLE, root)
+                def mutate(text):
+                    (root / "new.py").write_text("# added during retrieval\n", encoding="utf-8")
+                    return counter(text)
+                with self.assertRaises(GraphError):
+                    self.retriever(root=root, count_tokens=mutate).retrieve([self.node_id("login")], 1000, issue_text=issue)
 
     def test_invalid_node_hash_and_inconsistent_byte_range_fail_closed(self) -> None:
         for change in ("hash", "range", "path"):

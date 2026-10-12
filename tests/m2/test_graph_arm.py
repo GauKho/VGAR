@@ -20,6 +20,29 @@ SOURCES = {"src/auth.py": AUTH, "src/other.py": OTHER}
 PATCH = ("--- a/src/auth.py\n+++ b/src/auth.py\n@@ -5,2 +5,2 @@\n def check(user, password):\n"
          '-    return user == "root"\n+    return user == "admin"\n')
 SHA = "a" * 40
+
+
+def test_scip_extraction_preserves_stubs_config_and_python_byte_identity(tmp_path):
+    archive = tmp_path / 'source.tar.gz'
+    inputs = {'src/a.py': b'def f():\r\n    return 1\r\n', 'src/a.pyi': b'def f() -> int: ...\n',
+              'pyproject.toml': b'[tool.pyright]\nextraPaths = ["src"]\n', 'README.md': b'not an index input'}
+    with tarfile.open(archive, 'w:gz') as bundle:
+        for path, data in inputs.items():
+            info = tarfile.TarInfo('r-' + SHA + '/' + path)
+            info.size = len(data)
+            bundle.addfile(info, io.BytesIO(data))
+    plain, enriched = tmp_path / 'plain', tmp_path / 'enriched'
+    a = extract_python_tree(archive, 'o/r', SHA, plain)
+    b = extract_python_tree(archive, 'o/r', SHA, enriched, include_scip_inputs=True)
+    assert a['tree_hash'] == b['tree_hash']
+    assert (plain / 'src/a.py').read_bytes() == (enriched / 'src/a.py').read_bytes() == inputs['src/a.py']
+    assert b['auxiliary_file_count'] == 2
+    assert (enriched / 'src/a.pyi').read_bytes() == inputs['src/a.pyi']
+    assert (enriched / 'pyproject.toml').read_bytes() == inputs['pyproject.toml']
+    assert not (enriched / 'README.md').exists()
+    with pytest.raises(ValueError, match='policy differs'):
+        extract_python_tree(archive, 'o/r', SHA, plain, include_scip_inputs=True)
+
 TASK = {"instance_id": "t-2", "repo": "o/r", "base_commit": SHA, "problem_statement": "login check password user fails", "patch": PATCH}
 words = lambda text: len(text.split())
 NODES = {

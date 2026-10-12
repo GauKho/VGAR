@@ -7,7 +7,9 @@ VGAR checkout; consumer sign-off remains separate in the M1 decision log.
 
 | Purpose | Reference |
 |---|---|
-| Current M1 W5–W6 implementation, evaluation and handoff — 10/10/2026 | [m1_w5_w6_handoff_2026-10-10.md](m1_w5_w6_handoff_2026-10-10.md) |
+| Current W5–W6 SCIP/LSP resolver extension and graph contract | [graph_schema.md](graph_schema.md) |
+| SCIP integration checkpoint and M1 W7–W8 context/test handoff — 11/10/2026 | [m1_w7_w8_scip_handoff_2026-10-11.md](m1_w7_w8_scip_handoff_2026-10-11.md) |
+| Historical W5–W6 implementation, evaluation and handoff — 10/10/2026 | [m1_w5_w6_handoff_2026-10-10.md](m1_w5_w6_handoff_2026-10-10.md) |
 | Graph shapes, IDs, endpoints, queries/errors and DTO mapping | [graph_schema.md](graph_schema.md) |
 | Context models, validation and approved M1 producer principles | [context_payload_contract.md](context_payload_contract.md) |
 | User-approved Milestone 1 baseline decisions | [m1_contract_decision_log.md](m1_contract_decision_log.md) |
