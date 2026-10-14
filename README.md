@@ -242,7 +242,7 @@ python scripts\smoke_w7_w8_m1.py --tokenizer-manifest path\to\tokenizer_manifest
 
 Thêm `--resolver scip` khi muốn kiểm tra SCIP sau khi cài runtime riêng.
 
-Gói bàn giao M1 gồm `context.json`, `context_manifest.json`, `test_links.json` và phần context cho prompt. Manifest tách hash toàn file khỏi hash snippet, khai báo phạm vi Python sources và giữ nguyên byte/range. `vgar.contracts.handoff.validate_context_handoff` kiểm snapshot/source/token counts trước prompt; `adapt_test_hints` trả mapping và selectors dạng tuple cho M2. Cách export và nhận gói ở [context contract](docs/context_payload_contract.md). M2 vẫn kiểm tổng prompt budget, pytest collection và verification sau patch.
+Gói bàn giao M1 gồm `context.json`, `context_manifest.json`, `test_links.json` và phần context cho prompt. Manifest tách hash toàn file khỏi hash snippet, khai báo phạm vi Python sources và giữ nguyên byte/range. `vgar.contracts.handoff.validate_context_handoff` kiểm snapshot/source/token counts trước prompt; `adapt_test_hints` trả mapping, selectors và diagnostics cho M2. CLI `scripts/consume_m1_handoff.py` nhận gói với task identity riêng, render context sau validation và đối chiếu `--changed-path` khi được cung cấp. Ba fixture demo chạy bằng `scripts/demo_w7_w8_handoff.py`. Cách export, nhận gói và chạy demo ở [context contract](docs/context_payload_contract.md). M2 vẫn kiểm tổng prompt budget, pytest collection và verification sau patch.
 
 So sánh static và SCIP trên cùng dev manifest:
 

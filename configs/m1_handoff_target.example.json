@@ -1,0 +1,6 @@
+{
+  "task_id": "sample-auth",
+  "repo_key": "replace-with-approved-repo-key",
+  "repository_revision": "replace-with-approved-revision",
+  "graph_version": "replace-with-approved-graph-version"
+}

@@ -20,6 +20,10 @@ REQUIRED = {
     "README.md", "pyproject.toml", "scripts/requirements_m1.txt",
     "scripts/smoke_w7_w8_m1.py", "src/vgar/graph/retrieval.py",
     "src/vgar/contracts/context.py", "src/vgar/contracts/handoff.py",
+    "src/vgar/contracts/consumer.py", "scripts/consume_m1_handoff.py",
+    "configs/m1_handoff_target.example.json",
+    "scripts/demo_w7_w8_handoff.py", "tests/fixtures/w7_w8_handoff/cases.json",
+    "tests/test_w7_w8_handoff_demo.py",
     "configs/scip/package-lock.json", "configs/lsp/package-lock.json",
     *FIXTURES,
 }

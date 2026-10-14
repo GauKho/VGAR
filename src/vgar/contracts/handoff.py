@@ -5,6 +5,7 @@ Expected snapshot identity comes from the consumer's approved task configuration
 """
 from __future__ import annotations
 
+import copy
 import hashlib
 import json
 import os
@@ -189,7 +190,8 @@ def adapt_test_hints(hints: TestHints | dict, manifest: ContextManifest | dict,
     """Return M2's tuple mapping/explicit/fallback inputs; never run pytest.
 
     Paths are checked, but pytest collection and verification belong to M2.
-    Empty links preserve all provided fallback selectors.
+    Empty links preserve all provided fallback selectors. Diagnostics remain
+    separate from the shared ContextPayload and do not prove pytest collection.
     """
     data = TestHints.model_validate(hints.model_dump() if isinstance(hints, TestHints) else hints)
     sidecar = ContextManifest.model_validate(manifest.model_dump() if isinstance(manifest, ContextManifest) else manifest)
@@ -213,13 +215,30 @@ def adapt_test_hints(hints: TestHints | dict, manifest: ContextManifest | dict,
             raise ValueError('Test selector file is outside the declared source scope')
         return value
 
-    links = {}
+    links, details = {}, {}
     if set(data.link_details) != set(data.test_links):
         raise ValueError('Test links must carry selection details for each target')
     for target, values in data.test_links.items():
         if target not in sidecar.files and target not in sidecar.items:
             raise ValueError('Test-link target is outside the context/source scope')
         links[target] = tuple(sorted({selector(value) for value in values}))
+        detail = data.link_details[target]
+        if any(type(detail.get(name)) is not bool for name in ('truncated', 'traversal_limited')):
+            raise ValueError('Test-link limits must contain explicit boolean flags')
+        reason = detail.get('fallback_reason')
+        if 'fallback_reason' not in detail or (reason is not None and
+                (not isinstance(reason, str) or not reason.strip())):
+            raise ValueError('Test-link fallback reason must be a string or null')
+        if not isinstance(detail.get('candidates'), list):
+            raise ValueError('Test-link candidates must be a list')
+        details[target] = copy.deepcopy(detail)
     return {'test_links': links,
             'failing_selectors': tuple(sorted({selector(value) for value in data.failing_selectors})),
-            'fallback_scope': tuple(sorted({selector(value, allow_directory=True) for value in data.fallback_scope}))}
+            'fallback_scope': tuple(sorted({selector(value, allow_directory=True) for value in data.fallback_scope})),
+            'diagnostics': {
+                'link_details': details,
+                'limited_targets': tuple(sorted(target for target, detail in details.items()
+                                                if detail['truncated'] or detail['traversal_limited'])),
+                'unlinked_targets': tuple(sorted(target for target, values in links.items() if not values)),
+                'coverage_verified': False, 'collection_verified': False,
+            }}

@@ -26,6 +26,8 @@ PATTERNS = (
     "test_source_evidence.py",
     "test_w7_w8_m1.py",
     "test_m1_handoff.py",
+    "test_w7_w8_handoff_demo.py",
+    "test_test_selection.py",
 )
 
 

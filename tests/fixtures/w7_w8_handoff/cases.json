@@ -1,0 +1,37 @@
+{
+  "cases": [
+    {
+      "task_id": "single_file_login",
+      "repository": "single_file_login/repo",
+      "issue_text": "auth.py login accepts whitespace-only names; trim the name before checking whether it is empty.",
+      "failing_tests": ["tests/test_auth.py::test_login_rejects_whitespace"],
+      "selected_tests": ["tests"],
+      "changed_paths": ["auth.py"],
+      "expected_context_paths": ["auth.py"],
+      "expected_mapping_status": {"auth.py": "linked"},
+      "expected_fallback_required": false
+    },
+    {
+      "task_id": "multi_file_invoice",
+      "repository": "multi_file_invoice/repo",
+      "issue_text": "pricing.py discounted_price subtracts a percentage as a flat amount; invoice.py invoice_total adds tax_percent as a flat amount. Both helpers must apply percentages to their relevant prices.",
+      "failing_tests": ["tests/test_invoice.py::test_discount_percentage", "tests/test_invoice.py::test_invoice_percentage_tax"],
+      "selected_tests": ["tests"],
+      "changed_paths": ["pricing.py", "invoice.py"],
+      "expected_context_paths": ["pricing.py", "invoice.py"],
+      "expected_mapping_status": {"pricing.py": "linked", "invoice.py": "linked"},
+      "expected_fallback_required": false
+    },
+    {
+      "task_id": "missing_links",
+      "repository": "missing_links/repo",
+      "issue_text": "formatter.py label preserves surrounding whitespace; strip the name. The test loads this function dynamically.",
+      "failing_tests": ["tests/test_formatter.py::test_label_trim"],
+      "selected_tests": ["tests"],
+      "changed_paths": ["formatter.py"],
+      "expected_context_paths": ["formatter.py"],
+      "expected_mapping_status": {"formatter.py": "unlinked"},
+      "expected_fallback_required": true
+    }
+  ]
+}
