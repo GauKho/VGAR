@@ -1,6 +1,6 @@
 # M2 W7–8 — Execution checkpoint
 
-## Publication — chuẩn bị nhánh riêng M2 W7–8, 15/10/2026
+## Publication — ĐÃ PUSH nhánh riêng M2 W7–8, 15/10/2026
 
 User yêu cầu push vào GauKho/VGAR, không main. Nhánh bàn giao độc lập dự kiến:
 feat/m2-w7-w8-v11-r002-20261015; nội dung M2 ở root, không copy repo VGAR main.
@@ -11,8 +11,15 @@ results/publication/20261015-v11-r002/tests/20261015T143258304123Z-e0ca889ea2ff/
 Không generation mới. Giữ source/docs/inputs/provenance/history/final+manual
 evidence; loại .venv/weights/caches/temp/workspaces/owner-locks. Bản xuất bản
 thêm Git attributes giữ nguyên EOL/bytes và ghi chú PUBLICATION, không code mới.
-Remote main trước push: b39e0dbf87645d39b9a68e87b19d0655df264a05. Chưa push tại
-mốc checkpoint này; không coi bước chuẩn bị/commit local là GitHub đã cập nhật.
+Đã push và xác minh remote commit nội dung8441aa5bff56897cc4f813103be2bfa70500087c
+trên nhánh feat/m2-w7-w8-v11-r002-20261015. Main trước/sau giữ nguyên
+b39e0dbf87645d39b9a68e87b19d0655df264a05. Không PR, merge hoặc force-push.
+Link: https://github.com/GauKho/VGAR/tree/feat/m2-w7-w8-v11-r002-20261015
+1517files nguồn đã chọn +2Git metadata=1519tracked files; SHA256 copy và index
+blob bytes khớp,36README links đủ ở bản xuất bản. .gitattributes giữ EOL/bytes.
+Lần push đầu bị Git ownership guard do sandbox/user khác SID; dùng safe.directory
+đúng publication path chỉ trong command, không đổi global config. Checkpoint
+xác minh này được bổ sung bằng commit docs sau commit nội dung, không đổi core.
 
 ## Documentation update — Viết lại README tiếng Việt, 15/10/2026
 
