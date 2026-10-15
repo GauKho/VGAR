@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="4" skipped="0" tests="13" time="0.710" timestamp="2026-10-15T07:32:32.898409+07:00" hostname="TMT"><testcase classname="tests.test_adaptive_campaign" name="test_retry_needs_new_revision_and_clean_final_requires_all_three" time="0.012" /><testcase classname="tests.test_adaptive_campaign" name="test_four_b_failures_move_to_c_with_new_revision_not_fifth_b" time="0.001" /><testcase classname="tests.test_adaptive_campaign" name="test_eleven_slots_are_separate_quotas_and_final_never_adapts" time="0.001" /><testcase classname="tests.test_adaptive_campaign" name="test_runtime_error_and_c_exhaustion_stop_not_prompt_retry" time="0.000" /><testcase classname="tests.test_adaptive_campaign" name="test_revision_reservation_resume_and_terminal_gate_tamper" time="0.047" /><testcase classname="tests.test_adaptive_campaign" name="test_prompt_file_tamper_blocks_resume" time="0.021" /><testcase classname="tests.test_adaptive_campaign" name="test_pending_owner_live_does_not_retry_and_dead_owner_consumes_slot" time="0.036" /><testcase classname="tests.test_adaptive_campaign" name="test_concurrent_owner_and_changed_runtime_block" time="0.016" /><testcase classname="tests.test_adaptive_campaign" name="test_failure_requires_fresh_registered_revision_and_feedback_is_same_case" time="0.080" /><testcase classname="tests.test_adaptive_campaign" name="test_interrupted_registration_is_reconciled_without_deleting_or_counting_attempt" time="0.012"><failure message="AssertionError: assert 'NONE' == 'RECOVERED_REGISTRATION'&#10;  &#10;  - RECOVERED_REGISTRATION&#10;  + NONE">store = &lt;vgar_m2_w78.adaptive_campaign.AdaptiveCampaignStore object at 0x00000237BEC40D50&gt;
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000237BEC40D90&gt;
+
+    def test_interrupted_registration_is_reconciled_without_deleting_or_counting_attempt(store, monkeypatch):
+        module = api('adaptive_campaign')
+        write = module.atomic_json
+        def fail_ledger(path, data):
+            if Path(path) == store.path:
+                raise OSError('injected interruption after registration file')
+            return write(path, data)
+        with store.session():
+            monkeypatch.setattr(module, 'atomic_json', fail_ledger)
+            with pytest.raises(OSError):
+                store.register(V5, 'Initial approved design', 'Absolute source coordinates')
+        monkeypatch.setattr(module, 'atomic_json', write)
+        resumed = module.AdaptiveCampaignStore.open(store.directory)
+        with resumed.session():
+&gt;           assert resumed.recover_pending() == 'RECOVERED_REGISTRATION'
+E           AssertionError: assert 'NONE' == 'RECOVERED_REGISTRATION'
+E             
+E             - RECOVERED_REGISTRATION
+E             + NONE
+
+tests\test_adaptive_campaign.py:180: AssertionError</failure></testcase><testcase classname="tests.test_adaptive_campaign" name="test_attempt_is_durable_before_directory_setup_and_interruption_consumes_slot" time="0.017"><failure message="assert (0 == 1)&#10; +  where 0 = len([])">store = &lt;vgar_m2_w78.adaptive_campaign.AdaptiveCampaignStore object at 0x00000237BEC40190&gt;
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000237BEC40210&gt;
+
+    def test_attempt_is_durable_before_directory_setup_and_interruption_consumes_slot(store, monkeypatch):
+        module = api('adaptive_campaign')
+        mkdir = Path.mkdir
+        def fail_attempt_directory(path, *args, **kwargs):
+            if path == store.directory / 'attempts/01':
+                raise OSError('injected interruption before attempt directory')
+            return mkdir(path, *args, **kwargs)
+        with store.session():
+            store.register(V5, 'Initial approved design', 'Absolute source coordinates')
+            monkeypatch.setattr(Path, 'mkdir', fail_attempt_directory)
+            with pytest.raises(OSError):
+                store.reserve()
+        ledger = json.loads(store.path.read_text(encoding='utf-8'))
+&gt;       assert len(ledger['attempts']) == 1 and not ledger['attempts'][0]['complete']
+E       assert (0 == 1)
+E        +  where 0 = len([])
+
+tests\test_adaptive_campaign.py:198: AssertionError</failure></testcase><testcase classname="tests.test_adaptive_campaign" name="test_renamed_identical_parent_template_does_not_register_or_consume_attempt" time="0.040"><failure message="Failed: DID NOT RAISE &lt;class 'ValueError'&gt;">store = &lt;vgar_m2_w78.adaptive_campaign.AdaptiveCampaignStore object at 0x00000237BD2C8AD0&gt;
+
+    def test_renamed_identical_parent_template_does_not_register_or_consume_attempt(store):
+        with store.session():
+            store.register(V5, 'Initial approved design', 'Absolute source coordinates')
+            finish_simulated(store, store.reserve(), 'FAIL')
+            (api('prompt').ROOT / 'prompts/repair_v6.txt').write_bytes(api('prompt').template_path(V5).read_bytes())
+&gt;           with pytest.raises(ValueError, match='identical|unchanged'):
+E           Failed: DID NOT RAISE &lt;class 'ValueError'&gt;
+
+tests\test_adaptive_campaign.py:213: Failed</failure></testcase><testcase classname="tests.test_adaptive_campaign" name="test_cli_recovered_terminal_pass_returns_pass_without_reserving_or_generating" time="0.265"><failure message="RuntimeError: Adaptive campaign is terminal">store = &lt;vgar_m2_w78.adaptive_campaign.AdaptiveCampaignStore object at 0x00000237BD225F90&gt;
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000237BD225650&gt;
+
+    def test_cli_recovered_terminal_pass_returns_pass_without_reserving_or_generating(store, monkeypatch):
+        import importlib.util
+        script_path = Path(__file__).resolve().parents[1] / 'scripts/run_adaptive_acceptance.py'
+        spec = importlib.util.spec_from_file_location('adaptive_cli_recovery', script_path)
+        script = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(script)
+        with store.session():
+            store.register(V5, 'Initial approved design', 'Absolute source coordinates')
+            for _ in range(4):
+                finish_simulated(store, store.reserve())
+            last = store.reserve()
+            finish_simulated(store, last, finish=False)
+        monkeypatch.setattr(api('adaptive_campaign'), 'process_identity', lambda pid: None)
+&gt;       assert script.run_next(store) == 0
+               ^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_adaptive_campaign.py:232: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\run_adaptive_acceptance.py:38: in run_next
+    attempt = store.reserve()
+              ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;vgar_m2_w78.adaptive_campaign.AdaptiveCampaignStore object at 0x00000237BD225F90&gt;
+
+    def reserve(self):
+        self._owned()
+        self._reload()
+        if any(not e['complete'] for e in self.state['attempts']):
+            raise RuntimeError('Pending attempt must be reconciled, never restarted')
+        step = self.decision()['next']
+        if step is None:
+&gt;           raise RuntimeError('Adaptive campaign is terminal')
+E           RuntimeError: Adaptive campaign is terminal
+
+src\vgar_m2_w78\adaptive_campaign.py:190: RuntimeError</failure></testcase></testsuite></testsuites>

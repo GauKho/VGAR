@@ -1,0 +1,11 @@
+{
+  "path": "D:\\Project\\CAPSTONES\\M2_week_7_8\\prompts\\repair_v10.txt",
+  "template_hash": "sha256:2df05ea176647f165d24d4ba195c42144cb9d24e06ad8dd3bb6daee097dfd41a",
+  "archives": {
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\b_repair\\2026-10-15-evidence-driven-b\\prompt-archives\\m2-w78-v10.txt": "sha256:2df05ea176647f165d24d4ba195c42144cb9d24e06ad8dd3bb6daee097dfd41a"
+  },
+  "parent": null,
+  "reason": "Approved replacement-style V10; explicit original-file coordinates/counts and allowed/read-only source metadata; neutral two-file example",
+  "trigger": null,
+  "created_utc": "2026-10-15T07:00:44.980779+00:00"
+}

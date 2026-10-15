@@ -1,0 +1,245 @@
+{
+  "reference": {
+    "head": "b8e2461635b81d1ae790445efea5c9757d91700a",
+    "root": "D:\\Project\\CAPSTONES\\VGAR",
+    "hashes": {
+      "src/vgar/__init__.py": "8eb57d207d71671cc7c5de557ebf95dc8f1992fe5b9e615f2aa082db07ae576e",
+      "src/vgar/contracts/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "src/vgar/contracts/context.py": "a76901ab62ea3dbc396a5fccaa427ef1e5b5eadcd41745df98ab004f513bee59",
+      "src/vgar/contracts/consumer.py": "768d5c406488401ed840408135f497a1401a852debcd01b61c7cd41305f365e2",
+      "src/vgar/contracts/handoff.py": "8fcf572ea08d54949aee50648fd54a85ad0895c92a0f02618c471b2c761cdefa",
+      "src/vgar/contracts/prompt_context.py": "9098d2ade4cba006dd2d1d64417c7492d4200a21a4acff678d11165b98ca0ffc",
+      "src/vgar/contracts/repair.py": "144892b901ed3657b2f2784a14efd3e274247c38ca19b08c2521aac8a594d0e5",
+      "src/vgar/contracts/evidence.py": "80f1c7fd72ba9844f9353c43312236838c0d461fa7e58039cf0ca321f27346be",
+      "src/vgar/config/settings.py": "d2dadde8064fd72fa766335ccca5253ffafc61f4129d066c8f57292f103e0e68",
+      "src/vgar/config/__init__.py": "ec3b8d65527db0f97380ed9279ea9c14d4dc5cf64dc21aba5ad949e52849974d",
+      "src/vgar/graph/token_counter.py": "302f9cd69347bef1a15fe54a0d1834f6958c3d62310679b8b46586bd590c3b89",
+      "src/vgar/graph/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "dirty_paths": [
+      "src/vgar/evaluation/retrieval/compare.py",
+      "src/vgar/evaluation/retrieval/scoring.py"
+    ]
+  },
+  "policy": {
+    "prompt_version": "m2-w78-v2",
+    "input_cap": 6000,
+    "output_cap": 1536,
+    "reserved_margin": 256,
+    "generation_timeout": 900.0,
+    "command_timeout": 120.0,
+    "global_timeout": 1800.0,
+    "max_output_bytes": 8388608,
+    "max_diff_bytes": 262144,
+    "max_files": 5,
+    "max_changed_lines": 500,
+    "runtime": "native_trusted_fixtures"
+  },
+  "model": {
+    "model_id": "Qwen/Qwen3-4B-Instruct-2507",
+    "revision": "cdbee75f17c01a7cc42f958dc650907174af0554",
+    "snapshot": "D:\\Project\\CAPSTONES\\.cache\\huggingface\\hub\\models--Qwen--Qwen3-4B-Instruct-2507\\snapshots\\cdbee75f17c01a7cc42f958dc650907174af0554",
+    "interpreter": "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe",
+    "tokenizer_manifest": "D:\\Project\\CAPSTONES\\VGAR\\artifacts\\m2\\w5-w6\\tokenizer_manifest.json",
+    "approved_prototype": true,
+    "do_sample": false,
+    "dtype": "float16",
+    "device_map": "auto"
+  },
+  "templates": {
+    "m2-w78-v3": "sha256:52962b5e9cf2d5b51ae176328a95928a99474a1c83d17043b8838025ac1f78c6",
+    "m2-w78-v4": "sha256:ead48b5a1f5bd15d95e1ef961cab80f78d4081420afad24e0b5d3ee9f09e15a1"
+  },
+  "tasks": {
+    "single_file_login": {
+      "task": {
+        "task_id": "single_file_login",
+        "issue_text": "auth.py login accepts whitespace-only names; trim the name before checking whether it is empty.",
+        "source_repo": "D:\\Project\\CAPSTONES\\M2_week_7_8\\examples\\snapshots\\single_file_login",
+        "repo_key": "demo/w7-w8/single_file_login",
+        "revision": "fixture-v1",
+        "graph_version": "sha256:e1fe94d21f10f112cd3a5e2a39f88e1fb26a760ee8ea3eaa6d3bac608d1ec371",
+        "bundle_directory": "D:\\Project\\CAPSTONES\\M2_week_7_8\\examples\\handoffs\\single_file_login",
+        "failing_selectors": [
+          "tests/test_auth.py::test_login_rejects_whitespace"
+        ],
+        "fallback_scope": [
+          "tests"
+        ],
+        "allowed_source_paths": [
+          "auth.py"
+        ],
+        "protected_paths": [
+          "pytest.ini",
+          "tests"
+        ],
+        "trusted_fixture": true
+      },
+      "source_hashes": {
+        "auth.py": "sha256:d6d89aae3fb09d77d7fcab3aa9b53ebbbb0d2f87e995f95e2ccc09fe3d18b74a",
+        "pytest.ini": "sha256:82fd55d62e39ad5dc83c58bd005c337e4e9810ef96f7356c370d7069de775a16",
+        "tests/test_auth.py": "sha256:82a4f022c58d27e2769b64a86ec068681edafc3b99ab404d0079dbc8ac5f62c4"
+      },
+      "bundle_hashes": {
+        "context.json": "sha256:340cba38d7d7173b4e03efc912344ff3a7d7aa8d03de37f2659f07c4bfe44d01",
+        "context_manifest.json": "sha256:d50a6728fedf0a0f60c49b261bda2f8488f116dc004759c9999aa3e726571b63",
+        "test_links.json": "sha256:e8beae41566f1af6bc1cb9efd5fa73b5e18edc904c4e9ab2cdca37aeaa0eac26"
+      },
+      "source_digest": "sha256:3121f4240c6e47d67974b4aa550bd8486b53ace95ba478067aa60d876570eedc"
+    },
+    "multi_file_invoice": {
+      "task": {
+        "task_id": "multi_file_invoice",
+        "issue_text": "pricing.py discounted_price subtracts a percentage as a flat amount; invoice.py invoice_total adds tax_percent as a flat amount. Both helpers must apply percentages to their relevant prices.",
+        "source_repo": "D:\\Project\\CAPSTONES\\M2_week_7_8\\examples\\snapshots\\multi_file_invoice",
+        "repo_key": "demo/w7-w8/multi_file_invoice",
+        "revision": "fixture-v1",
+        "graph_version": "sha256:1bbff47bc1ee5098b1f3d8f37dc5952faa9127224763e651c66630d838adb93e",
+        "bundle_directory": "D:\\Project\\CAPSTONES\\M2_week_7_8\\examples\\handoffs\\multi_file_invoice",
+        "failing_selectors": [
+          "tests/test_invoice.py::test_discount_percentage",
+          "tests/test_invoice.py::test_invoice_percentage_tax"
+        ],
+        "fallback_scope": [
+          "tests"
+        ],
+        "allowed_source_paths": [
+          "invoice.py",
+          "pricing.py"
+        ],
+        "protected_paths": [
+          "pytest.ini",
+          "tests"
+        ],
+        "trusted_fixture": true
+      },
+      "source_hashes": {
+        "invoice.py": "sha256:9dcad8f5a030d4b595ca951a76f030a8b245e268ddb0df324af3f6b9fa003062",
+        "pricing.py": "sha256:48807cc8ac8188a688a3682fe3b07ea545ff91b51efac86a54148bef49d21183",
+        "pytest.ini": "sha256:82fd55d62e39ad5dc83c58bd005c337e4e9810ef96f7356c370d7069de775a16",
+        "tests/test_invoice.py": "sha256:75db0c0f491d387315076f17adf64dd88727bb465d36d059c3f94449e2fa8374"
+      },
+      "bundle_hashes": {
+        "context.json": "sha256:3ea9ebf0c96da65ea014751089751c135c4e58c3a261523bdda75e07371c281e",
+        "context_manifest.json": "sha256:4a449412d438fbe1600d0cd64616208fd55c59abb04ca7930199ec59ae34cb42",
+        "test_links.json": "sha256:2e5df5dbe5829820b9e55734560dcedb14e7dd7fa530e303700ed3914413c5ff"
+      },
+      "source_digest": "sha256:4b893c21db66cde5cd6a87d25323c6620fe4b63798035d5da65ac4259b9c4e6c"
+    },
+    "missing_links": {
+      "task": {
+        "task_id": "missing_links",
+        "issue_text": "formatter.py label preserves surrounding whitespace; strip the name. The test loads this function dynamically.",
+        "source_repo": "D:\\Project\\CAPSTONES\\M2_week_7_8\\examples\\snapshots\\missing_links",
+        "repo_key": "demo/w7-w8/missing_links",
+        "revision": "fixture-v1",
+        "graph_version": "sha256:ac135fa480d1f999d33e943fc36e003b76a570ba59ee5ba8cf495e76bb285c51",
+        "bundle_directory": "D:\\Project\\CAPSTONES\\M2_week_7_8\\examples\\handoffs\\missing_links",
+        "failing_selectors": [
+          "tests/test_formatter.py::test_label_trim"
+        ],
+        "fallback_scope": [
+          "tests"
+        ],
+        "allowed_source_paths": [
+          "formatter.py"
+        ],
+        "protected_paths": [
+          "pytest.ini",
+          "tests"
+        ],
+        "trusted_fixture": true
+      },
+      "source_hashes": {
+        "formatter.py": "sha256:81c4454fb956eba7bba20dd437745bdde15bb1eb15180d9ee457dc8de794ee8d",
+        "pytest.ini": "sha256:82fd55d62e39ad5dc83c58bd005c337e4e9810ef96f7356c370d7069de775a16",
+        "tests/test_formatter.py": "sha256:ab756048829f6cb46128e03788854ea8f19d7f44537867a1afc0b8bc29b2cee0"
+      },
+      "bundle_hashes": {
+        "context.json": "sha256:802907fe3f61e391dd751c81c529fd90de9be866bb8a6a544c937aecfcdd123b",
+        "context_manifest.json": "sha256:7f305854e3512a2459c9a662d5c41288bebc3397cfee7595687a63488beb309b",
+        "test_links.json": "sha256:56e5640ce39d4612161f4383d938e236ae83dab236848ca5daa58ff693c174d5"
+      },
+      "source_digest": "sha256:607bfd316ae45d74b0d8e4b7d76f365617f2b59405bd358055c6ad4afee5642a"
+    }
+  },
+  "files": {
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\__init__.py": "sha256:040c6cf8728496f5d1f71da811f5f31add85c3fa6e66b7ad8331feae6823ceac",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\adaptive_campaign.py": "sha256:4d3e59e2f4b169906840daee6636c32a76f027ae42fa240b7102b9415abe1a6d",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\bootstrap.py": "sha256:3b89cfaba1c0f393437b95778c1ec19091b80ad91a22e907f7a00b8375ce6bb2",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\campaign.py": "sha256:af0c006a92b7e826fedf4d8ecfd17a08e6b872f978097b74315755ac469d1477",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\checks.py": "sha256:b21569fcb5cf0958628bde8e5e9c607cc2672a5886c471868c5fc46f85c915b2",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\cli.py": "sha256:6f954e64e47b023f64087108d264e67d9db7997d7f76e0d7b4b6ab08c68be9f9",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\config.py": "sha256:b575cce7c0c733adfb1a0c4e74b231f9ab1776a50689c51f36147a2df71d16a0",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\context_adapter.py": "sha256:271c3cf05caeeccec23b2c034457d1e1a846a13efcf6b1bc7ff2cc5da969f2b3",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\context_presentation.py": "sha256:8bbc6cdd743769b293c2be49e29f02063e3951b45f03055db3c52f86cf182215",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\contracts.py": "sha256:cb4d814d241a13ba5c6e5d69e1065a34635495ccfc4ad4432dbd4b7d20268675",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\evidence.py": "sha256:5f2c64f125868d0b896d6fda5e6168637362a68a795d0c1ec5f95b0bc81930cd",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\executor.py": "sha256:64b5e086941d097aa7ac7e003588b6bbf70388109418144de5e3974fec98ced7",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\generator.py": "sha256:08d28f6372e200ebd7b6f7e5954ee0148db4d4d3cdb8ff2fb9f1d4d95593d054",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\generator_hf.py": "sha256:b5352ab313128bc5ca6eae1fedeee75906b4af75a01d1e7c3f5cf3349da4bab1",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\hf_backend.py": "sha256:9e637407b737dd1f47abc20f8efad1d6fdd5a71480b93a9d3bc9d4d06567c978",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\hf_worker.py": "sha256:6e0573d823ed358a3a4418404144145a8ed744b160d73acf0812ee8a5b049f8a",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\local_chat.py": "sha256:f3a7094f59ed82edc4def4f4b06b66549ee962a00a7d3e26431f6dc131f10bc7",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\model_worker.py": "sha256:205aa38dd6d44012fccaa899b4ffa89e80543f69fd9eb9ec2a0fe510e87d3a4a",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\patch.py": "sha256:5b515761bae9ce5895828c77e55ae10974ba8f220eef3f3845b94d82f8230c61",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\pipeline.py": "sha256:f5ed4248fef188c9e8f8cc4603bf46a1a93ae97f74ea54a7155677efaf52da52",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\prompt.py": "sha256:8b040947e61f5c370f949d38c5f961915535a937bf6270aee621f2d5d9db0e37",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\pytest_plugin.py": "sha256:d01f48e7383ed94730faa0c78be3f7c17cb35ce70820b71517c399842c922434",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\test_runner.py": "sha256:f6467fae9d6796fb731e1f816d554bcef87e7a3ae4f81e41e51751a11a5ecfa1",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\test_selection.py": "sha256:b4592918ff8a618c8163d6ad6f1ed60d1871d88b36e548a20b3421e082bd7ec9",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\verification.py": "sha256:b08a65a65df5f8475099b3890e268b3f1667b839c0d4d53c67d6c3d7881d8c33",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\workspace.py": "sha256:de243af79ba9b21fd6123383b86a8e1236973c3955c0da40ea69d82ca2231be0",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78.egg-info\\dependency_links.txt": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78.egg-info\\entry_points.txt": "sha256:0c1b82520ac954d2daa50dab4ea786d8360df01c8627a3867021bdd1b6f751f6",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78.egg-info\\requires.txt": "sha256:fa1dcff109fc3a49f96847beaa28d359e781839955f320e6b57215cfffe2ce27",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78.egg-info\\SOURCES.txt": "sha256:23dcbe2851b0e573b621a8e1e0b50ba5853c1277896615bd6bd971fb642035d8",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78.egg-info\\top_level.txt": "sha256:bb956c916881063820fd357829032762cc718ae2bb621cc31cba1070fa444cff",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\scripts\\prepare_inputs.py": "sha256:3e77724d25651008d3e6ec8a5fd672ce82317599970c3a13c46cdf1217d81df8",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\scripts\\qualify_model.py": "sha256:0ba7328a20ea87a453b4264627431712fb4d354adc412f710f70b86821a3970e",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\scripts\\record_tests.py": "sha256:6a7e40e948a84da798b674fa49c71f3a130b61bb2d1789b7ed19f482cf5117d0",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\scripts\\run_acceptance.py": "sha256:bfc9eb3f46269dc7a9830df65c8079b643a85f257c5c1b71eb7a4da4fa348162",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\scripts\\run_adaptive_acceptance.py": "sha256:10a082dcb7990f38ab3d8f0ec441251164a686d484b99699bd77a5895a537071",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\scripts\\run_demo.py": "sha256:5c3737aa5fd7fe22b107eceed8a769d6086a0504cd1431456fa23d888dee97fc",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\scripts\\summarize_runs.py": "sha256:03b99d831d7b83df0261f6dc4bbcc8c77039d7b70269180a3d40cad4f0c860e8",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\prompts\\repair_v1.txt": "sha256:e02066386df09b5e479c0ebf8a5f1bc28aeaf80f66b5085990d1226bdf737465",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\prompts\\repair_v2.txt": "sha256:5807d78085d27793dc1cf2b4cc798976cca443947d35ec49e98b400ceff184e2",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\prompts\\repair_v3.txt": "sha256:52962b5e9cf2d5b51ae176328a95928a99474a1c83d17043b8838025ac1f78c6",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\prompts\\repair_v4.txt": "sha256:ead48b5a1f5bd15d95e1ef961cab80f78d4081420afad24e0b5d3ee9f09e15a1",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\config\\demo.json": "sha256:d1ba30333e9193a1e225ee3c2219b53cdec2be7c55756acb7eb89055be5b0825",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\config\\fixtures\\mypy.ini": "sha256:5dd48be92168fadb88322eaa068922fa3249f8cba740ca4ac3c13c0d7a6fa7ee",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\config\\fixtures\\ruff.toml": "sha256:17bb1eb2799030893f3059f4092c772439d9861afcf71ca3f5a6dc277660b4c7",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\config\\source_pin.json": "sha256:d62411622591bdd7dbfb87af7873a998f9e0f449662bc79ffba7cdec495b603a",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\config\\trusted_fixtures.json": "sha256:d9e7b1122057f2b453ab64866a7ad620f03378ae081c54acc74a3ce778abe167",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\examples\\tasks\\single_file_login.json": "sha256:c213cc0e6e31f60cf5e916196cb74a81ec6de09435378ad7aee77f57cc7ea73b",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\examples\\handoffs\\single_file_login\\context.json": "sha256:340cba38d7d7173b4e03efc912344ff3a7d7aa8d03de37f2659f07c4bfe44d01",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\examples\\handoffs\\single_file_login\\context_manifest.json": "sha256:d50a6728fedf0a0f60c49b261bda2f8488f116dc004759c9999aa3e726571b63",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\examples\\handoffs\\single_file_login\\test_links.json": "sha256:e8beae41566f1af6bc1cb9efd5fa73b5e18edc904c4e9ab2cdca37aeaa0eac26",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\examples\\snapshots\\single_file_login\\auth.py": "sha256:d6d89aae3fb09d77d7fcab3aa9b53ebbbb0d2f87e995f95e2ccc09fe3d18b74a",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\examples\\snapshots\\single_file_login\\pytest.ini": "sha256:82fd55d62e39ad5dc83c58bd005c337e4e9810ef96f7356c370d7069de775a16",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\examples\\snapshots\\single_file_login\\tests\\test_auth.py": "sha256:82a4f022c58d27e2769b64a86ec068681edafc3b99ab404d0079dbc8ac5f62c4",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\examples\\tasks\\multi_file_invoice.json": "sha256:3b2368050f3e19d13eb67db3eca48fbcd9df40c1cdd8e0af5103439cbbb6eed5",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\examples\\handoffs\\multi_file_invoice\\context.json": "sha256:3ea9ebf0c96da65ea014751089751c135c4e58c3a261523bdda75e07371c281e",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\examples\\handoffs\\multi_file_invoice\\context_manifest.json": "sha256:4a449412d438fbe1600d0cd64616208fd55c59abb04ca7930199ec59ae34cb42",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\examples\\handoffs\\multi_file_invoice\\test_links.json": "sha256:2e5df5dbe5829820b9e55734560dcedb14e7dd7fa530e303700ed3914413c5ff",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\examples\\snapshots\\multi_file_invoice\\invoice.py": "sha256:9dcad8f5a030d4b595ca951a76f030a8b245e268ddb0df324af3f6b9fa003062",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\examples\\snapshots\\multi_file_invoice\\pricing.py": "sha256:48807cc8ac8188a688a3682fe3b07ea545ff91b51efac86a54148bef49d21183",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\examples\\snapshots\\multi_file_invoice\\pytest.ini": "sha256:82fd55d62e39ad5dc83c58bd005c337e4e9810ef96f7356c370d7069de775a16",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\examples\\snapshots\\multi_file_invoice\\tests\\test_invoice.py": "sha256:75db0c0f491d387315076f17adf64dd88727bb465d36d059c3f94449e2fa8374",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\examples\\tasks\\missing_links.json": "sha256:2c4aa62d117c9f648b2f01137f22db26425f2e82cf793c2fd76513bb7a625a65",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\examples\\handoffs\\missing_links\\context.json": "sha256:802907fe3f61e391dd751c81c529fd90de9be866bb8a6a544c937aecfcdd123b",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\examples\\handoffs\\missing_links\\context_manifest.json": "sha256:7f305854e3512a2459c9a662d5c41288bebc3397cfee7595687a63488beb309b",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\examples\\handoffs\\missing_links\\test_links.json": "sha256:56e5640ce39d4612161f4383d938e236ae83dab236848ca5daa58ff693c174d5",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\examples\\snapshots\\missing_links\\formatter.py": "sha256:81c4454fb956eba7bba20dd437745bdde15bb1eb15180d9ee457dc8de794ee8d",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\examples\\snapshots\\missing_links\\pytest.ini": "sha256:82fd55d62e39ad5dc83c58bd005c337e4e9810ef96f7356c370d7069de775a16",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\examples\\snapshots\\missing_links\\tests\\test_formatter.py": "sha256:ab756048829f6cb46128e03788854ea8f19d7f44537867a1afc0b8bc29b2cee0",
+    "D:\\Project\\CAPSTONES\\VGAR\\artifacts\\m2\\w5-w6\\tokenizer_manifest.json": "sha256:35a7802c98c4555577da4a5b085d32ca5fbad410ba49b889bd67228b4cfdef3c",
+    "D:\\Project\\CAPSTONES\\VGAR\\artifacts\\m1\\tokenizers\\Qwen3-4B-Instruct-2507\\cdbee75f17c01a7cc42f958dc650907174af0554\\merges.txt": "sha256:599bab54075088774b1733fde865d5bd747cbcc7a547c5bc12610e874e26f5e3",
+    "D:\\Project\\CAPSTONES\\VGAR\\artifacts\\m1\\tokenizers\\Qwen3-4B-Instruct-2507\\cdbee75f17c01a7cc42f958dc650907174af0554\\tokenizer.json": "sha256:aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4",
+    "D:\\Project\\CAPSTONES\\VGAR\\artifacts\\m1\\tokenizers\\Qwen3-4B-Instruct-2507\\cdbee75f17c01a7cc42f958dc650907174af0554\\tokenizer_config.json": "sha256:a62ff0a2472a0fa1b8eaabcb57c59b58afa42a22831dc141400b6e0cf2b65ce3",
+    "D:\\Project\\CAPSTONES\\VGAR\\artifacts\\m1\\tokenizers\\Qwen3-4B-Instruct-2507\\cdbee75f17c01a7cc42f958dc650907174af0554\\vocab.json": "sha256:ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+  },
+  "scope": "adaptive development trusted fixtures; NOT benchmark or MCP",
+  "archive_manifest": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive-preflight\\20261015T001508430263Z-6296d566fd2e\\archive_manifest.json",
+  "archive_sha256": "sha256:e4aa7250d75ab2fd220bf0f9aa1072471660e93e984d94f16a69ee47b2c86dc8"
+}

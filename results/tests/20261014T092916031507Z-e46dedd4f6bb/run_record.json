@@ -1,0 +1,65 @@
+{
+  "run_id": "20261014T092916031507Z-e46dedd4f6bb",
+  "kind": "pytest",
+  "status": "PASS",
+  "complete": true,
+  "started_utc": "2026-10-14T09:29:16.031507+00:00",
+  "ended_utc": "2026-10-14T09:30:29.292217+00:00",
+  "duration_ms": 73250,
+  "interpreter": "D:\\Project\\CAPSTONES\\M2_week_7_8\\.venv\\Scripts\\python.exe",
+  "python": "3.11.6 (tags/v3.11.6:8b6ee5b, Oct  2 2023, 14:57:12) [MSC v.1935 64 bit (AMD64)]",
+  "stages": {
+    "pytest": {
+      "argv": [
+        "D:\\Project\\CAPSTONES\\M2_week_7_8\\.venv\\Scripts\\python.exe",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "--junitxml=D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\tests\\20261014T092916031507Z-e46dedd4f6bb\\junit.xml",
+        "tests"
+      ],
+      "command": "D:\\Project\\CAPSTONES\\M2_week_7_8\\.venv\\Scripts\\python.exe -m pytest -q -p no:cacheprovider --junitxml=D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\tests\\20261014T092916031507Z-e46dedd4f6bb\\junit.xml tests",
+      "cwd": "D:\\Project\\CAPSTONES\\M2_week_7_8",
+      "interpreter": "D:\\Project\\CAPSTONES\\M2_week_7_8\\.venv\\Scripts\\python.exe",
+      "started_utc": "2026-10-14T09:29:16.150732+00:00",
+      "timeout_seconds": 240.0,
+      "exit_code": 0,
+      "stdout": "........................................................................ [ 94%]\r\n....                                                                     [100%]\r\n- generated xml file: D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\tests\\20261014T092916031507Z-e46dedd4f6bb\\junit.xml -\r\n76 passed in 72.61s (0:01:12)\r\n",
+      "stderr": "",
+      "timed_out": false,
+      "output_truncated": false,
+      "complete": true,
+      "stdout_bytes": 311,
+      "stderr_bytes": 0,
+      "status": "PASS",
+      "ended_utc": "2026-10-14T09:30:29.289219+00:00",
+      "duration_ms": 73140
+    }
+  },
+  "mode": "offline",
+  "task_id": "M2-tests",
+  "reference": {
+    "head": "b8e2461635b81d1ae790445efea5c9757d91700a",
+    "root": "D:\\Project\\CAPSTONES\\VGAR",
+    "hashes": {
+      "src/vgar/__init__.py": "8eb57d207d71671cc7c5de557ebf95dc8f1992fe5b9e615f2aa082db07ae576e",
+      "src/vgar/contracts/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "src/vgar/contracts/context.py": "a76901ab62ea3dbc396a5fccaa427ef1e5b5eadcd41745df98ab004f513bee59",
+      "src/vgar/contracts/consumer.py": "768d5c406488401ed840408135f497a1401a852debcd01b61c7cd41305f365e2",
+      "src/vgar/contracts/handoff.py": "8fcf572ea08d54949aee50648fd54a85ad0895c92a0f02618c471b2c761cdefa",
+      "src/vgar/contracts/prompt_context.py": "9098d2ade4cba006dd2d1d64417c7492d4200a21a4acff678d11165b98ca0ffc",
+      "src/vgar/contracts/repair.py": "144892b901ed3657b2f2784a14efd3e274247c38ca19b08c2521aac8a594d0e5",
+      "src/vgar/contracts/evidence.py": "80f1c7fd72ba9844f9353c43312236838c0d461fa7e58039cf0ca321f27346be",
+      "src/vgar/config/settings.py": "d2dadde8064fd72fa766335ccca5253ffafc61f4129d066c8f57292f103e0e68",
+      "src/vgar/config/__init__.py": "ec3b8d65527db0f97380ed9279ea9c14d4dc5cf64dc21aba5ad949e52849974d",
+      "src/vgar/graph/token_counter.py": "302f9cd69347bef1a15fe54a0d1834f6958c3d62310679b8b46586bd590c3b89",
+      "src/vgar/graph/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "dirty_paths": [
+      "src/vgar/evaluation/retrieval/compare.py",
+      "src/vgar/evaluation/retrieval/scoring.py"
+    ]
+  }
+}

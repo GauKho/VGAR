@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="3" skipped="0" tests="3" time="0.111" timestamp="2026-10-15T13:49:22.954678+07:00" hostname="TMT"><testcase classname="tests.test_b_experiment" name="test_b_additive_gates_route_to_actual_cause_not_automatic_hard_stop[REAL_GENERATION_DIAGNOSTICS-runtime]" time="0.008"><failure message="AttributeError: module 'vgar_m2_w78.b_experiment' has no attribute 'diagnose_assessment'">gate = 'REAL_GENERATION_DIAGNOSTICS', want = 'runtime'
+
+    @pytest.mark.parametrize('gate,want', [('REAL_GENERATION_DIAGNOSTICS','runtime'),
+        ('PUBLIC_SIGNATURE_CHANGED','candidate'), ('RUNTIME_CHANGED_DURING_RUN','integrity')])
+    def test_b_additive_gates_route_to_actual_cause_not_automatic_hard_stop(gate, want):
+&gt;       assert api('b_experiment').diagnose_assessment({'status':'PASS','reason':None}, [gate])['category'] == want
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'vgar_m2_w78.b_experiment' has no attribute 'diagnose_assessment'
+
+tests\test_b_experiment.py:138: AttributeError</failure></testcase><testcase classname="tests.test_b_experiment" name="test_b_additive_gates_route_to_actual_cause_not_automatic_hard_stop[PUBLIC_SIGNATURE_CHANGED-candidate]" time="0.001"><failure message="AttributeError: module 'vgar_m2_w78.b_experiment' has no attribute 'diagnose_assessment'">gate = 'PUBLIC_SIGNATURE_CHANGED', want = 'candidate'
+
+    @pytest.mark.parametrize('gate,want', [('REAL_GENERATION_DIAGNOSTICS','runtime'),
+        ('PUBLIC_SIGNATURE_CHANGED','candidate'), ('RUNTIME_CHANGED_DURING_RUN','integrity')])
+    def test_b_additive_gates_route_to_actual_cause_not_automatic_hard_stop(gate, want):
+&gt;       assert api('b_experiment').diagnose_assessment({'status':'PASS','reason':None}, [gate])['category'] == want
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'vgar_m2_w78.b_experiment' has no attribute 'diagnose_assessment'
+
+tests\test_b_experiment.py:138: AttributeError</failure></testcase><testcase classname="tests.test_b_experiment" name="test_b_additive_gates_route_to_actual_cause_not_automatic_hard_stop[RUNTIME_CHANGED_DURING_RUN-integrity]" time="0.001"><failure message="AttributeError: module 'vgar_m2_w78.b_experiment' has no attribute 'diagnose_assessment'">gate = 'RUNTIME_CHANGED_DURING_RUN', want = 'integrity'
+
+    @pytest.mark.parametrize('gate,want', [('REAL_GENERATION_DIAGNOSTICS','runtime'),
+        ('PUBLIC_SIGNATURE_CHANGED','candidate'), ('RUNTIME_CHANGED_DURING_RUN','integrity')])
+    def test_b_additive_gates_route_to_actual_cause_not_automatic_hard_stop(gate, want):
+&gt;       assert api('b_experiment').diagnose_assessment({'status':'PASS','reason':None}, [gate])['category'] == want
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'vgar_m2_w78.b_experiment' has no attribute 'diagnose_assessment'
+
+tests\test_b_experiment.py:138: AttributeError</failure></testcase></testsuite></testsuites>

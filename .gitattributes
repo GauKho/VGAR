@@ -1,0 +1,3 @@
+# Keep frozen source/fixture/evidence bytes unchanged across checkouts.
+# CRLF/LF is part of the registered SHA256 provenance in this prototype.
+* -text

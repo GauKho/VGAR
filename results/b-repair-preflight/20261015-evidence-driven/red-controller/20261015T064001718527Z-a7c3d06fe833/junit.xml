@@ -1,0 +1,675 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="11" skipped="0" tests="11" time="0.230" timestamp="2026-10-15T13:40:02.199244+07:00" hostname="TMT"><testcase classname="tests.test_b_experiment" name="test_b_store_has_durable_cap_and_requires_new_revision" time="0.006"><failure message="Failed: Planned M2 API not implemented: b_experiment">module = 'b_experiment'
+
+    def api(module):
+        try:
+&gt;           return importlib.import_module('vgar_m2_w78.' + module)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_bootstrap.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'vgar_m2_w78.b_experiment', package = None
+
+    def import_module(name, package=None):
+        """Import a module.
+    
+        The 'package' argument is required when performing a relative import. It
+        specifies the package to use as the anchor point from which to resolve the
+        relative import to an absolute import.
+    
+        """
+        level = 0
+        if name.startswith('.'):
+            if not package:
+                msg = ("the 'package' argument is required to perform a relative "
+                       "import for {!r}")
+                raise TypeError(msg.format(name))
+            for character in name:
+                if character != '.':
+                    break
+                level += 1
+&gt;       return _bootstrap._gcd_import(name[level:], package, level)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ModuleNotFoundError: No module named 'vgar_m2_w78.b_experiment'
+
+C:\Program Files\Python311\Lib\importlib\__init__.py:126: ModuleNotFoundError
+
+During handling of the above exception, another exception occurred:
+
+tmp_path = WindowsPath('D:/Project/CAPSTONES/M2_week_7_8/results/b-repair-preflight/20261015-evidence-driven/temp/pytest-of-pc/pytest-4/test_b_store_has_durable_cap_a0')
+
+    def test_b_store_has_durable_cap_and_requires_new_revision(tmp_path):
+&gt;       module, store, _, _, _ = ready(tmp_path)
+                                 ^^^^^^^^^^^^^^^
+
+tests\test_b_experiment.py:51: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_b_experiment.py:34: in ready
+    module, store, root, proof, protected = setup_store(tmp_path)
+                                            ^^^^^^^^^^^^^^^^^^^^^
+tests\test_b_experiment.py:12: in setup_store
+    module = api('b_experiment')
+             ^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+module = 'b_experiment'
+
+    def api(module):
+        try:
+            return importlib.import_module('vgar_m2_w78.' + module)
+        except ModuleNotFoundError:
+&gt;           pytest.fail('Planned M2 API not implemented: ' + module)
+E           Failed: Planned M2 API not implemented: b_experiment
+
+tests\test_bootstrap.py:13: Failed</failure></testcase><testcase classname="tests.test_b_experiment" name="test_b_runtime_changes_are_explicit_and_archived" time="0.002"><failure message="Failed: Planned M2 API not implemented: b_experiment">module = 'b_experiment'
+
+    def api(module):
+        try:
+&gt;           return importlib.import_module('vgar_m2_w78.' + module)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_bootstrap.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'vgar_m2_w78.b_experiment', package = None
+
+    def import_module(name, package=None):
+        """Import a module.
+    
+        The 'package' argument is required when performing a relative import. It
+        specifies the package to use as the anchor point from which to resolve the
+        relative import to an absolute import.
+    
+        """
+        level = 0
+        if name.startswith('.'):
+            if not package:
+                msg = ("the 'package' argument is required to perform a relative "
+                       "import for {!r}")
+                raise TypeError(msg.format(name))
+            for character in name:
+                if character != '.':
+                    break
+                level += 1
+&gt;       return _bootstrap._gcd_import(name[level:], package, level)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ModuleNotFoundError: No module named 'vgar_m2_w78.b_experiment'
+
+C:\Program Files\Python311\Lib\importlib\__init__.py:126: ModuleNotFoundError
+
+During handling of the above exception, another exception occurred:
+
+tmp_path = WindowsPath('D:/Project/CAPSTONES/M2_week_7_8/results/b-repair-preflight/20261015-evidence-driven/temp/pytest-of-pc/pytest-4/test_b_runtime_changes_are_exp0')
+
+    def test_b_runtime_changes_are_explicit_and_archived(tmp_path):
+&gt;       module, store, root, proof, _ = ready(tmp_path)
+                                        ^^^^^^^^^^^^^^^
+
+tests\test_b_experiment.py:69: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_b_experiment.py:34: in ready
+    module, store, root, proof, protected = setup_store(tmp_path)
+                                            ^^^^^^^^^^^^^^^^^^^^^
+tests\test_b_experiment.py:12: in setup_store
+    module = api('b_experiment')
+             ^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+module = 'b_experiment'
+
+    def api(module):
+        try:
+            return importlib.import_module('vgar_m2_w78.' + module)
+        except ModuleNotFoundError:
+&gt;           pytest.fail('Planned M2 API not implemented: ' + module)
+E           Failed: Planned M2 API not implemented: b_experiment
+
+tests\test_bootstrap.py:13: Failed</failure></testcase><testcase classname="tests.test_b_experiment" name="test_b_protected_change_and_prompt_tamper_fail_closed" time="0.002"><failure message="Failed: Planned M2 API not implemented: b_experiment">module = 'b_experiment'
+
+    def api(module):
+        try:
+&gt;           return importlib.import_module('vgar_m2_w78.' + module)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_bootstrap.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'vgar_m2_w78.b_experiment', package = None
+
+    def import_module(name, package=None):
+        """Import a module.
+    
+        The 'package' argument is required when performing a relative import. It
+        specifies the package to use as the anchor point from which to resolve the
+        relative import to an absolute import.
+    
+        """
+        level = 0
+        if name.startswith('.'):
+            if not package:
+                msg = ("the 'package' argument is required to perform a relative "
+                       "import for {!r}")
+                raise TypeError(msg.format(name))
+            for character in name:
+                if character != '.':
+                    break
+                level += 1
+&gt;       return _bootstrap._gcd_import(name[level:], package, level)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ModuleNotFoundError: No module named 'vgar_m2_w78.b_experiment'
+
+C:\Program Files\Python311\Lib\importlib\__init__.py:126: ModuleNotFoundError
+
+During handling of the above exception, another exception occurred:
+
+tmp_path = WindowsPath('D:/Project/CAPSTONES/M2_week_7_8/results/b-repair-preflight/20261015-evidence-driven/temp/pytest-of-pc/pytest-4/test_b_protected_change_and_pr0')
+
+    def test_b_protected_change_and_prompt_tamper_fail_closed(tmp_path):
+&gt;       _, store, root, _, protected = ready(tmp_path)
+                                       ^^^^^^^^^^^^^^^
+
+tests\test_b_experiment.py:89: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_b_experiment.py:34: in ready
+    module, store, root, proof, protected = setup_store(tmp_path)
+                                            ^^^^^^^^^^^^^^^^^^^^^
+tests\test_b_experiment.py:12: in setup_store
+    module = api('b_experiment')
+             ^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+module = 'b_experiment'
+
+    def api(module):
+        try:
+            return importlib.import_module('vgar_m2_w78.' + module)
+        except ModuleNotFoundError:
+&gt;           pytest.fail('Planned M2 API not implemented: ' + module)
+E           Failed: Planned M2 API not implemented: b_experiment
+
+tests\test_bootstrap.py:13: Failed</failure></testcase><testcase classname="tests.test_b_experiment" name="test_b_pending_owner_is_not_restarted_and_dead_recovery_consumes_slot" time="0.002"><failure message="Failed: Planned M2 API not implemented: b_experiment">module = 'b_experiment'
+
+    def api(module):
+        try:
+&gt;           return importlib.import_module('vgar_m2_w78.' + module)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_bootstrap.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'vgar_m2_w78.b_experiment', package = None
+
+    def import_module(name, package=None):
+        """Import a module.
+    
+        The 'package' argument is required when performing a relative import. It
+        specifies the package to use as the anchor point from which to resolve the
+        relative import to an absolute import.
+    
+        """
+        level = 0
+        if name.startswith('.'):
+            if not package:
+                msg = ("the 'package' argument is required to perform a relative "
+                       "import for {!r}")
+                raise TypeError(msg.format(name))
+            for character in name:
+                if character != '.':
+                    break
+                level += 1
+&gt;       return _bootstrap._gcd_import(name[level:], package, level)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ModuleNotFoundError: No module named 'vgar_m2_w78.b_experiment'
+
+C:\Program Files\Python311\Lib\importlib\__init__.py:126: ModuleNotFoundError
+
+During handling of the above exception, another exception occurred:
+
+tmp_path = WindowsPath('D:/Project/CAPSTONES/M2_week_7_8/results/b-repair-preflight/20261015-evidence-driven/temp/pytest-of-pc/pytest-4/test_b_pending_owner_is_not_re0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001956346F850&gt;
+
+    def test_b_pending_owner_is_not_restarted_and_dead_recovery_consumes_slot(tmp_path, monkeypatch):
+&gt;       module, store, _, _, _ = ready(tmp_path)
+                                 ^^^^^^^^^^^^^^^
+
+tests\test_b_experiment.py:100: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_b_experiment.py:34: in ready
+    module, store, root, proof, protected = setup_store(tmp_path)
+                                            ^^^^^^^^^^^^^^^^^^^^^
+tests\test_b_experiment.py:12: in setup_store
+    module = api('b_experiment')
+             ^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+module = 'b_experiment'
+
+    def api(module):
+        try:
+            return importlib.import_module('vgar_m2_w78.' + module)
+        except ModuleNotFoundError:
+&gt;           pytest.fail('Planned M2 API not implemented: ' + module)
+E           Failed: Planned M2 API not implemented: b_experiment
+
+tests\test_bootstrap.py:13: Failed</failure></testcase><testcase classname="tests.test_b_experiment" name="test_b_duplicate_generation_is_blocked_before_second_generation" time="0.002"><failure message="Failed: Planned M2 API not implemented: b_experiment">module = 'b_experiment'
+
+    def api(module):
+        try:
+&gt;           return importlib.import_module('vgar_m2_w78.' + module)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_bootstrap.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'vgar_m2_w78.b_experiment', package = None
+
+    def import_module(name, package=None):
+        """Import a module.
+    
+        The 'package' argument is required when performing a relative import. It
+        specifies the package to use as the anchor point from which to resolve the
+        relative import to an absolute import.
+    
+        """
+        level = 0
+        if name.startswith('.'):
+            if not package:
+                msg = ("the 'package' argument is required to perform a relative "
+                       "import for {!r}")
+                raise TypeError(msg.format(name))
+            for character in name:
+                if character != '.':
+                    break
+                level += 1
+&gt;       return _bootstrap._gcd_import(name[level:], package, level)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ModuleNotFoundError: No module named 'vgar_m2_w78.b_experiment'
+
+C:\Program Files\Python311\Lib\importlib\__init__.py:126: ModuleNotFoundError
+
+During handling of the above exception, another exception occurred:
+
+tmp_path = WindowsPath('D:/Project/CAPSTONES/M2_week_7_8/results/b-repair-preflight/20261015-evidence-driven/temp/pytest-of-pc/pytest-4/test_b_duplicate_generation_is0')
+
+    def test_b_duplicate_generation_is_blocked_before_second_generation(tmp_path):
+&gt;       _, store, _, _, _ = ready(tmp_path)
+                            ^^^^^^^^^^^^^^^
+
+tests\test_b_experiment.py:114: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_b_experiment.py:34: in ready
+    module, store, root, proof, protected = setup_store(tmp_path)
+                                            ^^^^^^^^^^^^^^^^^^^^^
+tests\test_b_experiment.py:12: in setup_store
+    module = api('b_experiment')
+             ^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+module = 'b_experiment'
+
+    def api(module):
+        try:
+            return importlib.import_module('vgar_m2_w78.' + module)
+        except ModuleNotFoundError:
+&gt;           pytest.fail('Planned M2 API not implemented: ' + module)
+E           Failed: Planned M2 API not implemented: b_experiment
+
+tests\test_bootstrap.py:13: Failed</failure></testcase><testcase classname="tests.test_b_experiment" name="test_b_diagnosis_separates_candidate_and_runtime[PATCH_PARSE_ERROR-candidate]" time="0.001"><failure message="Failed: Planned M2 API not implemented: b_experiment">module = 'b_experiment'
+
+    def api(module):
+        try:
+&gt;           return importlib.import_module('vgar_m2_w78.' + module)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_bootstrap.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'vgar_m2_w78.b_experiment', package = None
+
+    def import_module(name, package=None):
+        """Import a module.
+    
+        The 'package' argument is required when performing a relative import. It
+        specifies the package to use as the anchor point from which to resolve the
+        relative import to an absolute import.
+    
+        """
+        level = 0
+        if name.startswith('.'):
+            if not package:
+                msg = ("the 'package' argument is required to perform a relative "
+                       "import for {!r}")
+                raise TypeError(msg.format(name))
+            for character in name:
+                if character != '.':
+                    break
+                level += 1
+&gt;       return _bootstrap._gcd_import(name[level:], package, level)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ModuleNotFoundError: No module named 'vgar_m2_w78.b_experiment'
+
+C:\Program Files\Python311\Lib\importlib\__init__.py:126: ModuleNotFoundError
+
+During handling of the above exception, another exception occurred:
+
+reason = 'PATCH_PARSE_ERROR', want = 'candidate'
+
+    @pytest.mark.parametrize('reason,want', [('PATCH_PARSE_ERROR','candidate'), ('PATCH_APPLY_FAILED','candidate'),
+        ('TEST_FAILED','candidate'), ('INTERNAL_ERROR','runtime'), ('FINALIZATION_ERROR','runtime')])
+    def test_b_diagnosis_separates_candidate_and_runtime(reason, want):
+&gt;       assert api('b_experiment').diagnose(dict(status='FAIL' if want == 'candidate' else 'ERROR',
+               ^^^^^^^^^^^^^^^^^^^
+            reason=reason, stages={}))['category'] == want
+
+tests\test_b_experiment.py:131: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+module = 'b_experiment'
+
+    def api(module):
+        try:
+            return importlib.import_module('vgar_m2_w78.' + module)
+        except ModuleNotFoundError:
+&gt;           pytest.fail('Planned M2 API not implemented: ' + module)
+E           Failed: Planned M2 API not implemented: b_experiment
+
+tests\test_bootstrap.py:13: Failed</failure></testcase><testcase classname="tests.test_b_experiment" name="test_b_diagnosis_separates_candidate_and_runtime[PATCH_APPLY_FAILED-candidate]" time="0.001"><failure message="Failed: Planned M2 API not implemented: b_experiment">module = 'b_experiment'
+
+    def api(module):
+        try:
+&gt;           return importlib.import_module('vgar_m2_w78.' + module)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_bootstrap.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'vgar_m2_w78.b_experiment', package = None
+
+    def import_module(name, package=None):
+        """Import a module.
+    
+        The 'package' argument is required when performing a relative import. It
+        specifies the package to use as the anchor point from which to resolve the
+        relative import to an absolute import.
+    
+        """
+        level = 0
+        if name.startswith('.'):
+            if not package:
+                msg = ("the 'package' argument is required to perform a relative "
+                       "import for {!r}")
+                raise TypeError(msg.format(name))
+            for character in name:
+                if character != '.':
+                    break
+                level += 1
+&gt;       return _bootstrap._gcd_import(name[level:], package, level)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ModuleNotFoundError: No module named 'vgar_m2_w78.b_experiment'
+
+C:\Program Files\Python311\Lib\importlib\__init__.py:126: ModuleNotFoundError
+
+During handling of the above exception, another exception occurred:
+
+reason = 'PATCH_APPLY_FAILED', want = 'candidate'
+
+    @pytest.mark.parametrize('reason,want', [('PATCH_PARSE_ERROR','candidate'), ('PATCH_APPLY_FAILED','candidate'),
+        ('TEST_FAILED','candidate'), ('INTERNAL_ERROR','runtime'), ('FINALIZATION_ERROR','runtime')])
+    def test_b_diagnosis_separates_candidate_and_runtime(reason, want):
+&gt;       assert api('b_experiment').diagnose(dict(status='FAIL' if want == 'candidate' else 'ERROR',
+               ^^^^^^^^^^^^^^^^^^^
+            reason=reason, stages={}))['category'] == want
+
+tests\test_b_experiment.py:131: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+module = 'b_experiment'
+
+    def api(module):
+        try:
+            return importlib.import_module('vgar_m2_w78.' + module)
+        except ModuleNotFoundError:
+&gt;           pytest.fail('Planned M2 API not implemented: ' + module)
+E           Failed: Planned M2 API not implemented: b_experiment
+
+tests\test_bootstrap.py:13: Failed</failure></testcase><testcase classname="tests.test_b_experiment" name="test_b_diagnosis_separates_candidate_and_runtime[TEST_FAILED-candidate]" time="0.001"><failure message="Failed: Planned M2 API not implemented: b_experiment">module = 'b_experiment'
+
+    def api(module):
+        try:
+&gt;           return importlib.import_module('vgar_m2_w78.' + module)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_bootstrap.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'vgar_m2_w78.b_experiment', package = None
+
+    def import_module(name, package=None):
+        """Import a module.
+    
+        The 'package' argument is required when performing a relative import. It
+        specifies the package to use as the anchor point from which to resolve the
+        relative import to an absolute import.
+    
+        """
+        level = 0
+        if name.startswith('.'):
+            if not package:
+                msg = ("the 'package' argument is required to perform a relative "
+                       "import for {!r}")
+                raise TypeError(msg.format(name))
+            for character in name:
+                if character != '.':
+                    break
+                level += 1
+&gt;       return _bootstrap._gcd_import(name[level:], package, level)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ModuleNotFoundError: No module named 'vgar_m2_w78.b_experiment'
+
+C:\Program Files\Python311\Lib\importlib\__init__.py:126: ModuleNotFoundError
+
+During handling of the above exception, another exception occurred:
+
+reason = 'TEST_FAILED', want = 'candidate'
+
+    @pytest.mark.parametrize('reason,want', [('PATCH_PARSE_ERROR','candidate'), ('PATCH_APPLY_FAILED','candidate'),
+        ('TEST_FAILED','candidate'), ('INTERNAL_ERROR','runtime'), ('FINALIZATION_ERROR','runtime')])
+    def test_b_diagnosis_separates_candidate_and_runtime(reason, want):
+&gt;       assert api('b_experiment').diagnose(dict(status='FAIL' if want == 'candidate' else 'ERROR',
+               ^^^^^^^^^^^^^^^^^^^
+            reason=reason, stages={}))['category'] == want
+
+tests\test_b_experiment.py:131: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+module = 'b_experiment'
+
+    def api(module):
+        try:
+            return importlib.import_module('vgar_m2_w78.' + module)
+        except ModuleNotFoundError:
+&gt;           pytest.fail('Planned M2 API not implemented: ' + module)
+E           Failed: Planned M2 API not implemented: b_experiment
+
+tests\test_bootstrap.py:13: Failed</failure></testcase><testcase classname="tests.test_b_experiment" name="test_b_diagnosis_separates_candidate_and_runtime[INTERNAL_ERROR-runtime]" time="0.001"><failure message="Failed: Planned M2 API not implemented: b_experiment">module = 'b_experiment'
+
+    def api(module):
+        try:
+&gt;           return importlib.import_module('vgar_m2_w78.' + module)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_bootstrap.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'vgar_m2_w78.b_experiment', package = None
+
+    def import_module(name, package=None):
+        """Import a module.
+    
+        The 'package' argument is required when performing a relative import. It
+        specifies the package to use as the anchor point from which to resolve the
+        relative import to an absolute import.
+    
+        """
+        level = 0
+        if name.startswith('.'):
+            if not package:
+                msg = ("the 'package' argument is required to perform a relative "
+                       "import for {!r}")
+                raise TypeError(msg.format(name))
+            for character in name:
+                if character != '.':
+                    break
+                level += 1
+&gt;       return _bootstrap._gcd_import(name[level:], package, level)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ModuleNotFoundError: No module named 'vgar_m2_w78.b_experiment'
+
+C:\Program Files\Python311\Lib\importlib\__init__.py:126: ModuleNotFoundError
+
+During handling of the above exception, another exception occurred:
+
+reason = 'INTERNAL_ERROR', want = 'runtime'
+
+    @pytest.mark.parametrize('reason,want', [('PATCH_PARSE_ERROR','candidate'), ('PATCH_APPLY_FAILED','candidate'),
+        ('TEST_FAILED','candidate'), ('INTERNAL_ERROR','runtime'), ('FINALIZATION_ERROR','runtime')])
+    def test_b_diagnosis_separates_candidate_and_runtime(reason, want):
+&gt;       assert api('b_experiment').diagnose(dict(status='FAIL' if want == 'candidate' else 'ERROR',
+               ^^^^^^^^^^^^^^^^^^^
+            reason=reason, stages={}))['category'] == want
+
+tests\test_b_experiment.py:131: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+module = 'b_experiment'
+
+    def api(module):
+        try:
+            return importlib.import_module('vgar_m2_w78.' + module)
+        except ModuleNotFoundError:
+&gt;           pytest.fail('Planned M2 API not implemented: ' + module)
+E           Failed: Planned M2 API not implemented: b_experiment
+
+tests\test_bootstrap.py:13: Failed</failure></testcase><testcase classname="tests.test_b_experiment" name="test_b_diagnosis_separates_candidate_and_runtime[FINALIZATION_ERROR-runtime]" time="0.001"><failure message="Failed: Planned M2 API not implemented: b_experiment">module = 'b_experiment'
+
+    def api(module):
+        try:
+&gt;           return importlib.import_module('vgar_m2_w78.' + module)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_bootstrap.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'vgar_m2_w78.b_experiment', package = None
+
+    def import_module(name, package=None):
+        """Import a module.
+    
+        The 'package' argument is required when performing a relative import. It
+        specifies the package to use as the anchor point from which to resolve the
+        relative import to an absolute import.
+    
+        """
+        level = 0
+        if name.startswith('.'):
+            if not package:
+                msg = ("the 'package' argument is required to perform a relative "
+                       "import for {!r}")
+                raise TypeError(msg.format(name))
+            for character in name:
+                if character != '.':
+                    break
+                level += 1
+&gt;       return _bootstrap._gcd_import(name[level:], package, level)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ModuleNotFoundError: No module named 'vgar_m2_w78.b_experiment'
+
+C:\Program Files\Python311\Lib\importlib\__init__.py:126: ModuleNotFoundError
+
+During handling of the above exception, another exception occurred:
+
+reason = 'FINALIZATION_ERROR', want = 'runtime'
+
+    @pytest.mark.parametrize('reason,want', [('PATCH_PARSE_ERROR','candidate'), ('PATCH_APPLY_FAILED','candidate'),
+        ('TEST_FAILED','candidate'), ('INTERNAL_ERROR','runtime'), ('FINALIZATION_ERROR','runtime')])
+    def test_b_diagnosis_separates_candidate_and_runtime(reason, want):
+&gt;       assert api('b_experiment').diagnose(dict(status='FAIL' if want == 'candidate' else 'ERROR',
+               ^^^^^^^^^^^^^^^^^^^
+            reason=reason, stages={}))['category'] == want
+
+tests\test_b_experiment.py:131: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+module = 'b_experiment'
+
+    def api(module):
+        try:
+            return importlib.import_module('vgar_m2_w78.' + module)
+        except ModuleNotFoundError:
+&gt;           pytest.fail('Planned M2 API not implemented: ' + module)
+E           Failed: Planned M2 API not implemented: b_experiment
+
+tests\test_bootstrap.py:13: Failed</failure></testcase><testcase classname="tests.test_b_experiment" name="test_b_rejects_other_task_and_exhausted_time" time="0.002"><failure message="Failed: Planned M2 API not implemented: b_experiment">module = 'b_experiment'
+
+    def api(module):
+        try:
+&gt;           return importlib.import_module('vgar_m2_w78.' + module)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_bootstrap.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'vgar_m2_w78.b_experiment', package = None
+
+    def import_module(name, package=None):
+        """Import a module.
+    
+        The 'package' argument is required when performing a relative import. It
+        specifies the package to use as the anchor point from which to resolve the
+        relative import to an absolute import.
+    
+        """
+        level = 0
+        if name.startswith('.'):
+            if not package:
+                msg = ("the 'package' argument is required to perform a relative "
+                       "import for {!r}")
+                raise TypeError(msg.format(name))
+            for character in name:
+                if character != '.':
+                    break
+                level += 1
+&gt;       return _bootstrap._gcd_import(name[level:], package, level)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ModuleNotFoundError: No module named 'vgar_m2_w78.b_experiment'
+
+C:\Program Files\Python311\Lib\importlib\__init__.py:126: ModuleNotFoundError
+
+During handling of the above exception, another exception occurred:
+
+tmp_path = WindowsPath('D:/Project/CAPSTONES/M2_week_7_8/results/b-repair-preflight/20261015-evidence-driven/temp/pytest-of-pc/pytest-4/test_b_rejects_other_task_and_0')
+
+    def test_b_rejects_other_task_and_exhausted_time(tmp_path):
+&gt;       module, store, _, _, _ = ready(tmp_path)
+                                 ^^^^^^^^^^^^^^^
+
+tests\test_b_experiment.py:136: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_b_experiment.py:34: in ready
+    module, store, root, proof, protected = setup_store(tmp_path)
+                                            ^^^^^^^^^^^^^^^^^^^^^
+tests\test_b_experiment.py:12: in setup_store
+    module = api('b_experiment')
+             ^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+module = 'b_experiment'
+
+    def api(module):
+        try:
+            return importlib.import_module('vgar_m2_w78.' + module)
+        except ModuleNotFoundError:
+&gt;           pytest.fail('Planned M2 API not implemented: ' + module)
+E           Failed: Planned M2 API not implemented: b_experiment
+
+tests\test_bootstrap.py:13: Failed</failure></testcase></testsuite></testsuites>

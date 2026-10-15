@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="9" skipped="0" tests="9" time="4.002" timestamp="2026-10-15T08:26:53.470134+07:00" hostname="TMT"><testcase classname="tests.test_diagnostic_logging" name="test_parser_reports_raw_location_and_complete_hunk_counts[--- a/app.py\n+++ b/app.py\n@@ -1,1 +1,1 @@\n def answer():\n-    return 1\n+    return 2\n-5-expected0-actual0-True]" time="0.135"><failure message="AttributeError: 'ValueError' object has no attribute 'parser_diagnostics'">raw = '--- a/app.py\n+++ b/app.py\n@@ -1,1 +1,1 @@\n def answer():\n-    return 1\n+    return 2\n'
+line = 5, expected = {'new': 1, 'old': 1}, actual = {'new': 2, 'old': 2}
+complete = True
+
+    @pytest.mark.parametrize('raw,line,expected,actual,complete', [
+        (BASE, 5, {'old': 1, 'new': 1}, {'old': 2, 'new': 2}, True),
+        (BASE.replace('-1,1 +1,1', '-1,3 +1,3'), 7, {'old': 3, 'new': 3}, {'old': 2, 'new': 2}, True),
+        (BASE.replace(' def answer()', 'def answer()'), 4, {'old': 1, 'new': 1}, {'old': 1, 'new': 1}, False),
+        ('```diff\n' + BASE + '```\n', 6, {'old': 1, 'new': 1}, {'old': 2, 'new': 2}, True),
+    ])
+    def test_parser_reports_raw_location_and_complete_hunk_counts(raw, line, expected, actual, complete):
+        module = api('patch')
+        with pytest.raises(ValueError) as caught:
+            module.parse_unified_diff(raw, module.PatchPolicy(('app.py',), ('tests',)))
+&gt;       d = caught.value.parser_diagnostics
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'ValueError' object has no attribute 'parser_diagnostics'
+
+tests\test_diagnostic_logging.py:23: AttributeError</failure></testcase><testcase classname="tests.test_diagnostic_logging" name="test_parser_reports_raw_location_and_complete_hunk_counts[--- a/app.py\n+++ b/app.py\n@@ -1,3 +1,3 @@\n def answer():\n-    return 1\n+    return 2\n-7-expected1-actual1-True]" time="0.001"><failure message="AttributeError: 'ValueError' object has no attribute 'parser_diagnostics'">raw = '--- a/app.py\n+++ b/app.py\n@@ -1,3 +1,3 @@\n def answer():\n-    return 1\n+    return 2\n'
+line = 7, expected = {'new': 3, 'old': 3}, actual = {'new': 2, 'old': 2}
+complete = True
+
+    @pytest.mark.parametrize('raw,line,expected,actual,complete', [
+        (BASE, 5, {'old': 1, 'new': 1}, {'old': 2, 'new': 2}, True),
+        (BASE.replace('-1,1 +1,1', '-1,3 +1,3'), 7, {'old': 3, 'new': 3}, {'old': 2, 'new': 2}, True),
+        (BASE.replace(' def answer()', 'def answer()'), 4, {'old': 1, 'new': 1}, {'old': 1, 'new': 1}, False),
+        ('```diff\n' + BASE + '```\n', 6, {'old': 1, 'new': 1}, {'old': 2, 'new': 2}, True),
+    ])
+    def test_parser_reports_raw_location_and_complete_hunk_counts(raw, line, expected, actual, complete):
+        module = api('patch')
+        with pytest.raises(ValueError) as caught:
+            module.parse_unified_diff(raw, module.PatchPolicy(('app.py',), ('tests',)))
+&gt;       d = caught.value.parser_diagnostics
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'ValueError' object has no attribute 'parser_diagnostics'
+
+tests\test_diagnostic_logging.py:23: AttributeError</failure></testcase><testcase classname="tests.test_diagnostic_logging" name="test_parser_reports_raw_location_and_complete_hunk_counts[--- a/app.py\n+++ b/app.py\n@@ -1,1 +1,1 @@\ndef answer():\n-    return 1\n+    return 2\n-4-expected2-actual2-False]" time="0.001"><failure message="AttributeError: 'ValueError' object has no attribute 'parser_diagnostics'">raw = '--- a/app.py\n+++ b/app.py\n@@ -1,1 +1,1 @@\ndef answer():\n-    return 1\n+    return 2\n'
+line = 4, expected = {'new': 1, 'old': 1}, actual = {'new': 1, 'old': 1}
+complete = False
+
+    @pytest.mark.parametrize('raw,line,expected,actual,complete', [
+        (BASE, 5, {'old': 1, 'new': 1}, {'old': 2, 'new': 2}, True),
+        (BASE.replace('-1,1 +1,1', '-1,3 +1,3'), 7, {'old': 3, 'new': 3}, {'old': 2, 'new': 2}, True),
+        (BASE.replace(' def answer()', 'def answer()'), 4, {'old': 1, 'new': 1}, {'old': 1, 'new': 1}, False),
+        ('```diff\n' + BASE + '```\n', 6, {'old': 1, 'new': 1}, {'old': 2, 'new': 2}, True),
+    ])
+    def test_parser_reports_raw_location_and_complete_hunk_counts(raw, line, expected, actual, complete):
+        module = api('patch')
+        with pytest.raises(ValueError) as caught:
+            module.parse_unified_diff(raw, module.PatchPolicy(('app.py',), ('tests',)))
+&gt;       d = caught.value.parser_diagnostics
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'ValueError' object has no attribute 'parser_diagnostics'
+
+tests\test_diagnostic_logging.py:23: AttributeError</failure></testcase><testcase classname="tests.test_diagnostic_logging" name="test_parser_reports_raw_location_and_complete_hunk_counts[```diff\n--- a/app.py\n+++ b/app.py\n@@ -1,1 +1,1 @@\n def answer():\n-    return 1\n+    return 2\n```\n-6-expected3-actual3-True]" time="0.001"><failure message="AttributeError: 'ValueError' object has no attribute 'parser_diagnostics'">raw = '```diff\n--- a/app.py\n+++ b/app.py\n@@ -1,1 +1,1 @@\n def answer():\n-    return 1\n+    return 2\n```\n'
+line = 6, expected = {'new': 1, 'old': 1}, actual = {'new': 2, 'old': 2}
+complete = True
+
+    @pytest.mark.parametrize('raw,line,expected,actual,complete', [
+        (BASE, 5, {'old': 1, 'new': 1}, {'old': 2, 'new': 2}, True),
+        (BASE.replace('-1,1 +1,1', '-1,3 +1,3'), 7, {'old': 3, 'new': 3}, {'old': 2, 'new': 2}, True),
+        (BASE.replace(' def answer()', 'def answer()'), 4, {'old': 1, 'new': 1}, {'old': 1, 'new': 1}, False),
+        ('```diff\n' + BASE + '```\n', 6, {'old': 1, 'new': 1}, {'old': 2, 'new': 2}, True),
+    ])
+    def test_parser_reports_raw_location_and_complete_hunk_counts(raw, line, expected, actual, complete):
+        module = api('patch')
+        with pytest.raises(ValueError) as caught:
+            module.parse_unified_diff(raw, module.PatchPolicy(('app.py',), ('tests',)))
+&gt;       d = caught.value.parser_diagnostics
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'ValueError' object has no attribute 'parser_diagnostics'
+
+tests\test_diagnostic_logging.py:23: AttributeError</failure></testcase><testcase classname="tests.test_diagnostic_logging" name="test_unapproved_path_reports_header_not_a_nonexistent_hunk" time="0.001"><failure message="AttributeError: 'ValueError' object has no attribute 'parser_diagnostics'">def test_unapproved_path_reports_header_not_a_nonexistent_hunk():
+        module = api('patch')
+        with pytest.raises(ValueError, match='Protected or unapproved path') as caught:
+            module.parse_unified_diff(BASE.replace('app.py', 'tests/test_app.py'), module.PatchPolicy(('app.py',), ('tests',)))
+&gt;       d = caught.value.parser_diagnostics
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'ValueError' object has no attribute 'parser_diagnostics'
+
+tests\test_diagnostic_logging.py:35: AttributeError</failure></testcase><testcase classname="tests.test_diagnostic_logging" name="test_pipeline_persists_parser_diagnostics_and_traceback" time="3.261"><failure message="KeyError: 'parser_diagnostics'">m1_case = (RepairTask(task_id='single_file_login', issue_text='auth.py login accepts whitespace-only names; trim the name before...', 'pytest.ini'), trusted_fixture=True), &lt;vgar.graph.token_counter.LocalTokenizerCounter object at 0x0000026A5914DC50&gt;)
+tmp_path = WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-583/test_pipeline_persists_parser_0')
+
+    def test_pipeline_persists_parser_diagnostics_and_traceback(m1_case, tmp_path):
+        task, counter = m1_case
+        run = api('pipeline').run_repair(task, api('contracts').RepairPolicy(),
+            api('generator').FakeGenerator('not a diff'), None, tmp_path/'runs',
+            m1_counter=counter, tokenizer=CharacterChatTokenizer(), temp_root=tmp_path/'temp')
+        r = json.loads(run.path.read_text(encoding='utf-8'))
+        assert r['status'] == 'FAIL' and r['reason'] == 'PATCH_PARSE_ERROR'
+        error = r['error_detail']
+&gt;       assert error['parser_diagnostics']['raw_line'] == 1
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'parser_diagnostics'
+
+tests\test_diagnostic_logging.py:48: KeyError</failure></testcase><testcase classname="tests.test_diagnostic_logging" name="test_command_launch_exception_preserves_traceback" time="0.004"><failure message="KeyError: 'traceback'">tmp_path = WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-583/test_command_launch_exception_0')
+
+    def test_command_launch_exception_preserves_traceback(tmp_path):
+        result = api('executor').run_bounded((str(tmp_path/'missing-python.exe'),), tmp_path, 2)
+        assert result['status'] == 'ERROR' and not result['complete']
+&gt;       assert 'FileNotFoundError' in result['traceback'] and 'run_bounded' in result['traceback']
+                                      ^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'traceback'
+
+tests\test_diagnostic_logging.py:58: KeyError</failure></testcase><testcase classname="tests.test_diagnostic_logging" name="test_chained_exception_logs_frames_without_locals" time="0.001"><failure message="Failed: Planned M2 API not implemented: diagnostics">def test_chained_exception_logs_frames_without_locals():
+        secret_local = 'do-not-log-locals'
+        try:
+            try:
+&gt;               raise ValueError('inner')
+E               ValueError: inner
+
+tests\test_diagnostic_logging.py:65: ValueError
+
+The above exception was the direct cause of the following exception:
+
+    def test_chained_exception_logs_frames_without_locals():
+        secret_local = 'do-not-log-locals'
+        try:
+            try:
+                raise ValueError('inner')
+            except ValueError as error:
+&gt;               raise RuntimeError('outer') from error
+E               RuntimeError: outer
+
+tests\test_diagnostic_logging.py:67: RuntimeError
+
+During handling of the above exception, another exception occurred:
+
+module = 'diagnostics'
+
+    def api(module):
+        try:
+&gt;           return importlib.import_module('vgar_m2_w78.' + module)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_bootstrap.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'vgar_m2_w78.diagnostics', package = None
+
+    def import_module(name, package=None):
+        """Import a module.
+    
+        The 'package' argument is required when performing a relative import. It
+        specifies the package to use as the anchor point from which to resolve the
+        relative import to an absolute import.
+    
+        """
+        level = 0
+        if name.startswith('.'):
+            if not package:
+                msg = ("the 'package' argument is required to perform a relative "
+                       "import for {!r}")
+                raise TypeError(msg.format(name))
+            for character in name:
+                if character != '.':
+                    break
+                level += 1
+&gt;       return _bootstrap._gcd_import(name[level:], package, level)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ModuleNotFoundError: No module named 'vgar_m2_w78.diagnostics'
+
+C:\Program Files\Python311\Lib\importlib\__init__.py:126: ModuleNotFoundError
+
+During handling of the above exception, another exception occurred:
+
+    def test_chained_exception_logs_frames_without_locals():
+        secret_local = 'do-not-log-locals'
+        try:
+            try:
+                raise ValueError('inner')
+            except ValueError as error:
+                raise RuntimeError('outer') from error
+        except RuntimeError as error:
+&gt;           result = api('diagnostics').exception_details(error)
+                     ^^^^^^^^^^^^^^^^^^
+
+tests\test_diagnostic_logging.py:69: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+module = 'diagnostics'
+
+    def api(module):
+        try:
+            return importlib.import_module('vgar_m2_w78.' + module)
+        except ModuleNotFoundError:
+&gt;           pytest.fail('Planned M2 API not implemented: ' + module)
+E           Failed: Planned M2 API not implemented: diagnostics
+
+tests\test_bootstrap.py:13: Failed</failure></testcase><testcase classname="tests.test_diagnostic_logging" name="test_cli_config_error_has_traceback" time="0.443"><failure message="KeyError: 'traceback'">tmp_path = WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-583/test_cli_config_error_has_trac0')
+
+    def test_cli_config_error_has_traceback(tmp_path):
+        import subprocess
+        from conftest import ROOT
+        result = subprocess.run([sys.executable, str(ROOT/'scripts/run_demo.py'), '--mode', 'fake',
+            '--task', str(tmp_path/'missing-task.json'), '--output-root', str(tmp_path/'runs')],
+            capture_output=True, text=True, timeout=30)
+        assert result.returncode == 2
+        saved = json.loads(next((tmp_path/'runs').glob('*/run_record.json')).read_text(encoding='utf-8'))
+&gt;       assert 'FileNotFoundError' in saved['traceback'] and saved['status'] == 'ERROR'
+                                      ^^^^^^^^^^^^^^^^^^
+E       KeyError: 'traceback'
+
+tests\test_diagnostic_logging.py:83: KeyError</failure></testcase></testsuite></testsuites>

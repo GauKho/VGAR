@@ -1,0 +1,11 @@
+{
+  "path": "D:\\Project\\CAPSTONES\\M2_week_7_8\\prompts\\repair_v11.txt",
+  "template_hash": "sha256:ba6d147898eaf411b57b12ab70527aadef239ff9d7a2a8fb3f6639aa333d5ef8",
+  "archives": {
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\b_repair\\2026-10-15-evidence-driven-b\\prompt-archives\\m2-w78-v11.txt": "sha256:ba6d147898eaf411b57b12ab70527aadef239ff9d7a2a8fb3f6639aa333d5ef8"
+  },
+  "parent": "m2-w78-v10",
+  "reason": "Attempt01 raw line1 copied literal format wrapper; remove both neutral example wrappers and require first file header/last diff body line; no host patch correction",
+  "trigger": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\b_repair\\2026-10-15-evidence-driven-b\\attempts\\01\\20261015T070104677647Z-57e15f34010f\\run_record.json",
+  "created_utc": "2026-10-15T07:09:15.376631+00:00"
+}

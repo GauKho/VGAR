@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="4" time="14.164" timestamp="2026-10-15T15:41:17.564895+07:00" hostname="TMT"><testcase classname=".superpowers.sdd.2026-10-15-m2-delivery-package.test_delivery" name="test_saved_mode_audits_all_cases_and_prints_all_artifact_families" time="3.398"><failure message="AssertionError: tion_job.py preflight D:\Project\CAPSTONES\M2_week_7_8 D:\Project\CAPSTONES\M2_week_7_8\results\delivery-tests\test_saved_mode_audits_all_cas0 ReadSaved&#10;  {&#10;    &quot;status&quot;: &quot;PASS&quot;,&#10;    &quot;scope&quot;: &quot;preflight, NOT repair acceptance&quot;,&#10;    &quot;core_versions&quot;: {&#10;      &quot;pydantic&quot;: &quot;2.13.5&quot;,&#10;      &quot;python-dotenv&quot;: &quot;1.2.3&quot;,&#10;      &quot;tokenizers&quot;: &quot;0.22.1&quot;,&#10;      &quot;jinja2&quot;: &quot;3.1.6&quot;,&#10;      &quot;pytest&quot;: &quot;8.4.2&quot;,&#10;      &quot;mypy&quot;: &quot;1.20.2&quot;,&#10;      &quot;ruff&quot;: &quot;0.16.7&quot;&#10;    },&#10;    &quot;reference&quot;: {&#10;      &quot;head&quot;: &quot;b8e2461635b81d1ae790445efea5c9757d91700a&quot;,&#10;      &quot;root&quot;: &quot;D:\\Project\\CAPSTONES\\VGAR&quot;,&#10;      &quot;hashes&quot;: {&#10;        &quot;src/vgar/__init__.py&quot;: &quot;8eb57d207d71671cc7c5de557ebf95dc8f1992fe5b9e615f2aa082db07ae576e&quot;,&#10;        &quot;src/vgar/contracts/__init__.py&quot;: &quot;e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855&quot;,&#10;        &quot;src/vgar/contracts/context.py&quot;: &quot;a76901ab62ea3dbc396a5fccaa427ef1e5b5eadcd41745df98ab004f513bee59&quot;,&#10;        &quot;src/vgar/contracts/consumer.py&quot;: &quot;768d5c406488401ed840408135f497a1401a852debcd01b61c7cd41305f365e2&quot;,&#10;        &quot;src/vgar/contracts/handoff.py&quot;: &quot;8fcf572ea08d54949aee50648fd54a85ad0895c92a0f02618c471b2c761cdefa&quot;,&#10;        &quot;src/vgar/contracts/prompt_context.py&quot;: &quot;9098d2ade4cba006dd2d1d64417c7492d4200a21a4acff678d11165b98ca0ffc&quot;,&#10;        &quot;src/vgar/contracts/repair.py&quot;: &quot;144892b901ed3657b2f2784a14efd3e274247c38ca19b08c2521aac8a594d0e5&quot;,&#10;        &quot;src/vgar/contracts/evidence.py&quot;: &quot;80f1c7fd72ba9844f9353c43312236838c0d461fa7e58039cf0ca321f27346be&quot;,&#10;        &quot;src/vgar/config/settings.py&quot;: &quot;d2dadde8064fd72fa766335ccca5253ffafc61f4129d066c8f57292f103e0e68&quot;,&#10;        &quot;src/vgar/config/__init__.py&quot;: &quot;ec3b8d65527db0f97380ed9279ea9c14d4dc5cf64dc21aba5ad949e52849974d&quot;,&#10;        &quot;src/vgar/graph/token_counter.py&quot;: &quot;302f9cd69347bef1a15fe54a0d1834f6958c3d62310679b8b46586bd590c3b89&quot;,&#10;        &quot;src/vgar/graph/__init__.py&quot;: &quot;e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855&quot;&#10;      },&#10;      &quot;dirty_paths&quot;: [&#10;        &quot;src/vgar/evaluation/retrieval/compare.py&quot;,&#10;        &quot;src/vgar/evaluation/retrieval/scoring.py&quot;&#10;      ]&#10;    },&#10;    &quot;runtime_revision&quot;: &quot;r002&quot;,&#10;    &quot;profile&quot;: {&#10;      &quot;model_id&quot;: &quot;Qwen/Qwen3-4B-Instruct-2507&quot;,&#10;      &quot;revision&quot;: &quot;cdbee75f17c01a7cc42f958dc650907174af0554&quot;,&#10;      &quot;snapshot&quot;: &quot;D:\\Project\\CAPSTONES\\.cache\\huggingface\\hub\\models--Qwen--Qwen3-4B-Instruct-2507\\snapshots\\cdbee75f17c01a7cc42f958dc650907174af0554&quot;,&#10;      &quot;interpreter&quot;: &quot;D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe&quot;,&#10;      &quot;tokenizer_manifest&quot;: &quot;D:\\Project\\CAPSTONES\\VGAR\\artifacts\\m2\\w5-w6\\tokenizer_manifest.json&quot;,&#10;      &quot;approved_prototype&quot;: true,&#10;      &quot;do_sample&quot;: false,&#10;      &quot;dtype&quot;: &quot;float16&quot;,&#10;      &quot;device_map&quot;: &quot;auto&quot;&#10;    },&#10;    &quot;policy&quot;: {&#10;      &quot;prompt_version&quot;: &quot;m2-w78-v11&quot;,&#10;      &quot;input_cap&quot;: 6000,&#10;      &quot;output_cap&quot;: 1536,&#10;      &quot;reserved_margin&quot;: 256,&#10;      &quot;generation_timeout&quot;: 900.0,&#10;      &quot;command_timeout&quot;: 120.0,&#10;      &quot;global_timeout&quot;: 1800.0,&#10;      &quot;max_output_bytes&quot;: 8388608,&#10;      &quot;max_diff_bytes&quot;: 262144,&#10;      &quot;max_files&quot;: 5,&#10;      &quot;max_changed_lines&quot;: 500,&#10;      &quot;runtime&quot;: &quot;native_trusted_fixtures&quot;&#10;    }&#10;  }&#10;  END preflight; exit=0; duration_ms=537&#10;  D:\Project\CAPSTONES\M2_week_7_8\test_abc_v11_r002.ps1 : Exception calling &quot;Replace&quot; with &quot;3&quot; argument(s): &quot;The path &#10;  is not of a legal form.&quot;&#10;      + CategoryInfo          : NotSpecified: (:) [test_abc_v11_r002.ps1], MethodInvocationException&#10;      + FullyQualifiedErrorId : ArgumentException,test_abc_v11_r002.ps1&#10;   &#10;  &#10;assert 1 == 0&#10; +  where 1 = CompletedProcess(args=['powershell', '-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', 'D:\\Project\\CAPSTONES\\M2_..._v11_r002.ps1], MethodInvocationException\n    + FullyQualifiedErrorId : ArgumentException,test_abc_v11_r002.ps1\n \n').returncode">tmp_path = WindowsPath('D:/Project/CAPSTONES/M2_week_7_8/results/delivery-validation/temp/pytest-of-pc/pytest-0/test_saved_mode_audits_all_cas0')
+
+    def test_saved_mode_audits_all_cases_and_prints_all_artifact_families(tmp_path):
+        assert SCRIPT.is_file(), 'PowerShell runner has not been implemented'
+        output = ROOT/'results/delivery-tests'/tmp_path.name
+        result = run_ps('-Mode','ReadSaved','-OutputRoot',str(output))
+&gt;       assert result.returncode == 0, result.stdout[-3000:]+result.stderr[-3000:]
+E       AssertionError: tion_job.py preflight D:\Project\CAPSTONES\M2_week_7_8 D:\Project\CAPSTONES\M2_week_7_8\results\delivery-tests\test_saved_mode_audits_all_cas0 ReadSaved
+E         {
+E           "status": "PASS",
+E           "scope": "preflight, NOT repair acceptance",
+E           "core_versions": {
+E             "pydantic": "2.13.5",
+E             "python-dotenv": "1.2.3",
+E             "tokenizers": "0.22.1",
+E             "jinja2": "3.1.6",
+E             "pytest": "8.4.2",
+E             "mypy": "1.20.2",
+E             "ruff": "0.16.7"
+E           },
+E           "reference": {
+E             "head": "b8e2461635b81d1ae790445efea5c9757d91700a",
+E             "root": "D:\\Project\\CAPSTONES\\VGAR",
+E             "hashes": {
+E               "src/vgar/__init__.py": "8eb57d207d71671cc7c5de557ebf95dc8f1992fe5b9e615f2aa082db07ae576e",
+E               "src/vgar/contracts/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+E               "src/vgar/contracts/context.py": "a76901ab62ea3dbc396a5fccaa427ef1e5b5eadcd41745df98ab004f513bee59",
+E               "src/vgar/contracts/consumer.py": "768d5c406488401ed840408135f497a1401a852debcd01b61c7cd41305f365e2",
+E               "src/vgar/contracts/handoff.py": "8fcf572ea08d54949aee50648fd54a85ad0895c92a0f02618c471b2c761cdefa",
+E               "src/vgar/contracts/prompt_context.py": "9098d2ade4cba006dd2d1d64417c7492d4200a21a4acff678d11165b98ca0ffc",
+E               "src/vgar/contracts/repair.py": "144892b901ed3657b2f2784a14efd3e274247c38ca19b08c2521aac8a594d0e5",
+E               "src/vgar/contracts/evidence.py": "80f1c7fd72ba9844f9353c43312236838c0d461fa7e58039cf0ca321f27346be",
+E               "src/vgar/config/settings.py": "d2dadde8064fd72fa766335ccca5253ffafc61f4129d066c8f57292f103e0e68",
+E               "src/vgar/config/__init__.py": "ec3b8d65527db0f97380ed9279ea9c14d4dc5cf64dc21aba5ad949e52849974d",
+E               "src/vgar/graph/token_counter.py": "302f9cd69347bef1a15fe54a0d1834f6958c3d62310679b8b46586bd590c3b89",
+E               "src/vgar/graph/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+E             },
+E             "dirty_paths": [
+E               "src/vgar/evaluation/retrieval/compare.py",
+E               "src/vgar/evaluation/retrieval/scoring.py"
+E             ]
+E           },
+E           "runtime_revision": "r002",
+E           "profile": {
+E             "model_id": "Qwen/Qwen3-4B-Instruct-2507",
+E             "revision": "cdbee75f17c01a7cc42f958dc650907174af0554",
+E             "snapshot": "D:\\Project\\CAPSTONES\\.cache\\huggingface\\hub\\models--Qwen--Qwen3-4B-Instruct-2507\\snapshots\\cdbee75f17c01a7cc42f958dc650907174af0554",
+E             "interpreter": "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe",
+E             "tokenizer_manifest": "D:\\Project\\CAPSTONES\\VGAR\\artifacts\\m2\\w5-w6\\tokenizer_manifest.json",
+E             "approved_prototype": true,
+E             "do_sample": false,
+E             "dtype": "float16",
+E             "device_map": "auto"
+E           },
+E           "policy": {
+E             "prompt_version": "m2-w78-v11",
+E             "input_cap": 6000,
+E             "output_cap": 1536,
+E             "reserved_margin": 256,
+E             "generation_timeout": 900.0,
+E             "command_timeout": 120.0,
+E             "global_timeout": 1800.0,
+E             "max_output_bytes": 8388608,
+E             "max_diff_bytes": 262144,
+E             "max_files": 5,
+E             "max_changed_lines": 500,
+E             "runtime": "native_trusted_fixtures"
+E           }
+E         }
+E         END preflight; exit=0; duration_ms=537
+E         D:\Project\CAPSTONES\M2_week_7_8\test_abc_v11_r002.ps1 : Exception calling "Replace" with "3" argument(s): "The path 
+E         is not of a legal form."
+E             + CategoryInfo          : NotSpecified: (:) [test_abc_v11_r002.ps1], MethodInvocationException
+E             + FullyQualifiedErrorId : ArgumentException,test_abc_v11_r002.ps1
+E          
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['powershell', '-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', 'D:\\Project\\CAPSTONES\\M2_..._v11_r002.ps1], MethodInvocationException\n    + FullyQualifiedErrorId : ArgumentException,test_abc_v11_r002.ps1\n \n').returncode
+
+.superpowers\sdd\2026-10-15-m2-delivery-package\test_delivery.py:19: AssertionError</failure></testcase><testcase classname=".superpowers.sdd.2026-10-15-m2-delivery-package.test_delivery" name="test_existing_output_is_never_overwritten" time="2.003" /><testcase classname=".superpowers.sdd.2026-10-15-m2-delivery-package.test_delivery" name="test_output_outside_results_is_rejected_before_any_mutation" time="2.415" /><testcase classname=".superpowers.sdd.2026-10-15-m2-delivery-package.test_delivery" name="test_check_mode_never_launches_real_or_creates_case_directories" time="6.279"><failure message="AssertionError: &quot;2.13.5&quot;,&#10;      &quot;python-dotenv&quot;: &quot;1.2.3&quot;,&#10;      &quot;tokenizers&quot;: &quot;0.22.1&quot;,&#10;      &quot;jinja2&quot;: &quot;3.1.6&quot;,&#10;      &quot;pytest&quot;: &quot;8.4.2&quot;,&#10;      &quot;mypy&quot;: &quot;1.20.2&quot;,&#10;      &quot;ruff&quot;: &quot;0.16.7&quot;&#10;    },&#10;    &quot;reference&quot;: {&#10;      &quot;head&quot;: &quot;b8e2461635b81d1ae790445efea5c9757d91700a&quot;,&#10;      &quot;root&quot;: &quot;D:\\Project\\CAPSTONES\\VGAR&quot;,&#10;      &quot;hashes&quot;: {&#10;        &quot;src/vgar/__init__.py&quot;: &quot;8eb57d207d71671cc7c5de557ebf95dc8f1992fe5b9e615f2aa082db07ae576e&quot;,&#10;        &quot;src/vgar/contracts/__init__.py&quot;: &quot;e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855&quot;,&#10;        &quot;src/vgar/contracts/context.py&quot;: &quot;a76901ab62ea3dbc396a5fccaa427ef1e5b5eadcd41745df98ab004f513bee59&quot;,&#10;        &quot;src/vgar/contracts/consumer.py&quot;: &quot;768d5c406488401ed840408135f497a1401a852debcd01b61c7cd41305f365e2&quot;,&#10;        &quot;src/vgar/contracts/handoff.py&quot;: &quot;8fcf572ea08d54949aee50648fd54a85ad0895c92a0f02618c471b2c761cdefa&quot;,&#10;        &quot;src/vgar/contracts/prompt_context.py&quot;: &quot;9098d2ade4cba006dd2d1d64417c7492d4200a21a4acff678d11165b98ca0ffc&quot;,&#10;        &quot;src/vgar/contracts/repair.py&quot;: &quot;144892b901ed3657b2f2784a14efd3e274247c38ca19b08c2521aac8a594d0e5&quot;,&#10;        &quot;src/vgar/contracts/evidence.py&quot;: &quot;80f1c7fd72ba9844f9353c43312236838c0d461fa7e58039cf0ca321f27346be&quot;,&#10;        &quot;src/vgar/config/settings.py&quot;: &quot;d2dadde8064fd72fa766335ccca5253ffafc61f4129d066c8f57292f103e0e68&quot;,&#10;        &quot;src/vgar/config/__init__.py&quot;: &quot;ec3b8d65527db0f97380ed9279ea9c14d4dc5cf64dc21aba5ad949e52849974d&quot;,&#10;        &quot;src/vgar/graph/token_counter.py&quot;: &quot;302f9cd69347bef1a15fe54a0d1834f6958c3d62310679b8b46586bd590c3b89&quot;,&#10;        &quot;src/vgar/graph/__init__.py&quot;: &quot;e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855&quot;&#10;      },&#10;      &quot;dirty_paths&quot;: [&#10;        &quot;src/vgar/evaluation/retrieval/compare.py&quot;,&#10;        &quot;src/vgar/evaluation/retrieval/scoring.py&quot;&#10;      ]&#10;    },&#10;    &quot;runtime_revision&quot;: &quot;r002&quot;,&#10;    &quot;profile&quot;: {&#10;      &quot;model_id&quot;: &quot;Qwen/Qwen3-4B-Instruct-2507&quot;,&#10;      &quot;revision&quot;: &quot;cdbee75f17c01a7cc42f958dc650907174af0554&quot;,&#10;      &quot;snapshot&quot;: &quot;D:\\Project\\CAPSTONES\\.cache\\huggingface\\hub\\models--Qwen--Qwen3-4B-Instruct-2507\\snapshots\\cdbee75f17c01a7cc42f958dc650907174af0554&quot;,&#10;      &quot;interpreter&quot;: &quot;D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe&quot;,&#10;      &quot;tokenizer_manifest&quot;: &quot;D:\\Project\\CAPSTONES\\VGAR\\artifacts\\m2\\w5-w6\\tokenizer_manifest.json&quot;,&#10;      &quot;approved_prototype&quot;: true,&#10;      &quot;do_sample&quot;: false,&#10;      &quot;dtype&quot;: &quot;float16&quot;,&#10;      &quot;device_map&quot;: &quot;auto&quot;&#10;    },&#10;    &quot;policy&quot;: {&#10;      &quot;prompt_version&quot;: &quot;m2-w78-v11&quot;,&#10;      &quot;input_cap&quot;: 6000,&#10;      &quot;output_cap&quot;: 1536,&#10;      &quot;reserved_margin&quot;: 256,&#10;      &quot;generation_timeout&quot;: 900.0,&#10;      &quot;command_timeout&quot;: 120.0,&#10;      &quot;global_timeout&quot;: 1800.0,&#10;      &quot;max_output_bytes&quot;: 8388608,&#10;      &quot;max_diff_bytes&quot;: 262144,&#10;      &quot;max_files&quot;: 5,&#10;      &quot;max_changed_lines&quot;: 500,&#10;      &quot;runtime&quot;: &quot;native_trusted_fixtures&quot;&#10;    },&#10;    &quot;hf&quot;: {&#10;      &quot;cuda&quot;: true,&#10;      &quot;versions&quot;: {&#10;        &quot;torch&quot;: &quot;2.11.0+cu128&quot;,&#10;        &quot;transformers&quot;: &quot;4.57.6&quot;,&#10;        &quot;tokenizers&quot;: &quot;0.22.2&quot;,&#10;        &quot;accelerate&quot;: &quot;1.15.0&quot;,&#10;        &quot;safetensors&quot;: &quot;0.8.0&quot;&#10;      },&#10;      &quot;gpu&quot;: &quot;NVIDIA GeForce RTX 4050 Laptop GPU&quot;&#10;    }&#10;  }&#10;  END preflight; exit=0; duration_ms=3519&#10;  D:\Project\CAPSTONES\M2_week_7_8\test_abc_v11_r002.ps1 : Exception calling &quot;Replace&quot; with &quot;3&quot; argument(s): &quot;The path &#10;  is not of a legal form.&quot;&#10;      + CategoryInfo          : NotSpecified: (:) [test_abc_v11_r002.ps1], MethodInvocationException&#10;      + FullyQualifiedErrorId : ArgumentException,test_abc_v11_r002.ps1&#10;   &#10;  &#10;assert 1 == 0&#10; +  where 1 = CompletedProcess(args=['powershell', '-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', 'D:\\Project\\CAPSTONES\\M2_..._v11_r002.ps1], MethodInvocationException\n    + FullyQualifiedErrorId : ArgumentException,test_abc_v11_r002.ps1\n \n').returncode">tmp_path = WindowsPath('D:/Project/CAPSTONES/M2_week_7_8/results/delivery-validation/temp/pytest-of-pc/pytest-0/test_check_mode_never_launches0')
+
+    def test_check_mode_never_launches_real_or_creates_case_directories(tmp_path):
+        assert SCRIPT.is_file(), 'PowerShell runner has not been implemented'
+        output = ROOT/'results/delivery-tests'/tmp_path.name
+        result = run_ps('-Mode','Check','-OutputRoot',str(output))
+&gt;       assert result.returncode == 0, result.stdout[-3000:]+result.stderr[-3000:]
+E       AssertionError: "2.13.5",
+E             "python-dotenv": "1.2.3",
+E             "tokenizers": "0.22.1",
+E             "jinja2": "3.1.6",
+E             "pytest": "8.4.2",
+E             "mypy": "1.20.2",
+E             "ruff": "0.16.7"
+E           },
+E           "reference": {
+E             "head": "b8e2461635b81d1ae790445efea5c9757d91700a",
+E             "root": "D:\\Project\\CAPSTONES\\VGAR",
+E             "hashes": {
+E               "src/vgar/__init__.py": "8eb57d207d71671cc7c5de557ebf95dc8f1992fe5b9e615f2aa082db07ae576e",
+E               "src/vgar/contracts/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+E               "src/vgar/contracts/context.py": "a76901ab62ea3dbc396a5fccaa427ef1e5b5eadcd41745df98ab004f513bee59",
+E               "src/vgar/contracts/consumer.py": "768d5c406488401ed840408135f497a1401a852debcd01b61c7cd41305f365e2",
+E               "src/vgar/contracts/handoff.py": "8fcf572ea08d54949aee50648fd54a85ad0895c92a0f02618c471b2c761cdefa",
+E               "src/vgar/contracts/prompt_context.py": "9098d2ade4cba006dd2d1d64417c7492d4200a21a4acff678d11165b98ca0ffc",
+E               "src/vgar/contracts/repair.py": "144892b901ed3657b2f2784a14efd3e274247c38ca19b08c2521aac8a594d0e5",
+E               "src/vgar/contracts/evidence.py": "80f1c7fd72ba9844f9353c43312236838c0d461fa7e58039cf0ca321f27346be",
+E               "src/vgar/config/settings.py": "d2dadde8064fd72fa766335ccca5253ffafc61f4129d066c8f57292f103e0e68",
+E               "src/vgar/config/__init__.py": "ec3b8d65527db0f97380ed9279ea9c14d4dc5cf64dc21aba5ad949e52849974d",
+E               "src/vgar/graph/token_counter.py": "302f9cd69347bef1a15fe54a0d1834f6958c3d62310679b8b46586bd590c3b89",
+E               "src/vgar/graph/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+E             },
+E             "dirty_paths": [
+E               "src/vgar/evaluation/retrieval/compare.py",
+E               "src/vgar/evaluation/retrieval/scoring.py"
+E             ]
+E           },
+E           "runtime_revision": "r002",
+E           "profile": {
+E             "model_id": "Qwen/Qwen3-4B-Instruct-2507",
+E             "revision": "cdbee75f17c01a7cc42f958dc650907174af0554",
+E             "snapshot": "D:\\Project\\CAPSTONES\\.cache\\huggingface\\hub\\models--Qwen--Qwen3-4B-Instruct-2507\\snapshots\\cdbee75f17c01a7cc42f958dc650907174af0554",
+E             "interpreter": "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe",
+E             "tokenizer_manifest": "D:\\Project\\CAPSTONES\\VGAR\\artifacts\\m2\\w5-w6\\tokenizer_manifest.json",
+E             "approved_prototype": true,
+E             "do_sample": false,
+E             "dtype": "float16",
+E             "device_map": "auto"
+E           },
+E           "policy": {
+E             "prompt_version": "m2-w78-v11",
+E             "input_cap": 6000,
+E             "output_cap": 1536,
+E             "reserved_margin": 256,
+E             "generation_timeout": 900.0,
+E             "command_timeout": 120.0,
+E             "global_timeout": 1800.0,
+E             "max_output_bytes": 8388608,
+E             "max_diff_bytes": 262144,
+E             "max_files": 5,
+E             "max_changed_lines": 500,
+E             "runtime": "native_trusted_fixtures"
+E           },
+E           "hf": {
+E             "cuda": true,
+E             "versions": {
+E               "torch": "2.11.0+cu128",
+E               "transformers": "4.57.6",
+E               "tokenizers": "0.22.2",
+E               "accelerate": "1.15.0",
+E               "safetensors": "0.8.0"
+E             },
+E             "gpu": "NVIDIA GeForce RTX 4050 Laptop GPU"
+E           }
+E         }
+E         END preflight; exit=0; duration_ms=3519
+E         D:\Project\CAPSTONES\M2_week_7_8\test_abc_v11_r002.ps1 : Exception calling "Replace" with "3" argument(s): "The path 
+E         is not of a legal form."
+E             + CategoryInfo          : NotSpecified: (:) [test_abc_v11_r002.ps1], MethodInvocationException
+E             + FullyQualifiedErrorId : ArgumentException,test_abc_v11_r002.ps1
+E          
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['powershell', '-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', 'D:\\Project\\CAPSTONES\\M2_..._v11_r002.ps1], MethodInvocationException\n    + FullyQualifiedErrorId : ArgumentException,test_abc_v11_r002.ps1\n \n').returncode
+
+.superpowers\sdd\2026-10-15-m2-delivery-package\test_delivery.py:53: AssertionError</failure></testcase></testsuite></testsuites>

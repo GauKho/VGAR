@@ -1,0 +1,8 @@
+{
+  "template_hash": "sha256:e11d6e7575934e0732a34bcde32f1e9e3e53e2caa21110edb23cc3d8f02a1966",
+  "parent_version": "m2-w78-v7",
+  "parent_record": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\03\\20261015T004931535482Z-daa3ae13e75e\\run_record.json",
+  "reason": "V7 had correct production files and hunk counts but omitted context markers before source indentation",
+  "hypothesis": "A body-only neutral whitespace example distinguishes one context marker from original Python indentation without copying numeric headers",
+  "registered_utc": "2026-10-15T00:55:32.659728+00:00"
+}

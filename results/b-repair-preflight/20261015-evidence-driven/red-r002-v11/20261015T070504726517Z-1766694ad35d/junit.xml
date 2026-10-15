@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="3" time="0.122" timestamp="2026-10-15T14:05:05.301853+07:00" hostname="TMT"><testcase classname="tests.test_b_failure_routing" name="test_parse_failure_with_command_timeout_metadata_is_candidate" time="0.009"><failure message="AssertionError: assert 'runtime' == 'candidate'&#10;  &#10;  - candidate&#10;  + runtime">def test_parse_failure_with_command_timeout_metadata_is_candidate():
+        record = dict(status='FAIL', reason='PATCH_PARSE_ERROR', error_detail={
+            'type':'ValueError','message':'Expected file headers; extra text/operations are not allowed'},
+            stages={'baseline':{'command':{'timeout_seconds':120,'timed_out':False}}})
+&gt;       assert api('b_experiment').diagnose(record)['category'] == 'candidate'
+E       AssertionError: assert 'runtime' == 'candidate'
+E         
+E         - candidate
+E         + runtime
+
+tests\test_b_failure_routing.py:9: AssertionError</failure></testcase><testcase classname="tests.test_b_failure_routing" name="test_worker_prompt_hash_mismatch_keeps_integrity_precedence" time="0.000" /><testcase classname="tests.test_prompt_v11" name="test_v11_has_no_copyable_format_delimiters_and_keeps_valid_neutral_diff" time="0.008"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'D:\\Project\\CAPSTONES\\M2_week_7_8\\prompts\\repair_v11.txt'">tmp_path = WindowsPath('D:/Project/CAPSTONES/M2_week_7_8/results/b-repair-preflight/20261015-evidence-driven/temp/pytest-of-pc/pytest-16/test_v11_has_no_copyable_forma0')
+
+    def test_v11_has_no_copyable_format_delimiters_and_keeps_valid_neutral_diff(tmp_path):
+        root = Path(__file__).resolve().parents[1]
+&gt;       template = (root/'prompts/repair_v11.txt').read_text(encoding='utf-8')
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_prompt_v11.py:9: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Program Files\Python311\Lib\pathlib.py:1058: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('D:/Project/CAPSTONES/M2_week_7_8/prompts/repair_v11.txt')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'D:\\Project\\CAPSTONES\\M2_week_7_8\\prompts\\repair_v11.txt'
+
+C:\Program Files\Python311\Lib\pathlib.py:1044: FileNotFoundError</failure></testcase></testsuite></testsuites>

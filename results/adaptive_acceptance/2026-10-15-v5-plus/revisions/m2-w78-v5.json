@@ -1,0 +1,8 @@
+{
+  "template_hash": "sha256:c2681aa98de9b24b11b6a289d35a0e8eafefdbc2c20f0f3bbb0b146fbc1fe4e1",
+  "parent_version": null,
+  "parent_record": null,
+  "reason": "Approved V5: complete multi-file issue and absolute hunk coordinates",
+  "hypothesis": "Neutral offsets 3/6 and explicit original-file first line reduce snippet-relative start errors",
+  "registered_utc": "2026-10-15T00:37:02.443757+00:00"
+}

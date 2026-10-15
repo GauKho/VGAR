@@ -1,0 +1,1298 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="21" skipped="0" tests="21" time="1.016" timestamp="2026-10-14T21:13:56.531574+07:00" hostname="TMT"><testcase classname="tests.test_acceptance_campaign" name="test_next_attempt_uses_order_and_restarts_all_cases_on_v4[history0-want0]" time="0.002"><failure message="Failed: Planned M2 API not implemented: campaign">module = 'campaign'
+
+    def api(module):
+        try:
+&gt;           return importlib.import_module('vgar_m2_w78.' + module)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_bootstrap.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'vgar_m2_w78.campaign', package = None
+
+    def import_module(name, package=None):
+        """Import a module.
+    
+        The 'package' argument is required when performing a relative import. It
+        specifies the package to use as the anchor point from which to resolve the
+        relative import to an absolute import.
+    
+        """
+        level = 0
+        if name.startswith('.'):
+            if not package:
+                msg = ("the 'package' argument is required to perform a relative "
+                       "import for {!r}")
+                raise TypeError(msg.format(name))
+            for character in name:
+                if character != '.':
+                    break
+                level += 1
+&gt;       return _bootstrap._gcd_import(name[level:], package, level)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ModuleNotFoundError: No module named 'vgar_m2_w78.campaign'
+
+C:\Program Files\Python311\Lib\importlib\__init__.py:126: ModuleNotFoundError
+
+During handling of the above exception, another exception occurred:
+
+history = [], want = ('m2-w78-v3', 'single_file_login')
+
+    @pytest.mark.parametrize('history,want',[
+        ([],(V3,A)),
+        ([(V3,A,'PASS')],(V3,B)),
+        ([(V3,A,'FAIL')],(V4,A)),
+        ([(V3,A,'PASS'),(V3,B,'FAIL')],(V4,A)),
+        ([(V3,A,'PASS'),(V3,B,'PASS'),(V3,C,'FAIL')],(V4,A)),
+        ([(V3,A,'FAIL'),(V4,A,'PASS'),(V4,B,'PASS')],(V4,C)),
+    ])
+    def test_next_attempt_uses_order_and_restarts_all_cases_on_v4(history,want):
+        entries=[dict(version=v,task_id=t,status=s) for v,t,s in history]
+&gt;       step=api('campaign').next_step(entries)
+             ^^^^^^^^^^^^^^^
+
+tests\test_acceptance_campaign.py:22: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+module = 'campaign'
+
+    def api(module):
+        try:
+            return importlib.import_module('vgar_m2_w78.' + module)
+        except ModuleNotFoundError:
+&gt;           pytest.fail('Planned M2 API not implemented: ' + module)
+E           Failed: Planned M2 API not implemented: campaign
+
+tests\test_bootstrap.py:13: Failed</failure></testcase><testcase classname="tests.test_acceptance_campaign" name="test_next_attempt_uses_order_and_restarts_all_cases_on_v4[history1-want1]" time="0.001"><failure message="Failed: Planned M2 API not implemented: campaign">module = 'campaign'
+
+    def api(module):
+        try:
+&gt;           return importlib.import_module('vgar_m2_w78.' + module)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_bootstrap.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'vgar_m2_w78.campaign', package = None
+
+    def import_module(name, package=None):
+        """Import a module.
+    
+        The 'package' argument is required when performing a relative import. It
+        specifies the package to use as the anchor point from which to resolve the
+        relative import to an absolute import.
+    
+        """
+        level = 0
+        if name.startswith('.'):
+            if not package:
+                msg = ("the 'package' argument is required to perform a relative "
+                       "import for {!r}")
+                raise TypeError(msg.format(name))
+            for character in name:
+                if character != '.':
+                    break
+                level += 1
+&gt;       return _bootstrap._gcd_import(name[level:], package, level)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ModuleNotFoundError: No module named 'vgar_m2_w78.campaign'
+
+C:\Program Files\Python311\Lib\importlib\__init__.py:126: ModuleNotFoundError
+
+During handling of the above exception, another exception occurred:
+
+history = [('m2-w78-v3', 'single_file_login', 'PASS')]
+want = ('m2-w78-v3', 'multi_file_invoice')
+
+    @pytest.mark.parametrize('history,want',[
+        ([],(V3,A)),
+        ([(V3,A,'PASS')],(V3,B)),
+        ([(V3,A,'FAIL')],(V4,A)),
+        ([(V3,A,'PASS'),(V3,B,'FAIL')],(V4,A)),
+        ([(V3,A,'PASS'),(V3,B,'PASS'),(V3,C,'FAIL')],(V4,A)),
+        ([(V3,A,'FAIL'),(V4,A,'PASS'),(V4,B,'PASS')],(V4,C)),
+    ])
+    def test_next_attempt_uses_order_and_restarts_all_cases_on_v4(history,want):
+        entries=[dict(version=v,task_id=t,status=s) for v,t,s in history]
+&gt;       step=api('campaign').next_step(entries)
+             ^^^^^^^^^^^^^^^
+
+tests\test_acceptance_campaign.py:22: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+module = 'campaign'
+
+    def api(module):
+        try:
+            return importlib.import_module('vgar_m2_w78.' + module)
+        except ModuleNotFoundError:
+&gt;           pytest.fail('Planned M2 API not implemented: ' + module)
+E           Failed: Planned M2 API not implemented: campaign
+
+tests\test_bootstrap.py:13: Failed</failure></testcase><testcase classname="tests.test_acceptance_campaign" name="test_next_attempt_uses_order_and_restarts_all_cases_on_v4[history2-want2]" time="0.001"><failure message="Failed: Planned M2 API not implemented: campaign">module = 'campaign'
+
+    def api(module):
+        try:
+&gt;           return importlib.import_module('vgar_m2_w78.' + module)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_bootstrap.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'vgar_m2_w78.campaign', package = None
+
+    def import_module(name, package=None):
+        """Import a module.
+    
+        The 'package' argument is required when performing a relative import. It
+        specifies the package to use as the anchor point from which to resolve the
+        relative import to an absolute import.
+    
+        """
+        level = 0
+        if name.startswith('.'):
+            if not package:
+                msg = ("the 'package' argument is required to perform a relative "
+                       "import for {!r}")
+                raise TypeError(msg.format(name))
+            for character in name:
+                if character != '.':
+                    break
+                level += 1
+&gt;       return _bootstrap._gcd_import(name[level:], package, level)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ModuleNotFoundError: No module named 'vgar_m2_w78.campaign'
+
+C:\Program Files\Python311\Lib\importlib\__init__.py:126: ModuleNotFoundError
+
+During handling of the above exception, another exception occurred:
+
+history = [('m2-w78-v3', 'single_file_login', 'FAIL')]
+want = ('m2-w78-v4', 'single_file_login')
+
+    @pytest.mark.parametrize('history,want',[
+        ([],(V3,A)),
+        ([(V3,A,'PASS')],(V3,B)),
+        ([(V3,A,'FAIL')],(V4,A)),
+        ([(V3,A,'PASS'),(V3,B,'FAIL')],(V4,A)),
+        ([(V3,A,'PASS'),(V3,B,'PASS'),(V3,C,'FAIL')],(V4,A)),
+        ([(V3,A,'FAIL'),(V4,A,'PASS'),(V4,B,'PASS')],(V4,C)),
+    ])
+    def test_next_attempt_uses_order_and_restarts_all_cases_on_v4(history,want):
+        entries=[dict(version=v,task_id=t,status=s) for v,t,s in history]
+&gt;       step=api('campaign').next_step(entries)
+             ^^^^^^^^^^^^^^^
+
+tests\test_acceptance_campaign.py:22: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+module = 'campaign'
+
+    def api(module):
+        try:
+            return importlib.import_module('vgar_m2_w78.' + module)
+        except ModuleNotFoundError:
+&gt;           pytest.fail('Planned M2 API not implemented: ' + module)
+E           Failed: Planned M2 API not implemented: campaign
+
+tests\test_bootstrap.py:13: Failed</failure></testcase><testcase classname="tests.test_acceptance_campaign" name="test_next_attempt_uses_order_and_restarts_all_cases_on_v4[history3-want3]" time="0.001"><failure message="Failed: Planned M2 API not implemented: campaign">module = 'campaign'
+
+    def api(module):
+        try:
+&gt;           return importlib.import_module('vgar_m2_w78.' + module)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_bootstrap.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'vgar_m2_w78.campaign', package = None
+
+    def import_module(name, package=None):
+        """Import a module.
+    
+        The 'package' argument is required when performing a relative import. It
+        specifies the package to use as the anchor point from which to resolve the
+        relative import to an absolute import.
+    
+        """
+        level = 0
+        if name.startswith('.'):
+            if not package:
+                msg = ("the 'package' argument is required to perform a relative "
+                       "import for {!r}")
+                raise TypeError(msg.format(name))
+            for character in name:
+                if character != '.':
+                    break
+                level += 1
+&gt;       return _bootstrap._gcd_import(name[level:], package, level)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ModuleNotFoundError: No module named 'vgar_m2_w78.campaign'
+
+C:\Program Files\Python311\Lib\importlib\__init__.py:126: ModuleNotFoundError
+
+During handling of the above exception, another exception occurred:
+
+history = [('m2-w78-v3', 'single_file_login', 'PASS'), ('m2-w78-v3', 'multi_file_invoice', 'FAIL')]
+want = ('m2-w78-v4', 'single_file_login')
+
+    @pytest.mark.parametrize('history,want',[
+        ([],(V3,A)),
+        ([(V3,A,'PASS')],(V3,B)),
+        ([(V3,A,'FAIL')],(V4,A)),
+        ([(V3,A,'PASS'),(V3,B,'FAIL')],(V4,A)),
+        ([(V3,A,'PASS'),(V3,B,'PASS'),(V3,C,'FAIL')],(V4,A)),
+        ([(V3,A,'FAIL'),(V4,A,'PASS'),(V4,B,'PASS')],(V4,C)),
+    ])
+    def test_next_attempt_uses_order_and_restarts_all_cases_on_v4(history,want):
+        entries=[dict(version=v,task_id=t,status=s) for v,t,s in history]
+&gt;       step=api('campaign').next_step(entries)
+             ^^^^^^^^^^^^^^^
+
+tests\test_acceptance_campaign.py:22: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+module = 'campaign'
+
+    def api(module):
+        try:
+            return importlib.import_module('vgar_m2_w78.' + module)
+        except ModuleNotFoundError:
+&gt;           pytest.fail('Planned M2 API not implemented: ' + module)
+E           Failed: Planned M2 API not implemented: campaign
+
+tests\test_bootstrap.py:13: Failed</failure></testcase><testcase classname="tests.test_acceptance_campaign" name="test_next_attempt_uses_order_and_restarts_all_cases_on_v4[history4-want4]" time="0.001"><failure message="Failed: Planned M2 API not implemented: campaign">module = 'campaign'
+
+    def api(module):
+        try:
+&gt;           return importlib.import_module('vgar_m2_w78.' + module)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_bootstrap.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'vgar_m2_w78.campaign', package = None
+
+    def import_module(name, package=None):
+        """Import a module.
+    
+        The 'package' argument is required when performing a relative import. It
+        specifies the package to use as the anchor point from which to resolve the
+        relative import to an absolute import.
+    
+        """
+        level = 0
+        if name.startswith('.'):
+            if not package:
+                msg = ("the 'package' argument is required to perform a relative "
+                       "import for {!r}")
+                raise TypeError(msg.format(name))
+            for character in name:
+                if character != '.':
+                    break
+                level += 1
+&gt;       return _bootstrap._gcd_import(name[level:], package, level)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ModuleNotFoundError: No module named 'vgar_m2_w78.campaign'
+
+C:\Program Files\Python311\Lib\importlib\__init__.py:126: ModuleNotFoundError
+
+During handling of the above exception, another exception occurred:
+
+history = [('m2-w78-v3', 'single_file_login', 'PASS'), ('m2-w78-v3', 'multi_file_invoice', 'PASS'), ('m2-w78-v3', 'missing_links', 'FAIL')]
+want = ('m2-w78-v4', 'single_file_login')
+
+    @pytest.mark.parametrize('history,want',[
+        ([],(V3,A)),
+        ([(V3,A,'PASS')],(V3,B)),
+        ([(V3,A,'FAIL')],(V4,A)),
+        ([(V3,A,'PASS'),(V3,B,'FAIL')],(V4,A)),
+        ([(V3,A,'PASS'),(V3,B,'PASS'),(V3,C,'FAIL')],(V4,A)),
+        ([(V3,A,'FAIL'),(V4,A,'PASS'),(V4,B,'PASS')],(V4,C)),
+    ])
+    def test_next_attempt_uses_order_and_restarts_all_cases_on_v4(history,want):
+        entries=[dict(version=v,task_id=t,status=s) for v,t,s in history]
+&gt;       step=api('campaign').next_step(entries)
+             ^^^^^^^^^^^^^^^
+
+tests\test_acceptance_campaign.py:22: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+module = 'campaign'
+
+    def api(module):
+        try:
+            return importlib.import_module('vgar_m2_w78.' + module)
+        except ModuleNotFoundError:
+&gt;           pytest.fail('Planned M2 API not implemented: ' + module)
+E           Failed: Planned M2 API not implemented: campaign
+
+tests\test_bootstrap.py:13: Failed</failure></testcase><testcase classname="tests.test_acceptance_campaign" name="test_next_attempt_uses_order_and_restarts_all_cases_on_v4[history5-want5]" time="0.001"><failure message="Failed: Planned M2 API not implemented: campaign">module = 'campaign'
+
+    def api(module):
+        try:
+&gt;           return importlib.import_module('vgar_m2_w78.' + module)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_bootstrap.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'vgar_m2_w78.campaign', package = None
+
+    def import_module(name, package=None):
+        """Import a module.
+    
+        The 'package' argument is required when performing a relative import. It
+        specifies the package to use as the anchor point from which to resolve the
+        relative import to an absolute import.
+    
+        """
+        level = 0
+        if name.startswith('.'):
+            if not package:
+                msg = ("the 'package' argument is required to perform a relative "
+                       "import for {!r}")
+                raise TypeError(msg.format(name))
+            for character in name:
+                if character != '.':
+                    break
+                level += 1
+&gt;       return _bootstrap._gcd_import(name[level:], package, level)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ModuleNotFoundError: No module named 'vgar_m2_w78.campaign'
+
+C:\Program Files\Python311\Lib\importlib\__init__.py:126: ModuleNotFoundError
+
+During handling of the above exception, another exception occurred:
+
+history = [('m2-w78-v3', 'single_file_login', 'FAIL'), ('m2-w78-v4', 'single_file_login', 'PASS'), ('m2-w78-v4', 'multi_file_invoice', 'PASS')]
+want = ('m2-w78-v4', 'missing_links')
+
+    @pytest.mark.parametrize('history,want',[
+        ([],(V3,A)),
+        ([(V3,A,'PASS')],(V3,B)),
+        ([(V3,A,'FAIL')],(V4,A)),
+        ([(V3,A,'PASS'),(V3,B,'FAIL')],(V4,A)),
+        ([(V3,A,'PASS'),(V3,B,'PASS'),(V3,C,'FAIL')],(V4,A)),
+        ([(V3,A,'FAIL'),(V4,A,'PASS'),(V4,B,'PASS')],(V4,C)),
+    ])
+    def test_next_attempt_uses_order_and_restarts_all_cases_on_v4(history,want):
+        entries=[dict(version=v,task_id=t,status=s) for v,t,s in history]
+&gt;       step=api('campaign').next_step(entries)
+             ^^^^^^^^^^^^^^^
+
+tests\test_acceptance_campaign.py:22: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+module = 'campaign'
+
+    def api(module):
+        try:
+            return importlib.import_module('vgar_m2_w78.' + module)
+        except ModuleNotFoundError:
+&gt;           pytest.fail('Planned M2 API not implemented: ' + module)
+E           Failed: Planned M2 API not implemented: campaign
+
+tests\test_bootstrap.py:13: Failed</failure></testcase><testcase classname="tests.test_acceptance_campaign" name="test_terminal_campaign_never_launches_more_after_success_error_or_two_failures[history0-PASS]" time="0.001"><failure message="Failed: Planned M2 API not implemented: campaign">module = 'campaign'
+
+    def api(module):
+        try:
+&gt;           return importlib.import_module('vgar_m2_w78.' + module)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_bootstrap.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'vgar_m2_w78.campaign', package = None
+
+    def import_module(name, package=None):
+        """Import a module.
+    
+        The 'package' argument is required when performing a relative import. It
+        specifies the package to use as the anchor point from which to resolve the
+        relative import to an absolute import.
+    
+        """
+        level = 0
+        if name.startswith('.'):
+            if not package:
+                msg = ("the 'package' argument is required to perform a relative "
+                       "import for {!r}")
+                raise TypeError(msg.format(name))
+            for character in name:
+                if character != '.':
+                    break
+                level += 1
+&gt;       return _bootstrap._gcd_import(name[level:], package, level)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ModuleNotFoundError: No module named 'vgar_m2_w78.campaign'
+
+C:\Program Files\Python311\Lib\importlib\__init__.py:126: ModuleNotFoundError
+
+During handling of the above exception, another exception occurred:
+
+history = [('m2-w78-v3', 'single_file_login', 'PASS'), ('m2-w78-v3', 'multi_file_invoice', 'PASS'), ('m2-w78-v3', 'missing_links', 'PASS')]
+status = 'PASS'
+
+    @pytest.mark.parametrize('history,status',[
+        ([(V3,A,'PASS'),(V3,B,'PASS'),(V3,C,'PASS')],'PASS'),
+        ([(V3,A,'FAIL'),(V4,A,'FAIL')],'FAIL'),
+        ([(V3,A,'ERROR')],'ERROR'),
+        ([(V3,A,'PASS'),(V3,B,'PASS'),(V3,C,'FAIL'),(V4,A,'PASS'),(V4,B,'PASS'),(V4,C,'PASS')],'PASS'),
+    ])
+    def test_terminal_campaign_never_launches_more_after_success_error_or_two_failures(history,status):
+&gt;       step=api('campaign').next_step([dict(version=v,task_id=t,status=s) for v,t,s in history])
+             ^^^^^^^^^^^^^^^
+
+tests\test_acceptance_campaign.py:33: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+module = 'campaign'
+
+    def api(module):
+        try:
+            return importlib.import_module('vgar_m2_w78.' + module)
+        except ModuleNotFoundError:
+&gt;           pytest.fail('Planned M2 API not implemented: ' + module)
+E           Failed: Planned M2 API not implemented: campaign
+
+tests\test_bootstrap.py:13: Failed</failure></testcase><testcase classname="tests.test_acceptance_campaign" name="test_terminal_campaign_never_launches_more_after_success_error_or_two_failures[history1-FAIL]" time="0.001"><failure message="Failed: Planned M2 API not implemented: campaign">module = 'campaign'
+
+    def api(module):
+        try:
+&gt;           return importlib.import_module('vgar_m2_w78.' + module)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_bootstrap.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'vgar_m2_w78.campaign', package = None
+
+    def import_module(name, package=None):
+        """Import a module.
+    
+        The 'package' argument is required when performing a relative import. It
+        specifies the package to use as the anchor point from which to resolve the
+        relative import to an absolute import.
+    
+        """
+        level = 0
+        if name.startswith('.'):
+            if not package:
+                msg = ("the 'package' argument is required to perform a relative "
+                       "import for {!r}")
+                raise TypeError(msg.format(name))
+            for character in name:
+                if character != '.':
+                    break
+                level += 1
+&gt;       return _bootstrap._gcd_import(name[level:], package, level)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ModuleNotFoundError: No module named 'vgar_m2_w78.campaign'
+
+C:\Program Files\Python311\Lib\importlib\__init__.py:126: ModuleNotFoundError
+
+During handling of the above exception, another exception occurred:
+
+history = [('m2-w78-v3', 'single_file_login', 'FAIL'), ('m2-w78-v4', 'single_file_login', 'FAIL')]
+status = 'FAIL'
+
+    @pytest.mark.parametrize('history,status',[
+        ([(V3,A,'PASS'),(V3,B,'PASS'),(V3,C,'PASS')],'PASS'),
+        ([(V3,A,'FAIL'),(V4,A,'FAIL')],'FAIL'),
+        ([(V3,A,'ERROR')],'ERROR'),
+        ([(V3,A,'PASS'),(V3,B,'PASS'),(V3,C,'FAIL'),(V4,A,'PASS'),(V4,B,'PASS'),(V4,C,'PASS')],'PASS'),
+    ])
+    def test_terminal_campaign_never_launches_more_after_success_error_or_two_failures(history,status):
+&gt;       step=api('campaign').next_step([dict(version=v,task_id=t,status=s) for v,t,s in history])
+             ^^^^^^^^^^^^^^^
+
+tests\test_acceptance_campaign.py:33: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+module = 'campaign'
+
+    def api(module):
+        try:
+            return importlib.import_module('vgar_m2_w78.' + module)
+        except ModuleNotFoundError:
+&gt;           pytest.fail('Planned M2 API not implemented: ' + module)
+E           Failed: Planned M2 API not implemented: campaign
+
+tests\test_bootstrap.py:13: Failed</failure></testcase><testcase classname="tests.test_acceptance_campaign" name="test_terminal_campaign_never_launches_more_after_success_error_or_two_failures[history2-ERROR]" time="0.001"><failure message="Failed: Planned M2 API not implemented: campaign">module = 'campaign'
+
+    def api(module):
+        try:
+&gt;           return importlib.import_module('vgar_m2_w78.' + module)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_bootstrap.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'vgar_m2_w78.campaign', package = None
+
+    def import_module(name, package=None):
+        """Import a module.
+    
+        The 'package' argument is required when performing a relative import. It
+        specifies the package to use as the anchor point from which to resolve the
+        relative import to an absolute import.
+    
+        """
+        level = 0
+        if name.startswith('.'):
+            if not package:
+                msg = ("the 'package' argument is required to perform a relative "
+                       "import for {!r}")
+                raise TypeError(msg.format(name))
+            for character in name:
+                if character != '.':
+                    break
+                level += 1
+&gt;       return _bootstrap._gcd_import(name[level:], package, level)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ModuleNotFoundError: No module named 'vgar_m2_w78.campaign'
+
+C:\Program Files\Python311\Lib\importlib\__init__.py:126: ModuleNotFoundError
+
+During handling of the above exception, another exception occurred:
+
+history = [('m2-w78-v3', 'single_file_login', 'ERROR')], status = 'ERROR'
+
+    @pytest.mark.parametrize('history,status',[
+        ([(V3,A,'PASS'),(V3,B,'PASS'),(V3,C,'PASS')],'PASS'),
+        ([(V3,A,'FAIL'),(V4,A,'FAIL')],'FAIL'),
+        ([(V3,A,'ERROR')],'ERROR'),
+        ([(V3,A,'PASS'),(V3,B,'PASS'),(V3,C,'FAIL'),(V4,A,'PASS'),(V4,B,'PASS'),(V4,C,'PASS')],'PASS'),
+    ])
+    def test_terminal_campaign_never_launches_more_after_success_error_or_two_failures(history,status):
+&gt;       step=api('campaign').next_step([dict(version=v,task_id=t,status=s) for v,t,s in history])
+             ^^^^^^^^^^^^^^^
+
+tests\test_acceptance_campaign.py:33: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+module = 'campaign'
+
+    def api(module):
+        try:
+            return importlib.import_module('vgar_m2_w78.' + module)
+        except ModuleNotFoundError:
+&gt;           pytest.fail('Planned M2 API not implemented: ' + module)
+E           Failed: Planned M2 API not implemented: campaign
+
+tests\test_bootstrap.py:13: Failed</failure></testcase><testcase classname="tests.test_acceptance_campaign" name="test_terminal_campaign_never_launches_more_after_success_error_or_two_failures[history3-PASS]" time="0.001"><failure message="Failed: Planned M2 API not implemented: campaign">module = 'campaign'
+
+    def api(module):
+        try:
+&gt;           return importlib.import_module('vgar_m2_w78.' + module)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_bootstrap.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'vgar_m2_w78.campaign', package = None
+
+    def import_module(name, package=None):
+        """Import a module.
+    
+        The 'package' argument is required when performing a relative import. It
+        specifies the package to use as the anchor point from which to resolve the
+        relative import to an absolute import.
+    
+        """
+        level = 0
+        if name.startswith('.'):
+            if not package:
+                msg = ("the 'package' argument is required to perform a relative "
+                       "import for {!r}")
+                raise TypeError(msg.format(name))
+            for character in name:
+                if character != '.':
+                    break
+                level += 1
+&gt;       return _bootstrap._gcd_import(name[level:], package, level)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ModuleNotFoundError: No module named 'vgar_m2_w78.campaign'
+
+C:\Program Files\Python311\Lib\importlib\__init__.py:126: ModuleNotFoundError
+
+During handling of the above exception, another exception occurred:
+
+history = [('m2-w78-v3', 'single_file_login', 'PASS'), ('m2-w78-v3', 'multi_file_invoice', 'PASS'), ('m2-w78-v3', 'missing_links...v4', 'single_file_login', 'PASS'), ('m2-w78-v4', 'multi_file_invoice', 'PASS'), ('m2-w78-v4', 'missing_links', 'PASS')]
+status = 'PASS'
+
+    @pytest.mark.parametrize('history,status',[
+        ([(V3,A,'PASS'),(V3,B,'PASS'),(V3,C,'PASS')],'PASS'),
+        ([(V3,A,'FAIL'),(V4,A,'FAIL')],'FAIL'),
+        ([(V3,A,'ERROR')],'ERROR'),
+        ([(V3,A,'PASS'),(V3,B,'PASS'),(V3,C,'FAIL'),(V4,A,'PASS'),(V4,B,'PASS'),(V4,C,'PASS')],'PASS'),
+    ])
+    def test_terminal_campaign_never_launches_more_after_success_error_or_two_failures(history,status):
+&gt;       step=api('campaign').next_step([dict(version=v,task_id=t,status=s) for v,t,s in history])
+             ^^^^^^^^^^^^^^^
+
+tests\test_acceptance_campaign.py:33: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+module = 'campaign'
+
+    def api(module):
+        try:
+            return importlib.import_module('vgar_m2_w78.' + module)
+        except ModuleNotFoundError:
+&gt;           pytest.fail('Planned M2 API not implemented: ' + module)
+E           Failed: Planned M2 API not implemented: campaign
+
+tests\test_bootstrap.py:13: Failed</failure></testcase><testcase classname="tests.test_acceptance_campaign" name="test_wrong_order_and_seventh_attempt_are_rejected" time="0.001"><failure message="Failed: Planned M2 API not implemented: campaign">module = 'campaign'
+
+    def api(module):
+        try:
+&gt;           return importlib.import_module('vgar_m2_w78.' + module)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_bootstrap.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'vgar_m2_w78.campaign', package = None
+
+    def import_module(name, package=None):
+        """Import a module.
+    
+        The 'package' argument is required when performing a relative import. It
+        specifies the package to use as the anchor point from which to resolve the
+        relative import to an absolute import.
+    
+        """
+        level = 0
+        if name.startswith('.'):
+            if not package:
+                msg = ("the 'package' argument is required to perform a relative "
+                       "import for {!r}")
+                raise TypeError(msg.format(name))
+            for character in name:
+                if character != '.':
+                    break
+                level += 1
+&gt;       return _bootstrap._gcd_import(name[level:], package, level)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ModuleNotFoundError: No module named 'vgar_m2_w78.campaign'
+
+C:\Program Files\Python311\Lib\importlib\__init__.py:126: ModuleNotFoundError
+
+During handling of the above exception, another exception occurred:
+
+    def test_wrong_order_and_seventh_attempt_are_rejected():
+        with pytest.raises(ValueError):
+&gt;           api('campaign').next_step([dict(version=V4,task_id=B,status='PASS')])
+            ^^^^^^^^^^^^^^^
+
+tests\test_acceptance_campaign.py:39: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+module = 'campaign'
+
+    def api(module):
+        try:
+            return importlib.import_module('vgar_m2_w78.' + module)
+        except ModuleNotFoundError:
+&gt;           pytest.fail('Planned M2 API not implemented: ' + module)
+E           Failed: Planned M2 API not implemented: campaign
+
+tests\test_bootstrap.py:13: Failed</failure></testcase><testcase classname="tests.test_acceptance_campaign" name="test_reservation_is_durable_and_live_pending_blocks_new_attempt" time="0.007"><failure message="Failed: Planned M2 API not implemented: campaign">module = 'campaign'
+
+    def api(module):
+        try:
+&gt;           return importlib.import_module('vgar_m2_w78.' + module)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_bootstrap.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'vgar_m2_w78.campaign', package = None
+
+    def import_module(name, package=None):
+        """Import a module.
+    
+        The 'package' argument is required when performing a relative import. It
+        specifies the package to use as the anchor point from which to resolve the
+        relative import to an absolute import.
+    
+        """
+        level = 0
+        if name.startswith('.'):
+            if not package:
+                msg = ("the 'package' argument is required to perform a relative "
+                       "import for {!r}")
+                raise TypeError(msg.format(name))
+            for character in name:
+                if character != '.':
+                    break
+                level += 1
+&gt;       return _bootstrap._gcd_import(name[level:], package, level)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ModuleNotFoundError: No module named 'vgar_m2_w78.campaign'
+
+C:\Program Files\Python311\Lib\importlib\__init__.py:126: ModuleNotFoundError
+
+During handling of the above exception, another exception occurred:
+
+tmp_path = WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-545/test_reservation_is_durable_an0')
+
+    def test_reservation_is_durable_and_live_pending_blocks_new_attempt(tmp_path):
+&gt;       store=api('campaign').CampaignStore.create(tmp_path/'campaign',{'pin':'fixture'})
+              ^^^^^^^^^^^^^^^
+
+tests\test_acceptance_campaign.py:45: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+module = 'campaign'
+
+    def api(module):
+        try:
+            return importlib.import_module('vgar_m2_w78.' + module)
+        except ModuleNotFoundError:
+&gt;           pytest.fail('Planned M2 API not implemented: ' + module)
+E           Failed: Planned M2 API not implemented: campaign
+
+tests\test_bootstrap.py:13: Failed</failure></testcase><testcase classname="tests.test_acceptance_campaign" name="test_dead_pending_consumes_attempt_and_runtime_error_stops" time="0.002"><failure message="Failed: Planned M2 API not implemented: campaign">module = 'campaign'
+
+    def api(module):
+        try:
+&gt;           return importlib.import_module('vgar_m2_w78.' + module)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_bootstrap.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'vgar_m2_w78.campaign', package = None
+
+    def import_module(name, package=None):
+        """Import a module.
+    
+        The 'package' argument is required when performing a relative import. It
+        specifies the package to use as the anchor point from which to resolve the
+        relative import to an absolute import.
+    
+        """
+        level = 0
+        if name.startswith('.'):
+            if not package:
+                msg = ("the 'package' argument is required to perform a relative "
+                       "import for {!r}")
+                raise TypeError(msg.format(name))
+            for character in name:
+                if character != '.':
+                    break
+                level += 1
+&gt;       return _bootstrap._gcd_import(name[level:], package, level)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ModuleNotFoundError: No module named 'vgar_m2_w78.campaign'
+
+C:\Program Files\Python311\Lib\importlib\__init__.py:126: ModuleNotFoundError
+
+During handling of the above exception, another exception occurred:
+
+tmp_path = WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-545/test_dead_pending_consumes_att0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001EDC3C5AF10&gt;
+
+    def test_dead_pending_consumes_attempt_and_runtime_error_stops(tmp_path,monkeypatch):
+&gt;       module=api('campaign')
+               ^^^^^^^^^^^^^^^
+
+tests\test_acceptance_campaign.py:61: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+module = 'campaign'
+
+    def api(module):
+        try:
+            return importlib.import_module('vgar_m2_w78.' + module)
+        except ModuleNotFoundError:
+&gt;           pytest.fail('Planned M2 API not implemented: ' + module)
+E           Failed: Planned M2 API not implemented: campaign
+
+tests\test_bootstrap.py:13: Failed</failure></testcase><testcase classname="tests.test_acceptance_campaign" name="test_changed_snapshot_and_concurrent_owner_block" time="0.002"><failure message="Failed: Planned M2 API not implemented: campaign">module = 'campaign'
+
+    def api(module):
+        try:
+&gt;           return importlib.import_module('vgar_m2_w78.' + module)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_bootstrap.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'vgar_m2_w78.campaign', package = None
+
+    def import_module(name, package=None):
+        """Import a module.
+    
+        The 'package' argument is required when performing a relative import. It
+        specifies the package to use as the anchor point from which to resolve the
+        relative import to an absolute import.
+    
+        """
+        level = 0
+        if name.startswith('.'):
+            if not package:
+                msg = ("the 'package' argument is required to perform a relative "
+                       "import for {!r}")
+                raise TypeError(msg.format(name))
+            for character in name:
+                if character != '.':
+                    break
+                level += 1
+&gt;       return _bootstrap._gcd_import(name[level:], package, level)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ModuleNotFoundError: No module named 'vgar_m2_w78.campaign'
+
+C:\Program Files\Python311\Lib\importlib\__init__.py:126: ModuleNotFoundError
+
+During handling of the above exception, another exception occurred:
+
+tmp_path = WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-545/test_changed_snapshot_and_conc0')
+
+    def test_changed_snapshot_and_concurrent_owner_block(tmp_path):
+&gt;       module=api('campaign')
+               ^^^^^^^^^^^^^^^
+
+tests\test_acceptance_campaign.py:74: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+module = 'campaign'
+
+    def api(module):
+        try:
+            return importlib.import_module('vgar_m2_w78.' + module)
+        except ModuleNotFoundError:
+&gt;           pytest.fail('Planned M2 API not implemented: ' + module)
+E           Failed: Planned M2 API not implemented: campaign
+
+tests\test_bootstrap.py:13: Failed</failure></testcase><testcase classname="tests.test_acceptance_campaign" name="test_top_level_pass_cannot_hide_failed_acceptance_gate[fake]" time="0.017"><failure message="Failed: Planned M2 API not implemented: campaign">module = 'campaign'
+
+    def api(module):
+        try:
+&gt;           return importlib.import_module('vgar_m2_w78.' + module)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_bootstrap.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'vgar_m2_w78.campaign', package = None
+
+    def import_module(name, package=None):
+        """Import a module.
+    
+        The 'package' argument is required when performing a relative import. It
+        specifies the package to use as the anchor point from which to resolve the
+        relative import to an absolute import.
+    
+        """
+        level = 0
+        if name.startswith('.'):
+            if not package:
+                msg = ("the 'package' argument is required to perform a relative "
+                       "import for {!r}")
+                raise TypeError(msg.format(name))
+            for character in name:
+                if character != '.':
+                    break
+                level += 1
+&gt;       return _bootstrap._gcd_import(name[level:], package, level)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ModuleNotFoundError: No module named 'vgar_m2_w78.campaign'
+
+C:\Program Files\Python311\Lib\importlib\__init__.py:126: ModuleNotFoundError
+
+During handling of the above exception, another exception occurred:
+
+tmp_path = WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-545/test_top_level_pass_cannot_hid0')
+fault = 'fake'
+
+    @pytest.mark.parametrize('fault',['fake','required_skip','one_file','bundle_hash','lint_missing'])
+    def test_top_level_pass_cannot_hide_failed_acceptance_gate(tmp_path,fault):
+        case=B if fault=='one_file' else A
+        path=simulated_record(tmp_path/'run',case)
+        record=json.loads(path.read_text(encoding='utf-8'))
+        if fault=='fake': record['mode']='fake'
+        elif fault=='required_skip': record['stages']['verification']['tests']['outcomes']['test.py::test_fix']='SKIP'
+        elif fault=='one_file': record['stages']['apply']['changed_files']=['invoice.py']
+        elif fault=='lint_missing': record['stages']['verification']['static']['ruff']['status']='NOT_RUN'
+        if fault!='bundle_hash':
+            api('evidence').atomic_json(path,record)
+            bundle=json.loads((path.parent/'evidence_bundle.json').read_text(encoding='utf-8'))
+            bundle['metadata']['canonical_sha256']=api('evidence').digest(path.read_bytes())
+            api('evidence').atomic_json(path.parent/'evidence_bundle.json',bundle)
+        else:
+            path.write_text(path.read_text(encoding='utf-8')+' ',encoding='utf-8')
+&gt;       assessment=api('campaign').assess_record(path)
+                   ^^^^^^^^^^^^^^^
+
+tests\test_acceptance_campaign.py:123: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+module = 'campaign'
+
+    def api(module):
+        try:
+            return importlib.import_module('vgar_m2_w78.' + module)
+        except ModuleNotFoundError:
+&gt;           pytest.fail('Planned M2 API not implemented: ' + module)
+E           Failed: Planned M2 API not implemented: campaign
+
+tests\test_bootstrap.py:13: Failed</failure></testcase><testcase classname="tests.test_acceptance_campaign" name="test_top_level_pass_cannot_hide_failed_acceptance_gate[required_skip]" time="0.013"><failure message="Failed: Planned M2 API not implemented: campaign">module = 'campaign'
+
+    def api(module):
+        try:
+&gt;           return importlib.import_module('vgar_m2_w78.' + module)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_bootstrap.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'vgar_m2_w78.campaign', package = None
+
+    def import_module(name, package=None):
+        """Import a module.
+    
+        The 'package' argument is required when performing a relative import. It
+        specifies the package to use as the anchor point from which to resolve the
+        relative import to an absolute import.
+    
+        """
+        level = 0
+        if name.startswith('.'):
+            if not package:
+                msg = ("the 'package' argument is required to perform a relative "
+                       "import for {!r}")
+                raise TypeError(msg.format(name))
+            for character in name:
+                if character != '.':
+                    break
+                level += 1
+&gt;       return _bootstrap._gcd_import(name[level:], package, level)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ModuleNotFoundError: No module named 'vgar_m2_w78.campaign'
+
+C:\Program Files\Python311\Lib\importlib\__init__.py:126: ModuleNotFoundError
+
+During handling of the above exception, another exception occurred:
+
+tmp_path = WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-545/test_top_level_pass_cannot_hid1')
+fault = 'required_skip'
+
+    @pytest.mark.parametrize('fault',['fake','required_skip','one_file','bundle_hash','lint_missing'])
+    def test_top_level_pass_cannot_hide_failed_acceptance_gate(tmp_path,fault):
+        case=B if fault=='one_file' else A
+        path=simulated_record(tmp_path/'run',case)
+        record=json.loads(path.read_text(encoding='utf-8'))
+        if fault=='fake': record['mode']='fake'
+        elif fault=='required_skip': record['stages']['verification']['tests']['outcomes']['test.py::test_fix']='SKIP'
+        elif fault=='one_file': record['stages']['apply']['changed_files']=['invoice.py']
+        elif fault=='lint_missing': record['stages']['verification']['static']['ruff']['status']='NOT_RUN'
+        if fault!='bundle_hash':
+            api('evidence').atomic_json(path,record)
+            bundle=json.loads((path.parent/'evidence_bundle.json').read_text(encoding='utf-8'))
+            bundle['metadata']['canonical_sha256']=api('evidence').digest(path.read_bytes())
+            api('evidence').atomic_json(path.parent/'evidence_bundle.json',bundle)
+        else:
+            path.write_text(path.read_text(encoding='utf-8')+' ',encoding='utf-8')
+&gt;       assessment=api('campaign').assess_record(path)
+                   ^^^^^^^^^^^^^^^
+
+tests\test_acceptance_campaign.py:123: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+module = 'campaign'
+
+    def api(module):
+        try:
+            return importlib.import_module('vgar_m2_w78.' + module)
+        except ModuleNotFoundError:
+&gt;           pytest.fail('Planned M2 API not implemented: ' + module)
+E           Failed: Planned M2 API not implemented: campaign
+
+tests\test_bootstrap.py:13: Failed</failure></testcase><testcase classname="tests.test_acceptance_campaign" name="test_top_level_pass_cannot_hide_failed_acceptance_gate[one_file]" time="0.012"><failure message="Failed: Planned M2 API not implemented: campaign">module = 'campaign'
+
+    def api(module):
+        try:
+&gt;           return importlib.import_module('vgar_m2_w78.' + module)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_bootstrap.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'vgar_m2_w78.campaign', package = None
+
+    def import_module(name, package=None):
+        """Import a module.
+    
+        The 'package' argument is required when performing a relative import. It
+        specifies the package to use as the anchor point from which to resolve the
+        relative import to an absolute import.
+    
+        """
+        level = 0
+        if name.startswith('.'):
+            if not package:
+                msg = ("the 'package' argument is required to perform a relative "
+                       "import for {!r}")
+                raise TypeError(msg.format(name))
+            for character in name:
+                if character != '.':
+                    break
+                level += 1
+&gt;       return _bootstrap._gcd_import(name[level:], package, level)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ModuleNotFoundError: No module named 'vgar_m2_w78.campaign'
+
+C:\Program Files\Python311\Lib\importlib\__init__.py:126: ModuleNotFoundError
+
+During handling of the above exception, another exception occurred:
+
+tmp_path = WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-545/test_top_level_pass_cannot_hid2')
+fault = 'one_file'
+
+    @pytest.mark.parametrize('fault',['fake','required_skip','one_file','bundle_hash','lint_missing'])
+    def test_top_level_pass_cannot_hide_failed_acceptance_gate(tmp_path,fault):
+        case=B if fault=='one_file' else A
+        path=simulated_record(tmp_path/'run',case)
+        record=json.loads(path.read_text(encoding='utf-8'))
+        if fault=='fake': record['mode']='fake'
+        elif fault=='required_skip': record['stages']['verification']['tests']['outcomes']['test.py::test_fix']='SKIP'
+        elif fault=='one_file': record['stages']['apply']['changed_files']=['invoice.py']
+        elif fault=='lint_missing': record['stages']['verification']['static']['ruff']['status']='NOT_RUN'
+        if fault!='bundle_hash':
+            api('evidence').atomic_json(path,record)
+            bundle=json.loads((path.parent/'evidence_bundle.json').read_text(encoding='utf-8'))
+            bundle['metadata']['canonical_sha256']=api('evidence').digest(path.read_bytes())
+            api('evidence').atomic_json(path.parent/'evidence_bundle.json',bundle)
+        else:
+            path.write_text(path.read_text(encoding='utf-8')+' ',encoding='utf-8')
+&gt;       assessment=api('campaign').assess_record(path)
+                   ^^^^^^^^^^^^^^^
+
+tests\test_acceptance_campaign.py:123: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+module = 'campaign'
+
+    def api(module):
+        try:
+            return importlib.import_module('vgar_m2_w78.' + module)
+        except ModuleNotFoundError:
+&gt;           pytest.fail('Planned M2 API not implemented: ' + module)
+E           Failed: Planned M2 API not implemented: campaign
+
+tests\test_bootstrap.py:13: Failed</failure></testcase><testcase classname="tests.test_acceptance_campaign" name="test_top_level_pass_cannot_hide_failed_acceptance_gate[bundle_hash]" time="0.008"><failure message="Failed: Planned M2 API not implemented: campaign">module = 'campaign'
+
+    def api(module):
+        try:
+&gt;           return importlib.import_module('vgar_m2_w78.' + module)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_bootstrap.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'vgar_m2_w78.campaign', package = None
+
+    def import_module(name, package=None):
+        """Import a module.
+    
+        The 'package' argument is required when performing a relative import. It
+        specifies the package to use as the anchor point from which to resolve the
+        relative import to an absolute import.
+    
+        """
+        level = 0
+        if name.startswith('.'):
+            if not package:
+                msg = ("the 'package' argument is required to perform a relative "
+                       "import for {!r}")
+                raise TypeError(msg.format(name))
+            for character in name:
+                if character != '.':
+                    break
+                level += 1
+&gt;       return _bootstrap._gcd_import(name[level:], package, level)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ModuleNotFoundError: No module named 'vgar_m2_w78.campaign'
+
+C:\Program Files\Python311\Lib\importlib\__init__.py:126: ModuleNotFoundError
+
+During handling of the above exception, another exception occurred:
+
+tmp_path = WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-545/test_top_level_pass_cannot_hid3')
+fault = 'bundle_hash'
+
+    @pytest.mark.parametrize('fault',['fake','required_skip','one_file','bundle_hash','lint_missing'])
+    def test_top_level_pass_cannot_hide_failed_acceptance_gate(tmp_path,fault):
+        case=B if fault=='one_file' else A
+        path=simulated_record(tmp_path/'run',case)
+        record=json.loads(path.read_text(encoding='utf-8'))
+        if fault=='fake': record['mode']='fake'
+        elif fault=='required_skip': record['stages']['verification']['tests']['outcomes']['test.py::test_fix']='SKIP'
+        elif fault=='one_file': record['stages']['apply']['changed_files']=['invoice.py']
+        elif fault=='lint_missing': record['stages']['verification']['static']['ruff']['status']='NOT_RUN'
+        if fault!='bundle_hash':
+            api('evidence').atomic_json(path,record)
+            bundle=json.loads((path.parent/'evidence_bundle.json').read_text(encoding='utf-8'))
+            bundle['metadata']['canonical_sha256']=api('evidence').digest(path.read_bytes())
+            api('evidence').atomic_json(path.parent/'evidence_bundle.json',bundle)
+        else:
+            path.write_text(path.read_text(encoding='utf-8')+' ',encoding='utf-8')
+&gt;       assessment=api('campaign').assess_record(path)
+                   ^^^^^^^^^^^^^^^
+
+tests\test_acceptance_campaign.py:123: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+module = 'campaign'
+
+    def api(module):
+        try:
+            return importlib.import_module('vgar_m2_w78.' + module)
+        except ModuleNotFoundError:
+&gt;           pytest.fail('Planned M2 API not implemented: ' + module)
+E           Failed: Planned M2 API not implemented: campaign
+
+tests\test_bootstrap.py:13: Failed</failure></testcase><testcase classname="tests.test_acceptance_campaign" name="test_top_level_pass_cannot_hide_failed_acceptance_gate[lint_missing]" time="0.013"><failure message="Failed: Planned M2 API not implemented: campaign">module = 'campaign'
+
+    def api(module):
+        try:
+&gt;           return importlib.import_module('vgar_m2_w78.' + module)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_bootstrap.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'vgar_m2_w78.campaign', package = None
+
+    def import_module(name, package=None):
+        """Import a module.
+    
+        The 'package' argument is required when performing a relative import. It
+        specifies the package to use as the anchor point from which to resolve the
+        relative import to an absolute import.
+    
+        """
+        level = 0
+        if name.startswith('.'):
+            if not package:
+                msg = ("the 'package' argument is required to perform a relative "
+                       "import for {!r}")
+                raise TypeError(msg.format(name))
+            for character in name:
+                if character != '.':
+                    break
+                level += 1
+&gt;       return _bootstrap._gcd_import(name[level:], package, level)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ModuleNotFoundError: No module named 'vgar_m2_w78.campaign'
+
+C:\Program Files\Python311\Lib\importlib\__init__.py:126: ModuleNotFoundError
+
+During handling of the above exception, another exception occurred:
+
+tmp_path = WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-545/test_top_level_pass_cannot_hid4')
+fault = 'lint_missing'
+
+    @pytest.mark.parametrize('fault',['fake','required_skip','one_file','bundle_hash','lint_missing'])
+    def test_top_level_pass_cannot_hide_failed_acceptance_gate(tmp_path,fault):
+        case=B if fault=='one_file' else A
+        path=simulated_record(tmp_path/'run',case)
+        record=json.loads(path.read_text(encoding='utf-8'))
+        if fault=='fake': record['mode']='fake'
+        elif fault=='required_skip': record['stages']['verification']['tests']['outcomes']['test.py::test_fix']='SKIP'
+        elif fault=='one_file': record['stages']['apply']['changed_files']=['invoice.py']
+        elif fault=='lint_missing': record['stages']['verification']['static']['ruff']['status']='NOT_RUN'
+        if fault!='bundle_hash':
+            api('evidence').atomic_json(path,record)
+            bundle=json.loads((path.parent/'evidence_bundle.json').read_text(encoding='utf-8'))
+            bundle['metadata']['canonical_sha256']=api('evidence').digest(path.read_bytes())
+            api('evidence').atomic_json(path.parent/'evidence_bundle.json',bundle)
+        else:
+            path.write_text(path.read_text(encoding='utf-8')+' ',encoding='utf-8')
+&gt;       assessment=api('campaign').assess_record(path)
+                   ^^^^^^^^^^^^^^^
+
+tests\test_acceptance_campaign.py:123: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+module = 'campaign'
+
+    def api(module):
+        try:
+            return importlib.import_module('vgar_m2_w78.' + module)
+        except ModuleNotFoundError:
+&gt;           pytest.fail('Planned M2 API not implemented: ' + module)
+E           Failed: Planned M2 API not implemented: campaign
+
+tests\test_bootstrap.py:13: Failed</failure></testcase><testcase classname="tests.test_acceptance_campaign" name="test_finish_records_terminal_path_and_resumed_campaign_advances" time="0.002"><failure message="Failed: Planned M2 API not implemented: campaign">module = 'campaign'
+
+    def api(module):
+        try:
+&gt;           return importlib.import_module('vgar_m2_w78.' + module)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_bootstrap.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'vgar_m2_w78.campaign', package = None
+
+    def import_module(name, package=None):
+        """Import a module.
+    
+        The 'package' argument is required when performing a relative import. It
+        specifies the package to use as the anchor point from which to resolve the
+        relative import to an absolute import.
+    
+        """
+        level = 0
+        if name.startswith('.'):
+            if not package:
+                msg = ("the 'package' argument is required to perform a relative "
+                       "import for {!r}")
+                raise TypeError(msg.format(name))
+            for character in name:
+                if character != '.':
+                    break
+                level += 1
+&gt;       return _bootstrap._gcd_import(name[level:], package, level)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ModuleNotFoundError: No module named 'vgar_m2_w78.campaign'
+
+C:\Program Files\Python311\Lib\importlib\__init__.py:126: ModuleNotFoundError
+
+During handling of the above exception, another exception occurred:
+
+tmp_path = WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-545/test_finish_records_terminal_p0')
+
+    def test_finish_records_terminal_path_and_resumed_campaign_advances(tmp_path):
+&gt;       module=api('campaign')
+               ^^^^^^^^^^^^^^^
+
+tests\test_acceptance_campaign.py:128: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+module = 'campaign'
+
+    def api(module):
+        try:
+            return importlib.import_module('vgar_m2_w78.' + module)
+        except ModuleNotFoundError:
+&gt;           pytest.fail('Planned M2 API not implemented: ' + module)
+E           Failed: Planned M2 API not implemented: campaign
+
+tests\test_bootstrap.py:13: Failed</failure></testcase><testcase classname="tests.test_acceptance_campaign" name="test_pipeline_embeds_campaign_identity_before_bundle_hash" time="0.653"><failure message="TypeError: run_repair() got an unexpected keyword argument 'campaign_id'">m1_case = (RepairTask(task_id='single_file_login', issue_text='auth.py login accepts whitespace-only names; trim the name before...', 'pytest.ini'), trusted_fixture=True), &lt;vgar.graph.token_counter.LocalTokenizerCounter object at 0x000001EDC60B53D0&gt;)
+tmp_path = WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-545/test_pipeline_embeds_campaign_0')
+
+    def test_pipeline_embeds_campaign_identity_before_bundle_hash(m1_case,tmp_path):
+        from conftest import CharacterChatTokenizer
+        from test_pipeline import FIX
+        task,counter=m1_case
+&gt;       result=api('pipeline').run_repair(task,api('contracts').RepairPolicy(prompt_version=V3),api('generator').FakeGenerator(FIX),None,
+            tmp_path/'runs',m1_counter=counter,tokenizer=CharacterChatTokenizer(),temp_root=tmp_path/'temp',campaign_id='campaign',attempt_id='attempt-01')
+E       TypeError: run_repair() got an unexpected keyword argument 'campaign_id'
+
+tests\test_acceptance_campaign.py:144: TypeError</failure></testcase></testsuite></testsuites>

@@ -1,0 +1,14 @@
+{
+    "argv":  [
+                 "D:\\Project\\CAPSTONES\\M2_week_7_8\\.venv\\Scripts\\python.exe",
+                 "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\delivery-tests\\pytest-4-test_optimized_python_is_rejec0\\verification_job.py",
+                 "preflight",
+                 "D:\\Project\\CAPSTONES\\M2_week_7_8",
+                 "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\delivery-tests\\pytest-4-test_optimized_python_is_rejec0",
+                 "ReadSaved"
+             ],
+    "exit_code":  0,
+    "started_utc":  "2026-10-15T09:00:05.6932231Z",
+    "ended_utc":  "2026-10-15T09:00:07.1344472Z",
+    "duration_ms":  1434
+}

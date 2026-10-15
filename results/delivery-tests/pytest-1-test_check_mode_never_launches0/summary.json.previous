@@ -1,0 +1,12 @@
+{
+    "status":  "NOT_RUN",
+    "complete":  false,
+    "mode":  "Check",
+    "started_utc":  "2026-10-15T08:42:47.0017327Z",
+    "ended_utc":  null,
+    "cases":  [
+
+              ],
+    "output_root":  "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\delivery-tests\\pytest-1-test_check_mode_never_launches0",
+    "reason":  null
+}

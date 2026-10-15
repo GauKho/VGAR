@@ -1,0 +1,12 @@
+{
+    "status":  "NOT_RUN",
+    "complete":  false,
+    "mode":  "Run",
+    "started_utc":  "2026-10-15T09:00:14.3625641Z",
+    "ended_utc":  null,
+    "cases":  [
+
+              ],
+    "output_root":  "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\delivery-tests\\pytest-4-test_failed_selftests_print_re0",
+    "reason":  null
+}

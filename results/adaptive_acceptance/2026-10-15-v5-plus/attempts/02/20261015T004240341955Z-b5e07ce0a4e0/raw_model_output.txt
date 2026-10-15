@@ -1,0 +1,25 @@
+--- a/pricing.py
++++ b/pricing.py
+@@ -1,2 +1,2 @@
+ def discounted_price(price, discount_percent):
+-    return price - discount_percent
++    return price - (price * (discount_percent / 100))
+--- a/invoice.py
++++ b/invoice.py
+@@ -4,6 +4,6 @@
+ def invoice_total(price, discount_percent, tax_percent):
+     net = discounted_price(price, discount_percent)
+-    return net + tax_percent
++    return net + (net * (tax_percent / 100))
+--- a/tests/test_invoice.py
++++ b/tests/test_invoice.py
+@@ -5,4 +5,4 @@
+ def test_discount_percentage():
+     assert discounted_price(200, 10) == 180
+-# test_invoice_percentage_tax is now covered by updated logic
++# test_invoice_percentage_tax is now covered by updated logic
+@@ -9,4 +9,4 @@
+ def test_invoice_percentage_tax():
+     assert invoice_total(200, 10, 5) == 189
+-# test_invoice_without_adjustments is now covered by updated logic
++# test_invoice_without_adjustments is now covered by updated logic

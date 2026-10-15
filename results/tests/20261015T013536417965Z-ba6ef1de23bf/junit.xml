@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="3" skipped="0" tests="6" time="0.255" timestamp="2026-10-15T08:35:36.855585+07:00" hostname="TMT"><testcase classname="tests.test_generation_diagnostics" name="test_observer_captures_actual_decoder_config_and_mask_without_changing_call" time="0.009"><failure message="TypeError: 'NoneType' object is not subscriptable">def test_observer_captures_actual_decoder_config_and_mask_without_changing_call():
+        module = api('hf_diagnostics')
+        model, snapshots = Decoder(), []
+        original = model._sample
+        settings = Config(do_sample=False, eos_token_id=[9], max_length=None)
+        result, diagnostic = module.generate_observed(model, Tensor([[1, 2, 3]]), settings,
+            dict(do_sample=False, max_new_tokens=6, return_dict_in_generate=False),
+            lambda item: snapshots.append(json.loads(json.dumps(item))))
+        assert result.tolist() == [[1, 2, 3, 8, 9]]
+&gt;       assert diagnostic['effective_generation_config']['do_sample'] is False
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: 'NoneType' object is not subscriptable
+
+tests\test_generation_diagnostics.py:85: TypeError</failure></testcase><testcase classname="tests.test_generation_diagnostics" name="test_observer_persists_configuration_before_failure_and_restores_decoder" time="0.001"><failure message="TypeError: 'NoneType' object is not subscriptable">def test_observer_persists_configuration_before_failure_and_restores_decoder():
+        model, snapshots = Decoder(fail=True), []
+        with pytest.raises(RuntimeError, match='decoder crashed'):
+            api('hf_diagnostics').generate_observed(model, Tensor([[1, 2, 3]]), Config(do_sample=False),
+                dict(do_sample=False, max_new_tokens=6, return_dict_in_generate=False),
+                lambda item: snapshots.append(deepcopy(item)))
+        assert snapshots[-1]['status'] == 'ERROR' and snapshots[-1]['phase'] == 'error'
+&gt;       assert snapshots[-1]['effective_generation_config']['max_length'] == 9
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: 'NoneType' object is not subscriptable
+
+tests\test_generation_diagnostics.py:104: TypeError</failure></testcase><testcase classname="tests.test_generation_diagnostics" name="test_unsupported_decoder_does_not_invent_effective_observation" time="0.001" /><testcase classname="tests.test_generation_diagnostics" name="test_worker_serializes_chained_exception" time="0.010" /><testcase classname="tests.test_generation_diagnostics" name="test_backend_wires_observer_and_writes_durable_metadata_without_weights" time="0.006"><failure message="TypeError: 'NoneType' object is not subscriptable">tmp_path = WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-591/test_backend_wires_observer_an0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000002351A289A50&gt;
+
+    def test_backend_wires_observer_and_writes_durable_metadata_without_weights(tmp_path, monkeypatch):
+        backend = api('hf_backend')
+        class Tokenizer:
+            def apply_chat_template(self, messages, *, tokenize, add_generation_prompt, return_tensors=None):
+                return Tensor([[1, 2, 3]]) if return_tensors else [1, 2, 3] if tokenize else 'rendered'
+    
+            def decode(self, ids, **kwargs):
+                return 'generated'
+        tokenizer, model = Tokenizer(), Decoder()
+        monkeypatch.setitem(sys.modules, 'transformers', SimpleNamespace(
+            AutoTokenizer=SimpleNamespace(from_pretrained=lambda *a, **kw: tokenizer),
+            AutoModelForCausalLM=SimpleNamespace(from_pretrained=lambda *a, **kw: model)))
+        monkeypatch.setitem(sys.modules, 'torch', SimpleNamespace(cuda=SimpleNamespace(
+            is_available=lambda: True, reset_peak_memory_stats=lambda: None,
+            max_memory_allocated=lambda: 123, get_device_name=lambda n: 'unit-test-double'),
+            float16='float16', inference_mode=nullcontext))
+        monkeypatch.setattr(backend.importlib.metadata, 'version', lambda name: 'unit-test-double')
+        snapshot = tmp_path/backend.REVISION
+        snapshot.mkdir()
+        (snapshot/'config.json').write_text('{"max_position_embeddings": 100}', encoding='utf-8')
+        request = dict(kind='generate', messages=[dict(role='user', content='neutral')], expected_input_tokens=3,
+            profile=dict(snapshot=str(snapshot), approved_prototype=True, model_id=backend.MODEL, revision=backend.REVISION),
+            policy=dict(input_cap=20, output_cap=6, reserved_margin=2))
+        artifact = tmp_path/'generation_diagnostics.json'
+        result = backend.execute(request, diagnostics_path=artifact)
+        stored = json.loads(artifact.read_text(encoding='utf-8'))
+        assert result['raw_text'] == 'generated' and result['output_tokens'] == 2
+        assert stored == result['generation_diagnostics']
+&gt;       assert stored['effective_generation_config']['max_length'] == 9
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: 'NoneType' object is not subscriptable
+
+tests\test_generation_diagnostics.py:165: TypeError</failure></testcase><testcase classname="tests.test_generation_diagnostics" name="test_host_keeps_partial_generation_diagnostics_when_worker_fails" time="0.140" /></testsuite></testsuites>

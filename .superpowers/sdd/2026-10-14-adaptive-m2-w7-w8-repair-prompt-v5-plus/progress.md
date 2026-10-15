@@ -1,0 +1,51 @@
+# SDD ledger — plan: docs/superpowers/plans/2026-10-14-adaptive-m2-w7-w8-repair-prompt-v5-plus.md
+
+Finalhandoff: docs/plancheckboxes/README/COMPLETION_REPORT/FAILURES/guide/REPORT andsummary updatedwith actualB4FAIL/C1PASS/finalNOT_RUN. DocumentationauditPASS at results/checks/20261015T010602134092Z-5a277ccd02b2/run_record.json:5Markdownfiles/6PowerShellblocks/13tables, protectedreferencegitstatus/diff(readonly command-scopedsafe.directory, no globalconfig). Oneinline Python-c quotingerror beforebegin_run, nofiles/attemptschanged, orchestrationfixedandrecorded. 74frozenfiles/5revisions/5bundles/3sources audited. Preserve archive/ledger; noGitintegration/cleanup becauseusernonGit/nocommitapproval; noextraattempts/modelprocess. Terminal checkpoint below authoritative; older live entries historical.
+
+TERMINAL CHECKPOINT 15/10/2026: engineering/boundedexperiment finished, real3/3 UNMET. B4FAIL(V5 counts2/body3,V6 counts6/body3+rawtestdiff,V7 contextprefix,V8 unauthorizedmetadatafile); C1V9 realPASS nofeedback. CanonicalC attempts/05/20261015T005816855246Z-a997178dc2f5/run_record.json,65.359s/input957/output43/EOS, formatter.py, baseline1FAIL1PASS->post2PASS, collection/fallback/staticPASS/sourceunchanged. Session79482 endedexit0; campaign nevertheless terminalFAIL TUNING_QUOTA_EXHAUSTED, nofinal/pending/profile. NEVERB5/noextracaseC/noreset withoutnewapproval.
+
+Milestone1 complete: archived69files/historical69/protectedVGAR4 and126baselinePASS.
+Milestone2 complete: controller/presentation/prompts/reviewfixes RED->GREEN,148PASS beforefreeze; V6/V7/V8/V9 newprompttests RED->GREEN. NewV9 neutralfullsnippet replacement exactparse+GitapplyGREEN8 at005810022680Z-43a7262e9a84. No runtime edits afterfreeze.
+Milestone3 complete as boundedprotocol: BquotaexhaustedBLOCKED, CfirstPASS, all5evidence retained; noOOM/timeout/truncation.
+Milestone4 NOT_RUN/unmet becauseBnotPASS; no pooledversions/fake/OK.
+Milestone5 reports/checkpoint/guide prepared andverified; teammate replay/M3 externalNOTACCEPTED. Finalfull152PASS88.51s recorder89.203s exit0 at results/tests/20261015T005945598043Z-a4f4d47f3d8d/run_record.json. Ruff/frozen/source/5publiccanonicalbundles/caps/deadowners/history auditPASS at results/checks/20261015T010114900109Z-cfbffe5811a9/run_record.json; auditPASS!=campaignPASS. Earlier live notes historical; all execsessions ended. No commit/push. Preserve nonGit archive/ledger; do not delete sole recovery record.
+
+Latest: B4 V8 FAIL PATCH_PARSE_ERROR Protected or unapproved path, raw invents host_path_policy.json; sourceunchanged, total75.734s/input1655/output49/EOS. Canonical attempts/04/20261015T005533899467Z-16d544650f34/run_record.json. B quota4 exhausted BLOCKED, noB5/final. V9 metadata-not-source/whole-snippet replacement neutralexample exact strictparse+Gitapply RED005748137182Z-4ed713425863 -> GREEN8 005810022680Z-43a7262e9a84, RuffPASS. RegisteredV9, C1 attempt05 running execsession79482, feedbackNone (no Bfeedback transferred). No runtimeguard/model change. Only poll handle; previous live notes historical.
+
+Latest: B3 V7 terminalFAIL PATCH_PARSE_ERROR, correct paths/counts but no context marker before def, only4 instead of5 spaces before unchanged assignment. Canonical attempts/03/20261015T004931535482Z-daa3ae13e75e/run_record.json, total133.422s/input1584/output124/EOS/sourceunchanged. V8 whitespace-body neutralexample TDD RED at005301742703Z-ab04aa6193bf -> focusedGREEN8 at005528142073Z-e80d98b5b5f9; RuffPASS. RegisteredV8, attempt04 tuning_B running execsession96365. LAST authorizedB, C/final0. No runtime edits/guard changes; only poll existinghandle. Earlier live entries historical.
+
+Latest: V7GREEN7 at results/tests/20261015T004924428681Z-ab4950e84c9f/run_record.json, RuffPASS, registered; attempt03B V7 running execsession7596. ThreeB reserved(twoFAIL), C/final0, sourcecodefreezeunchanged. Pollhandle only.
+
+ActualB2V6 FAIL PATCH_PARSE_ERROR malformedhunk count6 vsactual3, unauthorizedtestheaders/hallucinatedcomments inraw. EOS261tokens,input1799,total271.938s, sourceunchanged, noapply. Canonical attempts/02/20261015T004240341955Z-b5e07ce0a4e0/run_record.json; session47679endedexit1. V7 shortergenericpolicy: fullsnippet oldstart=Source_start,count=Snippet_line_count; ignorefiletotal/endcounts; testsreadonly; removeexamples toreducecopy/confusion. No actualsolution/gold, rawunchanged. NewtestRED missingV7 at20261015T004840664848Z-b296dcd224df. NextfocusedGREEN/register/B3, C/finalnotrun. No coreedit afterfreeze.
+
+Latest actual: V6 focusedGREEN23 at results/tests/20261015T004212433083Z-207198c7cbfb/run_record.json, registeredchangedhash; attempt02 tuning_B V6 running execsession47679. B1FAIL counts3vsdeclared2 retained; twoB reserved, C/final0. No runtime edits, onlyV6newtemplate/selftest/docs. Do not restart pending generation.
+
+ActualB1V5 FAIL PATCH_PARSE_ERROR counts2 actual3, starts4correct andtwofilespresent; EOS134tokens,input1614,total189.641s, sourceunchanged. Canonical attempts/01/20261015T003703727090Z-e62648364844/run_record.json; session54898endedexit1. Rootcause rawinvoice hasdefcontext+2removed =3old anddefcontext+2added=3new butdeclares2. V6 newneutralexample3counts/unchangedassignmentcontext, genericnofixtureanswers; RED missingV6 at results/tests/20261015T004131406711Z-49ed91250767/run_record.json. Onlyprompt/newselftest/docs edited afterfreeze, notruntime. NextfocusedGREEN/registerV6/B2; no C/finalyet.
+
+Milestone3 live: init/freeze andV5register succeeded, campaign results/adaptive_acceptance/2026-10-15-v5-plus, attempt01 tuning_B V5 running execsession54898. OneB reserved, no terminal result. No other worker/rereview/core edit. Only poll existinghandle/canonical; no duplicate launch.
+
+Milestone2 complete afteronefixpass: full148PASS91.55s at results/tests/20261015T003431000678Z-2ed7f5d46960/run_record.json; Ruff/history PASS results/checks/20261015T003520341923Z-7c7ed0acbfac/run_record.json. Review3Important allfixed,1Minor deferred, no rereview. Runtime freeze +V5register and realB next; no source changes afterfreeze. Prior inprogress notes historical.
+
+Final review returned: noCritical,2Important crashtransactions/identicaltemplate,2Minor. Recovery commandERROR for terminalPASS regradedImportant by actual normalresumeeffect. One fixpass RED4+9oldPASS at results/tests/20261015T003232409439Z-45a30e887790/run_record.json → GREEN22 at results/tests/20261015T003334787835Z-188f03ecb3a7/run_record.json. All3Important fixed: orphanregistrationreconcile/durablebeforemkdir; identicalparenthashreject; actiondispatchafterrecovery/exportonlyterminalPASS. Fullsuite now running; no rereview/inferenceyet.
+Final: minor (deferred): static-check feedback chooses pytest stdout; full failed-check diagnostics remain in canonical and Codex must read them. Existing deep JUnit-counter reconciliation remains out of this extension.
+Final: Ruling: empirical promptquality judged only from upcoming retained real runs — cost: no benchmark/generalization guarantee.
+Final: Ruling: each future revision is author-reviewed for substantive change/no embedded fixture solution; hashes establish identity only — cost: no automated semantic/goldabsence proof.
+Final: Ruling: hostile coordinated ledger/snapshot/evidence rewriting not authenticated by this localfixture controller — cost: not adversarial storage/security acceptance.
+Final: Ruling: ownerlock covers this fixed campaign, not machinewide GPU callers — cost: external runs can contend; don't launch them concurrently.
+Final: Ruling: Windows existing kill-on-close workers are approved runtime; Linux orphan behavior not accepted — cost: no crossplatform qualification.
+Final: Ruling: finaldocs/results author checked and humanrepro/M3 owned externally — cost: no independent integration signoff.
+Final: Ruling: nonGit archive/ledger replaces Git-isolation/commit workflow under userapproval — cost: preserve local artifacts, no Git recovery.
+
+Latest checkpoint: full144PASS90.19s at results/tests/20261015T002457111204Z-87340a8f70c8/run_record.json; execsession13623 ended. Ruff/genuine-tokenizer V5A1187/B1614/C1072 and historical preservation PASS at results/checks/20261015T002833577904Z-40869529560c/run_record.json. One fresh-context gpt-6-astra finalreview inprogress; no new real inference/freeze yet. Earlier inprogress entries below are historical.
+
+Approved15/10/2026 Asia/Saigon: inline Codex prompt adaptation, max4B+4C+3final,
+same final template3PASS, all original model/budget/source guards retained.
+Ruling: standalone non-Git M2 directory is approved isolation; no Git init/worktree/commit — cost: preserve archive/ledger/evidence for recovery instead of commits.
+Ruling: full runtime review before inference, one TDD fix pass, final observed docs author-checked — cost: no second independent review of later prompt/results; human reproduction external.
+Preflight1→2: archived original runtime/hashes → historical audit; no old evidence rewrites.
+Preflight2→3: frozen code/profile plus append-only templates → adaptive revisions; no source edits after freeze.
+Preflight3→4: tuning B,C PASS → last C template frozen, no previous feedback in final3.
+Preflight4→5: canonical gates/bundles → acceptance report; no old/fake/OK pooling.
+Milestone1 in progress. No new model run launched. Previous campaign terminalFAIL4runs2failures preserved.
+Milestone1 complete: archive69files/historical69/protectedexternal4 at results/adaptive-preflight/20261015T001508430263Z-6296d566fd2e/archive_manifest.json; source/profile pins and old owner terminal checked. Baseline126PASS87.45s at results/tests/20261015T001511843849Z-7ff83d5d2111/run_record.json.
+Milestone2 TDD: prompt RED4+1existingguardPASS at results/tests/20261015T001612781686Z-ab6e8345b73d/run_record.json; GREEN22 incllegacy at results/tests/20261015T001729456969Z-3aab35695cc3/run_record.json. Controller RED4fail/5missingmoduleerrors at20261015T002004222808Z-45f3e457c4db; GREEN9 at20261015T002147684262Z-5423de3285a8. CLI/historymapping/pending RED4 at20261015T002310035276Z-234c480f5935; combinedGREEN18 at20261015T002431659744Z-151b43dc7a02. Full suite inprogress execsession13623; do not duplicate. Ruff F401 unusednewtestimport identified/removed, no protected/coreguard edits.

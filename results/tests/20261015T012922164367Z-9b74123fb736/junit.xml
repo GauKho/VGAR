@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="5" skipped="0" tests="5" time="0.156" timestamp="2026-10-15T08:29:22.703279+07:00" hostname="TMT"><testcase classname="tests.test_generation_diagnostics" name="test_observer_captures_actual_decoder_config_and_mask_without_changing_call" time="0.002"><failure message="Failed: Planned M2 API not implemented: hf_diagnostics">module = 'hf_diagnostics'
+
+    def api(module):
+        try:
+&gt;           return importlib.import_module('vgar_m2_w78.' + module)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_bootstrap.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'vgar_m2_w78.hf_diagnostics', package = None
+
+    def import_module(name, package=None):
+        """Import a module.
+    
+        The 'package' argument is required when performing a relative import. It
+        specifies the package to use as the anchor point from which to resolve the
+        relative import to an absolute import.
+    
+        """
+        level = 0
+        if name.startswith('.'):
+            if not package:
+                msg = ("the 'package' argument is required to perform a relative "
+                       "import for {!r}")
+                raise TypeError(msg.format(name))
+            for character in name:
+                if character != '.':
+                    break
+                level += 1
+&gt;       return _bootstrap._gcd_import(name[level:], package, level)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ModuleNotFoundError: No module named 'vgar_m2_w78.hf_diagnostics'
+
+C:\Program Files\Python311\Lib\importlib\__init__.py:126: ModuleNotFoundError
+
+During handling of the above exception, another exception occurred:
+
+    def test_observer_captures_actual_decoder_config_and_mask_without_changing_call():
+&gt;       module = api('hf_diagnostics')
+                 ^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_generation_diagnostics.py:68: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+module = 'hf_diagnostics'
+
+    def api(module):
+        try:
+            return importlib.import_module('vgar_m2_w78.' + module)
+        except ModuleNotFoundError:
+&gt;           pytest.fail('Planned M2 API not implemented: ' + module)
+E           Failed: Planned M2 API not implemented: hf_diagnostics
+
+tests\test_bootstrap.py:13: Failed</failure></testcase><testcase classname="tests.test_generation_diagnostics" name="test_observer_persists_configuration_before_failure_and_restores_decoder" time="0.001"><failure message="Failed: Planned M2 API not implemented: hf_diagnostics">module = 'hf_diagnostics'
+
+    def api(module):
+        try:
+&gt;           return importlib.import_module('vgar_m2_w78.' + module)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_bootstrap.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'vgar_m2_w78.hf_diagnostics', package = None
+
+    def import_module(name, package=None):
+        """Import a module.
+    
+        The 'package' argument is required when performing a relative import. It
+        specifies the package to use as the anchor point from which to resolve the
+        relative import to an absolute import.
+    
+        """
+        level = 0
+        if name.startswith('.'):
+            if not package:
+                msg = ("the 'package' argument is required to perform a relative "
+                       "import for {!r}")
+                raise TypeError(msg.format(name))
+            for character in name:
+                if character != '.':
+                    break
+                level += 1
+&gt;       return _bootstrap._gcd_import(name[level:], package, level)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ModuleNotFoundError: No module named 'vgar_m2_w78.hf_diagnostics'
+
+C:\Program Files\Python311\Lib\importlib\__init__.py:126: ModuleNotFoundError
+
+During handling of the above exception, another exception occurred:
+
+    def test_observer_persists_configuration_before_failure_and_restores_decoder():
+        model, snapshots = Decoder(fail=True), []
+        with pytest.raises(RuntimeError, match='decoder crashed'):
+&gt;           api('hf_diagnostics').generate_observed(model, Tensor([[1, 2, 3]]), Config(do_sample=False),
+            ^^^^^^^^^^^^^^^^^^^^^
+                dict(do_sample=False, max_new_tokens=6, return_dict_in_generate=False),
+                lambda item: snapshots.append(deepcopy(item)))
+
+tests\test_generation_diagnostics.py:91: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+module = 'hf_diagnostics'
+
+    def api(module):
+        try:
+            return importlib.import_module('vgar_m2_w78.' + module)
+        except ModuleNotFoundError:
+&gt;           pytest.fail('Planned M2 API not implemented: ' + module)
+E           Failed: Planned M2 API not implemented: hf_diagnostics
+
+tests\test_bootstrap.py:13: Failed</failure></testcase><testcase classname="tests.test_generation_diagnostics" name="test_unsupported_decoder_does_not_invent_effective_observation" time="0.001"><failure message="Failed: Planned M2 API not implemented: hf_diagnostics">module = 'hf_diagnostics'
+
+    def api(module):
+        try:
+&gt;           return importlib.import_module('vgar_m2_w78.' + module)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_bootstrap.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'vgar_m2_w78.hf_diagnostics', package = None
+
+    def import_module(name, package=None):
+        """Import a module.
+    
+        The 'package' argument is required when performing a relative import. It
+        specifies the package to use as the anchor point from which to resolve the
+        relative import to an absolute import.
+    
+        """
+        level = 0
+        if name.startswith('.'):
+            if not package:
+                msg = ("the 'package' argument is required to perform a relative "
+                       "import for {!r}")
+                raise TypeError(msg.format(name))
+            for character in name:
+                if character != '.':
+                    break
+                level += 1
+&gt;       return _bootstrap._gcd_import(name[level:], package, level)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ModuleNotFoundError: No module named 'vgar_m2_w78.hf_diagnostics'
+
+C:\Program Files\Python311\Lib\importlib\__init__.py:126: ModuleNotFoundError
+
+During handling of the above exception, another exception occurred:
+
+    def test_unsupported_decoder_does_not_invent_effective_observation():
+        class OtherDecoder:
+            generation_config = Config(do_sample=False)
+    
+            def generate(self, inputs, **kwargs):
+                return inputs
+&gt;       _, diagnostic = api('hf_diagnostics').generate_observed(OtherDecoder(), Tensor([[1]]),
+                        ^^^^^^^^^^^^^^^^^^^^^
+            Config(do_sample=False), dict(do_sample=False), lambda item: None)
+
+tests\test_generation_diagnostics.py:106: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+module = 'hf_diagnostics'
+
+    def api(module):
+        try:
+            return importlib.import_module('vgar_m2_w78.' + module)
+        except ModuleNotFoundError:
+&gt;           pytest.fail('Planned M2 API not implemented: ' + module)
+E           Failed: Planned M2 API not implemented: hf_diagnostics
+
+tests\test_bootstrap.py:13: Failed</failure></testcase><testcase classname="tests.test_generation_diagnostics" name="test_worker_serializes_chained_exception" time="0.014"><failure message="AttributeError: module 'vgar_m2_w78.hf_worker' has no attribute 'main'">tmp_path = WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-585/test_worker_serializes_chained0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000245E3827F50&gt;
+
+    def test_worker_serializes_chained_exception(tmp_path, monkeypatch):
+        worker = api('hf_worker')
+        def broken(request, **kwargs):
+            try:
+                raise ValueError('bad input')
+            except ValueError as error:
+                raise RuntimeError('worker failed') from error
+        monkeypatch.setattr(worker, 'execute', broken)
+        request, response = tmp_path/'request.json', tmp_path/'response.json'
+        request.write_text('{}', encoding='utf-8')
+&gt;       assert worker.main([str(request), str(response)]) == 2
+               ^^^^^^^^^^^
+E       AttributeError: module 'vgar_m2_w78.hf_worker' has no attribute 'main'
+
+tests\test_generation_diagnostics.py:122: AttributeError</failure></testcase><testcase classname="tests.test_generation_diagnostics" name="test_backend_wires_observer_and_writes_durable_metadata_without_weights" time="0.003"><failure message="TypeError: execute() got an unexpected keyword argument 'diagnostics_path'">tmp_path = WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-585/test_backend_wires_observer_an0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000245E37EA750&gt;
+
+    def test_backend_wires_observer_and_writes_durable_metadata_without_weights(tmp_path, monkeypatch):
+        backend = api('hf_backend')
+        class Tokenizer:
+            def apply_chat_template(self, messages, *, tokenize, add_generation_prompt, return_tensors=None):
+                return Tensor([[1, 2, 3]]) if return_tensors else [1, 2, 3] if tokenize else 'rendered'
+    
+            def decode(self, ids, **kwargs):
+                return 'generated'
+        tokenizer, model = Tokenizer(), Decoder()
+        monkeypatch.setitem(sys.modules, 'transformers', SimpleNamespace(
+            AutoTokenizer=SimpleNamespace(from_pretrained=lambda *a, **kw: tokenizer),
+            AutoModelForCausalLM=SimpleNamespace(from_pretrained=lambda *a, **kw: model)))
+        monkeypatch.setitem(sys.modules, 'torch', SimpleNamespace(cuda=SimpleNamespace(
+            is_available=lambda: True, reset_peak_memory_stats=lambda: None,
+            max_memory_allocated=lambda: 123, get_device_name=lambda n: 'unit-test-double'),
+            float16='float16', inference_mode=nullcontext))
+        monkeypatch.setattr(backend.importlib.metadata, 'version', lambda name: 'unit-test-double')
+        snapshot = tmp_path/backend.REVISION
+        snapshot.mkdir()
+        (snapshot/'config.json').write_text('{"max_position_embeddings": 100}', encoding='utf-8')
+        request = dict(kind='generate', messages=[dict(role='user', content='neutral')], expected_input_tokens=3,
+            profile=dict(snapshot=str(snapshot), approved_prototype=True, model_id=backend.MODEL, revision=backend.REVISION),
+            policy=dict(input_cap=20, output_cap=6, reserved_margin=2))
+        artifact = tmp_path/'generation_diagnostics.json'
+&gt;       result = backend.execute(request, diagnostics_path=artifact)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: execute() got an unexpected keyword argument 'diagnostics_path'
+
+tests\test_generation_diagnostics.py:152: TypeError</failure></testcase></testsuite></testsuites>

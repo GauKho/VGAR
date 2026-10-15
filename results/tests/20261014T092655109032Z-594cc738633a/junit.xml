@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="5" skipped="0" tests="5" time="2.469" timestamp="2026-10-14T16:26:55.630125+07:00" hostname="TMT"><testcase classname="tests.test_review_guards" name="test_public_bundle_uses_assessed_tests_not_raw_exit_zero" time="0.713"><failure message="AssertionError: assert 'PASS' == 'ERROR'&#10;  &#10;  - ERROR&#10;  + PASS">m1_case = (RepairTask(task_id='single_file_login', issue_text='auth.py login accepts whitespace-only names; trim the name before...', 'pytest.ini'), trusted_fixture=True), &lt;vgar.graph.token_counter.LocalTokenizerCounter object at 0x0000021B57C7E750&gt;)
+tmp_path = WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-533/test_public_bundle_uses_assess0')
+
+    def test_public_bundle_uses_assessed_tests_not_raw_exit_zero(m1_case, tmp_path):
+        task, _ = m1_case
+        run = api('evidence').begin_run(tmp_path / 'runs', 'repair', task_id=task.task_id, mode='fake')
+        run.record['stages']['baseline'] = {'required_ids': ['required'], 'tests': {'outcomes': {'required': 'FAIL', 'regression': 'PASS'}}}
+        command = dict(command='pytest', argv=['pytest'], timed_out=False, exit_code=0, duration_ms=1,
+            stdout='', stderr='', complete=True, output_truncated=False, stdout_bytes=0, stderr_bytes=0, timeout_seconds=1)
+        verification = {'status': 'ERROR', 'reasons': ['VERIFICATION_INCOMPLETE'],
+            'tests': {'status': 'PASS', 'command': command, 'outcomes': {'required': 'SKIP', 'regression': 'PASS'}, 'durations_ms': {}}}
+        lease = SimpleNamespace(before=api('workspace').inventory(task.source_repo), worktree_id='test-worktree')
+        bundle = api('pipeline')._project_bundle(run, task, lease, None, verification)
+&gt;       assert bundle.verification.tests.status == 'ERROR'
+E       AssertionError: assert 'PASS' == 'ERROR'
+E         
+E         - ERROR
+E         + PASS
+
+tests\test_review_guards.py:21: AssertionError</failure></testcase><testcase classname="tests.test_review_guards" name="test_applied_diff_export_failure_is_error" time="1.154"><failure message="AssertionError: assert 'PASS' == 'ERROR'&#10;  &#10;  - ERROR&#10;  + PASS">m1_case = (RepairTask(task_id='single_file_login', issue_text='auth.py login accepts whitespace-only names; trim the name before...', 'pytest.ini'), trusted_fixture=True), &lt;vgar.graph.token_counter.LocalTokenizerCounter object at 0x0000021B5AC3AE90&gt;)
+tmp_path = WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-533/test_applied_diff_export_failu0')
+
+    def test_applied_diff_export_failure_is_error(m1_case, tmp_path):
+        task, _ = m1_case
+        with api('workspace').create_workspace(task.source_repo, tmp_path / 'temp') as lease:
+            native = api('executor').NativeExecutor(lease)
+            class ExportFailure:
+                def run(self, argv, cwd, timeout):
+                    if argv[:2] == ('git', 'diff'):
+                        return dict(status='ERROR', complete=False, stdout='', stderr='injected export failure')
+                    return native.run(argv, cwd, timeout)
+            patch = api('patch').parse_unified_diff(FIX, api('patch').PatchPolicy(task.allowed_source_paths, task.protected_paths))
+            result = api('patch').apply_patch(lease, patch, ExportFailure())
+&gt;           assert result.status == 'ERROR'
+E           AssertionError: assert 'PASS' == 'ERROR'
+E             
+E             - ERROR
+E             + PASS
+
+tests\test_review_guards.py:37: AssertionError</failure></testcase><testcase classname="tests.test_review_guards" name="test_expired_workspace_budget_stops_before_git" time="0.496"><failure message="TypeError: create_workspace() got an unexpected keyword argument 'deadline'">m1_case = (RepairTask(task_id='single_file_login', issue_text='auth.py login accepts whitespace-only names; trim the name before...', 'pytest.ini'), trusted_fixture=True), &lt;vgar.graph.token_counter.LocalTokenizerCounter object at 0x0000021B5AC1D790&gt;)
+tmp_path = WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-533/test_expired_workspace_budget_0')
+
+    def test_expired_workspace_budget_stops_before_git(m1_case, tmp_path):
+        task, _ = m1_case
+        with pytest.raises(TimeoutError, match='deadline'):
+&gt;           api('workspace').create_workspace(task.source_repo, tmp_path / 'temp', deadline=time.monotonic()-1)
+E           TypeError: create_workspace() got an unexpected keyword argument 'deadline'
+
+tests\test_review_guards.py:44: TypeError</failure></testcase><testcase classname="tests.test_review_guards" name="test_reference_subprocess_is_bounded" time="0.002"><failure message="TypeError: verify_reference() got an unexpected keyword argument 'deadline'">tmp_path = WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-533/test_reference_subprocess_is_b0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000021B5AC99310&gt;
+
+    def test_reference_subprocess_is_bounded(tmp_path, monkeypatch):
+        bootstrap = api('bootstrap')
+        calls = []
+        def checked(command, **kwargs):
+            calls.append(kwargs)
+            return 'wrong-revision'
+        monkeypatch.setattr(bootstrap.subprocess, 'check_output', checked)
+        with pytest.raises(ValueError, match='HEAD'):
+&gt;           bootstrap.verify_reference(deadline=time.monotonic()+10)
+E           TypeError: verify_reference() got an unexpected keyword argument 'deadline'
+
+tests\test_review_guards.py:55: TypeError</failure></testcase><testcase classname="tests.test_review_guards" name="test_tokenizer_obeys_global_deadline_before_launch" time="0.003"><failure message="AttributeError: 'types.SimpleNamespace' object has no attribute 'request'">def test_tokenizer_obeys_global_deadline_before_launch():
+        generator = SimpleNamespace(profile=SimpleNamespace(model_id='test', revision='test'))
+        tokenizer = api('generator_hf').HFChatTokenizer(generator, api('contracts').RepairPolicy())
+        tokenizer.deadline = time.monotonic()-1
+        with pytest.raises(TimeoutError, match='deadline'):
+&gt;           tokenizer.apply_chat_template([], tokenize=False, add_generation_prompt=True)
+
+tests\test_review_guards.py:64: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;vgar_m2_w78.generator_hf.HFChatTokenizer object at 0x0000021B5AC22D50&gt;
+messages = []
+
+    def apply_chat_template(self, messages, *, tokenize, add_generation_prompt):
+        key = json.dumps(messages, sort_keys=True)
+        if key not in self.cache:
+&gt;           result = self.generator.request('tokenize', messages, self.policy, self.timeout)
+                     ^^^^^^^^^^^^^^^^^^^^^^
+E           AttributeError: 'types.SimpleNamespace' object has no attribute 'request'
+
+src\vgar_m2_w78\generator_hf.py:61: AttributeError</failure></testcase></testsuite></testsuites>

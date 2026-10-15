@@ -1,0 +1,125 @@
+{
+  "run_id": "20261014T145443813152Z-5f5c0a54d7d1",
+  "kind": "final-extension-docs-ruff-preservation",
+  "status": "PASS",
+  "complete": true,
+  "started_utc": "2026-10-14T14:54:43.813152+00:00",
+  "ended_utc": "2026-10-14T14:54:44.394637+00:00",
+  "duration_ms": 578,
+  "interpreter": "D:\\Project\\CAPSTONES\\M2_week_7_8\\.venv\\Scripts\\python.exe",
+  "python": "3.11.6 (tags/v3.11.6:8b6ee5b, Oct  2 2023, 14:57:12) [MSC v.1935 64 bit (AMD64)]",
+  "stages": {
+    "powershell_document_syntax": {
+      "status": "PASS",
+      "blocks": [
+        {
+          "file": "docs/PROMPT_V3_V4_VA_NGHIEM_THU_REAL.md",
+          "block": 1,
+          "errors": [],
+          "status": "PASS"
+        },
+        {
+          "file": "docs/PROMPT_V3_V4_VA_NGHIEM_THU_REAL.md",
+          "block": 2,
+          "errors": [],
+          "status": "PASS"
+        },
+        {
+          "file": "docs/GIAI_THICH_M2_W7_W8_VA_CACH_KIEM_THU.md",
+          "block": 1,
+          "errors": [],
+          "status": "PASS"
+        },
+        {
+          "file": "docs/GIAI_THICH_M2_W7_W8_VA_CACH_KIEM_THU.md",
+          "block": 2,
+          "errors": [],
+          "status": "PASS"
+        },
+        {
+          "file": "docs/GIAI_THICH_M2_W7_W8_VA_CACH_KIEM_THU.md",
+          "block": 3,
+          "errors": [],
+          "status": "PASS"
+        },
+        {
+          "file": "docs/GIAI_THICH_M2_W7_W8_VA_CACH_KIEM_THU.md",
+          "block": 4,
+          "errors": [],
+          "status": "PASS"
+        }
+      ],
+      "note": "Parsed only; no examples executed"
+    },
+    "ruff": {
+      "status": "PASS",
+      "command_argv": [
+        "D:\\Project\\CAPSTONES\\M2_week_7_8\\.venv\\Scripts\\python.exe",
+        "-m",
+        "ruff",
+        "check",
+        "--select",
+        "E9,F",
+        "src",
+        "scripts",
+        "tests"
+      ],
+      "exit_code": 0,
+      "stdout": "All checks passed!\n",
+      "stderr": ""
+    },
+    "reference": {
+      "head": "b8e2461635b81d1ae790445efea5c9757d91700a",
+      "root": "D:\\Project\\CAPSTONES\\VGAR",
+      "hashes": {
+        "src/vgar/__init__.py": "8eb57d207d71671cc7c5de557ebf95dc8f1992fe5b9e615f2aa082db07ae576e",
+        "src/vgar/contracts/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "src/vgar/contracts/context.py": "a76901ab62ea3dbc396a5fccaa427ef1e5b5eadcd41745df98ab004f513bee59",
+        "src/vgar/contracts/consumer.py": "768d5c406488401ed840408135f497a1401a852debcd01b61c7cd41305f365e2",
+        "src/vgar/contracts/handoff.py": "8fcf572ea08d54949aee50648fd54a85ad0895c92a0f02618c471b2c761cdefa",
+        "src/vgar/contracts/prompt_context.py": "9098d2ade4cba006dd2d1d64417c7492d4200a21a4acff678d11165b98ca0ffc",
+        "src/vgar/contracts/repair.py": "144892b901ed3657b2f2784a14efd3e274247c38ca19b08c2521aac8a594d0e5",
+        "src/vgar/contracts/evidence.py": "80f1c7fd72ba9844f9353c43312236838c0d461fa7e58039cf0ca321f27346be",
+        "src/vgar/config/settings.py": "d2dadde8064fd72fa766335ccca5253ffafc61f4129d066c8f57292f103e0e68",
+        "src/vgar/config/__init__.py": "ec3b8d65527db0f97380ed9279ea9c14d4dc5cf64dc21aba5ad949e52849974d",
+        "src/vgar/graph/token_counter.py": "302f9cd69347bef1a15fe54a0d1834f6958c3d62310679b8b46586bd590c3b89",
+        "src/vgar/graph/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "dirty_paths": [
+        "src/vgar/evaluation/retrieval/compare.py",
+        "src/vgar/evaluation/retrieval/scoring.py"
+      ]
+    },
+    "preservation": {
+      "status": "PASS",
+      "unchanged_existing_core_count": 20,
+      "authorized_modified_existing_core": [
+        "src/vgar_m2_w78/contracts.py",
+        "src/vgar_m2_w78/pipeline.py",
+        "src/vgar_m2_w78/prompt.py"
+      ],
+      "core_mismatch": [],
+      "VGAR_mismatch": [],
+      "historical_failure_mismatch": []
+    },
+    "terminal_campaign": {
+      "status": "PASS",
+      "observed_campaign_status": "FAIL",
+      "attempts": 4,
+      "failures": 2,
+      "three_case_acceptance": false,
+      "original_source_unchanged": true,
+      "pending": 0,
+      "controller_live": false,
+      "frozen_files_checked": 72
+    },
+    "final_self_tests": {
+      "status": "PASS",
+      "record": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\tests\\20261014T144408789514Z-d6a80718ea70\\run_record.json",
+      "exit_code": 0,
+      "stdout": "........................................................................ [ 57%]\r\n......................................................                   [100%]\r\n- generated xml file: D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\tests\\20261014T144408789514Z-d6a80718ea70\\junit.xml -\r\n126 passed in 87.16s (0:01:27)\r\n",
+      "duration_ms": 87766
+    }
+  },
+  "mode": "offline"
+}

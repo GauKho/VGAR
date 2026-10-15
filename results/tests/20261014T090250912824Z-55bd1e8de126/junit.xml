@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="0.067" timestamp="2026-10-14T16:02:51.362730+07:00" hostname="TMT"><testcase classname="tests.test_local_chat" name="test_local_chat_counts_full_qwen_template_without_model" time="0.002"><failure message="Failed: Planned M2 API not implemented: local_chat">module = 'local_chat'
+
+    def api(module):
+        try:
+&gt;           return importlib.import_module('vgar_m2_w78.' + module)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_bootstrap.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'vgar_m2_w78.local_chat', package = None
+
+    def import_module(name, package=None):
+        """Import a module.
+    
+        The 'package' argument is required when performing a relative import. It
+        specifies the package to use as the anchor point from which to resolve the
+        relative import to an absolute import.
+    
+        """
+        level = 0
+        if name.startswith('.'):
+            if not package:
+                msg = ("the 'package' argument is required to perform a relative "
+                       "import for {!r}")
+                raise TypeError(msg.format(name))
+            for character in name:
+                if character != '.':
+                    break
+                level += 1
+&gt;       return _bootstrap._gcd_import(name[level:], package, level)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ModuleNotFoundError: No module named 'vgar_m2_w78.local_chat'
+
+C:\Program Files\Python311\Lib\importlib\__init__.py:126: ModuleNotFoundError
+
+During handling of the above exception, another exception occurred:
+
+    def test_local_chat_counts_full_qwen_template_without_model():
+&gt;       tokenizer = api('local_chat').LocalChatTokenizer(VGAR / 'artifacts/m2/w5-w6/tokenizer_manifest.json')
+                    ^^^^^^^^^^^^^^^^^
+
+tests\test_local_chat.py:6: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+module = 'local_chat'
+
+    def api(module):
+        try:
+            return importlib.import_module('vgar_m2_w78.' + module)
+        except ModuleNotFoundError:
+&gt;           pytest.fail('Planned M2 API not implemented: ' + module)
+E           Failed: Planned M2 API not implemented: local_chat
+
+tests\test_bootstrap.py:13: Failed</failure></testcase></testsuite></testsuites>

@@ -1,0 +1,55 @@
+{
+  "run_id": "20261014T143948282795Z-dc2133321dfe",
+  "task_id": "multi_file_invoice",
+  "source_repo": "D:\\Project\\CAPSTONES\\M2_week_7_8\\examples\\snapshots\\multi_file_invoice",
+  "source_hash_before": "sha256:0b7d881a2e18e7b016b1846af91c2def48ad1d1c5adda60ee2294e6751111c8e",
+  "source_hash_after": "sha256:0b7d881a2e18e7b016b1846af91c2def48ad1d1c5adda60ee2294e6751111c8e",
+  "worktree_id": "wt-3ccea9cecdb44f8e8d04a9383ad8caae",
+  "verification": {
+    "patch_applied": false,
+    "tests": {
+      "status": "NOT_RUN",
+      "command": "",
+      "argv": [],
+      "exit_code": null,
+      "duration_ms": 0,
+      "stdout": "",
+      "stderr": "",
+      "timeout_seconds": null,
+      "cases": [],
+      "case_counts": {},
+      "reason": null,
+      "complete": false,
+      "output_truncated": false,
+      "stdout_bytes": 0,
+      "stderr_bytes": 0
+    },
+    "typecheck": {
+      "status": "NOT_RUN",
+      "reason": null
+    },
+    "lint": {
+      "status": "NOT_RUN",
+      "reason": null
+    },
+    "api_check": {
+      "status": "NOT_RUN",
+      "reason": null
+    },
+    "structural_check": {
+      "status": "NOT_RUN",
+      "reason": null
+    },
+    "reasons": []
+  },
+  "artifact_path": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\acceptance\\2026-10-14-prompt-v3-v4\\attempts\\04\\20261014T143948282795Z-dc2133321dfe\\run_record.json",
+  "metadata": {
+    "repair_status": "FAIL",
+    "mode": "real",
+    "graph_version": "sha256:1bbff47bc1ee5098b1f3d8f37dc5952faa9127224763e651c66630d838adb93e",
+    "canonical_sha256": "sha256:998c8151f7aa343a6e9c7ec46b6f76d680b07d29ff895a10dd8fdfe2971275ac",
+    "raw_pytest_status": "NOT_RUN",
+    "baseline_ref": "run_record.json#stages/baseline",
+    "selection_ref": "run_record.json#stages/selection"
+  }
+}

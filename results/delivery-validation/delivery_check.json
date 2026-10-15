@@ -1,0 +1,23 @@
+{
+  "status": "PASS",
+  "checks": {
+    "five_deliverables_exist": true,
+    "doc3_exact_script_mirror": true,
+    "doc3_each_nonempty_line_explained": true,
+    "core_dependency_pins_match": true,
+    "qualified_core_r002_unchanged": true,
+    "saved_real_abc_core_acceptance": true,
+    "fresh_core234_pass": true,
+    "runner8_pass": true,
+    "ruff_pass": true,
+    "powershell_syntax_pass": true,
+    "inventory_all_files_exact": true,
+    "inventory_all_directories_exact": true
+  },
+  "files": 10874,
+  "directories": 3661,
+  "ruff_stdout": "All checks passed!\n",
+  "powershell_stdout": "PowerShell syntax PASS\n",
+  "new_model_generations": 0,
+  "checked_utc": "2026-10-15T09:21:57.273915+00:00"
+}

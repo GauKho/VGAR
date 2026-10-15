@@ -1,0 +1,23 @@
+{
+  "task_id": "missing_links",
+  "issue_text": "formatter.py label preserves surrounding whitespace; strip the name. The test loads this function dynamically.",
+  "source_repo": "../snapshots/missing_links",
+  "bundle_directory": "../handoffs/missing_links",
+  "repo_key": "demo/w7-w8/missing_links",
+  "revision": "fixture-v1",
+  "graph_version": "sha256:ac135fa480d1f999d33e943fc36e003b76a570ba59ee5ba8cf495e76bb285c51",
+  "failing_selectors": [
+    "tests/test_formatter.py::test_label_trim"
+  ],
+  "fallback_scope": [
+    "tests"
+  ],
+  "allowed_source_paths": [
+    "formatter.py"
+  ],
+  "protected_paths": [
+    "tests",
+    "pytest.ini"
+  ],
+  "trusted_fixture": true
+}

@@ -1,0 +1,254 @@
+{
+  "run_id": "20261015T014155215724Z-fb7147b392bf",
+  "kind": "offline-parser-replay-and-history-audit",
+  "status": "PASS",
+  "complete": true,
+  "started_utc": "2026-10-15T01:41:55.215724+00:00",
+  "ended_utc": "2026-10-15T01:41:55.425724+00:00",
+  "duration_ms": 219,
+  "interpreter": "D:\\Project\\CAPSTONES\\M2_week_7_8\\.venv\\Scripts\\python.exe",
+  "python": "3.11.6 (tags/v3.11.6:8b6ee5b, Oct  2 2023, 14:57:12) [MSC v.1935 64 bit (AMD64)]",
+  "stages": {
+    "V5_history": {
+      "status": "PASS",
+      "archived_files": 86,
+      "historical_files": 76,
+      "current_runtime_changes": [
+        "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\campaign.py",
+        "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\checks.py",
+        "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\cli.py",
+        "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\executor.py",
+        "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\generator_hf.py",
+        "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\hf_backend.py",
+        "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\hf_worker.py",
+        "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\model_worker.py",
+        "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\patch.py",
+        "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\pipeline.py",
+        "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\test_runner.py",
+        "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\verification.py",
+        "D:\\Project\\CAPSTONES\\M2_week_7_8\\scripts\\prepare_inputs.py",
+        "D:\\Project\\CAPSTONES\\M2_week_7_8\\scripts\\qualify_model.py",
+        "D:\\Project\\CAPSTONES\\M2_week_7_8\\scripts\\record_tests.py",
+        "D:\\Project\\CAPSTONES\\M2_week_7_8\\scripts\\run_acceptance.py",
+        "D:\\Project\\CAPSTONES\\M2_week_7_8\\scripts\\run_adaptive_acceptance.py"
+      ],
+      "note": "Historical bytes verified; new code is not claimed to be old runtime"
+    },
+    "V3_V4_history": {
+      "status": "PASS",
+      "archived_files": 69,
+      "historical_files": 69,
+      "current_runtime_changes": [
+        "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\campaign.py",
+        "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\checks.py",
+        "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\cli.py",
+        "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\context_presentation.py",
+        "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\contracts.py",
+        "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\executor.py",
+        "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\generator_hf.py",
+        "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\hf_backend.py",
+        "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\hf_worker.py",
+        "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\model_worker.py",
+        "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\patch.py",
+        "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\pipeline.py",
+        "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\prompt.py",
+        "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\test_runner.py",
+        "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\verification.py",
+        "D:\\Project\\CAPSTONES\\M2_week_7_8\\scripts\\prepare_inputs.py",
+        "D:\\Project\\CAPSTONES\\M2_week_7_8\\scripts\\qualify_model.py",
+        "D:\\Project\\CAPSTONES\\M2_week_7_8\\scripts\\record_tests.py",
+        "D:\\Project\\CAPSTONES\\M2_week_7_8\\scripts\\run_acceptance.py"
+      ],
+      "note": "Historical bytes verified; new code is not claimed to be old runtime"
+    },
+    "B1": {
+      "status": "PASS",
+      "original_repair_status": "FAIL",
+      "original_canonical": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\01\\20261015T003703727090Z-e62648364844\\run_record.json",
+      "original_sha256": "sha256:4f4dfff82c5c98c45fa36735b61c2718d4166963370b31c56c3523733060b65c",
+      "raw_sha256": "sha256:c24f4fa913f0a5d32132618babed55ab0ff8b2dc82a4b14d0fcd67ef43568949",
+      "replay_exception": {
+        "type": "ValueError",
+        "message": "Hunk counts exceeded",
+        "traceback": "Traceback (most recent call last):\n  File \"<string>\", line 38, in <module>\n  File \"D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\patch.py\", line 45, in parse_unified_diff\n    return _parse_unified_diff(raw, policy, location)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\patch.py\", line 111, in _parse_unified_diff\n    raise ValueError('Hunk counts exceeded')\nValueError: Hunk counts exceeded\n",
+        "parser_diagnostics": {
+          "raw_line": 12,
+          "raw_line_text": "-    return net + tax_percent",
+          "raw_line_count": 14,
+          "path": "invoice.py",
+          "hunk_index": 1,
+          "hunk_raw_line": 9,
+          "hunk_header": "@@ -4,2 +4,2 @@",
+          "expected_counts": {
+            "old": 2,
+            "new": 2
+          },
+          "actual_counts": {
+            "old": 3,
+            "new": 3
+          },
+          "counts_complete": true,
+          "invalid_body_lines": [],
+          "ambiguous_body_boundary": null,
+          "counts_note": "Actual counts use valid body prefixes only; invalid lines are not guessed or repaired"
+        }
+      },
+      "traceback_origin": "Current offline replay, NOT a recovered original model traceback"
+    },
+    "B2": {
+      "status": "PASS",
+      "original_repair_status": "FAIL",
+      "original_canonical": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\02\\20261015T004240341955Z-b5e07ce0a4e0\\run_record.json",
+      "original_sha256": "sha256:c31bfcee24e8a64ccee332e4d3d98bcff442a3fe933478b5bd77035dba1668d5",
+      "raw_sha256": "sha256:9aefbed048c493b006bb6f45e005f7b9c3585d7eb1a925bf0042fe27f8210db1",
+      "replay_exception": {
+        "type": "ValueError",
+        "message": "Truncated or malformed hunk",
+        "traceback": "Traceback (most recent call last):\n  File \"<string>\", line 38, in <module>\n  File \"D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\patch.py\", line 45, in parse_unified_diff\n    return _parse_unified_diff(raw, policy, location)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\patch.py\", line 106, in _parse_unified_diff\n    raise ValueError('Truncated or malformed hunk')\nValueError: Truncated or malformed hunk\n",
+        "parser_diagnostics": {
+          "raw_line": 16,
+          "raw_line_text": "@@ -5,4 +5,4 @@",
+          "raw_line_count": 25,
+          "path": "invoice.py",
+          "hunk_index": 1,
+          "hunk_raw_line": 9,
+          "hunk_header": "@@ -4,6 +4,6 @@",
+          "expected_counts": {
+            "old": 6,
+            "new": 6
+          },
+          "actual_counts": {
+            "old": 3,
+            "new": 3
+          },
+          "counts_complete": false,
+          "invalid_body_lines": [],
+          "ambiguous_body_boundary": {
+            "raw_line": 14,
+            "reason": "Possible next file header in incomplete hunk"
+          },
+          "counts_note": "Actual counts use valid body prefixes only; invalid lines are not guessed or repaired"
+        }
+      },
+      "traceback_origin": "Current offline replay, NOT a recovered original model traceback"
+    },
+    "B3": {
+      "status": "PASS",
+      "original_repair_status": "FAIL",
+      "original_canonical": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\03\\20261015T004931535482Z-daa3ae13e75e\\run_record.json",
+      "original_sha256": "sha256:37040afcab56013d5e9d31365b093bedc3511ca86c77a9a40047895a271e6ff5",
+      "raw_sha256": "sha256:df9ec56a24d3b88b8efed59092db2fec63fdeb18f7bf5fdd90e96f721aa08231",
+      "replay_exception": {
+        "type": "ValueError",
+        "message": "Truncated or malformed hunk",
+        "traceback": "Traceback (most recent call last):\n  File \"<string>\", line 38, in <module>\n  File \"D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\patch.py\", line 45, in parse_unified_diff\n    return _parse_unified_diff(raw, policy, location)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\patch.py\", line 106, in _parse_unified_diff\n    raise ValueError('Truncated or malformed hunk')\nValueError: Truncated or malformed hunk\n",
+        "parser_diagnostics": {
+          "raw_line": 4,
+          "raw_line_text": "def discounted_price(price, discount_percent):",
+          "raw_line_count": 14,
+          "path": "pricing.py",
+          "hunk_index": 1,
+          "hunk_raw_line": 3,
+          "hunk_header": "@@ -1,2 +1,2 @@",
+          "expected_counts": {
+            "old": 2,
+            "new": 2
+          },
+          "actual_counts": {
+            "old": 1,
+            "new": 1
+          },
+          "counts_complete": false,
+          "invalid_body_lines": [
+            {
+              "raw_line": 4,
+              "text": "def discounted_price(price, discount_percent):"
+            }
+          ],
+          "ambiguous_body_boundary": null,
+          "counts_note": "Actual counts use valid body prefixes only; invalid lines are not guessed or repaired"
+        }
+      },
+      "traceback_origin": "Current offline replay, NOT a recovered original model traceback"
+    },
+    "B4": {
+      "status": "PASS",
+      "original_repair_status": "FAIL",
+      "original_canonical": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\04\\20261015T005533899467Z-16d544650f34\\run_record.json",
+      "original_sha256": "sha256:ff517108861989dcde7c6100810bc186f86af4131e55574d0e4f0a01395bf037",
+      "raw_sha256": "sha256:5a0d8b303738da4ce859d28312d8ab18512c724213d0b03de44d2b01778fddeb",
+      "replay_exception": {
+        "type": "ValueError",
+        "message": "Protected or unapproved path",
+        "traceback": "Traceback (most recent call last):\n  File \"<string>\", line 38, in <module>\n  File \"D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\patch.py\", line 45, in parse_unified_diff\n    return _parse_unified_diff(raw, policy, location)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\patch.py\", line 84, in _parse_unified_diff\n    raise ValueError('Protected or unapproved path')\nValueError: Protected or unapproved path\n",
+        "parser_diagnostics": {
+          "raw_line": 1,
+          "raw_line_text": "--- a/host_path_policy.json",
+          "raw_line_count": 4,
+          "path": "host_path_policy.json",
+          "hunk_index": null,
+          "hunk_raw_line": null,
+          "hunk_header": null,
+          "expected_counts": null,
+          "actual_counts": null,
+          "counts_complete": false,
+          "invalid_body_lines": [],
+          "ambiguous_body_boundary": null,
+          "counts_note": "Actual counts use valid body prefixes only; invalid lines are not guessed or repaired"
+        }
+      },
+      "traceback_origin": "Current offline replay, NOT a recovered original model traceback"
+    },
+    "strict_guard_compatibility": {
+      "status": "PASS",
+      "cases": 19,
+      "outcomes": [
+        "PASS",
+        "PASS",
+        "ValueError",
+        "ValueError",
+        "ValueError",
+        "ValueError",
+        "ValueError",
+        "ValueError",
+        "ValueError",
+        "ValueError",
+        "ValueError",
+        "ValueError",
+        "ValueError",
+        "ValueError",
+        "ValueError",
+        "ValueError",
+        "ValueError",
+        "ValueError",
+        "SyntaxError"
+      ],
+      "note": "Same acceptance/class/message and parsed file bodies as archived parser; no raw modifications"
+    }
+  },
+  "mode": "offline",
+  "task_id": "diagnostics-not-real-B-repair",
+  "reference": {
+    "head": "b8e2461635b81d1ae790445efea5c9757d91700a",
+    "root": "D:\\Project\\CAPSTONES\\VGAR",
+    "hashes": {
+      "src/vgar/__init__.py": "8eb57d207d71671cc7c5de557ebf95dc8f1992fe5b9e615f2aa082db07ae576e",
+      "src/vgar/contracts/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "src/vgar/contracts/context.py": "a76901ab62ea3dbc396a5fccaa427ef1e5b5eadcd41745df98ab004f513bee59",
+      "src/vgar/contracts/consumer.py": "768d5c406488401ed840408135f497a1401a852debcd01b61c7cd41305f365e2",
+      "src/vgar/contracts/handoff.py": "8fcf572ea08d54949aee50648fd54a85ad0895c92a0f02618c471b2c761cdefa",
+      "src/vgar/contracts/prompt_context.py": "9098d2ade4cba006dd2d1d64417c7492d4200a21a4acff678d11165b98ca0ffc",
+      "src/vgar/contracts/repair.py": "144892b901ed3657b2f2784a14efd3e274247c38ca19b08c2521aac8a594d0e5",
+      "src/vgar/contracts/evidence.py": "80f1c7fd72ba9844f9353c43312236838c0d461fa7e58039cf0ca321f27346be",
+      "src/vgar/config/settings.py": "d2dadde8064fd72fa766335ccca5253ffafc61f4129d066c8f57292f103e0e68",
+      "src/vgar/config/__init__.py": "ec3b8d65527db0f97380ed9279ea9c14d4dc5cf64dc21aba5ad949e52849974d",
+      "src/vgar/graph/token_counter.py": "302f9cd69347bef1a15fe54a0d1834f6958c3d62310679b8b46586bd590c3b89",
+      "src/vgar/graph/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "dirty_paths": [
+      "src/vgar/evaluation/retrieval/compare.py",
+      "src/vgar/evaluation/retrieval/scoring.py"
+    ]
+  },
+  "scope": "Offline diagnostics only. B still blocked; no model generation or verdict change."
+}

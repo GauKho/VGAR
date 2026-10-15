@@ -1,0 +1,8 @@
+diff --git a/pricing.py b/pricing.py
+index ce1aa2f..6e6200e 100644
+--- a/pricing.py
++++ b/pricing.py
+@@ -1,2 +1,2 @@
+ def discounted_price(price, discount_percent):
+-    return price - discount_percent
++    return price - (price * discount_percent / 100)

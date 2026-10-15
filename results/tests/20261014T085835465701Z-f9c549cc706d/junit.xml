@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="2" time="0.076" timestamp="2026-10-14T15:58:36.080384+07:00" hostname="TMT"><testcase classname="tests.test_cli" name="test_bad_task_cli_returns_error_artifact" time="0.008"><failure message="AssertionError: Demo CLI not implemented&#10;assert False&#10; +  where False = is_file()&#10; +    where is_file = WindowsPath('D:/Project/CAPSTONES/M2_week_7_8/scripts/run_demo.py').is_file">tmp_path = WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-526/test_bad_task_cli_returns_erro0')
+
+    def test_bad_task_cli_returns_error_artifact(tmp_path):
+        script = ROOT / 'scripts/run_demo.py'
+&gt;       assert script.is_file(), 'Demo CLI not implemented'
+E       AssertionError: Demo CLI not implemented
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = WindowsPath('D:/Project/CAPSTONES/M2_week_7_8/scripts/run_demo.py').is_file
+
+tests\test_cli.py:10: AssertionError</failure></testcase><testcase classname="tests.test_cli" name="test_prepare_inputs_builds_three_portable_tasks" time="0.001"><failure message="AssertionError: Input provisioning not implemented&#10;assert False&#10; +  where False = is_file()&#10; +    where is_file = (WindowsPath('D:/Project/CAPSTONES/M2_week_7_8') / 'scripts/prepare_inputs.py').is_file">def test_prepare_inputs_builds_three_portable_tasks():
+&gt;       assert (ROOT / 'scripts/prepare_inputs.py').is_file(), 'Input provisioning not implemented'
+E       AssertionError: Input provisioning not implemented
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = (WindowsPath('D:/Project/CAPSTONES/M2_week_7_8') / 'scripts/prepare_inputs.py').is_file
+
+tests\test_cli.py:20: AssertionError</failure></testcase></testsuite></testsuites>

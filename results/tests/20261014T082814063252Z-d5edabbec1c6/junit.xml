@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="2" time="1.040" timestamp="2026-10-14T15:28:14.574780+07:00" hostname="TMT"><testcase classname="tests.test_generator" name="test_fake_generation_is_explicit_and_never_real" time="0.936"><failure message="Failed: Planned M2 API not implemented: generator">module = 'generator'
+
+    def api(module):
+        try:
+&gt;           return importlib.import_module('vgar_m2_w78.' + module)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_bootstrap.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'vgar_m2_w78.generator', package = None
+
+    def import_module(name, package=None):
+        """Import a module.
+    
+        The 'package' argument is required when performing a relative import. It
+        specifies the package to use as the anchor point from which to resolve the
+        relative import to an absolute import.
+    
+        """
+        level = 0
+        if name.startswith('.'):
+            if not package:
+                msg = ("the 'package' argument is required to perform a relative "
+                       "import for {!r}")
+                raise TypeError(msg.format(name))
+            for character in name:
+                if character != '.':
+                    break
+                level += 1
+&gt;       return _bootstrap._gcd_import(name[level:], package, level)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ModuleNotFoundError: No module named 'vgar_m2_w78.generator'
+
+C:\Program Files\Python311\Lib\importlib\__init__.py:126: ModuleNotFoundError
+
+During handling of the above exception, another exception occurred:
+
+m1_case = (RepairTask(task_id='single_file_login', issue_text='auth.py login accepts whitespace-only names; trim the name before...', 'pytest.ini'), trusted_fixture=True), &lt;vgar.graph.token_counter.LocalTokenizerCounter object at 0x0000020EFC9EB6D0&gt;)
+
+    def test_fake_generation_is_explicit_and_never_real(m1_case):
+        from conftest import CharacterChatTokenizer
+        task, counter = m1_case
+        handoff = api('context_adapter').load_handoff(task, counter, counter.counter_label)
+        prompt = api('prompt').build_repair_prompt(task, handoff, {}, CharacterChatTokenizer(), api('contracts').RepairPolicy())
+&gt;       result = api('generator').FakeGenerator('--- a/auth.py\n').generate(prompt, None, 1)
+                 ^^^^^^^^^^^^^^^^
+
+tests\test_generator.py:10: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+module = 'generator'
+
+    def api(module):
+        try:
+            return importlib.import_module('vgar_m2_w78.' + module)
+        except ModuleNotFoundError:
+&gt;           pytest.fail('Planned M2 API not implemented: ' + module)
+E           Failed: Planned M2 API not implemented: generator
+
+tests\test_bootstrap.py:13: Failed</failure></testcase><testcase classname="tests.test_generator" name="test_worker_timeout_and_invalid_json_never_fallback" time="0.003"><failure message="Failed: Planned M2 API not implemented: model_worker">module = 'model_worker'
+
+    def api(module):
+        try:
+&gt;           return importlib.import_module('vgar_m2_w78.' + module)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_bootstrap.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'vgar_m2_w78.model_worker', package = None
+
+    def import_module(name, package=None):
+        """Import a module.
+    
+        The 'package' argument is required when performing a relative import. It
+        specifies the package to use as the anchor point from which to resolve the
+        relative import to an absolute import.
+    
+        """
+        level = 0
+        if name.startswith('.'):
+            if not package:
+                msg = ("the 'package' argument is required to perform a relative "
+                       "import for {!r}")
+                raise TypeError(msg.format(name))
+            for character in name:
+                if character != '.':
+                    break
+                level += 1
+&gt;       return _bootstrap._gcd_import(name[level:], package, level)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ModuleNotFoundError: No module named 'vgar_m2_w78.model_worker'
+
+C:\Program Files\Python311\Lib\importlib\__init__.py:126: ModuleNotFoundError
+
+During handling of the above exception, another exception occurred:
+
+tmp_path = WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-508/test_worker_timeout_and_invali0')
+
+    def test_worker_timeout_and_invalid_json_never_fallback(tmp_path):
+&gt;       module = api('model_worker')
+                 ^^^^^^^^^^^^^^^^^^^
+
+tests\test_generator.py:16: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+module = 'model_worker'
+
+    def api(module):
+        try:
+            return importlib.import_module('vgar_m2_w78.' + module)
+        except ModuleNotFoundError:
+&gt;           pytest.fail('Planned M2 API not implemented: ' + module)
+E           Failed: Planned M2 API not implemented: model_worker
+
+tests\test_bootstrap.py:13: Failed</failure></testcase></testsuite></testsuites>

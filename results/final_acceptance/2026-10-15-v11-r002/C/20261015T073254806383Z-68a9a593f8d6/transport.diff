@@ -1,0 +1,7 @@
+--- a/formatter.py
++++ b/formatter.py
+@@ -1,2 +1,2 @@
+-def label(name):
+-    return name
++def label(name):
++    return name.strip()

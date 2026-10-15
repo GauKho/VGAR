@@ -1,0 +1,65 @@
+{
+  "run_id": "20261015T063401380978Z-281950c2d92f",
+  "kind": "pytest",
+  "status": "FAIL",
+  "complete": true,
+  "started_utc": "2026-10-15T06:34:01.380978+00:00",
+  "ended_utc": "2026-10-15T06:34:02.212419+00:00",
+  "duration_ms": 828,
+  "interpreter": "D:\\Project\\CAPSTONES\\M2_week_7_8\\.venv\\Scripts\\python.exe",
+  "python": "3.11.6 (tags/v3.11.6:8b6ee5b, Oct  2 2023, 14:57:12) [MSC v.1935 64 bit (AMD64)]",
+  "stages": {
+    "pytest": {
+      "argv": [
+        "D:\\Project\\CAPSTONES\\M2_week_7_8\\.venv\\Scripts\\python.exe",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "--junitxml=D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\b-repair-preflight\\20261015-evidence-driven\\red-tokenizer\\20261015T063401380978Z-281950c2d92f\\junit.xml",
+        "tests/test_tokenizer_flags.py"
+      ],
+      "command": "D:\\Project\\CAPSTONES\\M2_week_7_8\\.venv\\Scripts\\python.exe -m pytest -q -p no:cacheprovider --junitxml=D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\b-repair-preflight\\20261015-evidence-driven\\red-tokenizer\\20261015T063401380978Z-281950c2d92f\\junit.xml tests/test_tokenizer_flags.py",
+      "cwd": "D:\\Project\\CAPSTONES\\M2_week_7_8",
+      "interpreter": "D:\\Project\\CAPSTONES\\M2_week_7_8\\.venv\\Scripts\\python.exe",
+      "started_utc": "2026-10-15T06:34:01.481828+00:00",
+      "timeout_seconds": 120.0,
+      "exit_code": 1,
+      "stdout": "F.FF                                                                     [100%]\r\n================================== FAILURES ===================================\r\n______ test_host_tokenizer_distinguishes_generation_flag_and_keeps_cache ______\r\n\r\ntmp_path = WindowsPath('D:/Project/CAPSTONES/M2_week_7_8/results/b-repair-preflight/20261015-evidence-driven/temp/pytest-of-pc/pytest-0/test_host_tokenizer_distinguis0')\r\n\r\n    def test_host_tokenizer_distinguishes_generation_flag_and_keeps_cache(tmp_path):\r\n        from pathlib import Path\r\n        module = api('generator_hf')\r\n    \r\n        class TokenizeWorker:\r\n            profile = SimpleNamespace(model_id='unit-test', revision='pinned')\r\n            def request(self, kind, messages, policy, timeout, expected_input_tokens=None, **kwargs):\r\n                flag = kwargs.get('add_generation_prompt', True)\r\n                assert kind == 'tokenize'\r\n                return {'status': 'PASS', 'response': {'rendered': 'base+assistant' if flag else 'base',\r\n                                                     'input_ids': [1, 2] if flag else [1]}}\r\n    \r\n        tokenizer = module.HFChatTokenizer(TokenizeWorker(), api('contracts').RepairPolicy())\r\n        messages = [dict(role='user', content='neutral')]\r\n        assert tokenizer.apply_chat_template(messages, tokenize=True, add_generation_prompt=True) == [1, 2]\r\n>       assert tokenizer.apply_chat_template(messages, tokenize=True, add_generation_prompt=False) == [1]\r\nE       assert [1, 2] == [1]\r\nE         \r\nE         Left contains one more item: 2\r\nE         Use -v to get more diff\r\n\r\ntests\\test_tokenizer_flags.py:25: AssertionError\r\n_______ test_backend_tokenize_honors_flag_without_loading_model[False] ________\r\n\r\ntmp_path = WindowsPath('D:/Project/CAPSTONES/M2_week_7_8/results/b-repair-preflight/20261015-evidence-driven/temp/pytest-of-pc/pytest-0/test_backend_tokenize_honors_f1')\r\nmonkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001C7BB309010>\r\nflag = False\r\n\r\n    @pytest.mark.parametrize('flag', [True, False])\r\n    def test_backend_tokenize_honors_flag_without_loading_model(tmp_path, monkeypatch, flag):\r\n        backend = api('hf_backend')\r\n    \r\n        class Tokenizer:\r\n            def apply_chat_template(self, messages, *, tokenize, add_generation_prompt):\r\n                return ([1, 2] if add_generation_prompt else [1]) if tokenize else ('base+assistant' if add_generation_prompt else 'base')\r\n    \r\n        monkeypatch.setitem(sys.modules, 'transformers', SimpleNamespace(\r\n            AutoTokenizer=SimpleNamespace(from_pretrained=lambda *a, **kw: Tokenizer())))\r\n        # Backend imports both Auto classes but must never load weights for tokenize.\r\n        sys.modules['transformers'].AutoModelForCausalLM = SimpleNamespace(\r\n            from_pretrained=lambda *a, **kw: pytest.fail('Tokenize loaded model'))\r\n        result = backend.execute(dict(kind='tokenize', messages=[], add_generation_prompt=flag,\r\n            profile=dict(snapshot=str(tmp_path/backend.REVISION), approved_prototype=True,\r\n                         model_id=backend.MODEL, revision=backend.REVISION), policy=dict(input_cap=30)))\r\n>       assert result['input_ids'] == ([1, 2] if flag else [1])\r\nE       assert [1, 2] == [1]\r\nE         \r\nE         Left contains one more item: 2\r\nE         Use -v to get more diff\r\n\r\ntests\\test_tokenizer_flags.py:47: AssertionError\r\n________________ test_request_carries_tokenizer_flag_to_worker ________________\r\n\r\ntmp_path = WindowsPath('D:/Project/CAPSTONES/M2_week_7_8/results/b-repair-preflight/20261015-evidence-driven/temp/pytest-of-pc/pytest-0/test_request_carries_tokenizer0')\r\nmonkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001C7BB353090>\r\n\r\n    def test_request_carries_tokenizer_flag_to_worker(tmp_path, monkeypatch):\r\n        module = api('generator_hf')\r\n        profile = api('contracts').ModelProfile(snapshot=tmp_path/api('hf_backend').REVISION,\r\n            interpreter=sys.executable, tokenizer_manifest=tmp_path/'manifest.json', approved_prototype=True)\r\n    \r\n        def worker(command, folder, response, timeout):\r\n            import json\r\n            request = json.loads((folder/'request.json').read_text(encoding='utf-8'))\r\n            assert request['add_generation_prompt'] is False\r\n            return dict(status='PASS', response=dict(kind='tokenize', rendered='base', input_ids=[1]))\r\n    \r\n        monkeypatch.setattr(module, 'invoke_worker', worker)\r\n        generator = module.HFGenerator(profile, tmp_path/'workers', api('contracts').RepairPolicy())\r\n>       assert generator.request('tokenize', [], generator.policy, 2, add_generation_prompt=False)['status'] == 'PASS'\r\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\nE       TypeError: HFGenerator.request() got an unexpected keyword argument 'add_generation_prompt'\r\n\r\ntests\\test_tokenizer_flags.py:64: TypeError\r\n- generated xml file: D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\b-repair-preflight\\20261015-evidence-driven\\red-tokenizer\\20261015T063401380978Z-281950c2d92f\\junit.xml -\r\n=========================== short test summary info ===========================\r\nFAILED tests/test_tokenizer_flags.py::test_host_tokenizer_distinguishes_generation_flag_and_keeps_cache\r\nFAILED tests/test_tokenizer_flags.py::test_backend_tokenize_honors_flag_without_loading_model[False]\r\nFAILED tests/test_tokenizer_flags.py::test_request_carries_tokenizer_flag_to_worker\r\n3 failed, 1 passed in 0.26s\r\n",
+      "stderr": "",
+      "timed_out": false,
+      "output_truncated": false,
+      "complete": true,
+      "stdout_bytes": 5505,
+      "stderr_bytes": 0,
+      "status": "FAIL",
+      "ended_utc": "2026-10-15T06:34:02.210430+00:00",
+      "duration_ms": 734
+    }
+  },
+  "mode": "offline",
+  "task_id": "M2-tests",
+  "reference": {
+    "head": "b8e2461635b81d1ae790445efea5c9757d91700a",
+    "root": "D:\\Project\\CAPSTONES\\VGAR",
+    "hashes": {
+      "src/vgar/__init__.py": "8eb57d207d71671cc7c5de557ebf95dc8f1992fe5b9e615f2aa082db07ae576e",
+      "src/vgar/contracts/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "src/vgar/contracts/context.py": "a76901ab62ea3dbc396a5fccaa427ef1e5b5eadcd41745df98ab004f513bee59",
+      "src/vgar/contracts/consumer.py": "768d5c406488401ed840408135f497a1401a852debcd01b61c7cd41305f365e2",
+      "src/vgar/contracts/handoff.py": "8fcf572ea08d54949aee50648fd54a85ad0895c92a0f02618c471b2c761cdefa",
+      "src/vgar/contracts/prompt_context.py": "9098d2ade4cba006dd2d1d64417c7492d4200a21a4acff678d11165b98ca0ffc",
+      "src/vgar/contracts/repair.py": "144892b901ed3657b2f2784a14efd3e274247c38ca19b08c2521aac8a594d0e5",
+      "src/vgar/contracts/evidence.py": "80f1c7fd72ba9844f9353c43312236838c0d461fa7e58039cf0ca321f27346be",
+      "src/vgar/config/settings.py": "d2dadde8064fd72fa766335ccca5253ffafc61f4129d066c8f57292f103e0e68",
+      "src/vgar/config/__init__.py": "ec3b8d65527db0f97380ed9279ea9c14d4dc5cf64dc21aba5ad949e52849974d",
+      "src/vgar/graph/token_counter.py": "302f9cd69347bef1a15fe54a0d1834f6958c3d62310679b8b46586bd590c3b89",
+      "src/vgar/graph/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "dirty_paths": [
+      "src/vgar/evaluation/retrieval/compare.py",
+      "src/vgar/evaluation/retrieval/scoring.py"
+    ]
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "template_hash": "sha256:fed824d100a09feab2cd52850a7c1ceb7f131c0829c863972073ff29ed079aa5",
+  "parent_version": "m2-w78-v5",
+  "parent_record": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\01\\20261015T003703727090Z-e62648364844\\run_record.json",
+  "reason": "B V5 declared count2 for a three-line hunk; retain unchanged statements as context",
+  "hypothesis": "A neutral 3-line hunk and explicit 2context plus 1change counting prevents copying count2",
+  "registered_utc": "2026-10-15T00:42:38.953662+00:00"
+}

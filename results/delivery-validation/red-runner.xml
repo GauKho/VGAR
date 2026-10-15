@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="4" skipped="0" tests="4" time="0.136" timestamp="2026-10-15T15:38:30.394461+07:00" hostname="TMT"><testcase classname=".superpowers.sdd.2026-10-15-m2-delivery-package.test_delivery" name="test_saved_mode_audits_all_cases_and_prints_all_artifact_families" time="0.010"><failure message="AssertionError: PowerShell runner has not been implemented&#10;assert False&#10; +  where False = is_file()&#10; +    where is_file = WindowsPath('D:/Project/CAPSTONES/M2_week_7_8/test_abc_v11_r002.ps1').is_file">tmp_path = WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-600/test_saved_mode_audits_all_cas0')
+
+    def test_saved_mode_audits_all_cases_and_prints_all_artifact_families(tmp_path):
+&gt;       assert SCRIPT.is_file(), 'PowerShell runner has not been implemented'
+E       AssertionError: PowerShell runner has not been implemented
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = WindowsPath('D:/Project/CAPSTONES/M2_week_7_8/test_abc_v11_r002.ps1').is_file
+
+.superpowers\sdd\2026-10-15-m2-delivery-package\test_delivery.py:16: AssertionError</failure></testcase><testcase classname=".superpowers.sdd.2026-10-15-m2-delivery-package.test_delivery" name="test_existing_output_is_never_overwritten" time="0.003"><failure message="AssertionError: PowerShell runner has not been implemented&#10;assert False&#10; +  where False = is_file()&#10; +    where is_file = WindowsPath('D:/Project/CAPSTONES/M2_week_7_8/test_abc_v11_r002.ps1').is_file">tmp_path = WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-600/test_existing_output_is_never_0')
+
+    def test_existing_output_is_never_overwritten(tmp_path):
+&gt;       assert SCRIPT.is_file(), 'PowerShell runner has not been implemented'
+E       AssertionError: PowerShell runner has not been implemented
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = WindowsPath('D:/Project/CAPSTONES/M2_week_7_8/test_abc_v11_r002.ps1').is_file
+
+.superpowers\sdd\2026-10-15-m2-delivery-package\test_delivery.py:31: AssertionError</failure></testcase><testcase classname=".superpowers.sdd.2026-10-15-m2-delivery-package.test_delivery" name="test_output_outside_results_is_rejected_before_any_mutation" time="0.004"><failure message="AssertionError: PowerShell runner has not been implemented&#10;assert False&#10; +  where False = is_file()&#10; +    where is_file = WindowsPath('D:/Project/CAPSTONES/M2_week_7_8/test_abc_v11_r002.ps1').is_file">tmp_path = WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-600/test_output_outside_results_is0')
+
+    def test_output_outside_results_is_rejected_before_any_mutation(tmp_path):
+&gt;       assert SCRIPT.is_file(), 'PowerShell runner has not been implemented'
+E       AssertionError: PowerShell runner has not been implemented
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = WindowsPath('D:/Project/CAPSTONES/M2_week_7_8/test_abc_v11_r002.ps1').is_file
+
+.superpowers\sdd\2026-10-15-m2-delivery-package\test_delivery.py:42: AssertionError</failure></testcase><testcase classname=".superpowers.sdd.2026-10-15-m2-delivery-package.test_delivery" name="test_check_mode_never_launches_real_or_creates_case_directories" time="0.003"><failure message="AssertionError: PowerShell runner has not been implemented&#10;assert False&#10; +  where False = is_file()&#10; +    where is_file = WindowsPath('D:/Project/CAPSTONES/M2_week_7_8/test_abc_v11_r002.ps1').is_file">tmp_path = WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-600/test_check_mode_never_launches0')
+
+    def test_check_mode_never_launches_real_or_creates_case_directories(tmp_path):
+&gt;       assert SCRIPT.is_file(), 'PowerShell runner has not been implemented'
+E       AssertionError: PowerShell runner has not been implemented
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = WindowsPath('D:/Project/CAPSTONES/M2_week_7_8/test_abc_v11_r002.ps1').is_file
+
+.superpowers\sdd\2026-10-15-m2-delivery-package\test_delivery.py:50: AssertionError</failure></testcase></testsuite></testsuites>

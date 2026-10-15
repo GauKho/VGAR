@@ -1,0 +1,434 @@
+{
+  "files": {
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\__init__.py": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\src\\vgar_m2_w78\\__init__.py",
+      "sha256": "sha256:040c6cf8728496f5d1f71da811f5f31add85c3fa6e66b7ad8331feae6823ceac"
+    },
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\adaptive_campaign.py": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\src\\vgar_m2_w78\\adaptive_campaign.py",
+      "sha256": "sha256:4d3e59e2f4b169906840daee6636c32a76f027ae42fa240b7102b9415abe1a6d"
+    },
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\bootstrap.py": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\src\\vgar_m2_w78\\bootstrap.py",
+      "sha256": "sha256:3b89cfaba1c0f393437b95778c1ec19091b80ad91a22e907f7a00b8375ce6bb2"
+    },
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\campaign.py": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\src\\vgar_m2_w78\\campaign.py",
+      "sha256": "sha256:af0c006a92b7e826fedf4d8ecfd17a08e6b872f978097b74315755ac469d1477"
+    },
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\checks.py": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\src\\vgar_m2_w78\\checks.py",
+      "sha256": "sha256:b21569fcb5cf0958628bde8e5e9c607cc2672a5886c471868c5fc46f85c915b2"
+    },
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\cli.py": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\src\\vgar_m2_w78\\cli.py",
+      "sha256": "sha256:6f954e64e47b023f64087108d264e67d9db7997d7f76e0d7b4b6ab08c68be9f9"
+    },
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\config.py": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\src\\vgar_m2_w78\\config.py",
+      "sha256": "sha256:b575cce7c0c733adfb1a0c4e74b231f9ab1776a50689c51f36147a2df71d16a0"
+    },
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\context_adapter.py": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\src\\vgar_m2_w78\\context_adapter.py",
+      "sha256": "sha256:271c3cf05caeeccec23b2c034457d1e1a846a13efcf6b1bc7ff2cc5da969f2b3"
+    },
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\context_presentation.py": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\src\\vgar_m2_w78\\context_presentation.py",
+      "sha256": "sha256:8bbc6cdd743769b293c2be49e29f02063e3951b45f03055db3c52f86cf182215"
+    },
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\contracts.py": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\src\\vgar_m2_w78\\contracts.py",
+      "sha256": "sha256:cb4d814d241a13ba5c6e5d69e1065a34635495ccfc4ad4432dbd4b7d20268675"
+    },
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\evidence.py": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\src\\vgar_m2_w78\\evidence.py",
+      "sha256": "sha256:5f2c64f125868d0b896d6fda5e6168637362a68a795d0c1ec5f95b0bc81930cd"
+    },
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\executor.py": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\src\\vgar_m2_w78\\executor.py",
+      "sha256": "sha256:64b5e086941d097aa7ac7e003588b6bbf70388109418144de5e3974fec98ced7"
+    },
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\generator.py": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\src\\vgar_m2_w78\\generator.py",
+      "sha256": "sha256:08d28f6372e200ebd7b6f7e5954ee0148db4d4d3cdb8ff2fb9f1d4d95593d054"
+    },
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\generator_hf.py": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\src\\vgar_m2_w78\\generator_hf.py",
+      "sha256": "sha256:b5352ab313128bc5ca6eae1fedeee75906b4af75a01d1e7c3f5cf3349da4bab1"
+    },
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\hf_backend.py": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\src\\vgar_m2_w78\\hf_backend.py",
+      "sha256": "sha256:9e637407b737dd1f47abc20f8efad1d6fdd5a71480b93a9d3bc9d4d06567c978"
+    },
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\hf_worker.py": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\src\\vgar_m2_w78\\hf_worker.py",
+      "sha256": "sha256:6e0573d823ed358a3a4418404144145a8ed744b160d73acf0812ee8a5b049f8a"
+    },
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\local_chat.py": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\src\\vgar_m2_w78\\local_chat.py",
+      "sha256": "sha256:f3a7094f59ed82edc4def4f4b06b66549ee962a00a7d3e26431f6dc131f10bc7"
+    },
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\model_worker.py": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\src\\vgar_m2_w78\\model_worker.py",
+      "sha256": "sha256:205aa38dd6d44012fccaa899b4ffa89e80543f69fd9eb9ec2a0fe510e87d3a4a"
+    },
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\patch.py": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\src\\vgar_m2_w78\\patch.py",
+      "sha256": "sha256:5b515761bae9ce5895828c77e55ae10974ba8f220eef3f3845b94d82f8230c61"
+    },
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\pipeline.py": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\src\\vgar_m2_w78\\pipeline.py",
+      "sha256": "sha256:f5ed4248fef188c9e8f8cc4603bf46a1a93ae97f74ea54a7155677efaf52da52"
+    },
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\prompt.py": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\src\\vgar_m2_w78\\prompt.py",
+      "sha256": "sha256:8b040947e61f5c370f949d38c5f961915535a937bf6270aee621f2d5d9db0e37"
+    },
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\pytest_plugin.py": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\src\\vgar_m2_w78\\pytest_plugin.py",
+      "sha256": "sha256:d01f48e7383ed94730faa0c78be3f7c17cb35ce70820b71517c399842c922434"
+    },
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\test_runner.py": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\src\\vgar_m2_w78\\test_runner.py",
+      "sha256": "sha256:f6467fae9d6796fb731e1f816d554bcef87e7a3ae4f81e41e51751a11a5ecfa1"
+    },
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\test_selection.py": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\src\\vgar_m2_w78\\test_selection.py",
+      "sha256": "sha256:b4592918ff8a618c8163d6ad6f1ed60d1871d88b36e548a20b3421e082bd7ec9"
+    },
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\verification.py": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\src\\vgar_m2_w78\\verification.py",
+      "sha256": "sha256:b08a65a65df5f8475099b3890e268b3f1667b839c0d4d53c67d6c3d7881d8c33"
+    },
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\workspace.py": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\src\\vgar_m2_w78\\workspace.py",
+      "sha256": "sha256:de243af79ba9b21fd6123383b86a8e1236973c3955c0da40ea69d82ca2231be0"
+    },
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78.egg-info\\dependency_links.txt": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\src\\vgar_m2_w78.egg-info\\dependency_links.txt",
+      "sha256": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
+    },
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78.egg-info\\entry_points.txt": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\src\\vgar_m2_w78.egg-info\\entry_points.txt",
+      "sha256": "sha256:0c1b82520ac954d2daa50dab4ea786d8360df01c8627a3867021bdd1b6f751f6"
+    },
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78.egg-info\\requires.txt": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\src\\vgar_m2_w78.egg-info\\requires.txt",
+      "sha256": "sha256:fa1dcff109fc3a49f96847beaa28d359e781839955f320e6b57215cfffe2ce27"
+    },
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78.egg-info\\SOURCES.txt": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\src\\vgar_m2_w78.egg-info\\SOURCES.txt",
+      "sha256": "sha256:23dcbe2851b0e573b621a8e1e0b50ba5853c1277896615bd6bd971fb642035d8"
+    },
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78.egg-info\\top_level.txt": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\src\\vgar_m2_w78.egg-info\\top_level.txt",
+      "sha256": "sha256:bb956c916881063820fd357829032762cc718ae2bb621cc31cba1070fa444cff"
+    },
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\scripts\\prepare_inputs.py": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\scripts\\prepare_inputs.py",
+      "sha256": "sha256:3e77724d25651008d3e6ec8a5fd672ce82317599970c3a13c46cdf1217d81df8"
+    },
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\scripts\\qualify_model.py": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\scripts\\qualify_model.py",
+      "sha256": "sha256:0ba7328a20ea87a453b4264627431712fb4d354adc412f710f70b86821a3970e"
+    },
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\scripts\\record_tests.py": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\scripts\\record_tests.py",
+      "sha256": "sha256:6a7e40e948a84da798b674fa49c71f3a130b61bb2d1789b7ed19f482cf5117d0"
+    },
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\scripts\\run_acceptance.py": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\scripts\\run_acceptance.py",
+      "sha256": "sha256:bfc9eb3f46269dc7a9830df65c8079b643a85f257c5c1b71eb7a4da4fa348162"
+    },
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\scripts\\run_adaptive_acceptance.py": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\scripts\\run_adaptive_acceptance.py",
+      "sha256": "sha256:10a082dcb7990f38ab3d8f0ec441251164a686d484b99699bd77a5895a537071"
+    },
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\scripts\\run_demo.py": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\scripts\\run_demo.py",
+      "sha256": "sha256:5c3737aa5fd7fe22b107eceed8a769d6086a0504cd1431456fa23d888dee97fc"
+    },
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\scripts\\summarize_runs.py": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\scripts\\summarize_runs.py",
+      "sha256": "sha256:03b99d831d7b83df0261f6dc4bbcc8c77039d7b70269180a3d40cad4f0c860e8"
+    },
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\config\\demo.json": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\config\\demo.json",
+      "sha256": "sha256:d1ba30333e9193a1e225ee3c2219b53cdec2be7c55756acb7eb89055be5b0825"
+    },
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\config\\fixtures\\mypy.ini": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\config\\fixtures\\mypy.ini",
+      "sha256": "sha256:5dd48be92168fadb88322eaa068922fa3249f8cba740ca4ac3c13c0d7a6fa7ee"
+    },
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\config\\fixtures\\ruff.toml": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\config\\fixtures\\ruff.toml",
+      "sha256": "sha256:17bb1eb2799030893f3059f4092c772439d9861afcf71ca3f5a6dc277660b4c7"
+    },
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\config\\source_pin.json": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\config\\source_pin.json",
+      "sha256": "sha256:d62411622591bdd7dbfb87af7873a998f9e0f449662bc79ffba7cdec495b603a"
+    },
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\config\\trusted_fixtures.json": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\config\\trusted_fixtures.json",
+      "sha256": "sha256:d9e7b1122057f2b453ab64866a7ad620f03378ae081c54acc74a3ce778abe167"
+    },
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\prompts\\repair_v1.txt": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\prompts\\repair_v1.txt",
+      "sha256": "sha256:e02066386df09b5e479c0ebf8a5f1bc28aeaf80f66b5085990d1226bdf737465"
+    },
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\prompts\\repair_v2.txt": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\prompts\\repair_v2.txt",
+      "sha256": "sha256:5807d78085d27793dc1cf2b4cc798976cca443947d35ec49e98b400ceff184e2"
+    },
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\prompts\\repair_v3.txt": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\prompts\\repair_v3.txt",
+      "sha256": "sha256:52962b5e9cf2d5b51ae176328a95928a99474a1c83d17043b8838025ac1f78c6"
+    },
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\prompts\\repair_v4.txt": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\prompts\\repair_v4.txt",
+      "sha256": "sha256:ead48b5a1f5bd15d95e1ef961cab80f78d4081420afad24e0b5d3ee9f09e15a1"
+    },
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\prompts\\repair_v5.txt": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\prompts\\repair_v5.txt",
+      "sha256": "sha256:c2681aa98de9b24b11b6a289d35a0e8eafefdbc2c20f0f3bbb0b146fbc1fe4e1"
+    },
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\prompts\\repair_v6.txt": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\prompts\\repair_v6.txt",
+      "sha256": "sha256:fed824d100a09feab2cd52850a7c1ceb7f131c0829c863972073ff29ed079aa5"
+    },
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\prompts\\repair_v7.txt": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\prompts\\repair_v7.txt",
+      "sha256": "sha256:680f20f9c289b47372672ced2db649329718b59c8c8c69cc6ca4e0c7b129286a"
+    },
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\prompts\\repair_v8.txt": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\prompts\\repair_v8.txt",
+      "sha256": "sha256:e11d6e7575934e0732a34bcde32f1e9e3e53e2caa21110edb23cc3d8f02a1966"
+    },
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\prompts\\repair_v9.txt": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\prompts\\repair_v9.txt",
+      "sha256": "sha256:326ad28a2e862eaca0404b0eeb423151dc373d1f4f40b21856b5d68539f52259"
+    },
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\tests\\conftest.py": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\tests\\conftest.py",
+      "sha256": "sha256:00bf9077554ae86d55aaccbcf8892266f941d8829210e42f6e1f9f7933aa6bf8"
+    },
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\tests\\fixtures\\reference_patches\\missing_links.diff": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\tests\\fixtures\\reference_patches\\missing_links.diff",
+      "sha256": "sha256:75fe2315571bfba6e949c3f975d5f8f5b2e1410cfa2625f6001dd6e4d2cb668d"
+    },
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\tests\\fixtures\\reference_patches\\multi_file_invoice.diff": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\tests\\fixtures\\reference_patches\\multi_file_invoice.diff",
+      "sha256": "sha256:29a52dbe37a13944becb07d5dbaef8e7d01329eb5fba58e2e0ee7c6738fb4b65"
+    },
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\tests\\fixtures\\reference_patches\\single_file_login.diff": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\tests\\fixtures\\reference_patches\\single_file_login.diff",
+      "sha256": "sha256:41c33dcc1d9522d88e2599c1d155486deb9793a8defcd2e38759940088520620"
+    },
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\tests\\test_acceptance_campaign.py": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\tests\\test_acceptance_campaign.py",
+      "sha256": "sha256:1657ca9bc08475c07f38f6cfad01e5ff1605ccab76ef946730c24ad4deda410f"
+    },
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\tests\\test_acceptance_cli.py": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\tests\\test_acceptance_cli.py",
+      "sha256": "sha256:ff7dfe680040a7dd7636ed0aef6bb9d25ccc748e3cfe1220072a18a962c2ed92"
+    },
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\tests\\test_adaptive_campaign.py": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\tests\\test_adaptive_campaign.py",
+      "sha256": "sha256:a38cf51a01fbf6fc8b9b7ff3577a83c87646f7859ad1917817e12aae90ce439b"
+    },
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\tests\\test_adaptive_cli.py": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\tests\\test_adaptive_cli.py",
+      "sha256": "sha256:a597477f00e72fb32cc88bbee9e71c4e61d5636c043430ed8c4563788efd8305"
+    },
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\tests\\test_bootstrap.py": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\tests\\test_bootstrap.py",
+      "sha256": "sha256:133e5fa96daa425b32bacc4f37128e2107b0dc65f8d63d04b4c7f4ff2d02e5aa"
+    },
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\tests\\test_cli.py": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\tests\\test_cli.py",
+      "sha256": "sha256:17ce6e2c3079f39d01b80bcbbf99308acd82b8213e657ee9ba1ba8b016f8392f"
+    },
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\tests\\test_context_adapter.py": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\tests\\test_context_adapter.py",
+      "sha256": "sha256:fd681ab61f31f6a982baa29b5b3ad7dbec1a6bf46e24ee43c699eb0d78ee9402"
+    },
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\tests\\test_contracts.py": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\tests\\test_contracts.py",
+      "sha256": "sha256:dc143712fbd90807e8aa2a3e96ae4dc2123453be1401818b76a7e1deda9bc5f0"
+    },
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\tests\\test_evidence.py": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\tests\\test_evidence.py",
+      "sha256": "sha256:eabcd59c7a6c469c2767850e098bb8c2fee62e2ea90c08332ada1c229333c115"
+    },
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\tests\\test_executor.py": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\tests\\test_executor.py",
+      "sha256": "sha256:3b5270d7c06e4f1aee7a739b668e037fc1ad98e681ee2ae1a0f2c5b94c0e01cc"
+    },
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\tests\\test_finalization.py": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\tests\\test_finalization.py",
+      "sha256": "sha256:f821a22d5f149919da04fbae421e2f7c22c44a7930954f142404c2bfb044768d"
+    },
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\tests\\test_generator.py": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\tests\\test_generator.py",
+      "sha256": "sha256:89d7dc95c97bab1a2710957d645fc341a332d33b0b839010b9ec0cff8499a3d9"
+    },
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\tests\\test_hf_adapter.py": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\tests\\test_hf_adapter.py",
+      "sha256": "sha256:86bb50dd040be4a6d5e47564e6c8596e9929d632223dca657a3813fb91ddff98"
+    },
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\tests\\test_local_chat.py": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\tests\\test_local_chat.py",
+      "sha256": "sha256:74e38196ef23baebf9da01713b2ada48f00bfa7cfcac0a0794b810b4538c0018"
+    },
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\tests\\test_patch.py": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\tests\\test_patch.py",
+      "sha256": "sha256:0ff796f3d87a82b264f4f45caf34b943cfce4e5baef2ffe79b7a793f2665a06a"
+    },
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\tests\\test_pipeline.py": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\tests\\test_pipeline.py",
+      "sha256": "sha256:8cdf6f92c6b08a0dec0ddf8afdb1cbc4b47a6c8a7fcde842b0f789d4ec606f95"
+    },
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\tests\\test_prompt.py": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\tests\\test_prompt.py",
+      "sha256": "sha256:df4df0a4c5b2b30342ef2fa2af724b1546e3ff950e37bdfa16f56a74e81fc510"
+    },
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\tests\\test_prompt_adaptive.py": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\tests\\test_prompt_adaptive.py",
+      "sha256": "sha256:3769a5a55bac207ea65491eca909eefecef5e6ecb6cf50c4a5fa94ce27732ac0"
+    },
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\tests\\test_prompt_v2.py": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\tests\\test_prompt_v2.py",
+      "sha256": "sha256:7186d723594c8f6ce6dbe8925202c9ff0e527b403103260db6e9d3247968b419"
+    },
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\tests\\test_prompt_v3_v4.py": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\tests\\test_prompt_v3_v4.py",
+      "sha256": "sha256:4919575368e35bffcddfc4a3cb778a6217343b529546a8a723b2bcf7255affd9"
+    },
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\tests\\test_prompt_v6.py": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\tests\\test_prompt_v6.py",
+      "sha256": "sha256:df00409c81c5e0db3669001ad61ce7887af4616e8b81c8f5d063928ae8e8f592"
+    },
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\tests\\test_prompt_v7.py": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\tests\\test_prompt_v7.py",
+      "sha256": "sha256:68313120780260b63bd3eb7b16f34f1c79853e0f6654d40e40088464cd836472"
+    },
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\tests\\test_prompt_v8.py": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\tests\\test_prompt_v8.py",
+      "sha256": "sha256:23860ce2c4e0b76bfb86c5de10527e44348d44a5e629643cda1a7a4a743340bb"
+    },
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\tests\\test_prompt_v9.py": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\tests\\test_prompt_v9.py",
+      "sha256": "sha256:544e596a333316ab74e98229dfaee9cbadd162f48d191c4c419d4b039db5801b"
+    },
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\tests\\test_review_guards.py": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\tests\\test_review_guards.py",
+      "sha256": "sha256:9ee2c8978b6b3a2e67d2e9203c93fe5df4eab15011bdb0ab929a141e73e344a0"
+    },
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\tests\\test_summary.py": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\tests\\test_summary.py",
+      "sha256": "sha256:f9a4a18d8341cfe03977086a627584d64df1508a024352845b231139dd5b91b9"
+    },
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\tests\\test_test_runner.py": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\tests\\test_test_runner.py",
+      "sha256": "sha256:cb4d3b2ef03b6604d659440ae6cef5950ab80d08e0e7162b4ecb236f6af25cd1"
+    },
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\tests\\test_test_selection.py": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\tests\\test_test_selection.py",
+      "sha256": "sha256:d48f1f7f71a8a2316101a55f49471976f4e3864ab8cb368b33f0e2930f485e57"
+    },
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\tests\\test_verification.py": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\tests\\test_verification.py",
+      "sha256": "sha256:1e364c57a857d64dc55c7825fda429101cf80c21f33d4af52d1cae048404b041"
+    },
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\tests\\test_workspace.py": {
+      "archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\diagnostics-preflight\\20261015T012505328670Z-d98793260a4a\\runtime\\tests\\test_workspace.py",
+      "sha256": "sha256:404c1f60181eef08b3402cc3a2fa32cb5f49c90004c80ae8158064dc9f6fdfcd"
+    }
+  },
+  "historical": {
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\campaign.json": "sha256:c945e1ed34ba0136c61ade8196a3f0ff0dd175048bb0984101fd52ce77a4fb8a",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\frozen_inputs.json": "sha256:c2256c4f8c07537d94685d8f4c6be398dff37a020c3cc08b2dc7ac7e0ec9a36c",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\REPORT.md": "sha256:1ed0333847b831496175680a81d06f7c7bcb576fa2701a40cec27b71499b759f",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\summary.json": "sha256:eed5679f331923ca73ad4544e3aecc76f7a3bbe68d245fed733ed5c4d518870c",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\01\\20261015T003703727090Z-e62648364844\\evidence_bundle.json": "sha256:a4ab4264a1626b9d823217afd5ea8417cb46905ac4e20b384525700a3ab927b5",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\01\\20261015T003703727090Z-e62648364844\\prompt.txt": "sha256:d0ee8c4afb6aa0b340ff93b0ced8ba03d496e50e23814f1a91f098808f197d82",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\01\\20261015T003703727090Z-e62648364844\\raw_model_output.txt": "sha256:c24f4fa913f0a5d32132618babed55ab0ff8b2dc82a4b14d0fcd67ef43568949",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\01\\20261015T003703727090Z-e62648364844\\REPORT.md": "sha256:9a5f323397133af9f754c627738b8469ff39e4f00921ba7f334ba14b82c345ac",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\01\\20261015T003703727090Z-e62648364844\\run_record.json": "sha256:4f4dfff82c5c98c45fa36735b61c2718d4166963370b31c56c3523733060b65c",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\01\\model-workers\\0560b8fb3ea74688a0d1f8665962bf9b\\command.json": "sha256:865145403d0cd949b9bfb2bfb40c91315387fd6d4b3eb2bcedeb631416c32ec1",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\01\\model-workers\\0560b8fb3ea74688a0d1f8665962bf9b\\request.json": "sha256:93bd5060fbe028301a91a68b0a87cc677ab29f6ea0edb52cc56a6da9ef92c5c0",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\01\\model-workers\\0560b8fb3ea74688a0d1f8665962bf9b\\response.json": "sha256:05f6d4a02b3fccd4d892a66592eea21d932c26a8a5c82797adbee9bc4c524027",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\01\\model-workers\\19fea6d611244838a23d37529183f22f\\command.json": "sha256:510988b1c5f0d5b607307d651ed4f69643e88e4a81939e28e7168cfb7b69aed6",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\01\\model-workers\\19fea6d611244838a23d37529183f22f\\request.json": "sha256:a8f2148ab445ff60d16a8cd7d8429d03938b4fcc4f033189c47037c71ff3e389",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\01\\model-workers\\19fea6d611244838a23d37529183f22f\\response.json": "sha256:5581e7a6f529387a4d3fda28a3c8ba8f17a817bd0e95d850fb60e050f380ae81",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\02\\20261015T004240341955Z-b5e07ce0a4e0\\evidence_bundle.json": "sha256:01238ba78ac9fb2125419a3c50d62eea6b2c925634cb78276b562cfca8ff2d04",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\02\\20261015T004240341955Z-b5e07ce0a4e0\\prompt.txt": "sha256:71a0211cf833490453738962553e769f0db668aab698985017e649d20ac4877f",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\02\\20261015T004240341955Z-b5e07ce0a4e0\\raw_model_output.txt": "sha256:9aefbed048c493b006bb6f45e005f7b9c3585d7eb1a925bf0042fe27f8210db1",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\02\\20261015T004240341955Z-b5e07ce0a4e0\\REPORT.md": "sha256:b01bc06be9d34b778bc45fde44670fb0092acafdc317fe2155e83d58299dea00",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\02\\20261015T004240341955Z-b5e07ce0a4e0\\run_record.json": "sha256:c31bfcee24e8a64ccee332e4d3d98bcff442a3fe933478b5bd77035dba1668d5",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\02\\model-workers\\624242fe8190418d86fcf60ad1b7e441\\command.json": "sha256:67dc895f3c3cfb597963d5d56180655a9a2b9518f79fdd8565ae6d4806771d4d",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\02\\model-workers\\624242fe8190418d86fcf60ad1b7e441\\request.json": "sha256:cdbe4a130b39765bc07b1a4f1115a73a1fe9b135db9c773e0330d9f3301bfade",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\02\\model-workers\\624242fe8190418d86fcf60ad1b7e441\\response.json": "sha256:f4241b64061b951a02eeae6987fc85866d5a6895385b042483939560f8c27ab3",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\02\\model-workers\\944de4f296254571895ae77b66b5e555\\command.json": "sha256:0ba9695a99cf6a8d4d497f5d23c8dab64c7a6b6eac051c65a77a64e91ed27ac3",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\02\\model-workers\\944de4f296254571895ae77b66b5e555\\request.json": "sha256:f726f3e3a840fe78f2eb359675c3abac447494f9dc587b31bf6a97528cde0c9e",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\02\\model-workers\\944de4f296254571895ae77b66b5e555\\response.json": "sha256:140231460ead673d05208ccf060b2ae962495a1acdc48fb8c12480f1dff5dddb",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\02\\model-workers\\a808be9d0496473c82bc27783afd3921\\command.json": "sha256:42c59b4fbc516456f0f6bd01f8f47b3b7643a0b4d1fab1a7286de0e6e0e43160",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\02\\model-workers\\a808be9d0496473c82bc27783afd3921\\request.json": "sha256:76325fbc02cb3052d324fece448deddbfe61cf3d4331cff7baf7a9f436236660",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\02\\model-workers\\a808be9d0496473c82bc27783afd3921\\response.json": "sha256:33db24283c3e2fba79aac465eda08312d81d0bf936a3f0c3228f13e4102dcf36",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\03\\20261015T004931535482Z-daa3ae13e75e\\evidence_bundle.json": "sha256:364e5d5d24c9d61b5ec4c8b935f2626abdebed5bc353cbc99ba2635f0d5a25b6",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\03\\20261015T004931535482Z-daa3ae13e75e\\prompt.txt": "sha256:708f0b15061c4762456f8254d408ea254a15bbd91a313bf67cdedb8d6f3f2b9a",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\03\\20261015T004931535482Z-daa3ae13e75e\\raw_model_output.txt": "sha256:df9ec56a24d3b88b8efed59092db2fec63fdeb18f7bf5fdd90e96f721aa08231",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\03\\20261015T004931535482Z-daa3ae13e75e\\REPORT.md": "sha256:22948721f164b5e8e6aa45489b32ffe84802223a690310bcb88d87619f0374bc",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\03\\20261015T004931535482Z-daa3ae13e75e\\run_record.json": "sha256:37040afcab56013d5e9d31365b093bedc3511ca86c77a9a40047895a271e6ff5",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\03\\model-workers\\28d28f3fa920475ca87ac0723b690e84\\command.json": "sha256:6168312ccbceea98e6037c45a71f0889c2d9803d7b408eebc8b2acfd375243dc",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\03\\model-workers\\28d28f3fa920475ca87ac0723b690e84\\request.json": "sha256:847736be7684649d9ebcee5f27c032f483ed6d10aeec1e0a0949162b2cc4e3db",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\03\\model-workers\\28d28f3fa920475ca87ac0723b690e84\\response.json": "sha256:d86ff85227ce20d095a315142785dc8b6c8882da882a0a34a6dcfc85ed9018b2",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\03\\model-workers\\3f4c9c5818ab469c93334952f2bdb561\\command.json": "sha256:fc205e44ab6ad4d6f80b7e791bd2c240c0d976ffb7a667a3234ebc8679ab808b",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\03\\model-workers\\3f4c9c5818ab469c93334952f2bdb561\\request.json": "sha256:94c6b6e299e22e583efc9c238e5eec9029b3adaa5eeab41745a48fdc09bf221c",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\03\\model-workers\\3f4c9c5818ab469c93334952f2bdb561\\response.json": "sha256:63f6c718f7345b0f133a0fcb530962883d4d614ceefe31612a40ca54f2eebd0c",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\03\\model-workers\\64d64c2d80f84f388ed7342d82da0280\\command.json": "sha256:c1e08bee3e029e95e935a43e5f5bf98fba9e92caf9b99d100cc48d54b9a16c33",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\03\\model-workers\\64d64c2d80f84f388ed7342d82da0280\\request.json": "sha256:fdf9a9b347f8146af858d821b6e4eb8e42d1a947bbdd030e560160beaa0a7454",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\03\\model-workers\\64d64c2d80f84f388ed7342d82da0280\\response.json": "sha256:4b127f1faa5d6c6000d6fda7c2d9ef8ea757382333f955e86c76e5864d97ff43",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\04\\20261015T005533899467Z-16d544650f34\\evidence_bundle.json": "sha256:718c438c618dcb503d09bf203850936825eacacd3db0d86519f101539bf8d56d",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\04\\20261015T005533899467Z-16d544650f34\\prompt.txt": "sha256:ad7577bc68911068bffb3aea094c51203e67e813788c05e7306f3d72bd2018d5",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\04\\20261015T005533899467Z-16d544650f34\\raw_model_output.txt": "sha256:5a0d8b303738da4ce859d28312d8ab18512c724213d0b03de44d2b01778fddeb",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\04\\20261015T005533899467Z-16d544650f34\\REPORT.md": "sha256:07c2c2d1fcb4fabb757d3d78ff001d00433f08571a45460537a6acece982137c",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\04\\20261015T005533899467Z-16d544650f34\\run_record.json": "sha256:ff517108861989dcde7c6100810bc186f86af4131e55574d0e4f0a01395bf037",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\04\\model-workers\\27c732757da944099fd135894753ea9c\\command.json": "sha256:d138919308e549ce8fbe5bc6a1f2b9cb8033b935aebf2a52bb9bf618209b0bb0",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\04\\model-workers\\27c732757da944099fd135894753ea9c\\request.json": "sha256:70c01cbddab95db08a61f3212d8345038ebd762b4828cb296964ced47814e6f2",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\04\\model-workers\\27c732757da944099fd135894753ea9c\\response.json": "sha256:271ef0d31e23cb10b29b4e4635812b42e14c55aaa118b618c994fce1aec40b87",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\04\\model-workers\\4525b022b265464084e26f8621840145\\command.json": "sha256:e66b8e67c3f9ff3f1787c86d996d058092c93b8083218ea25778189a8da5d8d3",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\04\\model-workers\\4525b022b265464084e26f8621840145\\request.json": "sha256:7b5e92f1d00d4da1dde01b1d261fe92a4a6100530a80882b82a386b008b466b4",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\04\\model-workers\\4525b022b265464084e26f8621840145\\response.json": "sha256:1a3ec34d17170a92366393f1fdefbbd83bb27627969a3ced41668d52517120cb",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\04\\model-workers\\f660c682dbd645619ae5c0ae50617091\\command.json": "sha256:9f9aa51ad5cde20248ed564696ed6fa4ceb44450d1f034f17b4b95865b013eff",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\04\\model-workers\\f660c682dbd645619ae5c0ae50617091\\request.json": "sha256:461028d1370deacbcd5b5fee64eed33acc321c9cd024acd1a36fb70292877de4",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\04\\model-workers\\f660c682dbd645619ae5c0ae50617091\\response.json": "sha256:36e4db9cb798d9bc756eda4aa78c792fee1b856cf572db35985a1d0d3ea1257a",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\05\\20261015T005816855246Z-a997178dc2f5\\applied.diff": "sha256:53e92ed9c46e70de0b983bdd1461de40856cb328a928664ba40ca313c2ead5ab",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\05\\20261015T005816855246Z-a997178dc2f5\\candidate.diff": "sha256:55411c98624911defcfd57fe792eba2e4cf7cf44a32a8a37a7d911f076fc198f",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\05\\20261015T005816855246Z-a997178dc2f5\\evidence_bundle.json": "sha256:0c3582f94bfd502b40d0a04abee1b394667087ce380c0e7f349a9983c2ccfaf6",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\05\\20261015T005816855246Z-a997178dc2f5\\prompt.txt": "sha256:53b1aa666e504da3d322562e42862dc45c2dc651b22d426f44d71461dc1f1142",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\05\\20261015T005816855246Z-a997178dc2f5\\raw_model_output.txt": "sha256:55411c98624911defcfd57fe792eba2e4cf7cf44a32a8a37a7d911f076fc198f",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\05\\20261015T005816855246Z-a997178dc2f5\\REPORT.md": "sha256:546629a7a986202c1a929d03163193a03c07d10e01521eff44791359b829a384",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\05\\20261015T005816855246Z-a997178dc2f5\\run_record.json": "sha256:0ff945b06afce97b42958db1fadc4662c61c6439175a9b86df217c72e9b74b56",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\05\\20261015T005816855246Z-a997178dc2f5\\transport.diff": "sha256:6f3505e82b1ecabb8c8269aa549ac3148d599a7e7b28d55a66676a0d35113e41",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\05\\model-workers\\258a896177bb4bbfa462febca59d8b0b\\command.json": "sha256:c15043cea2f54086c3c4ca30e0ff6e63e00c71cdc89ddcc22ab5c907b0fb24b3",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\05\\model-workers\\258a896177bb4bbfa462febca59d8b0b\\request.json": "sha256:60c040e75fb1333204d7fe387fc1d7bd2c4d4d48888835a0db3b0c367ad24a2c",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\05\\model-workers\\258a896177bb4bbfa462febca59d8b0b\\response.json": "sha256:adce8bbfdd8df7925989e34a378f963dfc5408c9d78db68a57ee640ee338905b",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\05\\model-workers\\9ee8ea2b6f6e409fa2e40057ee24b10e\\command.json": "sha256:f21a084e90767e08dd49bfa3f350028b78fa9238c957bbdd290d286d18f42555",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\05\\model-workers\\9ee8ea2b6f6e409fa2e40057ee24b10e\\request.json": "sha256:c6056e9ee63a5b27cf4430899785662994f05fa2e338e1b14ca0c18f739235d6",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\05\\model-workers\\9ee8ea2b6f6e409fa2e40057ee24b10e\\response.json": "sha256:c3a7fa5e8ab8343f8480906f7705d11327ce90e59ffe2e2138f28a861506a945",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\revisions\\m2-w78-v5.json": "sha256:ffb7e0f5d8ec764a0ce4c502a98071215f5b9175902edc73f5b01db118ee61c1",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\revisions\\m2-w78-v6.json": "sha256:eead9620d1afab1e5393f0c32532b4a808d240a8b3f8e0a4c913be7c54668067",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\revisions\\m2-w78-v7.json": "sha256:4316f2ee02b8c2bfaab845eda818287d7ebde960f4c511eab614b7a4e08ec834",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\revisions\\m2-w78-v8.json": "sha256:12908eff72fb67a506842f705ebe9b1a3a60313130d99c8f0960f831517a8d97",
+    "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\revisions\\m2-w78-v9.json": "sha256:cbe4be417069d7cb052d24139355a2626c09f11c6d35b9173cd86880db56e165"
+  },
+  "protected_external": {
+    "D:\\Project\\CAPSTONES\\VGAR\\src\\vgar\\evaluation\\retrieval\\compare.py": "sha256:1e88a8a97b0845eb5579322841991debaee00b9c779cf5e462737965a8f013b6",
+    "D:\\Project\\CAPSTONES\\VGAR\\src\\vgar\\evaluation\\retrieval\\scoring.py": "sha256:dfbad5552d67a42dffac9f22f54ef58f8b397f8c88825fab719e4772b97293b8",
+    "D:\\Project\\CAPSTONES\\VGAR\\PROGRESS.md": "sha256:77e5bcc7f974e017784c51e7e7e2fd7903e33f7c20ad5f959c7afb8c2343eac5",
+    "D:\\Project\\CAPSTONES\\VGAR\\Task Status.md": "sha256:6c4bbd5db44f04ce52eb3a27cc1c3878ebeaf6f11d68f27f9ef5195cccd2b479"
+  },
+  "previous_archive": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive-preflight\\20261015T001508430263Z-6296d566fd2e\\archive_manifest.json",
+  "scope": "logging-only diagnostics; no further inference authorized"
+}

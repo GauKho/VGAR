@@ -1,0 +1,179 @@
+{
+  "campaign_id": "2026-10-15-v5-plus",
+  "status": "FAIL",
+  "complete": true,
+  "started_utc": "2026-10-15T00:37:01.781629+00:00",
+  "ended_utc": "2026-10-15T00:59:22.281895+00:00",
+  "limits": {
+    "tuning_B": 4,
+    "tuning_C": 4,
+    "final": 3
+  },
+  "frozen_sha256": "sha256:c2256c4f8c07537d94685d8f4c6be398dff37a020c3cc08b2dc7ac7e0ec9a36c",
+  "revisions": {
+    "m2-w78-v5": {
+      "template_hash": "sha256:c2681aa98de9b24b11b6a289d35a0e8eafefdbc2c20f0f3bbb0b146fbc1fe4e1",
+      "parent_version": null,
+      "parent_record": null,
+      "reason": "Approved V5: complete multi-file issue and absolute hunk coordinates",
+      "hypothesis": "Neutral offsets 3/6 and explicit original-file first line reduce snippet-relative start errors",
+      "registered_utc": "2026-10-15T00:37:02.443757+00:00"
+    },
+    "m2-w78-v6": {
+      "template_hash": "sha256:fed824d100a09feab2cd52850a7c1ceb7f131c0829c863972073ff29ed079aa5",
+      "parent_version": "m2-w78-v5",
+      "parent_record": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\01\\20261015T003703727090Z-e62648364844\\run_record.json",
+      "reason": "B V5 declared count2 for a three-line hunk; retain unchanged statements as context",
+      "hypothesis": "A neutral 3-line hunk and explicit 2context plus 1change counting prevents copying count2",
+      "registered_utc": "2026-10-15T00:42:38.953662+00:00"
+    },
+    "m2-w78-v7": {
+      "template_hash": "sha256:680f20f9c289b47372672ced2db649329718b59c8c8c69cc6ca4e0c7b129286a",
+      "parent_version": "m2-w78-v6",
+      "parent_record": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\02\\20261015T004240341955Z-b5e07ce0a4e0\\run_record.json",
+      "reason": "V6 used whole-file count6 for snippet3 and emitted forbidden test diffs",
+      "hypothesis": "Short source-metadata recipe without example numbers reduces count confusion; tests are read-only",
+      "registered_utc": "2026-10-15T00:49:30.420519+00:00"
+    },
+    "m2-w78-v8": {
+      "template_hash": "sha256:e11d6e7575934e0732a34bcde32f1e9e3e53e2caa21110edb23cc3d8f02a1966",
+      "parent_version": "m2-w78-v7",
+      "parent_record": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\03\\20261015T004931535482Z-daa3ae13e75e\\run_record.json",
+      "reason": "V7 had correct production files and hunk counts but omitted context markers before source indentation",
+      "hypothesis": "A body-only neutral whitespace example distinguishes one context marker from original Python indentation without copying numeric headers",
+      "registered_utc": "2026-10-15T00:55:32.659728+00:00"
+    },
+    "m2-w78-v9": {
+      "template_hash": "sha256:326ad28a2e862eaca0404b0eeb423151dc373d1f4f40b21856b5d68539f52259",
+      "parent_version": "m2-w78-v8",
+      "parent_record": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\04\\20261015T005533899467Z-16d544650f34\\run_record.json",
+      "reason": "B V8 hallucinated a host_path_policy.json metadata file; B quota exhausted, continue C only",
+      "hypothesis": "Explicit source-only paths and neutral whole-snippet replacement avoid treating metadata as a file and missing context prefixes",
+      "registered_utc": "2026-10-15T00:58:15.382264+00:00"
+    }
+  },
+  "attempts": [
+    {
+      "task_id": "multi_file_invoice",
+      "phase": "tuning_B",
+      "version": "m2-w78-v5",
+      "number": 1,
+      "attempt_id": "attempt-01",
+      "status": "FAIL",
+      "complete": true,
+      "feedback": null,
+      "started_utc": "2026-10-15T00:37:03.165980+00:00",
+      "ended_utc": "2026-10-15T00:40:13.404025+00:00",
+      "owner": {
+        "pid": 5840,
+        "birth": "134364982225004263"
+      },
+      "run_root": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\01",
+      "record": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\01\\20261015T003703727090Z-e62648364844\\run_record.json",
+      "gate_errors": [],
+      "observed_status": "FAIL",
+      "canonical_sha256": "sha256:4f4dfff82c5c98c45fa36735b61c2718d4166963370b31c56c3523733060b65c"
+    },
+    {
+      "task_id": "multi_file_invoice",
+      "phase": "tuning_B",
+      "version": "m2-w78-v6",
+      "number": 2,
+      "attempt_id": "attempt-02",
+      "status": "FAIL",
+      "complete": true,
+      "feedback": {
+        "task_id": "multi_file_invoice",
+        "source_run_id": "20261015T003703727090Z-e62648364844",
+        "category": "PATCH_PARSE_ERROR",
+        "message": "Hunk counts exceeded"
+      },
+      "started_utc": "2026-10-15T00:42:39.907007+00:00",
+      "ended_utc": "2026-10-15T00:47:12.315881+00:00",
+      "owner": {
+        "pid": 3952,
+        "birth": "134364985590471917"
+      },
+      "run_root": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\02",
+      "record": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\02\\20261015T004240341955Z-b5e07ce0a4e0\\run_record.json",
+      "gate_errors": [],
+      "observed_status": "FAIL",
+      "canonical_sha256": "sha256:c31bfcee24e8a64ccee332e4d3d98bcff442a3fe933478b5bd77035dba1668d5"
+    },
+    {
+      "task_id": "multi_file_invoice",
+      "phase": "tuning_B",
+      "version": "m2-w78-v7",
+      "number": 3,
+      "attempt_id": "attempt-03",
+      "status": "FAIL",
+      "complete": true,
+      "feedback": {
+        "task_id": "multi_file_invoice",
+        "source_run_id": "20261015T004240341955Z-b5e07ce0a4e0",
+        "category": "PATCH_PARSE_ERROR",
+        "message": "Truncated or malformed hunk"
+      },
+      "started_utc": "2026-10-15T00:49:31.103176+00:00",
+      "ended_utc": "2026-10-15T00:51:44.991301+00:00",
+      "owner": {
+        "pid": 6360,
+        "birth": "134364989704768581"
+      },
+      "run_root": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\03",
+      "record": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\03\\20261015T004931535482Z-daa3ae13e75e\\run_record.json",
+      "gate_errors": [],
+      "observed_status": "FAIL",
+      "canonical_sha256": "sha256:37040afcab56013d5e9d31365b093bedc3511ca86c77a9a40047895a271e6ff5"
+    },
+    {
+      "task_id": "multi_file_invoice",
+      "phase": "tuning_B",
+      "version": "m2-w78-v8",
+      "number": 4,
+      "attempt_id": "attempt-04",
+      "status": "FAIL",
+      "complete": true,
+      "feedback": {
+        "task_id": "multi_file_invoice",
+        "source_run_id": "20261015T004931535482Z-daa3ae13e75e",
+        "category": "PATCH_PARSE_ERROR",
+        "message": "Truncated or malformed hunk"
+      },
+      "started_utc": "2026-10-15T00:55:33.352345+00:00",
+      "ended_utc": "2026-10-15T00:56:49.655717+00:00",
+      "owner": {
+        "pid": 16420,
+        "birth": "134364993327021924"
+      },
+      "run_root": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\04",
+      "record": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\04\\20261015T005533899467Z-16d544650f34\\run_record.json",
+      "gate_errors": [],
+      "observed_status": "FAIL",
+      "canonical_sha256": "sha256:ff517108861989dcde7c6100810bc186f86af4131e55574d0e4f0a01395bf037"
+    },
+    {
+      "task_id": "missing_links",
+      "phase": "tuning_C",
+      "version": "m2-w78-v9",
+      "number": 5,
+      "attempt_id": "attempt-05",
+      "status": "PASS",
+      "complete": true,
+      "feedback": null,
+      "started_utc": "2026-10-15T00:58:16.308865+00:00",
+      "ended_utc": "2026-10-15T00:59:22.281895+00:00",
+      "owner": {
+        "pid": 9756,
+        "birth": "134364994954309560"
+      },
+      "run_root": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\05",
+      "record": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\05\\20261015T005816855246Z-a997178dc2f5\\run_record.json",
+      "gate_errors": [],
+      "observed_status": "PASS",
+      "canonical_sha256": "sha256:0ff945b06afce97b42958db1fadc4662c61c6439175a9b86df217c72e9b74b56"
+    }
+  ],
+  "final_version": null,
+  "reason": "TUNING_QUOTA_EXHAUSTED"
+}

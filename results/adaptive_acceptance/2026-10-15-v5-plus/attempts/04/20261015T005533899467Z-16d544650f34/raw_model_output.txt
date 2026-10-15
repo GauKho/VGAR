@@ -1,0 +1,4 @@
+--- a/host_path_policy.json
++++ b/host_path_policy.json
+@@ -1,4 +1,4 @@
+ {"allowed_source_paths": ["invoice.py", "pricing.py"], "protected_paths": ["pytest.ini", "tests"]}

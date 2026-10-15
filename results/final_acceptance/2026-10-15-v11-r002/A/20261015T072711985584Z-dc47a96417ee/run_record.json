@@ -1,0 +1,2099 @@
+{
+  "run_id": "20261015T072711985584Z-dc47a96417ee",
+  "kind": "repair",
+  "status": "PASS",
+  "complete": true,
+  "started_utc": "2026-10-15T07:27:11.985584+00:00",
+  "ended_utc": "2026-10-15T07:28:20.826972+00:00",
+  "duration_ms": 68828,
+  "interpreter": "D:\\Project\\CAPSTONES\\M2_week_7_8\\.venv\\Scripts\\python.exe",
+  "python": "3.11.6 (tags/v3.11.6:8b6ee5b, Oct  2 2023, 14:57:12) [MSC v.1935 64 bit (AMD64)]",
+  "stages": {
+    "context": {
+      "status": "PASS",
+      "metadata": {
+        "task_id": "single_file_login",
+        "repo_key": "demo/w7-w8/single_file_login",
+        "repository_revision": "fixture-v1",
+        "graph_version": "sha256:e1fe94d21f10f112cd3a5e2a39f88e1fb26a760ee8ea3eaa6d3bac608d1ec371",
+        "source_digest": "sha256:3121f4240c6e47d67974b4aa550bd8486b53ace95ba478067aa60d876570eedc",
+        "counter_label": "local-hf:Qwen/Qwen3-4B-Instruct-2507@cdbee75f17c01a7cc42f958dc650907174af0554:sha256=aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4:no-special-tokens",
+        "context_items": 3,
+        "snippet_tokens": 40,
+        "snippet_budget": 8000,
+        "context_truncated": false,
+        "token_budget_unit": "snippets-only",
+        "coverage_verified": false,
+        "collection_verified": false
+      },
+      "inputs": {
+        "test_links": {
+          "auth.py": [
+            "tests/test_auth.py::test_login_accepts_name",
+            "tests/test_auth.py::test_login_rejects_whitespace"
+          ],
+          "vgar:demo/w7-w8/single_file_login:python:file:auth.py": [
+            "tests/test_auth.py::test_login_accepts_name",
+            "tests/test_auth.py::test_login_rejects_whitespace"
+          ],
+          "vgar:demo/w7-w8/single_file_login:python:test:tests/test_auth.py:tests.test_auth.test_login_accepts_name": [
+            "tests/test_auth.py::test_login_accepts_name"
+          ],
+          "vgar:demo/w7-w8/single_file_login:python:test:tests/test_auth.py:tests.test_auth.test_login_rejects_whitespace": [
+            "tests/test_auth.py::test_login_rejects_whitespace"
+          ]
+        },
+        "failing_selectors": [
+          "tests/test_auth.py::test_login_rejects_whitespace"
+        ],
+        "fallback_scope": [
+          "tests"
+        ],
+        "diagnostics": {
+          "link_details": {
+            "auth.py": {
+              "candidates": [
+                {
+                  "selector": "tests/test_auth.py::test_login_accepts_name",
+                  "node_id": "vgar:demo/w7-w8/single_file_login:python:test:tests/test_auth.py:tests.test_auth.test_login_accepts_name",
+                  "distance": 0,
+                  "confidence": 0.95,
+                  "reason": "direct_call",
+                  "via": [
+                    "vgar:demo/w7-w8/single_file_login:python:function:auth.py:auth.login"
+                  ],
+                  "coverage_verified": false
+                },
+                {
+                  "selector": "tests/test_auth.py::test_login_rejects_whitespace",
+                  "node_id": "vgar:demo/w7-w8/single_file_login:python:test:tests/test_auth.py:tests.test_auth.test_login_rejects_whitespace",
+                  "distance": 0,
+                  "confidence": 0.95,
+                  "reason": "direct_call",
+                  "via": [
+                    "vgar:demo/w7-w8/single_file_login:python:function:auth.py:auth.login"
+                  ],
+                  "coverage_verified": false
+                }
+              ],
+              "truncated": false,
+              "traversal_limited": false,
+              "fallback_reason": null
+            },
+            "vgar:demo/w7-w8/single_file_login:python:file:auth.py": {
+              "candidates": [
+                {
+                  "selector": "tests/test_auth.py::test_login_accepts_name",
+                  "node_id": "vgar:demo/w7-w8/single_file_login:python:test:tests/test_auth.py:tests.test_auth.test_login_accepts_name",
+                  "distance": 0,
+                  "confidence": 0.95,
+                  "reason": "direct_call",
+                  "via": [
+                    "vgar:demo/w7-w8/single_file_login:python:function:auth.py:auth.login"
+                  ],
+                  "coverage_verified": false
+                },
+                {
+                  "selector": "tests/test_auth.py::test_login_rejects_whitespace",
+                  "node_id": "vgar:demo/w7-w8/single_file_login:python:test:tests/test_auth.py:tests.test_auth.test_login_rejects_whitespace",
+                  "distance": 0,
+                  "confidence": 0.95,
+                  "reason": "direct_call",
+                  "via": [
+                    "vgar:demo/w7-w8/single_file_login:python:function:auth.py:auth.login"
+                  ],
+                  "coverage_verified": false
+                }
+              ],
+              "truncated": false,
+              "traversal_limited": false,
+              "fallback_reason": null
+            },
+            "vgar:demo/w7-w8/single_file_login:python:test:tests/test_auth.py:tests.test_auth.test_login_accepts_name": {
+              "candidates": [
+                {
+                  "selector": "tests/test_auth.py::test_login_accepts_name",
+                  "node_id": "vgar:demo/w7-w8/single_file_login:python:test:tests/test_auth.py:tests.test_auth.test_login_accepts_name",
+                  "distance": 0,
+                  "confidence": 1.0,
+                  "reason": "test_target",
+                  "via": [
+                    "vgar:demo/w7-w8/single_file_login:python:test:tests/test_auth.py:tests.test_auth.test_login_accepts_name"
+                  ],
+                  "coverage_verified": false
+                }
+              ],
+              "truncated": false,
+              "traversal_limited": false,
+              "fallback_reason": null
+            },
+            "vgar:demo/w7-w8/single_file_login:python:test:tests/test_auth.py:tests.test_auth.test_login_rejects_whitespace": {
+              "candidates": [
+                {
+                  "selector": "tests/test_auth.py::test_login_rejects_whitespace",
+                  "node_id": "vgar:demo/w7-w8/single_file_login:python:test:tests/test_auth.py:tests.test_auth.test_login_rejects_whitespace",
+                  "distance": 0,
+                  "confidence": 1.0,
+                  "reason": "test_target",
+                  "via": [
+                    "vgar:demo/w7-w8/single_file_login:python:test:tests/test_auth.py:tests.test_auth.test_login_rejects_whitespace"
+                  ],
+                  "coverage_verified": false
+                }
+              ],
+              "truncated": false,
+              "traversal_limited": false,
+              "fallback_reason": null
+            }
+          },
+          "limited_targets": [],
+          "unlinked_targets": [],
+          "coverage_verified": false,
+          "collection_verified": false
+        }
+      },
+      "hashes": {
+        "context.json": "sha256:340cba38d7d7173b4e03efc912344ff3a7d7aa8d03de37f2659f07c4bfe44d01",
+        "context_manifest.json": "sha256:d50a6728fedf0a0f60c49b261bda2f8488f116dc004759c9999aa3e726571b63",
+        "test_links.json": "sha256:e8beae41566f1af6bc1cb9efd5fa73b5e18edc904c4e9ab2cdca37aeaa0eac26"
+      },
+      "context": {
+        "graph_version": "sha256:e1fe94d21f10f112cd3a5e2a39f88e1fb26a760ee8ea3eaa6d3bac608d1ec371",
+        "anchor_ids": [
+          "vgar:demo/w7-w8/single_file_login:python:file:auth.py",
+          "vgar:demo/w7-w8/single_file_login:python:function:auth.py:auth.login",
+          "vgar:demo/w7-w8/single_file_login:python:test:tests/test_auth.py:tests.test_auth.test_login_rejects_whitespace"
+        ],
+        "items": [
+          {
+            "node_id": "vgar:demo/w7-w8/single_file_login:python:test:tests/test_auth.py:tests.test_auth.test_login_rejects_whitespace",
+            "path": "tests/test_auth.py",
+            "symbol": "tests.test_auth.test_login_rejects_whitespace",
+            "range": {
+              "start_line": 4,
+              "start_col": 0,
+              "end_line": 5,
+              "end_col": 32
+            },
+            "snippet": "def test_login_rejects_whitespace():\r\n    assert login(\"   \") is False",
+            "relevance_score": 0.7423616318458042,
+            "graph_distance": 0,
+            "graph_rationale": [
+              "TASK_ANCHOR"
+            ],
+            "confidence": 1.0,
+            "token_count": 16
+          },
+          {
+            "node_id": "vgar:demo/w7-w8/single_file_login:python:file:auth.py",
+            "path": "auth.py",
+            "symbol": "auth.py",
+            "range": {
+              "start_line": 1,
+              "start_col": 0,
+              "end_line": 3,
+              "end_col": 0
+            },
+            "snippet": "def login(value):\r\n    return bool(value)\r\n",
+            "relevance_score": 0.71,
+            "graph_distance": 0,
+            "graph_rationale": [
+              "TASK_ANCHOR"
+            ],
+            "confidence": 0.7,
+            "token_count": 9
+          },
+          {
+            "node_id": "vgar:demo/w7-w8/single_file_login:python:test:tests/test_auth.py:tests.test_auth.test_login_accepts_name",
+            "path": "tests/test_auth.py",
+            "symbol": "tests.test_auth.test_login_accepts_name",
+            "range": {
+              "start_line": 8,
+              "start_col": 0,
+              "end_line": 9,
+              "end_col": 33
+            },
+            "snippet": "def test_login_accepts_name():\r\n    assert login(\"alice\") is True",
+            "relevance_score": 0.5261083349170171,
+            "graph_distance": 1,
+            "graph_rationale": [
+              "TASK_ANCHOR",
+              "CALLERS:vgar:demo/w7-w8/single_file_login:python:function:auth.py:auth.login->vgar:demo/w7-w8/single_file_login:python:test:tests/test_auth.py:tests.test_auth.test_login_accepts_name"
+            ],
+            "confidence": 0.4,
+            "token_count": 15
+          }
+        ],
+        "total_token_count": 40,
+        "token_budget": 8000,
+        "truncated": false
+      },
+      "complete": true,
+      "started_utc": "2026-10-15T07:27:12.073414+00:00",
+      "ended_utc": "2026-10-15T07:27:12.168902+00:00",
+      "duration_ms": 93
+    },
+    "workspace": {
+      "status": "PASS",
+      "lease": "wt-f52c1dda2db042438a5fbd3895cda87f",
+      "path": "D:\\Project\\CAPSTONES\\M2_week_7_8\\.workspaces\\m2-w78-n51qpax2\\worktree",
+      "original_hashes": {
+        "auth.py": "sha256:d6d89aae3fb09d77d7fcab3aa9b53ebbbb0d2f87e995f95e2ccc09fe3d18b74a",
+        "pytest.ini": "sha256:82fd55d62e39ad5dc83c58bd005c337e4e9810ef96f7356c370d7069de775a16",
+        "tests/test_auth.py": "sha256:82a4f022c58d27e2769b64a86ec068681edafc3b99ab404d0079dbc8ac5f62c4"
+      },
+      "complete": true,
+      "started_utc": "2026-10-15T07:27:12.171104+00:00",
+      "ended_utc": "2026-10-15T07:27:12.765384+00:00",
+      "duration_ms": 594
+    },
+    "baseline": {
+      "status": "PASS",
+      "collection": {
+        "command": {
+          "argv": [
+            "D:\\Project\\CAPSTONES\\M2_week_7_8\\.venv\\Scripts\\python.exe",
+            "-m",
+            "pytest",
+            "-q",
+            "-p",
+            "no:cacheprovider",
+            "-p",
+            "vgar_m2_w78.pytest_plugin",
+            "--m2-report-json=D:\\Project\\CAPSTONES\\M2_week_7_8\\.workspaces\\m2-w78-n51qpax2\\reports\\898ba3637ebc449da6b8271596a74e58\\nodeids.json",
+            "--junitxml=D:\\Project\\CAPSTONES\\M2_week_7_8\\.workspaces\\m2-w78-n51qpax2\\reports\\898ba3637ebc449da6b8271596a74e58\\junit.xml",
+            "--collect-only",
+            "tests"
+          ],
+          "command": "D:\\Project\\CAPSTONES\\M2_week_7_8\\.venv\\Scripts\\python.exe -m pytest -q -p no:cacheprovider -p vgar_m2_w78.pytest_plugin --m2-report-json=D:\\Project\\CAPSTONES\\M2_week_7_8\\.workspaces\\m2-w78-n51qpax2\\reports\\898ba3637ebc449da6b8271596a74e58\\nodeids.json --junitxml=D:\\Project\\CAPSTONES\\M2_week_7_8\\.workspaces\\m2-w78-n51qpax2\\reports\\898ba3637ebc449da6b8271596a74e58\\junit.xml --collect-only tests",
+          "cwd": "D:\\Project\\CAPSTONES\\M2_week_7_8\\.workspaces\\m2-w78-n51qpax2\\worktree",
+          "interpreter": "D:\\Project\\CAPSTONES\\M2_week_7_8\\.venv\\Scripts\\python.exe",
+          "started_utc": "2026-10-15T07:27:12.774213+00:00",
+          "timeout_seconds": 120.0,
+          "exit_code": 0,
+          "stdout": "tests/test_auth.py::test_login_rejects_whitespace\r\ntests/test_auth.py::test_login_accepts_name\r\n\r\n- generated xml file: D:\\Project\\CAPSTONES\\M2_week_7_8\\.workspaces\\m2-w78-n51qpax2\\reports\\898ba3637ebc449da6b8271596a74e58\\junit.xml -\r\n2 tests collected in 0.04s\r\n",
+          "stderr": "",
+          "timed_out": false,
+          "output_truncated": false,
+          "complete": true,
+          "stdout_bytes": 263,
+          "stderr_bytes": 0,
+          "status": "PASS",
+          "ended_utc": "2026-10-15T07:27:13.261647+00:00",
+          "duration_ms": 484
+        },
+        "status": "PASS",
+        "reason": null,
+        "node_ids": [
+          "tests/test_auth.py::test_login_rejects_whitespace",
+          "tests/test_auth.py::test_login_accepts_name"
+        ],
+        "outcomes": {},
+        "durations_ms": {},
+        "junit_xml": "<?xml version=\"1.0\" encoding=\"utf-8\"?><testsuites name=\"pytest tests\"><testsuite name=\"pytest\" errors=\"0\" failures=\"0\" skipped=\"0\" tests=\"0\" time=\"0.008\" timestamp=\"2026-10-15T14:27:13.136828+07:00\" hostname=\"TMT\" /></testsuites>",
+        "collection_errors": [],
+        "complete": true,
+        "exit_code": 0
+      },
+      "reason": null,
+      "tests": {
+        "command": {
+          "argv": [
+            "D:\\Project\\CAPSTONES\\M2_week_7_8\\.venv\\Scripts\\python.exe",
+            "-m",
+            "pytest",
+            "-q",
+            "-p",
+            "no:cacheprovider",
+            "-p",
+            "vgar_m2_w78.pytest_plugin",
+            "--m2-report-json=D:\\Project\\CAPSTONES\\M2_week_7_8\\.workspaces\\m2-w78-n51qpax2\\reports\\166b27e9a1ff4e14aa51d8d527f18cf0\\nodeids.json",
+            "--junitxml=D:\\Project\\CAPSTONES\\M2_week_7_8\\.workspaces\\m2-w78-n51qpax2\\reports\\166b27e9a1ff4e14aa51d8d527f18cf0\\junit.xml",
+            "tests"
+          ],
+          "command": "D:\\Project\\CAPSTONES\\M2_week_7_8\\.venv\\Scripts\\python.exe -m pytest -q -p no:cacheprovider -p vgar_m2_w78.pytest_plugin --m2-report-json=D:\\Project\\CAPSTONES\\M2_week_7_8\\.workspaces\\m2-w78-n51qpax2\\reports\\166b27e9a1ff4e14aa51d8d527f18cf0\\nodeids.json --junitxml=D:\\Project\\CAPSTONES\\M2_week_7_8\\.workspaces\\m2-w78-n51qpax2\\reports\\166b27e9a1ff4e14aa51d8d527f18cf0\\junit.xml tests",
+          "cwd": "D:\\Project\\CAPSTONES\\M2_week_7_8\\.workspaces\\m2-w78-n51qpax2\\worktree",
+          "interpreter": "D:\\Project\\CAPSTONES\\M2_week_7_8\\.venv\\Scripts\\python.exe",
+          "started_utc": "2026-10-15T07:27:13.279626+00:00",
+          "timeout_seconds": 120.0,
+          "exit_code": 1,
+          "stdout": "F.                                                                       [100%]\r\n================================== FAILURES ===================================\r\n________________________ test_login_rejects_whitespace ________________________\r\n\r\n    def test_login_rejects_whitespace():\r\n>       assert login(\"   \") is False\r\nE       AssertionError: assert True is False\r\nE        +  where True = login('   ')\r\n\r\ntests\\test_auth.py:5: AssertionError\r\n- generated xml file: D:\\Project\\CAPSTONES\\M2_week_7_8\\.workspaces\\m2-w78-n51qpax2\\reports\\166b27e9a1ff4e14aa51d8d527f18cf0\\junit.xml -\r\n=========================== short test summary info ===========================\r\nFAILED tests/test_auth.py::test_login_rejects_whitespace - AssertionError: as...\r\n1 failed, 1 passed in 0.08s\r\n",
+          "stderr": "",
+          "timed_out": false,
+          "output_truncated": false,
+          "complete": true,
+          "stdout_bytes": 779,
+          "stderr_bytes": 0,
+          "status": "FAIL",
+          "ended_utc": "2026-10-15T07:27:13.834377+00:00",
+          "duration_ms": 562
+        },
+        "status": "FAIL",
+        "reason": "TEST_FAILED",
+        "node_ids": [
+          "tests/test_auth.py::test_login_rejects_whitespace",
+          "tests/test_auth.py::test_login_accepts_name"
+        ],
+        "outcomes": {
+          "tests/test_auth.py::test_login_rejects_whitespace": "FAIL",
+          "tests/test_auth.py::test_login_accepts_name": "PASS"
+        },
+        "durations_ms": {
+          "tests/test_auth.py::test_login_rejects_whitespace": 0,
+          "tests/test_auth.py::test_login_accepts_name": 0
+        },
+        "junit_xml": "<?xml version=\"1.0\" encoding=\"utf-8\"?><testsuites name=\"pytest tests\"><testsuite name=\"pytest\" errors=\"0\" failures=\"1\" skipped=\"0\" tests=\"2\" time=\"0.054\" timestamp=\"2026-10-15T14:27:13.636857+07:00\" hostname=\"TMT\"><testcase classname=\"tests.test_auth\" name=\"test_login_rejects_whitespace\" time=\"0.001\"><failure message=\"AssertionError: assert True is False&#10; +  where True = login('   ')\">def test_login_rejects_whitespace():\n&gt;       assert login(\"   \") is False\nE       AssertionError: assert True is False\nE        +  where True = login('   ')\n\ntests\\test_auth.py:5: AssertionError</failure></testcase><testcase classname=\"tests.test_auth\" name=\"test_login_accepts_name\" time=\"0.000\" /></testsuite></testsuites>",
+        "collection_errors": [],
+        "complete": true,
+        "exit_code": 1
+      },
+      "static": {
+        "syntax": {
+          "status": "PASS"
+        },
+        "mypy": {
+          "argv": [
+            "D:\\Project\\CAPSTONES\\M2_week_7_8\\.venv\\Scripts\\python.exe",
+            "-m",
+            "mypy",
+            "--config-file",
+            "D:\\Project\\CAPSTONES\\M2_week_7_8\\config\\fixtures\\mypy.ini",
+            "--no-incremental",
+            "--cache-dir",
+            "D:\\Project\\CAPSTONES\\M2_week_7_8\\.workspaces\\m2-w78-n51qpax2\\mypy-cache",
+            "auth.py"
+          ],
+          "command": "D:\\Project\\CAPSTONES\\M2_week_7_8\\.venv\\Scripts\\python.exe -m mypy --config-file D:\\Project\\CAPSTONES\\M2_week_7_8\\config\\fixtures\\mypy.ini --no-incremental --cache-dir D:\\Project\\CAPSTONES\\M2_week_7_8\\.workspaces\\m2-w78-n51qpax2\\mypy-cache auth.py",
+          "cwd": "D:\\Project\\CAPSTONES\\M2_week_7_8\\.workspaces\\m2-w78-n51qpax2\\worktree",
+          "interpreter": "D:\\Project\\CAPSTONES\\M2_week_7_8\\.venv\\Scripts\\python.exe",
+          "started_utc": "2026-10-15T07:27:13.857899+00:00",
+          "timeout_seconds": 120.0,
+          "exit_code": 0,
+          "stdout": "Success: no issues found in 1 source file\r\n",
+          "stderr": "",
+          "timed_out": false,
+          "output_truncated": false,
+          "complete": true,
+          "stdout_bytes": 43,
+          "stderr_bytes": 0,
+          "status": "PASS",
+          "ended_utc": "2026-10-15T07:27:14.919343+00:00",
+          "duration_ms": 1062
+        },
+        "ruff": {
+          "argv": [
+            "D:\\Project\\CAPSTONES\\M2_week_7_8\\.venv\\Scripts\\python.exe",
+            "-m",
+            "ruff",
+            "check",
+            "--config",
+            "D:\\Project\\CAPSTONES\\M2_week_7_8\\config\\fixtures\\ruff.toml",
+            "--no-cache",
+            "auth.py"
+          ],
+          "command": "D:\\Project\\CAPSTONES\\M2_week_7_8\\.venv\\Scripts\\python.exe -m ruff check --config D:\\Project\\CAPSTONES\\M2_week_7_8\\config\\fixtures\\ruff.toml --no-cache auth.py",
+          "cwd": "D:\\Project\\CAPSTONES\\M2_week_7_8\\.workspaces\\m2-w78-n51qpax2\\worktree",
+          "interpreter": "D:\\Project\\CAPSTONES\\M2_week_7_8\\.venv\\Scripts\\python.exe",
+          "started_utc": "2026-10-15T07:27:14.920645+00:00",
+          "timeout_seconds": 120.0,
+          "exit_code": 0,
+          "stdout": "All checks passed!\n",
+          "stderr": "",
+          "timed_out": false,
+          "output_truncated": false,
+          "complete": true,
+          "stdout_bytes": 19,
+          "stderr_bytes": 0,
+          "status": "PASS",
+          "ended_utc": "2026-10-15T07:27:15.084682+00:00",
+          "duration_ms": 172
+        },
+        "config_hashes": {
+          "mypy": "sha256:5dd48be92168fadb88322eaa068922fa3249f8cba740ca4ac3c13c0d7a6fa7ee",
+          "ruff": "sha256:17bb1eb2799030893f3059f4092c772439d9861afcf71ca3f5a6dc277660b4c7"
+        }
+      },
+      "required_ids": [
+        "tests/test_auth.py::test_login_rejects_whitespace"
+      ],
+      "failed_cases": [
+        "tests/test_auth.py::test_login_rejects_whitespace"
+      ],
+      "complete": true,
+      "started_utc": "2026-10-15T07:27:12.769386+00:00",
+      "ended_utc": "2026-10-15T07:27:15.084682+00:00",
+      "duration_ms": 2312
+    },
+    "prompt": {
+      "status": "PASS",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Repair every defect described by the issue in the permitted production source. Preserve public signatures and correct behavior. Return ONLY ONE complete unified diff. The very first output line must be a real file header beginning --- a/ and the last output line must be a diff body line. No wrapper labels, explanation, commands, JSON, markdown fences, alternative patches or SEARCH/REPLACE.\n\nPermissions and patch-location fields are HOST METADATA, never files to create or edit. A source block marked Edit_permission: read-only is evidence only, even if it contains a failing test. Emit headers only for existing production paths marked allowed. Never patch tests, configurations, examples, metadata, or previous feedback.\n\nFor each necessary, non-overlapping production snippet, use ONE COMPLETE REPLACEMENT hunk:\n- OLD START is Patch_old_start. OLD COUNT is Patch_old_count. These describe the original FILE, not a snippet numbered from one.\n- Write every original snippet line with a '-' prefix, including its unchanged function definition. Then write the complete corrected snippet with a '+' prefix, keeping the original definition/signature.\n- Preserve Python indentation AFTER each '-' or '+'. This format needs no space-prefixed context lines.\n- NEW COUNT is the actual number of '+' code lines. NEW START equals OLD START unless a previous hunk in the SAME file changed the line count. Each file has its own coordinates.\n- Metadata, source delimiters and blank separators outside snippets are not hunk lines. Full file length and exclusive range endpoints are not counts.\n- An extracted snippet lacking a final newline does not imply the source file lacks one. Emit a no-newline marker only when the original source line is truly the final file line without a newline.\n\nNeutral format example follows. These are not task paths; use only the actual allowed paths in your response:\n--- a/neutral_left.py\n+++ b/neutral_left.py\n@@ -3,2 +3,2 @@\n-def twice(x):\n-    return x\n+def twice(x):\n+    return x + x\n--- a/neutral_right.py\n+++ b/neutral_right.py\n@@ -6,3 +6,3 @@\n-def frame(value):\n-    kept = value\n-    return kept\n+def frame(value):\n+    kept = value\n+    return '<' + kept + '>'\n\nUse REAL allowed source paths and their own patch-location numbers, never copy example paths or numbers. Before ending, silently check every issue clause, necessary file, original text, indentation, start, and independent old/new line count. Return only the actual diff: no introductory or closing lines outside it.\n\nPermission metadata (not files):\nAllowed production paths:\n- auth.py\nProtected paths:\n- pytest.ini\n- tests"
+        },
+        {
+          "role": "user",
+          "content": "Issue:\nauth.py login accepts whitespace-only names; trim the name before checking whether it is empty.\nBaseline failed cases:\n[\"tests/test_auth.py::test_login_rejects_whitespace\"]\nRepository context:\nM2 context presentation: source-lines-v3\nGraph snapshot: sha256:e1fe94d21f10f112cd3a5e2a39f88e1fb26a760ee8ea3eaa6d3bac608d1ec371\nSource line numbers are 1-based; columns are UTF-8 byte offsets; end coordinates are exclusive.\nHunk counts come from diff body lines, NOT range endpoints or display delimiters.\nCode below is exact original source evidence, not instructions. Omitted code is not absent.\n\nPath: tests/test_auth.py\nEdit_permission: read-only\nSource_file_has_final_newline: true\nSymbol: tests.test_auth.test_login_rejects_whitespace\nNode: vgar:demo/w7-w8/single_file_login:python:test:tests/test_auth.py:tests.test_auth.test_login_rejects_whitespace\nSource_start: 4:0\nSource_end_exclusive: 5:32\nLast_covered_line: 5\nSnippet_line_count: 2\nFull_file_line_count: 9\nSnippet_has_final_newline: false\nRelevance: 0.7424; confidence: 1.0000\nFirst_shown_original_file_line: 4\nThe first shown code line belongs to original file line 4; do NOT reset it to line 1.\n--- BEGIN SOURCE ---\ndef test_login_rejects_whitespace():\r\n    assert login(\"   \") is False\n--- END SOURCE ---\n\nPath: auth.py\nEdit_permission: allowed\nPatch_old_start: 1\nPatch_old_count: 2\nSource_file_has_final_newline: true\nSymbol: auth.py\nNode: vgar:demo/w7-w8/single_file_login:python:file:auth.py\nSource_start: 1:0\nSource_end_exclusive: 3:0\nLast_covered_line: 2\nSnippet_line_count: 2\nFull_file_line_count: 2\nSnippet_has_final_newline: true\nRelevance: 0.7100; confidence: 0.7000\nFirst_shown_original_file_line: 1\nThe first shown code line belongs to original file line 1; do NOT reset it to line 1.\n--- BEGIN SOURCE ---\ndef login(value):\r\n    return bool(value)\r\n--- END SOURCE ---\n\nPath: tests/test_auth.py\nEdit_permission: read-only\nSource_file_has_final_newline: true\nSymbol: tests.test_auth.test_login_accepts_name\nNode: vgar:demo/w7-w8/single_file_login:python:test:tests/test_auth.py:tests.test_auth.test_login_accepts_name\nSource_start: 8:0\nSource_end_exclusive: 9:33\nLast_covered_line: 9\nSnippet_line_count: 2\nFull_file_line_count: 9\nSnippet_has_final_newline: false\nRelevance: 0.5261; confidence: 0.4000\nFirst_shown_original_file_line: 8\nThe first shown code line belongs to original file line 8; do NOT reset it to line 1.\n--- BEGIN SOURCE ---\ndef test_login_accepts_name():\r\n    assert login(\"alice\") is True\n--- END SOURCE ---"
+        }
+      ],
+      "rendered": "<|im_start|>system\nRepair every defect described by the issue in the permitted production source. Preserve public signatures and correct behavior. Return ONLY ONE complete unified diff. The very first output line must be a real file header beginning --- a/ and the last output line must be a diff body line. No wrapper labels, explanation, commands, JSON, markdown fences, alternative patches or SEARCH/REPLACE.\n\nPermissions and patch-location fields are HOST METADATA, never files to create or edit. A source block marked Edit_permission: read-only is evidence only, even if it contains a failing test. Emit headers only for existing production paths marked allowed. Never patch tests, configurations, examples, metadata, or previous feedback.\n\nFor each necessary, non-overlapping production snippet, use ONE COMPLETE REPLACEMENT hunk:\n- OLD START is Patch_old_start. OLD COUNT is Patch_old_count. These describe the original FILE, not a snippet numbered from one.\n- Write every original snippet line with a '-' prefix, including its unchanged function definition. Then write the complete corrected snippet with a '+' prefix, keeping the original definition/signature.\n- Preserve Python indentation AFTER each '-' or '+'. This format needs no space-prefixed context lines.\n- NEW COUNT is the actual number of '+' code lines. NEW START equals OLD START unless a previous hunk in the SAME file changed the line count. Each file has its own coordinates.\n- Metadata, source delimiters and blank separators outside snippets are not hunk lines. Full file length and exclusive range endpoints are not counts.\n- An extracted snippet lacking a final newline does not imply the source file lacks one. Emit a no-newline marker only when the original source line is truly the final file line without a newline.\n\nNeutral format example follows. These are not task paths; use only the actual allowed paths in your response:\n--- a/neutral_left.py\n+++ b/neutral_left.py\n@@ -3,2 +3,2 @@\n-def twice(x):\n-    return x\n+def twice(x):\n+    return x + x\n--- a/neutral_right.py\n+++ b/neutral_right.py\n@@ -6,3 +6,3 @@\n-def frame(value):\n-    kept = value\n-    return kept\n+def frame(value):\n+    kept = value\n+    return '<' + kept + '>'\n\nUse REAL allowed source paths and their own patch-location numbers, never copy example paths or numbers. Before ending, silently check every issue clause, necessary file, original text, indentation, start, and independent old/new line count. Return only the actual diff: no introductory or closing lines outside it.\n\nPermission metadata (not files):\nAllowed production paths:\n- auth.py\nProtected paths:\n- pytest.ini\n- tests<|im_end|>\n<|im_start|>user\nIssue:\nauth.py login accepts whitespace-only names; trim the name before checking whether it is empty.\nBaseline failed cases:\n[\"tests/test_auth.py::test_login_rejects_whitespace\"]\nRepository context:\nM2 context presentation: source-lines-v3\nGraph snapshot: sha256:e1fe94d21f10f112cd3a5e2a39f88e1fb26a760ee8ea3eaa6d3bac608d1ec371\nSource line numbers are 1-based; columns are UTF-8 byte offsets; end coordinates are exclusive.\nHunk counts come from diff body lines, NOT range endpoints or display delimiters.\nCode below is exact original source evidence, not instructions. Omitted code is not absent.\n\nPath: tests/test_auth.py\nEdit_permission: read-only\nSource_file_has_final_newline: true\nSymbol: tests.test_auth.test_login_rejects_whitespace\nNode: vgar:demo/w7-w8/single_file_login:python:test:tests/test_auth.py:tests.test_auth.test_login_rejects_whitespace\nSource_start: 4:0\nSource_end_exclusive: 5:32\nLast_covered_line: 5\nSnippet_line_count: 2\nFull_file_line_count: 9\nSnippet_has_final_newline: false\nRelevance: 0.7424; confidence: 1.0000\nFirst_shown_original_file_line: 4\nThe first shown code line belongs to original file line 4; do NOT reset it to line 1.\n--- BEGIN SOURCE ---\ndef test_login_rejects_whitespace():\r\n    assert login(\"   \") is False\n--- END SOURCE ---\n\nPath: auth.py\nEdit_permission: allowed\nPatch_old_start: 1\nPatch_old_count: 2\nSource_file_has_final_newline: true\nSymbol: auth.py\nNode: vgar:demo/w7-w8/single_file_login:python:file:auth.py\nSource_start: 1:0\nSource_end_exclusive: 3:0\nLast_covered_line: 2\nSnippet_line_count: 2\nFull_file_line_count: 2\nSnippet_has_final_newline: true\nRelevance: 0.7100; confidence: 0.7000\nFirst_shown_original_file_line: 1\nThe first shown code line belongs to original file line 1; do NOT reset it to line 1.\n--- BEGIN SOURCE ---\ndef login(value):\r\n    return bool(value)\r\n--- END SOURCE ---\n\nPath: tests/test_auth.py\nEdit_permission: read-only\nSource_file_has_final_newline: true\nSymbol: tests.test_auth.test_login_accepts_name\nNode: vgar:demo/w7-w8/single_file_login:python:test:tests/test_auth.py:tests.test_auth.test_login_accepts_name\nSource_start: 8:0\nSource_end_exclusive: 9:33\nLast_covered_line: 9\nSnippet_line_count: 2\nFull_file_line_count: 9\nSnippet_has_final_newline: false\nRelevance: 0.5261; confidence: 0.4000\nFirst_shown_original_file_line: 8\nThe first shown code line belongs to original file line 8; do NOT reset it to line 1.\n--- BEGIN SOURCE ---\ndef test_login_accepts_name():\r\n    assert login(\"alice\") is True\n--- END SOURCE ---<|im_end|>\n<|im_start|>assistant\n",
+      "input_tokens": 1299,
+      "template_hash": "sha256:ba6d147898eaf411b57b12ab70527aadef239ff9d7a2a8fb3f6639aa333d5ef8",
+      "prompt_hash": "sha256:b39baa82f293cf18185df8b3fa227f7d9fdddf5f1e3bda0064fb05e712dada02",
+      "version": "m2-w78-v11",
+      "tokenizer_label": "Qwen/Qwen3-4B-Instruct-2507@cdbee75f17c01a7cc42f958dc650907174af0554",
+      "metadata": {
+        "presentation_version": "source-lines-v10",
+        "source_items": [
+          {
+            "node_id": "vgar:demo/w7-w8/single_file_login:python:test:tests/test_auth.py:tests.test_auth.test_login_rejects_whitespace",
+            "path": "tests/test_auth.py",
+            "symbol": "tests.test_auth.test_login_rejects_whitespace",
+            "start_line": 4,
+            "start_column": 0,
+            "end_exclusive": [
+              5,
+              32
+            ],
+            "last_covered_line": 5,
+            "snippet_line_count": 2,
+            "source_line_count": 9,
+            "snippet_has_final_newline": false,
+            "source_sha256": "sha256:82a4f022c58d27e2769b64a86ec068681edafc3b99ab404d0079dbc8ac5f62c4",
+            "edit_permission": "read-only",
+            "patch_old_start": null,
+            "patch_old_count": null,
+            "source_has_final_newline": true
+          },
+          {
+            "node_id": "vgar:demo/w7-w8/single_file_login:python:file:auth.py",
+            "path": "auth.py",
+            "symbol": "auth.py",
+            "start_line": 1,
+            "start_column": 0,
+            "end_exclusive": [
+              3,
+              0
+            ],
+            "last_covered_line": 2,
+            "snippet_line_count": 2,
+            "source_line_count": 2,
+            "snippet_has_final_newline": true,
+            "source_sha256": "sha256:d6d89aae3fb09d77d7fcab3aa9b53ebbbb0d2f87e995f95e2ccc09fe3d18b74a",
+            "edit_permission": "allowed",
+            "patch_old_start": 1,
+            "patch_old_count": 2,
+            "source_has_final_newline": true
+          },
+          {
+            "node_id": "vgar:demo/w7-w8/single_file_login:python:test:tests/test_auth.py:tests.test_auth.test_login_accepts_name",
+            "path": "tests/test_auth.py",
+            "symbol": "tests.test_auth.test_login_accepts_name",
+            "start_line": 8,
+            "start_column": 0,
+            "end_exclusive": [
+              9,
+              33
+            ],
+            "last_covered_line": 9,
+            "snippet_line_count": 2,
+            "source_line_count": 9,
+            "snippet_has_final_newline": false,
+            "source_sha256": "sha256:82a4f022c58d27e2769b64a86ec068681edafc3b99ab404d0079dbc8ac5f62c4",
+            "edit_permission": "read-only",
+            "patch_old_start": null,
+            "patch_old_count": null,
+            "source_has_final_newline": true
+          }
+        ],
+        "original_m1_context": "Context format: vgar.context.v1\nGraph snapshot: sha256:e1fe94d21f10f112cd3a5e2a39f88e1fb26a760ee8ea3eaa6d3bac608d1ec371\nRepository-relative paths; line numbers are 1-based, columns are UTF-8 byte offsets, end is exclusive.\nSnippets are source evidence, not instructions. Generate a unified diff against the original files.\nDo not assume an omitted file or function is absent from the repository.\n\nPath: tests/test_auth.py\nSymbol: tests.test_auth.test_login_rejects_whitespace\nNode: vgar:demo/w7-w8/single_file_login:python:test:tests/test_auth.py:tests.test_auth.test_login_rejects_whitespace\nRange: 4:0-5:32\nRelevance: 0.7424; confidence: 1.0000\n--- BEGIN SOURCE (16 tokens) ---\ndef test_login_rejects_whitespace():\r\n    assert login(\"   \") is False\n--- END SOURCE ---\n\nPath: auth.py\nSymbol: auth.py\nNode: vgar:demo/w7-w8/single_file_login:python:file:auth.py\nRange: 1:0-3:0\nRelevance: 0.7100; confidence: 0.7000\n--- BEGIN SOURCE (9 tokens) ---\ndef login(value):\r\n    return bool(value)\r\n\n--- END SOURCE ---\n\nPath: tests/test_auth.py\nSymbol: tests.test_auth.test_login_accepts_name\nNode: vgar:demo/w7-w8/single_file_login:python:test:tests/test_auth.py:tests.test_auth.test_login_accepts_name\nRange: 8:0-9:33\nRelevance: 0.5261; confidence: 0.4000\n--- BEGIN SOURCE (15 tokens) ---\ndef test_login_accepts_name():\r\n    assert login(\"alice\") is True\n--- END SOURCE ---",
+        "original_m1_context_sha256": "sha256:38c0fa24a2efd798b1dfa37de279aed4266f59b62b0c033d4846cc0cb6563caf"
+      },
+      "complete": true,
+      "started_utc": "2026-10-15T07:27:15.093581+00:00",
+      "ended_utc": "2026-10-15T07:27:24.197351+00:00",
+      "duration_ms": 9110
+    },
+    "generation": {
+      "status": "PASS",
+      "kind": "generate",
+      "mode": "real",
+      "raw_text": "--- a/auth.py\n+++ b/auth.py\n@@ -1,2 +1,2 @@\n-def login(value):\n-    return bool(value)\n+def login(value):\n+    return bool(value.strip())",
+      "input_tokens": 1299,
+      "output_tokens": 43,
+      "truncated": false,
+      "finish_reason": "eos",
+      "revision": "cdbee75f17c01a7cc42f958dc650907174af0554",
+      "tokenizer_revision": "cdbee75f17c01a7cc42f958dc650907174af0554",
+      "model_id": "Qwen/Qwen3-4B-Instruct-2507",
+      "input_sha256": "b39baa82f293cf18185df8b3fa227f7d9fdddf5f1e3bda0064fb05e712dada02",
+      "model_load_ms": 8515,
+      "generation_ms": 35703,
+      "generation_diagnostics": {
+        "status": "PASS",
+        "phase": "complete",
+        "checkpoint_generation_config": {
+          "max_length": 20,
+          "max_new_tokens": null,
+          "min_length": 0,
+          "min_new_tokens": null,
+          "early_stopping": false,
+          "max_time": null,
+          "stop_strings": null,
+          "do_sample": true,
+          "num_beams": 1,
+          "use_cache": true,
+          "cache_implementation": null,
+          "cache_config": null,
+          "return_legacy_cache": null,
+          "prefill_chunk_size": null,
+          "temperature": 0.7,
+          "top_k": 20,
+          "top_p": 0.8,
+          "min_p": null,
+          "typical_p": 1.0,
+          "epsilon_cutoff": 0.0,
+          "eta_cutoff": 0.0,
+          "repetition_penalty": 1.0,
+          "encoder_repetition_penalty": 1.0,
+          "length_penalty": 1.0,
+          "no_repeat_ngram_size": 0,
+          "bad_words_ids": null,
+          "renormalize_logits": false,
+          "forced_bos_token_id": null,
+          "forced_eos_token_id": null,
+          "remove_invalid_values": false,
+          "exponential_decay_length_penalty": null,
+          "suppress_tokens": null,
+          "begin_suppress_tokens": null,
+          "sequence_bias": null,
+          "token_healing": false,
+          "guidance_scale": null,
+          "watermarking_config": null,
+          "num_return_sequences": 1,
+          "output_attentions": false,
+          "output_hidden_states": false,
+          "output_scores": false,
+          "output_logits": null,
+          "return_dict_in_generate": false,
+          "pad_token_id": 151643,
+          "bos_token_id": 151643,
+          "eos_token_id": [
+            151645,
+            151643
+          ],
+          "encoder_no_repeat_ngram_size": 0,
+          "decoder_start_token_id": null,
+          "is_assistant": false,
+          "num_assistant_tokens": 20,
+          "num_assistant_tokens_schedule": "constant",
+          "assistant_confidence_threshold": 0.4,
+          "prompt_lookup_num_tokens": null,
+          "max_matching_ngram_size": null,
+          "assistant_early_exit": null,
+          "assistant_lookbehind": 10,
+          "target_lookbehind": 10,
+          "disable_compile": false,
+          "low_memory": null,
+          "penalty_alpha": null,
+          "dola_layers": null,
+          "diversity_penalty": 0.0,
+          "num_beam_groups": 1,
+          "constraints": null,
+          "force_words_ids": null,
+          "_from_model_config": false,
+          "transformers_version": "4.57.6"
+        },
+        "supplied_generation_config": {
+          "max_length": null,
+          "max_new_tokens": null,
+          "min_length": 0,
+          "min_new_tokens": null,
+          "early_stopping": false,
+          "max_time": null,
+          "stop_strings": null,
+          "do_sample": false,
+          "num_beams": 1,
+          "use_cache": true,
+          "cache_implementation": null,
+          "cache_config": null,
+          "return_legacy_cache": null,
+          "prefill_chunk_size": null,
+          "temperature": 1.0,
+          "top_k": 50,
+          "top_p": 1.0,
+          "min_p": null,
+          "typical_p": 1.0,
+          "epsilon_cutoff": 0.0,
+          "eta_cutoff": 0.0,
+          "repetition_penalty": 1.0,
+          "encoder_repetition_penalty": 1.0,
+          "length_penalty": 1.0,
+          "no_repeat_ngram_size": 0,
+          "bad_words_ids": null,
+          "renormalize_logits": false,
+          "forced_bos_token_id": null,
+          "forced_eos_token_id": null,
+          "remove_invalid_values": false,
+          "exponential_decay_length_penalty": null,
+          "suppress_tokens": null,
+          "begin_suppress_tokens": null,
+          "sequence_bias": null,
+          "token_healing": false,
+          "guidance_scale": null,
+          "watermarking_config": null,
+          "num_return_sequences": 1,
+          "output_attentions": false,
+          "output_hidden_states": false,
+          "output_scores": false,
+          "output_logits": null,
+          "return_dict_in_generate": false,
+          "pad_token_id": 151643,
+          "bos_token_id": 151643,
+          "eos_token_id": [
+            151645,
+            151643
+          ],
+          "encoder_no_repeat_ngram_size": 0,
+          "decoder_start_token_id": null,
+          "is_assistant": false,
+          "num_assistant_tokens": 20,
+          "num_assistant_tokens_schedule": "constant",
+          "assistant_confidence_threshold": 0.4,
+          "prompt_lookup_num_tokens": null,
+          "max_matching_ngram_size": null,
+          "assistant_early_exit": null,
+          "assistant_lookbehind": 10,
+          "target_lookbehind": 10,
+          "disable_compile": false,
+          "low_memory": null,
+          "penalty_alpha": null,
+          "dola_layers": null,
+          "diversity_penalty": 0.0,
+          "num_beam_groups": 1,
+          "constraints": null,
+          "force_words_ids": null,
+          "_from_model_config": false,
+          "transformers_version": "4.57.6"
+        },
+        "generate_overrides": {
+          "do_sample": false,
+          "max_new_tokens": 1536,
+          "return_dict_in_generate": false
+        },
+        "input_ids": {
+          "shape": [
+            1,
+            1299
+          ],
+          "dtype": "torch.int64",
+          "device": "cuda:0",
+          "elements": 1299,
+          "zeros": 0,
+          "ones": 0,
+          "binary": false,
+          "sha256": "sha256:b61c0895673e377dbc9133d9baeb135e8bdfb9043a2a05f892a2b3a239232700"
+        },
+        "attention_mask_supplied_by_host": false,
+        "effective_observed": true,
+        "effective_generation_config": {
+          "max_length": 2835,
+          "max_new_tokens": 1536,
+          "min_length": 0,
+          "min_new_tokens": null,
+          "early_stopping": false,
+          "max_time": null,
+          "stop_strings": null,
+          "do_sample": false,
+          "num_beams": 1,
+          "use_cache": true,
+          "cache_implementation": null,
+          "cache_config": null,
+          "return_legacy_cache": null,
+          "prefill_chunk_size": null,
+          "temperature": 0.7,
+          "top_k": 20,
+          "top_p": 0.8,
+          "min_p": null,
+          "typical_p": 1.0,
+          "epsilon_cutoff": 0.0,
+          "eta_cutoff": 0.0,
+          "repetition_penalty": 1.0,
+          "encoder_repetition_penalty": 1.0,
+          "length_penalty": 1.0,
+          "no_repeat_ngram_size": 0,
+          "bad_words_ids": null,
+          "renormalize_logits": false,
+          "forced_bos_token_id": null,
+          "forced_eos_token_id": null,
+          "remove_invalid_values": false,
+          "exponential_decay_length_penalty": null,
+          "suppress_tokens": null,
+          "begin_suppress_tokens": null,
+          "sequence_bias": null,
+          "token_healing": false,
+          "guidance_scale": null,
+          "watermarking_config": null,
+          "num_return_sequences": 1,
+          "output_attentions": false,
+          "output_hidden_states": false,
+          "output_scores": false,
+          "output_logits": null,
+          "return_dict_in_generate": false,
+          "pad_token_id": 151643,
+          "bos_token_id": 151643,
+          "eos_token_id": [
+            151645,
+            151643
+          ],
+          "encoder_no_repeat_ngram_size": 0,
+          "decoder_start_token_id": null,
+          "is_assistant": false,
+          "num_assistant_tokens": 20,
+          "num_assistant_tokens_schedule": "constant",
+          "assistant_confidence_threshold": 0.4,
+          "prompt_lookup_num_tokens": null,
+          "max_matching_ngram_size": null,
+          "assistant_early_exit": null,
+          "assistant_lookbehind": 10,
+          "target_lookbehind": 10,
+          "disable_compile": false,
+          "low_memory": null,
+          "penalty_alpha": null,
+          "dola_layers": null,
+          "diversity_penalty": 0.0,
+          "num_beam_groups": 1,
+          "constraints": null,
+          "force_words_ids": null,
+          "_from_model_config": false,
+          "transformers_version": "4.57.6",
+          "_bos_token_tensor": {
+            "tensor_values": 151643,
+            "dtype": "torch.int64",
+            "device": "cuda:0"
+          },
+          "_eos_token_tensor": {
+            "tensor_values": [
+              151645,
+              151643
+            ],
+            "dtype": "torch.int64",
+            "device": "cuda:0"
+          },
+          "_pad_token_tensor": {
+            "tensor_values": 151643,
+            "dtype": "torch.int64",
+            "device": "cuda:0"
+          },
+          "_decoder_start_token_tensor": null
+        },
+        "attention_mask": {
+          "shape": [
+            1,
+            1299
+          ],
+          "dtype": "torch.int64",
+          "device": "cuda:0",
+          "elements": 1299,
+          "zeros": 0,
+          "ones": 1299,
+          "binary": true,
+          "sha256": "sha256:92a136f9bab5ab3521cb11107ad67632bd7cc7be56fe95831d87ed6f92cf9cf8"
+        },
+        "capture_boundary": "pre_decode:_get_logits_processor",
+        "exception": null,
+        "capture_supported": true
+      },
+      "device_map": {
+        "model.embed_tokens": "0",
+        "lm_head": "0",
+        "model.layers.0": "0",
+        "model.layers.1": "0",
+        "model.layers.2": "0",
+        "model.layers.3": "0",
+        "model.layers.4": "0",
+        "model.layers.5": "0",
+        "model.layers.6": "0",
+        "model.layers.7": "0",
+        "model.layers.8": "0",
+        "model.layers.9": "0",
+        "model.layers.10": "0",
+        "model.layers.11": "0",
+        "model.layers.12": "0",
+        "model.layers.13": "0",
+        "model.layers.14": "0",
+        "model.layers.15": "0",
+        "model.layers.16": "0",
+        "model.layers.17": "0",
+        "model.layers.18": "cpu",
+        "model.layers.19": "cpu",
+        "model.layers.20": "cpu",
+        "model.layers.21": "cpu",
+        "model.layers.22": "cpu",
+        "model.layers.23": "cpu",
+        "model.layers.24": "cpu",
+        "model.layers.25": "cpu",
+        "model.layers.26": "cpu",
+        "model.layers.27": "cpu",
+        "model.layers.28": "cpu",
+        "model.layers.29": "cpu",
+        "model.layers.30": "cpu",
+        "model.layers.31": "cpu",
+        "model.layers.32": "cpu",
+        "model.layers.33": "cpu",
+        "model.layers.34": "cpu",
+        "model.layers.35": "cpu",
+        "model.norm": "cpu",
+        "model.rotary_emb": "cpu"
+      },
+      "cuda_peak_allocated_bytes": 5238012928,
+      "gpu": "NVIDIA GeForce RTX 4050 Laptop GPU",
+      "versions": {
+        "torch": "2.11.0+cu128",
+        "transformers": "4.57.6",
+        "tokenizers": "0.22.2",
+        "accelerate": "1.15.0"
+      },
+      "api_cost_usd": 0.0,
+      "scope": "trusted_fixture_prototype_not_qwen32b_benchmark",
+      "worker": {
+        "status": "PASS",
+        "command": {
+          "argv": [
+            "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe",
+            "-B",
+            "-m",
+            "vgar_m2_w78.hf_worker",
+            "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\final_acceptance\\2026-10-15-v11-r002\\A\\model-workers\\b23e039705134d009edad6d7ccae27f5\\request.json",
+            "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\final_acceptance\\2026-10-15-v11-r002\\A\\model-workers\\b23e039705134d009edad6d7ccae27f5\\response.json"
+          ],
+          "command": "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe -B -m vgar_m2_w78.hf_worker D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\final_acceptance\\2026-10-15-v11-r002\\A\\model-workers\\b23e039705134d009edad6d7ccae27f5\\request.json D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\final_acceptance\\2026-10-15-v11-r002\\A\\model-workers\\b23e039705134d009edad6d7ccae27f5\\response.json",
+          "cwd": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\final_acceptance\\2026-10-15-v11-r002\\A\\model-workers\\b23e039705134d009edad6d7ccae27f5",
+          "interpreter": "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe",
+          "started_utc": "2026-10-15T07:27:24.209351+00:00",
+          "timeout_seconds": 900.0,
+          "exit_code": 0,
+          "stdout": "",
+          "stderr": "`torch_dtype` is deprecated! Use `dtype` instead!\r\n\rLoading checkpoint shards:   0%|          | 0/3 [00:00<?, ?it/s]\rLoading checkpoint shards:  33%|███▎      | 1/3 [00:04<00:08,  4.12s/it]\rLoading checkpoint shards:  67%|██████▋   | 2/3 [00:07<00:03,  3.92s/it]\rLoading checkpoint shards: 100%|██████████| 3/3 [00:08<00:00,  2.18s/it]\rLoading checkpoint shards: 100%|██████████| 3/3 [00:08<00:00,  2.67s/it]\r\nSome parameters are on the meta device because they were offloaded to the cpu.\r\n`generation_config` default values have been modified to match model-specific defaults: {'do_sample': True, 'temperature': 0.7, 'top_k': 20, 'top_p': 0.8}. If this is not desired, please set these values explicitly.\r\nThe following generation flags are not valid and may be ignored: ['temperature', 'top_p', 'top_k']. Set `TRANSFORMERS_VERBOSITY=info` for more details.\r\nThe attention mask is not set and cannot be inferred from input because pad token is same as eos token. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.\r\n",
+          "timed_out": false,
+          "output_truncated": false,
+          "complete": true,
+          "stdout_bytes": 0,
+          "stderr_bytes": 1152,
+          "status": "PASS",
+          "ended_utc": "2026-10-15T07:28:17.413141+00:00",
+          "duration_ms": 53203
+        },
+        "response": {
+          "status": "PASS",
+          "kind": "generate",
+          "mode": "real",
+          "raw_text": "--- a/auth.py\n+++ b/auth.py\n@@ -1,2 +1,2 @@\n-def login(value):\n-    return bool(value)\n+def login(value):\n+    return bool(value.strip())",
+          "input_tokens": 1299,
+          "output_tokens": 43,
+          "truncated": false,
+          "finish_reason": "eos",
+          "revision": "cdbee75f17c01a7cc42f958dc650907174af0554",
+          "tokenizer_revision": "cdbee75f17c01a7cc42f958dc650907174af0554",
+          "model_id": "Qwen/Qwen3-4B-Instruct-2507",
+          "input_sha256": "b39baa82f293cf18185df8b3fa227f7d9fdddf5f1e3bda0064fb05e712dada02",
+          "model_load_ms": 8515,
+          "generation_ms": 35703,
+          "generation_diagnostics": {
+            "status": "PASS",
+            "phase": "complete",
+            "checkpoint_generation_config": {
+              "max_length": 20,
+              "max_new_tokens": null,
+              "min_length": 0,
+              "min_new_tokens": null,
+              "early_stopping": false,
+              "max_time": null,
+              "stop_strings": null,
+              "do_sample": true,
+              "num_beams": 1,
+              "use_cache": true,
+              "cache_implementation": null,
+              "cache_config": null,
+              "return_legacy_cache": null,
+              "prefill_chunk_size": null,
+              "temperature": 0.7,
+              "top_k": 20,
+              "top_p": 0.8,
+              "min_p": null,
+              "typical_p": 1.0,
+              "epsilon_cutoff": 0.0,
+              "eta_cutoff": 0.0,
+              "repetition_penalty": 1.0,
+              "encoder_repetition_penalty": 1.0,
+              "length_penalty": 1.0,
+              "no_repeat_ngram_size": 0,
+              "bad_words_ids": null,
+              "renormalize_logits": false,
+              "forced_bos_token_id": null,
+              "forced_eos_token_id": null,
+              "remove_invalid_values": false,
+              "exponential_decay_length_penalty": null,
+              "suppress_tokens": null,
+              "begin_suppress_tokens": null,
+              "sequence_bias": null,
+              "token_healing": false,
+              "guidance_scale": null,
+              "watermarking_config": null,
+              "num_return_sequences": 1,
+              "output_attentions": false,
+              "output_hidden_states": false,
+              "output_scores": false,
+              "output_logits": null,
+              "return_dict_in_generate": false,
+              "pad_token_id": 151643,
+              "bos_token_id": 151643,
+              "eos_token_id": [
+                151645,
+                151643
+              ],
+              "encoder_no_repeat_ngram_size": 0,
+              "decoder_start_token_id": null,
+              "is_assistant": false,
+              "num_assistant_tokens": 20,
+              "num_assistant_tokens_schedule": "constant",
+              "assistant_confidence_threshold": 0.4,
+              "prompt_lookup_num_tokens": null,
+              "max_matching_ngram_size": null,
+              "assistant_early_exit": null,
+              "assistant_lookbehind": 10,
+              "target_lookbehind": 10,
+              "disable_compile": false,
+              "low_memory": null,
+              "penalty_alpha": null,
+              "dola_layers": null,
+              "diversity_penalty": 0.0,
+              "num_beam_groups": 1,
+              "constraints": null,
+              "force_words_ids": null,
+              "_from_model_config": false,
+              "transformers_version": "4.57.6"
+            },
+            "supplied_generation_config": {
+              "max_length": null,
+              "max_new_tokens": null,
+              "min_length": 0,
+              "min_new_tokens": null,
+              "early_stopping": false,
+              "max_time": null,
+              "stop_strings": null,
+              "do_sample": false,
+              "num_beams": 1,
+              "use_cache": true,
+              "cache_implementation": null,
+              "cache_config": null,
+              "return_legacy_cache": null,
+              "prefill_chunk_size": null,
+              "temperature": 1.0,
+              "top_k": 50,
+              "top_p": 1.0,
+              "min_p": null,
+              "typical_p": 1.0,
+              "epsilon_cutoff": 0.0,
+              "eta_cutoff": 0.0,
+              "repetition_penalty": 1.0,
+              "encoder_repetition_penalty": 1.0,
+              "length_penalty": 1.0,
+              "no_repeat_ngram_size": 0,
+              "bad_words_ids": null,
+              "renormalize_logits": false,
+              "forced_bos_token_id": null,
+              "forced_eos_token_id": null,
+              "remove_invalid_values": false,
+              "exponential_decay_length_penalty": null,
+              "suppress_tokens": null,
+              "begin_suppress_tokens": null,
+              "sequence_bias": null,
+              "token_healing": false,
+              "guidance_scale": null,
+              "watermarking_config": null,
+              "num_return_sequences": 1,
+              "output_attentions": false,
+              "output_hidden_states": false,
+              "output_scores": false,
+              "output_logits": null,
+              "return_dict_in_generate": false,
+              "pad_token_id": 151643,
+              "bos_token_id": 151643,
+              "eos_token_id": [
+                151645,
+                151643
+              ],
+              "encoder_no_repeat_ngram_size": 0,
+              "decoder_start_token_id": null,
+              "is_assistant": false,
+              "num_assistant_tokens": 20,
+              "num_assistant_tokens_schedule": "constant",
+              "assistant_confidence_threshold": 0.4,
+              "prompt_lookup_num_tokens": null,
+              "max_matching_ngram_size": null,
+              "assistant_early_exit": null,
+              "assistant_lookbehind": 10,
+              "target_lookbehind": 10,
+              "disable_compile": false,
+              "low_memory": null,
+              "penalty_alpha": null,
+              "dola_layers": null,
+              "diversity_penalty": 0.0,
+              "num_beam_groups": 1,
+              "constraints": null,
+              "force_words_ids": null,
+              "_from_model_config": false,
+              "transformers_version": "4.57.6"
+            },
+            "generate_overrides": {
+              "do_sample": false,
+              "max_new_tokens": 1536,
+              "return_dict_in_generate": false
+            },
+            "input_ids": {
+              "shape": [
+                1,
+                1299
+              ],
+              "dtype": "torch.int64",
+              "device": "cuda:0",
+              "elements": 1299,
+              "zeros": 0,
+              "ones": 0,
+              "binary": false,
+              "sha256": "sha256:b61c0895673e377dbc9133d9baeb135e8bdfb9043a2a05f892a2b3a239232700"
+            },
+            "attention_mask_supplied_by_host": false,
+            "effective_observed": true,
+            "effective_generation_config": {
+              "max_length": 2835,
+              "max_new_tokens": 1536,
+              "min_length": 0,
+              "min_new_tokens": null,
+              "early_stopping": false,
+              "max_time": null,
+              "stop_strings": null,
+              "do_sample": false,
+              "num_beams": 1,
+              "use_cache": true,
+              "cache_implementation": null,
+              "cache_config": null,
+              "return_legacy_cache": null,
+              "prefill_chunk_size": null,
+              "temperature": 0.7,
+              "top_k": 20,
+              "top_p": 0.8,
+              "min_p": null,
+              "typical_p": 1.0,
+              "epsilon_cutoff": 0.0,
+              "eta_cutoff": 0.0,
+              "repetition_penalty": 1.0,
+              "encoder_repetition_penalty": 1.0,
+              "length_penalty": 1.0,
+              "no_repeat_ngram_size": 0,
+              "bad_words_ids": null,
+              "renormalize_logits": false,
+              "forced_bos_token_id": null,
+              "forced_eos_token_id": null,
+              "remove_invalid_values": false,
+              "exponential_decay_length_penalty": null,
+              "suppress_tokens": null,
+              "begin_suppress_tokens": null,
+              "sequence_bias": null,
+              "token_healing": false,
+              "guidance_scale": null,
+              "watermarking_config": null,
+              "num_return_sequences": 1,
+              "output_attentions": false,
+              "output_hidden_states": false,
+              "output_scores": false,
+              "output_logits": null,
+              "return_dict_in_generate": false,
+              "pad_token_id": 151643,
+              "bos_token_id": 151643,
+              "eos_token_id": [
+                151645,
+                151643
+              ],
+              "encoder_no_repeat_ngram_size": 0,
+              "decoder_start_token_id": null,
+              "is_assistant": false,
+              "num_assistant_tokens": 20,
+              "num_assistant_tokens_schedule": "constant",
+              "assistant_confidence_threshold": 0.4,
+              "prompt_lookup_num_tokens": null,
+              "max_matching_ngram_size": null,
+              "assistant_early_exit": null,
+              "assistant_lookbehind": 10,
+              "target_lookbehind": 10,
+              "disable_compile": false,
+              "low_memory": null,
+              "penalty_alpha": null,
+              "dola_layers": null,
+              "diversity_penalty": 0.0,
+              "num_beam_groups": 1,
+              "constraints": null,
+              "force_words_ids": null,
+              "_from_model_config": false,
+              "transformers_version": "4.57.6",
+              "_bos_token_tensor": {
+                "tensor_values": 151643,
+                "dtype": "torch.int64",
+                "device": "cuda:0"
+              },
+              "_eos_token_tensor": {
+                "tensor_values": [
+                  151645,
+                  151643
+                ],
+                "dtype": "torch.int64",
+                "device": "cuda:0"
+              },
+              "_pad_token_tensor": {
+                "tensor_values": 151643,
+                "dtype": "torch.int64",
+                "device": "cuda:0"
+              },
+              "_decoder_start_token_tensor": null
+            },
+            "attention_mask": {
+              "shape": [
+                1,
+                1299
+              ],
+              "dtype": "torch.int64",
+              "device": "cuda:0",
+              "elements": 1299,
+              "zeros": 0,
+              "ones": 1299,
+              "binary": true,
+              "sha256": "sha256:92a136f9bab5ab3521cb11107ad67632bd7cc7be56fe95831d87ed6f92cf9cf8"
+            },
+            "capture_boundary": "pre_decode:_get_logits_processor",
+            "exception": null,
+            "capture_supported": true
+          },
+          "device_map": {
+            "model.embed_tokens": "0",
+            "lm_head": "0",
+            "model.layers.0": "0",
+            "model.layers.1": "0",
+            "model.layers.2": "0",
+            "model.layers.3": "0",
+            "model.layers.4": "0",
+            "model.layers.5": "0",
+            "model.layers.6": "0",
+            "model.layers.7": "0",
+            "model.layers.8": "0",
+            "model.layers.9": "0",
+            "model.layers.10": "0",
+            "model.layers.11": "0",
+            "model.layers.12": "0",
+            "model.layers.13": "0",
+            "model.layers.14": "0",
+            "model.layers.15": "0",
+            "model.layers.16": "0",
+            "model.layers.17": "0",
+            "model.layers.18": "cpu",
+            "model.layers.19": "cpu",
+            "model.layers.20": "cpu",
+            "model.layers.21": "cpu",
+            "model.layers.22": "cpu",
+            "model.layers.23": "cpu",
+            "model.layers.24": "cpu",
+            "model.layers.25": "cpu",
+            "model.layers.26": "cpu",
+            "model.layers.27": "cpu",
+            "model.layers.28": "cpu",
+            "model.layers.29": "cpu",
+            "model.layers.30": "cpu",
+            "model.layers.31": "cpu",
+            "model.layers.32": "cpu",
+            "model.layers.33": "cpu",
+            "model.layers.34": "cpu",
+            "model.layers.35": "cpu",
+            "model.norm": "cpu",
+            "model.rotary_emb": "cpu"
+          },
+          "cuda_peak_allocated_bytes": 5238012928,
+          "gpu": "NVIDIA GeForce RTX 4050 Laptop GPU",
+          "versions": {
+            "torch": "2.11.0+cu128",
+            "transformers": "4.57.6",
+            "tokenizers": "0.22.2",
+            "accelerate": "1.15.0"
+          },
+          "api_cost_usd": 0.0,
+          "scope": "trusted_fixture_prototype_not_qwen32b_benchmark"
+        },
+        "generation_diagnostics": {
+          "status": "PASS",
+          "phase": "complete",
+          "checkpoint_generation_config": {
+            "max_length": 20,
+            "max_new_tokens": null,
+            "min_length": 0,
+            "min_new_tokens": null,
+            "early_stopping": false,
+            "max_time": null,
+            "stop_strings": null,
+            "do_sample": true,
+            "num_beams": 1,
+            "use_cache": true,
+            "cache_implementation": null,
+            "cache_config": null,
+            "return_legacy_cache": null,
+            "prefill_chunk_size": null,
+            "temperature": 0.7,
+            "top_k": 20,
+            "top_p": 0.8,
+            "min_p": null,
+            "typical_p": 1.0,
+            "epsilon_cutoff": 0.0,
+            "eta_cutoff": 0.0,
+            "repetition_penalty": 1.0,
+            "encoder_repetition_penalty": 1.0,
+            "length_penalty": 1.0,
+            "no_repeat_ngram_size": 0,
+            "bad_words_ids": null,
+            "renormalize_logits": false,
+            "forced_bos_token_id": null,
+            "forced_eos_token_id": null,
+            "remove_invalid_values": false,
+            "exponential_decay_length_penalty": null,
+            "suppress_tokens": null,
+            "begin_suppress_tokens": null,
+            "sequence_bias": null,
+            "token_healing": false,
+            "guidance_scale": null,
+            "watermarking_config": null,
+            "num_return_sequences": 1,
+            "output_attentions": false,
+            "output_hidden_states": false,
+            "output_scores": false,
+            "output_logits": null,
+            "return_dict_in_generate": false,
+            "pad_token_id": 151643,
+            "bos_token_id": 151643,
+            "eos_token_id": [
+              151645,
+              151643
+            ],
+            "encoder_no_repeat_ngram_size": 0,
+            "decoder_start_token_id": null,
+            "is_assistant": false,
+            "num_assistant_tokens": 20,
+            "num_assistant_tokens_schedule": "constant",
+            "assistant_confidence_threshold": 0.4,
+            "prompt_lookup_num_tokens": null,
+            "max_matching_ngram_size": null,
+            "assistant_early_exit": null,
+            "assistant_lookbehind": 10,
+            "target_lookbehind": 10,
+            "disable_compile": false,
+            "low_memory": null,
+            "penalty_alpha": null,
+            "dola_layers": null,
+            "diversity_penalty": 0.0,
+            "num_beam_groups": 1,
+            "constraints": null,
+            "force_words_ids": null,
+            "_from_model_config": false,
+            "transformers_version": "4.57.6"
+          },
+          "supplied_generation_config": {
+            "max_length": null,
+            "max_new_tokens": null,
+            "min_length": 0,
+            "min_new_tokens": null,
+            "early_stopping": false,
+            "max_time": null,
+            "stop_strings": null,
+            "do_sample": false,
+            "num_beams": 1,
+            "use_cache": true,
+            "cache_implementation": null,
+            "cache_config": null,
+            "return_legacy_cache": null,
+            "prefill_chunk_size": null,
+            "temperature": 1.0,
+            "top_k": 50,
+            "top_p": 1.0,
+            "min_p": null,
+            "typical_p": 1.0,
+            "epsilon_cutoff": 0.0,
+            "eta_cutoff": 0.0,
+            "repetition_penalty": 1.0,
+            "encoder_repetition_penalty": 1.0,
+            "length_penalty": 1.0,
+            "no_repeat_ngram_size": 0,
+            "bad_words_ids": null,
+            "renormalize_logits": false,
+            "forced_bos_token_id": null,
+            "forced_eos_token_id": null,
+            "remove_invalid_values": false,
+            "exponential_decay_length_penalty": null,
+            "suppress_tokens": null,
+            "begin_suppress_tokens": null,
+            "sequence_bias": null,
+            "token_healing": false,
+            "guidance_scale": null,
+            "watermarking_config": null,
+            "num_return_sequences": 1,
+            "output_attentions": false,
+            "output_hidden_states": false,
+            "output_scores": false,
+            "output_logits": null,
+            "return_dict_in_generate": false,
+            "pad_token_id": 151643,
+            "bos_token_id": 151643,
+            "eos_token_id": [
+              151645,
+              151643
+            ],
+            "encoder_no_repeat_ngram_size": 0,
+            "decoder_start_token_id": null,
+            "is_assistant": false,
+            "num_assistant_tokens": 20,
+            "num_assistant_tokens_schedule": "constant",
+            "assistant_confidence_threshold": 0.4,
+            "prompt_lookup_num_tokens": null,
+            "max_matching_ngram_size": null,
+            "assistant_early_exit": null,
+            "assistant_lookbehind": 10,
+            "target_lookbehind": 10,
+            "disable_compile": false,
+            "low_memory": null,
+            "penalty_alpha": null,
+            "dola_layers": null,
+            "diversity_penalty": 0.0,
+            "num_beam_groups": 1,
+            "constraints": null,
+            "force_words_ids": null,
+            "_from_model_config": false,
+            "transformers_version": "4.57.6"
+          },
+          "generate_overrides": {
+            "do_sample": false,
+            "max_new_tokens": 1536,
+            "return_dict_in_generate": false
+          },
+          "input_ids": {
+            "shape": [
+              1,
+              1299
+            ],
+            "dtype": "torch.int64",
+            "device": "cuda:0",
+            "elements": 1299,
+            "zeros": 0,
+            "ones": 0,
+            "binary": false,
+            "sha256": "sha256:b61c0895673e377dbc9133d9baeb135e8bdfb9043a2a05f892a2b3a239232700"
+          },
+          "attention_mask_supplied_by_host": false,
+          "effective_observed": true,
+          "effective_generation_config": {
+            "max_length": 2835,
+            "max_new_tokens": 1536,
+            "min_length": 0,
+            "min_new_tokens": null,
+            "early_stopping": false,
+            "max_time": null,
+            "stop_strings": null,
+            "do_sample": false,
+            "num_beams": 1,
+            "use_cache": true,
+            "cache_implementation": null,
+            "cache_config": null,
+            "return_legacy_cache": null,
+            "prefill_chunk_size": null,
+            "temperature": 0.7,
+            "top_k": 20,
+            "top_p": 0.8,
+            "min_p": null,
+            "typical_p": 1.0,
+            "epsilon_cutoff": 0.0,
+            "eta_cutoff": 0.0,
+            "repetition_penalty": 1.0,
+            "encoder_repetition_penalty": 1.0,
+            "length_penalty": 1.0,
+            "no_repeat_ngram_size": 0,
+            "bad_words_ids": null,
+            "renormalize_logits": false,
+            "forced_bos_token_id": null,
+            "forced_eos_token_id": null,
+            "remove_invalid_values": false,
+            "exponential_decay_length_penalty": null,
+            "suppress_tokens": null,
+            "begin_suppress_tokens": null,
+            "sequence_bias": null,
+            "token_healing": false,
+            "guidance_scale": null,
+            "watermarking_config": null,
+            "num_return_sequences": 1,
+            "output_attentions": false,
+            "output_hidden_states": false,
+            "output_scores": false,
+            "output_logits": null,
+            "return_dict_in_generate": false,
+            "pad_token_id": 151643,
+            "bos_token_id": 151643,
+            "eos_token_id": [
+              151645,
+              151643
+            ],
+            "encoder_no_repeat_ngram_size": 0,
+            "decoder_start_token_id": null,
+            "is_assistant": false,
+            "num_assistant_tokens": 20,
+            "num_assistant_tokens_schedule": "constant",
+            "assistant_confidence_threshold": 0.4,
+            "prompt_lookup_num_tokens": null,
+            "max_matching_ngram_size": null,
+            "assistant_early_exit": null,
+            "assistant_lookbehind": 10,
+            "target_lookbehind": 10,
+            "disable_compile": false,
+            "low_memory": null,
+            "penalty_alpha": null,
+            "dola_layers": null,
+            "diversity_penalty": 0.0,
+            "num_beam_groups": 1,
+            "constraints": null,
+            "force_words_ids": null,
+            "_from_model_config": false,
+            "transformers_version": "4.57.6",
+            "_bos_token_tensor": {
+              "tensor_values": 151643,
+              "dtype": "torch.int64",
+              "device": "cuda:0"
+            },
+            "_eos_token_tensor": {
+              "tensor_values": [
+                151645,
+                151643
+              ],
+              "dtype": "torch.int64",
+              "device": "cuda:0"
+            },
+            "_pad_token_tensor": {
+              "tensor_values": 151643,
+              "dtype": "torch.int64",
+              "device": "cuda:0"
+            },
+            "_decoder_start_token_tensor": null
+          },
+          "attention_mask": {
+            "shape": [
+              1,
+              1299
+            ],
+            "dtype": "torch.int64",
+            "device": "cuda:0",
+            "elements": 1299,
+            "zeros": 0,
+            "ones": 1299,
+            "binary": true,
+            "sha256": "sha256:92a136f9bab5ab3521cb11107ad67632bd7cc7be56fe95831d87ed6f92cf9cf8"
+          },
+          "capture_boundary": "pre_decode:_get_logits_processor",
+          "exception": null,
+          "capture_supported": true
+        },
+        "diagnostics_artifact": {
+          "path": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\final_acceptance\\2026-10-15-v11-r002\\A\\model-workers\\b23e039705134d009edad6d7ccae27f5\\generation_diagnostics.json",
+          "sha256": "sha256:a5626e14d0ec6701d9785b5b51915700414bad75edee7c628304e393655f2c22"
+        }
+      },
+      "complete": true,
+      "started_utc": "2026-10-15T07:27:24.201347+00:00",
+      "ended_utc": "2026-10-15T07:28:17.452747+00:00",
+      "duration_ms": 53250
+    },
+    "parse_patch": {
+      "status": "PASS",
+      "files": {
+        "auth.py": [
+          {
+            "old": 1,
+            "oc": 2,
+            "new": 1,
+            "nc": 2,
+            "header": "@@ -1,2 +1,2 @@",
+            "body": [
+              [
+                "-",
+                "def login(value):",
+                false
+              ],
+              [
+                "-",
+                "    return bool(value)",
+                false
+              ],
+              [
+                "+",
+                "def login(value):",
+                false
+              ],
+              [
+                "+",
+                "    return bool(value.strip())",
+                false
+              ]
+            ]
+          }
+        ]
+      },
+      "raw_sha256": "sha256:e3cb1094cec06ac54dd7c9efc3ea936e4d2f4622b308a943cf9e14863b2bc7a5",
+      "complete": true,
+      "started_utc": "2026-10-15T07:28:17.460131+00:00",
+      "ended_utc": "2026-10-15T07:28:17.467385+00:00",
+      "duration_ms": 0
+    },
+    "apply": {
+      "status": "PASS",
+      "patch_applied": true,
+      "worktree_id": "wt-f52c1dda2db042438a5fbd3895cda87f",
+      "changed_files": [
+        "auth.py"
+      ],
+      "error": null,
+      "commands": [
+        {
+          "argv": [
+            "git",
+            "apply",
+            "--check",
+            "--index",
+            "D:\\Project\\CAPSTONES\\M2_week_7_8\\.workspaces\\m2-w78-n51qpax2\\candidate.diff"
+          ],
+          "command": "git apply --check --index D:\\Project\\CAPSTONES\\M2_week_7_8\\.workspaces\\m2-w78-n51qpax2\\candidate.diff",
+          "cwd": "D:\\Project\\CAPSTONES\\M2_week_7_8\\.workspaces\\m2-w78-n51qpax2\\worktree",
+          "interpreter": "git",
+          "started_utc": "2026-10-15T07:28:17.582227+00:00",
+          "timeout_seconds": 30,
+          "exit_code": 0,
+          "stdout": "",
+          "stderr": "",
+          "timed_out": false,
+          "output_truncated": false,
+          "complete": true,
+          "stdout_bytes": 0,
+          "stderr_bytes": 0,
+          "status": "PASS",
+          "ended_utc": "2026-10-15T07:28:17.635755+00:00",
+          "duration_ms": 47
+        },
+        {
+          "argv": [
+            "git",
+            "apply",
+            "--index",
+            "D:\\Project\\CAPSTONES\\M2_week_7_8\\.workspaces\\m2-w78-n51qpax2\\candidate.diff"
+          ],
+          "command": "git apply --index D:\\Project\\CAPSTONES\\M2_week_7_8\\.workspaces\\m2-w78-n51qpax2\\candidate.diff",
+          "cwd": "D:\\Project\\CAPSTONES\\M2_week_7_8\\.workspaces\\m2-w78-n51qpax2\\worktree",
+          "interpreter": "git",
+          "started_utc": "2026-10-15T07:28:17.636755+00:00",
+          "timeout_seconds": 30,
+          "exit_code": 0,
+          "stdout": "",
+          "stderr": "",
+          "timed_out": false,
+          "output_truncated": false,
+          "complete": true,
+          "stdout_bytes": 0,
+          "stderr_bytes": 0,
+          "status": "PASS",
+          "ended_utc": "2026-10-15T07:28:17.690852+00:00",
+          "duration_ms": 63
+        },
+        {
+          "argv": [
+            "git",
+            "diff",
+            "--cached",
+            "--no-ext-diff",
+            "--no-textconv"
+          ],
+          "command": "git diff --cached --no-ext-diff --no-textconv",
+          "cwd": "D:\\Project\\CAPSTONES\\M2_week_7_8\\.workspaces\\m2-w78-n51qpax2\\worktree",
+          "interpreter": "git",
+          "started_utc": "2026-10-15T07:28:17.694853+00:00",
+          "timeout_seconds": 30,
+          "exit_code": 0,
+          "stdout": "diff --git a/auth.py b/auth.py\nindex 8ccb7eb..434e9f8 100644\n--- a/auth.py\n+++ b/auth.py\n@@ -1,2 +1,2 @@\n def login(value):\r\n-    return bool(value)\r\n+    return bool(value.strip())\r\n",
+          "stderr": "",
+          "timed_out": false,
+          "output_truncated": false,
+          "complete": true,
+          "stdout_bytes": 183,
+          "stderr_bytes": 0,
+          "status": "PASS",
+          "ended_utc": "2026-10-15T07:28:17.749263+00:00",
+          "duration_ms": 47
+        }
+      ],
+      "exception": null,
+      "complete": true,
+      "started_utc": "2026-10-15T07:28:17.475259+00:00",
+      "ended_utc": "2026-10-15T07:28:17.749263+00:00",
+      "duration_ms": 266
+    },
+    "selection": {
+      "report": {
+        "changed_paths": [
+          "auth.py"
+        ],
+        "targets": {
+          "auth.py": {
+            "mapping_status": "linked",
+            "matched_targets": [
+              "auth.py",
+              "vgar:demo/w7-w8/single_file_login:python:file:auth.py"
+            ],
+            "selectors": [
+              "tests/test_auth.py::test_login_accepts_name",
+              "tests/test_auth.py::test_login_rejects_whitespace"
+            ],
+            "truncated": false,
+            "traversal_limited": false,
+            "fallback_reasons": []
+          }
+        },
+        "graph_selectors": [
+          "tests/test_auth.py::test_login_accepts_name",
+          "tests/test_auth.py::test_login_rejects_whitespace"
+        ],
+        "candidate_tests": [
+          "tests/test_auth.py::test_login_accepts_name",
+          "tests/test_auth.py::test_login_rejects_whitespace"
+        ],
+        "failing_selectors": [
+          "tests/test_auth.py::test_login_rejects_whitespace"
+        ],
+        "fallback_scope": [
+          "tests"
+        ],
+        "fallback_required": false,
+        "fallback_available": true,
+        "requires_fallback_input": false,
+        "coverage_verified": false,
+        "collection_verified": false
+      },
+      "required_selectors": [
+        "tests/test_auth.py::test_login_rejects_whitespace"
+      ],
+      "related_selectors": [
+        "tests/test_auth.py::test_login_accepts_name",
+        "tests/test_auth.py::test_login_rejects_whitespace"
+      ],
+      "fallback_scope": [
+        "tests"
+      ],
+      "selected": [
+        "tests"
+      ],
+      "fallback_required": false,
+      "reasons": [
+        "small_fixture_full_regression"
+      ],
+      "complete": true,
+      "started_utc": "2026-10-15T07:28:17.767246+00:00",
+      "ended_utc": "2026-10-15T07:28:17.844820+00:00",
+      "duration_ms": 62
+    },
+    "verification": {
+      "status": "PASS",
+      "reasons": [],
+      "tests": {
+        "command": {
+          "argv": [
+            "D:\\Project\\CAPSTONES\\M2_week_7_8\\.venv\\Scripts\\python.exe",
+            "-m",
+            "pytest",
+            "-q",
+            "-p",
+            "no:cacheprovider",
+            "-p",
+            "vgar_m2_w78.pytest_plugin",
+            "--m2-report-json=D:\\Project\\CAPSTONES\\M2_week_7_8\\.workspaces\\m2-w78-n51qpax2\\reports\\06c3fa77c84f45878b22525a49032b90\\nodeids.json",
+            "--junitxml=D:\\Project\\CAPSTONES\\M2_week_7_8\\.workspaces\\m2-w78-n51qpax2\\reports\\06c3fa77c84f45878b22525a49032b90\\junit.xml",
+            "tests"
+          ],
+          "command": "D:\\Project\\CAPSTONES\\M2_week_7_8\\.venv\\Scripts\\python.exe -m pytest -q -p no:cacheprovider -p vgar_m2_w78.pytest_plugin --m2-report-json=D:\\Project\\CAPSTONES\\M2_week_7_8\\.workspaces\\m2-w78-n51qpax2\\reports\\06c3fa77c84f45878b22525a49032b90\\nodeids.json --junitxml=D:\\Project\\CAPSTONES\\M2_week_7_8\\.workspaces\\m2-w78-n51qpax2\\reports\\06c3fa77c84f45878b22525a49032b90\\junit.xml tests",
+          "cwd": "D:\\Project\\CAPSTONES\\M2_week_7_8\\.workspaces\\m2-w78-n51qpax2\\worktree",
+          "interpreter": "D:\\Project\\CAPSTONES\\M2_week_7_8\\.venv\\Scripts\\python.exe",
+          "started_utc": "2026-10-15T07:28:18.927544+00:00",
+          "timeout_seconds": 120.0,
+          "exit_code": 0,
+          "stdout": "..                                                                       [100%]\r\n- generated xml file: D:\\Project\\CAPSTONES\\M2_week_7_8\\.workspaces\\m2-w78-n51qpax2\\reports\\06c3fa77c84f45878b22525a49032b90\\junit.xml -\r\n2 passed in 0.04s\r\n",
+          "stderr": "",
+          "timed_out": false,
+          "output_truncated": false,
+          "complete": true,
+          "stdout_bytes": 237,
+          "stderr_bytes": 0,
+          "status": "PASS",
+          "ended_utc": "2026-10-15T07:28:19.369633+00:00",
+          "duration_ms": 438
+        },
+        "status": "PASS",
+        "reason": null,
+        "node_ids": [
+          "tests/test_auth.py::test_login_rejects_whitespace",
+          "tests/test_auth.py::test_login_accepts_name"
+        ],
+        "outcomes": {
+          "tests/test_auth.py::test_login_rejects_whitespace": "PASS",
+          "tests/test_auth.py::test_login_accepts_name": "PASS"
+        },
+        "durations_ms": {
+          "tests/test_auth.py::test_login_rejects_whitespace": 0,
+          "tests/test_auth.py::test_login_accepts_name": 0
+        },
+        "junit_xml": "<?xml version=\"1.0\" encoding=\"utf-8\"?><testsuites name=\"pytest tests\"><testsuite name=\"pytest\" errors=\"0\" failures=\"0\" skipped=\"0\" tests=\"2\" time=\"0.015\" timestamp=\"2026-10-15T14:28:19.250011+07:00\" hostname=\"TMT\"><testcase classname=\"tests.test_auth\" name=\"test_login_rejects_whitespace\" time=\"0.001\" /><testcase classname=\"tests.test_auth\" name=\"test_login_accepts_name\" time=\"0.000\" /></testsuite></testsuites>",
+        "collection_errors": [],
+        "complete": true,
+        "exit_code": 0
+      },
+      "static": {
+        "syntax": {
+          "status": "PASS"
+        },
+        "mypy": {
+          "argv": [
+            "D:\\Project\\CAPSTONES\\M2_week_7_8\\.venv\\Scripts\\python.exe",
+            "-m",
+            "mypy",
+            "--config-file",
+            "D:\\Project\\CAPSTONES\\M2_week_7_8\\config\\fixtures\\mypy.ini",
+            "--no-incremental",
+            "--cache-dir",
+            "D:\\Project\\CAPSTONES\\M2_week_7_8\\.workspaces\\m2-w78-n51qpax2\\mypy-cache",
+            "auth.py"
+          ],
+          "command": "D:\\Project\\CAPSTONES\\M2_week_7_8\\.venv\\Scripts\\python.exe -m mypy --config-file D:\\Project\\CAPSTONES\\M2_week_7_8\\config\\fixtures\\mypy.ini --no-incremental --cache-dir D:\\Project\\CAPSTONES\\M2_week_7_8\\.workspaces\\m2-w78-n51qpax2\\mypy-cache auth.py",
+          "cwd": "D:\\Project\\CAPSTONES\\M2_week_7_8\\.workspaces\\m2-w78-n51qpax2\\worktree",
+          "interpreter": "D:\\Project\\CAPSTONES\\M2_week_7_8\\.venv\\Scripts\\python.exe",
+          "started_utc": "2026-10-15T07:28:19.385637+00:00",
+          "timeout_seconds": 120.0,
+          "exit_code": 0,
+          "stdout": "Success: no issues found in 1 source file\r\n",
+          "stderr": "",
+          "timed_out": false,
+          "output_truncated": false,
+          "complete": true,
+          "stdout_bytes": 43,
+          "stderr_bytes": 0,
+          "status": "PASS",
+          "ended_utc": "2026-10-15T07:28:20.634232+00:00",
+          "duration_ms": 1250
+        },
+        "ruff": {
+          "argv": [
+            "D:\\Project\\CAPSTONES\\M2_week_7_8\\.venv\\Scripts\\python.exe",
+            "-m",
+            "ruff",
+            "check",
+            "--config",
+            "D:\\Project\\CAPSTONES\\M2_week_7_8\\config\\fixtures\\ruff.toml",
+            "--no-cache",
+            "auth.py"
+          ],
+          "command": "D:\\Project\\CAPSTONES\\M2_week_7_8\\.venv\\Scripts\\python.exe -m ruff check --config D:\\Project\\CAPSTONES\\M2_week_7_8\\config\\fixtures\\ruff.toml --no-cache auth.py",
+          "cwd": "D:\\Project\\CAPSTONES\\M2_week_7_8\\.workspaces\\m2-w78-n51qpax2\\worktree",
+          "interpreter": "D:\\Project\\CAPSTONES\\M2_week_7_8\\.venv\\Scripts\\python.exe",
+          "started_utc": "2026-10-15T07:28:20.634232+00:00",
+          "timeout_seconds": 120.0,
+          "exit_code": 0,
+          "stdout": "All checks passed!\n",
+          "stderr": "",
+          "timed_out": false,
+          "output_truncated": false,
+          "complete": true,
+          "stdout_bytes": 19,
+          "stderr_bytes": 0,
+          "status": "PASS",
+          "ended_utc": "2026-10-15T07:28:20.769966+00:00",
+          "duration_ms": 141
+        },
+        "config_hashes": {
+          "mypy": "sha256:5dd48be92168fadb88322eaa068922fa3249f8cba740ca4ac3c13c0d7a6fa7ee",
+          "ruff": "sha256:17bb1eb2799030893f3059f4092c772439d9861afcf71ca3f5a6dc277660b4c7"
+        }
+      },
+      "collection": {
+        "command": {
+          "argv": [
+            "D:\\Project\\CAPSTONES\\M2_week_7_8\\.venv\\Scripts\\python.exe",
+            "-m",
+            "pytest",
+            "-q",
+            "-p",
+            "no:cacheprovider",
+            "-p",
+            "vgar_m2_w78.pytest_plugin",
+            "--m2-report-json=D:\\Project\\CAPSTONES\\M2_week_7_8\\.workspaces\\m2-w78-n51qpax2\\reports\\37d66040a24345aa97ae1dd75faf9814\\nodeids.json",
+            "--junitxml=D:\\Project\\CAPSTONES\\M2_week_7_8\\.workspaces\\m2-w78-n51qpax2\\reports\\37d66040a24345aa97ae1dd75faf9814\\junit.xml",
+            "--collect-only",
+            "tests"
+          ],
+          "command": "D:\\Project\\CAPSTONES\\M2_week_7_8\\.venv\\Scripts\\python.exe -m pytest -q -p no:cacheprovider -p vgar_m2_w78.pytest_plugin --m2-report-json=D:\\Project\\CAPSTONES\\M2_week_7_8\\.workspaces\\m2-w78-n51qpax2\\reports\\37d66040a24345aa97ae1dd75faf9814\\nodeids.json --junitxml=D:\\Project\\CAPSTONES\\M2_week_7_8\\.workspaces\\m2-w78-n51qpax2\\reports\\37d66040a24345aa97ae1dd75faf9814\\junit.xml --collect-only tests",
+          "cwd": "D:\\Project\\CAPSTONES\\M2_week_7_8\\.workspaces\\m2-w78-n51qpax2\\worktree",
+          "interpreter": "D:\\Project\\CAPSTONES\\M2_week_7_8\\.venv\\Scripts\\python.exe",
+          "started_utc": "2026-10-15T07:28:18.423166+00:00",
+          "timeout_seconds": 120.0,
+          "exit_code": 0,
+          "stdout": "tests/test_auth.py::test_login_rejects_whitespace\r\ntests/test_auth.py::test_login_accepts_name\r\n\r\n- generated xml file: D:\\Project\\CAPSTONES\\M2_week_7_8\\.workspaces\\m2-w78-n51qpax2\\reports\\37d66040a24345aa97ae1dd75faf9814\\junit.xml -\r\n2 tests collected in 0.04s\r\n",
+          "stderr": "",
+          "timed_out": false,
+          "output_truncated": false,
+          "complete": true,
+          "stdout_bytes": 263,
+          "stderr_bytes": 0,
+          "status": "PASS",
+          "ended_utc": "2026-10-15T07:28:18.911121+00:00",
+          "duration_ms": 500
+        },
+        "status": "PASS",
+        "reason": null,
+        "node_ids": [
+          "tests/test_auth.py::test_login_rejects_whitespace",
+          "tests/test_auth.py::test_login_accepts_name"
+        ],
+        "outcomes": {},
+        "durations_ms": {},
+        "junit_xml": "<?xml version=\"1.0\" encoding=\"utf-8\"?><testsuites name=\"pytest tests\"><testsuite name=\"pytest\" errors=\"0\" failures=\"0\" skipped=\"0\" tests=\"0\" time=\"0.014\" timestamp=\"2026-10-15T14:28:18.788595+07:00\" hostname=\"TMT\" /></testsuites>",
+        "collection_errors": [],
+        "complete": true,
+        "exit_code": 0
+      },
+      "related_collection": {
+        "command": {
+          "argv": [
+            "D:\\Project\\CAPSTONES\\M2_week_7_8\\.venv\\Scripts\\python.exe",
+            "-m",
+            "pytest",
+            "-q",
+            "-p",
+            "no:cacheprovider",
+            "-p",
+            "vgar_m2_w78.pytest_plugin",
+            "--m2-report-json=D:\\Project\\CAPSTONES\\M2_week_7_8\\.workspaces\\m2-w78-n51qpax2\\reports\\4c526f301f484309a3a5be6e19eaedef\\nodeids.json",
+            "--junitxml=D:\\Project\\CAPSTONES\\M2_week_7_8\\.workspaces\\m2-w78-n51qpax2\\reports\\4c526f301f484309a3a5be6e19eaedef\\junit.xml",
+            "--collect-only",
+            "tests/test_auth.py::test_login_accepts_name",
+            "tests/test_auth.py::test_login_rejects_whitespace"
+          ],
+          "command": "D:\\Project\\CAPSTONES\\M2_week_7_8\\.venv\\Scripts\\python.exe -m pytest -q -p no:cacheprovider -p vgar_m2_w78.pytest_plugin --m2-report-json=D:\\Project\\CAPSTONES\\M2_week_7_8\\.workspaces\\m2-w78-n51qpax2\\reports\\4c526f301f484309a3a5be6e19eaedef\\nodeids.json --junitxml=D:\\Project\\CAPSTONES\\M2_week_7_8\\.workspaces\\m2-w78-n51qpax2\\reports\\4c526f301f484309a3a5be6e19eaedef\\junit.xml --collect-only tests/test_auth.py::test_login_accepts_name tests/test_auth.py::test_login_rejects_whitespace",
+          "cwd": "D:\\Project\\CAPSTONES\\M2_week_7_8\\.workspaces\\m2-w78-n51qpax2\\worktree",
+          "interpreter": "D:\\Project\\CAPSTONES\\M2_week_7_8\\.venv\\Scripts\\python.exe",
+          "started_utc": "2026-10-15T07:28:17.853821+00:00",
+          "timeout_seconds": 120.0,
+          "exit_code": 0,
+          "stdout": "tests/test_auth.py::test_login_accepts_name\r\ntests/test_auth.py::test_login_rejects_whitespace\r\n\r\n- generated xml file: D:\\Project\\CAPSTONES\\M2_week_7_8\\.workspaces\\m2-w78-n51qpax2\\reports\\4c526f301f484309a3a5be6e19eaedef\\junit.xml -\r\n2 tests collected in 0.05s\r\n",
+          "stderr": "",
+          "timed_out": false,
+          "output_truncated": false,
+          "complete": true,
+          "stdout_bytes": 263,
+          "stderr_bytes": 0,
+          "status": "PASS",
+          "ended_utc": "2026-10-15T07:28:18.403285+00:00",
+          "duration_ms": 547
+        },
+        "status": "PASS",
+        "reason": null,
+        "node_ids": [
+          "tests/test_auth.py::test_login_accepts_name",
+          "tests/test_auth.py::test_login_rejects_whitespace"
+        ],
+        "outcomes": {},
+        "durations_ms": {},
+        "junit_xml": "<?xml version=\"1.0\" encoding=\"utf-8\"?><testsuites name=\"pytest tests\"><testsuite name=\"pytest\" errors=\"0\" failures=\"0\" skipped=\"0\" tests=\"0\" time=\"0.009\" timestamp=\"2026-10-15T14:28:18.257981+07:00\" hostname=\"TMT\" /></testsuites>",
+        "collection_errors": [],
+        "complete": true,
+        "exit_code": 0
+      },
+      "related_fallback_reason": null,
+      "complete": true,
+      "started_utc": "2026-10-15T07:28:17.848821+00:00",
+      "ended_utc": "2026-10-15T07:28:20.773972+00:00",
+      "duration_ms": 2922
+    },
+    "cleanup": {
+      "status": "PASS",
+      "complete": true,
+      "private_path": "D:\\Project\\CAPSTONES\\M2_week_7_8\\.workspaces\\m2-w78-n51qpax2",
+      "diagnostics_path": "D:\\Project\\CAPSTONES\\M2_week_7_8\\.workspaces\\.cleanup-records\\m2-w78-n51qpax2.json",
+      "cleanup_process_id": 24240,
+      "lock_owner": "not_identified",
+      "started_utc": "2026-10-15T07:28:20.809968+00:00",
+      "ended_utc": "2026-10-15T07:28:20.819972+00:00",
+      "duration_ms": 16,
+      "attempts": [
+        {
+          "number": 1,
+          "started_utc": "2026-10-15T07:28:20.809968+00:00",
+          "winerror": null,
+          "status": "PASS",
+          "ended_utc": "2026-10-15T07:28:20.819972+00:00"
+        }
+      ],
+      "max_attempts": 6,
+      "scheduled_wait_limit_ms": 1550
+    }
+  },
+  "task_id": "single_file_login",
+  "mode": "real",
+  "context_origin": "m1-retrieval",
+  "task": {
+    "task_id": "single_file_login",
+    "issue_text": "auth.py login accepts whitespace-only names; trim the name before checking whether it is empty.",
+    "source_repo": "D:\\Project\\CAPSTONES\\M2_week_7_8\\examples\\snapshots\\single_file_login",
+    "repo_key": "demo/w7-w8/single_file_login",
+    "revision": "fixture-v1",
+    "graph_version": "sha256:e1fe94d21f10f112cd3a5e2a39f88e1fb26a760ee8ea3eaa6d3bac608d1ec371",
+    "bundle_directory": "D:\\Project\\CAPSTONES\\M2_week_7_8\\examples\\handoffs\\single_file_login",
+    "failing_selectors": [
+      "tests/test_auth.py::test_login_rejects_whitespace"
+    ],
+    "fallback_scope": [
+      "tests"
+    ],
+    "allowed_source_paths": [
+      "auth.py"
+    ],
+    "protected_paths": [
+      "pytest.ini",
+      "tests"
+    ],
+    "trusted_fixture": true
+  },
+  "policy": {
+    "prompt_version": "m2-w78-v11",
+    "input_cap": 6000,
+    "output_cap": 1536,
+    "reserved_margin": 256,
+    "generation_timeout": 900.0,
+    "command_timeout": 120.0,
+    "global_timeout": 1800.0,
+    "max_output_bytes": 8388608,
+    "max_diff_bytes": 262144,
+    "max_files": 5,
+    "max_changed_lines": 500,
+    "runtime": "native_trusted_fixtures"
+  },
+  "model": {
+    "model_id": "Qwen/Qwen3-4B-Instruct-2507",
+    "revision": "cdbee75f17c01a7cc42f958dc650907174af0554",
+    "snapshot": "D:\\Project\\CAPSTONES\\.cache\\huggingface\\hub\\models--Qwen--Qwen3-4B-Instruct-2507\\snapshots\\cdbee75f17c01a7cc42f958dc650907174af0554",
+    "interpreter": "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe",
+    "tokenizer_manifest": "D:\\Project\\CAPSTONES\\VGAR\\artifacts\\m2\\w5-w6\\tokenizer_manifest.json",
+    "approved_prototype": true,
+    "do_sample": false,
+    "dtype": "float16",
+    "device_map": "auto"
+  },
+  "mcp_calls": [],
+  "mcp_scope": "standalone_not_executed",
+  "artifacts": {
+    "raw_output": "raw_model_output.txt",
+    "candidate": "candidate.diff",
+    "applied": "applied.diff",
+    "bundle": "evidence_bundle.json"
+  },
+  "original_source_unchanged": true,
+  "supersedes_run_id": null,
+  "rerun_reason": null,
+  "source_fingerprint": {
+    "src/vgar_m2_w78/__init__.py": "sha256:040c6cf8728496f5d1f71da811f5f31add85c3fa6e66b7ad8331feae6823ceac",
+    "src/vgar_m2_w78/adaptive_campaign.py": "sha256:4d3e59e2f4b169906840daee6636c32a76f027ae42fa240b7102b9415abe1a6d",
+    "src/vgar_m2_w78/b_acceptance.py": "sha256:cbb822f8aa1e61192853d7092440b5008bd6c26943e722dee009bc276548cf5b",
+    "src/vgar_m2_w78/b_experiment.py": "sha256:785e4659d5fd98fc3a9d5e901e7996dfcbec008aa0c50336fa4041a83db71d68",
+    "src/vgar_m2_w78/b_inputs.py": "sha256:6ae25c7b0d6f2e1911c9c94fd3b3f288f20e09bc27397f23171ef97bcea152b0",
+    "src/vgar_m2_w78/bootstrap.py": "sha256:3b89cfaba1c0f393437b95778c1ec19091b80ad91a22e907f7a00b8375ce6bb2",
+    "src/vgar_m2_w78/campaign.py": "sha256:cc3135e1aa8bc94ce94222a5c9e9124e57665021950657b23e8b6eb02634f873",
+    "src/vgar_m2_w78/checks.py": "sha256:cd4d105de982afb40effd9f662411df89a272fb664b0f5f406b18f03fb6583c2",
+    "src/vgar_m2_w78/cli.py": "sha256:477b76a91e849e4c4a4b4b5fb8815e8db51340aa7fb3eb277f7547fb068d0d1a",
+    "src/vgar_m2_w78/config.py": "sha256:b575cce7c0c733adfb1a0c4e74b231f9ab1776a50689c51f36147a2df71d16a0",
+    "src/vgar_m2_w78/context_adapter.py": "sha256:271c3cf05caeeccec23b2c034457d1e1a846a13efcf6b1bc7ff2cc5da969f2b3",
+    "src/vgar_m2_w78/context_presentation.py": "sha256:86e072f15660ae95ca3c4975eed8bba66177bbf7150ddcabc0b5b330f9c3d963",
+    "src/vgar_m2_w78/contracts.py": "sha256:cb4d814d241a13ba5c6e5d69e1065a34635495ccfc4ad4432dbd4b7d20268675",
+    "src/vgar_m2_w78/diagnostics.py": "sha256:33f289e1d4934eb90d38fc059cc325709ee24c8f645d8e9a4537c70e0f239c06",
+    "src/vgar_m2_w78/evidence.py": "sha256:5f2c64f125868d0b896d6fda5e6168637362a68a795d0c1ec5f95b0bc81930cd",
+    "src/vgar_m2_w78/executor.py": "sha256:ef7e3b630d20e64443946e10d46c092af4c83895f3722f849bd1e20481c2a65b",
+    "src/vgar_m2_w78/generator.py": "sha256:08d28f6372e200ebd7b6f7e5954ee0148db4d4d3cdb8ff2fb9f1d4d95593d054",
+    "src/vgar_m2_w78/generator_hf.py": "sha256:a7a3702f4822a2c47f63ac5b04d94c3d836d7904ab998402621eb421b0467e43",
+    "src/vgar_m2_w78/hf_backend.py": "sha256:51a5d4199fa57d9f73dfae0a10ee7a75d169b55e168d37f1872733cc2f562e07",
+    "src/vgar_m2_w78/hf_diagnostics.py": "sha256:7876b6763fda89992cdb875eefc137f467416008236d217db90b9d5978ca96e7",
+    "src/vgar_m2_w78/hf_worker.py": "sha256:2890f232c61aa5e20a68b52d1bf5daa9e9ddc63944909e3dc51d800c4e9bf072",
+    "src/vgar_m2_w78/local_chat.py": "sha256:f3a7094f59ed82edc4def4f4b06b66549ee962a00a7d3e26431f6dc131f10bc7",
+    "src/vgar_m2_w78/model_worker.py": "sha256:4e13a733ac9b73b8e034669dc970e9c0160ed76446fb43676046adcb95c03a92",
+    "src/vgar_m2_w78/patch.py": "sha256:9b508f9d311231174432392309848e04eff06a6ae05f83799f8a1f1fce4cb21e",
+    "src/vgar_m2_w78/pipeline.py": "sha256:1bd3a096cc3242f5ca0efa89889fbca081731a2b23066ccd4b8a98ee6aba6573",
+    "src/vgar_m2_w78/prompt.py": "sha256:aa6ac667d8ac866b174617ae084026d829cd4c4f77c25b36dfa114309caab779",
+    "src/vgar_m2_w78/pytest_plugin.py": "sha256:d01f48e7383ed94730faa0c78be3f7c17cb35ce70820b71517c399842c922434",
+    "src/vgar_m2_w78/test_runner.py": "sha256:0a2060071fbdd3f0cae1e2614bf1522db9949296c06a6571d12ea8a37549f8d4",
+    "src/vgar_m2_w78/test_selection.py": "sha256:b4592918ff8a618c8163d6ad6f1ed60d1871d88b36e548a20b3421e082bd7ec9",
+    "src/vgar_m2_w78/verification.py": "sha256:e199f0f5418cdc2ee597d30969b0f2f416b1f9548b1797946d61c795dba7d0e2",
+    "src/vgar_m2_w78/workspace.py": "sha256:4f3adf02690d45abb91cef8354b03f701c169de49d8bca22b169d9934d6aa1a3",
+    "src/vgar_m2_w78.egg-info/dependency_links.txt": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+    "src/vgar_m2_w78.egg-info/entry_points.txt": "sha256:0c1b82520ac954d2daa50dab4ea786d8360df01c8627a3867021bdd1b6f751f6",
+    "src/vgar_m2_w78.egg-info/requires.txt": "sha256:fa1dcff109fc3a49f96847beaa28d359e781839955f320e6b57215cfffe2ce27",
+    "src/vgar_m2_w78.egg-info/SOURCES.txt": "sha256:23dcbe2851b0e573b621a8e1e0b50ba5853c1277896615bd6bd971fb642035d8",
+    "src/vgar_m2_w78.egg-info/top_level.txt": "sha256:bb956c916881063820fd357829032762cc718ae2bb621cc31cba1070fa444cff",
+    "scripts/prepare_inputs.py": "sha256:0f84546f96071c5f25ec5a958534eed09e80b1bc5ab4d8cbf4eace870a5a4aae",
+    "scripts/qualify_model.py": "sha256:f7f3dda978de70025f768778e02151d457772ebdaed6d4b90f4cd9b5212af7ac",
+    "scripts/record_tests.py": "sha256:dd29aa98a12b00045e82ebd505e67af19521b9c58a650dce244989b3364384f0",
+    "scripts/run_acceptance.py": "sha256:65a6381bda3ff8868ea0cc686932667d79cf460a893b88062ffc7a823080d1cc",
+    "scripts/run_adaptive_acceptance.py": "sha256:6dcb8e85b5bc34ca266a37dfb86f95ce6b9b05876446cdc170f2029a416b44f4",
+    "scripts/run_b_experiment.py": "sha256:a6a289dc24015bbdd5c1c418db6c7446b8903dba27aca73f8ae38cc2c8a5bf71",
+    "scripts/run_demo.py": "sha256:5c3737aa5fd7fe22b107eceed8a769d6086a0504cd1431456fa23d888dee97fc",
+    "scripts/summarize_runs.py": "sha256:03b99d831d7b83df0261f6dc4bbcc8c77039d7b70269180a3d40cad4f0c860e8",
+    "prompts/repair_v1.txt": "sha256:e02066386df09b5e479c0ebf8a5f1bc28aeaf80f66b5085990d1226bdf737465",
+    "prompts/repair_v10.txt": "sha256:2df05ea176647f165d24d4ba195c42144cb9d24e06ad8dd3bb6daee097dfd41a",
+    "prompts/repair_v11.txt": "sha256:ba6d147898eaf411b57b12ab70527aadef239ff9d7a2a8fb3f6639aa333d5ef8",
+    "prompts/repair_v2.txt": "sha256:5807d78085d27793dc1cf2b4cc798976cca443947d35ec49e98b400ceff184e2",
+    "prompts/repair_v3.txt": "sha256:52962b5e9cf2d5b51ae176328a95928a99474a1c83d17043b8838025ac1f78c6",
+    "prompts/repair_v4.txt": "sha256:ead48b5a1f5bd15d95e1ef961cab80f78d4081420afad24e0b5d3ee9f09e15a1",
+    "prompts/repair_v5.txt": "sha256:c2681aa98de9b24b11b6a289d35a0e8eafefdbc2c20f0f3bbb0b146fbc1fe4e1",
+    "prompts/repair_v6.txt": "sha256:fed824d100a09feab2cd52850a7c1ceb7f131c0829c863972073ff29ed079aa5",
+    "prompts/repair_v7.txt": "sha256:680f20f9c289b47372672ced2db649329718b59c8c8c69cc6ca4e0c7b129286a",
+    "prompts/repair_v8.txt": "sha256:e11d6e7575934e0732a34bcde32f1e9e3e53e2caa21110edb23cc3d8f02a1966",
+    "prompts/repair_v9.txt": "sha256:326ad28a2e862eaca0404b0eeb423151dc373d1f4f40b21856b5d68539f52259",
+    "config/demo.json": "sha256:d1ba30333e9193a1e225ee3c2219b53cdec2be7c55756acb7eb89055be5b0825",
+    "config/fixtures/mypy.ini": "sha256:5dd48be92168fadb88322eaa068922fa3249f8cba740ca4ac3c13c0d7a6fa7ee",
+    "config/fixtures/ruff.toml": "sha256:17bb1eb2799030893f3059f4092c772439d9861afcf71ca3f5a6dc277660b4c7",
+    "config/source_pin.json": "sha256:d62411622591bdd7dbfb87af7873a998f9e0f449662bc79ffba7cdec495b603a",
+    "config/trusted_fixtures.json": "sha256:d9e7b1122057f2b453ab64866a7ad620f03378ae081c54acc74a3ce778abe167"
+  },
+  "reference": {
+    "head": "b8e2461635b81d1ae790445efea5c9757d91700a",
+    "root": "D:\\Project\\CAPSTONES\\VGAR",
+    "hashes": {
+      "src/vgar/__init__.py": "8eb57d207d71671cc7c5de557ebf95dc8f1992fe5b9e615f2aa082db07ae576e",
+      "src/vgar/contracts/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "src/vgar/contracts/context.py": "a76901ab62ea3dbc396a5fccaa427ef1e5b5eadcd41745df98ab004f513bee59",
+      "src/vgar/contracts/consumer.py": "768d5c406488401ed840408135f497a1401a852debcd01b61c7cd41305f365e2",
+      "src/vgar/contracts/handoff.py": "8fcf572ea08d54949aee50648fd54a85ad0895c92a0f02618c471b2c761cdefa",
+      "src/vgar/contracts/prompt_context.py": "9098d2ade4cba006dd2d1d64417c7492d4200a21a4acff678d11165b98ca0ffc",
+      "src/vgar/contracts/repair.py": "144892b901ed3657b2f2784a14efd3e274247c38ca19b08c2521aac8a594d0e5",
+      "src/vgar/contracts/evidence.py": "80f1c7fd72ba9844f9353c43312236838c0d461fa7e58039cf0ca321f27346be",
+      "src/vgar/config/settings.py": "d2dadde8064fd72fa766335ccca5253ffafc61f4129d066c8f57292f103e0e68",
+      "src/vgar/config/__init__.py": "ec3b8d65527db0f97380ed9279ea9c14d4dc5cf64dc21aba5ad949e52849974d",
+      "src/vgar/graph/token_counter.py": "302f9cd69347bef1a15fe54a0d1834f6958c3d62310679b8b46586bd590c3b89",
+      "src/vgar/graph/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "dirty_paths": [
+      "src/vgar/evaluation/retrieval/compare.py",
+      "src/vgar/evaluation/retrieval/scoring.py"
+    ]
+  },
+  "finalization_errors": [],
+  "reason": null
+}

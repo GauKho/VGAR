@@ -1,0 +1,86 @@
+{
+  "run_id": "20261015T070916546459Z-29b6c2d320ff",
+  "task_id": "multi_file_invoice",
+  "source_repo": "D:\\Project\\CAPSTONES\\M2_week_7_8\\examples\\snapshots\\multi_file_invoice",
+  "source_hash_before": "sha256:0b7d881a2e18e7b016b1846af91c2def48ad1d1c5adda60ee2294e6751111c8e",
+  "source_hash_after": "sha256:0b7d881a2e18e7b016b1846af91c2def48ad1d1c5adda60ee2294e6751111c8e",
+  "worktree_id": "wt-fa8249fde80e4b698f229103a8c37329",
+  "verification": {
+    "patch_applied": true,
+    "tests": {
+      "status": "PASS",
+      "command": "D:\\Project\\CAPSTONES\\M2_week_7_8\\.venv\\Scripts\\python.exe -m pytest -q -p no:cacheprovider -p vgar_m2_w78.pytest_plugin --m2-report-json=D:\\Project\\CAPSTONES\\M2_week_7_8\\.workspaces\\m2-w78-2opmbtzl\\reports\\f89494a72cdd4f2d83d4470f0e85237b\\nodeids.json --junitxml=D:\\Project\\CAPSTONES\\M2_week_7_8\\.workspaces\\m2-w78-2opmbtzl\\reports\\f89494a72cdd4f2d83d4470f0e85237b\\junit.xml tests",
+      "argv": [
+        "D:\\Project\\CAPSTONES\\M2_week_7_8\\.venv\\Scripts\\python.exe",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "-p",
+        "vgar_m2_w78.pytest_plugin",
+        "--m2-report-json=D:\\Project\\CAPSTONES\\M2_week_7_8\\.workspaces\\m2-w78-2opmbtzl\\reports\\f89494a72cdd4f2d83d4470f0e85237b\\nodeids.json",
+        "--junitxml=D:\\Project\\CAPSTONES\\M2_week_7_8\\.workspaces\\m2-w78-2opmbtzl\\reports\\f89494a72cdd4f2d83d4470f0e85237b\\junit.xml",
+        "tests"
+      ],
+      "exit_code": 0,
+      "duration_ms": 453,
+      "stdout": "...                                                                      [100%]\r\n- generated xml file: D:\\Project\\CAPSTONES\\M2_week_7_8\\.workspaces\\m2-w78-2opmbtzl\\reports\\f89494a72cdd4f2d83d4470f0e85237b\\junit.xml -\r\n3 passed in 0.04s\r\n",
+      "stderr": "",
+      "timeout_seconds": 120.0,
+      "cases": [
+        {
+          "name": "tests/test_invoice.py::test_discount_percentage",
+          "status": "PASS",
+          "duration_ms": 0,
+          "detail": "PASS"
+        },
+        {
+          "name": "tests/test_invoice.py::test_invoice_percentage_tax",
+          "status": "PASS",
+          "duration_ms": 0,
+          "detail": "PASS"
+        },
+        {
+          "name": "tests/test_invoice.py::test_invoice_without_adjustments",
+          "status": "PASS",
+          "duration_ms": 0,
+          "detail": "PASS"
+        }
+      ],
+      "case_counts": {},
+      "reason": null,
+      "complete": true,
+      "output_truncated": false,
+      "stdout_bytes": 237,
+      "stderr_bytes": 0
+    },
+    "typecheck": {
+      "status": "PASS",
+      "reason": null
+    },
+    "lint": {
+      "status": "PASS",
+      "reason": null
+    },
+    "api_check": {
+      "status": "NOT_RUN",
+      "reason": null
+    },
+    "structural_check": {
+      "status": "NOT_RUN",
+      "reason": null
+    },
+    "reasons": []
+  },
+  "artifact_path": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\b_repair\\2026-10-15-evidence-driven-b\\attempts\\02\\20261015T070916546459Z-29b6c2d320ff\\run_record.json",
+  "metadata": {
+    "repair_status": "PASS",
+    "mode": "real",
+    "graph_version": "sha256:1bbff47bc1ee5098b1f3d8f37dc5952faa9127224763e651c66630d838adb93e",
+    "canonical_sha256": "sha256:56af0a0e48b5dee0e35eba345a08862a245fe269eea6daf5f98aeeecefc51e07",
+    "raw_pytest_status": "PASS",
+    "baseline_ref": "run_record.json#stages/baseline",
+    "selection_ref": "run_record.json#stages/selection"
+  }
+}

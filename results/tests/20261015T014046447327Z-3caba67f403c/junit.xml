@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="0.241" timestamp="2026-10-15T08:40:47.012043+07:00" hostname="TMT"><testcase classname="tests.test_diagnostic_logging" name="test_quoted_header_syntax_exception_keeps_type_and_gets_location" time="0.137"><failure message="AttributeError: 'SyntaxError' object has no attribute 'parser_diagnostics'">def test_quoted_header_syntax_exception_keeps_type_and_gets_location():
+        module = api('patch')
+        with pytest.raises(SyntaxError) as caught:
+            module.parse_unified_diff('--- "a/app.py\n+++ b/app.py\n', module.PatchPolicy(('app.py',), ()))
+&gt;       assert caught.value.parser_diagnostics['raw_line'] == 1
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'SyntaxError' object has no attribute 'parser_diagnostics'
+
+tests\test_diagnostic_logging.py:67: AttributeError</failure></testcase></testsuite></testsuites>

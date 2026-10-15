@@ -1,0 +1,8 @@
+diff --git a/auth.py b/auth.py
+index 8ccb7eb..434e9f8 100644
+--- a/auth.py
++++ b/auth.py
+@@ -1,2 +1,2 @@
+ def login(value):
+-    return bool(value)
++    return bool(value.strip())

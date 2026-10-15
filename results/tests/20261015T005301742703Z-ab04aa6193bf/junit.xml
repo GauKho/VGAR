@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="0.074" timestamp="2026-10-15T07:53:02.233859+07:00" hostname="TMT"><testcase classname="tests.test_prompt_v8" name="test_v8_context_body_example_retains_prefix_and_original_python_indentation" time="0.014"><failure message="ValueError: Unregistered or missing prompt version: m2-w78-v8">tmp_path = WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-575/test_v8_context_body_example_r0')
+
+    def test_v8_context_body_example_retains_prefix_and_original_python_indentation(tmp_path):
+&gt;       text = api('prompt').template_path('m2-w78-v8').read_text(encoding='utf-8')
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_prompt_v8.py:7: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+version = 'm2-w78-v8'
+
+    def template_path(version: str) -&gt; Path:
+        match = re.fullmatch(r'm2-w78-v([1-9][0-9]*)', version)
+        if not match:
+            raise ValueError('Unsupported prompt version: ' + str(version))
+        path = ROOT / 'prompts' / ('repair_v' + match[1] + '.txt')
+        if not path.is_file() or path.is_symlink():
+&gt;           raise ValueError('Unregistered or missing prompt version: ' + version)
+E           ValueError: Unregistered or missing prompt version: m2-w78-v8
+
+src\vgar_m2_w78\prompt.py:29: ValueError</failure></testcase></testsuite></testsuites>

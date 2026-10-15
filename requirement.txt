@@ -1,0 +1,37 @@
+# TWO SEPARATE ENVIRONMENTS: executable entries install ONLY the M2 CORE.
+# Run once in M2_week_7_8/.venv, Python 3.11 (qualified 3.11.6):
+#   python -m pip install -r requirement.txt
+#   python -m pip install --no-deps -e .
+# Do not rerun installation when readiness/tests already pass.
+pydantic==2.13.5
+python-dotenv==1.2.3
+tokenizers==0.22.1
+jinja2==3.1.6
+pytest==8.4.2
+mypy==1.20.2
+ruff==0.16.7
+# setuptools>=69 is the pyproject build backend; already provisioned by venv/pip.
+#
+# HF WORKER: separate interpreter in config/demo.json, not installed into CORE
+# by this file. Qualified snapshot (install only if absent, in that interpreter):
+# torch==2.11.0+cu128  (official PyTorch CUDA 12.8 wheels; NVIDIA driver required)
+# transformers==4.57.6
+# tokenizers==0.22.2   (intentionally NOT the CORE 0.22.1 pin)
+# accelerate==1.15.0
+# safetensors==0.8.0
+# numpy==2.4.6        (observed HF dependency, not directly imported by M2)
+# psutil==7.2.2       (observed environment; NOT directly required by r002 backend)
+# Example one-time HF install, do not execute in CORE venv:
+# <HF-python> -m pip install torch==2.11.0+cu128 --index-url https://download.pytorch.org/whl/cu128
+# <HF-python> -m pip install transformers==4.57.6 tokenizers==0.22.2 accelerate==1.15.0 safetensors==0.8.0
+#
+# NON-PIP prerequisites (must be provisioned separately):
+# - Windows PowerShell >=5.1, Git for Windows on PATH, Python 3.11 x64.
+# - NVIDIA GPU/driver supporting CUDA-enabled Torch; nvidia-smi diagnostic optional.
+# - Local Qwen/Qwen3-4B-Instruct-2507 snapshot:
+#   cdbee75f17c01a7cc42f958dc650907174af0554, no automatic network downloads.
+# - Sibling VGAR checkout at source_pin revision and pinned 12 boundary files.
+# - M1 tokenizer_manifest.json plus assets and prepared examples/handoffs bundles.
+# - config/demo.json must resolve existing HF interpreter/model/tokenizer paths.
+# Not needed for this standalone task: Ollama, Gemini/OpenAI keys, Docker,
+# LangGraph/MCP server installation, bitsandbytes, training frameworks or W&B.

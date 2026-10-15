@@ -1,0 +1,15 @@
+{
+    "argv":  [
+                 "D:\\Project\\CAPSTONES\\M2_week_7_8\\.venv\\Scripts\\python.exe",
+                 "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\delivery-tests\\pytest-7-test_missing_prompt_does_not_h0\\verification_job.py",
+                 "audit",
+                 "D:\\Project\\CAPSTONES\\M2_week_7_8",
+                 "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\delivery-tests\\pytest-7-test_missing_prompt_does_not_h0",
+                 "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\delivery-validation\\temp\\pytest-of-pc\\pytest-7\\test_missing_prompt_does_not_h0\\saved",
+                 "A"
+             ],
+    "exit_code":  1,
+    "started_utc":  "2026-10-15T09:04:16.6230553Z",
+    "ended_utc":  "2026-10-15T09:04:17.2973182Z",
+    "duration_ms":  665
+}

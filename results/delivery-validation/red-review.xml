@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="5" skipped="0" tests="8" time="28.624" timestamp="2026-10-15T15:59:49.882904+07:00" hostname="TMT"><testcase classname=".superpowers.sdd.2026-10-15-m2-delivery-package.test_delivery" name="test_saved_mode_audits_all_cases_and_prints_all_artifact_families" time="4.359"><failure message="KeyError: 'skip_self_tests'">tmp_path = WindowsPath('D:/Project/CAPSTONES/M2_week_7_8/results/delivery-validation/temp/pytest-of-pc/pytest-4/test_saved_mode_audits_all_cas0')
+
+    def test_saved_mode_audits_all_cases_and_prints_all_artifact_families(tmp_path):
+        assert SCRIPT.is_file(), 'PowerShell runner has not been implemented'
+        output = ROOT/'results/delivery-tests'/(tmp_path.parent.name+'-'+tmp_path.name)
+        result = run_ps('-Mode','ReadSaved','-OutputRoot',str(output))
+        assert result.returncode == 0, result.stdout[-3000:]+result.stderr[-3000:]
+        summary = json.loads((output/'summary.json').read_text(encoding='utf-8-sig'))
+        assert summary['status'] == 'PASS' and summary['mode'] == 'ReadSaved'
+&gt;       assert summary['skip_self_tests'] is False
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'skip_self_tests'
+
+.superpowers\sdd\2026-10-15-m2-delivery-package\test_delivery.py:28: KeyError</failure></testcase><testcase classname=".superpowers.sdd.2026-10-15-m2-delivery-package.test_delivery" name="test_existing_output_is_never_overwritten" time="2.039" /><testcase classname=".superpowers.sdd.2026-10-15-m2-delivery-package.test_delivery" name="test_output_outside_results_is_rejected_before_any_mutation" time="1.950" /><testcase classname=".superpowers.sdd.2026-10-15-m2-delivery-package.test_delivery" name="test_check_mode_never_launches_real_or_creates_case_directories" time="5.258" /><testcase classname=".superpowers.sdd.2026-10-15-m2-delivery-package.test_delivery" name="test_optimized_python_is_rejected_before_acceptance" time="5.523"><failure message="AssertionError: Optimized Python must not disable acceptance checks&#10;assert 0 != 0&#10; +  where 0 = CompletedProcess(args=['powershell', '-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', 'D:\\Project\\CAPSTONES\\M2_...\CAPSTONES\\M2_week_7_8\\results\\delivery-tests\\pytest-4-test_optimized_python_is_rejec0\\summary.json\n', stderr='').returncode">tmp_path = WindowsPath('D:/Project/CAPSTONES/M2_week_7_8/results/delivery-validation/temp/pytest-of-pc/pytest-4/test_optimized_python_is_rejec0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001C00C84BE50&gt;
+
+    def test_optimized_python_is_rejected_before_acceptance(tmp_path, monkeypatch):
+        output = ROOT/'results/delivery-tests'/(tmp_path.parent.name+'-'+tmp_path.name)
+        monkeypatch.setenv('PYTHONOPTIMIZE','1')
+        result = run_ps('-Mode','ReadSaved','-OutputRoot',str(output))
+&gt;       assert result.returncode != 0, 'Optimized Python must not disable acceptance checks'
+E       AssertionError: Optimized Python must not disable acceptance checks
+E       assert 0 != 0
+E        +  where 0 = CompletedProcess(args=['powershell', '-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', 'D:\\Project\\CAPSTONES\\M2_...\CAPSTONES\\M2_week_7_8\\results\\delivery-tests\\pytest-4-test_optimized_python_is_rejec0\\summary.json\n', stderr='').returncode
+
+.superpowers\sdd\2026-10-15-m2-delivery-package\test_delivery.py:70: AssertionError</failure></testcase><testcase classname=".superpowers.sdd.2026-10-15-m2-delivery-package.test_delivery" name="test_core_pin_mismatch_is_not_readiness_pass" time="0.274"><failure message="SystemExit: 0">tmp_path = WindowsPath('D:/Project/CAPSTONES/M2_week_7_8/results/delivery-validation/temp/pytest-of-pc/pytest-4/test_core_pin_mismatch_is_not_0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001C00C8539D0&gt;
+
+    def test_core_pin_mismatch_is_not_readiness_pass(tmp_path, monkeypatch):
+        helper = SCRIPT.read_text(encoding='utf-8').split("$helper = @'\n",1)[1].split("\n'@",1)[0]
+        path = tmp_path/'helper.py'
+        path.write_text(helper,encoding='utf-8')
+        actual = importlib.metadata.version
+        monkeypatch.setattr(importlib.metadata,'version',lambda name:'8.4.3' if name=='pytest' else actual(name))
+        monkeypatch.setattr(sys,'argv',[str(path),'preflight',str(ROOT),str(tmp_path),'ReadSaved'])
+        with pytest.raises((AssertionError,RuntimeError),match='[Cc]ore|[Pp]in|version'):
+&gt;           runpy.run_path(str(path),run_name='__main__')
+
+.superpowers\sdd\2026-10-15-m2-delivery-package\test_delivery.py:82: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+&lt;frozen runpy&gt;:291: in run_path
+    ???
+&lt;frozen runpy&gt;:98: in _run_module_code
+    ???
+&lt;frozen runpy&gt;:88: in _run_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    import ast,json,sys,importlib.metadata as md,subprocess
+    from pathlib import Path,PureWindowsPath
+    root=Path(sys.argv[2]).resolve();sys.path.insert(0,str(root/'src'))
+    from vgar_m2_w78.bootstrap import verify_reference
+    from vgar_m2_w78.b_experiment import runtime_fingerprint
+    from vgar_m2_w78.campaign import assess_record
+    from vgar_m2_w78.config import load_config
+    from vgar_m2_w78.contracts import RepairTask
+    from vgar_m2_w78.evidence import atomic_json,digest
+    from vgar_m2_w78.pipeline import require_trusted_fixture
+    from vgar_m2_w78.patch import PatchPolicy,parse_unified_diff,_bind
+    output=Path(sys.argv[3]).resolve();action=sys.argv[1]
+    reference=verify_reference()
+    prior=root/'results/b_repair/2026-10-15-evidence-driven-b'
+    old=json.loads((prior/'frozen_inputs.json').read_text(encoding='utf-8'))
+    registered=json.loads((prior/'revisions/r002.json').read_text(encoding='utf-8'))
+    oldroot=PureWindowsPath(old['runtime_root'])
+    expected={PureWindowsPath(p).relative_to(oldroot).as_posix():h for p,h in registered['files'].items()}
+    current={Path(p).relative_to(root).as_posix():h for p,h in runtime_fingerprint(root).items()}
+    assert expected==current,'Qualified core r002 changed; do not silently accept a new runtime'
+    assert digest((root/'prompts/repair_v11.txt').read_bytes())=='sha256:ba6d147898eaf411b57b12ab70527aadef239ff9d7a2a8fb3f6639aa333d5ef8','V11 changed'
+    policy,profile=load_config(root/'config/demo.json');policy=policy.model_copy(update={'prompt_version':'m2-w78-v11'})
+    assert policy.model_dump()==dict(old['policy'],prompt_version='m2-w78-v11'),'Policy changed'
+    tasks={}
+    for letter,case in zip('ABC',('single_file_login','multi_file_invoice','missing_links')):
+        path=root/'examples/tasks'/f'{case}.json';data=json.loads(path.read_text(encoding='utf-8'))
+        for key in ('source_repo','bundle_directory'):data[key]=(path.parent/data[key]).resolve()
+        task=RepairTask.model_validate(data);require_trusted_fixture(task);tasks[letter]=task
+    if action=='preflight':
+        core={name:md.version(name) for name in ('pydantic','python-dotenv','tokenizers','jinja2','pytest','mypy','ruff')}
+        assert sys.version_info[:2]==(3,11),'Qualified profile uses Python 3.11'
+        result={'status':'PASS','scope':'preflight, NOT repair acceptance','core_versions':core,'reference':reference,'runtime_revision':'r002','profile':profile.model_dump(mode='json'),'policy':policy.model_dump()}
+        if sys.argv[4]!='ReadSaved':
+            assert profile.snapshot.name==profile.revision and profile.snapshot.is_dir() and profile.interpreter.is_file()
+            code="import json,torch,importlib.metadata as m;print(json.dumps({'cuda':torch.cuda.is_available(),'versions':{n:m.version(n) for n in ('torch','transformers','tokenizers','accelerate','safetensors')},'gpu':torch.cuda.get_device_name(0) if torch.cuda.is_available() else None}))"
+            probe=subprocess.run([str(profile.interpreter),'-c',code],capture_output=True,text=True,timeout=60)
+            assert probe.returncode==0,probe.stderr
+            gpu=json.loads(probe.stdout);assert gpu['cuda'],'No CUDA; no CPU fallback allowed'
+            assert gpu['versions']=={'torch':'2.11.0+cu128','transformers':'4.57.6','tokenizers':'0.22.2','accelerate':'1.15.0','safetensors':'0.8.0'},'HF environment differs from qualified profile'
+            result['hf']=gpu
+        atomic_json(output/'profile.json',{'policy':policy.model_dump(),'model':profile.model_dump(mode='json')})
+&gt;       atomic_json(output/'preflight.json',result);print(json.dumps(result,ensure_ascii=False,indent=2));sys.exit(0)
+                                                                                                          ^^^^^^^^^^^
+E       SystemExit: 0
+
+results\delivery-validation\temp\pytest-of-pc\pytest-4\test_core_pin_mismatch_is_not_0\helper.py:42: SystemExit</failure></testcase><testcase classname=".superpowers.sdd.2026-10-15-m2-delivery-package.test_delivery" name="test_missing_prompt_does_not_hide_remaining_saved_logs" time="3.115"><failure message="AssertionError: assert ('RAW OUTPUT' in 'MODE=ReadSaved OUTPUT=D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\delivery-tests\\pytest-4-test_missing_prompt_does...e 169\nSTOP: remaining cases were NOT launched. Inspect canonical/worker evidence; never edit a patch to force PASS.\n')">tmp_path = WindowsPath('D:/Project/CAPSTONES/M2_week_7_8/results/delivery-validation/temp/pytest-of-pc/pytest-4/test_missing_prompt_does_not_h0')
+
+    def test_missing_prompt_does_not_hide_remaining_saved_logs(tmp_path):
+        output = ROOT/'results/delivery-tests'/(tmp_path.parent.name+'-'+tmp_path.name)
+        saved = tmp_path/'saved'
+        shutil.copytree(ROOT/'results/final_acceptance/2026-10-15-v11-r002/A',saved/'A')
+        prompt = next((saved/'A').glob('*/prompt.txt'))
+        prompt.unlink()  # Only a test-owned copy, never original evidence.
+        result = run_ps('-Mode','ReadSaved','-SavedRoot',str(saved),'-OutputRoot',str(output))
+        assert result.returncode != 0
+        log = (output/'all_logs.txt').read_text(encoding='utf-8-sig')
+&gt;       assert 'RAW OUTPUT' in log and 'WORKER JSON' in log
+E       AssertionError: assert ('RAW OUTPUT' in 'MODE=ReadSaved OUTPUT=D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\delivery-tests\\pytest-4-test_missing_prompt_does...e 169\nSTOP: remaining cases were NOT launched. Inspect canonical/worker evidence; never edit a patch to force PASS.\n')
+
+.superpowers\sdd\2026-10-15-m2-delivery-package\test_delivery.py:95: AssertionError</failure></testcase><testcase classname=".superpowers.sdd.2026-10-15-m2-delivery-package.test_delivery" name="test_failed_selftests_print_real_pytest_diagnostics_and_never_generate" time="5.993"><failure message="AssertionError: assert 'unrecognized arguments: --delivery-invalid-option' in 'MODE=Run OUTPUT=D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\delivery-tests\\pytest-4-test_failed_selftests_print_re...e 152\nSTOP: remaining cases were NOT launched. Inspect canonical/worker evidence; never edit a patch to force PASS.\n'">tmp_path = WindowsPath('D:/Project/CAPSTONES/M2_week_7_8/results/delivery-validation/temp/pytest-of-pc/pytest-4/test_failed_selftests_print_re0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001C00CBD3D10&gt;
+
+    def test_failed_selftests_print_real_pytest_diagnostics_and_never_generate(tmp_path, monkeypatch):
+        output = ROOT/'results/delivery-tests'/(tmp_path.parent.name+'-'+tmp_path.name)
+        monkeypatch.setenv('PYTEST_ADDOPTS','--delivery-invalid-option')
+        result = run_ps('-Mode','Run','-OutputRoot',str(output))
+        assert result.returncode != 0
+        log = (output/'all_logs.txt').read_text(encoding='utf-8-sig')
+&gt;       assert 'unrecognized arguments: --delivery-invalid-option' in log
+E       AssertionError: assert 'unrecognized arguments: --delivery-invalid-option' in 'MODE=Run OUTPUT=D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\delivery-tests\\pytest-4-test_failed_selftests_print_re...e 152\nSTOP: remaining cases were NOT launched. Inspect canonical/worker evidence; never edit a patch to force PASS.\n'
+
+.superpowers\sdd\2026-10-15-m2-delivery-package\test_delivery.py:105: AssertionError</failure></testcase></testsuite></testsuites>

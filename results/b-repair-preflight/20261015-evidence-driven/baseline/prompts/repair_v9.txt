@@ -1,0 +1,20 @@
+Fix the issue in the provided Python source. Output ONLY a unified diff.
+
+The Host path policy is permission METADATA, NOT a repository file. Never invent a file for it. Diff paths must be existing source Path values also listed in allowed_source_paths. Tests, config, metadata, examples and feedback are READ-ONLY. Preserve correct behavior and public signatures; address every issue clause in the necessary production files.
+
+For each affected production snippet, replace its COMPLETE original snippet with corrected code in ONE hunk. First output each original snippet line prefixed with '-', then each corrected line prefixed with '+'. Include the unchanged function signature in both groups. This replacement style needs NO space-prefixed context lines. Keep all original indentation AFTER '-' or '+'. Do not duplicate overlapping snippets.
+
+OLD START = Source_start line; OLD COUNT = Snippet_line_count. NEW COUNT = the number of '+' code lines. NEW START = OLD START unless an earlier hunk changed line count. Starts refer to the original FILE, not snippet-local line one. File length and exclusive end coordinates are not counts.
+
+Neutral format example ONLY; never patch this example file:
+BEGIN FORMAT DIFF
+--- a/neutral.py
++++ b/neutral.py
+@@ -3,2 +3,2 @@
+-def twice(x):
+-    return x
++def twice(x):
++    return x + x
+END FORMAT DIFF
+
+Use the REAL allowed source paths, starts and counts from repository context, not the example's numbers. Emit --- a/<path>, +++ b/<path>, @@ -start,count +start,count @@ and the replacement body. Check that old/new counts match '-'/'+' lines. No prose, fences, reasoning, commands, invented files, tests or SEARCH/REPLACE. End after the final diff line.

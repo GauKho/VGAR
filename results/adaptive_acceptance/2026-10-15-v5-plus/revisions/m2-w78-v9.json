@@ -1,0 +1,8 @@
+{
+  "template_hash": "sha256:326ad28a2e862eaca0404b0eeb423151dc373d1f4f40b21856b5d68539f52259",
+  "parent_version": "m2-w78-v8",
+  "parent_record": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\04\\20261015T005533899467Z-16d544650f34\\run_record.json",
+  "reason": "B V8 hallucinated a host_path_policy.json metadata file; B quota exhausted, continue C only",
+  "hypothesis": "Explicit source-only paths and neutral whole-snippet replacement avoid treating metadata as a file and missing context prefixes",
+  "registered_utc": "2026-10-15T00:58:15.382264+00:00"
+}

@@ -1,0 +1,65 @@
+{
+  "run_id": "20261014T082814063252Z-d5edabbec1c6",
+  "kind": "pytest",
+  "status": "FAIL",
+  "complete": true,
+  "started_utc": "2026-10-14T08:28:14.063252+00:00",
+  "ended_utc": "2026-10-14T08:28:15.860396+00:00",
+  "duration_ms": 1797,
+  "interpreter": "D:\\Project\\CAPSTONES\\M2_week_7_8\\.venv\\Scripts\\python.exe",
+  "python": "3.11.6 (tags/v3.11.6:8b6ee5b, Oct  2 2023, 14:57:12) [MSC v.1935 64 bit (AMD64)]",
+  "stages": {
+    "pytest": {
+      "argv": [
+        "D:\\Project\\CAPSTONES\\M2_week_7_8\\.venv\\Scripts\\python.exe",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "--junitxml=D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\tests\\20261014T082814063252Z-d5edabbec1c6\\junit.xml",
+        "tests/test_generator.py"
+      ],
+      "command": "D:\\Project\\CAPSTONES\\M2_week_7_8\\.venv\\Scripts\\python.exe -m pytest -q -p no:cacheprovider --junitxml=D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\tests\\20261014T082814063252Z-d5edabbec1c6\\junit.xml tests/test_generator.py",
+      "cwd": "D:\\Project\\CAPSTONES\\M2_week_7_8",
+      "interpreter": "D:\\Project\\CAPSTONES\\M2_week_7_8\\.venv\\Scripts\\python.exe",
+      "started_utc": "2026-10-14T08:28:14.213808+00:00",
+      "timeout_seconds": 120.0,
+      "exit_code": 1,
+      "stdout": "FF                                                                       [100%]\r\n================================== FAILURES ===================================\r\n_______________ test_fake_generation_is_explicit_and_never_real _______________\r\n\r\nmodule = 'generator'\r\n\r\n    def api(module):\r\n        try:\r\n>           return importlib.import_module('vgar_m2_w78.' + module)\r\n                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\n\r\ntests\\test_bootstrap.py:11: \r\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\r\n\r\nname = 'vgar_m2_w78.generator', package = None\r\n\r\n    def import_module(name, package=None):\r\n        \"\"\"Import a module.\r\n    \r\n        The 'package' argument is required when performing a relative import. It\r\n        specifies the package to use as the anchor point from which to resolve the\r\n        relative import to an absolute import.\r\n    \r\n        \"\"\"\r\n        level = 0\r\n        if name.startswith('.'):\r\n            if not package:\r\n                msg = (\"the 'package' argument is required to perform a relative \"\r\n                       \"import for {!r}\")\r\n                raise TypeError(msg.format(name))\r\n            for character in name:\r\n                if character != '.':\r\n                    break\r\n                level += 1\r\n>       return _bootstrap._gcd_import(name[level:], package, level)\r\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\nE       ModuleNotFoundError: No module named 'vgar_m2_w78.generator'\r\n\r\nC:\\Program Files\\Python311\\Lib\\importlib\\__init__.py:126: ModuleNotFoundError\r\n\r\nDuring handling of the above exception, another exception occurred:\r\n\r\nm1_case = (RepairTask(task_id='single_file_login', issue_text='auth.py login accepts whitespace-only names; trim the name before...', 'pytest.ini'), trusted_fixture=True), <vgar.graph.token_counter.LocalTokenizerCounter object at 0x0000020EFC9EB6D0>)\r\n\r\n    def test_fake_generation_is_explicit_and_never_real(m1_case):\r\n        from conftest import CharacterChatTokenizer\r\n        task, counter = m1_case\r\n        handoff = api('context_adapter').load_handoff(task, counter, counter.counter_label)\r\n        prompt = api('prompt').build_repair_prompt(task, handoff, {}, CharacterChatTokenizer(), api('contracts').RepairPolicy())\r\n>       result = api('generator').FakeGenerator('--- a/auth.py\\n').generate(prompt, None, 1)\r\n                 ^^^^^^^^^^^^^^^^\r\n\r\ntests\\test_generator.py:10: \r\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\r\n\r\nmodule = 'generator'\r\n\r\n    def api(module):\r\n        try:\r\n            return importlib.import_module('vgar_m2_w78.' + module)\r\n        except ModuleNotFoundError:\r\n>           pytest.fail('Planned M2 API not implemented: ' + module)\r\nE           Failed: Planned M2 API not implemented: generator\r\n\r\ntests\\test_bootstrap.py:13: Failed\r\n_____________ test_worker_timeout_and_invalid_json_never_fallback _____________\r\n\r\nmodule = 'model_worker'\r\n\r\n    def api(module):\r\n        try:\r\n>           return importlib.import_module('vgar_m2_w78.' + module)\r\n                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\n\r\ntests\\test_bootstrap.py:11: \r\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\r\n\r\nname = 'vgar_m2_w78.model_worker', package = None\r\n\r\n    def import_module(name, package=None):\r\n        \"\"\"Import a module.\r\n    \r\n        The 'package' argument is required when performing a relative import. It\r\n        specifies the package to use as the anchor point from which to resolve the\r\n        relative import to an absolute import.\r\n    \r\n        \"\"\"\r\n        level = 0\r\n        if name.startswith('.'):\r\n            if not package:\r\n                msg = (\"the 'package' argument is required to perform a relative \"\r\n                       \"import for {!r}\")\r\n                raise TypeError(msg.format(name))\r\n            for character in name:\r\n                if character != '.':\r\n                    break\r\n                level += 1\r\n>       return _bootstrap._gcd_import(name[level:], package, level)\r\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\nE       ModuleNotFoundError: No module named 'vgar_m2_w78.model_worker'\r\n\r\nC:\\Program Files\\Python311\\Lib\\importlib\\__init__.py:126: ModuleNotFoundError\r\n\r\nDuring handling of the above exception, another exception occurred:\r\n\r\ntmp_path = WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-508/test_worker_timeout_and_invali0')\r\n\r\n    def test_worker_timeout_and_invalid_json_never_fallback(tmp_path):\r\n>       module = api('model_worker')\r\n                 ^^^^^^^^^^^^^^^^^^^\r\n\r\ntests\\test_generator.py:16: \r\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\r\n\r\nmodule = 'model_worker'\r\n\r\n    def api(module):\r\n        try:\r\n            return importlib.import_module('vgar_m2_w78.' + module)\r\n        except ModuleNotFoundError:\r\n>           pytest.fail('Planned M2 API not implemented: ' + module)\r\nE           Failed: Planned M2 API not implemented: model_worker\r\n\r\ntests\\test_bootstrap.py:13: Failed\r\n- generated xml file: D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\tests\\20261014T082814063252Z-d5edabbec1c6\\junit.xml -\r\n=========================== short test summary info ===========================\r\nFAILED tests/test_generator.py::test_fake_generation_is_explicit_and_never_real\r\nFAILED tests/test_generator.py::test_worker_timeout_and_invalid_json_never_fallback\r\n2 failed in 1.07s\r\n",
+      "stderr": "",
+      "timed_out": false,
+      "output_truncated": false,
+      "complete": true,
+      "stdout_bytes": 5506,
+      "stderr_bytes": 0,
+      "status": "FAIL",
+      "ended_utc": "2026-10-14T08:28:15.857395+00:00",
+      "duration_ms": 1657
+    }
+  },
+  "mode": "offline",
+  "task_id": "M2-tests",
+  "reference": {
+    "head": "b8e2461635b81d1ae790445efea5c9757d91700a",
+    "root": "D:\\Project\\CAPSTONES\\VGAR",
+    "hashes": {
+      "src/vgar/__init__.py": "8eb57d207d71671cc7c5de557ebf95dc8f1992fe5b9e615f2aa082db07ae576e",
+      "src/vgar/contracts/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "src/vgar/contracts/context.py": "a76901ab62ea3dbc396a5fccaa427ef1e5b5eadcd41745df98ab004f513bee59",
+      "src/vgar/contracts/consumer.py": "768d5c406488401ed840408135f497a1401a852debcd01b61c7cd41305f365e2",
+      "src/vgar/contracts/handoff.py": "8fcf572ea08d54949aee50648fd54a85ad0895c92a0f02618c471b2c761cdefa",
+      "src/vgar/contracts/prompt_context.py": "9098d2ade4cba006dd2d1d64417c7492d4200a21a4acff678d11165b98ca0ffc",
+      "src/vgar/contracts/repair.py": "144892b901ed3657b2f2784a14efd3e274247c38ca19b08c2521aac8a594d0e5",
+      "src/vgar/contracts/evidence.py": "80f1c7fd72ba9844f9353c43312236838c0d461fa7e58039cf0ca321f27346be",
+      "src/vgar/config/settings.py": "d2dadde8064fd72fa766335ccca5253ffafc61f4129d066c8f57292f103e0e68",
+      "src/vgar/config/__init__.py": "ec3b8d65527db0f97380ed9279ea9c14d4dc5cf64dc21aba5ad949e52849974d",
+      "src/vgar/graph/token_counter.py": "302f9cd69347bef1a15fe54a0d1834f6958c3d62310679b8b46586bd590c3b89",
+      "src/vgar/graph/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "dirty_paths": [
+      "src/vgar/evaluation/retrieval/compare.py",
+      "src/vgar/evaluation/retrieval/scoring.py"
+    ]
+  }
+}

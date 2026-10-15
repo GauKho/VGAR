@@ -1,0 +1,38 @@
+--- src\vgar_m2_w78\b_experiment.py
++++ src\vgar_m2_w78\b_experiment.py
+@@ -59,7 +59,8 @@
+             or any(s in text for s in ('hash mismatch', 'source changed', 'frozen input', 'protected source',
+                                       'prompt bytes mismatch', 'input hash mismatch'))):
+         return dict(category='integrity', action='STOP', reason=reason)
+-    if record.get('status') == 'ERROR' or any(s in text for s in ('out of memory', 'winerror', 'timeout')):
++    exception_text = json.dumps(record.get('error_detail', {}), ensure_ascii=False).lower()
++    if record.get('status') == 'ERROR' or any(s in exception_text for s in ('out of memory', 'winerror', 'timeout')):
+         return dict(category='runtime', action='DIAGNOSE_RUNTIME', reason=reason)
+     if reason in ('PATCH_PARSE_ERROR', 'PATCH_APPLY_FAILED', 'TEST_FAILED', 'TYPECHECK_FAILED', 'LINT_FAILED', 'VERIFICATION_INCOMPLETE'):
+         return dict(category='candidate', action='REVISE_PROMPT', reason=reason)
+--- scripts\run_b_experiment.py
++++ scripts\run_b_experiment.py
+@@ -7,7 +7,7 @@
+ ROOT = Path(__file__).resolve().parents[1]
+ sys.path.insert(0, str(ROOT/'src'))
+ 
+-from vgar_m2_w78.b_experiment import BExperimentStore, reservation_deadline
++from vgar_m2_w78.b_experiment import BExperimentStore, reservation_deadline, diagnose_assessment
+ from vgar_m2_w78.b_inputs import freeze_b_inputs
+ from vgar_m2_w78.bootstrap import verify_reference
+ from vgar_m2_w78.contracts import ModelProfile, RepairPolicy, RepairTask
+@@ -20,9 +20,13 @@
+ 
+ 
+ def feedback(entry):
+-    if not entry or entry.get('diagnosis', {}).get('category') != 'candidate' or not entry.get('record'):
++    if not entry or not entry.get('record'):
+         return None
+     record = json.loads(Path(entry['record']).read_text(encoding='utf-8'))
++    # Preserve the original diagnosis receipt; a corrected runtime may classify
++    # its canonical evidence more accurately when building new feedback.
++    if diagnose_assessment(record, entry.get('gate_errors', []))['category'] != 'candidate':
++        return None
+     error = record.get('error_detail', {})
+     diagnostic = error.get('parser_diagnostics') or record.get('stages', {}).get('parse_patch', {}).get('parser_diagnostics')
+     message = error.get('message') or (record.get('stages', {}).get('apply', {}).get('error') or {}).get('message')

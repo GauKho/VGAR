@@ -1,0 +1,79 @@
+{
+  "run_id": "20261015T002833577904Z-40869529560c",
+  "kind": "adaptive-v5-offline-gate",
+  "status": "PASS",
+  "complete": true,
+  "started_utc": "2026-10-15T00:28:33.577904+00:00",
+  "ended_utc": "2026-10-15T00:28:39.378085+00:00",
+  "duration_ms": 5812,
+  "interpreter": "D:\\Project\\CAPSTONES\\M2_week_7_8\\.venv\\Scripts\\python.exe",
+  "python": "3.11.6 (tags/v3.11.6:8b6ee5b, Oct  2 2023, 14:57:12) [MSC v.1935 64 bit (AMD64)]",
+  "stages": {
+    "ruff": {
+      "argv": [
+        "D:\\Project\\CAPSTONES\\M2_week_7_8\\.venv\\Scripts\\python.exe",
+        "-m",
+        "ruff",
+        "check",
+        "--select",
+        "E9,F",
+        "src",
+        "scripts",
+        "tests"
+      ],
+      "command": "D:\\Project\\CAPSTONES\\M2_week_7_8\\.venv\\Scripts\\python.exe -m ruff check --select E9,F src scripts tests",
+      "cwd": "D:\\Project\\CAPSTONES\\M2_week_7_8",
+      "interpreter": "D:\\Project\\CAPSTONES\\M2_week_7_8\\.venv\\Scripts\\python.exe",
+      "started_utc": "2026-10-15T00:28:33.580801+00:00",
+      "timeout_seconds": 120,
+      "exit_code": 0,
+      "stdout": "All checks passed!\n",
+      "stderr": "",
+      "timed_out": false,
+      "output_truncated": false,
+      "complete": true,
+      "stdout_bytes": 19,
+      "stderr_bytes": 0,
+      "status": "PASS",
+      "ended_utc": "2026-10-15T00:28:35.151275+00:00",
+      "duration_ms": 1563
+    },
+    "genuine_tokenizer": {
+      "status": "PASS",
+      "cases": [
+        {
+          "task_id": "single_file_login",
+          "input_tokens": 1187,
+          "prompt_hash": "sha256:d066aea48a0921b230b1169887ffa75cbf37f97139666c86b8ac9c3ff5ee8482",
+          "template_hash": "sha256:c2681aa98de9b24b11b6a289d35a0e8eafefdbc2c20f0f3bbb0b146fbc1fe4e1"
+        },
+        {
+          "task_id": "multi_file_invoice",
+          "input_tokens": 1614,
+          "prompt_hash": "sha256:d0ee8c4afb6aa0b340ff93b0ced8ba03d496e50e23814f1a91f098808f197d82",
+          "template_hash": "sha256:c2681aa98de9b24b11b6a289d35a0e8eafefdbc2c20f0f3bbb0b146fbc1fe4e1"
+        },
+        {
+          "task_id": "missing_links",
+          "input_tokens": 1072,
+          "prompt_hash": "sha256:cd03bdc27ef388e350851e65031f06357c3fee332643f3e9ae99d5252a41b41a",
+          "template_hash": "sha256:c2681aa98de9b24b11b6a289d35a0e8eafefdbc2c20f0f3bbb0b146fbc1fe4e1"
+        }
+      ],
+      "note": "Offline only; not real repair evidence"
+    },
+    "historical_preservation": {
+      "status": "PASS",
+      "archived_files": 69,
+      "historical_files": 69,
+      "current_runtime_changes": [
+        "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\context_presentation.py",
+        "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\contracts.py",
+        "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\pipeline.py",
+        "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\prompt.py"
+      ],
+      "note": "Historical bytes verified; new code is not claimed to be old runtime"
+    }
+  },
+  "mode": "offline"
+}

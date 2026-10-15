@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="5" skipped="0" tests="14" time="7.707" timestamp="2026-10-15T13:35:38.354369+07:00" hostname="TMT"><testcase classname="tests.test_prompt_v10" name="test_v10_labels_source_permissions_without_changing_snippets" time="0.864"><failure message="ValueError: Unregistered or missing prompt version: m2-w78-v10">m1_case = (RepairTask(task_id='single_file_login', issue_text='auth.py login accepts whitespace-only names; trim the name before...', 'pytest.ini'), trusted_fixture=True), &lt;vgar.graph.token_counter.LocalTokenizerCounter object at 0x000001BAAD3EE510&gt;)
+
+    def test_v10_labels_source_permissions_without_changing_snippets(m1_case):
+        task, counter = m1_case
+        handoff = api('context_adapter').load_handoff(task, counter, counter.counter_label)
+&gt;       prompt = api('prompt').build_repair_prompt(task, handoff, {}, CharacterChatTokenizer(),
+            api('contracts').RepairPolicy(prompt_version='m2-w78-v10'))
+
+tests\test_prompt_v10.py:16: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\vgar_m2_w78\prompt.py:35: in build_repair_prompt
+    template = template_path(policy.prompt_version).read_text(encoding='utf-8')
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+version = 'm2-w78-v10'
+
+    def template_path(version: str) -&gt; Path:
+        match = re.fullmatch(r'm2-w78-v([1-9][0-9]*)', version)
+        if not match:
+            raise ValueError('Unsupported prompt version: ' + str(version))
+        path = ROOT / 'prompts' / ('repair_v' + match[1] + '.txt')
+        if not path.is_file() or path.is_symlink():
+&gt;           raise ValueError('Unregistered or missing prompt version: ' + version)
+E           ValueError: Unregistered or missing prompt version: m2-w78-v10
+
+src\vgar_m2_w78\prompt.py:29: ValueError</failure></testcase><testcase classname="tests.test_prompt_v10" name="test_v10_rejects_partial_production_line_before_generation" time="0.020"><failure message="TypeError: present_context() got an unexpected keyword argument 'patch_contract'">tmp_path = WindowsPath('D:/Project/CAPSTONES/M2_week_7_8/results/b-repair-preflight/20261015-evidence-driven/temp/pytest-of-pc/pytest-2/test_v10_rejects_partial_produ0')
+
+    def test_v10_rejects_partial_production_line_before_generation(tmp_path):
+        module = api('context_presentation')
+        source = tmp_path/'app.py'
+        source.write_bytes(b'value = 123\n')
+        item = SimpleNamespace(node_id='node:partial', path='app.py', symbol='value', snippet='123',
+            relevance_score=1.0, confidence=1.0,
+            range=SimpleNamespace(start_line=1, start_col=8, end_line=1, end_col=11))
+        handoff = SimpleNamespace(assert_unchanged=lambda: None, context_text='original',
+            context=SimpleNamespace(graph_version='g', items=[item]),
+            task=SimpleNamespace(source_repo=tmp_path, allowed_source_paths=('app.py',), protected_paths=('tests',)),
+            manifest={'files': {'app.py': api('evidence').digest(source.read_bytes())}})
+        with pytest.raises(ValueError, match='complete source lines'):
+&gt;           module.present_context(handoff, absolute_lines=True, patch_contract=True)
+E           TypeError: present_context() got an unexpected keyword argument 'patch_contract'
+
+tests\test_prompt_v10.py:45: TypeError</failure></testcase><testcase classname="tests.test_prompt_v10" name="test_v10_neutral_two_file_replacement_passes_current_parser_and_git[\n]" time="0.002"><failure message="ValueError: Unregistered or missing prompt version: m2-w78-v10">tmp_path = WindowsPath('D:/Project/CAPSTONES/M2_week_7_8/results/b-repair-preflight/20261015-evidence-driven/temp/pytest-of-pc/pytest-2/test_v10_neutral_two_file_repl0')
+eol = b'\n'
+
+    @pytest.mark.parametrize('eol', [b'\n', b'\r\n'])
+    def test_v10_neutral_two_file_replacement_passes_current_parser_and_git(tmp_path, eol):
+&gt;       template = api('prompt').template_path('m2-w78-v10').read_text(encoding='utf-8')
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_prompt_v10.py:50: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+version = 'm2-w78-v10'
+
+    def template_path(version: str) -&gt; Path:
+        match = re.fullmatch(r'm2-w78-v([1-9][0-9]*)', version)
+        if not match:
+            raise ValueError('Unsupported prompt version: ' + str(version))
+        path = ROOT / 'prompts' / ('repair_v' + match[1] + '.txt')
+        if not path.is_file() or path.is_symlink():
+&gt;           raise ValueError('Unregistered or missing prompt version: ' + version)
+E           ValueError: Unregistered or missing prompt version: m2-w78-v10
+
+src\vgar_m2_w78\prompt.py:29: ValueError</failure></testcase><testcase classname="tests.test_prompt_v10" name="test_v10_neutral_two_file_replacement_passes_current_parser_and_git[\r\n]" time="0.002"><failure message="ValueError: Unregistered or missing prompt version: m2-w78-v10">tmp_path = WindowsPath('D:/Project/CAPSTONES/M2_week_7_8/results/b-repair-preflight/20261015-evidence-driven/temp/pytest-of-pc/pytest-2/test_v10_neutral_two_file_repl1')
+eol = b'\r\n'
+
+    @pytest.mark.parametrize('eol', [b'\n', b'\r\n'])
+    def test_v10_neutral_two_file_replacement_passes_current_parser_and_git(tmp_path, eol):
+&gt;       template = api('prompt').template_path('m2-w78-v10').read_text(encoding='utf-8')
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_prompt_v10.py:50: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+version = 'm2-w78-v10'
+
+    def template_path(version: str) -&gt; Path:
+        match = re.fullmatch(r'm2-w78-v([1-9][0-9]*)', version)
+        if not match:
+            raise ValueError('Unsupported prompt version: ' + str(version))
+        path = ROOT / 'prompts' / ('repair_v' + match[1] + '.txt')
+        if not path.is_file() or path.is_symlink():
+&gt;           raise ValueError('Unregistered or missing prompt version: ' + version)
+E           ValueError: Unregistered or missing prompt version: m2-w78-v10
+
+src\vgar_m2_w78\prompt.py:29: ValueError</failure></testcase><testcase classname="tests.test_prompt_v10" name="test_previous_versions_keep_baseline_messages[1]" time="0.612" /><testcase classname="tests.test_prompt_v10" name="test_previous_versions_keep_baseline_messages[2]" time="0.642" /><testcase classname="tests.test_prompt_v10" name="test_previous_versions_keep_baseline_messages[3]" time="0.592" /><testcase classname="tests.test_prompt_v10" name="test_previous_versions_keep_baseline_messages[4]" time="0.654" /><testcase classname="tests.test_prompt_v10" name="test_previous_versions_keep_baseline_messages[5]" time="0.651" /><testcase classname="tests.test_prompt_v10" name="test_previous_versions_keep_baseline_messages[6]" time="0.649" /><testcase classname="tests.test_prompt_v10" name="test_previous_versions_keep_baseline_messages[7]" time="0.618" /><testcase classname="tests.test_prompt_v10" name="test_previous_versions_keep_baseline_messages[8]" time="0.733" /><testcase classname="tests.test_prompt_v10" name="test_previous_versions_keep_baseline_messages[9]" time="0.684" /><testcase classname="tests.test_prompt_v10" name="test_v10_budget_is_checked_for_full_chat" time="0.624"><failure message="AssertionError: Regex pattern did not match.&#10; Regex: 'budget'&#10; Input: 'Unregistered or missing prompt version: m2-w78-v10'">m1_case = (RepairTask(task_id='single_file_login', issue_text='auth.py login accepts whitespace-only names; trim the name before...', 'pytest.ini'), trusted_fixture=True), &lt;vgar.graph.token_counter.LocalTokenizerCounter object at 0x000001BAADF89910&gt;)
+
+    def test_v10_budget_is_checked_for_full_chat(m1_case):
+        task, counter = m1_case
+        handoff = api('context_adapter').load_handoff(task, counter, counter.counter_label)
+        with pytest.raises(ValueError, match='budget'):
+&gt;           api('prompt').build_repair_prompt(task, handoff, {}, CharacterChatTokenizer(),
+                api('contracts').RepairPolicy(prompt_version='m2-w78-v10', input_cap=10))
+
+tests\test_prompt_v10.py:88: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\vgar_m2_w78\prompt.py:35: in build_repair_prompt
+    template = template_path(policy.prompt_version).read_text(encoding='utf-8')
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+version = 'm2-w78-v10'
+
+    def template_path(version: str) -&gt; Path:
+        match = re.fullmatch(r'm2-w78-v([1-9][0-9]*)', version)
+        if not match:
+            raise ValueError('Unsupported prompt version: ' + str(version))
+        path = ROOT / 'prompts' / ('repair_v' + match[1] + '.txt')
+        if not path.is_file() or path.is_symlink():
+&gt;           raise ValueError('Unregistered or missing prompt version: ' + version)
+E           ValueError: Unregistered or missing prompt version: m2-w78-v10
+
+src\vgar_m2_w78\prompt.py:29: ValueError
+
+During handling of the above exception, another exception occurred:
+
+m1_case = (RepairTask(task_id='single_file_login', issue_text='auth.py login accepts whitespace-only names; trim the name before...', 'pytest.ini'), trusted_fixture=True), &lt;vgar.graph.token_counter.LocalTokenizerCounter object at 0x000001BAADF89910&gt;)
+
+    def test_v10_budget_is_checked_for_full_chat(m1_case):
+        task, counter = m1_case
+        handoff = api('context_adapter').load_handoff(task, counter, counter.counter_label)
+&gt;       with pytest.raises(ValueError, match='budget'):
+E       AssertionError: Regex pattern did not match.
+E        Regex: 'budget'
+E        Input: 'Unregistered or missing prompt version: m2-w78-v10'
+
+tests\test_prompt_v10.py:87: AssertionError</failure></testcase></testsuite></testsuites>

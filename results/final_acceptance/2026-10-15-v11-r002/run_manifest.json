@@ -1,0 +1,25 @@
+{
+  "purpose": "User-authorized final A/B/C validation; no feedback; no production changes",
+  "campaign_id": "2026-10-15-v11-r002",
+  "prompt_version": "m2-w78-v11",
+  "template_hash": "sha256:ba6d147898eaf411b57b12ab70527aadef239ff9d7a2a8fb3f6639aa333d5ef8",
+  "runtime_revision": "r002",
+  "runtime_registration": "results/b_repair/2026-10-15-evidence-driven-b/revisions/r002.json",
+  "limits": {"max_new_runs": 3, "runs_per_case": 1, "global_seconds_per_run": 1800},
+  "feedback": null,
+  "status": "PASS",
+  "complete": true,
+  "ended_utc": "2026-10-15T07:34:39+00:00",
+  "final_audit": "audits/20261015T073438247626Z-8ce2a58ef084/run_record.json",
+  "pipeline_seconds_sum": 290.141,
+  "generation_seconds_sum": 246.906,
+  "input_tokens_sum": 4237,
+  "output_tokens_sum": 243,
+  "cases": {
+    "A": {"task_id": "single_file_login", "status": "PASS", "record": "A/20261015T072711985584Z-dc47a96417ee/run_record.json", "reservation_utc": "2026-10-15T07:24:47+00:00", "exec_session": 33891, "audit": "audits/20261015T072910452391Z-6bc45ef93046/run_record.json"},
+    "B": {"task_id": "multi_file_invoice", "status": "PASS", "record": "B/20261015T072938917449Z-a0075c35e2ee/run_record.json", "reservation_utc": "2026-10-15T07:29:11+00:00", "exec_session": 75898, "audit": "audits/20261015T073226931714Z-986411624f02/run_record.json"},
+    "C": {"task_id": "missing_links", "status": "PASS", "record": "C/20261015T073254806383Z-68a9a593f8d6/run_record.json", "reservation_utc": "2026-10-15T07:32:28+00:00", "exec_session": 90968, "audit": "audits/20261015T073438247626Z-8ce2a58ef084/run_record.json"}
+  },
+  "resume_rule": "No automatic relaunch. Inspect live process/record before any recovery; never rerun a reserved case or reset quota.",
+  "scope": "Trusted-fixture final validation; not independent teammate acceptance, MCP integration, or SWE-bench"
+}

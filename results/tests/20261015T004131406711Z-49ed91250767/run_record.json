@@ -1,0 +1,65 @@
+{
+  "run_id": "20261015T004131406711Z-49ed91250767",
+  "kind": "pytest",
+  "status": "FAIL",
+  "complete": true,
+  "started_utc": "2026-10-15T00:41:31.406711+00:00",
+  "ended_utc": "2026-10-15T00:41:32.211512+00:00",
+  "duration_ms": 812,
+  "interpreter": "D:\\Project\\CAPSTONES\\M2_week_7_8\\.venv\\Scripts\\python.exe",
+  "python": "3.11.6 (tags/v3.11.6:8b6ee5b, Oct  2 2023, 14:57:12) [MSC v.1935 64 bit (AMD64)]",
+  "stages": {
+    "pytest": {
+      "argv": [
+        "D:\\Project\\CAPSTONES\\M2_week_7_8\\.venv\\Scripts\\python.exe",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "--junitxml=D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\tests\\20261015T004131406711Z-49ed91250767\\junit.xml",
+        "tests/test_prompt_v6.py"
+      ],
+      "command": "D:\\Project\\CAPSTONES\\M2_week_7_8\\.venv\\Scripts\\python.exe -m pytest -q -p no:cacheprovider --junitxml=D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\tests\\20261015T004131406711Z-49ed91250767\\junit.xml tests/test_prompt_v6.py",
+      "cwd": "D:\\Project\\CAPSTONES\\M2_week_7_8",
+      "interpreter": "D:\\Project\\CAPSTONES\\M2_week_7_8\\.venv\\Scripts\\python.exe",
+      "started_utc": "2026-10-15T00:41:31.547111+00:00",
+      "timeout_seconds": 120.0,
+      "exit_code": 1,
+      "stdout": "F                                                                        [100%]\r\n================================== FAILURES ===================================\r\n__ test_v6_examples_bind_two_and_three_line_hunks_with_unchanged_assignment ___\r\n\r\ntmp_path = WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-571/test_v6_examples_bind_two_and_0')\r\n\r\n    def test_v6_examples_bind_two_and_three_line_hunks_with_unchanged_assignment(tmp_path):\r\n>       text = api('prompt').template_path('m2-w78-v6').read_text(encoding='utf-8')\r\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\n\r\ntests\\test_prompt_v6.py:8: \r\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\r\n\r\nversion = 'm2-w78-v6'\r\n\r\n    def template_path(version: str) -> Path:\r\n        match = re.fullmatch(r'm2-w78-v([1-9][0-9]*)', version)\r\n        if not match:\r\n            raise ValueError('Unsupported prompt version: ' + str(version))\r\n        path = ROOT / 'prompts' / ('repair_v' + match[1] + '.txt')\r\n        if not path.is_file() or path.is_symlink():\r\n>           raise ValueError('Unregistered or missing prompt version: ' + version)\r\nE           ValueError: Unregistered or missing prompt version: m2-w78-v6\r\n\r\nsrc\\vgar_m2_w78\\prompt.py:29: ValueError\r\n- generated xml file: D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\tests\\20261015T004131406711Z-49ed91250767\\junit.xml -\r\n=========================== short test summary info ===========================\r\nFAILED tests/test_prompt_v6.py::test_v6_examples_bind_two_and_three_line_hunks_with_unchanged_assignment\r\n1 failed in 0.12s\r\n",
+      "stderr": "",
+      "timed_out": false,
+      "output_truncated": false,
+      "complete": true,
+      "stdout_bytes": 1594,
+      "stderr_bytes": 0,
+      "status": "FAIL",
+      "ended_utc": "2026-10-15T00:41:32.210511+00:00",
+      "duration_ms": 672
+    }
+  },
+  "mode": "offline",
+  "task_id": "M2-tests",
+  "reference": {
+    "head": "b8e2461635b81d1ae790445efea5c9757d91700a",
+    "root": "D:\\Project\\CAPSTONES\\VGAR",
+    "hashes": {
+      "src/vgar/__init__.py": "8eb57d207d71671cc7c5de557ebf95dc8f1992fe5b9e615f2aa082db07ae576e",
+      "src/vgar/contracts/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "src/vgar/contracts/context.py": "a76901ab62ea3dbc396a5fccaa427ef1e5b5eadcd41745df98ab004f513bee59",
+      "src/vgar/contracts/consumer.py": "768d5c406488401ed840408135f497a1401a852debcd01b61c7cd41305f365e2",
+      "src/vgar/contracts/handoff.py": "8fcf572ea08d54949aee50648fd54a85ad0895c92a0f02618c471b2c761cdefa",
+      "src/vgar/contracts/prompt_context.py": "9098d2ade4cba006dd2d1d64417c7492d4200a21a4acff678d11165b98ca0ffc",
+      "src/vgar/contracts/repair.py": "144892b901ed3657b2f2784a14efd3e274247c38ca19b08c2521aac8a594d0e5",
+      "src/vgar/contracts/evidence.py": "80f1c7fd72ba9844f9353c43312236838c0d461fa7e58039cf0ca321f27346be",
+      "src/vgar/config/settings.py": "d2dadde8064fd72fa766335ccca5253ffafc61f4129d066c8f57292f103e0e68",
+      "src/vgar/config/__init__.py": "ec3b8d65527db0f97380ed9279ea9c14d4dc5cf64dc21aba5ad949e52849974d",
+      "src/vgar/graph/token_counter.py": "302f9cd69347bef1a15fe54a0d1834f6958c3d62310679b8b46586bd590c3b89",
+      "src/vgar/graph/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "dirty_paths": [
+      "src/vgar/evaluation/retrieval/compare.py",
+      "src/vgar/evaluation/retrieval/scoring.py"
+    ]
+  }
+}

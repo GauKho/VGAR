@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="0.578" timestamp="2026-10-15T13:08:54.863045+07:00" hostname="TMT"><testcase classname="tests.test_workspace_cleanup" name="test_real_windows_directory_handle_is_released_before_cleanup_returns" time="0.376"><failure message="PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\cleanup-fix\\20261015-workspace-lock\\temp\\pytest-of-pc\\pytest-1\\test_real_windows_directory_ha0\\temp\\m2-w78-cleanup-test\\seed'">path = 'D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\cleanup-fix\\20261015-workspace-lock\\temp\\pytest-of-pc\\pytest-1\\test_real_windows_directory_ha0\\temp\\m2-w78-cleanup-test\\seed'
+onerror = &lt;function _remove_owned.&lt;locals&gt;.onerror at 0x000002142F7A32E0&gt;
+
+    def _rmtree_unsafe(path, onerror):
+        try:
+            with os.scandir(path) as scandir_it:
+                entries = list(scandir_it)
+        except OSError:
+            onerror(os.scandir, path, sys.exc_info())
+            entries = []
+        for entry in entries:
+            fullname = entry.path
+            if _rmtree_isdir(entry):
+                try:
+                    if entry.is_symlink():
+                        # This can only happen if someone replaces
+                        # a directory with a symlink after the call to
+                        # os.scandir or entry.is_dir above.
+                        raise OSError("Cannot call rmtree on a symbolic link")
+                except OSError:
+                    onerror(os.path.islink, fullname, sys.exc_info())
+                    continue
+                _rmtree_unsafe(fullname, onerror)
+            else:
+                try:
+                    os.unlink(fullname)
+                except OSError:
+                    onerror(os.unlink, fullname, sys.exc_info())
+        try:
+&gt;           os.rmdir(path)
+E           PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\cleanup-fix\\20261015-workspace-lock\\temp\\pytest-of-pc\\pytest-1\\test_real_windows_directory_ha0\\temp\\m2-w78-cleanup-test\\seed'
+
+C:\Program Files\Python311\Lib\shutil.py:624: PermissionError
+
+During handling of the above exception, another exception occurred:
+
+tmp_path = WindowsPath('D:/Project/CAPSTONES/M2_week_7_8/results/cleanup-fix/20261015-workspace-lock/temp/pytest-of-pc/pytest-1/test_real_windows_directory_ha0')
+
+    @pytest.mark.skipif(os.name != 'nt', reason='Real Windows directory sharing handle')
+    def test_real_windows_directory_handle_is_released_before_cleanup_returns(tmp_path):
+        module = api('workspace')
+        root, private = owned_tree(tmp_path)
+        from ctypes import wintypes
+        kernel = ctypes.WinDLL('kernel32', use_last_error=True)
+        kernel.CreateFileW.argtypes = [wintypes.LPCWSTR, wintypes.DWORD, wintypes.DWORD,
+                                       ctypes.c_void_p, wintypes.DWORD, wintypes.DWORD, wintypes.HANDLE]
+        kernel.CreateFileW.restype = wintypes.HANDLE
+        kernel.CloseHandle.argtypes = [wintypes.HANDLE]
+        kernel.CloseHandle.restype = wintypes.BOOL
+        # FILE_SHARE_READ | FILE_SHARE_WRITE, deliberately no FILE_SHARE_DELETE.
+        handle = kernel.CreateFileW(str(private / 'seed'), 1, 3, None, 3, 0x02000000, None)
+        assert handle != ctypes.c_void_p(-1).value, ctypes.get_last_error()
+        closed = threading.Event()
+    
+        def release():
+            kernel.CloseHandle(handle)
+            closed.set()
+    
+        timer = threading.Timer(0.25, release)
+        timer.start()
+        try:
+&gt;           module._remove_owned(private, root)
+
+tests\test_workspace_cleanup.py:130: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\vgar_m2_w78\workspace.py:57: in _remove_owned
+    shutil.rmtree(private, onerror=onerror)
+C:\Program Files\Python311\Lib\shutil.py:759: in rmtree
+    return _rmtree_unsafe(path, onerror)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Program Files\Python311\Lib\shutil.py:617: in _rmtree_unsafe
+    _rmtree_unsafe(fullname, onerror)
+C:\Program Files\Python311\Lib\shutil.py:626: in _rmtree_unsafe
+    onerror(os.rmdir, path, sys.exc_info())
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+func = &lt;built-in function rmdir&gt;
+path = 'D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\cleanup-fix\\20261015-workspace-lock\\temp\\pytest-of-pc\\pytest-1\\test_real_windows_directory_ha0\\temp\\m2-w78-cleanup-test\\seed'
+exc = (&lt;class 'PermissionError'&gt;, PermissionError(13, 'The process cannot access the file because it is being used by another process'), &lt;traceback object at 0x000002142F7D2E00&gt;)
+
+    def onerror(func, path, exc):
+        os.chmod(path, stat.S_IWRITE | stat.S_IREAD)
+&gt;       func(path)
+E       PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\cleanup-fix\\20261015-workspace-lock\\temp\\pytest-of-pc\\pytest-1\\test_real_windows_directory_ha0\\temp\\m2-w78-cleanup-test\\seed'
+
+src\vgar_m2_w78\workspace.py:56: PermissionError</failure></testcase></testsuite></testsuites>

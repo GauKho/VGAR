@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="12" time="3.527" timestamp="2026-10-14T15:35:08.337897+07:00" hostname="TMT"><testcase classname="tests.test_patch" name="test_private_apply_preserves_original_and_line_endings[False]" time="0.904"><failure message="AssertionError: assert ('ERROR' == 'PASS'&#10;  &#10;  - PASS&#10;  + ERROR)">tmp_path = WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-512/test_private_apply_preserves_o0')
+crlf = False
+
+    @pytest.mark.parametrize('crlf', [False, True])
+    def test_private_apply_preserves_original_and_line_endings(tmp_path, crlf):
+        source = make_source(tmp_path, crlf)
+        before = (source / 'app.py').read_bytes()
+        module = api('patch')
+        with api('workspace').create_workspace(source, tmp_path / 'temp') as lease:
+            parsed = module.parse_unified_diff(PATCH, module.PatchPolicy(('app.py',), ('tests',)))
+            result = module.apply_patch(lease, parsed, api('executor').NativeExecutor(lease))
+&gt;           assert result.status == 'PASS' and result.changed_files == ['app.py']
+E           AssertionError: assert ('ERROR' == 'PASS'
+E             
+E             - PASS
+E             + ERROR)
+
+tests\test_patch.py:24: AssertionError</failure></testcase><testcase classname="tests.test_patch" name="test_private_apply_preserves_original_and_line_endings[True]" time="0.703" /><testcase classname="tests.test_patch" name="test_bad_second_file_never_partially_applies" time="0.489" /><testcase classname="tests.test_patch" name="test_bad_diff_is_rejected[--- a/../app.py\n+++ b/../app.py\n@@ -1,2 +1,2 @@\n def answer():\n-    return 1\n+    return 2\n]" time="0.001" /><testcase classname="tests.test_patch" name="test_bad_diff_is_rejected[--- a/tests/test_x.py\n+++ b/tests/test_x.py\n@@ -1,2 +1,2 @@\n def answer():\n-    return 1\n+    return 2\n]" time="0.001" /><testcase classname="tests.test_patch" name="test_bad_diff_is_rejected[--- a/app.py\n+++ b/app.py\n@@ -1,99 +1,2 @@\n def answer():\n-    return 1\n+    return 2\n]" time="0.001" /><testcase classname="tests.test_patch" name="test_bad_diff_is_rejected[--- a/app.py\n+++ b/app.py\n@@ -1,2 +1,2 @@\n def answer():\n-    return 1\n]" time="0.000" /><testcase classname="tests.test_patch" name="test_bad_diff_is_rejected[--- a/app.py\n+++ b/app.py\n@@ -1,2 +1,2 @@\n def answer():\n-    return 1\n+    return 2\nplease run it\n]" time="0.000" /><testcase classname="tests.test_patch" name="test_bad_diff_is_rejected[--- a//dev/null\n+++ b//dev/null\n@@ -1,2 +1,2 @@\n def answer():\n-    return 1\n+    return 2\n]" time="0.000" /><testcase classname="tests.test_patch" name="test_multifile_unicode_space_and_no_final_newline" time="0.760"><failure message="AssertionError: assert 'ERROR' == 'PASS'&#10;  &#10;  - PASS&#10;  + ERROR">tmp_path = WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-512/test_multifile_unicode_space_a0')
+
+    def test_multifile_unicode_space_and_no_final_newline(tmp_path):
+        source = make_source(tmp_path)
+        (source / 'tên file.py').write_bytes(b'value = 1')
+        raw = PATCH + '--- a/tên file.py\n+++ b/tên file.py\n@@ -1 +1 @@\n-value = 1\n\\ No newline at end of file\n+value = 2\n\\ No newline at end of file\n'
+        module = api('patch')
+        with api('workspace').create_workspace(source, tmp_path / 'temp') as lease:
+            result = module.apply_patch(lease, module.parse_unified_diff(raw,
+                module.PatchPolicy(('app.py', 'tên file.py'), ('tests',))), api('executor').NativeExecutor(lease))
+&gt;           assert result.status == 'PASS'
+E           AssertionError: assert 'ERROR' == 'PASS'
+E             
+E             - PASS
+E             + ERROR
+
+tests\test_patch.py:58: AssertionError</failure></testcase><testcase classname="tests.test_workspace" name="test_source_git_metadata_unchanged" time="0.551" /><testcase classname="tests.test_workspace" name="test_workspace_rejects_overlap" time="0.007" /></testsuite></testsuites>

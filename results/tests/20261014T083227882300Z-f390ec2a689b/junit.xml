@@ -1,0 +1,718 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="12" skipped="0" tests="12" time="0.288" timestamp="2026-10-14T15:32:28.412895+07:00" hostname="TMT"><testcase classname="tests.test_patch" name="test_private_apply_preserves_original_and_line_endings[False]" time="0.009"><failure message="Failed: Planned M2 API not implemented: patch">module = 'patch'
+
+    def api(module):
+        try:
+&gt;           return importlib.import_module('vgar_m2_w78.' + module)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_bootstrap.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'vgar_m2_w78.patch', package = None
+
+    def import_module(name, package=None):
+        """Import a module.
+    
+        The 'package' argument is required when performing a relative import. It
+        specifies the package to use as the anchor point from which to resolve the
+        relative import to an absolute import.
+    
+        """
+        level = 0
+        if name.startswith('.'):
+            if not package:
+                msg = ("the 'package' argument is required to perform a relative "
+                       "import for {!r}")
+                raise TypeError(msg.format(name))
+            for character in name:
+                if character != '.':
+                    break
+                level += 1
+&gt;       return _bootstrap._gcd_import(name[level:], package, level)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ModuleNotFoundError: No module named 'vgar_m2_w78.patch'
+
+C:\Program Files\Python311\Lib\importlib\__init__.py:126: ModuleNotFoundError
+
+During handling of the above exception, another exception occurred:
+
+tmp_path = WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-511/test_private_apply_preserves_o0')
+crlf = False
+
+    @pytest.mark.parametrize('crlf', [False, True])
+    def test_private_apply_preserves_original_and_line_endings(tmp_path, crlf):
+        source = make_source(tmp_path, crlf)
+        before = (source / 'app.py').read_bytes()
+&gt;       module = api('patch')
+                 ^^^^^^^^^^^^
+
+tests\test_patch.py:20: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+module = 'patch'
+
+    def api(module):
+        try:
+            return importlib.import_module('vgar_m2_w78.' + module)
+        except ModuleNotFoundError:
+&gt;           pytest.fail('Planned M2 API not implemented: ' + module)
+E           Failed: Planned M2 API not implemented: patch
+
+tests\test_bootstrap.py:13: Failed</failure></testcase><testcase classname="tests.test_patch" name="test_private_apply_preserves_original_and_line_endings[True]" time="0.003"><failure message="Failed: Planned M2 API not implemented: patch">module = 'patch'
+
+    def api(module):
+        try:
+&gt;           return importlib.import_module('vgar_m2_w78.' + module)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_bootstrap.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'vgar_m2_w78.patch', package = None
+
+    def import_module(name, package=None):
+        """Import a module.
+    
+        The 'package' argument is required when performing a relative import. It
+        specifies the package to use as the anchor point from which to resolve the
+        relative import to an absolute import.
+    
+        """
+        level = 0
+        if name.startswith('.'):
+            if not package:
+                msg = ("the 'package' argument is required to perform a relative "
+                       "import for {!r}")
+                raise TypeError(msg.format(name))
+            for character in name:
+                if character != '.':
+                    break
+                level += 1
+&gt;       return _bootstrap._gcd_import(name[level:], package, level)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ModuleNotFoundError: No module named 'vgar_m2_w78.patch'
+
+C:\Program Files\Python311\Lib\importlib\__init__.py:126: ModuleNotFoundError
+
+During handling of the above exception, another exception occurred:
+
+tmp_path = WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-511/test_private_apply_preserves_o1')
+crlf = True
+
+    @pytest.mark.parametrize('crlf', [False, True])
+    def test_private_apply_preserves_original_and_line_endings(tmp_path, crlf):
+        source = make_source(tmp_path, crlf)
+        before = (source / 'app.py').read_bytes()
+&gt;       module = api('patch')
+                 ^^^^^^^^^^^^
+
+tests\test_patch.py:20: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+module = 'patch'
+
+    def api(module):
+        try:
+            return importlib.import_module('vgar_m2_w78.' + module)
+        except ModuleNotFoundError:
+&gt;           pytest.fail('Planned M2 API not implemented: ' + module)
+E           Failed: Planned M2 API not implemented: patch
+
+tests\test_bootstrap.py:13: Failed</failure></testcase><testcase classname="tests.test_patch" name="test_bad_second_file_never_partially_applies" time="0.003"><failure message="Failed: Planned M2 API not implemented: patch">module = 'patch'
+
+    def api(module):
+        try:
+&gt;           return importlib.import_module('vgar_m2_w78.' + module)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_bootstrap.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'vgar_m2_w78.patch', package = None
+
+    def import_module(name, package=None):
+        """Import a module.
+    
+        The 'package' argument is required when performing a relative import. It
+        specifies the package to use as the anchor point from which to resolve the
+        relative import to an absolute import.
+    
+        """
+        level = 0
+        if name.startswith('.'):
+            if not package:
+                msg = ("the 'package' argument is required to perform a relative "
+                       "import for {!r}")
+                raise TypeError(msg.format(name))
+            for character in name:
+                if character != '.':
+                    break
+                level += 1
+&gt;       return _bootstrap._gcd_import(name[level:], package, level)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ModuleNotFoundError: No module named 'vgar_m2_w78.patch'
+
+C:\Program Files\Python311\Lib\importlib\__init__.py:126: ModuleNotFoundError
+
+During handling of the above exception, another exception occurred:
+
+tmp_path = WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-511/test_bad_second_file_never_par0')
+
+    def test_bad_second_file_never_partially_applies(tmp_path):
+        source = make_source(tmp_path)
+        (source / 'other.py').write_bytes(b'value = 1\n')
+        raw = PATCH + '\n--- a/other.py\n+++ b/other.py\n@@ -1 +1 @@\n-value = 99\n+value = 2\n'
+&gt;       module = api('patch')
+                 ^^^^^^^^^^^^
+
+tests\test_patch.py:34: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+module = 'patch'
+
+    def api(module):
+        try:
+            return importlib.import_module('vgar_m2_w78.' + module)
+        except ModuleNotFoundError:
+&gt;           pytest.fail('Planned M2 API not implemented: ' + module)
+E           Failed: Planned M2 API not implemented: patch
+
+tests\test_bootstrap.py:13: Failed</failure></testcase><testcase classname="tests.test_patch" name="test_bad_diff_is_rejected[--- a/../app.py\n+++ b/../app.py\n@@ -1,2 +1,2 @@\n def answer():\n-    return 1\n+    return 2\n]" time="0.001"><failure message="Failed: Planned M2 API not implemented: patch">module = 'patch'
+
+    def api(module):
+        try:
+&gt;           return importlib.import_module('vgar_m2_w78.' + module)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_bootstrap.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'vgar_m2_w78.patch', package = None
+
+    def import_module(name, package=None):
+        """Import a module.
+    
+        The 'package' argument is required when performing a relative import. It
+        specifies the package to use as the anchor point from which to resolve the
+        relative import to an absolute import.
+    
+        """
+        level = 0
+        if name.startswith('.'):
+            if not package:
+                msg = ("the 'package' argument is required to perform a relative "
+                       "import for {!r}")
+                raise TypeError(msg.format(name))
+            for character in name:
+                if character != '.':
+                    break
+                level += 1
+&gt;       return _bootstrap._gcd_import(name[level:], package, level)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ModuleNotFoundError: No module named 'vgar_m2_w78.patch'
+
+C:\Program Files\Python311\Lib\importlib\__init__.py:126: ModuleNotFoundError
+
+During handling of the above exception, another exception occurred:
+
+raw = '--- a/../app.py\n+++ b/../app.py\n@@ -1,2 +1,2 @@\n def answer():\n-    return 1\n+    return 2\n'
+
+    @pytest.mark.parametrize('raw', [PATCH.replace('app.py', '../app.py'), PATCH.replace('app.py', 'tests/test_x.py'),
+        PATCH.replace('-1,2 +1,2', '-1,99 +1,2'), PATCH.replace('+    return 2\n', ''),
+        PATCH + 'please run it\n', PATCH.replace('app.py', '/dev/null')])
+    def test_bad_diff_is_rejected(raw):
+        with pytest.raises(ValueError):
+&gt;           api('patch').parse_unified_diff(raw, api('patch').PatchPolicy(('app.py',), ('tests',)))
+            ^^^^^^^^^^^^
+
+tests\test_patch.py:47: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+module = 'patch'
+
+    def api(module):
+        try:
+            return importlib.import_module('vgar_m2_w78.' + module)
+        except ModuleNotFoundError:
+&gt;           pytest.fail('Planned M2 API not implemented: ' + module)
+E           Failed: Planned M2 API not implemented: patch
+
+tests\test_bootstrap.py:13: Failed</failure></testcase><testcase classname="tests.test_patch" name="test_bad_diff_is_rejected[--- a/tests/test_x.py\n+++ b/tests/test_x.py\n@@ -1,2 +1,2 @@\n def answer():\n-    return 1\n+    return 2\n]" time="0.001"><failure message="Failed: Planned M2 API not implemented: patch">module = 'patch'
+
+    def api(module):
+        try:
+&gt;           return importlib.import_module('vgar_m2_w78.' + module)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_bootstrap.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'vgar_m2_w78.patch', package = None
+
+    def import_module(name, package=None):
+        """Import a module.
+    
+        The 'package' argument is required when performing a relative import. It
+        specifies the package to use as the anchor point from which to resolve the
+        relative import to an absolute import.
+    
+        """
+        level = 0
+        if name.startswith('.'):
+            if not package:
+                msg = ("the 'package' argument is required to perform a relative "
+                       "import for {!r}")
+                raise TypeError(msg.format(name))
+            for character in name:
+                if character != '.':
+                    break
+                level += 1
+&gt;       return _bootstrap._gcd_import(name[level:], package, level)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ModuleNotFoundError: No module named 'vgar_m2_w78.patch'
+
+C:\Program Files\Python311\Lib\importlib\__init__.py:126: ModuleNotFoundError
+
+During handling of the above exception, another exception occurred:
+
+raw = '--- a/tests/test_x.py\n+++ b/tests/test_x.py\n@@ -1,2 +1,2 @@\n def answer():\n-    return 1\n+    return 2\n'
+
+    @pytest.mark.parametrize('raw', [PATCH.replace('app.py', '../app.py'), PATCH.replace('app.py', 'tests/test_x.py'),
+        PATCH.replace('-1,2 +1,2', '-1,99 +1,2'), PATCH.replace('+    return 2\n', ''),
+        PATCH + 'please run it\n', PATCH.replace('app.py', '/dev/null')])
+    def test_bad_diff_is_rejected(raw):
+        with pytest.raises(ValueError):
+&gt;           api('patch').parse_unified_diff(raw, api('patch').PatchPolicy(('app.py',), ('tests',)))
+            ^^^^^^^^^^^^
+
+tests\test_patch.py:47: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+module = 'patch'
+
+    def api(module):
+        try:
+            return importlib.import_module('vgar_m2_w78.' + module)
+        except ModuleNotFoundError:
+&gt;           pytest.fail('Planned M2 API not implemented: ' + module)
+E           Failed: Planned M2 API not implemented: patch
+
+tests\test_bootstrap.py:13: Failed</failure></testcase><testcase classname="tests.test_patch" name="test_bad_diff_is_rejected[--- a/app.py\n+++ b/app.py\n@@ -1,99 +1,2 @@\n def answer():\n-    return 1\n+    return 2\n]" time="0.001"><failure message="Failed: Planned M2 API not implemented: patch">module = 'patch'
+
+    def api(module):
+        try:
+&gt;           return importlib.import_module('vgar_m2_w78.' + module)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_bootstrap.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'vgar_m2_w78.patch', package = None
+
+    def import_module(name, package=None):
+        """Import a module.
+    
+        The 'package' argument is required when performing a relative import. It
+        specifies the package to use as the anchor point from which to resolve the
+        relative import to an absolute import.
+    
+        """
+        level = 0
+        if name.startswith('.'):
+            if not package:
+                msg = ("the 'package' argument is required to perform a relative "
+                       "import for {!r}")
+                raise TypeError(msg.format(name))
+            for character in name:
+                if character != '.':
+                    break
+                level += 1
+&gt;       return _bootstrap._gcd_import(name[level:], package, level)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ModuleNotFoundError: No module named 'vgar_m2_w78.patch'
+
+C:\Program Files\Python311\Lib\importlib\__init__.py:126: ModuleNotFoundError
+
+During handling of the above exception, another exception occurred:
+
+raw = '--- a/app.py\n+++ b/app.py\n@@ -1,99 +1,2 @@\n def answer():\n-    return 1\n+    return 2\n'
+
+    @pytest.mark.parametrize('raw', [PATCH.replace('app.py', '../app.py'), PATCH.replace('app.py', 'tests/test_x.py'),
+        PATCH.replace('-1,2 +1,2', '-1,99 +1,2'), PATCH.replace('+    return 2\n', ''),
+        PATCH + 'please run it\n', PATCH.replace('app.py', '/dev/null')])
+    def test_bad_diff_is_rejected(raw):
+        with pytest.raises(ValueError):
+&gt;           api('patch').parse_unified_diff(raw, api('patch').PatchPolicy(('app.py',), ('tests',)))
+            ^^^^^^^^^^^^
+
+tests\test_patch.py:47: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+module = 'patch'
+
+    def api(module):
+        try:
+            return importlib.import_module('vgar_m2_w78.' + module)
+        except ModuleNotFoundError:
+&gt;           pytest.fail('Planned M2 API not implemented: ' + module)
+E           Failed: Planned M2 API not implemented: patch
+
+tests\test_bootstrap.py:13: Failed</failure></testcase><testcase classname="tests.test_patch" name="test_bad_diff_is_rejected[--- a/app.py\n+++ b/app.py\n@@ -1,2 +1,2 @@\n def answer():\n-    return 1\n]" time="0.001"><failure message="Failed: Planned M2 API not implemented: patch">module = 'patch'
+
+    def api(module):
+        try:
+&gt;           return importlib.import_module('vgar_m2_w78.' + module)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_bootstrap.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'vgar_m2_w78.patch', package = None
+
+    def import_module(name, package=None):
+        """Import a module.
+    
+        The 'package' argument is required when performing a relative import. It
+        specifies the package to use as the anchor point from which to resolve the
+        relative import to an absolute import.
+    
+        """
+        level = 0
+        if name.startswith('.'):
+            if not package:
+                msg = ("the 'package' argument is required to perform a relative "
+                       "import for {!r}")
+                raise TypeError(msg.format(name))
+            for character in name:
+                if character != '.':
+                    break
+                level += 1
+&gt;       return _bootstrap._gcd_import(name[level:], package, level)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ModuleNotFoundError: No module named 'vgar_m2_w78.patch'
+
+C:\Program Files\Python311\Lib\importlib\__init__.py:126: ModuleNotFoundError
+
+During handling of the above exception, another exception occurred:
+
+raw = '--- a/app.py\n+++ b/app.py\n@@ -1,2 +1,2 @@\n def answer():\n-    return 1\n'
+
+    @pytest.mark.parametrize('raw', [PATCH.replace('app.py', '../app.py'), PATCH.replace('app.py', 'tests/test_x.py'),
+        PATCH.replace('-1,2 +1,2', '-1,99 +1,2'), PATCH.replace('+    return 2\n', ''),
+        PATCH + 'please run it\n', PATCH.replace('app.py', '/dev/null')])
+    def test_bad_diff_is_rejected(raw):
+        with pytest.raises(ValueError):
+&gt;           api('patch').parse_unified_diff(raw, api('patch').PatchPolicy(('app.py',), ('tests',)))
+            ^^^^^^^^^^^^
+
+tests\test_patch.py:47: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+module = 'patch'
+
+    def api(module):
+        try:
+            return importlib.import_module('vgar_m2_w78.' + module)
+        except ModuleNotFoundError:
+&gt;           pytest.fail('Planned M2 API not implemented: ' + module)
+E           Failed: Planned M2 API not implemented: patch
+
+tests\test_bootstrap.py:13: Failed</failure></testcase><testcase classname="tests.test_patch" name="test_bad_diff_is_rejected[--- a/app.py\n+++ b/app.py\n@@ -1,2 +1,2 @@\n def answer():\n-    return 1\n+    return 2\nplease run it\n]" time="0.001"><failure message="Failed: Planned M2 API not implemented: patch">module = 'patch'
+
+    def api(module):
+        try:
+&gt;           return importlib.import_module('vgar_m2_w78.' + module)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_bootstrap.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'vgar_m2_w78.patch', package = None
+
+    def import_module(name, package=None):
+        """Import a module.
+    
+        The 'package' argument is required when performing a relative import. It
+        specifies the package to use as the anchor point from which to resolve the
+        relative import to an absolute import.
+    
+        """
+        level = 0
+        if name.startswith('.'):
+            if not package:
+                msg = ("the 'package' argument is required to perform a relative "
+                       "import for {!r}")
+                raise TypeError(msg.format(name))
+            for character in name:
+                if character != '.':
+                    break
+                level += 1
+&gt;       return _bootstrap._gcd_import(name[level:], package, level)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ModuleNotFoundError: No module named 'vgar_m2_w78.patch'
+
+C:\Program Files\Python311\Lib\importlib\__init__.py:126: ModuleNotFoundError
+
+During handling of the above exception, another exception occurred:
+
+raw = '--- a/app.py\n+++ b/app.py\n@@ -1,2 +1,2 @@\n def answer():\n-    return 1\n+    return 2\nplease run it\n'
+
+    @pytest.mark.parametrize('raw', [PATCH.replace('app.py', '../app.py'), PATCH.replace('app.py', 'tests/test_x.py'),
+        PATCH.replace('-1,2 +1,2', '-1,99 +1,2'), PATCH.replace('+    return 2\n', ''),
+        PATCH + 'please run it\n', PATCH.replace('app.py', '/dev/null')])
+    def test_bad_diff_is_rejected(raw):
+        with pytest.raises(ValueError):
+&gt;           api('patch').parse_unified_diff(raw, api('patch').PatchPolicy(('app.py',), ('tests',)))
+            ^^^^^^^^^^^^
+
+tests\test_patch.py:47: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+module = 'patch'
+
+    def api(module):
+        try:
+            return importlib.import_module('vgar_m2_w78.' + module)
+        except ModuleNotFoundError:
+&gt;           pytest.fail('Planned M2 API not implemented: ' + module)
+E           Failed: Planned M2 API not implemented: patch
+
+tests\test_bootstrap.py:13: Failed</failure></testcase><testcase classname="tests.test_patch" name="test_bad_diff_is_rejected[--- a//dev/null\n+++ b//dev/null\n@@ -1,2 +1,2 @@\n def answer():\n-    return 1\n+    return 2\n]" time="0.001"><failure message="Failed: Planned M2 API not implemented: patch">module = 'patch'
+
+    def api(module):
+        try:
+&gt;           return importlib.import_module('vgar_m2_w78.' + module)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_bootstrap.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'vgar_m2_w78.patch', package = None
+
+    def import_module(name, package=None):
+        """Import a module.
+    
+        The 'package' argument is required when performing a relative import. It
+        specifies the package to use as the anchor point from which to resolve the
+        relative import to an absolute import.
+    
+        """
+        level = 0
+        if name.startswith('.'):
+            if not package:
+                msg = ("the 'package' argument is required to perform a relative "
+                       "import for {!r}")
+                raise TypeError(msg.format(name))
+            for character in name:
+                if character != '.':
+                    break
+                level += 1
+&gt;       return _bootstrap._gcd_import(name[level:], package, level)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ModuleNotFoundError: No module named 'vgar_m2_w78.patch'
+
+C:\Program Files\Python311\Lib\importlib\__init__.py:126: ModuleNotFoundError
+
+During handling of the above exception, another exception occurred:
+
+raw = '--- a//dev/null\n+++ b//dev/null\n@@ -1,2 +1,2 @@\n def answer():\n-    return 1\n+    return 2\n'
+
+    @pytest.mark.parametrize('raw', [PATCH.replace('app.py', '../app.py'), PATCH.replace('app.py', 'tests/test_x.py'),
+        PATCH.replace('-1,2 +1,2', '-1,99 +1,2'), PATCH.replace('+    return 2\n', ''),
+        PATCH + 'please run it\n', PATCH.replace('app.py', '/dev/null')])
+    def test_bad_diff_is_rejected(raw):
+        with pytest.raises(ValueError):
+&gt;           api('patch').parse_unified_diff(raw, api('patch').PatchPolicy(('app.py',), ('tests',)))
+            ^^^^^^^^^^^^
+
+tests\test_patch.py:47: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+module = 'patch'
+
+    def api(module):
+        try:
+            return importlib.import_module('vgar_m2_w78.' + module)
+        except ModuleNotFoundError:
+&gt;           pytest.fail('Planned M2 API not implemented: ' + module)
+E           Failed: Planned M2 API not implemented: patch
+
+tests\test_bootstrap.py:13: Failed</failure></testcase><testcase classname="tests.test_patch" name="test_multifile_unicode_space_and_no_final_newline" time="0.004"><failure message="Failed: Planned M2 API not implemented: patch">module = 'patch'
+
+    def api(module):
+        try:
+&gt;           return importlib.import_module('vgar_m2_w78.' + module)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_bootstrap.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'vgar_m2_w78.patch', package = None
+
+    def import_module(name, package=None):
+        """Import a module.
+    
+        The 'package' argument is required when performing a relative import. It
+        specifies the package to use as the anchor point from which to resolve the
+        relative import to an absolute import.
+    
+        """
+        level = 0
+        if name.startswith('.'):
+            if not package:
+                msg = ("the 'package' argument is required to perform a relative "
+                       "import for {!r}")
+                raise TypeError(msg.format(name))
+            for character in name:
+                if character != '.':
+                    break
+                level += 1
+&gt;       return _bootstrap._gcd_import(name[level:], package, level)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ModuleNotFoundError: No module named 'vgar_m2_w78.patch'
+
+C:\Program Files\Python311\Lib\importlib\__init__.py:126: ModuleNotFoundError
+
+During handling of the above exception, another exception occurred:
+
+tmp_path = WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-511/test_multifile_unicode_space_a0')
+
+    def test_multifile_unicode_space_and_no_final_newline(tmp_path):
+        source = make_source(tmp_path)
+        (source / 'tên file.py').write_bytes(b'value = 1')
+        raw = PATCH + '--- a/tên file.py\n+++ b/tên file.py\n@@ -1 +1 @@\n-value = 1\n\\ No newline at end of file\n+value = 2\n\\ No newline at end of file\n'
+&gt;       module = api('patch')
+                 ^^^^^^^^^^^^
+
+tests\test_patch.py:54: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+module = 'patch'
+
+    def api(module):
+        try:
+            return importlib.import_module('vgar_m2_w78.' + module)
+        except ModuleNotFoundError:
+&gt;           pytest.fail('Planned M2 API not implemented: ' + module)
+E           Failed: Planned M2 API not implemented: patch
+
+tests\test_bootstrap.py:13: Failed</failure></testcase><testcase classname="tests.test_workspace" name="test_source_git_metadata_unchanged" time="0.071"><failure message="Failed: Planned M2 API not implemented: workspace">module = 'workspace'
+
+    def api(module):
+        try:
+&gt;           return importlib.import_module('vgar_m2_w78.' + module)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_bootstrap.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'vgar_m2_w78.workspace', package = None
+
+    def import_module(name, package=None):
+        """Import a module.
+    
+        The 'package' argument is required when performing a relative import. It
+        specifies the package to use as the anchor point from which to resolve the
+        relative import to an absolute import.
+    
+        """
+        level = 0
+        if name.startswith('.'):
+            if not package:
+                msg = ("the 'package' argument is required to perform a relative "
+                       "import for {!r}")
+                raise TypeError(msg.format(name))
+            for character in name:
+                if character != '.':
+                    break
+                level += 1
+&gt;       return _bootstrap._gcd_import(name[level:], package, level)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ModuleNotFoundError: No module named 'vgar_m2_w78.workspace'
+
+C:\Program Files\Python311\Lib\importlib\__init__.py:126: ModuleNotFoundError
+
+During handling of the above exception, another exception occurred:
+
+tmp_path = WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-511/test_source_git_metadata_uncha0')
+
+    def test_source_git_metadata_unchanged(tmp_path):
+        source = tmp_path / 'source'
+        source.mkdir()
+        subprocess.run(['git', 'init', '--template=', str(source)], check=True, capture_output=True)
+        (source / 'app.py').write_bytes(b'value = 1\n')
+        before = {p.relative_to(source).as_posix(): p.read_bytes() for p in (source / '.git').rglob('*') if p.is_file()}
+&gt;       with api('workspace').create_workspace(source, tmp_path / 'temp') as lease:
+             ^^^^^^^^^^^^^^^^
+
+tests\test_workspace.py:14: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+module = 'workspace'
+
+    def api(module):
+        try:
+            return importlib.import_module('vgar_m2_w78.' + module)
+        except ModuleNotFoundError:
+&gt;           pytest.fail('Planned M2 API not implemented: ' + module)
+E           Failed: Planned M2 API not implemented: workspace
+
+tests\test_bootstrap.py:13: Failed</failure></testcase><testcase classname="tests.test_workspace" name="test_workspace_rejects_overlap" time="0.002"><failure message="Failed: Planned M2 API not implemented: workspace">module = 'workspace'
+
+    def api(module):
+        try:
+&gt;           return importlib.import_module('vgar_m2_w78.' + module)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_bootstrap.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'vgar_m2_w78.workspace', package = None
+
+    def import_module(name, package=None):
+        """Import a module.
+    
+        The 'package' argument is required when performing a relative import. It
+        specifies the package to use as the anchor point from which to resolve the
+        relative import to an absolute import.
+    
+        """
+        level = 0
+        if name.startswith('.'):
+            if not package:
+                msg = ("the 'package' argument is required to perform a relative "
+                       "import for {!r}")
+                raise TypeError(msg.format(name))
+            for character in name:
+                if character != '.':
+                    break
+                level += 1
+&gt;       return _bootstrap._gcd_import(name[level:], package, level)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ModuleNotFoundError: No module named 'vgar_m2_w78.workspace'
+
+C:\Program Files\Python311\Lib\importlib\__init__.py:126: ModuleNotFoundError
+
+During handling of the above exception, another exception occurred:
+
+tmp_path = WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-511/test_workspace_rejects_overlap0')
+
+    def test_workspace_rejects_overlap(tmp_path):
+        (tmp_path / 'app.py').write_bytes(b'value = 1\n')
+        with pytest.raises(ValueError):
+&gt;           api('workspace').create_workspace(tmp_path, tmp_path / 'temp')
+            ^^^^^^^^^^^^^^^^
+
+tests\test_workspace.py:23: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+module = 'workspace'
+
+    def api(module):
+        try:
+            return importlib.import_module('vgar_m2_w78.' + module)
+        except ModuleNotFoundError:
+&gt;           pytest.fail('Planned M2 API not implemented: ' + module)
+E           Failed: Planned M2 API not implemented: workspace
+
+tests\test_bootstrap.py:13: Failed</failure></testcase></testsuite></testsuites>

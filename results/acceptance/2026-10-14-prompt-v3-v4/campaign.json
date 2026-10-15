@@ -1,0 +1,90 @@
+{
+  "campaign_id": "2026-10-14-prompt-v3-v4",
+  "status": "FAIL",
+  "complete": true,
+  "started_utc": "2026-10-14T14:36:10.560380+00:00",
+  "ended_utc": "2026-10-14T14:41:56.119002+00:00",
+  "max_attempts": 6,
+  "max_failures": 2,
+  "frozen_sha256": "sha256:c2f0a876f6924377aa444e58368aeba11a15b8c077db37ebb3f2c1142740f7e8",
+  "attempts": [
+    {
+      "version": "m2-w78-v3",
+      "task_id": "single_file_login",
+      "number": 1,
+      "attempt_id": "attempt-01",
+      "status": "PASS",
+      "complete": true,
+      "started_utc": "2026-10-14T14:36:10.763739+00:00",
+      "ended_utc": "2026-10-14T14:37:24.377113+00:00",
+      "owner": {
+        "pid": 10612,
+        "birth": "134364621691491968"
+      },
+      "run_root": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\acceptance\\2026-10-14-prompt-v3-v4\\attempts\\01",
+      "record": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\acceptance\\2026-10-14-prompt-v3-v4\\attempts\\01\\20261014T143611380216Z-4cfb6e98732e\\run_record.json",
+      "gate_errors": [],
+      "observed_status": "PASS",
+      "canonical_sha256": "sha256:d7b30e85fb8d41129c3ba4e8022c9048f211c04ae7f1bb50bc80d79b31c4687c"
+    },
+    {
+      "version": "m2-w78-v3",
+      "task_id": "multi_file_invoice",
+      "number": 2,
+      "attempt_id": "attempt-02",
+      "status": "FAIL",
+      "complete": true,
+      "started_utc": "2026-10-14T14:37:24.462772+00:00",
+      "ended_utc": "2026-10-14T14:38:44.218466+00:00",
+      "owner": {
+        "pid": 10612,
+        "birth": "134364621691491968"
+      },
+      "run_root": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\acceptance\\2026-10-14-prompt-v3-v4\\attempts\\02",
+      "record": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\acceptance\\2026-10-14-prompt-v3-v4\\attempts\\02\\20261014T143724950165Z-28712948b7fb\\run_record.json",
+      "gate_errors": [],
+      "observed_status": "FAIL",
+      "canonical_sha256": "sha256:3be39e444e0ba4dc9ffc016b328e75d0e1ad3243665ed2df4bced32bd2da689c"
+    },
+    {
+      "version": "m2-w78-v4",
+      "task_id": "single_file_login",
+      "number": 3,
+      "attempt_id": "attempt-03",
+      "status": "PASS",
+      "complete": true,
+      "started_utc": "2026-10-14T14:38:44.299939+00:00",
+      "ended_utc": "2026-10-14T14:39:47.723408+00:00",
+      "owner": {
+        "pid": 10612,
+        "birth": "134364621691491968"
+      },
+      "run_root": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\acceptance\\2026-10-14-prompt-v3-v4\\attempts\\03",
+      "record": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\acceptance\\2026-10-14-prompt-v3-v4\\attempts\\03\\20261014T143844748488Z-ca62ce11f2d2\\run_record.json",
+      "gate_errors": [],
+      "observed_status": "PASS",
+      "canonical_sha256": "sha256:07078681f32cd92454634d26680c780a168ecdd0009f1db1176021936d2484a1"
+    },
+    {
+      "version": "m2-w78-v4",
+      "task_id": "multi_file_invoice",
+      "number": 4,
+      "attempt_id": "attempt-04",
+      "status": "FAIL",
+      "complete": true,
+      "started_utc": "2026-10-14T14:39:47.797422+00:00",
+      "ended_utc": "2026-10-14T14:41:56.119002+00:00",
+      "owner": {
+        "pid": 10612,
+        "birth": "134364621691491968"
+      },
+      "run_root": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\acceptance\\2026-10-14-prompt-v3-v4\\attempts\\04",
+      "record": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\acceptance\\2026-10-14-prompt-v3-v4\\attempts\\04\\20261014T143948282795Z-dc2133321dfe\\run_record.json",
+      "gate_errors": [],
+      "observed_status": "FAIL",
+      "canonical_sha256": "sha256:998c8151f7aa343a6e9c7ec46b6f76d680b07d29ff895a10dd8fdfe2971275ac"
+    }
+  ],
+  "final_version": null,
+  "reason": "FAILURE_LIMIT"
+}

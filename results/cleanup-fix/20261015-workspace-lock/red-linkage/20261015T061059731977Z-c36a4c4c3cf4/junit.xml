@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="2" time="15.262" timestamp="2026-10-15T13:11:00.283457+07:00" hostname="TMT"><testcase classname="tests.test_workspace_cleanup" name="test_pipeline_links_cleanup_evidence_and_never_passes_a_locked_workspace[False]" time="6.775"><failure message="KeyError: 'cleanup'">m1_case = (RepairTask(task_id='single_file_login', issue_text='auth.py login accepts whitespace-only names; trim the name before...', 'pytest.ini'), trusted_fixture=True), &lt;vgar.graph.token_counter.LocalTokenizerCounter object at 0x0000022AC6982710&gt;)
+tmp_path = WindowsPath('D:/Project/CAPSTONES/M2_week_7_8/results/cleanup-fix/20261015-workspace-lock/temp/pytest-of-pc/pytest-3/test_pipeline_links_cleanup_ev0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000022AC7453B50&gt;
+blocked = False
+
+    @pytest.mark.parametrize('blocked', [False, True])
+    def test_pipeline_links_cleanup_evidence_and_never_passes_a_locked_workspace(m1_case, tmp_path, monkeypatch, blocked):
+        task, counter = m1_case
+        original = os.rmdir
+    
+        def rmdir(path, *args, **kwargs):
+            if blocked and Path(path).name == 'seed' and Path(path).parent.name.startswith('m2-w78-'):
+                raise windows_error(32, path)
+            return original(path, *args, **kwargs)
+    
+        monkeypatch.setattr(os, 'rmdir', rmdir)
+        run = api('pipeline').run_repair(task, api('contracts').RepairPolicy(),
+            api('generator').FakeGenerator(FIX), None, tmp_path / 'runs',
+            m1_counter=counter, tokenizer=CharacterChatTokenizer(), temp_root=tmp_path / 'temp')
+        record = json.loads(run.path.read_text(encoding='utf-8'))
+        assert record['status'] == ('ERROR' if blocked else 'PASS')
+        assert record['original_source_unchanged'] is True
+&gt;       cleanup = record['stages']['cleanup']
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'cleanup'
+
+tests\test_workspace_cleanup.py:126: KeyError</failure></testcase><testcase classname="tests.test_workspace_cleanup" name="test_pipeline_links_cleanup_evidence_and_never_passes_a_locked_workspace[True]" time="8.373"><failure message="KeyError: 'cleanup'">m1_case = (RepairTask(task_id='single_file_login', issue_text='auth.py login accepts whitespace-only names; trim the name before...', 'pytest.ini'), trusted_fixture=True), &lt;vgar.graph.token_counter.LocalTokenizerCounter object at 0x0000022AC74B4810&gt;)
+tmp_path = WindowsPath('D:/Project/CAPSTONES/M2_week_7_8/results/cleanup-fix/20261015-workspace-lock/temp/pytest-of-pc/pytest-3/test_pipeline_links_cleanup_ev1')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000022AC509C090&gt;
+blocked = True
+
+    @pytest.mark.parametrize('blocked', [False, True])
+    def test_pipeline_links_cleanup_evidence_and_never_passes_a_locked_workspace(m1_case, tmp_path, monkeypatch, blocked):
+        task, counter = m1_case
+        original = os.rmdir
+    
+        def rmdir(path, *args, **kwargs):
+            if blocked and Path(path).name == 'seed' and Path(path).parent.name.startswith('m2-w78-'):
+                raise windows_error(32, path)
+            return original(path, *args, **kwargs)
+    
+        monkeypatch.setattr(os, 'rmdir', rmdir)
+        run = api('pipeline').run_repair(task, api('contracts').RepairPolicy(),
+            api('generator').FakeGenerator(FIX), None, tmp_path / 'runs',
+            m1_counter=counter, tokenizer=CharacterChatTokenizer(), temp_root=tmp_path / 'temp')
+        record = json.loads(run.path.read_text(encoding='utf-8'))
+        assert record['status'] == ('ERROR' if blocked else 'PASS')
+        assert record['original_source_unchanged'] is True
+&gt;       cleanup = record['stages']['cleanup']
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'cleanup'
+
+tests\test_workspace_cleanup.py:126: KeyError</failure></testcase></testsuite></testsuites>

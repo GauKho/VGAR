@@ -1,0 +1,163 @@
+{
+  "run_id": "20261015T061553537404Z-dd9eb5b9b5bb",
+  "kind": "cleanup-preservation-audit",
+  "status": "PASS",
+  "complete": true,
+  "started_utc": "2026-10-15T06:15:53.537404+00:00",
+  "ended_utc": "2026-10-15T06:15:54.039394+00:00",
+  "duration_ms": 500,
+  "interpreter": "D:\\Project\\CAPSTONES\\M2_week_7_8\\.venv\\Scripts\\python.exe",
+  "python": "3.11.6 (tags/v3.11.6:8b6ee5b, Oct  2 2023, 14:57:12) [MSC v.1935 64 bit (AMD64)]",
+  "stages": {
+    "scoped_preedit_copies": {
+      "status": "PASS",
+      "changed": [
+        "PROGRESS.md",
+        "README.md",
+        "docs/LOG_DIAGNOSTICS_VA_CACH_DOC_LOI.md",
+        "src/vgar_m2_w78/pipeline.py",
+        "src/vgar_m2_w78/workspace.py"
+      ],
+      "copies": {
+        "PROGRESS.md": {
+          "before": "sha256:bebbfb72995ffeb1bee663d71645297198333f74be50b24b1a550806b40c33e8",
+          "after": "sha256:ef44cb4c7206b72df546934d6506f1ea288d27c2582febef7b22fbd9e470241e"
+        },
+        "README.md": {
+          "before": "sha256:1a2d39dc9759e4b9d715be4f24e78ba5397578bcd946785b3c0b8752e4bd6887",
+          "after": "sha256:e84165e1bdc55af0e2bd9fae2b078af6c393564c133de5a83137ad706844115f"
+        },
+        "docs/LOG_DIAGNOSTICS_VA_CACH_DOC_LOI.md": {
+          "before": "sha256:a75f351fe18f2cf8aa888391837ecb6508378fb17cd7dcd422ad9020ea8df566",
+          "after": "sha256:b62c880d2eba7b07a513ca5f421bfb925be3cfb648ae1533c40c0bc66d167ed1"
+        },
+        "scripts/record_tests.py": {
+          "before": "sha256:b2098864c4b848bc0eede79c25f88c43e7c9f21d503ca68404b74f804a164047",
+          "after": "sha256:b2098864c4b848bc0eede79c25f88c43e7c9f21d503ca68404b74f804a164047"
+        },
+        "src/vgar_m2_w78/diagnostics.py": {
+          "before": "sha256:33f289e1d4934eb90d38fc059cc325709ee24c8f645d8e9a4537c70e0f239c06",
+          "after": "sha256:33f289e1d4934eb90d38fc059cc325709ee24c8f645d8e9a4537c70e0f239c06"
+        },
+        "src/vgar_m2_w78/executor.py": {
+          "before": "sha256:ef7e3b630d20e64443946e10d46c092af4c83895f3722f849bd1e20481c2a65b",
+          "after": "sha256:ef7e3b630d20e64443946e10d46c092af4c83895f3722f849bd1e20481c2a65b"
+        },
+        "src/vgar_m2_w78/pipeline.py": {
+          "before": "sha256:d8d49dccc6f26c304dff72fbc388f20746e1bbdf82ad79e977af51b2132973c4",
+          "after": "sha256:34a86e9982ba3e99dfed7d0d9b4ea5b68de13165c817de68aef3916b69cfef64"
+        },
+        "src/vgar_m2_w78/workspace.py": {
+          "before": "sha256:de243af79ba9b21fd6123383b86a8e1236973c3955c0da40ea69d82ca2231be0",
+          "after": "sha256:4f3adf02690d45abb91cef8354b03f701c169de49d8bca22b169d9934d6aa1a3"
+        },
+        "tests/test_workspace.py": {
+          "before": "sha256:404c1f60181eef08b3402cc3a2fa32cb5f49c90004c80ae8158064dc9f6fdfcd",
+          "after": "sha256:404c1f60181eef08b3402cc3a2fa32cb5f49c90004c80ae8158064dc9f6fdfcd"
+        }
+      },
+      "added_files": [
+        "tests/test_workspace_cleanup.py",
+        "docs/CLEANUP_WINDOWS_VA_CACH_KIEM_THU.md"
+      ],
+      "scope_note": "Nine pre-edit copies, not a new Git/whole-repository audit"
+    },
+    "reference_read_only": {
+      "status": "PASS",
+      "reference": {
+        "head": "b8e2461635b81d1ae790445efea5c9757d91700a",
+        "root": "D:\\Project\\CAPSTONES\\VGAR",
+        "hashes": {
+          "src/vgar/__init__.py": "8eb57d207d71671cc7c5de557ebf95dc8f1992fe5b9e615f2aa082db07ae576e",
+          "src/vgar/contracts/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "src/vgar/contracts/context.py": "a76901ab62ea3dbc396a5fccaa427ef1e5b5eadcd41745df98ab004f513bee59",
+          "src/vgar/contracts/consumer.py": "768d5c406488401ed840408135f497a1401a852debcd01b61c7cd41305f365e2",
+          "src/vgar/contracts/handoff.py": "8fcf572ea08d54949aee50648fd54a85ad0895c92a0f02618c471b2c761cdefa",
+          "src/vgar/contracts/prompt_context.py": "9098d2ade4cba006dd2d1d64417c7492d4200a21a4acff678d11165b98ca0ffc",
+          "src/vgar/contracts/repair.py": "144892b901ed3657b2f2784a14efd3e274247c38ca19b08c2521aac8a594d0e5",
+          "src/vgar/contracts/evidence.py": "80f1c7fd72ba9844f9353c43312236838c0d461fa7e58039cf0ca321f27346be",
+          "src/vgar/config/settings.py": "d2dadde8064fd72fa766335ccca5253ffafc61f4129d066c8f57292f103e0e68",
+          "src/vgar/config/__init__.py": "ec3b8d65527db0f97380ed9279ea9c14d4dc5cf64dc21aba5ad949e52849974d",
+          "src/vgar/graph/token_counter.py": "302f9cd69347bef1a15fe54a0d1834f6958c3d62310679b8b46586bd590c3b89",
+          "src/vgar/graph/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "dirty_paths": [
+          "src/vgar/evaluation/retrieval/compare.py",
+          "src/vgar/evaluation/retrieval/scoring.py"
+        ]
+      }
+    },
+    "historical_archive": {
+      "status": "PASS",
+      "archived_files": 86,
+      "historical_files": 76,
+      "current_runtime_changes": [
+        "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\campaign.py",
+        "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\checks.py",
+        "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\cli.py",
+        "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\executor.py",
+        "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\generator_hf.py",
+        "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\hf_backend.py",
+        "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\hf_worker.py",
+        "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\model_worker.py",
+        "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\patch.py",
+        "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\pipeline.py",
+        "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\test_runner.py",
+        "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\verification.py",
+        "D:\\Project\\CAPSTONES\\M2_week_7_8\\src\\vgar_m2_w78\\workspace.py",
+        "D:\\Project\\CAPSTONES\\M2_week_7_8\\scripts\\prepare_inputs.py",
+        "D:\\Project\\CAPSTONES\\M2_week_7_8\\scripts\\qualify_model.py",
+        "D:\\Project\\CAPSTONES\\M2_week_7_8\\scripts\\record_tests.py",
+        "D:\\Project\\CAPSTONES\\M2_week_7_8\\scripts\\run_acceptance.py",
+        "D:\\Project\\CAPSTONES\\M2_week_7_8\\scripts\\run_adaptive_acceptance.py"
+      ],
+      "note": "Historical bytes verified; new code is not claimed to be old runtime"
+    },
+    "no_new_campaign_inference": {
+      "status": "PASS",
+      "attempts": 5,
+      "campaign_status": "FAIL",
+      "reason": "TUNING_QUOTA_EXHAUSTED",
+      "acceptance": "B BLOCKED; C historical V9 PASS; final3 NOT_RUN"
+    },
+    "full_suite": {
+      "status": "PASS",
+      "record": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\cleanup-fix\\20261015-workspace-lock\\full\\20261015T061228986192Z-ccfc40626b7e\\run_record.json",
+      "tests": 183,
+      "duration_ms": 105281,
+      "stdout": "........................................................................ [ 39%]\r\n........................................................................ [ 78%]\r\n.......................................                                  [100%]\r\n- generated xml file: D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\cleanup-fix\\20261015-workspace-lock\\full\\20261015T061228986192Z-ccfc40626b7e\\junit.xml -\r\n183 passed in 104.62s (0:01:44)\r\n"
+    },
+    "ruff": {
+      "argv": [
+        "D:\\Project\\CAPSTONES\\M2_week_7_8\\.venv\\Scripts\\python.exe",
+        "-m",
+        "ruff",
+        "check",
+        "--select",
+        "E9,F",
+        "src",
+        "scripts",
+        "tests"
+      ],
+      "command": "D:\\Project\\CAPSTONES\\M2_week_7_8\\.venv\\Scripts\\python.exe -m ruff check --select E9,F src scripts tests",
+      "cwd": "D:\\Project\\CAPSTONES\\M2_week_7_8",
+      "interpreter": "D:\\Project\\CAPSTONES\\M2_week_7_8\\.venv\\Scripts\\python.exe",
+      "started_utc": "2026-10-15T06:15:53.890773+00:00",
+      "timeout_seconds": 30,
+      "exit_code": 0,
+      "stdout": "All checks passed!\n",
+      "stderr": "",
+      "timed_out": false,
+      "output_truncated": false,
+      "complete": true,
+      "stdout_bytes": 19,
+      "stderr_bytes": 0,
+      "status": "PASS",
+      "ended_utc": "2026-10-15T06:15:54.037413+00:00",
+      "duration_ms": 156
+    }
+  },
+  "mode": "offline",
+  "task_id": "M2-cleanup-fix",
+  "scope": "cleanup fix only; no real repair acceptance claim"
+}

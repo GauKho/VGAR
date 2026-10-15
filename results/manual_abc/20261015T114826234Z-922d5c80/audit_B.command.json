@@ -1,0 +1,15 @@
+{
+    "argv":  [
+                 "D:\\Project\\CAPSTONES\\M2_week_7_8\\.venv\\Scripts\\python.exe",
+                 "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\manual_abc\\20261015T114826234Z-922d5c80\\verification_job.py",
+                 "audit",
+                 "D:\\Project\\CAPSTONES\\M2_week_7_8",
+                 "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\manual_abc\\20261015T114826234Z-922d5c80",
+                 "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\manual_abc\\20261015T114826234Z-922d5c80",
+                 "B"
+             ],
+    "exit_code":  0,
+    "started_utc":  "2026-10-15T11:54:26.2417055Z",
+    "ended_utc":  "2026-10-15T11:54:26.9208651Z",
+    "duration_ms":  669
+}

@@ -1,0 +1,7 @@
+<<<<<<< SEARCH
+def login(value):
+    return bool(value)
+=======
+def login(value):
+    return bool(value.strip())
+>>>>>>> REPLACE

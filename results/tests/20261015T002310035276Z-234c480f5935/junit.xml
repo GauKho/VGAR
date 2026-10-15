@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="3" skipped="0" tests="13" time="0.680" timestamp="2026-10-15T07:23:10.562500+07:00" hostname="TMT"><testcase classname="tests.test_adaptive_cli" name="test_status_missing_campaign_does_not_create_it_or_launch_model" time="0.105"><failure message="AssertionError: C:\Program Files\Python311\python.exe: can't open file 'D:\\Project\\CAPSTONES\\M2_week_7_8\\scripts\\run_adaptive_acceptance.py': [Errno 2] No such file or directory&#10;  &#10;assert 2 == 0&#10; +  where 2 = CompletedProcess(args=['D:\\Project\\CAPSTONES\\M2_week_7_8\\.venv\\Scripts\\python.exe', 'D:\\Project\\CAPSTONES\\M2_...\Project\\\\CAPSTONES\\\\M2_week_7_8\\\\scripts\\\\run_adaptive_acceptance.py': [Errno 2] No such file or directory\n&quot;).returncode">tmp_path = WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-563/test_status_missing_campaign_d0')
+
+    def test_status_missing_campaign_does_not_create_it_or_launch_model(tmp_path):
+        directory = tmp_path / 'missing'
+        result = subprocess.run([sys.executable, str(ROOT / 'scripts/run_adaptive_acceptance.py'),
+            '--status', '--campaign', str(directory)], capture_output=True, text=True, timeout=30)
+&gt;       assert result.returncode == 0, result.stderr
+E       AssertionError: C:\Program Files\Python311\python.exe: can't open file 'D:\\Project\\CAPSTONES\\M2_week_7_8\\scripts\\run_adaptive_acceptance.py': [Errno 2] No such file or directory
+E         
+E       assert 2 == 0
+E        +  where 2 = CompletedProcess(args=['D:\\Project\\CAPSTONES\\M2_week_7_8\\.venv\\Scripts\\python.exe', 'D:\\Project\\CAPSTONES\\M2_...\Project\\\\CAPSTONES\\\\M2_week_7_8\\\\scripts\\\\run_adaptive_acceptance.py': [Errno 2] No such file or directory\n").returncode
+
+tests\test_adaptive_cli.py:16: AssertionError</failure></testcase><testcase classname="tests.test_adaptive_cli" name="test_running_without_explicit_init_does_not_create_campaign" time="0.073" /><testcase classname="tests.test_adaptive_cli" name="test_historical_archive_must_match_original_frozen_code_mapping" time="0.031"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\pc\\AppData\\Local\\Temp\\pytest-of-pc\\pytest-563\\test_historical_archive_must_m0\\current.py'">tmp_path = WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-563/test_historical_archive_must_m0')
+
+    def test_historical_archive_must_match_original_frozen_code_mapping(tmp_path):
+        evidence = api('evidence')
+        old = tmp_path / 'old.py'
+        old.write_bytes(b'old-runtime')
+        frozen = tmp_path / 'frozen_inputs.json'
+        evidence.atomic_json(frozen, dict(files={str(tmp_path / 'current.py'): evidence.digest(b'different-runtime')}))
+        manifest = tmp_path / 'manifest.json'
+        evidence.atomic_json(manifest, dict(files={str(tmp_path / 'current.py'): dict(archive=str(old), sha256=evidence.digest(old.read_bytes()))},
+            historical={str(frozen): evidence.digest(frozen.read_bytes())}, protected_external={}))
+        with pytest.raises(ValueError, match='frozen|Frozen'):
+&gt;           api('adaptive_campaign').audit_archive(manifest)
+
+tests\test_adaptive_cli.py:39: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\vgar_m2_w78\adaptive_campaign.py:78: in audit_archive
+    current_changes = [name for name, entry in data['files'].items() if digest(Path(name).read_bytes()) != entry['sha256']]
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\vgar_m2_w78\adaptive_campaign.py:78: in &lt;listcomp&gt;
+    current_changes = [name for name, entry in data['files'].items() if digest(Path(name).read_bytes()) != entry['sha256']]
+                                                                               ^^^^^^^^^^^^^^^^^^^^^^^
+C:\Program Files\Python311\Lib\pathlib.py:1050: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-563/test_historical_archive_must_m0/current.py')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\pc\\AppData\\Local\\Temp\\pytest-of-pc\\pytest-563\\test_historical_archive_must_m0\\current.py'
+
+C:\Program Files\Python311\Lib\pathlib.py:1044: FileNotFoundError</failure></testcase><testcase classname="tests.test_adaptive_cli" name="test_changed_frozen_runtime_is_not_treated_as_prompt_tuning" time="0.015" /><testcase classname="tests.test_adaptive_campaign" name="test_retry_needs_new_revision_and_clean_final_requires_all_three" time="0.002" /><testcase classname="tests.test_adaptive_campaign" name="test_four_b_failures_move_to_c_with_new_revision_not_fifth_b" time="0.001" /><testcase classname="tests.test_adaptive_campaign" name="test_eleven_slots_are_separate_quotas_and_final_never_adapts" time="0.001" /><testcase classname="tests.test_adaptive_campaign" name="test_runtime_error_and_c_exhaustion_stop_not_prompt_retry" time="0.001" /><testcase classname="tests.test_adaptive_campaign" name="test_revision_reservation_resume_and_terminal_gate_tamper" time="0.049" /><testcase classname="tests.test_adaptive_campaign" name="test_prompt_file_tamper_blocks_resume" time="0.018" /><testcase classname="tests.test_adaptive_campaign" name="test_pending_owner_live_does_not_retry_and_dead_owner_consumes_slot" time="0.029"><failure message="AssertionError: assert 'WAIT_PROMPT' == 'PENDING'&#10;  &#10;  - PENDING&#10;  + WAIT_PROMPT">store = &lt;vgar_m2_w78.adaptive_campaign.AdaptiveCampaignStore object at 0x000002298400F110&gt;
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000002298400FB50&gt;
+
+    def test_pending_owner_live_does_not_retry_and_dead_owner_consumes_slot(store, monkeypatch):
+        module = api('adaptive_campaign')
+        with store.session():
+            store.register(V5, 'Initial approved design', 'Absolute source coordinates')
+            attempt = store.reserve()
+        resumed = module.AdaptiveCampaignStore.open(store.directory)
+        with resumed.session():
+            assert resumed.recover_pending() == 'LIVE'
+&gt;           assert resumed.next_action()['action'] == 'PENDING'
+E           AssertionError: assert 'WAIT_PROMPT' == 'PENDING'
+E             
+E             - PENDING
+E             + WAIT_PROMPT
+
+tests\test_adaptive_campaign.py:125: AssertionError</failure></testcase><testcase classname="tests.test_adaptive_campaign" name="test_concurrent_owner_and_changed_runtime_block" time="0.011" /><testcase classname="tests.test_adaptive_campaign" name="test_failure_requires_fresh_registered_revision_and_feedback_is_same_case" time="0.076" /></testsuite></testsuites>

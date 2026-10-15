@@ -1,0 +1,66 @@
+{
+  "run_id": "20261015T013135278926Z-d37f02c1f3d9",
+  "kind": "pytest",
+  "status": "FAIL",
+  "complete": true,
+  "started_utc": "2026-10-15T01:31:35.278926+00:00",
+  "ended_utc": "2026-10-15T01:31:40.677925+00:00",
+  "duration_ms": 5406,
+  "interpreter": "D:\\Project\\CAPSTONES\\M2_week_7_8\\.venv\\Scripts\\python.exe",
+  "python": "3.11.6 (tags/v3.11.6:8b6ee5b, Oct  2 2023, 14:57:12) [MSC v.1935 64 bit (AMD64)]",
+  "stages": {
+    "pytest": {
+      "argv": [
+        "D:\\Project\\CAPSTONES\\M2_week_7_8\\.venv\\Scripts\\python.exe",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "--junitxml=D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\tests\\20261015T013135278926Z-d37f02c1f3d9\\junit.xml",
+        "tests/test_diagnostic_logging.py",
+        "tests/test_generation_diagnostics.py"
+      ],
+      "command": "D:\\Project\\CAPSTONES\\M2_week_7_8\\.venv\\Scripts\\python.exe -m pytest -q -p no:cacheprovider --junitxml=D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\tests\\20261015T013135278926Z-d37f02c1f3d9\\junit.xml tests/test_diagnostic_logging.py tests/test_generation_diagnostics.py",
+      "cwd": "D:\\Project\\CAPSTONES\\M2_week_7_8",
+      "interpreter": "D:\\Project\\CAPSTONES\\M2_week_7_8\\.venv\\Scripts\\python.exe",
+      "started_utc": "2026-10-15T01:31:35.394966+00:00",
+      "timeout_seconds": 120.0,
+      "exit_code": 1,
+      "stdout": ".........FFF.....F                                                       [100%]\r\n================================== FAILURES ===================================\r\n___________ test_worker_error_response_keeps_its_original_traceback ___________\r\n\r\ntmp_path = WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-587/test_worker_error_response_kee0')\r\n\r\n    def test_worker_error_response_keeps_its_original_traceback(tmp_path):\r\n        response = tmp_path/'response.json'\r\n        code = (\"import json, traceback; from pathlib import Path\\n\"\r\n                \"try:\\n    raise RuntimeError('worker exploded')\\n\"\r\n                \"except RuntimeError:\\n    \" +\r\n                f\"Path({str(response)!r}).write_text(json.dumps(dict(status='ERROR', reason='worker exploded', \"\r\n                \"traceback=traceback.format_exc())), encoding='utf-8')\\n\"\r\n                \"raise SystemExit(2)\")\r\n        result = api('model_worker').invoke_worker((sys.executable, '-c', code), tmp_path, response, 10)\r\n        assert result['status'] == 'ERROR' and result['command']['exit_code'] == 2\r\n>       assert 'RuntimeError: worker exploded' in result['response']['traceback']\r\n                                                  ^^^^^^^^^^^^^^^^^^\r\nE       KeyError: 'response'\r\n\r\ntests\\test_diagnostic_logging.py:96: KeyError\r\n____________________ test_syntax_failure_retains_traceback ____________________\r\n\r\ntmp_path = WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-587/test_syntax_failure_retains_tr0')\r\n\r\n    def test_syntax_failure_retains_traceback(tmp_path):\r\n        from types import SimpleNamespace\r\n        (tmp_path/'app.py').write_text('def broken(:', encoding='utf-8')\r\n        lease = SimpleNamespace(path=tmp_path, private=tmp_path)\r\n        executor = SimpleNamespace(run=lambda *args: dict(status='PASS'))\r\n        result = api('checks').run_static_checks(lease, ('app.py',), api('contracts').RepairPolicy(), executor)\r\n        assert result['syntax']['status'] == 'FAIL'\r\n>       assert 'SyntaxError' in result['syntax']['exception']['traceback']\r\n                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\nE       KeyError: 'exception'\r\n\r\ntests\\test_diagnostic_logging.py:106: KeyError\r\n_______________ test_missing_pytest_artifact_retains_traceback ________________\r\n\r\ntmp_path = WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-587/test_missing_pytest_artifact_r0')\r\n\r\n    def test_missing_pytest_artifact_retains_traceback(tmp_path):\r\n        from types import SimpleNamespace\r\n        lease = SimpleNamespace(path=tmp_path, private=tmp_path)\r\n        executor = SimpleNamespace(run=lambda *args: dict(status='ERROR', complete=False, exit_code=2))\r\n        result = api('test_runner').collect_tests(lease, ('tests',), executor)\r\n        assert result['status'] == 'ERROR' and result['reason'] == 'VERIFICATION_INCOMPLETE'\r\n>       assert 'FileNotFoundError' in result['exception']['traceback']\r\n                                      ^^^^^^^^^^^^^^^^^^^\r\nE       KeyError: 'exception'\r\n\r\ntests\\test_diagnostic_logging.py:115: KeyError\r\n______ test_host_keeps_partial_generation_diagnostics_when_worker_fails _______\r\n\r\ntmp_path = WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-587/test_host_keeps_partial_genera0')\r\nmonkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000124808D1E10>\r\n\r\n    def test_host_keeps_partial_generation_diagnostics_when_worker_fails(tmp_path, monkeypatch):\r\n        module = api('generator_hf')\r\n        profile = api('contracts').ModelProfile(snapshot=tmp_path/api('hf_backend').REVISION,\r\n            interpreter=sys.executable, tokenizer_manifest=tmp_path/'manifest.json', approved_prototype=True)\r\n        def failed_worker(command, folder, response, timeout):\r\n            api('evidence').atomic_json(folder/'generation_diagnostics.json',\r\n                dict(status='ERROR', effective_observed=True, effective_generation_config=dict(do_sample=False)))\r\n            return dict(status='ERROR', reason='decoder crashed')\r\n        monkeypatch.setattr(module, 'invoke_worker', failed_worker)\r\n        generator = module.HFGenerator(profile, tmp_path/'workers', api('contracts').RepairPolicy())\r\n        result = generator.request('generate', [], generator.policy, 3, 0)\r\n        assert result['status'] == 'ERROR'\r\n>       assert result['generation_diagnostics']['effective_generation_config']['do_sample'] is False\r\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\nE       KeyError: 'generation_diagnostics'\r\n\r\ntests\\test_generation_diagnostics.py:172: KeyError\r\n- generated xml file: D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\tests\\20261015T013135278926Z-d37f02c1f3d9\\junit.xml -\r\n=========================== short test summary info ===========================\r\nFAILED tests/test_diagnostic_logging.py::test_worker_error_response_keeps_its_original_traceback\r\nFAILED tests/test_diagnostic_logging.py::test_syntax_failure_retains_traceback\r\nFAILED tests/test_diagnostic_logging.py::test_missing_pytest_artifact_retains_traceback\r\nFAILED tests/test_generation_diagnostics.py::test_host_keeps_partial_generation_diagnostics_when_worker_fails\r\n4 failed, 14 passed in 4.68s\r\n",
+      "stderr": "",
+      "timed_out": false,
+      "output_truncated": false,
+      "complete": true,
+      "stdout_bytes": 5178,
+      "stderr_bytes": 0,
+      "status": "FAIL",
+      "ended_utc": "2026-10-15T01:31:40.674819+00:00",
+      "duration_ms": 5281
+    }
+  },
+  "mode": "offline",
+  "task_id": "M2-tests",
+  "reference": {
+    "head": "b8e2461635b81d1ae790445efea5c9757d91700a",
+    "root": "D:\\Project\\CAPSTONES\\VGAR",
+    "hashes": {
+      "src/vgar/__init__.py": "8eb57d207d71671cc7c5de557ebf95dc8f1992fe5b9e615f2aa082db07ae576e",
+      "src/vgar/contracts/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "src/vgar/contracts/context.py": "a76901ab62ea3dbc396a5fccaa427ef1e5b5eadcd41745df98ab004f513bee59",
+      "src/vgar/contracts/consumer.py": "768d5c406488401ed840408135f497a1401a852debcd01b61c7cd41305f365e2",
+      "src/vgar/contracts/handoff.py": "8fcf572ea08d54949aee50648fd54a85ad0895c92a0f02618c471b2c761cdefa",
+      "src/vgar/contracts/prompt_context.py": "9098d2ade4cba006dd2d1d64417c7492d4200a21a4acff678d11165b98ca0ffc",
+      "src/vgar/contracts/repair.py": "144892b901ed3657b2f2784a14efd3e274247c38ca19b08c2521aac8a594d0e5",
+      "src/vgar/contracts/evidence.py": "80f1c7fd72ba9844f9353c43312236838c0d461fa7e58039cf0ca321f27346be",
+      "src/vgar/config/settings.py": "d2dadde8064fd72fa766335ccca5253ffafc61f4129d066c8f57292f103e0e68",
+      "src/vgar/config/__init__.py": "ec3b8d65527db0f97380ed9279ea9c14d4dc5cf64dc21aba5ad949e52849974d",
+      "src/vgar/graph/token_counter.py": "302f9cd69347bef1a15fe54a0d1834f6958c3d62310679b8b46586bd590c3b89",
+      "src/vgar/graph/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "dirty_paths": [
+      "src/vgar/evaluation/retrieval/compare.py",
+      "src/vgar/evaluation/retrieval/scoring.py"
+    ]
+  }
+}

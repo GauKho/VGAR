@@ -1,0 +1,15 @@
+{
+    "argv":  [
+                 "D:\\Project\\CAPSTONES\\M2_week_7_8\\.venv\\Scripts\\python.exe",
+                 "scripts\\record_tests.py",
+                 "tests",
+                 "--timeout-seconds",
+                 "240",
+                 "--output-root",
+                 "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\delivery-tests\\pytest-7-test_failed_selftests_print_re0\\self_tests"
+             ],
+    "exit_code":  4,
+    "started_utc":  "2026-10-15T09:04:23.0751140Z",
+    "ended_utc":  "2026-10-15T09:04:23.9060730Z",
+    "duration_ms":  829
+}

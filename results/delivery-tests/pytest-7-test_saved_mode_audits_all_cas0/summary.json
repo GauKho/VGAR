@@ -1,0 +1,69 @@
+{
+    "status":  "PASS",
+    "complete":  true,
+    "mode":  "ReadSaved",
+    "skip_self_tests":  false,
+    "started_utc":  "2026-10-15T09:04:00.1028138Z",
+    "ended_utc":  "2026-10-15T09:04:02.4811346Z",
+    "cases":  [
+                  {
+                      "status":  "PASS",
+                      "gate_errors":  [
+
+                                      ],
+                      "observed_status":  "PASS",
+                      "exception_diagnostics":  [
+
+                                                ],
+                      "record":  "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\final_acceptance\\2026-10-15-v11-r002\\A\\20261015T072711985584Z-dc47a96417ee\\run_record.json",
+                      "canonical_sha256":  "sha256:31a34c16e9cac7a8fe0a9b62d4a2a904308280c3291d9aa2f5f514445549604e",
+                      "task_id":  "single_file_login",
+                      "letter":  "A",
+                      "runtime_revision":  "r002",
+                      "prompt_version":  "m2-w78-v11",
+                      "input_tokens":  1299,
+                      "output_tokens":  43,
+                      "duration_ms":  68828
+                  },
+                  {
+                      "status":  "PASS",
+                      "gate_errors":  [
+
+                                      ],
+                      "observed_status":  "PASS",
+                      "exception_diagnostics":  [
+
+                                                ],
+                      "record":  "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\final_acceptance\\2026-10-15-v11-r002\\B\\20261015T072938917449Z-a0075c35e2ee\\run_record.json",
+                      "canonical_sha256":  "sha256:24d9dccba4989a16336986685e7c03ca3d4b4eba08772acfed8659ffa6f80b47",
+                      "task_id":  "multi_file_invoice",
+                      "letter":  "B",
+                      "runtime_revision":  "r002",
+                      "prompt_version":  "m2-w78-v11",
+                      "input_tokens":  1769,
+                      "output_tokens":  157,
+                      "duration_ms":  157282
+                  },
+                  {
+                      "status":  "PASS",
+                      "gate_errors":  [
+
+                                      ],
+                      "observed_status":  "PASS",
+                      "exception_diagnostics":  [
+
+                                                ],
+                      "record":  "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\final_acceptance\\2026-10-15-v11-r002\\C\\20261015T073254806383Z-68a9a593f8d6\\run_record.json",
+                      "canonical_sha256":  "sha256:258cf19b463be43c372ad2dfe7b0beb28a6781cfc6b3ade70aa42dac116eeba2",
+                      "task_id":  "missing_links",
+                      "letter":  "C",
+                      "runtime_revision":  "r002",
+                      "prompt_version":  "m2-w78-v11",
+                      "input_tokens":  1169,
+                      "output_tokens":  43,
+                      "duration_ms":  64031
+                  }
+              ],
+    "output_root":  "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\delivery-tests\\pytest-7-test_saved_mode_audits_all_cas0",
+    "reason":  null
+}

@@ -1,0 +1,80 @@
+{
+  "run_id": "20261015T071410556116Z-462218813a53",
+  "kind": "b-closeout-audit",
+  "status": "PASS",
+  "complete": true,
+  "started_utc": "2026-10-15T07:14:10.556116+00:00",
+  "ended_utc": "2026-10-15T07:14:10.935124+00:00",
+  "duration_ms": 375,
+  "interpreter": "D:\\Project\\CAPSTONES\\M2_week_7_8\\.venv\\Scripts\\python.exe",
+  "python": "3.11.6 (tags/v3.11.6:8b6ee5b, Oct  2 2023, 14:57:12) [MSC v.1935 64 bit (AMD64)]",
+  "stages": {
+    "canonical_and_b_audit": {
+      "status": "PASS",
+      "canonical": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\b_repair\\2026-10-15-evidence-driven-b\\attempts\\02\\20261015T070916546459Z-29b6c2d320ff\\run_record.json",
+      "assessment": {
+        "status": "PASS",
+        "gate_errors": [],
+        "observed_status": "PASS",
+        "exception_diagnostics": [],
+        "record": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\b_repair\\2026-10-15-evidence-driven-b\\attempts\\02\\20261015T070916546459Z-29b6c2d320ff\\run_record.json",
+        "canonical_sha256": "sha256:56af0a0e48b5dee0e35eba345a08862a245fe269eea6daf5f98aeeecefc51e07"
+      },
+      "additional_gate_errors": [],
+      "attempts": 2,
+      "elapsed_seconds": 355.066107,
+      "host_corrected_raw": false
+    },
+    "scope": {
+      "status": "PASS",
+      "baseline_files": 119,
+      "modified_existing": [
+        "PROGRESS.md",
+        "scripts/record_tests.py",
+        "src/vgar_m2_w78/context_presentation.py",
+        "src/vgar_m2_w78/generator_hf.py",
+        "src/vgar_m2_w78/hf_backend.py",
+        "src/vgar_m2_w78/pipeline.py",
+        "src/vgar_m2_w78/prompt.py"
+      ],
+      "frozen_protected_files": 228,
+      "claims_excluded": [
+        "A/C acceptance",
+        "independent repeat",
+        "SWE-bench",
+        "full weight attestation"
+      ]
+    },
+    "ruff": {
+      "argv": [
+        "D:\\Project\\CAPSTONES\\M2_week_7_8\\.venv\\Scripts\\python.exe",
+        "-m",
+        "ruff",
+        "check",
+        "--select",
+        "E9,F",
+        "src",
+        "scripts",
+        "tests"
+      ],
+      "command": "D:\\Project\\CAPSTONES\\M2_week_7_8\\.venv\\Scripts\\python.exe -m ruff check --select E9,F src scripts tests",
+      "cwd": "D:\\Project\\CAPSTONES\\M2_week_7_8",
+      "interpreter": "D:\\Project\\CAPSTONES\\M2_week_7_8\\.venv\\Scripts\\python.exe",
+      "started_utc": "2026-10-15T07:14:10.720845+00:00",
+      "timeout_seconds": 30,
+      "exit_code": 0,
+      "stdout": "All checks passed!\n",
+      "stderr": "",
+      "timed_out": false,
+      "output_truncated": false,
+      "complete": true,
+      "stdout_bytes": 19,
+      "stderr_bytes": 0,
+      "status": "PASS",
+      "ended_utc": "2026-10-15T07:14:10.933123+00:00",
+      "duration_ms": 203
+    }
+  },
+  "mode": "offline",
+  "reason": null
+}

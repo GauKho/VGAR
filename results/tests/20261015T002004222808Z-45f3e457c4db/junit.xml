@@ -1,0 +1,527 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="5" failures="4" skipped="0" tests="9" time="0.403" timestamp="2026-10-15T07:20:04.924713+07:00" hostname="TMT"><testcase classname="tests.test_adaptive_campaign" name="test_retry_needs_new_revision_and_clean_final_requires_all_three" time="0.002"><failure message="Failed: Planned M2 API not implemented: adaptive_campaign">module = 'adaptive_campaign'
+
+    def api(module):
+        try:
+&gt;           return importlib.import_module('vgar_m2_w78.' + module)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_bootstrap.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'vgar_m2_w78.adaptive_campaign', package = None
+
+    def import_module(name, package=None):
+        """Import a module.
+    
+        The 'package' argument is required when performing a relative import. It
+        specifies the package to use as the anchor point from which to resolve the
+        relative import to an absolute import.
+    
+        """
+        level = 0
+        if name.startswith('.'):
+            if not package:
+                msg = ("the 'package' argument is required to perform a relative "
+                       "import for {!r}")
+                raise TypeError(msg.format(name))
+            for character in name:
+                if character != '.':
+                    break
+                level += 1
+&gt;       return _bootstrap._gcd_import(name[level:], package, level)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ModuleNotFoundError: No module named 'vgar_m2_w78.adaptive_campaign'
+
+C:\Program Files\Python311\Lib\importlib\__init__.py:126: ModuleNotFoundError
+
+During handling of the above exception, another exception occurred:
+
+    def test_retry_needs_new_revision_and_clean_final_requires_all_three():
+&gt;       step = api('adaptive_campaign').adaptive_step
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_adaptive_campaign.py:19: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+module = 'adaptive_campaign'
+
+    def api(module):
+        try:
+            return importlib.import_module('vgar_m2_w78.' + module)
+        except ModuleNotFoundError:
+&gt;           pytest.fail('Planned M2 API not implemented: ' + module)
+E           Failed: Planned M2 API not implemented: adaptive_campaign
+
+tests\test_bootstrap.py:13: Failed</failure></testcase><testcase classname="tests.test_adaptive_campaign" name="test_four_b_failures_move_to_c_with_new_revision_not_fifth_b" time="0.001"><failure message="Failed: Planned M2 API not implemented: adaptive_campaign">module = 'adaptive_campaign'
+
+    def api(module):
+        try:
+&gt;           return importlib.import_module('vgar_m2_w78.' + module)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_bootstrap.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'vgar_m2_w78.adaptive_campaign', package = None
+
+    def import_module(name, package=None):
+        """Import a module.
+    
+        The 'package' argument is required when performing a relative import. It
+        specifies the package to use as the anchor point from which to resolve the
+        relative import to an absolute import.
+    
+        """
+        level = 0
+        if name.startswith('.'):
+            if not package:
+                msg = ("the 'package' argument is required to perform a relative "
+                       "import for {!r}")
+                raise TypeError(msg.format(name))
+            for character in name:
+                if character != '.':
+                    break
+                level += 1
+&gt;       return _bootstrap._gcd_import(name[level:], package, level)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ModuleNotFoundError: No module named 'vgar_m2_w78.adaptive_campaign'
+
+C:\Program Files\Python311\Lib\importlib\__init__.py:126: ModuleNotFoundError
+
+During handling of the above exception, another exception occurred:
+
+    def test_four_b_failures_move_to_c_with_new_revision_not_fifth_b():
+&gt;       step = api('adaptive_campaign').adaptive_step
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_adaptive_campaign.py:35: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+module = 'adaptive_campaign'
+
+    def api(module):
+        try:
+            return importlib.import_module('vgar_m2_w78.' + module)
+        except ModuleNotFoundError:
+&gt;           pytest.fail('Planned M2 API not implemented: ' + module)
+E           Failed: Planned M2 API not implemented: adaptive_campaign
+
+tests\test_bootstrap.py:13: Failed</failure></testcase><testcase classname="tests.test_adaptive_campaign" name="test_eleven_slots_are_separate_quotas_and_final_never_adapts" time="0.001"><failure message="Failed: Planned M2 API not implemented: adaptive_campaign">module = 'adaptive_campaign'
+
+    def api(module):
+        try:
+&gt;           return importlib.import_module('vgar_m2_w78.' + module)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_bootstrap.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'vgar_m2_w78.adaptive_campaign', package = None
+
+    def import_module(name, package=None):
+        """Import a module.
+    
+        The 'package' argument is required when performing a relative import. It
+        specifies the package to use as the anchor point from which to resolve the
+        relative import to an absolute import.
+    
+        """
+        level = 0
+        if name.startswith('.'):
+            if not package:
+                msg = ("the 'package' argument is required to perform a relative "
+                       "import for {!r}")
+                raise TypeError(msg.format(name))
+            for character in name:
+                if character != '.':
+                    break
+                level += 1
+&gt;       return _bootstrap._gcd_import(name[level:], package, level)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ModuleNotFoundError: No module named 'vgar_m2_w78.adaptive_campaign'
+
+C:\Program Files\Python311\Lib\importlib\__init__.py:126: ModuleNotFoundError
+
+During handling of the above exception, another exception occurred:
+
+    def test_eleven_slots_are_separate_quotas_and_final_never_adapts():
+&gt;       step = api('adaptive_campaign').adaptive_step
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_adaptive_campaign.py:46: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+module = 'adaptive_campaign'
+
+    def api(module):
+        try:
+            return importlib.import_module('vgar_m2_w78.' + module)
+        except ModuleNotFoundError:
+&gt;           pytest.fail('Planned M2 API not implemented: ' + module)
+E           Failed: Planned M2 API not implemented: adaptive_campaign
+
+tests\test_bootstrap.py:13: Failed</failure></testcase><testcase classname="tests.test_adaptive_campaign" name="test_runtime_error_and_c_exhaustion_stop_not_prompt_retry" time="0.001"><failure message="Failed: Planned M2 API not implemented: adaptive_campaign">module = 'adaptive_campaign'
+
+    def api(module):
+        try:
+&gt;           return importlib.import_module('vgar_m2_w78.' + module)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_bootstrap.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'vgar_m2_w78.adaptive_campaign', package = None
+
+    def import_module(name, package=None):
+        """Import a module.
+    
+        The 'package' argument is required when performing a relative import. It
+        specifies the package to use as the anchor point from which to resolve the
+        relative import to an absolute import.
+    
+        """
+        level = 0
+        if name.startswith('.'):
+            if not package:
+                msg = ("the 'package' argument is required to perform a relative "
+                       "import for {!r}")
+                raise TypeError(msg.format(name))
+            for character in name:
+                if character != '.':
+                    break
+                level += 1
+&gt;       return _bootstrap._gcd_import(name[level:], package, level)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ModuleNotFoundError: No module named 'vgar_m2_w78.adaptive_campaign'
+
+C:\Program Files\Python311\Lib\importlib\__init__.py:126: ModuleNotFoundError
+
+During handling of the above exception, another exception occurred:
+
+    def test_runtime_error_and_c_exhaustion_stop_not_prompt_retry():
+&gt;       step = api('adaptive_campaign').adaptive_step
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_adaptive_campaign.py:58: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+module = 'adaptive_campaign'
+
+    def api(module):
+        try:
+            return importlib.import_module('vgar_m2_w78.' + module)
+        except ModuleNotFoundError:
+&gt;           pytest.fail('Planned M2 API not implemented: ' + module)
+E           Failed: Planned M2 API not implemented: adaptive_campaign
+
+tests\test_bootstrap.py:13: Failed</failure></testcase><testcase classname="tests.test_adaptive_campaign" name="test_revision_reservation_resume_and_terminal_gate_tamper" time="0.045"><error message="failed on setup with &quot;Failed: Planned M2 API not implemented: adaptive_campaign&quot;">module = 'adaptive_campaign'
+
+    def api(module):
+        try:
+&gt;           return importlib.import_module('vgar_m2_w78.' + module)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_bootstrap.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'vgar_m2_w78.adaptive_campaign', package = None
+
+    def import_module(name, package=None):
+        """Import a module.
+    
+        The 'package' argument is required when performing a relative import. It
+        specifies the package to use as the anchor point from which to resolve the
+        relative import to an absolute import.
+    
+        """
+        level = 0
+        if name.startswith('.'):
+            if not package:
+                msg = ("the 'package' argument is required to perform a relative "
+                       "import for {!r}")
+                raise TypeError(msg.format(name))
+            for character in name:
+                if character != '.':
+                    break
+                level += 1
+&gt;       return _bootstrap._gcd_import(name[level:], package, level)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ModuleNotFoundError: No module named 'vgar_m2_w78.adaptive_campaign'
+
+C:\Program Files\Python311\Lib\importlib\__init__.py:126: ModuleNotFoundError
+
+During handling of the above exception, another exception occurred:
+
+tmp_path = WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-561/test_revision_reservation_resu0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001B9B4896C90&gt;
+
+    @pytest.fixture
+    def store(tmp_path, monkeypatch):
+        prompt = api('prompt')
+        monkeypatch.setattr(prompt, 'ROOT', tmp_path)
+        (tmp_path / 'prompts').mkdir()
+        (tmp_path / 'prompts/repair_v5.txt').write_text('Generic instructions, no fixture solution.\n', encoding='utf-8')
+&gt;       return api('adaptive_campaign').AdaptiveCampaignStore.create(tmp_path / 'campaign', {'files': {}})
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_adaptive_campaign.py:70: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+module = 'adaptive_campaign'
+
+    def api(module):
+        try:
+            return importlib.import_module('vgar_m2_w78.' + module)
+        except ModuleNotFoundError:
+&gt;           pytest.fail('Planned M2 API not implemented: ' + module)
+E           Failed: Planned M2 API not implemented: adaptive_campaign
+
+tests\test_bootstrap.py:13: Failed</error></testcase><testcase classname="tests.test_adaptive_campaign" name="test_prompt_file_tamper_blocks_resume" time="0.006"><error message="failed on setup with &quot;Failed: Planned M2 API not implemented: adaptive_campaign&quot;">module = 'adaptive_campaign'
+
+    def api(module):
+        try:
+&gt;           return importlib.import_module('vgar_m2_w78.' + module)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_bootstrap.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'vgar_m2_w78.adaptive_campaign', package = None
+
+    def import_module(name, package=None):
+        """Import a module.
+    
+        The 'package' argument is required when performing a relative import. It
+        specifies the package to use as the anchor point from which to resolve the
+        relative import to an absolute import.
+    
+        """
+        level = 0
+        if name.startswith('.'):
+            if not package:
+                msg = ("the 'package' argument is required to perform a relative "
+                       "import for {!r}")
+                raise TypeError(msg.format(name))
+            for character in name:
+                if character != '.':
+                    break
+                level += 1
+&gt;       return _bootstrap._gcd_import(name[level:], package, level)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ModuleNotFoundError: No module named 'vgar_m2_w78.adaptive_campaign'
+
+C:\Program Files\Python311\Lib\importlib\__init__.py:126: ModuleNotFoundError
+
+During handling of the above exception, another exception occurred:
+
+tmp_path = WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-561/test_prompt_file_tamper_blocks0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001B9B4907010&gt;
+
+    @pytest.fixture
+    def store(tmp_path, monkeypatch):
+        prompt = api('prompt')
+        monkeypatch.setattr(prompt, 'ROOT', tmp_path)
+        (tmp_path / 'prompts').mkdir()
+        (tmp_path / 'prompts/repair_v5.txt').write_text('Generic instructions, no fixture solution.\n', encoding='utf-8')
+&gt;       return api('adaptive_campaign').AdaptiveCampaignStore.create(tmp_path / 'campaign', {'files': {}})
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_adaptive_campaign.py:70: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+module = 'adaptive_campaign'
+
+    def api(module):
+        try:
+            return importlib.import_module('vgar_m2_w78.' + module)
+        except ModuleNotFoundError:
+&gt;           pytest.fail('Planned M2 API not implemented: ' + module)
+E           Failed: Planned M2 API not implemented: adaptive_campaign
+
+tests\test_bootstrap.py:13: Failed</error></testcase><testcase classname="tests.test_adaptive_campaign" name="test_pending_owner_live_does_not_retry_and_dead_owner_consumes_slot" time="0.005"><error message="failed on setup with &quot;Failed: Planned M2 API not implemented: adaptive_campaign&quot;">module = 'adaptive_campaign'
+
+    def api(module):
+        try:
+&gt;           return importlib.import_module('vgar_m2_w78.' + module)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_bootstrap.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'vgar_m2_w78.adaptive_campaign', package = None
+
+    def import_module(name, package=None):
+        """Import a module.
+    
+        The 'package' argument is required when performing a relative import. It
+        specifies the package to use as the anchor point from which to resolve the
+        relative import to an absolute import.
+    
+        """
+        level = 0
+        if name.startswith('.'):
+            if not package:
+                msg = ("the 'package' argument is required to perform a relative "
+                       "import for {!r}")
+                raise TypeError(msg.format(name))
+            for character in name:
+                if character != '.':
+                    break
+                level += 1
+&gt;       return _bootstrap._gcd_import(name[level:], package, level)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ModuleNotFoundError: No module named 'vgar_m2_w78.adaptive_campaign'
+
+C:\Program Files\Python311\Lib\importlib\__init__.py:126: ModuleNotFoundError
+
+During handling of the above exception, another exception occurred:
+
+tmp_path = WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-561/test_pending_owner_live_does_n0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001B9B487EE50&gt;
+
+    @pytest.fixture
+    def store(tmp_path, monkeypatch):
+        prompt = api('prompt')
+        monkeypatch.setattr(prompt, 'ROOT', tmp_path)
+        (tmp_path / 'prompts').mkdir()
+        (tmp_path / 'prompts/repair_v5.txt').write_text('Generic instructions, no fixture solution.\n', encoding='utf-8')
+&gt;       return api('adaptive_campaign').AdaptiveCampaignStore.create(tmp_path / 'campaign', {'files': {}})
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_adaptive_campaign.py:70: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+module = 'adaptive_campaign'
+
+    def api(module):
+        try:
+            return importlib.import_module('vgar_m2_w78.' + module)
+        except ModuleNotFoundError:
+&gt;           pytest.fail('Planned M2 API not implemented: ' + module)
+E           Failed: Planned M2 API not implemented: adaptive_campaign
+
+tests\test_bootstrap.py:13: Failed</error></testcase><testcase classname="tests.test_adaptive_campaign" name="test_concurrent_owner_and_changed_runtime_block" time="0.004"><error message="failed on setup with &quot;Failed: Planned M2 API not implemented: adaptive_campaign&quot;">module = 'adaptive_campaign'
+
+    def api(module):
+        try:
+&gt;           return importlib.import_module('vgar_m2_w78.' + module)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_bootstrap.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'vgar_m2_w78.adaptive_campaign', package = None
+
+    def import_module(name, package=None):
+        """Import a module.
+    
+        The 'package' argument is required when performing a relative import. It
+        specifies the package to use as the anchor point from which to resolve the
+        relative import to an absolute import.
+    
+        """
+        level = 0
+        if name.startswith('.'):
+            if not package:
+                msg = ("the 'package' argument is required to perform a relative "
+                       "import for {!r}")
+                raise TypeError(msg.format(name))
+            for character in name:
+                if character != '.':
+                    break
+                level += 1
+&gt;       return _bootstrap._gcd_import(name[level:], package, level)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ModuleNotFoundError: No module named 'vgar_m2_w78.adaptive_campaign'
+
+C:\Program Files\Python311\Lib\importlib\__init__.py:126: ModuleNotFoundError
+
+During handling of the above exception, another exception occurred:
+
+tmp_path = WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-561/test_concurrent_owner_and_chan0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001B9B4861290&gt;
+
+    @pytest.fixture
+    def store(tmp_path, monkeypatch):
+        prompt = api('prompt')
+        monkeypatch.setattr(prompt, 'ROOT', tmp_path)
+        (tmp_path / 'prompts').mkdir()
+        (tmp_path / 'prompts/repair_v5.txt').write_text('Generic instructions, no fixture solution.\n', encoding='utf-8')
+&gt;       return api('adaptive_campaign').AdaptiveCampaignStore.create(tmp_path / 'campaign', {'files': {}})
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_adaptive_campaign.py:70: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+module = 'adaptive_campaign'
+
+    def api(module):
+        try:
+            return importlib.import_module('vgar_m2_w78.' + module)
+        except ModuleNotFoundError:
+&gt;           pytest.fail('Planned M2 API not implemented: ' + module)
+E           Failed: Planned M2 API not implemented: adaptive_campaign
+
+tests\test_bootstrap.py:13: Failed</error></testcase><testcase classname="tests.test_adaptive_campaign" name="test_failure_requires_fresh_registered_revision_and_feedback_is_same_case" time="0.004"><error message="failed on setup with &quot;Failed: Planned M2 API not implemented: adaptive_campaign&quot;">module = 'adaptive_campaign'
+
+    def api(module):
+        try:
+&gt;           return importlib.import_module('vgar_m2_w78.' + module)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_bootstrap.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'vgar_m2_w78.adaptive_campaign', package = None
+
+    def import_module(name, package=None):
+        """Import a module.
+    
+        The 'package' argument is required when performing a relative import. It
+        specifies the package to use as the anchor point from which to resolve the
+        relative import to an absolute import.
+    
+        """
+        level = 0
+        if name.startswith('.'):
+            if not package:
+                msg = ("the 'package' argument is required to perform a relative "
+                       "import for {!r}")
+                raise TypeError(msg.format(name))
+            for character in name:
+                if character != '.':
+                    break
+                level += 1
+&gt;       return _bootstrap._gcd_import(name[level:], package, level)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ModuleNotFoundError: No module named 'vgar_m2_w78.adaptive_campaign'
+
+C:\Program Files\Python311\Lib\importlib\__init__.py:126: ModuleNotFoundError
+
+During handling of the above exception, another exception occurred:
+
+tmp_path = WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-561/test_failure_requires_fresh_re0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001B9B48EC890&gt;
+
+    @pytest.fixture
+    def store(tmp_path, monkeypatch):
+        prompt = api('prompt')
+        monkeypatch.setattr(prompt, 'ROOT', tmp_path)
+        (tmp_path / 'prompts').mkdir()
+        (tmp_path / 'prompts/repair_v5.txt').write_text('Generic instructions, no fixture solution.\n', encoding='utf-8')
+&gt;       return api('adaptive_campaign').AdaptiveCampaignStore.create(tmp_path / 'campaign', {'files': {}})
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_adaptive_campaign.py:70: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+module = 'adaptive_campaign'
+
+    def api(module):
+        try:
+            return importlib.import_module('vgar_m2_w78.' + module)
+        except ModuleNotFoundError:
+&gt;           pytest.fail('Planned M2 API not implemented: ' + module)
+E           Failed: Planned M2 API not implemented: adaptive_campaign
+
+tests\test_bootstrap.py:13: Failed</error></testcase></testsuite></testsuites>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="2.759" timestamp="2026-10-15T11:34:43.222691+07:00" hostname="TMT"><testcase classname="tests.test_test_runner" name="test_collect_and_baseline_exact_node_ids" time="2.557"><failure message="PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\runtime_tmp\\4a468a5de2d8443dbf664be4a62f1002\\pytest-of-pc\\pytest-3\\test_collect_and_baseline_exac0\\temp\\m2-w78-7f1q9g85\\seed'">path = 'D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\runtime_tmp\\4a468a5de2d8443dbf664be4a62f1002\\pytest-of-pc\\pytest-3\\test_collect_and_baseline_exac0\\temp\\m2-w78-7f1q9g85\\seed'
+onerror = &lt;function _remove_owned.&lt;locals&gt;.onerror at 0x0000027C4EF63D80&gt;
+
+    def _rmtree_unsafe(path, onerror):
+        try:
+            with os.scandir(path) as scandir_it:
+                entries = list(scandir_it)
+        except OSError:
+            onerror(os.scandir, path, sys.exc_info())
+            entries = []
+        for entry in entries:
+            fullname = entry.path
+            if _rmtree_isdir(entry):
+                try:
+                    if entry.is_symlink():
+                        # This can only happen if someone replaces
+                        # a directory with a symlink after the call to
+                        # os.scandir or entry.is_dir above.
+                        raise OSError("Cannot call rmtree on a symbolic link")
+                except OSError:
+                    onerror(os.path.islink, fullname, sys.exc_info())
+                    continue
+                _rmtree_unsafe(fullname, onerror)
+            else:
+                try:
+                    os.unlink(fullname)
+                except OSError:
+                    onerror(os.unlink, fullname, sys.exc_info())
+        try:
+&gt;           os.rmdir(path)
+E           PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\runtime_tmp\\4a468a5de2d8443dbf664be4a62f1002\\pytest-of-pc\\pytest-3\\test_collect_and_baseline_exac0\\temp\\m2-w78-7f1q9g85\\seed'
+
+C:\Program Files\Python311\Lib\shutil.py:624: PermissionError
+
+During handling of the above exception, another exception occurred:
+
+m1_case = (RepairTask(task_id='single_file_login', issue_text='auth.py login accepts whitespace-only names; trim the name before...', 'pytest.ini'), trusted_fixture=True), &lt;vgar.graph.token_counter.LocalTokenizerCounter object at 0x0000027C4CABEA50&gt;)
+tmp_path = WindowsPath('D:/Project/CAPSTONES/M2_week_7_8/results/runtime_tmp/4a468a5de2d8443dbf664be4a62f1002/pytest-of-pc/pytest-3/test_collect_and_baseline_exac0')
+
+    def test_collect_and_baseline_exact_node_ids(m1_case, tmp_path):
+        task, _ = m1_case
+&gt;       with api('workspace').create_workspace(task.source_repo, tmp_path / 'temp') as lease:
+
+tests\test_test_runner.py:6: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\vgar_m2_w78\workspace.py:81: in __exit__
+    _remove_owned(self.private, self.temp_root)
+src\vgar_m2_w78\workspace.py:57: in _remove_owned
+    shutil.rmtree(private, onerror=onerror)
+C:\Program Files\Python311\Lib\shutil.py:759: in rmtree
+    return _rmtree_unsafe(path, onerror)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Program Files\Python311\Lib\shutil.py:617: in _rmtree_unsafe
+    _rmtree_unsafe(fullname, onerror)
+C:\Program Files\Python311\Lib\shutil.py:626: in _rmtree_unsafe
+    onerror(os.rmdir, path, sys.exc_info())
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+func = &lt;built-in function rmdir&gt;
+path = 'D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\runtime_tmp\\4a468a5de2d8443dbf664be4a62f1002\\pytest-of-pc\\pytest-3\\test_collect_and_baseline_exac0\\temp\\m2-w78-7f1q9g85\\seed'
+exc = (&lt;class 'PermissionError'&gt;, PermissionError(13, 'The process cannot access the file because it is being used by another process'), &lt;traceback object at 0x0000027C4F027780&gt;)
+
+    def onerror(func, path, exc):
+        os.chmod(path, stat.S_IWRITE | stat.S_IREAD)
+&gt;       func(path)
+E       PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\runtime_tmp\\4a468a5de2d8443dbf664be4a62f1002\\pytest-of-pc\\pytest-3\\test_collect_and_baseline_exac0\\temp\\m2-w78-7f1q9g85\\seed'
+
+src\vgar_m2_w78\workspace.py:56: PermissionError</failure></testcase></testsuite></testsuites>

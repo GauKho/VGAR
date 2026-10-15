@@ -1,0 +1,243 @@
+{
+  "format": "vgar.test-links.v1",
+  "graph_version": "sha256:1bbff47bc1ee5098b1f3d8f37dc5952faa9127224763e651c66630d838adb93e",
+  "repo_key": "demo/w7-w8/multi_file_invoice",
+  "repository_revision": "fixture-v1",
+  "source_digest": "sha256:4b893c21db66cde5cd6a87d25323c6620fe4b63798035d5da65ac4259b9c4e6c",
+  "test_links": {
+    "invoice.py": [
+      "tests/test_invoice.py::test_invoice_percentage_tax",
+      "tests/test_invoice.py::test_invoice_without_adjustments"
+    ],
+    "pricing.py": [
+      "tests/test_invoice.py::test_discount_percentage",
+      "tests/test_invoice.py::test_invoice_percentage_tax",
+      "tests/test_invoice.py::test_invoice_without_adjustments"
+    ],
+    "vgar:demo/w7-w8/multi_file_invoice:python:file:pricing.py": [
+      "tests/test_invoice.py::test_discount_percentage",
+      "tests/test_invoice.py::test_invoice_percentage_tax",
+      "tests/test_invoice.py::test_invoice_without_adjustments"
+    ],
+    "vgar:demo/w7-w8/multi_file_invoice:python:function:invoice.py:invoice.invoice_total": [
+      "tests/test_invoice.py::test_invoice_percentage_tax",
+      "tests/test_invoice.py::test_invoice_without_adjustments"
+    ],
+    "vgar:demo/w7-w8/multi_file_invoice:python:test:tests/test_invoice.py:tests.test_invoice.test_discount_percentage": [
+      "tests/test_invoice.py::test_discount_percentage"
+    ],
+    "vgar:demo/w7-w8/multi_file_invoice:python:test:tests/test_invoice.py:tests.test_invoice.test_invoice_percentage_tax": [
+      "tests/test_invoice.py::test_invoice_percentage_tax"
+    ],
+    "vgar:demo/w7-w8/multi_file_invoice:python:test:tests/test_invoice.py:tests.test_invoice.test_invoice_without_adjustments": [
+      "tests/test_invoice.py::test_invoice_without_adjustments"
+    ]
+  },
+  "link_details": {
+    "invoice.py": {
+      "candidates": [
+        {
+          "selector": "tests/test_invoice.py::test_invoice_percentage_tax",
+          "node_id": "vgar:demo/w7-w8/multi_file_invoice:python:test:tests/test_invoice.py:tests.test_invoice.test_invoice_percentage_tax",
+          "distance": 0,
+          "confidence": 0.95,
+          "reason": "direct_call",
+          "via": [
+            "vgar:demo/w7-w8/multi_file_invoice:python:function:invoice.py:invoice.invoice_total"
+          ],
+          "coverage_verified": false
+        },
+        {
+          "selector": "tests/test_invoice.py::test_invoice_without_adjustments",
+          "node_id": "vgar:demo/w7-w8/multi_file_invoice:python:test:tests/test_invoice.py:tests.test_invoice.test_invoice_without_adjustments",
+          "distance": 0,
+          "confidence": 0.95,
+          "reason": "direct_call",
+          "via": [
+            "vgar:demo/w7-w8/multi_file_invoice:python:function:invoice.py:invoice.invoice_total"
+          ],
+          "coverage_verified": false
+        }
+      ],
+      "truncated": false,
+      "traversal_limited": false,
+      "fallback_reason": null
+    },
+    "pricing.py": {
+      "candidates": [
+        {
+          "selector": "tests/test_invoice.py::test_discount_percentage",
+          "node_id": "vgar:demo/w7-w8/multi_file_invoice:python:test:tests/test_invoice.py:tests.test_invoice.test_discount_percentage",
+          "distance": 0,
+          "confidence": 0.95,
+          "reason": "direct_call",
+          "via": [
+            "vgar:demo/w7-w8/multi_file_invoice:python:function:pricing.py:pricing.discounted_price"
+          ],
+          "coverage_verified": false
+        },
+        {
+          "selector": "tests/test_invoice.py::test_invoice_percentage_tax",
+          "node_id": "vgar:demo/w7-w8/multi_file_invoice:python:test:tests/test_invoice.py:tests.test_invoice.test_invoice_percentage_tax",
+          "distance": 1,
+          "confidence": 0.95,
+          "reason": "transitive_call",
+          "via": [
+            "vgar:demo/w7-w8/multi_file_invoice:python:function:pricing.py:pricing.discounted_price",
+            "vgar:demo/w7-w8/multi_file_invoice:python:function:invoice.py:invoice.invoice_total"
+          ],
+          "coverage_verified": false
+        },
+        {
+          "selector": "tests/test_invoice.py::test_invoice_without_adjustments",
+          "node_id": "vgar:demo/w7-w8/multi_file_invoice:python:test:tests/test_invoice.py:tests.test_invoice.test_invoice_without_adjustments",
+          "distance": 1,
+          "confidence": 0.95,
+          "reason": "transitive_call",
+          "via": [
+            "vgar:demo/w7-w8/multi_file_invoice:python:function:pricing.py:pricing.discounted_price",
+            "vgar:demo/w7-w8/multi_file_invoice:python:function:invoice.py:invoice.invoice_total"
+          ],
+          "coverage_verified": false
+        }
+      ],
+      "truncated": false,
+      "traversal_limited": false,
+      "fallback_reason": null
+    },
+    "vgar:demo/w7-w8/multi_file_invoice:python:file:pricing.py": {
+      "candidates": [
+        {
+          "selector": "tests/test_invoice.py::test_discount_percentage",
+          "node_id": "vgar:demo/w7-w8/multi_file_invoice:python:test:tests/test_invoice.py:tests.test_invoice.test_discount_percentage",
+          "distance": 0,
+          "confidence": 0.95,
+          "reason": "direct_call",
+          "via": [
+            "vgar:demo/w7-w8/multi_file_invoice:python:function:pricing.py:pricing.discounted_price"
+          ],
+          "coverage_verified": false
+        },
+        {
+          "selector": "tests/test_invoice.py::test_invoice_percentage_tax",
+          "node_id": "vgar:demo/w7-w8/multi_file_invoice:python:test:tests/test_invoice.py:tests.test_invoice.test_invoice_percentage_tax",
+          "distance": 1,
+          "confidence": 0.95,
+          "reason": "transitive_call",
+          "via": [
+            "vgar:demo/w7-w8/multi_file_invoice:python:function:pricing.py:pricing.discounted_price",
+            "vgar:demo/w7-w8/multi_file_invoice:python:function:invoice.py:invoice.invoice_total"
+          ],
+          "coverage_verified": false
+        },
+        {
+          "selector": "tests/test_invoice.py::test_invoice_without_adjustments",
+          "node_id": "vgar:demo/w7-w8/multi_file_invoice:python:test:tests/test_invoice.py:tests.test_invoice.test_invoice_without_adjustments",
+          "distance": 1,
+          "confidence": 0.95,
+          "reason": "transitive_call",
+          "via": [
+            "vgar:demo/w7-w8/multi_file_invoice:python:function:pricing.py:pricing.discounted_price",
+            "vgar:demo/w7-w8/multi_file_invoice:python:function:invoice.py:invoice.invoice_total"
+          ],
+          "coverage_verified": false
+        }
+      ],
+      "truncated": false,
+      "traversal_limited": false,
+      "fallback_reason": null
+    },
+    "vgar:demo/w7-w8/multi_file_invoice:python:function:invoice.py:invoice.invoice_total": {
+      "candidates": [
+        {
+          "selector": "tests/test_invoice.py::test_invoice_percentage_tax",
+          "node_id": "vgar:demo/w7-w8/multi_file_invoice:python:test:tests/test_invoice.py:tests.test_invoice.test_invoice_percentage_tax",
+          "distance": 0,
+          "confidence": 0.95,
+          "reason": "direct_call",
+          "via": [
+            "vgar:demo/w7-w8/multi_file_invoice:python:function:invoice.py:invoice.invoice_total"
+          ],
+          "coverage_verified": false
+        },
+        {
+          "selector": "tests/test_invoice.py::test_invoice_without_adjustments",
+          "node_id": "vgar:demo/w7-w8/multi_file_invoice:python:test:tests/test_invoice.py:tests.test_invoice.test_invoice_without_adjustments",
+          "distance": 0,
+          "confidence": 0.95,
+          "reason": "direct_call",
+          "via": [
+            "vgar:demo/w7-w8/multi_file_invoice:python:function:invoice.py:invoice.invoice_total"
+          ],
+          "coverage_verified": false
+        }
+      ],
+      "truncated": false,
+      "traversal_limited": false,
+      "fallback_reason": null
+    },
+    "vgar:demo/w7-w8/multi_file_invoice:python:test:tests/test_invoice.py:tests.test_invoice.test_discount_percentage": {
+      "candidates": [
+        {
+          "selector": "tests/test_invoice.py::test_discount_percentage",
+          "node_id": "vgar:demo/w7-w8/multi_file_invoice:python:test:tests/test_invoice.py:tests.test_invoice.test_discount_percentage",
+          "distance": 0,
+          "confidence": 1.0,
+          "reason": "test_target",
+          "via": [
+            "vgar:demo/w7-w8/multi_file_invoice:python:test:tests/test_invoice.py:tests.test_invoice.test_discount_percentage"
+          ],
+          "coverage_verified": false
+        }
+      ],
+      "truncated": false,
+      "traversal_limited": false,
+      "fallback_reason": null
+    },
+    "vgar:demo/w7-w8/multi_file_invoice:python:test:tests/test_invoice.py:tests.test_invoice.test_invoice_percentage_tax": {
+      "candidates": [
+        {
+          "selector": "tests/test_invoice.py::test_invoice_percentage_tax",
+          "node_id": "vgar:demo/w7-w8/multi_file_invoice:python:test:tests/test_invoice.py:tests.test_invoice.test_invoice_percentage_tax",
+          "distance": 0,
+          "confidence": 1.0,
+          "reason": "test_target",
+          "via": [
+            "vgar:demo/w7-w8/multi_file_invoice:python:test:tests/test_invoice.py:tests.test_invoice.test_invoice_percentage_tax"
+          ],
+          "coverage_verified": false
+        }
+      ],
+      "truncated": false,
+      "traversal_limited": false,
+      "fallback_reason": null
+    },
+    "vgar:demo/w7-w8/multi_file_invoice:python:test:tests/test_invoice.py:tests.test_invoice.test_invoice_without_adjustments": {
+      "candidates": [
+        {
+          "selector": "tests/test_invoice.py::test_invoice_without_adjustments",
+          "node_id": "vgar:demo/w7-w8/multi_file_invoice:python:test:tests/test_invoice.py:tests.test_invoice.test_invoice_without_adjustments",
+          "distance": 0,
+          "confidence": 1.0,
+          "reason": "test_target",
+          "via": [
+            "vgar:demo/w7-w8/multi_file_invoice:python:test:tests/test_invoice.py:tests.test_invoice.test_invoice_without_adjustments"
+          ],
+          "coverage_verified": false
+        }
+      ],
+      "truncated": false,
+      "traversal_limited": false,
+      "fallback_reason": null
+    }
+  },
+  "failing_selectors": [
+    "tests/test_invoice.py::test_discount_percentage",
+    "tests/test_invoice.py::test_invoice_percentage_tax"
+  ],
+  "fallback_scope": [
+    "tests"
+  ],
+  "coverage_verified": false,
+  "collection_verified": false
+}

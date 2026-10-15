@@ -1,0 +1,80 @@
+{
+  "run_id": "20261014T143844748488Z-ca62ce11f2d2",
+  "task_id": "single_file_login",
+  "source_repo": "D:\\Project\\CAPSTONES\\M2_week_7_8\\examples\\snapshots\\single_file_login",
+  "source_hash_before": "sha256:e845cec6b1093f742bdc481ac9f31e8cd0d008520f50180a738a0fe1be820cb8",
+  "source_hash_after": "sha256:e845cec6b1093f742bdc481ac9f31e8cd0d008520f50180a738a0fe1be820cb8",
+  "worktree_id": "wt-10e8d37280534e43a3c146bfd3d731f6",
+  "verification": {
+    "patch_applied": true,
+    "tests": {
+      "status": "PASS",
+      "command": "D:\\Project\\CAPSTONES\\M2_week_7_8\\.venv\\Scripts\\python.exe -m pytest -q -p no:cacheprovider -p vgar_m2_w78.pytest_plugin --m2-report-json=D:\\Project\\CAPSTONES\\M2_week_7_8\\.workspaces\\m2-w78-sm8d7vp7\\reports\\671779ac43c04831a1ac53bb6b6fbe1e\\nodeids.json --junitxml=D:\\Project\\CAPSTONES\\M2_week_7_8\\.workspaces\\m2-w78-sm8d7vp7\\reports\\671779ac43c04831a1ac53bb6b6fbe1e\\junit.xml tests",
+      "argv": [
+        "D:\\Project\\CAPSTONES\\M2_week_7_8\\.venv\\Scripts\\python.exe",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "-p",
+        "vgar_m2_w78.pytest_plugin",
+        "--m2-report-json=D:\\Project\\CAPSTONES\\M2_week_7_8\\.workspaces\\m2-w78-sm8d7vp7\\reports\\671779ac43c04831a1ac53bb6b6fbe1e\\nodeids.json",
+        "--junitxml=D:\\Project\\CAPSTONES\\M2_week_7_8\\.workspaces\\m2-w78-sm8d7vp7\\reports\\671779ac43c04831a1ac53bb6b6fbe1e\\junit.xml",
+        "tests"
+      ],
+      "exit_code": 0,
+      "duration_ms": 468,
+      "stdout": "..                                                                       [100%]\r\n- generated xml file: D:\\Project\\CAPSTONES\\M2_week_7_8\\.workspaces\\m2-w78-sm8d7vp7\\reports\\671779ac43c04831a1ac53bb6b6fbe1e\\junit.xml -\r\n2 passed in 0.04s\r\n",
+      "stderr": "",
+      "timeout_seconds": 120.0,
+      "cases": [
+        {
+          "name": "tests/test_auth.py::test_login_rejects_whitespace",
+          "status": "PASS",
+          "duration_ms": 0,
+          "detail": "PASS"
+        },
+        {
+          "name": "tests/test_auth.py::test_login_accepts_name",
+          "status": "PASS",
+          "duration_ms": 0,
+          "detail": "PASS"
+        }
+      ],
+      "case_counts": {},
+      "reason": null,
+      "complete": true,
+      "output_truncated": false,
+      "stdout_bytes": 237,
+      "stderr_bytes": 0
+    },
+    "typecheck": {
+      "status": "PASS",
+      "reason": null
+    },
+    "lint": {
+      "status": "PASS",
+      "reason": null
+    },
+    "api_check": {
+      "status": "NOT_RUN",
+      "reason": null
+    },
+    "structural_check": {
+      "status": "NOT_RUN",
+      "reason": null
+    },
+    "reasons": []
+  },
+  "artifact_path": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\acceptance\\2026-10-14-prompt-v3-v4\\attempts\\03\\20261014T143844748488Z-ca62ce11f2d2\\run_record.json",
+  "metadata": {
+    "repair_status": "PASS",
+    "mode": "real",
+    "graph_version": "sha256:e1fe94d21f10f112cd3a5e2a39f88e1fb26a760ee8ea3eaa6d3bac608d1ec371",
+    "canonical_sha256": "sha256:07078681f32cd92454634d26680c780a168ecdd0009f1db1176021936d2484a1",
+    "raw_pytest_status": "PASS",
+    "baseline_ref": "run_record.json#stages/baseline",
+    "selection_ref": "run_record.json#stages/selection"
+  }
+}

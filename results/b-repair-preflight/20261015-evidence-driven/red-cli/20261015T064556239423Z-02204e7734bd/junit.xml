@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="3" skipped="0" tests="3" time="0.197" timestamp="2026-10-15T13:45:56.720485+07:00" hostname="TMT"><testcase classname="tests.test_b_cli" name="test_b_cli_status_is_read_only_and_never_initializes" time="0.062"><failure message="AssertionError: C:\Program Files\Python311\python.exe: can't open file 'D:\\Project\\CAPSTONES\\M2_week_7_8\\scripts\\run_b_experiment.py': [Errno 2] No such file or directory&#10;  &#10;assert 2 == 0&#10; +  where 2 = CompletedProcess(args=['D:\\Project\\CAPSTONES\\M2_week_7_8\\.venv\\Scripts\\python.exe', '-B', 'D:\\Project\\CAPSTONE... 'D:\\\\Project\\\\CAPSTONES\\\\M2_week_7_8\\\\scripts\\\\run_b_experiment.py': [Errno 2] No such file or directory\n&quot;).returncode">tmp_path = WindowsPath('D:/Project/CAPSTONES/M2_week_7_8/results/b-repair-preflight/20261015-evidence-driven/temp/pytest-of-pc/pytest-7/test_b_cli_status_is_read_only0')
+
+    def test_b_cli_status_is_read_only_and_never_initializes(tmp_path):
+        folder = tmp_path/'absent-experiment'
+        result = subprocess.run([sys.executable, '-B', str(ROOT/'scripts/run_b_experiment.py'),
+            '--status', '--campaign', str(folder)], text=True, capture_output=True, timeout=20)
+&gt;       assert result.returncode == 0, result.stderr
+E       AssertionError: C:\Program Files\Python311\python.exe: can't open file 'D:\\Project\\CAPSTONES\\M2_week_7_8\\scripts\\run_b_experiment.py': [Errno 2] No such file or directory
+E         
+E       assert 2 == 0
+E        +  where 2 = CompletedProcess(args=['D:\\Project\\CAPSTONES\\M2_week_7_8\\.venv\\Scripts\\python.exe', '-B', 'D:\\Project\\CAPSTONE... 'D:\\\\Project\\\\CAPSTONES\\\\M2_week_7_8\\\\scripts\\\\run_b_experiment.py': [Errno 2] No such file or directory\n").returncode
+
+tests\test_b_cli.py:15: AssertionError</failure></testcase><testcase classname="tests.test_b_cli" name="test_b_cli_refuses_external_write_before_freezing_or_model" time="0.053"><failure message="assert ('results/b_repair' in &quot;C:\\Program Files\\Python311\\python.exe: can't open file 'D:\\\\Project\\\\CAPSTONES\\\\M2_week_7_8\\\\scripts\\\\run_b_experiment.py': [Errno 2] No such file or directory\n&quot;)&#10; +  where &quot;C:\\Program Files\\Python311\\python.exe: can't open file 'D:\\\\Project\\\\CAPSTONES\\\\M2_week_7_8\\\\scripts\\\\run_b_experiment.py': [Errno 2] No such file or directory\n&quot; = CompletedProcess(args=['D:\\Project\\CAPSTONES\\M2_week_7_8\\.venv\\Scripts\\python.exe', '-B', 'D:\\Project\\CAPSTONE... 'D:\\\\Project\\\\CAPSTONES\\\\M2_week_7_8\\\\scripts\\\\run_b_experiment.py': [Errno 2] No such file or directory\n&quot;).stderr">tmp_path = WindowsPath('D:/Project/CAPSTONES/M2_week_7_8/results/b-repair-preflight/20261015-evidence-driven/temp/pytest-of-pc/pytest-7/test_b_cli_refuses_external_wr0')
+
+    def test_b_cli_refuses_external_write_before_freezing_or_model(tmp_path):
+        folder = tmp_path/'external'
+        result = subprocess.run([sys.executable, '-B', str(ROOT/'scripts/run_b_experiment.py'),
+            '--init', '--campaign', str(folder)], text=True, capture_output=True, timeout=20)
+        assert result.returncode == 2
+&gt;       assert 'results/b_repair' in result.stderr and not folder.exists()
+E       assert ('results/b_repair' in "C:\\Program Files\\Python311\\python.exe: can't open file 'D:\\\\Project\\\\CAPSTONES\\\\M2_week_7_8\\\\scripts\\\\run_b_experiment.py': [Errno 2] No such file or directory\n")
+E        +  where "C:\\Program Files\\Python311\\python.exe: can't open file 'D:\\\\Project\\\\CAPSTONES\\\\M2_week_7_8\\\\scripts\\\\run_b_experiment.py': [Errno 2] No such file or directory\n" = CompletedProcess(args=['D:\\Project\\CAPSTONES\\M2_week_7_8\\.venv\\Scripts\\python.exe', '-B', 'D:\\Project\\CAPSTONE... 'D:\\\\Project\\\\CAPSTONES\\\\M2_week_7_8\\\\scripts\\\\run_b_experiment.py': [Errno 2] No such file or directory\n").stderr
+
+tests\test_b_cli.py:25: AssertionError</failure></testcase><testcase classname="tests.test_b_cli" name="test_freeze_is_b_only_and_preserves_parser_tests_and_history" time="0.002"><failure message="Failed: Planned M2 API not implemented: b_inputs">module = 'b_inputs'
+
+    def api(module):
+        try:
+&gt;           return importlib.import_module('vgar_m2_w78.' + module)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_bootstrap.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'vgar_m2_w78.b_inputs', package = None
+
+    def import_module(name, package=None):
+        """Import a module.
+    
+        The 'package' argument is required when performing a relative import. It
+        specifies the package to use as the anchor point from which to resolve the
+        relative import to an absolute import.
+    
+        """
+        level = 0
+        if name.startswith('.'):
+            if not package:
+                msg = ("the 'package' argument is required to perform a relative "
+                       "import for {!r}")
+                raise TypeError(msg.format(name))
+            for character in name:
+                if character != '.':
+                    break
+                level += 1
+&gt;       return _bootstrap._gcd_import(name[level:], package, level)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ModuleNotFoundError: No module named 'vgar_m2_w78.b_inputs'
+
+C:\Program Files\Python311\Lib\importlib\__init__.py:126: ModuleNotFoundError
+
+During handling of the above exception, another exception occurred:
+
+    def test_freeze_is_b_only_and_preserves_parser_tests_and_history():
+&gt;       value = api('b_inputs').freeze_b_inputs()
+                ^^^^^^^^^^^^^^^
+
+tests\test_b_cli.py:29: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+module = 'b_inputs'
+
+    def api(module):
+        try:
+            return importlib.import_module('vgar_m2_w78.' + module)
+        except ModuleNotFoundError:
+&gt;           pytest.fail('Planned M2 API not implemented: ' + module)
+E           Failed: Planned M2 API not implemented: b_inputs
+
+tests\test_bootstrap.py:13: Failed</failure></testcase></testsuite></testsuites>

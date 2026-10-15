@@ -1,0 +1,14 @@
+{
+    "argv":  [
+                 "D:\\Project\\CAPSTONES\\M2_week_7_8\\.venv\\Scripts\\python.exe",
+                 "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\delivery-tests\\pytest-4-test_failed_selftests_print_re0\\verification_job.py",
+                 "preflight",
+                 "D:\\Project\\CAPSTONES\\M2_week_7_8",
+                 "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\delivery-tests\\pytest-4-test_failed_selftests_print_re0",
+                 "Run"
+             ],
+    "exit_code":  0,
+    "started_utc":  "2026-10-15T09:00:14.5121775Z",
+    "ended_utc":  "2026-10-15T09:00:17.5542801Z",
+    "duration_ms":  3035
+}

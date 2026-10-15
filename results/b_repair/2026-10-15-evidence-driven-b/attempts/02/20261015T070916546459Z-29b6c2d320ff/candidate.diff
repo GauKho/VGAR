@@ -1,0 +1,17 @@
+--- a/pricing.py
++++ b/pricing.py
+@@ -1,2 +1,2 @@
+-def discounted_price(price, discount_percent):
+-    return price - discount_percent
++def discounted_price(price, discount_percent):
++    return price - (price * (discount_percent / 100))
+
+--- a/invoice.py
++++ b/invoice.py
+@@ -4,3 +4,3 @@
+-def invoice_total(price, discount_percent, tax_percent):
+-    net = discounted_price(price, discount_percent)
+-    return net + tax_percent
++def invoice_total(price, discount_percent, tax_percent):
++    net = discounted_price(price, discount_percent)
++    return net + (net * (tax_percent / 100))

@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="9" skipped="0" tests="31" time="7.620" timestamp="2026-10-14T21:29:38.637467+07:00" hostname="TMT"><testcase classname="tests.test_acceptance_campaign" name="test_next_attempt_uses_order_and_restarts_all_cases_on_v4[history0-want0]" time="0.012" /><testcase classname="tests.test_acceptance_campaign" name="test_next_attempt_uses_order_and_restarts_all_cases_on_v4[history1-want1]" time="0.001" /><testcase classname="tests.test_acceptance_campaign" name="test_next_attempt_uses_order_and_restarts_all_cases_on_v4[history2-want2]" time="0.001" /><testcase classname="tests.test_acceptance_campaign" name="test_next_attempt_uses_order_and_restarts_all_cases_on_v4[history3-want3]" time="0.001" /><testcase classname="tests.test_acceptance_campaign" name="test_next_attempt_uses_order_and_restarts_all_cases_on_v4[history4-want4]" time="0.001" /><testcase classname="tests.test_acceptance_campaign" name="test_next_attempt_uses_order_and_restarts_all_cases_on_v4[history5-want5]" time="0.001" /><testcase classname="tests.test_acceptance_campaign" name="test_terminal_campaign_never_launches_more_after_success_error_or_two_failures[history0-PASS]" time="0.001" /><testcase classname="tests.test_acceptance_campaign" name="test_terminal_campaign_never_launches_more_after_success_error_or_two_failures[history1-FAIL]" time="0.001" /><testcase classname="tests.test_acceptance_campaign" name="test_terminal_campaign_never_launches_more_after_success_error_or_two_failures[history2-ERROR]" time="0.001" /><testcase classname="tests.test_acceptance_campaign" name="test_terminal_campaign_never_launches_more_after_success_error_or_two_failures[history3-PASS]" time="0.001" /><testcase classname="tests.test_acceptance_campaign" name="test_wrong_order_and_seventh_attempt_are_rejected" time="0.001" /><testcase classname="tests.test_acceptance_campaign" name="test_reservation_is_durable_and_live_pending_blocks_new_attempt" time="0.016" /><testcase classname="tests.test_acceptance_campaign" name="test_dead_pending_consumes_attempt_and_runtime_error_stops" time="0.012" /><testcase classname="tests.test_acceptance_campaign" name="test_changed_snapshot_and_concurrent_owner_block" time="0.008" /><testcase classname="tests.test_acceptance_campaign" name="test_frozen_source_file_change_is_detected_before_another_run" time="0.003" /><testcase classname="tests.test_acceptance_campaign" name="test_top_level_pass_cannot_hide_failed_acceptance_gate[fake]" time="0.012" /><testcase classname="tests.test_acceptance_campaign" name="test_top_level_pass_cannot_hide_failed_acceptance_gate[required_skip]" time="0.012" /><testcase classname="tests.test_acceptance_campaign" name="test_top_level_pass_cannot_hide_failed_acceptance_gate[one_file]" time="0.013" /><testcase classname="tests.test_acceptance_campaign" name="test_top_level_pass_cannot_hide_failed_acceptance_gate[bundle_hash]" time="0.008" /><testcase classname="tests.test_acceptance_campaign" name="test_top_level_pass_cannot_hide_failed_acceptance_gate[lint_missing]" time="0.012" /><testcase classname="tests.test_acceptance_campaign" name="test_finish_records_terminal_path_and_resumed_campaign_advances" time="0.022" /><testcase classname="tests.test_acceptance_campaign" name="test_pipeline_embeds_campaign_identity_before_bundle_hash" time="6.310" /><testcase classname="tests.test_acceptance_campaign" name="test_frozen_snapshot_includes_actual_task_jsons" time="0.838"><failure message="AssertionError: assert 'D:\\Project\\CAPSTONES\\M2_week_7_8\\examples\\tasks\\single_file_login.json' in {'D:\\Project\\CAPSTONES\\M2_week_7_8\\config\\demo.json': 'sha256:d1ba30333e9193a1e225ee3c2219b53cdec2be7c55756acb7eb...\M2_week_7_8\\config\\source_pin.json': 'sha256:d62411622591bdd7dbfb87af7873a998f9e0f449662bc79ffba7cdec495b603a', ...}&#10; +  where 'D:\\Project\\CAPSTONES\\M2_week_7_8\\examples\\tasks\\single_file_login.json' = str(((WindowsPath('D:/Project/CAPSTONES/M2_week_7_8') / 'examples/tasks') / 'single_file_login.json'))">def test_frozen_snapshot_includes_actual_task_jsons():
+        import importlib.util
+        root=Path(__file__).resolve().parents[1]
+        spec=importlib.util.spec_from_file_location('acceptance_script',root/'scripts/run_acceptance.py')
+        script=importlib.util.module_from_spec(spec);spec.loader.exec_module(script)
+        snapshot=script.freeze_inputs()
+        for case in (A,B,C):
+&gt;           assert str(root/'examples/tasks'/f'{case}.json') in snapshot['files']
+E           AssertionError: assert 'D:\\Project\\CAPSTONES\\M2_week_7_8\\examples\\tasks\\single_file_login.json' in {'D:\\Project\\CAPSTONES\\M2_week_7_8\\config\\demo.json': 'sha256:d1ba30333e9193a1e225ee3c2219b53cdec2be7c55756acb7eb...\M2_week_7_8\\config\\source_pin.json': 'sha256:d62411622591bdd7dbfb87af7873a998f9e0f449662bc79ffba7cdec495b603a', ...}
+E            +  where 'D:\\Project\\CAPSTONES\\M2_week_7_8\\examples\\tasks\\single_file_login.json' = str(((WindowsPath('D:/Project/CAPSTONES/M2_week_7_8') / 'examples/tasks') / 'single_file_login.json'))
+
+tests\test_acceptance_campaign.py:168: AssertionError</failure></testcase><testcase classname="tests.test_acceptance_campaign" name="test_modified_frozen_task_prevents_reservation" time="0.012"><failure message="Failed: DID NOT RAISE &lt;class 'ValueError'&gt;">tmp_path = WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-551/test_modified_frozen_task_prev0')
+
+    def test_modified_frozen_task_prevents_reservation(tmp_path):
+        module=api('campaign')
+        path=tmp_path/'task.json';path.write_bytes(b'{"issue_text":"original"}')
+        store=module.CampaignStore.create(tmp_path/'campaign',{'files':{str(path):api('evidence').digest(path.read_bytes())}})
+        path.write_bytes(b'{"issue_text":"different"}')
+&gt;       with pytest.raises(ValueError,match='changed'):
+E       Failed: DID NOT RAISE &lt;class 'ValueError'&gt;
+
+tests\test_acceptance_campaign.py:176: Failed</failure></testcase><testcase classname="tests.test_acceptance_campaign" name="test_ledger_fail_to_pass_mutation_cannot_change_resume_branch" time="0.024"><failure message="Failed: DID NOT RAISE &lt;class 'ValueError'&gt;">tmp_path = WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-551/test_ledger_fail_to_pass_mutat0')
+
+    def test_ledger_fail_to_pass_mutation_cannot_change_resume_branch(tmp_path):
+        module=api('campaign');store=module.CampaignStore.create(tmp_path/'campaign',{'pin':'fixture'})
+        with store.session():
+            attempt=store.reserve();path=simulated_record(Path(attempt['run_root'])/'simulated',status='FAIL')
+            store.finish(path)
+        ledger=json.loads(store.path.read_text(encoding='utf-8'))
+        ledger['attempts'][0]['status']='PASS'
+        api('evidence').atomic_json(store.path,ledger)
+&gt;       with pytest.raises(ValueError,match='ledger|canonical|Historical'):
+E       Failed: DID NOT RAISE &lt;class 'ValueError'&gt;
+
+tests\test_acceptance_campaign.py:189: Failed</failure></testcase><testcase classname="tests.test_acceptance_campaign" name="test_historical_delivered_artifact_tamper_blocks_resume" time="0.022"><failure message="Failed: DID NOT RAISE &lt;class 'ValueError'&gt;">tmp_path = WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-551/test_historical_delivered_arti0')
+
+    def test_historical_delivered_artifact_tamper_blocks_resume(tmp_path):
+        module=api('campaign');store=module.CampaignStore.create(tmp_path/'campaign',{'pin':'fixture'})
+        with store.session():
+            attempt=store.reserve();path=simulated_record(Path(attempt['run_root'])/'simulated')
+            store.finish(path)
+        (path.parent/'applied.diff').write_bytes(b'corrupt')
+&gt;       with pytest.raises(ValueError,match='ledger|canonical|Historical'):
+E       Failed: DID NOT RAISE &lt;class 'ValueError'&gt;
+
+tests\test_acceptance_campaign.py:199: Failed</failure></testcase><testcase classname="tests.test_acceptance_campaign" name="test_acceptance_requires_actual_selection_collection_and_export[selection_missing]" time="0.026"><failure message="AssertionError: assert 'PASS' == 'ERROR'&#10;  &#10;  - ERROR&#10;  + PASS">tmp_path = WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-551/test_acceptance_requires_actua0')
+fault = 'selection_missing'
+
+    @pytest.mark.parametrize('fault',['selection_missing','fallback_missing','collection_command_missing','collection_ids_missing','export_mismatch'])
+    def test_acceptance_requires_actual_selection_collection_and_export(tmp_path,fault):
+        path=simulated_record(tmp_path/'run',case=C)
+        assert api('campaign').assess_record(path)['status']=='PASS'
+        record=json.loads(path.read_text(encoding='utf-8'))
+        if fault=='selection_missing':record['stages'].pop('selection')
+        elif fault=='fallback_missing':record['stages']['selection']['fallback_scope']=[]
+        elif fault=='collection_command_missing':record['stages']['verification']['collection'].pop('command')
+        elif fault=='collection_ids_missing':record['stages']['verification']['collection']['node_ids']=[]
+        else:(path.parent/'applied.diff').write_bytes(b'nonempty but not actual export')
+        api('evidence').atomic_json(path,record)
+        bundle=json.loads((path.parent/'evidence_bundle.json').read_text(encoding='utf-8'))
+        bundle['metadata']['canonical_sha256']=api('evidence').digest(path.read_bytes())
+        api('evidence').atomic_json(path.parent/'evidence_bundle.json',bundle)
+&gt;       assert api('campaign').assess_record(path)['status']=='ERROR'
+E       AssertionError: assert 'PASS' == 'ERROR'
+E         
+E         - ERROR
+E         + PASS
+
+tests\test_acceptance_campaign.py:217: AssertionError</failure></testcase><testcase classname="tests.test_acceptance_campaign" name="test_acceptance_requires_actual_selection_collection_and_export[fallback_missing]" time="0.016"><failure message="AssertionError: assert 'PASS' == 'ERROR'&#10;  &#10;  - ERROR&#10;  + PASS">tmp_path = WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-551/test_acceptance_requires_actua1')
+fault = 'fallback_missing'
+
+    @pytest.mark.parametrize('fault',['selection_missing','fallback_missing','collection_command_missing','collection_ids_missing','export_mismatch'])
+    def test_acceptance_requires_actual_selection_collection_and_export(tmp_path,fault):
+        path=simulated_record(tmp_path/'run',case=C)
+        assert api('campaign').assess_record(path)['status']=='PASS'
+        record=json.loads(path.read_text(encoding='utf-8'))
+        if fault=='selection_missing':record['stages'].pop('selection')
+        elif fault=='fallback_missing':record['stages']['selection']['fallback_scope']=[]
+        elif fault=='collection_command_missing':record['stages']['verification']['collection'].pop('command')
+        elif fault=='collection_ids_missing':record['stages']['verification']['collection']['node_ids']=[]
+        else:(path.parent/'applied.diff').write_bytes(b'nonempty but not actual export')
+        api('evidence').atomic_json(path,record)
+        bundle=json.loads((path.parent/'evidence_bundle.json').read_text(encoding='utf-8'))
+        bundle['metadata']['canonical_sha256']=api('evidence').digest(path.read_bytes())
+        api('evidence').atomic_json(path.parent/'evidence_bundle.json',bundle)
+&gt;       assert api('campaign').assess_record(path)['status']=='ERROR'
+E       AssertionError: assert 'PASS' == 'ERROR'
+E         
+E         - ERROR
+E         + PASS
+
+tests\test_acceptance_campaign.py:217: AssertionError</failure></testcase><testcase classname="tests.test_acceptance_campaign" name="test_acceptance_requires_actual_selection_collection_and_export[collection_command_missing]" time="0.014"><failure message="AssertionError: assert 'PASS' == 'ERROR'&#10;  &#10;  - ERROR&#10;  + PASS">tmp_path = WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-551/test_acceptance_requires_actua2')
+fault = 'collection_command_missing'
+
+    @pytest.mark.parametrize('fault',['selection_missing','fallback_missing','collection_command_missing','collection_ids_missing','export_mismatch'])
+    def test_acceptance_requires_actual_selection_collection_and_export(tmp_path,fault):
+        path=simulated_record(tmp_path/'run',case=C)
+        assert api('campaign').assess_record(path)['status']=='PASS'
+        record=json.loads(path.read_text(encoding='utf-8'))
+        if fault=='selection_missing':record['stages'].pop('selection')
+        elif fault=='fallback_missing':record['stages']['selection']['fallback_scope']=[]
+        elif fault=='collection_command_missing':record['stages']['verification']['collection'].pop('command')
+        elif fault=='collection_ids_missing':record['stages']['verification']['collection']['node_ids']=[]
+        else:(path.parent/'applied.diff').write_bytes(b'nonempty but not actual export')
+        api('evidence').atomic_json(path,record)
+        bundle=json.loads((path.parent/'evidence_bundle.json').read_text(encoding='utf-8'))
+        bundle['metadata']['canonical_sha256']=api('evidence').digest(path.read_bytes())
+        api('evidence').atomic_json(path.parent/'evidence_bundle.json',bundle)
+&gt;       assert api('campaign').assess_record(path)['status']=='ERROR'
+E       AssertionError: assert 'PASS' == 'ERROR'
+E         
+E         - ERROR
+E         + PASS
+
+tests\test_acceptance_campaign.py:217: AssertionError</failure></testcase><testcase classname="tests.test_acceptance_campaign" name="test_acceptance_requires_actual_selection_collection_and_export[collection_ids_missing]" time="0.014"><failure message="AssertionError: assert 'PASS' == 'ERROR'&#10;  &#10;  - ERROR&#10;  + PASS">tmp_path = WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-551/test_acceptance_requires_actua3')
+fault = 'collection_ids_missing'
+
+    @pytest.mark.parametrize('fault',['selection_missing','fallback_missing','collection_command_missing','collection_ids_missing','export_mismatch'])
+    def test_acceptance_requires_actual_selection_collection_and_export(tmp_path,fault):
+        path=simulated_record(tmp_path/'run',case=C)
+        assert api('campaign').assess_record(path)['status']=='PASS'
+        record=json.loads(path.read_text(encoding='utf-8'))
+        if fault=='selection_missing':record['stages'].pop('selection')
+        elif fault=='fallback_missing':record['stages']['selection']['fallback_scope']=[]
+        elif fault=='collection_command_missing':record['stages']['verification']['collection'].pop('command')
+        elif fault=='collection_ids_missing':record['stages']['verification']['collection']['node_ids']=[]
+        else:(path.parent/'applied.diff').write_bytes(b'nonempty but not actual export')
+        api('evidence').atomic_json(path,record)
+        bundle=json.loads((path.parent/'evidence_bundle.json').read_text(encoding='utf-8'))
+        bundle['metadata']['canonical_sha256']=api('evidence').digest(path.read_bytes())
+        api('evidence').atomic_json(path.parent/'evidence_bundle.json',bundle)
+&gt;       assert api('campaign').assess_record(path)['status']=='ERROR'
+E       AssertionError: assert 'PASS' == 'ERROR'
+E         
+E         - ERROR
+E         + PASS
+
+tests\test_acceptance_campaign.py:217: AssertionError</failure></testcase><testcase classname="tests.test_acceptance_campaign" name="test_acceptance_requires_actual_selection_collection_and_export[export_mismatch]" time="0.018"><failure message="AssertionError: assert 'PASS' == 'ERROR'&#10;  &#10;  - ERROR&#10;  + PASS">tmp_path = WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-551/test_acceptance_requires_actua4')
+fault = 'export_mismatch'
+
+    @pytest.mark.parametrize('fault',['selection_missing','fallback_missing','collection_command_missing','collection_ids_missing','export_mismatch'])
+    def test_acceptance_requires_actual_selection_collection_and_export(tmp_path,fault):
+        path=simulated_record(tmp_path/'run',case=C)
+        assert api('campaign').assess_record(path)['status']=='PASS'
+        record=json.loads(path.read_text(encoding='utf-8'))
+        if fault=='selection_missing':record['stages'].pop('selection')
+        elif fault=='fallback_missing':record['stages']['selection']['fallback_scope']=[]
+        elif fault=='collection_command_missing':record['stages']['verification']['collection'].pop('command')
+        elif fault=='collection_ids_missing':record['stages']['verification']['collection']['node_ids']=[]
+        else:(path.parent/'applied.diff').write_bytes(b'nonempty but not actual export')
+        api('evidence').atomic_json(path,record)
+        bundle=json.loads((path.parent/'evidence_bundle.json').read_text(encoding='utf-8'))
+        bundle['metadata']['canonical_sha256']=api('evidence').digest(path.read_bytes())
+        api('evidence').atomic_json(path.parent/'evidence_bundle.json',bundle)
+&gt;       assert api('campaign').assess_record(path)['status']=='ERROR'
+E       AssertionError: assert 'PASS' == 'ERROR'
+E         
+E         - ERROR
+E         + PASS
+
+tests\test_acceptance_campaign.py:217: AssertionError</failure></testcase></testsuite></testsuites>

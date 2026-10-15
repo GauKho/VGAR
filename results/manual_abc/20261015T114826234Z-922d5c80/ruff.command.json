@@ -1,0 +1,17 @@
+{
+    "argv":  [
+                 "D:\\Project\\CAPSTONES\\M2_week_7_8\\.venv\\Scripts\\python.exe",
+                 "-m",
+                 "ruff",
+                 "check",
+                 "--select",
+                 "E9,F",
+                 "src",
+                 "scripts",
+                 "tests"
+             ],
+    "exit_code":  0,
+    "started_utc":  "2026-10-15T11:50:28.6867641Z",
+    "ended_utc":  "2026-10-15T11:50:28.8391279Z",
+    "duration_ms":  151
+}

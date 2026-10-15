@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="0.817" timestamp="2026-10-15T07:48:41.227762+07:00" hostname="TMT"><testcase classname="tests.test_prompt_v7" name="test_v7_full_prompt_keeps_original_context_without_final_feedback" time="0.729"><failure message="ValueError: Unregistered or missing prompt version: m2-w78-v7">m1_case = (RepairTask(task_id='single_file_login', issue_text='auth.py login accepts whitespace-only names; trim the name before...', 'pytest.ini'), trusted_fixture=True), &lt;vgar.graph.token_counter.LocalTokenizerCounter object at 0x000002542F834CD0&gt;)
+
+    def test_v7_full_prompt_keeps_original_context_without_final_feedback(m1_case):
+        task,counter = m1_case
+        handoff = api('context_adapter').load_handoff(task,counter,counter.counter_label)
+&gt;       p = api('prompt').build_repair_prompt(task,handoff,{},CharacterChatTokenizer(),
+            api('contracts').RepairPolicy(prompt_version='m2-w78-v7'))
+
+tests\test_prompt_v7.py:8: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\vgar_m2_w78\prompt.py:35: in build_repair_prompt
+    template = template_path(policy.prompt_version).read_text(encoding='utf-8')
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+version = 'm2-w78-v7'
+
+    def template_path(version: str) -&gt; Path:
+        match = re.fullmatch(r'm2-w78-v([1-9][0-9]*)', version)
+        if not match:
+            raise ValueError('Unsupported prompt version: ' + str(version))
+        path = ROOT / 'prompts' / ('repair_v' + match[1] + '.txt')
+        if not path.is_file() or path.is_symlink():
+&gt;           raise ValueError('Unregistered or missing prompt version: ' + version)
+E           ValueError: Unregistered or missing prompt version: m2-w78-v7
+
+src\vgar_m2_w78\prompt.py:29: ValueError</failure></testcase></testsuite></testsuites>

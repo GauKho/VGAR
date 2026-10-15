@@ -1,0 +1,14 @@
+{
+    "argv":  [
+                 "D:\\Project\\CAPSTONES\\M2_week_7_8\\.venv\\Scripts\\python.exe",
+                 "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\delivery-tests\\pytest-5-test_saved_mode_audits_all_cas0\\verification_job.py",
+                 "preflight",
+                 "D:\\Project\\CAPSTONES\\M2_week_7_8",
+                 "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\delivery-tests\\pytest-5-test_saved_mode_audits_all_cas0",
+                 "ReadSaved"
+             ],
+    "exit_code":  0,
+    "started_utc":  "2026-10-15T09:03:25.6936104Z",
+    "ended_utc":  "2026-10-15T09:03:26.1700002Z",
+    "duration_ms":  470
+}

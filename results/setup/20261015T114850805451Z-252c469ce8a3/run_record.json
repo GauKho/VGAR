@@ -1,0 +1,62 @@
+{
+  "run_id": "20261015T114850805451Z-252c469ce8a3",
+  "kind": "prepare-inputs",
+  "status": "PASS",
+  "complete": true,
+  "started_utc": "2026-10-15T11:48:50.805451+00:00",
+  "ended_utc": "2026-10-15T11:48:50.943259+00:00",
+  "duration_ms": 141,
+  "interpreter": "D:\\Project\\CAPSTONES\\M2_week_7_8\\.venv\\Scripts\\python.exe",
+  "python": "3.11.6 (tags/v3.11.6:8b6ee5b, Oct  2 2023, 14:57:12) [MSC v.1935 64 bit (AMD64)]",
+  "stages": {
+    "single_file_login": {
+      "status": "PASS",
+      "graph_version": "sha256:e1fe94d21f10f112cd3a5e2a39f88e1fb26a760ee8ea3eaa6d3bac608d1ec371",
+      "source_hashes": {
+        "auth.py": "sha256:d6d89aae3fb09d77d7fcab3aa9b53ebbbb0d2f87e995f95e2ccc09fe3d18b74a",
+        "pytest.ini": "sha256:82fd55d62e39ad5dc83c58bd005c337e4e9810ef96f7356c370d7069de775a16",
+        "tests/test_auth.py": "sha256:82a4f022c58d27e2769b64a86ec068681edafc3b99ab404d0079dbc8ac5f62c4"
+      },
+      "task_sha256": "sha256:42c8b8ec68e27e282734b10ebc6ae6ba5aa99a031db50fabd73fe32604c5d29f",
+      "bundle_hashes": {
+        "context.json": "sha256:340cba38d7d7173b4e03efc912344ff3a7d7aa8d03de37f2659f07c4bfe44d01",
+        "context_manifest.json": "sha256:d50a6728fedf0a0f60c49b261bda2f8488f116dc004759c9999aa3e726571b63",
+        "test_links.json": "sha256:e8beae41566f1af6bc1cb9efd5fa73b5e18edc904c4e9ab2cdca37aeaa0eac26"
+      }
+    },
+    "multi_file_invoice": {
+      "status": "PASS",
+      "graph_version": "sha256:1bbff47bc1ee5098b1f3d8f37dc5952faa9127224763e651c66630d838adb93e",
+      "source_hashes": {
+        "invoice.py": "sha256:9dcad8f5a030d4b595ca951a76f030a8b245e268ddb0df324af3f6b9fa003062",
+        "pricing.py": "sha256:48807cc8ac8188a688a3682fe3b07ea545ff91b51efac86a54148bef49d21183",
+        "pytest.ini": "sha256:82fd55d62e39ad5dc83c58bd005c337e4e9810ef96f7356c370d7069de775a16",
+        "tests/test_invoice.py": "sha256:75db0c0f491d387315076f17adf64dd88727bb465d36d059c3f94449e2fa8374"
+      },
+      "task_sha256": "sha256:5fe6a474b88802da1fca181ce985bf31976a342aee695a5649c7ba77f87c3136",
+      "bundle_hashes": {
+        "context.json": "sha256:3ea9ebf0c96da65ea014751089751c135c4e58c3a261523bdda75e07371c281e",
+        "context_manifest.json": "sha256:4a449412d438fbe1600d0cd64616208fd55c59abb04ca7930199ec59ae34cb42",
+        "test_links.json": "sha256:2e5df5dbe5829820b9e55734560dcedb14e7dd7fa530e303700ed3914413c5ff"
+      }
+    },
+    "missing_links": {
+      "status": "PASS",
+      "graph_version": "sha256:ac135fa480d1f999d33e943fc36e003b76a570ba59ee5ba8cf495e76bb285c51",
+      "source_hashes": {
+        "formatter.py": "sha256:81c4454fb956eba7bba20dd437745bdde15bb1eb15180d9ee457dc8de794ee8d",
+        "pytest.ini": "sha256:82fd55d62e39ad5dc83c58bd005c337e4e9810ef96f7356c370d7069de775a16",
+        "tests/test_formatter.py": "sha256:ab756048829f6cb46128e03788854ea8f19d7f44537867a1afc0b8bc29b2cee0"
+      },
+      "task_sha256": "sha256:f2391ce30532b22f7855d538d40de66a53a73ecb235723110cb5dd3027171a12",
+      "bundle_hashes": {
+        "context.json": "sha256:802907fe3f61e391dd751c81c529fd90de9be866bb8a6a544c937aecfcdd123b",
+        "context_manifest.json": "sha256:7f305854e3512a2459c9a662d5c41288bebc3397cfee7595687a63488beb309b",
+        "test_links.json": "sha256:56e5640ce39d4612161f4383d938e236ae83dab236848ca5daa58ff693c174d5"
+      }
+    }
+  },
+  "mode": "offline",
+  "reference_revision": "b8e2461635b81d1ae790445efea5c9757d91700a",
+  "source_m1_run": "20261014T072245Z-a8015356523c45cfa264244c07d252b0"
+}

@@ -1,0 +1,18 @@
+{
+    "status":  "ERROR",
+    "complete":  true,
+    "mode":  "ReadSaved",
+    "skip_self_tests":  false,
+    "started_utc":  "2026-10-15T09:04:15.9173409Z",
+    "ended_utc":  "2026-10-15T09:04:17.3263208Z",
+    "cases":  [
+                  {
+                      "letter":  "A",
+                      "task_id":  "single_file_login",
+                      "status":  "NOT_RUN",
+                      "reserved_utc":  "2026-10-15T09:04:16.5980593Z"
+                  }
+              ],
+    "output_root":  "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\delivery-tests\\pytest-7-test_missing_prompt_does_not_h0",
+    "reason":  "Command failed: audit_A (exit 1); inspect its console log and canonical evidence.\r\nat Invoke-Logged, D:\\Project\\CAPSTONES\\M2_week_7_8\\test_abc_v11_r002.ps1: line 56\r\nat \u003cScriptBlock\u003e, D:\\Project\\CAPSTONES\\M2_week_7_8\\test_abc_v11_r002.ps1: line 180"
+}

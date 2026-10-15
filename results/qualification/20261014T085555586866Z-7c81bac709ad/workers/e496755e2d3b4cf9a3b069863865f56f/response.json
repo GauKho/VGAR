@@ -1,0 +1,23 @@
+{
+  "status": "PASS",
+  "kind": "tokenize",
+  "rendered": "<|im_start|>user\nReturn only the word OK.<|im_end|>\n<|im_start|>assistant\n",
+  "input_ids": [
+    151644,
+    872,
+    198,
+    5598,
+    1172,
+    279,
+    3409,
+    10402,
+    13,
+    151645,
+    198,
+    151644,
+    77091,
+    198
+  ],
+  "model_id": "Qwen/Qwen3-4B-Instruct-2507",
+  "revision": "cdbee75f17c01a7cc42f958dc650907174af0554"
+}

@@ -1,0 +1,449 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="7" skipped="0" tests="7" time="5.139" timestamp="2026-10-14T15:38:57.733292+07:00" hostname="TMT"><testcase classname="tests.test_test_selection" name="test_failing_inputs_union_and_original_snapshot" time="0.869"><failure message="Failed: Planned M2 API not implemented: test_selection">module = 'test_selection'
+
+    def api(module):
+        try:
+&gt;           return importlib.import_module('vgar_m2_w78.' + module)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_bootstrap.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'vgar_m2_w78.test_selection', package = None
+
+    def import_module(name, package=None):
+        """Import a module.
+    
+        The 'package' argument is required when performing a relative import. It
+        specifies the package to use as the anchor point from which to resolve the
+        relative import to an absolute import.
+    
+        """
+        level = 0
+        if name.startswith('.'):
+            if not package:
+                msg = ("the 'package' argument is required to perform a relative "
+                       "import for {!r}")
+                raise TypeError(msg.format(name))
+            for character in name:
+                if character != '.':
+                    break
+                level += 1
+&gt;       return _bootstrap._gcd_import(name[level:], package, level)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ModuleNotFoundError: No module named 'vgar_m2_w78.test_selection'
+
+C:\Program Files\Python311\Lib\importlib\__init__.py:126: ModuleNotFoundError
+
+During handling of the above exception, another exception occurred:
+
+m1_case = (RepairTask(task_id='single_file_login', issue_text='auth.py login accepts whitespace-only names; trim the name before...', 'pytest.ini'), trusted_fixture=True), &lt;vgar.graph.token_counter.LocalTokenizerCounter object at 0x0000021155764250&gt;)
+
+    def test_failing_inputs_union_and_original_snapshot(m1_case):
+        task, counter = m1_case
+        context = api('context_adapter').load_handoff(task, counter, counter.counter_label)
+&gt;       selection = api('test_selection').select_relevant_tests(('auth.py',), context, task)
+                    ^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_test_selection.py:9: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+module = 'test_selection'
+
+    def api(module):
+        try:
+            return importlib.import_module('vgar_m2_w78.' + module)
+        except ModuleNotFoundError:
+&gt;           pytest.fail('Planned M2 API not implemented: ' + module)
+E           Failed: Planned M2 API not implemented: test_selection
+
+tests\test_bootstrap.py:13: Failed</failure></testcase><testcase classname="tests.test_test_selection" name="test_mapping_gaps_require_approved_fallback[missing_mapping]" time="0.620"><failure message="Failed: Planned M2 API not implemented: test_selection">module = 'test_selection'
+
+    def api(module):
+        try:
+&gt;           return importlib.import_module('vgar_m2_w78.' + module)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_bootstrap.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'vgar_m2_w78.test_selection', package = None
+
+    def import_module(name, package=None):
+        """Import a module.
+    
+        The 'package' argument is required when performing a relative import. It
+        specifies the package to use as the anchor point from which to resolve the
+        relative import to an absolute import.
+    
+        """
+        level = 0
+        if name.startswith('.'):
+            if not package:
+                msg = ("the 'package' argument is required to perform a relative "
+                       "import for {!r}")
+                raise TypeError(msg.format(name))
+            for character in name:
+                if character != '.':
+                    break
+                level += 1
+&gt;       return _bootstrap._gcd_import(name[level:], package, level)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ModuleNotFoundError: No module named 'vgar_m2_w78.test_selection'
+
+C:\Program Files\Python311\Lib\importlib\__init__.py:126: ModuleNotFoundError
+
+During handling of the above exception, another exception occurred:
+
+m1_case = (RepairTask(task_id='single_file_login', issue_text='auth.py login accepts whitespace-only names; trim the name before...', 'pytest.ini'), trusted_fixture=True), &lt;vgar.graph.token_counter.LocalTokenizerCounter object at 0x0000021157C04050&gt;)
+mapping = 'missing_mapping'
+
+    @pytest.mark.parametrize('mapping', ['missing_mapping', 'partial_mapping', 'unlinked'])
+    def test_mapping_gaps_require_approved_fallback(m1_case, mapping):
+        task, counter = m1_case
+        context = api('context_adapter').load_handoff(task, counter, counter.counter_label)
+        hints = copy.deepcopy(context.hints)
+        symbols = {key for key, binding in context.manifest['items'].items() if binding['path'] == 'auth.py'}
+        if mapping == 'unlinked':
+            hints['test_links']['auth.py'] = []
+        else:
+            for key in {'auth.py'} | (symbols if mapping == 'missing_mapping' else set()):
+                hints['test_links'].pop(key, None)
+                hints['link_details'].pop(key, None)
+        context.hints = hints
+&gt;       result = api('test_selection').select_relevant_tests(('auth.py',), context, task)
+                 ^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_test_selection.py:28: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+module = 'test_selection'
+
+    def api(module):
+        try:
+            return importlib.import_module('vgar_m2_w78.' + module)
+        except ModuleNotFoundError:
+&gt;           pytest.fail('Planned M2 API not implemented: ' + module)
+E           Failed: Planned M2 API not implemented: test_selection
+
+tests\test_bootstrap.py:13: Failed</failure></testcase><testcase classname="tests.test_test_selection" name="test_mapping_gaps_require_approved_fallback[partial_mapping]" time="0.598"><failure message="Failed: Planned M2 API not implemented: test_selection">module = 'test_selection'
+
+    def api(module):
+        try:
+&gt;           return importlib.import_module('vgar_m2_w78.' + module)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_bootstrap.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'vgar_m2_w78.test_selection', package = None
+
+    def import_module(name, package=None):
+        """Import a module.
+    
+        The 'package' argument is required when performing a relative import. It
+        specifies the package to use as the anchor point from which to resolve the
+        relative import to an absolute import.
+    
+        """
+        level = 0
+        if name.startswith('.'):
+            if not package:
+                msg = ("the 'package' argument is required to perform a relative "
+                       "import for {!r}")
+                raise TypeError(msg.format(name))
+            for character in name:
+                if character != '.':
+                    break
+                level += 1
+&gt;       return _bootstrap._gcd_import(name[level:], package, level)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ModuleNotFoundError: No module named 'vgar_m2_w78.test_selection'
+
+C:\Program Files\Python311\Lib\importlib\__init__.py:126: ModuleNotFoundError
+
+During handling of the above exception, another exception occurred:
+
+m1_case = (RepairTask(task_id='single_file_login', issue_text='auth.py login accepts whitespace-only names; trim the name before...', 'pytest.ini'), trusted_fixture=True), &lt;vgar.graph.token_counter.LocalTokenizerCounter object at 0x0000021157B62850&gt;)
+mapping = 'partial_mapping'
+
+    @pytest.mark.parametrize('mapping', ['missing_mapping', 'partial_mapping', 'unlinked'])
+    def test_mapping_gaps_require_approved_fallback(m1_case, mapping):
+        task, counter = m1_case
+        context = api('context_adapter').load_handoff(task, counter, counter.counter_label)
+        hints = copy.deepcopy(context.hints)
+        symbols = {key for key, binding in context.manifest['items'].items() if binding['path'] == 'auth.py'}
+        if mapping == 'unlinked':
+            hints['test_links']['auth.py'] = []
+        else:
+            for key in {'auth.py'} | (symbols if mapping == 'missing_mapping' else set()):
+                hints['test_links'].pop(key, None)
+                hints['link_details'].pop(key, None)
+        context.hints = hints
+&gt;       result = api('test_selection').select_relevant_tests(('auth.py',), context, task)
+                 ^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_test_selection.py:28: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+module = 'test_selection'
+
+    def api(module):
+        try:
+            return importlib.import_module('vgar_m2_w78.' + module)
+        except ModuleNotFoundError:
+&gt;           pytest.fail('Planned M2 API not implemented: ' + module)
+E           Failed: Planned M2 API not implemented: test_selection
+
+tests\test_bootstrap.py:13: Failed</failure></testcase><testcase classname="tests.test_test_selection" name="test_mapping_gaps_require_approved_fallback[unlinked]" time="0.593"><failure message="Failed: Planned M2 API not implemented: test_selection">module = 'test_selection'
+
+    def api(module):
+        try:
+&gt;           return importlib.import_module('vgar_m2_w78.' + module)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_bootstrap.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'vgar_m2_w78.test_selection', package = None
+
+    def import_module(name, package=None):
+        """Import a module.
+    
+        The 'package' argument is required when performing a relative import. It
+        specifies the package to use as the anchor point from which to resolve the
+        relative import to an absolute import.
+    
+        """
+        level = 0
+        if name.startswith('.'):
+            if not package:
+                msg = ("the 'package' argument is required to perform a relative "
+                       "import for {!r}")
+                raise TypeError(msg.format(name))
+            for character in name:
+                if character != '.':
+                    break
+                level += 1
+&gt;       return _bootstrap._gcd_import(name[level:], package, level)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ModuleNotFoundError: No module named 'vgar_m2_w78.test_selection'
+
+C:\Program Files\Python311\Lib\importlib\__init__.py:126: ModuleNotFoundError
+
+During handling of the above exception, another exception occurred:
+
+m1_case = (RepairTask(task_id='single_file_login', issue_text='auth.py login accepts whitespace-only names; trim the name before...', 'pytest.ini'), trusted_fixture=True), &lt;vgar.graph.token_counter.LocalTokenizerCounter object at 0x0000021157C44810&gt;)
+mapping = 'unlinked'
+
+    @pytest.mark.parametrize('mapping', ['missing_mapping', 'partial_mapping', 'unlinked'])
+    def test_mapping_gaps_require_approved_fallback(m1_case, mapping):
+        task, counter = m1_case
+        context = api('context_adapter').load_handoff(task, counter, counter.counter_label)
+        hints = copy.deepcopy(context.hints)
+        symbols = {key for key, binding in context.manifest['items'].items() if binding['path'] == 'auth.py'}
+        if mapping == 'unlinked':
+            hints['test_links']['auth.py'] = []
+        else:
+            for key in {'auth.py'} | (symbols if mapping == 'missing_mapping' else set()):
+                hints['test_links'].pop(key, None)
+                hints['link_details'].pop(key, None)
+        context.hints = hints
+&gt;       result = api('test_selection').select_relevant_tests(('auth.py',), context, task)
+                 ^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_test_selection.py:28: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+module = 'test_selection'
+
+    def api(module):
+        try:
+            return importlib.import_module('vgar_m2_w78.' + module)
+        except ModuleNotFoundError:
+&gt;           pytest.fail('Planned M2 API not implemented: ' + module)
+E           Failed: Planned M2 API not implemented: test_selection
+
+tests\test_bootstrap.py:13: Failed</failure></testcase><testcase classname="tests.test_test_selection" name="test_limited_links_and_missing_scope_is_incomplete" time="0.587"><failure message="Failed: Planned M2 API not implemented: test_selection">module = 'test_selection'
+
+    def api(module):
+        try:
+&gt;           return importlib.import_module('vgar_m2_w78.' + module)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_bootstrap.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'vgar_m2_w78.test_selection', package = None
+
+    def import_module(name, package=None):
+        """Import a module.
+    
+        The 'package' argument is required when performing a relative import. It
+        specifies the package to use as the anchor point from which to resolve the
+        relative import to an absolute import.
+    
+        """
+        level = 0
+        if name.startswith('.'):
+            if not package:
+                msg = ("the 'package' argument is required to perform a relative "
+                       "import for {!r}")
+                raise TypeError(msg.format(name))
+            for character in name:
+                if character != '.':
+                    break
+                level += 1
+&gt;       return _bootstrap._gcd_import(name[level:], package, level)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ModuleNotFoundError: No module named 'vgar_m2_w78.test_selection'
+
+C:\Program Files\Python311\Lib\importlib\__init__.py:126: ModuleNotFoundError
+
+During handling of the above exception, another exception occurred:
+
+m1_case = (RepairTask(task_id='single_file_login', issue_text='auth.py login accepts whitespace-only names; trim the name before...', 'pytest.ini'), trusted_fixture=True), &lt;vgar.graph.token_counter.LocalTokenizerCounter object at 0x0000021157B9CA50&gt;)
+
+    def test_limited_links_and_missing_scope_is_incomplete(m1_case):
+        task, counter = m1_case
+        context = api('context_adapter').load_handoff(task, counter, counter.counter_label)
+        context.hints['link_details']['auth.py']['traversal_limited'] = True
+        context.hints['fallback_scope'] = []
+        task = task.model_copy(update={'fallback_scope': ()})
+        with pytest.raises(ValueError, match='fallback'):
+&gt;           api('test_selection').select_relevant_tests(('auth.py',), context, task)
+            ^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_test_selection.py:40: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+module = 'test_selection'
+
+    def api(module):
+        try:
+            return importlib.import_module('vgar_m2_w78.' + module)
+        except ModuleNotFoundError:
+&gt;           pytest.fail('Planned M2 API not implemented: ' + module)
+E           Failed: Planned M2 API not implemented: test_selection
+
+tests\test_bootstrap.py:13: Failed</failure></testcase><testcase classname="tests.test_test_runner" name="test_collect_and_baseline_exact_node_ids" time="1.076"><failure message="Failed: Planned M2 API not implemented: test_runner">module = 'test_runner'
+
+    def api(module):
+        try:
+&gt;           return importlib.import_module('vgar_m2_w78.' + module)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_bootstrap.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'vgar_m2_w78.test_runner', package = None
+
+    def import_module(name, package=None):
+        """Import a module.
+    
+        The 'package' argument is required when performing a relative import. It
+        specifies the package to use as the anchor point from which to resolve the
+        relative import to an absolute import.
+    
+        """
+        level = 0
+        if name.startswith('.'):
+            if not package:
+                msg = ("the 'package' argument is required to perform a relative "
+                       "import for {!r}")
+                raise TypeError(msg.format(name))
+            for character in name:
+                if character != '.':
+                    break
+                level += 1
+&gt;       return _bootstrap._gcd_import(name[level:], package, level)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ModuleNotFoundError: No module named 'vgar_m2_w78.test_runner'
+
+C:\Program Files\Python311\Lib\importlib\__init__.py:126: ModuleNotFoundError
+
+During handling of the above exception, another exception occurred:
+
+m1_case = (RepairTask(task_id='single_file_login', issue_text='auth.py login accepts whitespace-only names; trim the name before...', 'pytest.ini'), trusted_fixture=True), &lt;vgar.graph.token_counter.LocalTokenizerCounter object at 0x0000021157C0F3D0&gt;)
+tmp_path = WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-515/test_collect_and_baseline_exac0')
+
+    def test_collect_and_baseline_exact_node_ids(m1_case, tmp_path):
+        task, _ = m1_case
+        with api('workspace').create_workspace(task.source_repo, tmp_path / 'temp') as lease:
+            executor = api('executor').NativeExecutor(lease)
+&gt;           collected = api('test_runner').collect_tests(lease, ('tests',), executor)
+                        ^^^^^^^^^^^^^^^^^^
+
+tests\test_test_runner.py:8: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+module = 'test_runner'
+
+    def api(module):
+        try:
+            return importlib.import_module('vgar_m2_w78.' + module)
+        except ModuleNotFoundError:
+&gt;           pytest.fail('Planned M2 API not implemented: ' + module)
+E           Failed: Planned M2 API not implemented: test_runner
+
+tests\test_bootstrap.py:13: Failed</failure></testcase><testcase classname="tests.test_test_runner" name="test_zero_tests_and_all_skip_are_not_pass" time="0.533"><failure message="Failed: Planned M2 API not implemented: test_runner">module = 'test_runner'
+
+    def api(module):
+        try:
+&gt;           return importlib.import_module('vgar_m2_w78.' + module)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_bootstrap.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'vgar_m2_w78.test_runner', package = None
+
+    def import_module(name, package=None):
+        """Import a module.
+    
+        The 'package' argument is required when performing a relative import. It
+        specifies the package to use as the anchor point from which to resolve the
+        relative import to an absolute import.
+    
+        """
+        level = 0
+        if name.startswith('.'):
+            if not package:
+                msg = ("the 'package' argument is required to perform a relative "
+                       "import for {!r}")
+                raise TypeError(msg.format(name))
+            for character in name:
+                if character != '.':
+                    break
+                level += 1
+&gt;       return _bootstrap._gcd_import(name[level:], package, level)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ModuleNotFoundError: No module named 'vgar_m2_w78.test_runner'
+
+C:\Program Files\Python311\Lib\importlib\__init__.py:126: ModuleNotFoundError
+
+During handling of the above exception, another exception occurred:
+
+tmp_path = WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-515/test_zero_tests_and_all_skip_a0')
+
+    def test_zero_tests_and_all_skip_are_not_pass(tmp_path):
+        source = tmp_path / 'source'
+        source.mkdir()
+        (source / 'test_empty.py').write_bytes(b'import pytest\n@pytest.mark.skip\ndef test_skip(): pass\n')
+        with api('workspace').create_workspace(source, tmp_path / 'temp') as lease:
+            executor = api('executor').NativeExecutor(lease)
+&gt;           result = api('test_runner').run_tests(lease, ('test_empty.py',), executor, 30)
+                     ^^^^^^^^^^^^^^^^^^
+
+tests\test_test_runner.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+module = 'test_runner'
+
+    def api(module):
+        try:
+            return importlib.import_module('vgar_m2_w78.' + module)
+        except ModuleNotFoundError:
+&gt;           pytest.fail('Planned M2 API not implemented: ' + module)
+E           Failed: Planned M2 API not implemented: test_runner
+
+tests\test_bootstrap.py:13: Failed</failure></testcase></testsuite></testsuites>

@@ -1,0 +1,72 @@
+{
+  "campaign_id": "2026-10-14-prompt-v3-v4",
+  "status": "FAIL",
+  "final_version": null,
+  "reason": "FAILURE_LIMIT",
+  "rows": [
+    {
+      "attempt": 1,
+      "case": "single_file_login",
+      "version": "m2-w78-v3",
+      "status": "PASS",
+      "reason": null,
+      "input_tokens": 1026,
+      "output_tokens": 38,
+      "duration_ms": 72938,
+      "generation_ms": 54453,
+      "source_unchanged": true,
+      "changed_files": [
+        "auth.py"
+      ],
+      "record": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\acceptance\\2026-10-14-prompt-v3-v4\\attempts\\01\\20261014T143611380216Z-4cfb6e98732e\\run_record.json"
+    },
+    {
+      "attempt": 2,
+      "case": "multi_file_invoice",
+      "version": "m2-w78-v3",
+      "status": "FAIL",
+      "reason": "TEST_FAILED",
+      "input_tokens": 1387,
+      "output_tokens": 55,
+      "duration_ms": 79219,
+      "generation_ms": 62641,
+      "source_unchanged": true,
+      "changed_files": [
+        "pricing.py"
+      ],
+      "record": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\acceptance\\2026-10-14-prompt-v3-v4\\attempts\\02\\20261014T143724950165Z-28712948b7fb\\run_record.json"
+    },
+    {
+      "attempt": 3,
+      "case": "single_file_login",
+      "version": "m2-w78-v4",
+      "status": "PASS",
+      "reason": null,
+      "input_tokens": 1233,
+      "output_tokens": 38,
+      "duration_ms": 62922,
+      "generation_ms": 48250,
+      "source_unchanged": true,
+      "changed_files": [
+        "auth.py"
+      ],
+      "record": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\acceptance\\2026-10-14-prompt-v3-v4\\attempts\\03\\20261014T143844748488Z-ca62ce11f2d2\\run_record.json"
+    },
+    {
+      "attempt": 4,
+      "case": "multi_file_invoice",
+      "version": "m2-w78-v4",
+      "status": "FAIL",
+      "reason": "PATCH_APPLY_FAILED",
+      "input_tokens": 1594,
+      "output_tokens": 122,
+      "duration_ms": 127813,
+      "generation_ms": 116797,
+      "source_unchanged": true,
+      "changed_files": [],
+      "record": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\acceptance\\2026-10-14-prompt-v3-v4\\attempts\\04\\20261014T143948282795Z-dc2133321dfe\\run_record.json"
+    }
+  ],
+  "missing_links": "NOT_RUN",
+  "real_same_version_3_pass": false
+}

@@ -1,0 +1,82 @@
+<|im_start|>system
+Fix the issue in the provided Python source. Output ONLY a unified diff.
+
+The Host path policy is permission METADATA, NOT a repository file. Never invent a file for it. Diff paths must be existing source Path values also listed in allowed_source_paths. Tests, config, metadata, examples and feedback are READ-ONLY. Preserve correct behavior and public signatures; address every issue clause in the necessary production files.
+
+For each affected production snippet, replace its COMPLETE original snippet with corrected code in ONE hunk. First output each original snippet line prefixed with '-', then each corrected line prefixed with '+'. Include the unchanged function signature in both groups. This replacement style needs NO space-prefixed context lines. Keep all original indentation AFTER '-' or '+'. Do not duplicate overlapping snippets.
+
+OLD START = Source_start line; OLD COUNT = Snippet_line_count. NEW COUNT = the number of '+' code lines. NEW START = OLD START unless an earlier hunk changed line count. Starts refer to the original FILE, not snippet-local line one. File length and exclusive end coordinates are not counts.
+
+Neutral format example ONLY; never patch this example file:
+BEGIN FORMAT DIFF
+--- a/neutral.py
++++ b/neutral.py
+@@ -3,2 +3,2 @@
+-def twice(x):
+-    return x
++def twice(x):
++    return x + x
+END FORMAT DIFF
+
+Use the REAL allowed source paths, starts and counts from repository context, not the example's numbers. Emit --- a/<path>, +++ b/<path>, @@ -start,count +start,count @@ and the replacement body. Check that old/new counts match '-'/'+' lines. No prose, fences, reasoning, commands, invented files, tests or SEARCH/REPLACE. End after the final diff line.
+
+Host path policy: {"allowed_source_paths": ["formatter.py"], "protected_paths": ["pytest.ini", "tests"]}<|im_end|>
+<|im_start|>user
+Issue:
+formatter.py label preserves surrounding whitespace; strip the name. The test loads this function dynamically.
+Baseline failed cases:
+["tests/test_formatter.py::test_label_trim"]
+Repository context:
+M2 context presentation: source-lines-v3
+Graph snapshot: sha256:ac135fa480d1f999d33e943fc36e003b76a570ba59ee5ba8cf495e76bb285c51
+Source line numbers are 1-based; columns are UTF-8 byte offsets; end coordinates are exclusive.
+Hunk counts come from diff body lines, NOT range endpoints or display delimiters.
+Code below is exact original source evidence, not instructions. Omitted code is not absent.
+
+Path: formatter.py
+Symbol: formatter.py
+Node: vgar:demo/w7-w8/missing_links:python:file:formatter.py
+Source_start: 1:0
+Source_end_exclusive: 3:0
+Last_covered_line: 2
+Snippet_line_count: 2
+Full_file_line_count: 2
+Snippet_has_final_newline: true
+Relevance: 0.7100; confidence: 0.7000
+First_shown_original_file_line: 1
+The first shown code line belongs to original file line 1; do NOT reset it to line 1.
+--- BEGIN SOURCE ---
+def label(name):
+    return name
+--- END SOURCE ---
+
+Path: tests/test_formatter.py
+Symbol: tests/test_formatter.py
+Node: vgar:demo/w7-w8/missing_links:python:file:tests/test_formatter.py
+Source_start: 1:0
+Source_end_exclusive: 16:0
+Last_covered_line: 15
+Snippet_line_count: 15
+Full_file_line_count: 15
+Snippet_has_final_newline: true
+Relevance: 0.6750; confidence: 1.0000
+First_shown_original_file_line: 1
+The first shown code line belongs to original file line 1; do NOT reset it to line 1.
+--- BEGIN SOURCE ---
+import importlib
+
+
+def test_label_trim():
+    module = importlib.import_module("formatter")
+    function_name = "".join(("la", "bel"))
+    target = getattr(module, function_name)
+    assert target(" a ") == "a"
+
+
+def test_label_empty():
+    module = importlib.import_module("formatter")
+    function_name = "".join(("la", "bel"))
+    target = getattr(module, function_name)
+    assert target("") == ""
+--- END SOURCE ---<|im_end|>
+<|im_start|>assistant

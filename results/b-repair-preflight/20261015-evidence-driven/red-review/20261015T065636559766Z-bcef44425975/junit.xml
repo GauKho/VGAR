@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="10" skipped="0" tests="10" time="1.401" timestamp="2026-10-15T13:56:37.043491+07:00" hostname="TMT"><testcase classname="tests.test_b_review_regressions" name="test_reload_rejects_changed_terminal_outcome_or_time[status-PASS]" time="0.196"><failure message="Failed: DID NOT RAISE &lt;class 'ValueError'&gt;">tmp_path = WindowsPath('D:/Project/CAPSTONES/M2_week_7_8/results/b-repair-preflight/20261015-evidence-driven/temp/pytest-of-pc/pytest-12/test_reload_rejects_changed_te0')
+field = 'status', value = 'PASS'
+
+    @pytest.mark.parametrize('field,value', [('status', 'PASS'), ('elapsed_seconds', 0)])
+    def test_reload_rejects_changed_terminal_outcome_or_time(tmp_path, field, value):
+        module, store, _, _, _ = ready(tmp_path)
+        with store.session():
+            entry = store.reserve()
+            store.finish(fail_record(store, entry).path)
+        state = json.loads(store.path.read_text(encoding='utf-8'))
+        state['attempts'][0][field] = value
+        state.update({k:v for k,v in module.b_decision(state['attempts']).items() if k != 'next'})
+        api('evidence').atomic_json(store.path, state)
+&gt;       with pytest.raises(ValueError, match='Historical|outcome|accounting'):
+E       Failed: DID NOT RAISE &lt;class 'ValueError'&gt;
+
+tests\test_b_review_regressions.py:22: Failed</failure></testcase><testcase classname="tests.test_b_review_regressions" name="test_reload_rejects_changed_terminal_outcome_or_time[elapsed_seconds-0]" time="0.189"><failure message="Failed: DID NOT RAISE &lt;class 'ValueError'&gt;">tmp_path = WindowsPath('D:/Project/CAPSTONES/M2_week_7_8/results/b-repair-preflight/20261015-evidence-driven/temp/pytest-of-pc/pytest-12/test_reload_rejects_changed_te1')
+field = 'elapsed_seconds', value = 0
+
+    @pytest.mark.parametrize('field,value', [('status', 'PASS'), ('elapsed_seconds', 0)])
+    def test_reload_rejects_changed_terminal_outcome_or_time(tmp_path, field, value):
+        module, store, _, _, _ = ready(tmp_path)
+        with store.session():
+            entry = store.reserve()
+            store.finish(fail_record(store, entry).path)
+        state = json.loads(store.path.read_text(encoding='utf-8'))
+        state['attempts'][0][field] = value
+        state.update({k:v for k,v in module.b_decision(state['attempts']).items() if k != 'next'})
+        api('evidence').atomic_json(store.path, state)
+&gt;       with pytest.raises(ValueError, match='Historical|outcome|accounting'):
+E       Failed: DID NOT RAISE &lt;class 'ValueError'&gt;
+
+tests\test_b_review_regressions.py:22: Failed</failure></testcase><testcase classname="tests.test_b_review_regressions" name="test_protected_input_changed_after_reserve_is_terminal_integrity" time="0.150"><failure message="AssertionError: assert None == 'UNRESOLVED_INTEGRITY'">tmp_path = WindowsPath('D:/Project/CAPSTONES/M2_week_7_8/results/b-repair-preflight/20261015-evidence-driven/temp/pytest-of-pc/pytest-12/test_protected_input_changed_a0')
+
+    def test_protected_input_changed_after_reserve_is_terminal_integrity(tmp_path):
+        _, store, _, _, protected = ready(tmp_path)
+        with store.session():
+            entry = store.reserve()
+            protected.write_bytes(b'changed during run')
+            store.finish(fail_record(store, entry).path)
+&gt;       assert store.state['stop_reason'] == 'UNRESOLVED_INTEGRITY'
+E       AssertionError: assert None == 'UNRESOLVED_INTEGRITY'
+
+tests\test_b_review_regressions.py:32: AssertionError</failure></testcase><testcase classname="tests.test_b_review_regressions" name="test_protected_input_checked_before_generation" time="0.131"><failure message="Failed: DID NOT RAISE &lt;class 'ValueError'&gt;">tmp_path = WindowsPath('D:/Project/CAPSTONES/M2_week_7_8/results/b-repair-preflight/20261015-evidence-driven/temp/pytest-of-pc/pytest-12/test_protected_input_checked_b0')
+
+    def test_protected_input_checked_before_generation(tmp_path):
+        _, store, _, _, protected = ready(tmp_path)
+        with store.session():
+            entry = store.reserve()
+            protected.write_bytes(b'changed during preflight')
+&gt;           with pytest.raises(ValueError, match='Frozen'):
+E           Failed: DID NOT RAISE &lt;class 'ValueError'&gt;
+
+tests\test_b_review_regressions.py:41: Failed</failure></testcase><testcase classname="tests.test_b_review_regressions" name="test_registration_can_recover_after_campaign_save_crash[runtime]" time="0.082"><failure message="FileExistsError: [WinError 183] Cannot create a file when that file already exists: 'D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\b-repair-preflight\\20261015-evidence-driven\\temp\\pytest-of-pc\\pytest-12\\test_registration_can_recover_0\\experiment\\runtime-archives\\r001'">tmp_path = WindowsPath('D:/Project/CAPSTONES/M2_week_7_8/results/b-repair-preflight/20261015-evidence-driven/temp/pytest-of-pc/pytest-12/test_registration_can_recover_0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000228FF6D31D0&gt;
+registration = 'runtime'
+
+    @pytest.mark.parametrize('registration', ['runtime', 'prompt'])
+    def test_registration_can_recover_after_campaign_save_crash(tmp_path, monkeypatch, registration):
+        module, store, _, proof, _ = setup_store(tmp_path)
+        if registration == 'prompt':
+            with store.session():
+                store.register_runtime('initial', proof)
+        def register():
+            if registration == 'runtime':
+                store.register_runtime('initial', proof)
+            else:
+                store.register_prompt('m2-w78-v10', 'initial prompt')
+        with store.session():
+            with monkeypatch.context() as patch:
+                patch.setattr(store, '_save', lambda: (_ for _ in ()).throw(OSError('injected save crash')))
+                with pytest.raises(OSError, match='injected'):
+                    register()
+        store = module.BExperimentStore.open(store.directory)
+        with store.session():
+&gt;           register()
+
+tests\test_b_review_regressions.py:64: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_b_review_regressions.py:54: in register
+    store.register_runtime('initial', proof)
+src\vgar_m2_w78\b_experiment.py:160: in register_runtime
+    folder.mkdir(parents=True, exist_ok=False)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('D:/Project/CAPSTONES/M2_week_7_8/results/b-repair-preflight/20261015-evidence-driven/temp/pytest-of-pc/pytest-12/test_registration_can_recover_0/experiment/runtime-archives/r001')
+mode = 511, parents = True, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+&gt;           os.mkdir(self, mode)
+E           FileExistsError: [WinError 183] Cannot create a file when that file already exists: 'D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\b-repair-preflight\\20261015-evidence-driven\\temp\\pytest-of-pc\\pytest-12\\test_registration_can_recover_0\\experiment\\runtime-archives\\r001'
+
+C:\Program Files\Python311\Lib\pathlib.py:1116: FileExistsError</failure></testcase><testcase classname="tests.test_b_review_regressions" name="test_registration_can_recover_after_campaign_save_crash[prompt]" time="0.107"><failure message="ValueError: Revision is append-only">tmp_path = WindowsPath('D:/Project/CAPSTONES/M2_week_7_8/results/b-repair-preflight/20261015-evidence-driven/temp/pytest-of-pc/pytest-12/test_registration_can_recover_1')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000002288004C3D0&gt;
+registration = 'prompt'
+
+    @pytest.mark.parametrize('registration', ['runtime', 'prompt'])
+    def test_registration_can_recover_after_campaign_save_crash(tmp_path, monkeypatch, registration):
+        module, store, _, proof, _ = setup_store(tmp_path)
+        if registration == 'prompt':
+            with store.session():
+                store.register_runtime('initial', proof)
+        def register():
+            if registration == 'runtime':
+                store.register_runtime('initial', proof)
+            else:
+                store.register_prompt('m2-w78-v10', 'initial prompt')
+        with store.session():
+            with monkeypatch.context() as patch:
+                patch.setattr(store, '_save', lambda: (_ for _ in ()).throw(OSError('injected save crash')))
+                with pytest.raises(OSError, match='injected'):
+                    register()
+        store = module.BExperimentStore.open(store.directory)
+        with store.session():
+&gt;           register()
+
+tests\test_b_review_regressions.py:64: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_b_review_regressions.py:56: in register
+    store.register_prompt('m2-w78-v10', 'initial prompt')
+src\vgar_m2_w78\b_experiment.py:204: in register_prompt
+    self._register('prompts', version, dict(path=str(path), template_hash=digest(data),
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;vgar_m2_w78.b_experiment.BExperimentStore object at 0x000002288004CCD0&gt;
+group = 'prompts', name = 'm2-w78-v10'
+data = {'archives': {'D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\b-repair-preflight\\20261015-evidence-driven\\temp\\pytes...vidence-driven\\temp\\pytest-of-pc\\pytest-12\\test_registration_can_recover_1\\project\\prompts\\repair_v10.txt', ...}
+
+    def _register(self, group, name, data):
+        path = self.directory/'revisions'/f'{name}.json'
+        if path.exists() or name in self.state[group]:
+&gt;           raise ValueError('Revision is append-only')
+E           ValueError: Revision is append-only
+
+src\vgar_m2_w78\b_experiment.py:130: ValueError</failure></testcase><testcase classname="tests.test_b_review_regressions" name="test_reservation_is_saved_before_directory_creation" time="0.130"><failure message="assert 0 == 1&#10; +  where 0 = len([])">tmp_path = WindowsPath('D:/Project/CAPSTONES/M2_week_7_8/results/b-repair-preflight/20261015-evidence-driven/temp/pytest-of-pc/pytest-12/test_reservation_is_saved_befo0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000228FDDA7510&gt;
+
+    def test_reservation_is_saved_before_directory_creation(tmp_path, monkeypatch):
+        module, store, _, _, _ = ready(tmp_path)
+        original = Path.mkdir
+        def fail_attempt_directory(path, *args, **kwargs):
+            if path.name == '01' and path.parent.name == 'attempts':
+                raise OSError('injected mkdir crash')
+            return original(path, *args, **kwargs)
+        with store.session(), monkeypatch.context() as patch:
+            patch.setattr(Path, 'mkdir', fail_attempt_directory)
+            with pytest.raises(OSError, match='injected'):
+                store.reserve()
+        recovered = module.BExperimentStore.open(store.directory)
+&gt;       assert len(recovered.state['attempts']) == 1
+E       assert 0 == 1
+E        +  where 0 = len([])
+
+tests\test_b_review_regressions.py:80: AssertionError</failure></testcase><testcase classname="tests.test_b_review_regressions" name="test_pipeline_shaped_integrity_error_stops_not_runtime_retry" time="0.001"><failure message="AssertionError: assert ('runtime' == 'integrity'&#10;  &#10;  - integrity&#10;  + runtime)">def test_pipeline_shaped_integrity_error_stops_not_runtime_retry():
+        result = api('b_experiment').diagnose(dict(status='ERROR', reason='FINALIZATION_ERROR',
+            original_source_unchanged=False, integrity_error='Original source changed', error_detail={}))
+&gt;       assert result['category'] == 'integrity' and result['action'] == 'STOP'
+E       AssertionError: assert ('runtime' == 'integrity'
+E         
+E         - integrity
+E         + runtime)
+
+tests\test_b_review_regressions.py:90: AssertionError</failure></testcase><testcase classname="tests.test_b_review_regressions" name="test_absolute_reservation_deadline_is_not_restarted" time="0.117"><failure message="AttributeError: module 'vgar_m2_w78.b_experiment' has no attribute 'reservation_deadline'">tmp_path = WindowsPath('D:/Project/CAPSTONES/M2_week_7_8/results/b-repair-preflight/20261015-evidence-driven/temp/pytest-of-pc/pytest-12/test_absolute_reservation_dead0')
+
+    def test_absolute_reservation_deadline_is_not_restarted(tmp_path):
+        module, store, _, _, _ = ready(tmp_path)
+        with store.session():
+            entry = store.reserve()
+&gt;           deadline = module.reservation_deadline(entry)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           AttributeError: module 'vgar_m2_w78.b_experiment' has no attribute 'reservation_deadline'
+
+tests\test_b_review_regressions.py:97: AttributeError</failure></testcase><testcase classname="tests.test_b_review_regressions" name="test_crlf_prompt_is_rejected_before_any_attempt_is_reserved" time="0.117"><failure message="Failed: DID NOT RAISE &lt;class 'ValueError'&gt;">tmp_path = WindowsPath('D:/Project/CAPSTONES/M2_week_7_8/results/b-repair-preflight/20261015-evidence-driven/temp/pytest-of-pc/pytest-12/test_crlf_prompt_is_rejected_b0')
+
+    def test_crlf_prompt_is_rejected_before_any_attempt_is_reserved(tmp_path):
+        _, store, root, proof, _ = setup_store(tmp_path)
+        (root/'prompts/repair_v10.txt').write_bytes(b'neutral\r\nformat\r\n')
+        with store.session():
+            store.register_runtime('initial', proof)
+&gt;           with pytest.raises(ValueError, match='LF|line ending'):
+E           Failed: DID NOT RAISE &lt;class 'ValueError'&gt;
+
+tests\test_b_review_regressions.py:108: Failed</failure></testcase></testsuite></testsuites>

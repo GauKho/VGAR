@@ -1,0 +1,17 @@
+{
+    "status":  "NOT_RUN",
+    "complete":  false,
+    "mode":  "ReadSaved",
+    "started_utc":  "2026-10-15T09:00:11.2529774Z",
+    "ended_utc":  null,
+    "cases":  [
+                  {
+                      "letter":  "A",
+                      "task_id":  "single_file_login",
+                      "status":  "NOT_RUN",
+                      "reserved_utc":  "2026-10-15T09:00:11.9218739Z"
+                  }
+              ],
+    "output_root":  "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\delivery-tests\\pytest-4-test_missing_prompt_does_not_h0",
+    "reason":  null
+}

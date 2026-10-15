@@ -1,0 +1,8 @@
+{
+  "template_hash": "sha256:680f20f9c289b47372672ced2db649329718b59c8c8c69cc6ca4e0c7b129286a",
+  "parent_version": "m2-w78-v6",
+  "parent_record": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\adaptive_acceptance\\2026-10-15-v5-plus\\attempts\\02\\20261015T004240341955Z-b5e07ce0a4e0\\run_record.json",
+  "reason": "V6 used whole-file count6 for snippet3 and emitted forbidden test diffs",
+  "hypothesis": "Short source-metadata recipe without example numbers reduces count confusion; tests are read-only",
+  "registered_utc": "2026-10-15T00:49:30.420519+00:00"
+}

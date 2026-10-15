@@ -1,0 +1,67 @@
+{
+  "format": "vgar.m1-handoff.v1",
+  "context_format": "vgar.context.v1",
+  "context_origin": "m1-retrieval",
+  "graph_version": "sha256:ac135fa480d1f999d33e943fc36e003b76a570ba59ee5ba8cf495e76bb285c51",
+  "repo_key": "demo/w7-w8/missing_links",
+  "repository_revision": "fixture-v1",
+  "context_sha256": "sha256:df92101c5b3a86291d0f3e5786efe4afdffa7f9fdb918e375541ae5c91f997a4",
+  "source_digest": "sha256:607bfd316ae45d74b0d8e4b7d76f365617f2b59405bd358055c6ad4afee5642a",
+  "files": {
+    "formatter.py": "sha256:81c4454fb956eba7bba20dd437745bdde15bb1eb15180d9ee457dc8de794ee8d",
+    "tests/test_formatter.py": "sha256:ab756048829f6cb46128e03788854ea8f19d7f44537867a1afc0b8bc29b2cee0"
+  },
+  "source_scope": {
+    "pattern": "*.py",
+    "excluded_directories": [
+      ".git",
+      ".hg",
+      ".m1-test-tmp",
+      ".mypy_cache",
+      ".pytest_cache",
+      ".tox",
+      ".venv",
+      ".venv-m1",
+      ".venv-win",
+      "__pycache__",
+      "build",
+      "dist",
+      "node_modules"
+    ],
+    "follow_links": false
+  },
+  "items": {
+    "vgar:demo/w7-w8/missing_links:python:file:formatter.py": {
+      "path": "formatter.py",
+      "symbol": "formatter.py",
+      "range": {
+        "start_line": 1,
+        "start_col": 0,
+        "end_line": 3,
+        "end_col": 0
+      },
+      "start_byte": 0,
+      "end_byte": 35,
+      "snippet_sha256": "sha256:81c4454fb956eba7bba20dd437745bdde15bb1eb15180d9ee457dc8de794ee8d"
+    },
+    "vgar:demo/w7-w8/missing_links:python:file:tests/test_formatter.py": {
+      "path": "tests/test_formatter.py",
+      "symbol": "tests/test_formatter.py",
+      "range": {
+        "start_line": 1,
+        "start_col": 0,
+        "end_line": 16,
+        "end_col": 0
+      },
+      "start_byte": 0,
+      "end_byte": 417,
+      "snippet_sha256": "sha256:ab756048829f6cb46128e03788854ea8f19d7f44537867a1afc0b8bc29b2cee0"
+    }
+  },
+  "range_encoding": "utf-8-bytes",
+  "line_base": 1,
+  "end_exclusive": true,
+  "snippet_policy": "whole-range-no-wrapper",
+  "counter_label": "local-hf:Qwen/Qwen3-4B-Instruct-2507@cdbee75f17c01a7cc42f958dc650907174af0554:sha256=aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4:no-special-tokens",
+  "token_budget_unit": "snippets-only"
+}

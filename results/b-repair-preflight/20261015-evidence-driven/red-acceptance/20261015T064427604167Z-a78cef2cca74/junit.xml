@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="2" time="0.745" timestamp="2026-10-15T13:44:28.081166+07:00" hostname="TMT"><testcase classname="tests.test_b_acceptance" name="test_b_acceptance_rejects_missing_provenance_and_real_diagnostics" time="0.018"><failure message="Failed: Planned M2 API not implemented: b_acceptance">module = 'b_acceptance'
+
+    def api(module):
+        try:
+&gt;           return importlib.import_module('vgar_m2_w78.' + module)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_bootstrap.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'vgar_m2_w78.b_acceptance', package = None
+
+    def import_module(name, package=None):
+        """Import a module.
+    
+        The 'package' argument is required when performing a relative import. It
+        specifies the package to use as the anchor point from which to resolve the
+        relative import to an absolute import.
+    
+        """
+        level = 0
+        if name.startswith('.'):
+            if not package:
+                msg = ("the 'package' argument is required to perform a relative "
+                       "import for {!r}")
+                raise TypeError(msg.format(name))
+            for character in name:
+                if character != '.':
+                    break
+                level += 1
+&gt;       return _bootstrap._gcd_import(name[level:], package, level)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ModuleNotFoundError: No module named 'vgar_m2_w78.b_acceptance'
+
+C:\Program Files\Python311\Lib\importlib\__init__.py:126: ModuleNotFoundError
+
+During handling of the above exception, another exception occurred:
+
+tmp_path = WindowsPath('D:/Project/CAPSTONES/M2_week_7_8/results/b-repair-preflight/20261015-evidence-driven/temp/pytest-of-pc/pytest-6/test_b_acceptance_rejects_miss0')
+
+    def test_b_acceptance_rejects_missing_provenance_and_real_diagnostics(tmp_path):
+        path = tmp_path/'run_record.json'
+        api('evidence').atomic_json(path, dict(status='PASS', mode='real', stages={}))
+&gt;       errors = api('b_acceptance').audit_b_pass(path, {'model': {}, 'task': {}, 'policy': {}, 'runtime_root': str(tmp_path)}, {})
+                 ^^^^^^^^^^^^^^^^^^^
+
+tests\test_b_acceptance.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+module = 'b_acceptance'
+
+    def api(module):
+        try:
+            return importlib.import_module('vgar_m2_w78.' + module)
+        except ModuleNotFoundError:
+&gt;           pytest.fail('Planned M2 API not implemented: ' + module)
+E           Failed: Planned M2 API not implemented: b_acceptance
+
+tests\test_bootstrap.py:13: Failed</failure></testcase><testcase classname="tests.test_b_acceptance" name="test_pipeline_guard_runs_before_any_generation" time="0.654"><failure message="TypeError: run_repair() got an unexpected keyword argument 'before_generation'">m1_case = (RepairTask(task_id='single_file_login', issue_text='auth.py login accepts whitespace-only names; trim the name before...', 'pytest.ini'), trusted_fixture=True), &lt;vgar.graph.token_counter.LocalTokenizerCounter object at 0x0000025D0E9D3D10&gt;)
+tmp_path = WindowsPath('D:/Project/CAPSTONES/M2_week_7_8/results/b-repair-preflight/20261015-evidence-driven/temp/pytest-of-pc/pytest-6/test_pipeline_guard_runs_befor0')
+
+    def test_pipeline_guard_runs_before_any_generation(m1_case, tmp_path):
+        task, counter = m1_case
+        def reject(run, prompt):
+            raise ValueError('Duplicate unchanged real generation is forbidden')
+        generator = SimpleNamespace(mode='fake', generate=lambda *a: pytest.fail('Generation passed rejected guard'))
+&gt;       result = api('pipeline').run_repair(task, api('contracts').RepairPolicy(), generator, None,
+            tmp_path/'runs', m1_counter=counter, tokenizer=CharacterChatTokenizer(),
+            temp_root=tmp_path/'temp', before_generation=reject)
+E       TypeError: run_repair() got an unexpected keyword argument 'before_generation'
+
+tests\test_b_acceptance.py:22: TypeError</failure></testcase></testsuite></testsuites>

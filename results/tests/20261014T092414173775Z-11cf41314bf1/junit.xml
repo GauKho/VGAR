@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="4" skipped="0" tests="4" time="20.590" timestamp="2026-10-14T16:24:14.618107+07:00" hostname="TMT"><testcase classname="tests.test_finalization" name="test_terminal_record_never_passes_when_finalization_fails[bundle]" time="6.650"><failure message="OSError: injected bundle failure">m1_case = (RepairTask(task_id='single_file_login', issue_text='auth.py login accepts whitespace-only names; trim the name before...', 'pytest.ini'), trusted_fixture=True), &lt;vgar.graph.token_counter.LocalTokenizerCounter object at 0x0000018CB75D0450&gt;)
+tmp_path = WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-531/test_terminal_record_never_pas0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000018CB526B390&gt;
+fault = 'bundle'
+
+    @pytest.mark.parametrize('fault', ['bundle', 'cleanup'])
+    def test_terminal_record_never_passes_when_finalization_fails(m1_case, tmp_path, monkeypatch, fault):
+        def broken(*args):
+            raise OSError('injected ' + fault + ' failure')
+        if fault == 'bundle':
+            monkeypatch.setattr(api('pipeline'), '_project_bundle', broken)
+        else:
+            monkeypatch.setattr(api('workspace'), '_remove_owned', broken)
+&gt;       result = repair(m1_case, tmp_path)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_finalization.py:23: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_finalization.py:10: in repair
+    return api('pipeline').run_repair(task, api('contracts').RepairPolicy(),
+src\vgar_m2_w78\pipeline.py:173: in run_repair
+    _project_bundle(run, task, lease, applied, verification)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+args = (&lt;vgar_m2_w78.evidence.RunHandle object at 0x0000018CB75BE690&gt;, RepairTask(task_id='single_file_login', issue_text='au...p\\m2-w78-kb4xwb8k\\worktree', ...}, 'complete': True, 'durations_ms': {}, ...}, 'related_fallback_reason': None, ...})
+
+    def broken(*args):
+&gt;       raise OSError('injected ' + fault + ' failure')
+E       OSError: injected bundle failure
+
+tests\test_finalization.py:18: OSError</failure></testcase><testcase classname="tests.test_finalization" name="test_terminal_record_never_passes_when_finalization_fails[cleanup]" time="6.787"><failure message="OSError: injected cleanup failure">m1_case = (RepairTask(task_id='single_file_login', issue_text='auth.py login accepts whitespace-only names; trim the name before...', 'pytest.ini'), trusted_fixture=True), &lt;vgar.graph.token_counter.LocalTokenizerCounter object at 0x0000018CB7718DD0&gt;)
+tmp_path = WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-531/test_terminal_record_never_pas1')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000018CB7719C10&gt;
+fault = 'cleanup'
+
+    @pytest.mark.parametrize('fault', ['bundle', 'cleanup'])
+    def test_terminal_record_never_passes_when_finalization_fails(m1_case, tmp_path, monkeypatch, fault):
+        def broken(*args):
+            raise OSError('injected ' + fault + ' failure')
+        if fault == 'bundle':
+            monkeypatch.setattr(api('pipeline'), '_project_bundle', broken)
+        else:
+            monkeypatch.setattr(api('workspace'), '_remove_owned', broken)
+&gt;       result = repair(m1_case, tmp_path)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_finalization.py:23: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_finalization.py:10: in repair
+    return api('pipeline').run_repair(task, api('contracts').RepairPolicy(),
+src\vgar_m2_w78\pipeline.py:175: in run_repair
+    lease.__exit__()
+src\vgar_m2_w78\workspace.py:80: in __exit__
+    _remove_owned(self.private, self.temp_root)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+args = (WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-531/test_terminal_record_never_pas1/temp/m2-w78-8iwj7ng4'), WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-531/test_terminal_record_never_pas1/temp'))
+
+    def broken(*args):
+&gt;       raise OSError('injected ' + fault + ' failure')
+E       OSError: injected cleanup failure
+
+tests\test_finalization.py:18: OSError</failure></testcase><testcase classname="tests.test_finalization" name="test_bundle_hash_points_to_terminal_canonical_record" time="7.013"><failure message="AssertionError: assert None == 'evidence_bundle.json'">m1_case = (RepairTask(task_id='single_file_login', issue_text='auth.py login accepts whitespace-only names; trim the name before...', 'pytest.ini'), trusted_fixture=True), &lt;vgar.graph.token_counter.LocalTokenizerCounter object at 0x0000018CB5250E50&gt;)
+tmp_path = WindowsPath('C:/Users/pc/AppData/Local/Temp/pytest-of-pc/pytest-531/test_bundle_hash_points_to_ter0')
+
+    def test_bundle_hash_points_to_terminal_canonical_record(m1_case, tmp_path):
+        result = repair(m1_case, tmp_path)
+        record = json.loads(result.path.read_text(encoding='utf-8'))
+&gt;       assert record['artifacts']['bundle'] == 'evidence_bundle.json'
+E       AssertionError: assert None == 'evidence_bundle.json'
+
+tests\test_finalization.py:33: AssertionError</failure></testcase><testcase classname="tests.test_finalization" name="test_regression_disappearing_or_skipping_is_incomplete" time="0.001"><failure message="AssertionError: assert ('FAIL' == 'ERROR'&#10;  &#10;  - ERROR&#10;  + FAIL)">def test_regression_disappearing_or_skipping_is_incomplete():
+        baseline = {'required_ids': ['fix'], 'tests': {'outcomes': {'fix': 'FAIL', 'regression': 'PASS'}}}
+        for state in (None, 'SKIP', 'XFAIL', 'XPASS', 'ERROR'):
+            post = {'status': 'PASS', 'outcomes': {'fix': 'PASS', 'regression': state}}
+            status, reasons = api('verification').assess_transition(baseline, post)
+&gt;           assert status == 'ERROR' and 'VERIFICATION_INCOMPLETE' in reasons
+E           AssertionError: assert ('FAIL' == 'ERROR'
+E             
+E             - ERROR
+E             + FAIL)
+
+tests\test_finalization.py:43: AssertionError</failure></testcase></testsuite></testsuites>

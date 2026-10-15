@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="5" skipped="0" tests="6" time="0.633" timestamp="2026-10-15T13:08:31.963580+07:00" hostname="TMT"><testcase classname="tests.test_workspace_cleanup" name="test_owned_cleanup_retries_sharing_lock_and_records_actual_outcome[32]" time="0.125"><failure message="PermissionError: [WinError 32] Controlled Windows sharing violation: 'D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\cleanup-fix\\20261015-workspace-lock\\temp\\pytest-of-pc\\pytest-0\\test_owned_cleanup_retries_sha0\\temp\\m2-w78-cleanup-test\\seed'">path = 'D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\cleanup-fix\\20261015-workspace-lock\\temp\\pytest-of-pc\\pytest-0\\test_owned_cleanup_retries_sha0\\temp\\m2-w78-cleanup-test\\seed'
+args = (), kwargs = {}
+
+    def rmdir(path, *args, **kwargs):
+        if Path(path) == private / 'seed' and remaining[0]:
+            remaining[0] -= 1
+&gt;           raise windows_error(code, path)
+E           PermissionError: [WinError 32] Controlled Windows sharing violation: 'D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\cleanup-fix\\20261015-workspace-lock\\temp\\pytest-of-pc\\pytest-0\\test_owned_cleanup_retries_sha0\\temp\\m2-w78-cleanup-test\\seed'
+
+tests\test_workspace_cleanup.py:42: PermissionError
+
+During handling of the above exception, another exception occurred:
+
+tmp_path = WindowsPath('D:/Project/CAPSTONES/M2_week_7_8/results/cleanup-fix/20261015-workspace-lock/temp/pytest-of-pc/pytest-0/test_owned_cleanup_retries_sha0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000181D87577D0&gt;
+code = 32
+
+    @pytest.mark.parametrize('code', [32, 33])
+    def test_owned_cleanup_retries_sharing_lock_and_records_actual_outcome(tmp_path, monkeypatch, code):
+        module = api('workspace')
+        root, private = owned_tree(tmp_path)
+        original = os.rmdir
+        remaining = [2]
+    
+        def rmdir(path, *args, **kwargs):
+            if Path(path) == private / 'seed' and remaining[0]:
+                remaining[0] -= 1
+                raise windows_error(code, path)
+            return original(path, *args, **kwargs)
+    
+        monkeypatch.setattr(os, 'rmdir', rmdir)
+&gt;       module._remove_owned(private, root)
+
+tests\test_workspace_cleanup.py:46: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\vgar_m2_w78\workspace.py:57: in _remove_owned
+    shutil.rmtree(private, onerror=onerror)
+C:\Program Files\Python311\Lib\shutil.py:759: in rmtree
+    return _rmtree_unsafe(path, onerror)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Program Files\Python311\Lib\shutil.py:617: in _rmtree_unsafe
+    _rmtree_unsafe(fullname, onerror)
+C:\Program Files\Python311\Lib\shutil.py:626: in _rmtree_unsafe
+    onerror(os.rmdir, path, sys.exc_info())
+src\vgar_m2_w78\workspace.py:56: in onerror
+    func(path)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = 'D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\cleanup-fix\\20261015-workspace-lock\\temp\\pytest-of-pc\\pytest-0\\test_owned_cleanup_retries_sha0\\temp\\m2-w78-cleanup-test\\seed'
+args = (), kwargs = {}
+
+    def rmdir(path, *args, **kwargs):
+        if Path(path) == private / 'seed' and remaining[0]:
+            remaining[0] -= 1
+&gt;           raise windows_error(code, path)
+E           PermissionError: [WinError 32] Controlled Windows sharing violation: 'D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\cleanup-fix\\20261015-workspace-lock\\temp\\pytest-of-pc\\pytest-0\\test_owned_cleanup_retries_sha0\\temp\\m2-w78-cleanup-test\\seed'
+
+tests\test_workspace_cleanup.py:42: PermissionError</failure></testcase><testcase classname="tests.test_workspace_cleanup" name="test_owned_cleanup_retries_sharing_lock_and_records_actual_outcome[33]" time="0.007"><failure message="PermissionError: [WinError 33] Controlled Windows sharing violation: 'D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\cleanup-fix\\20261015-workspace-lock\\temp\\pytest-of-pc\\pytest-0\\test_owned_cleanup_retries_sha1\\temp\\m2-w78-cleanup-test\\seed'">path = 'D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\cleanup-fix\\20261015-workspace-lock\\temp\\pytest-of-pc\\pytest-0\\test_owned_cleanup_retries_sha1\\temp\\m2-w78-cleanup-test\\seed'
+args = (), kwargs = {}
+
+    def rmdir(path, *args, **kwargs):
+        if Path(path) == private / 'seed' and remaining[0]:
+            remaining[0] -= 1
+&gt;           raise windows_error(code, path)
+E           PermissionError: [WinError 33] Controlled Windows sharing violation: 'D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\cleanup-fix\\20261015-workspace-lock\\temp\\pytest-of-pc\\pytest-0\\test_owned_cleanup_retries_sha1\\temp\\m2-w78-cleanup-test\\seed'
+
+tests\test_workspace_cleanup.py:42: PermissionError
+
+During handling of the above exception, another exception occurred:
+
+tmp_path = WindowsPath('D:/Project/CAPSTONES/M2_week_7_8/results/cleanup-fix/20261015-workspace-lock/temp/pytest-of-pc/pytest-0/test_owned_cleanup_retries_sha1')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000181DA796CD0&gt;
+code = 33
+
+    @pytest.mark.parametrize('code', [32, 33])
+    def test_owned_cleanup_retries_sharing_lock_and_records_actual_outcome(tmp_path, monkeypatch, code):
+        module = api('workspace')
+        root, private = owned_tree(tmp_path)
+        original = os.rmdir
+        remaining = [2]
+    
+        def rmdir(path, *args, **kwargs):
+            if Path(path) == private / 'seed' and remaining[0]:
+                remaining[0] -= 1
+                raise windows_error(code, path)
+            return original(path, *args, **kwargs)
+    
+        monkeypatch.setattr(os, 'rmdir', rmdir)
+&gt;       module._remove_owned(private, root)
+
+tests\test_workspace_cleanup.py:46: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\vgar_m2_w78\workspace.py:57: in _remove_owned
+    shutil.rmtree(private, onerror=onerror)
+C:\Program Files\Python311\Lib\shutil.py:759: in rmtree
+    return _rmtree_unsafe(path, onerror)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Program Files\Python311\Lib\shutil.py:617: in _rmtree_unsafe
+    _rmtree_unsafe(fullname, onerror)
+C:\Program Files\Python311\Lib\shutil.py:626: in _rmtree_unsafe
+    onerror(os.rmdir, path, sys.exc_info())
+src\vgar_m2_w78\workspace.py:56: in onerror
+    func(path)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = 'D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\cleanup-fix\\20261015-workspace-lock\\temp\\pytest-of-pc\\pytest-0\\test_owned_cleanup_retries_sha1\\temp\\m2-w78-cleanup-test\\seed'
+args = (), kwargs = {}
+
+    def rmdir(path, *args, **kwargs):
+        if Path(path) == private / 'seed' and remaining[0]:
+            remaining[0] -= 1
+&gt;           raise windows_error(code, path)
+E           PermissionError: [WinError 33] Controlled Windows sharing violation: 'D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\cleanup-fix\\20261015-workspace-lock\\temp\\pytest-of-pc\\pytest-0\\test_owned_cleanup_retries_sha1\\temp\\m2-w78-cleanup-test\\seed'
+
+tests\test_workspace_cleanup.py:42: PermissionError</failure></testcase><testcase classname="tests.test_workspace_cleanup" name="test_owned_cleanup_does_not_swallow_persistent_sharing_lock" time="0.009"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\cleanup-fix\\20261015-workspace-lock\\temp\\pytest-of-pc\\pytest-0\\test_owned_cleanup_does_not_sw0\\temp\\.cleanup-records\\m2-w78-cleanup-test.json'">tmp_path = WindowsPath('D:/Project/CAPSTONES/M2_week_7_8/results/cleanup-fix/20261015-workspace-lock/temp/pytest-of-pc/pytest-0/test_owned_cleanup_does_not_sw0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000181DA870E90&gt;
+
+    def test_owned_cleanup_does_not_swallow_persistent_sharing_lock(tmp_path, monkeypatch):
+        module = api('workspace')
+        root, private = owned_tree(tmp_path)
+        original = os.rmdir
+    
+        def rmdir(path, *args, **kwargs):
+            if Path(path) == private / 'seed':
+                raise windows_error(32, path)
+            return original(path, *args, **kwargs)
+    
+        monkeypatch.setattr(os, 'rmdir', rmdir)
+        with pytest.raises(PermissionError) as caught:
+            module._remove_owned(private, root)
+        assert caught.value.winerror == 32 and private.exists()
+&gt;       report = saved_cleanup(root, private)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_workspace_cleanup.py:72: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_workspace_cleanup.py:29: in saved_cleanup
+    return json.loads((root / '.cleanup-records' / (private.name + '.json')).read_text(encoding='utf-8'))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Program Files\Python311\Lib\pathlib.py:1058: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('D:/Project/CAPSTONES/M2_week_7_8/results/cleanup-fix/20261015-workspace-lock/temp/pytest-of-pc/pytest-0/test_owned_cleanup_does_not_sw0/temp/.cleanup-records/m2-w78-cleanup-test.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\cleanup-fix\\20261015-workspace-lock\\temp\\pytest-of-pc\\pytest-0\\test_owned_cleanup_does_not_sw0\\temp\\.cleanup-records\\m2-w78-cleanup-test.json'
+
+C:\Program Files\Python311\Lib\pathlib.py:1044: FileNotFoundError</failure></testcase><testcase classname="tests.test_workspace_cleanup" name="test_owned_cleanup_propagates_non_sharing_error_without_backoff" time="0.003"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\cleanup-fix\\20261015-workspace-lock\\temp\\pytest-of-pc\\pytest-0\\test_owned_cleanup_propagates_0\\temp\\.cleanup-records\\m2-w78-cleanup-test.json'">tmp_path = WindowsPath('D:/Project/CAPSTONES/M2_week_7_8/results/cleanup-fix/20261015-workspace-lock/temp/pytest-of-pc/pytest-0/test_owned_cleanup_propagates_0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000181DA7BE290&gt;
+
+    def test_owned_cleanup_propagates_non_sharing_error_without_backoff(tmp_path, monkeypatch):
+        module = api('workspace')
+        root, private = owned_tree(tmp_path)
+        original = os.rmdir
+        failure = OSError(errno.EIO, 'Controlled non-sharing I/O error', str(private / 'seed'))
+    
+        def rmdir(path, *args, **kwargs):
+            if Path(path) == private / 'seed':
+                raise failure
+            return original(path, *args, **kwargs)
+    
+        monkeypatch.setattr(os, 'rmdir', rmdir)
+        with pytest.raises(OSError) as caught:
+            module._remove_owned(private, root)
+        assert caught.value is failure
+&gt;       report = saved_cleanup(root, private)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_workspace_cleanup.py:94: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_workspace_cleanup.py:29: in saved_cleanup
+    return json.loads((root / '.cleanup-records' / (private.name + '.json')).read_text(encoding='utf-8'))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Program Files\Python311\Lib\pathlib.py:1058: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('D:/Project/CAPSTONES/M2_week_7_8/results/cleanup-fix/20261015-workspace-lock/temp/pytest-of-pc/pytest-0/test_owned_cleanup_propagates_0/temp/.cleanup-records/m2-w78-cleanup-test.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\cleanup-fix\\20261015-workspace-lock\\temp\\pytest-of-pc\\pytest-0\\test_owned_cleanup_propagates_0\\temp\\.cleanup-records\\m2-w78-cleanup-test.json'
+
+C:\Program Files\Python311\Lib\pathlib.py:1044: FileNotFoundError</failure></testcase><testcase classname="tests.test_workspace_cleanup" name="test_cleanup_ownership_guard_runs_before_any_delete_or_log" time="0.004" /><testcase classname="tests.test_workspace_cleanup" name="test_real_windows_directory_handle_is_released_before_cleanup_returns" time="0.266"><failure message="assert (False)&#10; +  where False = is_set()&#10; +    where is_set = &lt;threading.Event at 0x181d8756110: unset&gt;.is_set">tmp_path = WindowsPath('D:/Project/CAPSTONES/M2_week_7_8/results/cleanup-fix/20261015-workspace-lock/temp/pytest-of-pc/pytest-0/test_real_windows_directory_ha0')
+
+    @pytest.mark.skipif(os.name != 'nt', reason='Real Windows directory sharing handle')
+    def test_real_windows_directory_handle_is_released_before_cleanup_returns(tmp_path):
+        module = api('workspace')
+        root, private = owned_tree(tmp_path)
+        from ctypes import wintypes
+        kernel = ctypes.WinDLL('kernel32', use_last_error=True)
+        kernel.CreateFileW.argtypes = [wintypes.LPCWSTR, wintypes.DWORD, wintypes.DWORD,
+                                       ctypes.c_void_p, wintypes.DWORD, wintypes.DWORD, wintypes.HANDLE]
+        kernel.CreateFileW.restype = wintypes.HANDLE
+        kernel.CloseHandle.argtypes = [wintypes.HANDLE]
+        kernel.CloseHandle.restype = wintypes.BOOL
+        # FILE_SHARE_READ | FILE_SHARE_WRITE, deliberately no FILE_SHARE_DELETE.
+        handle = kernel.CreateFileW(str(private / 'seed'), 0, 3, None, 3, 0x02000000, None)
+        assert handle != ctypes.c_void_p(-1).value, ctypes.get_last_error()
+        closed = threading.Event()
+    
+        def release():
+            kernel.CloseHandle(handle)
+            closed.set()
+    
+        timer = threading.Timer(0.25, release)
+        timer.start()
+        try:
+            module._remove_owned(private, root)
+&gt;           assert closed.is_set() and not private.exists()
+E           assert (False)
+E            +  where False = is_set()
+E            +    where is_set = &lt;threading.Event at 0x181d8756110: unset&gt;.is_set
+
+tests\test_workspace_cleanup.py:131: AssertionError</failure></testcase></testsuite></testsuites>
