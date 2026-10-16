@@ -1,0 +1,140 @@
+{
+  "status": "PASS",
+  "complete": true,
+  "scope": "documentation and saved-evidence QA; no tests/inference rerun",
+  "started_utc": "2026-10-16T07:45:11.314633+00:00",
+  "ended_utc": "2026-10-16T07:45:11.396557+00:00",
+  "task_status_sha256": "cab8b4a214b1abe117044cf741b4da91523d811e4a486c83a2c778b5379d7dcb",
+  "before_sha256": "6c4bbd5db44f04ce52eb3a27cc1c3878ebeaf6f11d68f27f9ef5195cccd2b479",
+  "task_count": 150,
+  "counts": {
+    "CX": 30,
+    "MP": 48,
+    "HT": 47,
+    "CT": 25
+  },
+  "by_week": {
+    "W01-02": {
+      "CX": 10,
+      "MP": 5,
+      "HT": 6
+    },
+    "W03-04": {
+      "HT": 16,
+      "MP": 5,
+      "CX": 1
+    },
+    "W05-06": {
+      "HT": 13,
+      "MP": 4,
+      "CT": 1,
+      "CX": 2
+    },
+    "W07-08": {
+      "MP": 8,
+      "HT": 10,
+      "CX": 1
+    },
+    "W09-10": {
+      "CT": 14,
+      "MP": 4,
+      "CX": 2
+    },
+    "W11-12": {
+      "MP": 8,
+      "CT": 6,
+      "CX": 1,
+      "HT": 1
+    },
+    "W13-14": {
+      "CX": 6,
+      "CT": 4,
+      "MP": 6
+    },
+    "W15-16": {
+      "MP": 8,
+      "CX": 7,
+      "HT": 1
+    }
+  },
+  "changes": {
+    "W05-06-CHUNG-03": {
+      "before": "MP",
+      "after": "HT"
+    },
+    "W05-06-DOD-01": {
+      "before": "CX",
+      "after": "HT"
+    },
+    "W07-08-M2-01": {
+      "before": "MP",
+      "after": "HT"
+    },
+    "W07-08-M2-02": {
+      "before": "MP",
+      "after": "HT"
+    },
+    "W07-08-M2-03": {
+      "before": "CT",
+      "after": "HT"
+    },
+    "W07-08-M2-04": {
+      "before": "MP",
+      "after": "HT"
+    },
+    "W07-08-M2-05": {
+      "before": "MP",
+      "after": "HT"
+    },
+    "W07-08-M2-06": {
+      "before": "MP",
+      "after": "HT"
+    },
+    "W07-08-M2-07": {
+      "before": "MP",
+      "after": "HT"
+    },
+    "W07-08-DOD-01": {
+      "before": "CX",
+      "after": "HT"
+    }
+  },
+  "table_count": 20,
+  "missing_local_links": [],
+  "real_saved_audits": {
+    "A": {
+      "status": "PASS",
+      "gate_errors": [],
+      "observed_status": "PASS",
+      "exception_diagnostics": [],
+      "record": "D:\\Project\\CAPSTONES\\VGAR\\M2_week_7_8\\results\\final_acceptance\\2026-10-15-v11-r002\\A\\20261015T072711985584Z-dc47a96417ee\\run_record.json",
+      "canonical_sha256": "sha256:31a34c16e9cac7a8fe0a9b62d4a2a904308280c3291d9aa2f5f514445549604e"
+    },
+    "B": {
+      "status": "PASS",
+      "gate_errors": [],
+      "observed_status": "PASS",
+      "exception_diagnostics": [],
+      "record": "D:\\Project\\CAPSTONES\\VGAR\\M2_week_7_8\\results\\final_acceptance\\2026-10-15-v11-r002\\B\\20261015T072938917449Z-a0075c35e2ee\\run_record.json",
+      "canonical_sha256": "sha256:24d9dccba4989a16336986685e7c03ca3d4b4eba08772acfed8659ffa6f80b47"
+    },
+    "C": {
+      "status": "PASS",
+      "gate_errors": [],
+      "observed_status": "PASS",
+      "exception_diagnostics": [],
+      "record": "D:\\Project\\CAPSTONES\\VGAR\\M2_week_7_8\\results\\final_acceptance\\2026-10-15-v11-r002\\C\\20261015T073254806383Z-68a9a593f8d6\\run_record.json",
+      "canonical_sha256": "sha256:258cf19b463be43c372ad2dfe7b0beb28a6781cfc6b3ade70aa42dac116eeba2"
+    }
+  },
+  "core_tests": 236,
+  "vgar_suite": {
+    "PASS": 571,
+    "SKIP": 2,
+    "FAIL": 1
+  },
+  "retrieval_attempted": 25,
+  "retrieval_valid_pairs": 22,
+  "m1_owner_signoff": "PENDING_M1_OWNER_REVIEW",
+  "integration_hashes_match": true
+}

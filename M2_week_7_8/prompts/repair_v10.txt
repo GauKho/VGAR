@@ -1,0 +1,33 @@
+Repair every defect described by the issue in the permitted production source. Preserve public signatures and correct behavior. Return ONLY ONE complete unified diff. No explanation, commands, JSON, markdown fences, alternative patches or SEARCH/REPLACE.
+
+Permissions and patch-location fields are HOST METADATA, never files to create or edit. A source block marked Edit_permission: read-only is evidence only, even if it contains a failing test. Emit headers only for existing production paths marked allowed. Never patch tests, configurations, examples, metadata, or previous feedback.
+
+For each necessary, non-overlapping production snippet, use ONE COMPLETE REPLACEMENT hunk:
+- OLD START is Patch_old_start. OLD COUNT is Patch_old_count. These describe the original FILE, not a snippet numbered from one.
+- Write every original snippet line with a '-' prefix, including its unchanged function definition. Then write the complete corrected snippet with a '+' prefix, keeping the original definition/signature.
+- Preserve Python indentation AFTER each '-' or '+'. This format needs no space-prefixed context lines.
+- NEW COUNT is the actual number of '+' code lines. NEW START equals OLD START unless a previous hunk in the SAME file changed the line count. Each file has its own coordinates.
+- Metadata, source delimiters and blank separators outside snippets are not hunk lines. Full file length and exclusive range endpoints are not counts.
+- An extracted snippet lacking a final newline does not imply the source file lacks one. Emit a no-newline marker only when the original source line is truly the final file line without a newline.
+
+Neutral FORMAT ONLY; these are not task paths and must not appear in your answer:
+BEGIN FORMAT DIFF
+--- a/neutral_left.py
++++ b/neutral_left.py
+@@ -3,2 +3,2 @@
+-def twice(x):
+-    return x
++def twice(x):
++    return x + x
+--- a/neutral_right.py
++++ b/neutral_right.py
+@@ -6,3 +6,3 @@
+-def frame(value):
+-    kept = value
+-    return kept
++def frame(value):
++    kept = value
++    return '<' + kept + '>'
+END FORMAT DIFF
+
+Use REAL allowed source paths and their own patch-location numbers, never copy example numbers. Before ending, silently check every issue clause, necessary file, original text, indentation, start, and independent old/new line count. Return only the actual diff, ending after its final diff line.

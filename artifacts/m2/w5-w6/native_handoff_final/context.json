@@ -1,0 +1,52 @@
+{
+  "graph_version": "sha256:bd66a4ed8fb2eb962d1a03cfb14df584e848fd9b15457d8bf7313589da27cc3f",
+  "anchor_ids": [
+    "vgar:m2-handoff-fixture:python:file:src/auth.py",
+    "vgar:m2-handoff-fixture:python:function:src/auth.py:auth.normalize_token",
+    "vgar:m2-handoff-fixture:python:function:src/service.py:service.authenticate"
+  ],
+  "items": [
+    {
+      "node_id": "vgar:m2-handoff-fixture:python:file:src/auth.py",
+      "path": "src/auth.py",
+      "symbol": "src/auth.py",
+      "range": {
+        "start_line": 1,
+        "start_col": 0,
+        "end_line": 4,
+        "end_col": 0
+      },
+      "snippet": "def normalize_token(token: str) -> str:\n    \"\"\"Chuẩn hóa token.\"\"\"\n    return token\n",
+      "relevance_score": 0.8875,
+      "graph_distance": 0,
+      "graph_rationale": [
+        "TASK_ANCHOR"
+      ],
+      "confidence": 0.7,
+      "token_count": 22
+    },
+    {
+      "node_id": "vgar:m2-handoff-fixture:python:file:src/service.py",
+      "path": "src/service.py",
+      "symbol": "src/service.py",
+      "range": {
+        "start_line": 1,
+        "start_col": 0,
+        "end_line": 6,
+        "end_col": 0
+      },
+      "snippet": "from auth import normalize_token\n\n\ndef authenticate(token: str) -> bool:\n    return normalize_token(token) == 'valid'\n",
+      "relevance_score": 0.7250000000000001,
+      "graph_distance": 1,
+      "graph_rationale": [
+        "TASK_ANCHOR",
+        "SOURCE_FILE:vgar:m2-handoff-fixture:python:function:src/service.py:service.authenticate->vgar:m2-handoff-fixture:python:file:src/service.py"
+      ],
+      "confidence": 0.4,
+      "token_count": 25
+    }
+  ],
+  "total_token_count": 47,
+  "token_budget": 8000,
+  "truncated": false
+}

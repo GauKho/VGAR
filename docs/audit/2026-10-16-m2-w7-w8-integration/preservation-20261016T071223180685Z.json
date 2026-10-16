@@ -1,0 +1,23 @@
+{
+  "status": "PASS",
+  "stage": "final",
+  "source_root": "D:\\Project\\CAPSTONES\\M2_week_7_8",
+  "destination": "D:\\Project\\CAPSTONES\\VGAR\\M2_week_7_8",
+  "copied_files": 13071,
+  "copied_directories": 5252,
+  "bytes": 203602347,
+  "copy_mismatches": [],
+  "original_source": {
+    "changed": [],
+    "missing": []
+  },
+  "source_added_files": [],
+  "protected_vgar": {
+    "changed": [],
+    "missing": []
+  },
+  "backup_errors": [],
+  "started_utc": "2026-10-16T07:12:23.180685+00:00",
+  "ended_utc": "2026-10-16T07:12:29.548830+00:00",
+  "duration_seconds": 6.375
+}

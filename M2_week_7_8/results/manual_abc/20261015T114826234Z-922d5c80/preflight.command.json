@@ -1,0 +1,14 @@
+{
+    "argv":  [
+                 "D:\\Project\\CAPSTONES\\M2_week_7_8\\.venv\\Scripts\\python.exe",
+                 "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\manual_abc\\20261015T114826234Z-922d5c80\\verification_job.py",
+                 "preflight",
+                 "D:\\Project\\CAPSTONES\\M2_week_7_8",
+                 "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\manual_abc\\20261015T114826234Z-922d5c80",
+                 "Run"
+             ],
+    "exit_code":  0,
+    "started_utc":  "2026-10-15T11:48:26.4568569Z",
+    "ended_utc":  "2026-10-15T11:48:29.8583635Z",
+    "duration_ms":  3396
+}

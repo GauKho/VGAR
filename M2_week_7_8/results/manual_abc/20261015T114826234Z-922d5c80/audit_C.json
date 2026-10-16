@@ -1,0 +1,15 @@
+{
+  "status": "PASS",
+  "gate_errors": [],
+  "observed_status": "PASS",
+  "exception_diagnostics": [],
+  "record": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\manual_abc\\20261015T114826234Z-922d5c80\\C\\20261015T115427854568Z-9e414afa7685\\run_record.json",
+  "canonical_sha256": "sha256:66f412d69fb91cc74a3e6142b1959c2c5955ec8c307e0af346160606331dd056",
+  "task_id": "missing_links",
+  "letter": "C",
+  "runtime_revision": "r002",
+  "prompt_version": "m2-w78-v11",
+  "input_tokens": 1169,
+  "output_tokens": 43,
+  "duration_ms": 66906
+}

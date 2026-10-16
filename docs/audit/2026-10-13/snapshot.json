@@ -1,0 +1,144 @@
+{
+  "audit_date_local": "2026-10-13",
+  "recorded_at_utc": "2026-10-13T04:20:39.979578+00:00",
+  "repo": "D:\\Project\\CAPSTONES\\VGAR",
+  "branch": "integration/main-m1-w5-w6-20261013",
+  "head": "73814b8f89666c71b1911e42e98b8ecc7f6e3e99",
+  "main_sha": "b39e0dbf87645d39b9a68e87b19d0655df264a05",
+  "m1_sha": "73814b8f89666c71b1911e42e98b8ecc7f6e3e99",
+  "main_is_ancestor": true,
+  "plan": "D:\\Project\\CAPSTONES\\New_task\\project_plan_16_weeks.md",
+  "plan_sha256": "e349be0599fb2082b2ae4caa52241332a1c8b776ffe54b2c85fdf535e7c1ea53",
+  "tracked_files": 260,
+  "directories": {
+    ".claude": 2,
+    ".env.example": 1,
+    ".gitignore": 1,
+    "README.md": 1,
+    "artifacts": 30,
+    "configs": 8,
+    "docs": 25,
+    "pyproject.toml": 1,
+    "scripts": 37,
+    "src": 93,
+    "tests": 61
+  },
+  "checklist_items": 150,
+  "checklist_by_group": {
+    "W01-02-CHUNG": 6,
+    "W01-02-M1": 4,
+    "W01-02-M2": 4,
+    "W01-02-M3": 4,
+    "W01-02-DOD": 3,
+    "W03-04-CHUNG": 3,
+    "W03-04-M1": 7,
+    "W03-04-M2": 4,
+    "W03-04-M3": 5,
+    "W03-04-DOD": 3,
+    "W05-06-CHUNG": 3,
+    "W05-06-M1": 7,
+    "W05-06-M2": 4,
+    "W05-06-M3": 4,
+    "W05-06-DOD": 2,
+    "W07-08-CHUNG": 3,
+    "W07-08-M1": 3,
+    "W07-08-M2": 7,
+    "W07-08-M3": 4,
+    "W07-08-DOD": 2,
+    "W09-10-CHUNG": 3,
+    "W09-10-M1": 4,
+    "W09-10-M2": 7,
+    "W09-10-M3": 4,
+    "W09-10-DOD": 2,
+    "W11-12-CHUNG": 3,
+    "W11-12-M1": 3,
+    "W11-12-M2": 4,
+    "W11-12-M3": 4,
+    "W11-12-DOD": 2,
+    "W13-14-CHUNG": 3,
+    "W13-14-M1": 4,
+    "W13-14-M2": 3,
+    "W13-14-M3": 4,
+    "W13-14-DOD": 2,
+    "W15-16-CHUNG": 3,
+    "W15-16-M1": 3,
+    "W15-16-M2": 3,
+    "W15-16-M3": 4,
+    "W15-16-DOD": 3
+  },
+  "python": "3.11.6 (tags/v3.11.6:8b6ee5b, Oct  2 2023, 14:57:12) [MSC v.1935 64 bit (AMD64)]",
+  "interpreter": "D:\\Project\\CAPSTONES\\vgar_mcp_mvp\\.venv\\Scripts\\python.exe",
+  "platform": "Windows-10-10.0.26300-SP0",
+  "packages": {
+    "pytest": "8.4.2",
+    "pydantic": "2.13.5",
+    "mcp": "1.30.0",
+    "langchain": "1.4.0",
+    "langgraph": "1.2.11",
+    "langchain-mcp-adapters": "0.3.2",
+    "tree-sitter": "0.25.2",
+    "tree-sitter-python": "0.25.0",
+    "torch": "2.11.0+cu128",
+    "transformers": "4.57.6",
+    "tokenizers": "0.22.2",
+    "pyarrow": "25.0.1",
+    "datasets": "4.8.5",
+    "peft": "MISSING",
+    "trl": "MISSING",
+    "matplotlib": "MISSING"
+  },
+  "tests": {
+    "main-baseline": {
+      "suite": {
+        "name": "pytest",
+        "errors": "0",
+        "failures": "0",
+        "skipped": "1",
+        "tests": "197",
+        "time": "63.075",
+        "timestamp": "2026-10-13T10:42:33.462309+07:00",
+        "hostname": "TMT"
+      },
+      "non_passing": [
+        {
+          "class": "tests.m2.test_workspace",
+          "name": "test_external_symlink_rejected",
+          "outcome": "skipped",
+          "message": "symlink creation is not available"
+        }
+      ]
+    },
+    "integrated-tests": {
+      "suite": {
+        "name": "pytest",
+        "errors": "0",
+        "failures": "1",
+        "skipped": "2",
+        "tests": "414",
+        "time": "51.332",
+        "timestamp": "2026-10-13T10:45:16.970099+07:00",
+        "hostname": "TMT"
+      },
+      "non_passing": [
+        {
+          "class": "tests.m2.test_workspace",
+          "name": "test_external_symlink_rejected",
+          "outcome": "skipped",
+          "message": "symlink creation is not available"
+        },
+        {
+          "class": "tests.test_hf_model",
+          "name": "test_local_chat_model_uses_one_greedy_generation_config",
+          "outcome": "failure",
+          "message": "KeyError: 'generation_config'"
+        },
+        {
+          "class": "tests.test_w7_w8_m1",
+          "name": "test_plot_has_bounded_graph_and_complete_resolver_counts",
+          "outcome": "skipped",
+          "message": "could not import 'matplotlib': No module named 'matplotlib'"
+        }
+      ]
+    }
+  }
+}

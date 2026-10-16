@@ -1,0 +1,35 @@
+﻿**********************
+Windows PowerShell transcript start
+Start time: 20261013105410
+Username: TMT\CodexSandboxOffline
+RunAs User: TMT\CodexSandboxOffline
+Configuration Name: 
+Machine: TMT (Microsoft Windows NT 10.0.26300.0)
+Host Application: C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -Command try { [Console]::OutputEncoding=[System.Text.Encoding]::UTF8 } catch {}
+$env:PYTHONUTF8 = '1'
+$env:PYTHONPATH = 'D:\Project\CAPSTONES\VGAR\src'
+$env:PYTHONDONTWRITEBYTECODE = '1'
+Start-Transcript -LiteralPath 'D:\Project\CAPSTONES\VGAR\docs\audit\2026-10-13\probe-findings.log'
+& 'D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Scripts\python.exe' docs\audit\2026-10-13\probe_findings.py
+$probeExit = $LASTEXITCODE
+Write-Output "probe_script_exit=$probeExit"
+Stop-Transcript
+if ($probeExit -eq 0) { Get-Content -Raw -Encoding UTF8 -LiteralPath 'docs\audit\2026-10-13\probe-findings.json' }
+exit $probeExit
+Process ID: 21288
+PSVersion: 5.1.26100.9444
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.26100.9444
+BuildVersion: 10.0.26100.9444
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Transcript started, output file is D:\Project\CAPSTONES\VGAR\docs\audit\2026-10-13\probe-findings.log
+
+probe_script_exit=0
+**********************
+Windows PowerShell transcript end
+End time: 20261013105413
+**********************

@@ -1,0 +1,7 @@
+{
+    "before_sha256":  "e85df9f6e1b2cf05e1afe66b0ca84137aa258040fb333bbef9c153431fb929ee",
+    "after_tests_sha256":  "052da10f114d76615a9acb25065432888270d2a39847654da7e09d116dd2971e",
+    "restored_own_test_side_effect":  true,
+    "current_sha256":  "e85df9f6e1b2cf05e1afe66b0ca84137aa258040fb333bbef9c153431fb929ee",
+    "note":  "No git reset/checkout; only fixture bytes produced by this test session restored from pre-test backup."
+}

@@ -1,0 +1,469 @@
+{
+  "graph_version": "sha256:bd66a4ed8fb2eb962d1a03cfb14df584e848fd9b15457d8bf7313589da27cc3f",
+  "repo_key": "m2-handoff-fixture",
+  "repository_revision": "m2-w56-fixture-v1",
+  "nodes": [
+    {
+      "id": "vgar:m2-handoff-fixture:repository",
+      "type": "Repository",
+      "repo_key": "m2-handoff-fixture",
+      "name": "handoff_fixture",
+      "qualified_name": "m2-handoff-fixture",
+      "path": null,
+      "language": null,
+      "range": null,
+      "properties": {
+        "root_uri": "file:///D:/Project/CAPSTONES/VGAR/artifacts/m2/w5-w6/handoff_fixture",
+        "default_language": "python",
+        "repository_revision": "m2-w56-fixture-v1"
+      },
+      "content_hash": "sha256:a97836a2f0654ac66ecdc48c9f1cba2a9fd5732588f8d0e64f862ab5869a23d5",
+      "graph_version": "sha256:bd66a4ed8fb2eb962d1a03cfb14df584e848fd9b15457d8bf7313589da27cc3f"
+    },
+    {
+      "id": "vgar:m2-handoff-fixture:python:file:src/auth.py",
+      "type": "File",
+      "repo_key": "m2-handoff-fixture",
+      "name": "auth.py",
+      "qualified_name": "src/auth.py",
+      "path": "src/auth.py",
+      "language": "python",
+      "range": {
+        "start_line": 1,
+        "start_col": 0,
+        "start_byte": 0,
+        "end_line": 4,
+        "end_col": 0,
+        "end_byte": 87
+      },
+      "properties": {
+        "extension": ".py",
+        "size_bytes": 87,
+        "parse_status": "parsed",
+        "is_test_file": false
+      },
+      "content_hash": "sha256:9205364b034f4972adae9a15b135566cb9d3727a4adb1bf5d7ef8cfe8bf09cd6",
+      "graph_version": "sha256:bd66a4ed8fb2eb962d1a03cfb14df584e848fd9b15457d8bf7313589da27cc3f"
+    },
+    {
+      "id": "vgar:m2-handoff-fixture:python:module:src/auth.py:auth",
+      "type": "Module",
+      "repo_key": "m2-handoff-fixture",
+      "name": "auth",
+      "qualified_name": "auth",
+      "path": "src/auth.py",
+      "language": "python",
+      "range": {
+        "start_line": 1,
+        "start_col": 0,
+        "start_byte": 0,
+        "end_line": 4,
+        "end_col": 0,
+        "end_byte": 87
+      },
+      "properties": {
+        "module_name": "auth",
+        "is_package": false,
+        "is_external": false,
+        "resolution_status": "resolved"
+      },
+      "content_hash": "sha256:9205364b034f4972adae9a15b135566cb9d3727a4adb1bf5d7ef8cfe8bf09cd6",
+      "graph_version": "sha256:bd66a4ed8fb2eb962d1a03cfb14df584e848fd9b15457d8bf7313589da27cc3f"
+    },
+    {
+      "id": "vgar:m2-handoff-fixture:python:function:src/auth.py:auth.normalize_token",
+      "type": "Function",
+      "repo_key": "m2-handoff-fixture",
+      "name": "normalize_token",
+      "qualified_name": "auth.normalize_token",
+      "path": "src/auth.py",
+      "language": "python",
+      "range": {
+        "start_line": 1,
+        "start_col": 0,
+        "end_line": 3,
+        "end_col": 16,
+        "start_byte": 0,
+        "end_byte": 86
+      },
+      "properties": {
+        "signature": "def normalize_token(token: str) -> str",
+        "parameters": [
+          "token"
+        ],
+        "return_annotation": "str",
+        "decorators": [],
+        "is_async": false,
+        "visibility": "public"
+      },
+      "content_hash": "sha256:2d3e9060013bb823b85086754ddeeef00fc712e69c83ca5805504da7d69dc41d",
+      "graph_version": "sha256:bd66a4ed8fb2eb962d1a03cfb14df584e848fd9b15457d8bf7313589da27cc3f"
+    },
+    {
+      "id": "vgar:m2-handoff-fixture:python:file:src/service.py",
+      "type": "File",
+      "repo_key": "m2-handoff-fixture",
+      "name": "service.py",
+      "qualified_name": "src/service.py",
+      "path": "src/service.py",
+      "language": "python",
+      "range": {
+        "start_line": 1,
+        "start_col": 0,
+        "start_byte": 0,
+        "end_line": 6,
+        "end_col": 0,
+        "end_byte": 118
+      },
+      "properties": {
+        "extension": ".py",
+        "size_bytes": 118,
+        "parse_status": "parsed",
+        "is_test_file": false
+      },
+      "content_hash": "sha256:2d5b2b98cefeb025fc9d7a48712afe5a3cf878872e51d3f8514e0395db1e18ed",
+      "graph_version": "sha256:bd66a4ed8fb2eb962d1a03cfb14df584e848fd9b15457d8bf7313589da27cc3f"
+    },
+    {
+      "id": "vgar:m2-handoff-fixture:python:module:src/service.py:service",
+      "type": "Module",
+      "repo_key": "m2-handoff-fixture",
+      "name": "service",
+      "qualified_name": "service",
+      "path": "src/service.py",
+      "language": "python",
+      "range": {
+        "start_line": 1,
+        "start_col": 0,
+        "start_byte": 0,
+        "end_line": 6,
+        "end_col": 0,
+        "end_byte": 118
+      },
+      "properties": {
+        "module_name": "service",
+        "is_package": false,
+        "is_external": false,
+        "resolution_status": "resolved"
+      },
+      "content_hash": "sha256:2d5b2b98cefeb025fc9d7a48712afe5a3cf878872e51d3f8514e0395db1e18ed",
+      "graph_version": "sha256:bd66a4ed8fb2eb962d1a03cfb14df584e848fd9b15457d8bf7313589da27cc3f"
+    },
+    {
+      "id": "vgar:m2-handoff-fixture:python:import:src/service.py:1:0:c0fcae93c6ff",
+      "type": "Import",
+      "repo_key": "m2-handoff-fixture",
+      "name": "normalize_token",
+      "qualified_name": "service::<import:normalize_token:c0fcae93c6ff>",
+      "path": "src/service.py",
+      "language": "python",
+      "range": {
+        "start_line": 1,
+        "start_col": 0,
+        "end_line": 1,
+        "end_col": 32,
+        "start_byte": 0,
+        "end_byte": 32
+      },
+      "properties": {
+        "raw_text": "from auth import normalize_token",
+        "imported_module": "auth",
+        "imported_name": "normalize_token",
+        "alias": null,
+        "level": 0,
+        "resolution_status": "resolved"
+      },
+      "content_hash": "sha256:f9bb739d0f515b2ec5efc4c63f08d59a94433eba51b2eb1a4d94659a3bd698ec",
+      "graph_version": "sha256:bd66a4ed8fb2eb962d1a03cfb14df584e848fd9b15457d8bf7313589da27cc3f"
+    },
+    {
+      "id": "vgar:m2-handoff-fixture:python:function:src/service.py:service.authenticate",
+      "type": "Function",
+      "repo_key": "m2-handoff-fixture",
+      "name": "authenticate",
+      "qualified_name": "service.authenticate",
+      "path": "src/service.py",
+      "language": "python",
+      "range": {
+        "start_line": 4,
+        "start_col": 0,
+        "end_line": 5,
+        "end_col": 44,
+        "start_byte": 35,
+        "end_byte": 117
+      },
+      "properties": {
+        "signature": "def authenticate(token: str) -> bool",
+        "parameters": [
+          "token"
+        ],
+        "return_annotation": "bool",
+        "decorators": [],
+        "is_async": false,
+        "visibility": "public"
+      },
+      "content_hash": "sha256:aba5e39e0bf9e20e1df93b1cba2f1c3d0749ba0c433107581eb45af4a3917cd5",
+      "graph_version": "sha256:bd66a4ed8fb2eb962d1a03cfb14df584e848fd9b15457d8bf7313589da27cc3f"
+    },
+    {
+      "id": "vgar:m2-handoff-fixture:python:callsite:src/service.py:service.authenticate:1070dba5f887",
+      "type": "CallSite",
+      "repo_key": "m2-handoff-fixture",
+      "name": "normalize_token",
+      "qualified_name": "service.authenticate::<call:1>",
+      "path": "src/service.py",
+      "language": "python",
+      "range": {
+        "start_line": 5,
+        "start_col": 11,
+        "end_line": 5,
+        "end_col": 33,
+        "start_byte": 84,
+        "end_byte": 106
+      },
+      "properties": {
+        "callee_text": "normalize_token",
+        "argument_count": 1,
+        "dispatch_kind": "direct",
+        "resolution_status": "resolved",
+        "candidate_count": 1,
+        "resolver": "static"
+      },
+      "content_hash": "sha256:8c2e2e836da4c4e1353d509dbd400fd991e8f50b9e68b69255dda31b88df8673",
+      "graph_version": "sha256:bd66a4ed8fb2eb962d1a03cfb14df584e848fd9b15457d8bf7313589da27cc3f"
+    }
+  ],
+  "edges": [
+    {
+      "id": "sha256:46e66d665331d648a3e4427d07ab8d722208104ec0546a079530bf88bc2e237c",
+      "type": "CONTAINS",
+      "source_id": "vgar:m2-handoff-fixture:repository",
+      "target_id": "vgar:m2-handoff-fixture:python:file:src/auth.py",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "repository.file.v1",
+        "source_revision": "m2-w56-fixture-v1",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 0
+      },
+      "graph_version": "sha256:bd66a4ed8fb2eb962d1a03cfb14df584e848fd9b15457d8bf7313589da27cc3f"
+    },
+    {
+      "id": "sha256:6c4f72bca4c4c00e14adf44ae372283b75f5f87e1cbbe4bc5faf256f8d004c50",
+      "type": "CONTAINS",
+      "source_id": "vgar:m2-handoff-fixture:python:file:src/auth.py",
+      "target_id": "vgar:m2-handoff-fixture:python:module:src/auth.py:auth",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.file.module.v1",
+        "source_revision": "m2-w56-fixture-v1",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 0
+      },
+      "graph_version": "sha256:bd66a4ed8fb2eb962d1a03cfb14df584e848fd9b15457d8bf7313589da27cc3f"
+    },
+    {
+      "id": "sha256:baccb1272979694fdbdfab65459582db39d948d0985c79764ad4a4d4fa677233",
+      "type": "CONTAINS",
+      "source_id": "vgar:m2-handoff-fixture:python:module:src/auth.py:auth",
+      "target_id": "vgar:m2-handoff-fixture:python:function:src/auth.py:auth.normalize_token",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.scope.function.v1",
+        "source_revision": "m2-w56-fixture-v1",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 0
+      },
+      "graph_version": "sha256:bd66a4ed8fb2eb962d1a03cfb14df584e848fd9b15457d8bf7313589da27cc3f"
+    },
+    {
+      "id": "sha256:8a88dcac059ae29c915502fe2d463aeac67aa0b9d3475560b8203c515e639656",
+      "type": "CONTAINS",
+      "source_id": "vgar:m2-handoff-fixture:repository",
+      "target_id": "vgar:m2-handoff-fixture:python:file:src/service.py",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "repository.file.v1",
+        "source_revision": "m2-w56-fixture-v1",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 1
+      },
+      "graph_version": "sha256:bd66a4ed8fb2eb962d1a03cfb14df584e848fd9b15457d8bf7313589da27cc3f"
+    },
+    {
+      "id": "sha256:5a75cdc024ddeedc7c21c21334f759da22ba962363796eeed9b49e96f55fc94b",
+      "type": "CONTAINS",
+      "source_id": "vgar:m2-handoff-fixture:python:file:src/service.py",
+      "target_id": "vgar:m2-handoff-fixture:python:module:src/service.py:service",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.file.module.v1",
+        "source_revision": "m2-w56-fixture-v1",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 0
+      },
+      "graph_version": "sha256:bd66a4ed8fb2eb962d1a03cfb14df584e848fd9b15457d8bf7313589da27cc3f"
+    },
+    {
+      "id": "sha256:608d43eaebbb64fb303b10e67552e65695e7a351c21c8c83ba1a9c9614a52156",
+      "type": "CONTAINS",
+      "source_id": "vgar:m2-handoff-fixture:python:module:src/service.py:service",
+      "target_id": "vgar:m2-handoff-fixture:python:import:src/service.py:1:0:c0fcae93c6ff",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.module.import.v1",
+        "source_revision": "m2-w56-fixture-v1",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 0
+      },
+      "graph_version": "sha256:bd66a4ed8fb2eb962d1a03cfb14df584e848fd9b15457d8bf7313589da27cc3f"
+    },
+    {
+      "id": "sha256:806d7279f58027a4a19788fa1f99e469e178ca214aab85ecc7ef318ae0683107",
+      "type": "CONTAINS",
+      "source_id": "vgar:m2-handoff-fixture:python:module:src/service.py:service",
+      "target_id": "vgar:m2-handoff-fixture:python:function:src/service.py:service.authenticate",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.scope.function.v1",
+        "source_revision": "m2-w56-fixture-v1",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 1
+      },
+      "graph_version": "sha256:bd66a4ed8fb2eb962d1a03cfb14df584e848fd9b15457d8bf7313589da27cc3f"
+    },
+    {
+      "id": "sha256:d86ac83e3a949a2578b98edc66bf7707739696a35f86979bf9a60ea6506bcf99",
+      "type": "CONTAINS",
+      "source_id": "vgar:m2-handoff-fixture:python:function:src/service.py:service.authenticate",
+      "target_id": "vgar:m2-handoff-fixture:python:callsite:src/service.py:service.authenticate:1070dba5f887",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.function.callsite.v1",
+        "source_revision": "m2-w56-fixture-v1",
+        "evidence": []
+      },
+      "properties": {
+        "ordinal": 0
+      },
+      "graph_version": "sha256:bd66a4ed8fb2eb962d1a03cfb14df584e848fd9b15457d8bf7313589da27cc3f"
+    },
+    {
+      "id": "sha256:fc05fab132800d8fa319cf22ae990e87929473f1b990190d93812afeafb10259",
+      "type": "IMPORTS",
+      "source_id": "vgar:m2-handoff-fixture:python:import:src/service.py:1:0:c0fcae93c6ff",
+      "target_id": "vgar:m2-handoff-fixture:python:module:src/auth.py:auth",
+      "confidence": 1.0,
+      "resolution": "exact",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.import.resolve.v1",
+        "source_revision": "m2-w56-fixture-v1",
+        "evidence": []
+      },
+      "properties": {
+        "imported_name": "normalize_token",
+        "alias": null,
+        "is_wildcard": false
+      },
+      "graph_version": "sha256:bd66a4ed8fb2eb962d1a03cfb14df584e848fd9b15457d8bf7313589da27cc3f"
+    },
+    {
+      "id": "sha256:d176fe5056bad54428c0b6bcfe29500380e24876205c46f3afb51e6261928041",
+      "type": "CALLS",
+      "source_id": "vgar:m2-handoff-fixture:python:callsite:src/service.py:service.authenticate:1070dba5f887",
+      "target_id": "vgar:m2-handoff-fixture:python:function:src/auth.py:auth.normalize_token",
+      "confidence": 0.95,
+      "resolution": "analyzer",
+      "provenance": {
+        "source_tool": "vgar-python-graph-builder",
+        "source_tool_version": "0.1.0",
+        "rule_id": "python.call.static.resolve.v1",
+        "source_revision": "m2-w56-fixture-v1",
+        "evidence": []
+      },
+      "properties": {
+        "binding_kind": "imported_symbol",
+        "argument_match": null,
+        "candidate_rank": 1,
+        "confidence_reason": "Unique deterministic symbol match"
+      },
+      "graph_version": "sha256:bd66a4ed8fb2eb962d1a03cfb14df584e848fd9b15457d8bf7313589da27cc3f"
+    }
+  ],
+  "statistics": {
+    "node_count": 9,
+    "edge_count": 10,
+    "node_counts_by_type": {
+      "Repository": 1,
+      "File": 2,
+      "Module": 2,
+      "Function": 2,
+      "Import": 1,
+      "CallSite": 1
+    },
+    "edge_counts_by_type": {
+      "CONTAINS": 8,
+      "IMPORTS": 1,
+      "CALLS": 1
+    },
+    "callsite_count": 1,
+    "unresolved_call_count": 0,
+    "unresolved_call_rate": 0.0,
+    "partial_file_count": 0,
+    "skipped_overload_count": 0,
+    "renamed_duplicate_count": 0,
+    "failed_file_count": 0,
+    "failed_files": [],
+    "build_time_ms": 7.326,
+    "resolver": {
+      "requested": "static",
+      "active": "static",
+      "status": "ready",
+      "call_binding_statuses": {
+        "unavailable": 1
+      },
+      "scip_call_count": 0,
+      "static_call_count": 1
+    }
+  }
+}

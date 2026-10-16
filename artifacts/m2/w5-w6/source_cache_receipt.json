@@ -1,0 +1,83 @@
+{
+  "manifest_sha256": "sha256:9ce4e3bdc805d140d13af00253970b3c38c919f7424e363efb27c4dd9891f754",
+  "reused": [
+    {
+      "instance_id": "astropy__astropy-13398",
+      "archive_hash": "sha256:40e0109031eb10372d56e36cec87e7172462cfd870e537051f2fc6c6494733bc",
+      "from": "D:\\Project\\CAPSTONES\\M2_week_5_6\\data\\repositories\\archives\\astropy__astropy-6500928dc0e57be8f06d1162eacc3ba5e2eff692.tar.gz",
+      "to": "D:\\Project\\CAPSTONES\\VGAR\\data\\repositories\\archives\\astropy__astropy-6500928dc0e57be8f06d1162eacc3ba5e2eff692.tar.gz"
+    },
+    {
+      "instance_id": "django__django-11138",
+      "archive_hash": "sha256:e26b5be45c361e3fdf6f9df474e94461f9430fd3977425fd346cd81dd910c25b",
+      "from": "D:\\Project\\CAPSTONES\\M2_week_5_6\\data\\repositories\\archives\\django__django-c84b91b7603e488f7171fdff8f08368ef3d6b856.tar.gz",
+      "to": "D:\\Project\\CAPSTONES\\VGAR\\data\\repositories\\archives\\django__django-c84b91b7603e488f7171fdff8f08368ef3d6b856.tar.gz"
+    },
+    {
+      "instance_id": "matplotlib__matplotlib-14623",
+      "archive_hash": "sha256:058aacbbbfc3c800c503cd3768b5a11212e7e5845fff7c3c5ce4f2d6e00088e7",
+      "from": "D:\\Project\\CAPSTONES\\M2_week_5_6\\data\\repositories\\archives\\matplotlib__matplotlib-d65c9ca20ddf81ef91199e6d819f9d3506ef477c.tar.gz",
+      "to": "D:\\Project\\CAPSTONES\\VGAR\\data\\repositories\\archives\\matplotlib__matplotlib-d65c9ca20ddf81ef91199e6d819f9d3506ef477c.tar.gz"
+    },
+    {
+      "instance_id": "pydata__xarray-3305",
+      "archive_hash": "sha256:bb255d2ea2687f40274ce4e8ca2b1853f619f27ff15380cb47c39d7c6bb439d8",
+      "from": "D:\\Project\\CAPSTONES\\M2_week_5_6\\data\\repositories\\archives\\pydata__xarray-69c7e01e5167a3137c285cb50d1978252bb8bcbf.tar.gz",
+      "to": "D:\\Project\\CAPSTONES\\VGAR\\data\\repositories\\archives\\pydata__xarray-69c7e01e5167a3137c285cb50d1978252bb8bcbf.tar.gz"
+    },
+    {
+      "instance_id": "pylint-dev__pylint-4551",
+      "archive_hash": "sha256:b5d3b36a01d0ca3b658c93a33ddb5cea19a00d94cc2fbf1dfc771533c19c47b5",
+      "from": "D:\\Project\\CAPSTONES\\M2_week_5_6\\data\\repositories\\archives\\pylint-dev__pylint-99589b08de8c5a2c6cc61e13a37420a868c80599.tar.gz",
+      "to": "D:\\Project\\CAPSTONES\\VGAR\\data\\repositories\\archives\\pylint-dev__pylint-99589b08de8c5a2c6cc61e13a37420a868c80599.tar.gz"
+    },
+    {
+      "instance_id": "sphinx-doc__sphinx-10673",
+      "archive_hash": "sha256:fc3e60f8db03a578fa4ca825364538180fbf2c8a296e4583dad60a7d26207cba",
+      "from": "D:\\Project\\CAPSTONES\\M2_week_5_6\\data\\repositories\\archives\\sphinx-doc__sphinx-f35d2a6cc726f97d0e859ca7a0e1729f7da8a6c8.tar.gz",
+      "to": "D:\\Project\\CAPSTONES\\VGAR\\data\\repositories\\archives\\sphinx-doc__sphinx-f35d2a6cc726f97d0e859ca7a0e1729f7da8a6c8.tar.gz"
+    },
+    {
+      "instance_id": "astropy__astropy-8707",
+      "archive_hash": "sha256:00c7254788f3d5609c473b9abf12a54a11ad00df6e6a65e3d93d22baab9b6e62",
+      "from": "D:\\Project\\CAPSTONES\\M2_week_5_6\\data\\repositories\\archives\\astropy__astropy-a85a0747c54bac75e9c3b2fe436b105ea029d6cf.tar.gz",
+      "to": "D:\\Project\\CAPSTONES\\VGAR\\data\\repositories\\archives\\astropy__astropy-a85a0747c54bac75e9c3b2fe436b105ea029d6cf.tar.gz"
+    },
+    {
+      "instance_id": "pydata__xarray-3993",
+      "archive_hash": "sha256:265c509048672873432fa5da115e4044e2d8834f8d9935642ad968cbb4055c4f",
+      "from": "D:\\Project\\CAPSTONES\\M2_week_5_6\\data\\repositories\\archives\\pydata__xarray-8cc34cb412ba89ebca12fc84f76a9e452628f1bc.tar.gz",
+      "to": "D:\\Project\\CAPSTONES\\VGAR\\data\\repositories\\archives\\pydata__xarray-8cc34cb412ba89ebca12fc84f76a9e452628f1bc.tar.gz"
+    },
+    {
+      "instance_id": "pylint-dev__pylint-4604",
+      "archive_hash": "sha256:af2a7b3d9697f73a079d45362c761f61f408fe0aea6117bc06b29c5c23ba78bb",
+      "from": "D:\\Project\\CAPSTONES\\M2_week_5_6\\data\\repositories\\archives\\pylint-dev__pylint-1e55ae64624d28c5fe8b63ad7979880ee2e6ef3f.tar.gz",
+      "to": "D:\\Project\\CAPSTONES\\VGAR\\data\\repositories\\archives\\pylint-dev__pylint-1e55ae64624d28c5fe8b63ad7979880ee2e6ef3f.tar.gz"
+    },
+    {
+      "instance_id": "pylint-dev__pylint-6386",
+      "archive_hash": "sha256:5c416b43742e77732517d75128836ecdac2d7e3e9301f8727b32f1823b0d9945",
+      "from": "D:\\Project\\CAPSTONES\\M2_week_5_6\\data\\repositories\\archives\\pylint-dev__pylint-754b487f4d892e3d4872b6fc7468a71db4e31c13.tar.gz",
+      "to": "D:\\Project\\CAPSTONES\\VGAR\\data\\repositories\\archives\\pylint-dev__pylint-754b487f4d892e3d4872b6fc7468a71db4e31c13.tar.gz"
+    }
+  ],
+  "missing": [
+    "sympy__sympy-16597",
+    "django__django-11734",
+    "sphinx-doc__sphinx-8120",
+    "sympy__sympy-17318",
+    "django__django-11885",
+    "pydata__xarray-6992",
+    "sphinx-doc__sphinx-8548",
+    "sympy__sympy-20438",
+    "django__django-12155",
+    "django__django-12325",
+    "django__django-12741",
+    "django__django-13195",
+    "django__django-13212",
+    "django__django-13344",
+    "django__django-13512"
+  ],
+  "historical_metrics_reused": false
+}

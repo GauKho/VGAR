@@ -1,0 +1,61 @@
+{
+  "canonical_checklist_count": 150,
+  "report_rows": 150,
+  "missing_ids": [],
+  "extra_ids": [],
+  "duplicate_ids": [],
+  "broken_local_links": [],
+  "status_counts": {
+    "CX": 33,
+    "MP": 55,
+    "HT": 36,
+    "CT": 26
+  },
+  "status_by_week": {
+    "W01-02": {
+      "CX": 10,
+      "MP": 5,
+      "HT": 6
+    },
+    "W03-04": {
+      "HT": 16,
+      "MP": 5,
+      "CX": 1
+    },
+    "W05-06": {
+      "HT": 10,
+      "MP": 5,
+      "CX": 4,
+      "CT": 1
+    },
+    "W07-08": {
+      "MP": 14,
+      "HT": 2,
+      "CT": 1,
+      "CX": 2
+    },
+    "W09-10": {
+      "CT": 14,
+      "MP": 4,
+      "CX": 2
+    },
+    "W11-12": {
+      "MP": 8,
+      "CT": 6,
+      "CX": 1,
+      "HT": 1
+    },
+    "W13-14": {
+      "CX": 6,
+      "CT": 4,
+      "MP": 6
+    },
+    "W15-16": {
+      "MP": 8,
+      "CX": 7,
+      "HT": 1
+    }
+  },
+  "report_sha256": "335cf78e8de6c4c6bc0f3c3ba318f45c8e21eb53761535caf6962f056843739e",
+  "product_worktree_matches_head": true
+}

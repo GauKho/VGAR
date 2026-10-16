@@ -1,0 +1,117 @@
+{
+  "status": "PASS",
+  "scope": "documentation/static QA; no installs/test/model runs",
+  "started_utc": "2026-10-16T08:06:52.102932+00:00",
+  "ended_utc": "2026-10-16T08:06:52.455000+00:00",
+  "readme_lines": 818,
+  "markdown_tables": [
+    {
+      "line": 27,
+      "columns": 3
+    },
+    {
+      "line": 65,
+      "columns": 3
+    },
+    {
+      "line": 85,
+      "columns": 3
+    },
+    {
+      "line": 99,
+      "columns": 5
+    },
+    {
+      "line": 113,
+      "columns": 4
+    },
+    {
+      "line": 136,
+      "columns": 3
+    },
+    {
+      "line": 225,
+      "columns": 2
+    },
+    {
+      "line": 243,
+      "columns": 2
+    },
+    {
+      "line": 259,
+      "columns": 3
+    },
+    {
+      "line": 272,
+      "columns": 2
+    },
+    {
+      "line": 293,
+      "columns": 2
+    },
+    {
+      "line": 322,
+      "columns": 3
+    },
+    {
+      "line": 336,
+      "columns": 3
+    },
+    {
+      "line": 518,
+      "columns": 3
+    },
+    {
+      "line": 663,
+      "columns": 2
+    },
+    {
+      "line": 710,
+      "columns": 2
+    },
+    {
+      "line": 742,
+      "columns": 3
+    },
+    {
+      "line": 782,
+      "columns": 2
+    }
+  ],
+  "checked_local_links_and_anchors": 71,
+  "powershell_ast": {
+    "blocks": 15,
+    "errors": []
+  },
+  "requirements_match_pyproject_runtime_and_dev_plot": true,
+  "requirement_entries": 20,
+  "clean_dependency_resolution_verified": false,
+  "historical_core_counts": {
+    "tests": 236,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "passed": 236
+  },
+  "historical_root_counts": {
+    "tests": 574,
+    "failures": 1,
+    "errors": 0,
+    "skipped": 2,
+    "passed": 571
+  },
+  "historical_real_manifest": "PASS",
+  "preserved": {
+    "src/vgar/evaluation/retrieval/compare.py": "1e88a8a97b0845eb5579322841991debaee00b9c779cf5e462737965a8f013b6",
+    "src/vgar/evaluation/retrieval/scoring.py": "dfbad5552d67a42dffac9f22f54ef58f8b397f8c88825fab719e4772b97293b8",
+    "Task Status.md": "cab8b4a214b1abe117044cf741b4da91523d811e4a486c83a2c778b5379d7dcb",
+    "pyproject.toml": "d521f0424030c7e577b6be0d52257a743570cafb2fac39115b5be833cf8d23e3",
+    "M2_week_7_8/requirement.txt": "c81b5c19aa7d14fe101a7cfeb4ac022e431334994439a80192100986e901edb2"
+  },
+  "sha256": {
+    "README.md": "3cd7957b771202ee4a56ea702e4e342b9e05680e9153e5bec9c5787a49367407",
+    "requirement.txt": "7a6fe565542e9aec6e43f3e19dad88e7e4ed35abff1a1deff49b82f77bd6b210",
+    "PROGRESS.md": "59749148428a2b23f2cd014d95f1cc19598e1e5ac25e7d02283b55c140d1b60c"
+  },
+  "readme_before_sha256": "e4d212fcb383d511af85a0ae60ef46293a226823bb465f56cf0e82abc1976609"
+}

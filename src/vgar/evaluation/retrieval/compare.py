@@ -124,7 +124,7 @@ def compare_runs(bm25_run, graph_run, results_root, cap: int = 100, seed: int = 
             skipped.append({"instance_id": iid, "reason": "not_succeeded_in_both_runs"})
             continue
         b, g = _task(bm25_run, summary), _task(graph_run, other)
-        for key in ("query_hash", "corpus_hash", "base_commit"):
+        for key in ("query_hash", "corpus_hash", "base_commit", "patch_hash"):
             if b[key] != g[key]:
                 raise ValueError(f"{iid}: {key} differs between runs")
         per_task["bm25"][iid] = b["metrics"]

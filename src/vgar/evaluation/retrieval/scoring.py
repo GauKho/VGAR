@@ -105,11 +105,11 @@ class CorpusIndex:
         defs = self.definitions.get(path)
         if defs is None:
             return None, "PATH_NOT_IN_CORPUS"
-        same = [d for d in defs if d["symbol"] == symbol]
+        # A name alone is not a source binding, even when there is only one definition.
+        same = [d for d in defs if d["symbol"] == symbol
+                and d["start_line"] <= start_line <= end_line <= d["end_line"]]
         if len(same) > 1:   # conditional defs / property setters: BM25 suffixes parent_id with @definition:s:e
-            same = [d for d in same if d["start_line"] <= start_line and end_line <= d["end_line"]]
-            if len(same) > 1:
-                return None, "AMBIGUOUS_FUNCTION"
+            return None, "AMBIGUOUS_FUNCTION"
         return (same[0]["parent_id"], None) if same else (None, "NO_FUNCTION_MATCH")
 
 
@@ -134,6 +134,41 @@ def bm25_rank(instance_id: str, query: str, sources: Mapping[str, str], *, k1: f
              for c in BM25(chunks, k1=k1, b=b).search(query)]
     return RankRecord(instance_id, "bm25", items, meta={"parse_failures": failures or [], "k1": k1, "b": b,
                                                         "corpus_chunks": len(chunks)})
+
+
+def _source_line_span(span: Any, text: str) -> tuple[int, int] | None:
+    """Validate source binding before projecting native byte ranges to fair physical lines.
+
+    Legacy evaluation ranges explicitly supply two inclusive line coordinates.
+    Native M1 ranges supply both UTF-8 columns and an exclusive end.
+    """
+    if not isinstance(span, Mapping):
+        return None
+    start, end = span.get("start_line"), span.get("end_line")
+    if type(start) is not int or type(end) is not int or start < 1 or end < start:
+        return None
+    lines = physical_lines(text)
+    if "start_col" not in span and "end_col" not in span:
+        return (start, end) if end <= len(lines) else None
+    sc, ec = span.get("start_col"), span.get("end_col")
+    if type(sc) is not int or type(ec) is not int or sc < 0 or ec < 0:
+        return None
+    if (end, ec) <= (start, sc):
+        return None
+    # A trailing newline permits an exclusive EOF at the next line, column zero.
+    if text.endswith(("\n", "\r")):
+        lines.append("")
+    if start > len(lines) or end > len(lines):
+        return None
+    for line, column in ((start, sc), (end, ec)):
+        raw = lines[line - 1].encode("utf-8")
+        if column > len(raw):
+            return None
+        try:
+            raw[:column].decode("utf-8")
+        except UnicodeDecodeError:
+            return None
+    return start, end - 1 if ec == 0 and end > start else end
 
 
 def graph_rank(instance_id: str, candidates: Iterable[Mapping[str, Any]], nodes: Mapping[str, Mapping[str, Any]],
@@ -168,8 +203,12 @@ def graph_rank(instance_id: str, candidates: Iterable[Mapping[str, Any]], nodes:
         if path not in corpus.paths or path not in sources or not keep(node):
             excluded.append({"item_id": node_id, "reason": "NOT_IN_CORPUS", "path": path})
             continue
-        span = node.get("range") or {}
-        start, end = int(span.get("start_line", 1)), int(span.get("end_line", 1))
+        span = _source_line_span(node.get("range"), sources[path])
+        if span is None:
+            unmapped.append({"item_id": node_id, "scope": "item",
+                             "reason": "INVALID_SOURCE_RANGE", "path": path})
+            continue
+        start, end = span
         if path not in line_cache:
             line_cache[path] = physical_lines(sources[path], keepends=True)
         snippet = "".join(line_cache[path][start - 1:end])        # full physical lines, same policy as BM25 chunks

@@ -1,0 +1,1502 @@
+[
+  {
+    "id": "W01-02-CHUNG-01",
+    "week": "W01-02",
+    "owner": "CHUNG",
+    "section": "Mục tiêu chung",
+    "line": 57,
+    "text": "Chốt claim nghiên cứu: **graph-guided retrieval + verification evidence cho multi-file repair**.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W01-02-CHUNG-02",
+    "week": "W01-02",
+    "owner": "CHUNG",
+    "section": "Mục tiêu chung",
+    "line": 58,
+    "text": "Chốt scope: Python, SWE-bench Verified hoặc Lite, một model cố định.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W01-02-CHUNG-03",
+    "week": "W01-02",
+    "owner": "CHUNG",
+    "section": "Mục tiêu chung",
+    "line": 59,
+    "text": "Chốt model version, temperature, token budget, timeout, max iterations và max tool calls.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W01-02-CHUNG-04",
+    "week": "W01-02",
+    "owner": "CHUNG",
+    "section": "Mục tiêu chung",
+    "line": 60,
+    "text": "Chốt graph MVP: node/edge nào bắt buộc, layer nào optional.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W01-02-CHUNG-05",
+    "week": "W01-02",
+    "owner": "CHUNG",
+    "section": "Mục tiêu chung",
+    "line": 61,
+    "text": "Tạo repository chung, issue board, branching/PR convention và cấu trúc source code.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W01-02-CHUNG-06",
+    "week": "W01-02",
+    "owner": "CHUNG",
+    "section": "Mục tiêu chung",
+    "line": 62,
+    "text": "Viết protocol thực nghiệm nội bộ trước khi chạy benchmark chính.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W01-02-M1-01",
+    "week": "W01-02",
+    "owner": "M1",
+    "section": "M1 — Graph & Retrieval",
+    "line": 66,
+    "text": "Đọc/tóm tắt 8–10 bài về CPG, repository graph, graph retrieval, code localization.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W01-02-M1-02",
+    "week": "W01-02",
+    "owner": "M1",
+    "section": "M1 — Graph & Retrieval",
+    "line": 67,
+    "text": "Viết `docs/graph_schema.md`: node types, edge types, properties, confidence/provenance.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W01-02-M1-03",
+    "week": "W01-02",
+    "owner": "M1",
+    "section": "M1 — Graph & Retrieval",
+    "line": 68,
+    "text": "Chốt schema MVP: `File`, `Module`, `Class`, `Function`, `Method`, `Import`, `CallSite`, `Test`, `Issue`.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W01-02-M1-04",
+    "week": "W01-02",
+    "owner": "M1",
+    "section": "M1 — Graph & Retrieval",
+    "line": 69,
+    "text": "Chốt edges MVP: `CONTAINS`, `IMPORTS`, `CALLS`, `REFERENCES`, `TESTS`, `MENTIONS`, `REPRODUCES`.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W01-02-M2-01",
+    "week": "W01-02",
+    "owner": "M2",
+    "section": "M2 — Repair & Verification",
+    "line": 75,
+    "text": "Đọc/tóm tắt 8–10 bài về APR, LLM repair, plausible patches, validation/overfitting.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W01-02-M2-02",
+    "week": "W01-02",
+    "owner": "M2",
+    "section": "M2 — Repair & Verification",
+    "line": 76,
+    "text": "Viết `docs/verification_design.md`.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W01-02-M2-03",
+    "week": "W01-02",
+    "owner": "M2",
+    "section": "M2 — Repair & Verification",
+    "line": 77,
+    "text": "Chốt lớp verification MVP: failing/relevant tests, typecheck, lint, API signature check cơ bản.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W01-02-M2-04",
+    "week": "W01-02",
+    "owner": "M2",
+    "section": "M2 — Repair & Verification",
+    "line": 78,
+    "text": "Thiết kế JSON schema cho evidence bundle.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W01-02-M3-01",
+    "week": "W01-02",
+    "owner": "M3",
+    "section": "M3 — MCP, Evaluation & Paper",
+    "line": 84,
+    "text": "Đọc/tóm tắt 8–10 bài về SWE-bench, Agentless, MCP/tool use/security.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W01-02-M3-02",
+    "week": "W01-02",
+    "owner": "M3",
+    "section": "M3 — MCP, Evaluation & Paper",
+    "line": 85,
+    "text": "Viết `docs/research_design.md`: RQ, hypothesis, benchmark, split, baselines, metrics, fairness protocol.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W01-02-M3-03",
+    "week": "W01-02",
+    "owner": "M3",
+    "section": "M3 — MCP, Evaluation & Paper",
+    "line": 86,
+    "text": "Tạo literature-review table 30–50 papers.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W01-02-M3-04",
+    "week": "W01-02",
+    "owner": "M3",
+    "section": "M3 — MCP, Evaluation & Paper",
+    "line": 87,
+    "text": "Cài thử MCP SDK, `langchain-mcp-adapters`, SWE-bench tooling.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W01-02-DOD-01",
+    "week": "W01-02",
+    "owner": "DOD",
+    "section": "Definition of Done",
+    "line": 93,
+    "text": "Cả nhóm ký xác nhận scope và protocol.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W01-02-DOD-02",
+    "week": "W01-02",
+    "owner": "DOD",
+    "section": "Definition of Done",
+    "line": 94,
+    "text": "Có branch protection/PR review.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W01-02-DOD-03",
+    "week": "W01-02",
+    "owner": "DOD",
+    "section": "Definition of Done",
+    "line": 95,
+    "text": "Literature table có tối thiểu 20 bài đã điền.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W03-04-CHUNG-01",
+    "week": "W03-04",
+    "owner": "CHUNG",
+    "section": "Mục tiêu chung",
+    "line": 103,
+    "text": "Xây graph cho repository Python.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W03-04-CHUNG-02",
+    "week": "W03-04",
+    "owner": "CHUNG",
+    "section": "Mục tiêu chung",
+    "line": 104,
+    "text": "MCP server và LangChain client kết nối được.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W03-04-CHUNG-03",
+    "week": "W03-04",
+    "owner": "CHUNG",
+    "section": "Mục tiêu chung",
+    "line": 105,
+    "text": "Có tests trên repo nhỏ trước khi chạy SWE-bench.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W03-04-M1-01",
+    "week": "W03-04",
+    "owner": "M1",
+    "section": "M1 — Graph & Retrieval",
+    "line": 109,
+    "text": "Tích hợp tree-sitter Python.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W03-04-M1-02",
+    "week": "W03-04",
+    "owner": "M1",
+    "section": "M1 — Graph & Retrieval",
+    "line": 110,
+    "text": "Parse `.py` files và extract: file/module/class/function/method/import/callsite.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W03-04-M1-03",
+    "week": "W03-04",
+    "owner": "M1",
+    "section": "M1 — Graph & Retrieval",
+    "line": 111,
+    "text": "Build graph nodes/edges cơ bản.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W03-04-M1-04",
+    "week": "W03-04",
+    "owner": "M1",
+    "section": "M1 — Graph & Retrieval",
+    "line": 112,
+    "text": "Tích hợp symbol resolution tối thiểu bằng SCIP/LSP/Pyright/Jedi.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W03-04-M1-05",
+    "week": "W03-04",
+    "owner": "M1",
+    "section": "M1 — Graph & Retrieval",
+    "line": 113,
+    "text": "Resolve import và một số direct call điển hình; lưu `confidence` và `provenance`.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W03-04-M1-06",
+    "week": "W03-04",
+    "owner": "M1",
+    "section": "M1 — Graph & Retrieval",
+    "line": 114,
+    "text": "Lưu graph vào SQLite hoặc Kùzu.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W03-04-M1-07",
+    "week": "W03-04",
+    "owner": "M1",
+    "section": "M1 — Graph & Retrieval",
+    "line": 115,
+    "text": "Viết unit tests cho parser, extractor và graph query.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W03-04-M2-01",
+    "week": "W03-04",
+    "owner": "M2",
+    "section": "M2 — Repair & Verification",
+    "line": 121,
+    "text": "Thiết lập sandbox/worktree để chạy patch an toàn.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W03-04-M2-02",
+    "week": "W03-04",
+    "owner": "M2",
+    "section": "M2 — Repair & Verification",
+    "line": 122,
+    "text": "Viết test runner wrapper cho pytest.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W03-04-M2-03",
+    "week": "W03-04",
+    "owner": "M2",
+    "section": "M2 — Repair & Verification",
+    "line": 123,
+    "text": "Thu thập test result baseline: command, stdout/stderr, exit code, duration.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W03-04-M2-04",
+    "week": "W03-04",
+    "owner": "M2",
+    "section": "M2 — Repair & Verification",
+    "line": 124,
+    "text": "Hoàn thiện schema evidence bundle và writer JSON.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W03-04-M3-01",
+    "week": "W03-04",
+    "owner": "M3",
+    "section": "M3 — MCP, Evaluation & Paper",
+    "line": 130,
+    "text": "Tạo MCP server tối thiểu.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W03-04-M3-02",
+    "week": "W03-04",
+    "owner": "M3",
+    "section": "M3 — MCP, Evaluation & Paper",
+    "line": 131,
+    "text": "Resources: `vgar://repo/summary`, `vgar://graph/node/{id}`, `vgar://graph/subgraph/{id}`.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W03-04-M3-03",
+    "week": "W03-04",
+    "owner": "M3",
+    "section": "M3 — MCP, Evaluation & Paper",
+    "line": 132,
+    "text": "Tools: `search_symbols`, `get_callers`, `get_callees`.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W03-04-M3-04",
+    "week": "W03-04",
+    "owner": "M3",
+    "section": "M3 — MCP, Evaluation & Paper",
+    "line": 133,
+    "text": "Tạo LangChain client dùng `langchain-mcp-adapters` hoặc MCP client tương đương.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W03-04-M3-05",
+    "week": "W03-04",
+    "owner": "M3",
+    "section": "M3 — MCP, Evaluation & Paper",
+    "line": 134,
+    "text": "Ghi audit log cơ bản cho tool calls.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W03-04-DOD-01",
+    "week": "W03-04",
+    "owner": "DOD",
+    "section": "Definition of Done",
+    "line": 140,
+    "text": "Query callers/callees/imports trả kết quả hợp lý.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W03-04-DOD-02",
+    "week": "W03-04",
+    "owner": "DOD",
+    "section": "Definition of Done",
+    "line": 141,
+    "text": "Có manual validation ít nhất 20 call/import edges.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W03-04-DOD-03",
+    "week": "W03-04",
+    "owner": "DOD",
+    "section": "Definition of Done",
+    "line": 142,
+    "text": "Có dashboard/log hoặc file kết quả thể hiện số node, edge, build time.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W05-06-CHUNG-01",
+    "week": "W05-06",
+    "owner": "CHUNG",
+    "section": "Mục tiêu chung",
+    "line": 150,
+    "text": "Issue/failing test được nối với graph.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W05-06-CHUNG-02",
+    "week": "W05-06",
+    "owner": "CHUNG",
+    "section": "Mục tiêu chung",
+    "line": 151,
+    "text": "Có graph-guided context retrieval dưới token budget.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W05-06-CHUNG-03",
+    "week": "W05-06",
+    "owner": "CHUNG",
+    "section": "Mục tiêu chung",
+    "line": 152,
+    "text": "Có BM25 baseline và evaluation retrieval sơ bộ.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W05-06-M1-01",
+    "week": "W05-06",
+    "owner": "M1",
+    "section": "M1 — Graph & Retrieval",
+    "line": 156,
+    "text": "Implement `find_task_anchors(issue_text, failing_tests)`.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W05-06-M1-02",
+    "week": "W05-06",
+    "owner": "M1",
+    "section": "M1 — Graph & Retrieval",
+    "line": 157,
+    "text": "Extract file path, symbol mention, stack trace frame, failing test, route/API mention.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W05-06-M1-03",
+    "week": "W05-06",
+    "owner": "M1",
+    "section": "M1 — Graph & Retrieval",
+    "line": 158,
+    "text": "Tạo `Issue`/`FailingTest` nodes và trace edges.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W05-06-M1-04",
+    "week": "W05-06",
+    "owner": "M1",
+    "section": "M1 — Graph & Retrieval",
+    "line": 159,
+    "text": "Implement `get_related_context(anchor_ids, budget_tokens)`.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W05-06-M1-05",
+    "week": "W05-06",
+    "owner": "M1",
+    "section": "M1 — Graph & Retrieval",
+    "line": 160,
+    "text": "Traverse k-hop neighbors, callers, callees, tests, dependents.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W05-06-M1-06",
+    "week": "W05-06",
+    "owner": "M1",
+    "section": "M1 — Graph & Retrieval",
+    "line": 161,
+    "text": "Rank candidates theo graph distance, confidence, failing-test proximity, public API risk.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W05-06-M1-07",
+    "week": "W05-06",
+    "owner": "M1",
+    "section": "M1 — Graph & Retrieval",
+    "line": 162,
+    "text": "Pack snippets dưới token budget.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W05-06-M2-01",
+    "week": "W05-06",
+    "owner": "M2",
+    "section": "M2 — Repair & Verification",
+    "line": 168,
+    "text": "Implement BM25 baseline trên function/code chunks.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W05-06-M2-02",
+    "week": "W05-06",
+    "owner": "M2",
+    "section": "M2 — Repair & Verification",
+    "line": 169,
+    "text": "Chuẩn hóa gold-file/gold-function extraction từ developer patch.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W05-06-M2-03",
+    "week": "W05-06",
+    "owner": "M2",
+    "section": "M2 — Repair & Verification",
+    "line": 170,
+    "text": "Chạy retrieval evaluation ban đầu trên 20–30 SWE-bench tasks.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W05-06-M2-04",
+    "week": "W05-06",
+    "owner": "M2",
+    "section": "M2 — Repair & Verification",
+    "line": 171,
+    "text": "Phối hợp M1 debug context format và gold-label mapping.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W05-06-M3-01",
+    "week": "W05-06",
+    "owner": "M3",
+    "section": "M3 — MCP, Evaluation & Paper",
+    "line": 177,
+    "text": "Thêm MCP tools: `find_task_anchors`, `get_related_context`.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W05-06-M3-02",
+    "week": "W05-06",
+    "owner": "M3",
+    "section": "M3 — MCP, Evaluation & Paper",
+    "line": 178,
+    "text": "LangChain flow: issue -> anchors -> context -> print/display context.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W05-06-M3-03",
+    "week": "W05-06",
+    "owner": "M3",
+    "section": "M3 — MCP, Evaluation & Paper",
+    "line": 179,
+    "text": "Chuẩn bị SWE-bench subset 50–100 task có environment chạy được.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W05-06-M3-04",
+    "week": "W05-06",
+    "owner": "M3",
+    "section": "M3 — MCP, Evaluation & Paper",
+    "line": 180,
+    "text": "Viết draft Related Work: graph representation và graph-guided retrieval.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W05-06-DOD-01",
+    "week": "W05-06",
+    "owner": "DOD",
+    "section": "Definition of Done",
+    "line": 186,
+    "text": "Có bảng `Graph vs BM25` với Recall@3, Recall@5, Recall@10 và token cost.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W05-06-DOD-02",
+    "week": "W05-06",
+    "owner": "DOD",
+    "section": "Definition of Done",
+    "line": 187,
+    "text": "Có ít nhất 10 task được manual-inspect để xác nhận retrieval hợp lý.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W07-08-CHUNG-01",
+    "week": "W07-08",
+    "owner": "CHUNG",
+    "section": "Mục tiêu chung",
+    "line": 195,
+    "text": "Agent tạo được unified diff từ issue + retrieved context.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W07-08-CHUNG-02",
+    "week": "W07-08",
+    "owner": "CHUNG",
+    "section": "Mục tiêu chung",
+    "line": 196,
+    "text": "Patch được áp dụng trong worktree.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W07-08-CHUNG-03",
+    "week": "W07-08",
+    "owner": "CHUNG",
+    "section": "Mục tiêu chung",
+    "line": 197,
+    "text": "Có tests/type/lint evidence.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W07-08-M1-01",
+    "week": "W07-08",
+    "owner": "M1",
+    "section": "M1 — Graph & Retrieval",
+    "line": 201,
+    "text": "Chuẩn hóa payload context: code snippets, node ids, paths, metadata, relevance score.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W07-08-M1-02",
+    "week": "W07-08",
+    "owner": "M1",
+    "section": "M1 — Graph & Retrieval",
+    "line": 202,
+    "text": "Cải thiện ranking trên development subset; ghi rõ mọi heuristic/tuning.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W07-08-M1-03",
+    "week": "W07-08",
+    "owner": "M1",
+    "section": "M1 — Graph & Retrieval",
+    "line": 203,
+    "text": "Thêm test-to-function links nếu có thể suy ra từ naming/path/coverage.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W07-08-M2-01",
+    "week": "W07-08",
+    "owner": "M2",
+    "section": "M2 — Repair & Verification",
+    "line": 209,
+    "text": "Xây repair prompt template cố định.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W07-08-M2-02",
+    "week": "W07-08",
+    "owner": "M2",
+    "section": "M2 — Repair & Verification",
+    "line": 210,
+    "text": "Tích hợp một LLM backend cố định (HF/Codex/Claude theo protocol).",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W07-08-M2-03",
+    "week": "W07-08",
+    "owner": "M2",
+    "section": "M2 — Repair & Verification",
+    "line": 211,
+    "text": "Validate/parse unified diff.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W07-08-M2-04",
+    "week": "W07-08",
+    "owner": "M2",
+    "section": "M2 — Repair & Verification",
+    "line": 212,
+    "text": "Implement `apply_patch` vào temporary worktree.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W07-08-M2-05",
+    "week": "W07-08",
+    "owner": "M2",
+    "section": "M2 — Repair & Verification",
+    "line": 213,
+    "text": "Implement relevant-test selection cơ bản.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W07-08-M2-06",
+    "week": "W07-08",
+    "owner": "M2",
+    "section": "M2 — Repair & Verification",
+    "line": 214,
+    "text": "Chạy pytest, typecheck và lint.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W07-08-M2-07",
+    "week": "W07-08",
+    "owner": "M2",
+    "section": "M2 — Repair & Verification",
+    "line": 215,
+    "text": "Tạo evidence bundle với: patch applied, failing-test result, relevant-test result, typecheck, lint.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W07-08-M3-01",
+    "week": "W07-08",
+    "owner": "M3",
+    "section": "M3 — MCP, Evaluation & Paper",
+    "line": 221,
+    "text": "Expose MCP tools: `apply_patch`, `run_relevant_tests`, `verify_patch` bản cơ bản.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W07-08-M3-02",
+    "week": "W07-08",
+    "owner": "M3",
+    "section": "M3 — MCP, Evaluation & Paper",
+    "line": 222,
+    "text": "LangChain loop một vòng: retrieve -> generate -> patch -> verify.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W07-08-M3-03",
+    "week": "W07-08",
+    "owner": "M3",
+    "section": "M3 — MCP, Evaluation & Paper",
+    "line": 223,
+    "text": "Log prompt version, model configuration, tool calls, latency, token usage.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W07-08-M3-04",
+    "week": "W07-08",
+    "owner": "M3",
+    "section": "M3 — MCP, Evaluation & Paper",
+    "line": 224,
+    "text": "Viết draft Methodology: system overview, graph construction, retrieval.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W07-08-DOD-01",
+    "week": "W07-08",
+    "owner": "DOD",
+    "section": "Definition of Done",
+    "line": 230,
+    "text": "Có ít nhất 3 task sinh được diff hợp lệ và chạy được verification.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W07-08-DOD-02",
+    "week": "W07-08",
+    "owner": "DOD",
+    "section": "Definition of Done",
+    "line": 231,
+    "text": "Không ghi trực tiếp vào repo gốc.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W09-10-CHUNG-01",
+    "week": "W09-10",
+    "owner": "CHUNG",
+    "section": "Mục tiêu chung",
+    "line": 239,
+    "text": "Map diff sang graph nodes.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W09-10-CHUNG-02",
+    "week": "W09-10",
+    "owner": "CHUNG",
+    "section": "Mục tiêu chung",
+    "line": 240,
+    "text": "Có impact report.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W09-10-CHUNG-03",
+    "week": "W09-10",
+    "owner": "CHUNG",
+    "section": "Mục tiêu chung",
+    "line": 241,
+    "text": "Chạy A0–A2 trên subset đủ lớn.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W09-10-M1-01",
+    "week": "W09-10",
+    "owner": "M1",
+    "section": "M1 — Graph & Retrieval",
+    "line": 245,
+    "text": "Implement diff-to-node mapping: file/range/symbol -> graph node.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W09-10-M1-02",
+    "week": "W09-10",
+    "owner": "M1",
+    "section": "M1 — Graph & Retrieval",
+    "line": 246,
+    "text": "Implement impact traversal: reverse `CALLS`, `IMPORTS`, `TESTS`, component dependencies.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W09-10-M1-03",
+    "week": "W09-10",
+    "owner": "M1",
+    "section": "M1 — Graph & Retrieval",
+    "line": 247,
+    "text": "Tính risk features: changed public API, fan-in, affected callers/tests/components.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W09-10-M1-04",
+    "week": "W09-10",
+    "owner": "M1",
+    "section": "M1 — Graph & Retrieval",
+    "line": 248,
+    "text": "Viết impact report JSON.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W09-10-M2-01",
+    "week": "W09-10",
+    "owner": "M2",
+    "section": "M2 — Repair & Verification",
+    "line": 254,
+    "text": "Implement variants:",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W09-10-M2-02",
+    "week": "W09-10",
+    "owner": "M2",
+    "section": "M2 — Repair & Verification",
+    "line": 255,
+    "text": "**A0:** BM25 + tests only.",
+    "nested": true,
+    "original_checked": false
+  },
+  {
+    "id": "W09-10-M2-03",
+    "week": "W09-10",
+    "owner": "M2",
+    "section": "M2 — Repair & Verification",
+    "line": 256,
+    "text": "**A1:** Graph retrieval + tests only.",
+    "nested": true,
+    "original_checked": false
+  },
+  {
+    "id": "W09-10-M2-04",
+    "week": "W09-10",
+    "owner": "M2",
+    "section": "M2 — Repair & Verification",
+    "line": 257,
+    "text": "**A2:** Graph retrieval + tests + typecheck/lint.",
+    "nested": true,
+    "original_checked": false
+  },
+  {
+    "id": "W09-10-M2-05",
+    "week": "W09-10",
+    "owner": "M2",
+    "section": "M2 — Repair & Verification",
+    "line": 258,
+    "text": "Chạy trên 30–50 development tasks.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W09-10-M2-06",
+    "week": "W09-10",
+    "owner": "M2",
+    "section": "M2 — Repair & Verification",
+    "line": 259,
+    "text": "Đo patch success, false accept proxy, token/task, latency/task.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W09-10-M2-07",
+    "week": "W09-10",
+    "owner": "M2",
+    "section": "M2 — Repair & Verification",
+    "line": 260,
+    "text": "Ghi failure reason có cấu trúc.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W09-10-M3-01",
+    "week": "W09-10",
+    "owner": "M3",
+    "section": "M3 — MCP, Evaluation & Paper",
+    "line": 266,
+    "text": "Expose `analyze_patch_impact` qua MCP.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W09-10-M3-02",
+    "week": "W09-10",
+    "owner": "M3",
+    "section": "M3 — MCP, Evaluation & Paper",
+    "line": 267,
+    "text": "Tích hợp impact report vào LangChain feedback prompt.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W09-10-M3-03",
+    "week": "W09-10",
+    "owner": "M3",
+    "section": "M3 — MCP, Evaluation & Paper",
+    "line": 268,
+    "text": "Viết draft Methodology: repair, impact analysis, verification.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W09-10-M3-04",
+    "week": "W09-10",
+    "owner": "M3",
+    "section": "M3 — MCP, Evaluation & Paper",
+    "line": 269,
+    "text": "Viết draft Experimental Design: datasets, split, baselines, metrics, fairness controls.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W09-10-DOD-01",
+    "week": "W09-10",
+    "owner": "DOD",
+    "section": "Definition of Done",
+    "line": 275,
+    "text": "A0–A2 chạy end-to-end bằng cùng benchmark subset và configuration.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W09-10-DOD-02",
+    "week": "W09-10",
+    "owner": "DOD",
+    "section": "Definition of Done",
+    "line": 276,
+    "text": "Có ít nhất 1 bảng kết quả, không chỉ demo case.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W11-12-CHUNG-01",
+    "week": "W11-12",
+    "owner": "CHUNG",
+    "section": "Mục tiêu chung",
+    "line": 284,
+    "text": "Hoàn thiện MCP tool surface cần thiết.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W11-12-CHUNG-02",
+    "week": "W11-12",
+    "owner": "CHUNG",
+    "section": "Mục tiêu chung",
+    "line": 285,
+    "text": "Có security guardrails tối thiểu.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W11-12-CHUNG-03",
+    "week": "W11-12",
+    "owner": "CHUNG",
+    "section": "Mục tiêu chung",
+    "line": 286,
+    "text": "Đo performance và incremental update.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W11-12-M1-01",
+    "week": "W11-12",
+    "owner": "M1",
+    "section": "M1 — Graph & Retrieval",
+    "line": 290,
+    "text": "Implement incremental graph update cho changed files.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W11-12-M1-02",
+    "week": "W11-12",
+    "owner": "M1",
+    "section": "M1 — Graph & Retrieval",
+    "line": 291,
+    "text": "Reparse changed files, relink affected symbols, invalidate cache.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W11-12-M1-03",
+    "week": "W11-12",
+    "owner": "M1",
+    "section": "M1 — Graph & Retrieval",
+    "line": 292,
+    "text": "Đo cold build time, warm update time, affected node count, cache hit rate.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W11-12-M2-01",
+    "week": "W11-12",
+    "owner": "M2",
+    "section": "M2 — Repair & Verification",
+    "line": 298,
+    "text": "Thêm API compatibility checks: exported function/class, signature change cơ bản.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W11-12-M2-02",
+    "week": "W11-12",
+    "owner": "M2",
+    "section": "M2 — Repair & Verification",
+    "line": 299,
+    "text": "Thêm structural checks: forbidden import/layer rule/cycle rule nếu repo configuration cho phép.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W11-12-M2-03",
+    "week": "W11-12",
+    "owner": "M2",
+    "section": "M2 — Repair & Verification",
+    "line": 300,
+    "text": "Implement **A3:** graph retrieval + verification graph/API checks.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W11-12-M2-04",
+    "week": "W11-12",
+    "owner": "M2",
+    "section": "M2 — Repair & Verification",
+    "line": 301,
+    "text": "Đo false accept/false reject trên patch pool hoặc synthetic mutations nếu khả thi.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W11-12-M3-01",
+    "week": "W11-12",
+    "owner": "M3",
+    "section": "M3 — MCP, Evaluation & Paper",
+    "line": 307,
+    "text": "Hoàn thiện MCP server tool schemas và error responses.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W11-12-M3-02",
+    "week": "W11-12",
+    "owner": "M3",
+    "section": "M3 — MCP, Evaluation & Paper",
+    "line": 308,
+    "text": "Security tối thiểu: path allowlist/jail, read-only by default, command allowlist, timeout, audit log.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W11-12-M3-03",
+    "week": "W11-12",
+    "owner": "M3",
+    "section": "M3 — MCP, Evaluation & Paper",
+    "line": 309,
+    "text": "Đo latency/tool call, token/task, tool calls/task, read redundancy.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W11-12-M3-04",
+    "week": "W11-12",
+    "owner": "M3",
+    "section": "M3 — MCP, Evaluation & Paper",
+    "line": 310,
+    "text": "Viết draft Results với retrieval, repair, verification, efficiency tables.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W11-12-DOD-01",
+    "week": "W11-12",
+    "owner": "DOD",
+    "section": "Definition of Done",
+    "line": 316,
+    "text": "MCP tools không chạy command tùy ý.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W11-12-DOD-02",
+    "week": "W11-12",
+    "owner": "DOD",
+    "section": "Definition of Done",
+    "line": 317,
+    "text": "Có số liệu cold vs warm graph update và MCP overhead.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W13-14-CHUNG-01",
+    "week": "W13-14",
+    "owner": "CHUNG",
+    "section": "Mục tiêu chung",
+    "line": 325,
+    "text": "Dừng tuning heuristic trên development set.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W13-14-CHUNG-02",
+    "week": "W13-14",
+    "owner": "CHUNG",
+    "section": "Mục tiêu chung",
+    "line": 326,
+    "text": "Chạy held-out evaluation đã chốt trước.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W13-14-CHUNG-03",
+    "week": "W13-14",
+    "owner": "CHUNG",
+    "section": "Mục tiêu chung",
+    "line": 327,
+    "text": "Phân tích failure có hệ thống.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W13-14-M1-01",
+    "week": "W13-14",
+    "owner": "M1",
+    "section": "M1 — Graph & Retrieval",
+    "line": 331,
+    "text": "Chạy retrieval trên held-out set.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W13-14-M1-02",
+    "week": "W13-14",
+    "owner": "M1",
+    "section": "M1 — Graph & Retrieval",
+    "line": 332,
+    "text": "Báo cáo gold-file/function Recall@k, MRR, token cost.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W13-14-M1-03",
+    "week": "W13-14",
+    "owner": "M1",
+    "section": "M1 — Graph & Retrieval",
+    "line": 333,
+    "text": "Phân tầng single-file/multi-file.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W13-14-M1-04",
+    "week": "W13-14",
+    "owner": "M1",
+    "section": "M1 — Graph & Retrieval",
+    "line": 334,
+    "text": "Phân tích 10–15 retrieval failures.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W13-14-M2-01",
+    "week": "W13-14",
+    "owner": "M2",
+    "section": "M2 — Repair & Verification",
+    "line": 340,
+    "text": "Chạy A0–A3 trên held-out set.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W13-14-M2-02",
+    "week": "W13-14",
+    "owner": "M2",
+    "section": "M2 — Repair & Verification",
+    "line": 341,
+    "text": "Báo cáo resolved rate, multi-file resolved rate, false accept/reject, relevant-test coverage.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W13-14-M2-03",
+    "week": "W13-14",
+    "owner": "M2",
+    "section": "M2 — Repair & Verification",
+    "line": 342,
+    "text": "Phân tích 10–15 repair/verification failures.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W13-14-M3-01",
+    "week": "W13-14",
+    "owner": "M3",
+    "section": "M3 — MCP, Evaluation & Paper",
+    "line": 348,
+    "text": "Tính mean/median/std hoặc confidence interval.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W13-14-M3-02",
+    "week": "W13-14",
+    "owner": "M3",
+    "section": "M3 — MCP, Evaluation & Paper",
+    "line": 349,
+    "text": "Làm paired comparison khi cùng task được so sánh giữa variants.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W13-14-M3-03",
+    "week": "W13-14",
+    "owner": "M3",
+    "section": "M3 — MCP, Evaluation & Paper",
+    "line": 350,
+    "text": "Hoàn thiện plots/tables có caption và configuration note.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W13-14-M3-04",
+    "week": "W13-14",
+    "owner": "M3",
+    "section": "M3 — MCP, Evaluation & Paper",
+    "line": 351,
+    "text": "Viết Threats to Validity: construct, internal, external, reliability/security.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W13-14-DOD-01",
+    "week": "W13-14",
+    "owner": "DOD",
+    "section": "Definition of Done",
+    "line": 357,
+    "text": "Mọi con số trong paper có script tái tạo.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W13-14-DOD-02",
+    "week": "W13-14",
+    "owner": "DOD",
+    "section": "Definition of Done",
+    "line": 358,
+    "text": "Không thay đổi protocol sau khi thấy held-out results.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W15-16-CHUNG-01",
+    "week": "W15-16",
+    "owner": "CHUNG",
+    "section": "Mục tiêu chung",
+    "line": 366,
+    "text": "Đóng gói artifact tái lập được.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W15-16-CHUNG-02",
+    "week": "W15-16",
+    "owner": "CHUNG",
+    "section": "Mục tiêu chung",
+    "line": 367,
+    "text": "Viết paper theo evidence, không theo lời hứa.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W15-16-CHUNG-03",
+    "week": "W15-16",
+    "owner": "CHUNG",
+    "section": "Mục tiêu chung",
+    "line": 368,
+    "text": "Review chéo và chuẩn bị submission.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W15-16-M1-01",
+    "week": "W15-16",
+    "owner": "M1",
+    "section": "M1 — Graph & Retrieval",
+    "line": 372,
+    "text": "Hoàn thiện Methodology: graph schema, graph construction, task grounding, retrieval.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W15-16-M1-02",
+    "week": "W15-16",
+    "owner": "M1",
+    "section": "M1 — Graph & Retrieval",
+    "line": 373,
+    "text": "Kiểm tra code graph builder, schema migration, unit tests.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W15-16-M1-03",
+    "week": "W15-16",
+    "owner": "M1",
+    "section": "M1 — Graph & Retrieval",
+    "line": 374,
+    "text": "Viết README cho graph/retrieval modules.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W15-16-M2-01",
+    "week": "W15-16",
+    "owner": "M2",
+    "section": "M2 — Repair & Verification",
+    "line": 380,
+    "text": "Hoàn thiện Methodology: repair loop, patch impact, verification evidence.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W15-16-M2-02",
+    "week": "W15-16",
+    "owner": "M2",
+    "section": "M2 — Repair & Verification",
+    "line": 381,
+    "text": "Kiểm tra sandbox/worktree cleanup, test runner, verification report.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W15-16-M2-03",
+    "week": "W15-16",
+    "owner": "M2",
+    "section": "M2 — Repair & Verification",
+    "line": 382,
+    "text": "Viết README cho repair/verification modules.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W15-16-M3-01",
+    "week": "W15-16",
+    "owner": "M3",
+    "section": "M3 — MCP, Evaluation & Paper",
+    "line": 388,
+    "text": "Hoàn thiện Introduction, Abstract, Conclusion, Results, Threats to Validity.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W15-16-M3-02",
+    "week": "W15-16",
+    "owner": "M3",
+    "section": "M3 — MCP, Evaluation & Paper",
+    "line": 389,
+    "text": "Chuẩn bị Dockerfile/Dev Container, install scripts, benchmark manifest, reproducibility script.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W15-16-M3-03",
+    "week": "W15-16",
+    "owner": "M3",
+    "section": "M3 — MCP, Evaluation & Paper",
+    "line": 390,
+    "text": "Nhờ ít nhất một người ngoài nhóm chạy theo README.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W15-16-M3-04",
+    "week": "W15-16",
+    "owner": "M3",
+    "section": "M3 — MCP, Evaluation & Paper",
+    "line": 391,
+    "text": "Chọn venue và kiểm tra formatting, ethics, artifact policy, authorship requirements.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W15-16-DOD-01",
+    "week": "W15-16",
+    "owner": "DOD",
+    "section": "Definition of Done",
+    "line": 397,
+    "text": "`README` từ máy sạch có thể chạy demo và tái tạo ít nhất một bảng kết quả.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W15-16-DOD-02",
+    "week": "W15-16",
+    "owner": "DOD",
+    "section": "Definition of Done",
+    "line": 398,
+    "text": "Paper không overclaim; mọi claim chính có bảng/figure/evidence tương ứng.",
+    "nested": false,
+    "original_checked": false
+  },
+  {
+    "id": "W15-16-DOD-03",
+    "week": "W15-16",
+    "owner": "DOD",
+    "section": "Definition of Done",
+    "line": 399,
+    "text": "Có issue list cho các limitations và future work.",
+    "nested": false,
+    "original_checked": false
+  }
+]

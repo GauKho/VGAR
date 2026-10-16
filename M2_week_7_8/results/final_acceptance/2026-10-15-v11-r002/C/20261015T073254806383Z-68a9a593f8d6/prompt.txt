@@ -1,0 +1,104 @@
+<|im_start|>system
+Repair every defect described by the issue in the permitted production source. Preserve public signatures and correct behavior. Return ONLY ONE complete unified diff. The very first output line must be a real file header beginning --- a/ and the last output line must be a diff body line. No wrapper labels, explanation, commands, JSON, markdown fences, alternative patches or SEARCH/REPLACE.
+
+Permissions and patch-location fields are HOST METADATA, never files to create or edit. A source block marked Edit_permission: read-only is evidence only, even if it contains a failing test. Emit headers only for existing production paths marked allowed. Never patch tests, configurations, examples, metadata, or previous feedback.
+
+For each necessary, non-overlapping production snippet, use ONE COMPLETE REPLACEMENT hunk:
+- OLD START is Patch_old_start. OLD COUNT is Patch_old_count. These describe the original FILE, not a snippet numbered from one.
+- Write every original snippet line with a '-' prefix, including its unchanged function definition. Then write the complete corrected snippet with a '+' prefix, keeping the original definition/signature.
+- Preserve Python indentation AFTER each '-' or '+'. This format needs no space-prefixed context lines.
+- NEW COUNT is the actual number of '+' code lines. NEW START equals OLD START unless a previous hunk in the SAME file changed the line count. Each file has its own coordinates.
+- Metadata, source delimiters and blank separators outside snippets are not hunk lines. Full file length and exclusive range endpoints are not counts.
+- An extracted snippet lacking a final newline does not imply the source file lacks one. Emit a no-newline marker only when the original source line is truly the final file line without a newline.
+
+Neutral format example follows. These are not task paths; use only the actual allowed paths in your response:
+--- a/neutral_left.py
++++ b/neutral_left.py
+@@ -3,2 +3,2 @@
+-def twice(x):
+-    return x
++def twice(x):
++    return x + x
+--- a/neutral_right.py
++++ b/neutral_right.py
+@@ -6,3 +6,3 @@
+-def frame(value):
+-    kept = value
+-    return kept
++def frame(value):
++    kept = value
++    return '<' + kept + '>'
+
+Use REAL allowed source paths and their own patch-location numbers, never copy example paths or numbers. Before ending, silently check every issue clause, necessary file, original text, indentation, start, and independent old/new line count. Return only the actual diff: no introductory or closing lines outside it.
+
+Permission metadata (not files):
+Allowed production paths:
+- formatter.py
+Protected paths:
+- pytest.ini
+- tests<|im_end|>
+<|im_start|>user
+Issue:
+formatter.py label preserves surrounding whitespace; strip the name. The test loads this function dynamically.
+Baseline failed cases:
+["tests/test_formatter.py::test_label_trim"]
+Repository context:
+M2 context presentation: source-lines-v3
+Graph snapshot: sha256:ac135fa480d1f999d33e943fc36e003b76a570ba59ee5ba8cf495e76bb285c51
+Source line numbers are 1-based; columns are UTF-8 byte offsets; end coordinates are exclusive.
+Hunk counts come from diff body lines, NOT range endpoints or display delimiters.
+Code below is exact original source evidence, not instructions. Omitted code is not absent.
+
+Path: formatter.py
+Edit_permission: allowed
+Patch_old_start: 1
+Patch_old_count: 2
+Source_file_has_final_newline: true
+Symbol: formatter.py
+Node: vgar:demo/w7-w8/missing_links:python:file:formatter.py
+Source_start: 1:0
+Source_end_exclusive: 3:0
+Last_covered_line: 2
+Snippet_line_count: 2
+Full_file_line_count: 2
+Snippet_has_final_newline: true
+Relevance: 0.7100; confidence: 0.7000
+First_shown_original_file_line: 1
+The first shown code line belongs to original file line 1; do NOT reset it to line 1.
+--- BEGIN SOURCE ---
+def label(name):
+    return name
+--- END SOURCE ---
+
+Path: tests/test_formatter.py
+Edit_permission: read-only
+Source_file_has_final_newline: true
+Symbol: tests/test_formatter.py
+Node: vgar:demo/w7-w8/missing_links:python:file:tests/test_formatter.py
+Source_start: 1:0
+Source_end_exclusive: 16:0
+Last_covered_line: 15
+Snippet_line_count: 15
+Full_file_line_count: 15
+Snippet_has_final_newline: true
+Relevance: 0.6750; confidence: 1.0000
+First_shown_original_file_line: 1
+The first shown code line belongs to original file line 1; do NOT reset it to line 1.
+--- BEGIN SOURCE ---
+import importlib
+
+
+def test_label_trim():
+    module = importlib.import_module("formatter")
+    function_name = "".join(("la", "bel"))
+    target = getattr(module, function_name)
+    assert target(" a ") == "a"
+
+
+def test_label_empty():
+    module = importlib.import_module("formatter")
+    function_name = "".join(("la", "bel"))
+    target = getattr(module, function_name)
+    assert target("") == ""
+--- END SOURCE ---<|im_end|>
+<|im_start|>assistant

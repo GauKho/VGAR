@@ -1,0 +1,38 @@
+﻿**********************
+Windows PowerShell transcript start
+Start time: 20261013105118
+Username: TMT\CodexSandboxOffline
+RunAs User: TMT\CodexSandboxOffline
+Configuration Name: 
+Machine: TMT (Microsoft Windows NT 10.0.26300.0)
+Host Application: C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -Command try { [Console]::OutputEncoding=[System.Text.Encoding]::UTF8 } catch {}
+$env:PYTHONUTF8 = '1'
+$env:PYTHONPATH = 'D:\Project\CAPSTONES\VGAR\src'
+$env:PYTHONDONTWRITEBYTECODE = '1'
+$env:HF_HUB_OFFLINE = '1'
+$env:TRANSFORMERS_OFFLINE = '1'
+$env:TEMP = 'D:\Project\CAPSTONES\.audit-tmp\vgar-smoke-20261013'
+$env:TMP = $env:TEMP
+Start-Transcript -LiteralPath 'D:\Project\CAPSTONES\VGAR\docs\audit\2026-10-13\full-mcp-smoke.log'
+& 'D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Scripts\python.exe' scripts\smoke_w3_w4_full.py --strict-resources --keep
+$fullSmokeExit = $LASTEXITCODE
+Write-Output "full_mcp_smoke_exit=$fullSmokeExit"
+Stop-Transcript
+exit $fullSmokeExit
+Process ID: 12992
+PSVersion: 5.1.26100.9444
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.26100.9444
+BuildVersion: 10.0.26100.9444
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Transcript started, output file is D:\Project\CAPSTONES\VGAR\docs\audit\2026-10-13\full-mcp-smoke.log
+
+full_mcp_smoke_exit=1
+**********************
+Windows PowerShell transcript end
+End time: 20261013105131
+**********************

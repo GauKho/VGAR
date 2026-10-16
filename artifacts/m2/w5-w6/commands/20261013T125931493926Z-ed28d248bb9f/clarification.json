@@ -1,0 +1,12 @@
+{
+  "original_receipt_preserved": true,
+  "correction": "stopped_owned_pids in the original receipt denotes the two terminated owned processes, not two successful explicit Stop-Process calls",
+  "explicitly_stopped_launcher_pid": 22168,
+  "owned_child_pid": 24956,
+  "child_outcome": "Exited with launcher/job; the second stop guard refused after its identity became unavailable",
+  "verified_start_utc": ["2026-10-13T12:53:08.6742836Z", "2026-10-13T12:53:08.6887621Z"],
+  "stopped_other_processes": false,
+  "pytest_outcome_from_interrupted_invocation": "UNKNOWN",
+  "terminal_pytest_evidence": "../20261013T125931577415Z-c5e38fe74935/result.json",
+  "note": "Interrupted-invocation monotonic duration was not measured; do not invent it from wall-clock timestamps"
+}

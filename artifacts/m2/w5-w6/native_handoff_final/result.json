@@ -1,0 +1,240 @@
+{
+  "status": "PASS",
+  "context_origin": "actual-M1-static-producer",
+  "source_hashes": {
+    "src/auth.py": "sha256:9205364b034f4972adae9a15b135566cb9d3727a4adb1bf5d7ef8cfe8bf09cd6",
+    "src/service.py": "sha256:2d5b2b98cefeb025fc9d7a48712afe5a3cf878872e51d3f8514e0395db1e18ed"
+  },
+  "source_unchanged": true,
+  "counter": {
+    "model_id": "Qwen/Qwen3-4B-Instruct-2507",
+    "revision": "cdbee75f17c01a7cc42f958dc650907174af0554",
+    "tokenizer_json_sha256": "aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4",
+    "manifest_sha256": "35a7802c98c4555577da4a5b085d32ca5fbad410ba49b889bd67228b4cfdef3c",
+    "tokenizers_version": "0.22.1",
+    "counting_policy": "encode-each-snippet:add_special_tokens=false:sum-item-counts",
+    "padding": false,
+    "truncation": false
+  },
+  "counter_label": "local-hf:Qwen/Qwen3-4B-Instruct-2507@cdbee75f17c01a7cc42f958dc650907174af0554:sha256=aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4:no-special-tokens",
+  "issue": "Repair src/auth.py normalize_token: trim whitespace while preserving authenticate in src/service.py.",
+  "anchor_ids": [
+    "vgar:m2-handoff-fixture:python:file:src/auth.py",
+    "vgar:m2-handoff-fixture:python:function:src/auth.py:auth.normalize_token",
+    "vgar:m2-handoff-fixture:python:function:src/service.py:service.authenticate"
+  ],
+  "rank": {
+    "instance_id": "m2-handoff-proof",
+    "arm": "graph",
+    "scoring_version": "retrieval-scoring-v1",
+    "rank_hash": "sha256:376110d9f85b0f9e35dc84c811ef7ee7d7c253564475f2554138bfb77ec33655",
+    "items": [
+      {
+        "rank": 1,
+        "item_id": "vgar:m2-handoff-fixture:python:file:src/auth.py",
+        "path": "src/auth.py",
+        "kind": "file",
+        "symbol": "src/auth.py",
+        "function_id": null,
+        "score": 0.8875,
+        "lines": [
+          1,
+          3
+        ],
+        "snippet_sha256": "sha256:9205364b034f4972adae9a15b135566cb9d3727a4adb1bf5d7ef8cfe8bf09cd6",
+        "snippet": "def normalize_token(token: str) -> str:\n    \"\"\"Chuẩn hóa token.\"\"\"\n    return token\n"
+      },
+      {
+        "rank": 2,
+        "item_id": "vgar:m2-handoff-fixture:python:function:src/auth.py:auth.normalize_token",
+        "path": "src/auth.py",
+        "kind": "function",
+        "symbol": "auth.normalize_token",
+        "function_id": "src/auth.py::auth.normalize_token",
+        "score": 0.7250000000000001,
+        "lines": [
+          1,
+          3
+        ],
+        "snippet_sha256": "sha256:9205364b034f4972adae9a15b135566cb9d3727a4adb1bf5d7ef8cfe8bf09cd6",
+        "snippet": "def normalize_token(token: str) -> str:\n    \"\"\"Chuẩn hóa token.\"\"\"\n    return token\n"
+      },
+      {
+        "rank": 3,
+        "item_id": "vgar:m2-handoff-fixture:python:file:src/service.py",
+        "path": "src/service.py",
+        "kind": "file",
+        "symbol": "src/service.py",
+        "function_id": null,
+        "score": 0.7250000000000001,
+        "lines": [
+          1,
+          5
+        ],
+        "snippet_sha256": "sha256:2d5b2b98cefeb025fc9d7a48712afe5a3cf878872e51d3f8514e0395db1e18ed",
+        "snippet": "from auth import normalize_token\n\n\ndef authenticate(token: str) -> bool:\n    return normalize_token(token) == 'valid'\n"
+      },
+      {
+        "rank": 4,
+        "item_id": "vgar:m2-handoff-fixture:python:module:src/auth.py:auth",
+        "path": "src/auth.py",
+        "kind": "module",
+        "symbol": "auth",
+        "function_id": null,
+        "score": 0.55,
+        "lines": [
+          1,
+          3
+        ],
+        "snippet_sha256": "sha256:9205364b034f4972adae9a15b135566cb9d3727a4adb1bf5d7ef8cfe8bf09cd6",
+        "snippet": "def normalize_token(token: str) -> str:\n    \"\"\"Chuẩn hóa token.\"\"\"\n    return token\n"
+      },
+      {
+        "rank": 5,
+        "item_id": "vgar:m2-handoff-fixture:python:function:src/service.py:service.authenticate",
+        "path": "src/service.py",
+        "kind": "function",
+        "symbol": "service.authenticate",
+        "function_id": "src/service.py::service.authenticate",
+        "score": 0.5020620726159658,
+        "lines": [
+          4,
+          5
+        ],
+        "snippet_sha256": "sha256:447c0d30261d884f2eef80bd3ee5fb83595fb52ed8f8ef356d4f384b117df34b",
+        "snippet": "def authenticate(token: str) -> bool:\n    return normalize_token(token) == 'valid'\n"
+      },
+      {
+        "rank": 6,
+        "item_id": "vgar:m2-handoff-fixture:python:module:src/service.py:service",
+        "path": "src/service.py",
+        "kind": "module",
+        "symbol": "service",
+        "function_id": null,
+        "score": 0.47500000000000003,
+        "lines": [
+          1,
+          5
+        ],
+        "snippet_sha256": "sha256:2d5b2b98cefeb025fc9d7a48712afe5a3cf878872e51d3f8514e0395db1e18ed",
+        "snippet": "from auth import normalize_token\n\n\ndef authenticate(token: str) -> bool:\n    return normalize_token(token) == 'valid'\n"
+      }
+    ],
+    "excluded": [],
+    "unmapped": [],
+    "meta": {
+      "candidates_in": 6
+    }
+  },
+  "gold": {
+    "gold_files": [
+      "src/auth.py"
+    ],
+    "gold_functions": [
+      "src/auth.py::auth.normalize_token"
+    ],
+    "all_changed_source_files": [
+      "src/auth.py"
+    ],
+    "unretrievable_files": [],
+    "mapping_events": [
+      {
+        "path": "src/auth.py",
+        "side": "old",
+        "line": 3,
+        "function_id": "src/auth.py::auth.normalize_token",
+        "disposition": "mapped_function"
+      },
+      {
+        "path": "src/auth.py",
+        "side": "new",
+        "line": 3,
+        "function_id": "src/auth.py::auth.normalize_token",
+        "disposition": "mapped_function"
+      }
+    ],
+    "function_labels_complete": true,
+    "mapping_coverage": 1.0,
+    "file_retrievability_coverage": 1.0,
+    "label_semantics": "developer_changed_code_proxy_not_complete_relevance"
+  },
+  "scoring": {
+    "instance_id": "m2-handoff-proof",
+    "arm": "graph",
+    "scoring_version": "retrieval-scoring-v1",
+    "rank_hash": "sha256:376110d9f85b0f9e35dc84c811ef7ee7d7c253564475f2554138bfb77ec33655",
+    "rank": {
+      "metrics": {
+        "file_gold_count": 1,
+        "file_mrr": 1.0,
+        "file_recall@1": 1.0,
+        "file_all_gold@1": 1,
+        "file_recall@3": 1.0,
+        "file_all_gold@3": 1,
+        "file_recall@5": 1.0,
+        "file_all_gold@5": 1,
+        "file_recall@10": 1.0,
+        "file_all_gold@10": 1,
+        "file_recall@20": 1.0,
+        "file_all_gold@20": 1,
+        "function_gold_count": 1,
+        "function_mrr": 1.0,
+        "function_recall@1": 1.0,
+        "function_all_gold@1": 1,
+        "function_recall@3": 1.0,
+        "function_all_gold@3": 1,
+        "function_recall@5": 1.0,
+        "function_all_gold@5": 1,
+        "function_recall@10": 1.0,
+        "function_all_gold@10": 1,
+        "function_recall@20": 1.0,
+        "function_all_gold@20": 1
+      },
+      "reach": {
+        "file": 1.0,
+        "function": 1.0
+      },
+      "size": {
+        "items": 6,
+        "files": 2,
+        "functions": 2
+      }
+    },
+    "packed": {
+      "budget_tokens": 8000,
+      "counter_label": "local-hf:Qwen/Qwen3-4B-Instruct-2507@cdbee75f17c01a7cc42f958dc650907174af0554:sha256=aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4:no-special-tokens",
+      "snippet_policy": {
+        "max_snippet_lines": 80,
+        "header": true,
+        "overlap": "skip_if_overlaps_different_group"
+      },
+      "metrics": {
+        "gold_file_in_context": 1.0,
+        "gold_function_in_context": 0.0,
+        "all_gold_files_in_context": 1,
+        "all_gold_functions_in_context": 0,
+        "total_tokens": 63,
+        "tokens_to_first_gold_file": 30,
+        "tokens_to_first_gold_function": null,
+        "items_packed": 2,
+        "skipped": {
+          "token_budget": 0,
+          "overlap": 4
+        },
+        "truncated": false
+      }
+    },
+    "excluded_count": 0,
+    "unmapped": [],
+    "excluded_reasons": {}
+  },
+  "checks": [
+    "UTF-8-byte-source-slice",
+    "exclusive-range",
+    "token-accounting",
+    "canonical-function-mapping",
+    "gold-after-rank-freeze",
+    "source-unchanged"
+  ],
+  "owner_signoff": "PENDING_M1_OWNER_REVIEW"
+}

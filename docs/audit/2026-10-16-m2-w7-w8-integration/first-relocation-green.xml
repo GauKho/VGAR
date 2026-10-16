@@ -1,0 +1,1 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="0" skipped="0" tests="1" time="3.574" timestamp="2026-10-16T13:59:30.280495+07:00" hostname="TMT"><testcase classname="tests.m2.test_w78_integration" name="test_readsaved_uses_embedded_runtime_and_current_vgar" time="3.499" /></testsuite></testsuites>

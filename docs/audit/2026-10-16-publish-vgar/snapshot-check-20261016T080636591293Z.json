@@ -1,0 +1,56 @@
+{
+  "status": "PASS",
+  "created_utc": "2026-10-16T08:06:36.590316+00:00",
+  "branch": "feat/vgar-integrated-m2-w7-w8-20261016",
+  "parent": "b8e2461635b81d1ae790445efea5c9757d91700a",
+  "staged_tree_files": 724,
+  "total_blob_bytes": 26698739,
+  "exact_frozen_artifact_files": 426,
+  "shared_hashes_verified": 12,
+  "secret_pattern_findings": [],
+  "scan_limit": "pattern scan, not a guarantee of absence of every secret",
+  "working_head_unchanged": true,
+  "original_index_unchanged": true,
+  "largest_files": [
+    {
+      "path": "docs/audit/2026-10-16-m2-w7-w8-integration/before.json",
+      "bytes": 8818914
+    },
+    {
+      "path": "M2_week_7_8/docs/02_BAO_CAO_TOAN_BO_M2_W7_W8.md",
+      "bytes": 7072351
+    },
+    {
+      "path": "M2_week_7_8/results/manual_abc/20261015T114826234Z-922d5c80/all_logs.txt",
+      "bytes": 693317
+    },
+    {
+      "path": "artifacts/sample_graph.db",
+      "bytes": 278528
+    },
+    {
+      "path": "docs/audit/2026-10-13/sample_graph-after-tests.db",
+      "bytes": 278528
+    },
+    {
+      "path": "docs/audit/2026-10-14-m1-w7-w8/originals/artifacts/sample_graph.db",
+      "bytes": 278528
+    },
+    {
+      "path": "docs/audit/2026-10-14-m1-w7-w8/sample_graph-after-tests.db",
+      "bytes": 278528
+    },
+    {
+      "path": "docs/audit/2026-10-16-m2-w7-w8-integration/sample_graph-after-tests.db",
+      "bytes": 278528
+    }
+  ],
+  "excluded": [
+    "venvs",
+    "weights",
+    "dataset/source caches",
+    "temporary workspaces",
+    "large raw retrieval tasks",
+    "other ignored development campaigns"
+  ]
+}

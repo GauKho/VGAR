@@ -1,0 +1,80 @@
+{
+  "run_id": "20261015T115427854568Z-9e414afa7685",
+  "task_id": "missing_links",
+  "source_repo": "D:\\Project\\CAPSTONES\\M2_week_7_8\\examples\\snapshots\\missing_links",
+  "source_hash_before": "sha256:c2042cb4faa88467949f31f1a6657ad52293cd4ef0bebc18562b604e08ff562c",
+  "source_hash_after": "sha256:c2042cb4faa88467949f31f1a6657ad52293cd4ef0bebc18562b604e08ff562c",
+  "worktree_id": "wt-e16575e2095343d3b2ad3bd9f62080c5",
+  "verification": {
+    "patch_applied": true,
+    "tests": {
+      "status": "PASS",
+      "command": "D:\\Project\\CAPSTONES\\M2_week_7_8\\.venv\\Scripts\\python.exe -m pytest -q -p no:cacheprovider -p vgar_m2_w78.pytest_plugin --m2-report-json=D:\\Project\\CAPSTONES\\M2_week_7_8\\.workspaces\\m2-w78-adsddy3m\\reports\\da6de36595444bebae36e58691df479e\\nodeids.json --junitxml=D:\\Project\\CAPSTONES\\M2_week_7_8\\.workspaces\\m2-w78-adsddy3m\\reports\\da6de36595444bebae36e58691df479e\\junit.xml tests",
+      "argv": [
+        "D:\\Project\\CAPSTONES\\M2_week_7_8\\.venv\\Scripts\\python.exe",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "-p",
+        "vgar_m2_w78.pytest_plugin",
+        "--m2-report-json=D:\\Project\\CAPSTONES\\M2_week_7_8\\.workspaces\\m2-w78-adsddy3m\\reports\\da6de36595444bebae36e58691df479e\\nodeids.json",
+        "--junitxml=D:\\Project\\CAPSTONES\\M2_week_7_8\\.workspaces\\m2-w78-adsddy3m\\reports\\da6de36595444bebae36e58691df479e\\junit.xml",
+        "tests"
+      ],
+      "exit_code": 0,
+      "duration_ms": 688,
+      "stdout": "..                                                                       [100%]\r\n- generated xml file: D:\\Project\\CAPSTONES\\M2_week_7_8\\.workspaces\\m2-w78-adsddy3m\\reports\\da6de36595444bebae36e58691df479e\\junit.xml -\r\n2 passed in 0.06s\r\n",
+      "stderr": "",
+      "timeout_seconds": 120.0,
+      "cases": [
+        {
+          "name": "tests/test_formatter.py::test_label_trim",
+          "status": "PASS",
+          "duration_ms": 2,
+          "detail": "PASS"
+        },
+        {
+          "name": "tests/test_formatter.py::test_label_empty",
+          "status": "PASS",
+          "duration_ms": 0,
+          "detail": "PASS"
+        }
+      ],
+      "case_counts": {},
+      "reason": null,
+      "complete": true,
+      "output_truncated": false,
+      "stdout_bytes": 237,
+      "stderr_bytes": 0
+    },
+    "typecheck": {
+      "status": "PASS",
+      "reason": null
+    },
+    "lint": {
+      "status": "PASS",
+      "reason": null
+    },
+    "api_check": {
+      "status": "NOT_RUN",
+      "reason": null
+    },
+    "structural_check": {
+      "status": "NOT_RUN",
+      "reason": null
+    },
+    "reasons": []
+  },
+  "artifact_path": "D:\\Project\\CAPSTONES\\M2_week_7_8\\results\\manual_abc\\20261015T114826234Z-922d5c80\\C\\20261015T115427854568Z-9e414afa7685\\run_record.json",
+  "metadata": {
+    "repair_status": "PASS",
+    "mode": "real",
+    "graph_version": "sha256:ac135fa480d1f999d33e943fc36e003b76a570ba59ee5ba8cf495e76bb285c51",
+    "canonical_sha256": "sha256:66f412d69fb91cc74a3e6142b1959c2c5955ec8c307e0af346160606331dd056",
+    "raw_pytest_status": "PASS",
+    "baseline_ref": "run_record.json#stages/baseline",
+    "selection_ref": "run_record.json#stages/selection"
+  }
+}

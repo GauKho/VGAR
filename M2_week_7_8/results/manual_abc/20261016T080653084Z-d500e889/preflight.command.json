@@ -1,0 +1,14 @@
+{
+    "argv":  [
+                 "D:\\Project\\CAPSTONES\\VGAR\\M2_week_7_8\\.venv\\Scripts\\python.exe",
+                 "D:\\Project\\CAPSTONES\\VGAR\\M2_week_7_8\\results\\manual_abc\\20261016T080653084Z-d500e889\\verification_job.py",
+                 "preflight",
+                 "D:\\Project\\CAPSTONES\\VGAR\\M2_week_7_8",
+                 "D:\\Project\\CAPSTONES\\VGAR\\M2_week_7_8\\results\\manual_abc\\20261016T080653084Z-d500e889",
+                 "Check"
+             ],
+    "exit_code":  0,
+    "started_utc":  "2026-10-16T08:06:53.2154615Z",
+    "ended_utc":  "2026-10-16T08:06:57.4609615Z",
+    "duration_ms":  4221
+}

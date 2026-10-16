@@ -1,0 +1,80 @@
+{
+  "format": "vgar.m1-handoff.v1",
+  "context_format": "vgar.context.v1",
+  "context_origin": "m1-retrieval",
+  "graph_version": "sha256:e1fe94d21f10f112cd3a5e2a39f88e1fb26a760ee8ea3eaa6d3bac608d1ec371",
+  "repo_key": "demo/w7-w8/single_file_login",
+  "repository_revision": "fixture-v1",
+  "context_sha256": "sha256:a93e87cf74024e589a53a47c398b0aa904e97b46c2edb0ea24b3308efbe56522",
+  "source_digest": "sha256:3121f4240c6e47d67974b4aa550bd8486b53ace95ba478067aa60d876570eedc",
+  "files": {
+    "auth.py": "sha256:d6d89aae3fb09d77d7fcab3aa9b53ebbbb0d2f87e995f95e2ccc09fe3d18b74a",
+    "tests/test_auth.py": "sha256:82a4f022c58d27e2769b64a86ec068681edafc3b99ab404d0079dbc8ac5f62c4"
+  },
+  "source_scope": {
+    "pattern": "*.py",
+    "excluded_directories": [
+      ".git",
+      ".hg",
+      ".m1-test-tmp",
+      ".mypy_cache",
+      ".pytest_cache",
+      ".tox",
+      ".venv",
+      ".venv-m1",
+      ".venv-win",
+      "__pycache__",
+      "build",
+      "dist",
+      "node_modules"
+    ],
+    "follow_links": false
+  },
+  "items": {
+    "vgar:demo/w7-w8/single_file_login:python:test:tests/test_auth.py:tests.test_auth.test_login_rejects_whitespace": {
+      "path": "tests/test_auth.py",
+      "symbol": "tests.test_auth.test_login_rejects_whitespace",
+      "range": {
+        "start_line": 4,
+        "start_col": 0,
+        "end_line": 5,
+        "end_col": 32
+      },
+      "start_byte": 28,
+      "end_byte": 98,
+      "snippet_sha256": "sha256:36a56c705f01855a8799d3c996a0bfd450cff59ef30ed53910e758892d32d56c"
+    },
+    "vgar:demo/w7-w8/single_file_login:python:file:auth.py": {
+      "path": "auth.py",
+      "symbol": "auth.py",
+      "range": {
+        "start_line": 1,
+        "start_col": 0,
+        "end_line": 3,
+        "end_col": 0
+      },
+      "start_byte": 0,
+      "end_byte": 43,
+      "snippet_sha256": "sha256:d6d89aae3fb09d77d7fcab3aa9b53ebbbb0d2f87e995f95e2ccc09fe3d18b74a"
+    },
+    "vgar:demo/w7-w8/single_file_login:python:test:tests/test_auth.py:tests.test_auth.test_login_accepts_name": {
+      "path": "tests/test_auth.py",
+      "symbol": "tests.test_auth.test_login_accepts_name",
+      "range": {
+        "start_line": 8,
+        "start_col": 0,
+        "end_line": 9,
+        "end_col": 33
+      },
+      "start_byte": 104,
+      "end_byte": 169,
+      "snippet_sha256": "sha256:e5cb3b1491529f76366b8b0c10553e6cb66a372b18cc9e36e4b2fd8f033ecf49"
+    }
+  },
+  "range_encoding": "utf-8-bytes",
+  "line_base": 1,
+  "end_exclusive": true,
+  "snippet_policy": "whole-range-no-wrapper",
+  "counter_label": "local-hf:Qwen/Qwen3-4B-Instruct-2507@cdbee75f17c01a7cc42f958dc650907174af0554:sha256=aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4:no-special-tokens",
+  "token_budget_unit": "snippets-only"
+}

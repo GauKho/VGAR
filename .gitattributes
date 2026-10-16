@@ -1,0 +1,26 @@
+# Preserve byte-attested M2 runtime/fixtures/history across Windows clones.
+# This does not change working-tree source bytes or relax any M2 hash guard.
+M2_week_7_8/** -text
+artifacts/m2/** -text
+results/retrieval/** -text
+docs/audit/** -text
+Task[[:space:]]Status.md -text
+
+# Shared M1/M2 boundary files frozen by config/source_pin.json.
+# Existing approved Windows bytes include CRLF; store those exact bytes.
+src/vgar/__init__.py -text
+src/vgar/contracts/__init__.py -text
+src/vgar/contracts/context.py -text
+src/vgar/contracts/consumer.py -text
+src/vgar/contracts/handoff.py -text
+src/vgar/contracts/prompt_context.py -text
+src/vgar/contracts/repair.py -text
+src/vgar/contracts/evidence.py -text
+src/vgar/config/settings.py -text
+src/vgar/config/__init__.py -text
+src/vgar/graph/token_counter.py -text
+src/vgar/graph/__init__.py -text
+
+# Keep the current evaluated M2 scoring implementation byte-identical as well.
+src/vgar/evaluation/retrieval/compare.py -text
+src/vgar/evaluation/retrieval/scoring.py -text

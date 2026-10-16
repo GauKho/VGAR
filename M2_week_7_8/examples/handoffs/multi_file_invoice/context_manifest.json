@@ -1,0 +1,107 @@
+{
+  "format": "vgar.m1-handoff.v1",
+  "context_format": "vgar.context.v1",
+  "context_origin": "m1-retrieval",
+  "graph_version": "sha256:1bbff47bc1ee5098b1f3d8f37dc5952faa9127224763e651c66630d838adb93e",
+  "repo_key": "demo/w7-w8/multi_file_invoice",
+  "repository_revision": "fixture-v1",
+  "context_sha256": "sha256:fca8ec333665c6f81b6cc54045cdd476bf2de932eae3fc92ba9349cb29c957b2",
+  "source_digest": "sha256:4b893c21db66cde5cd6a87d25323c6620fe4b63798035d5da65ac4259b9c4e6c",
+  "files": {
+    "invoice.py": "sha256:9dcad8f5a030d4b595ca951a76f030a8b245e268ddb0df324af3f6b9fa003062",
+    "pricing.py": "sha256:48807cc8ac8188a688a3682fe3b07ea545ff91b51efac86a54148bef49d21183",
+    "tests/test_invoice.py": "sha256:75db0c0f491d387315076f17adf64dd88727bb465d36d059c3f94449e2fa8374"
+  },
+  "source_scope": {
+    "pattern": "*.py",
+    "excluded_directories": [
+      ".git",
+      ".hg",
+      ".m1-test-tmp",
+      ".mypy_cache",
+      ".pytest_cache",
+      ".tox",
+      ".venv",
+      ".venv-m1",
+      ".venv-win",
+      "__pycache__",
+      "build",
+      "dist",
+      "node_modules"
+    ],
+    "follow_links": false
+  },
+  "items": {
+    "vgar:demo/w7-w8/multi_file_invoice:python:test:tests/test_invoice.py:tests.test_invoice.test_invoice_percentage_tax": {
+      "path": "tests/test_invoice.py",
+      "symbol": "tests.test_invoice.test_invoice_percentage_tax",
+      "range": {
+        "start_line": 9,
+        "start_col": 0,
+        "end_line": 10,
+        "end_col": 43
+      },
+      "start_byte": 159,
+      "end_byte": 238,
+      "snippet_sha256": "sha256:beb717b900358d011e9b2e59c9d73705b1da8c8ad52b96b2f1187fcd704ec894"
+    },
+    "vgar:demo/w7-w8/multi_file_invoice:python:file:pricing.py": {
+      "path": "pricing.py",
+      "symbol": "pricing.py",
+      "range": {
+        "start_line": 1,
+        "start_col": 0,
+        "end_line": 3,
+        "end_col": 0
+      },
+      "start_byte": 0,
+      "end_byte": 85,
+      "snippet_sha256": "sha256:48807cc8ac8188a688a3682fe3b07ea545ff91b51efac86a54148bef49d21183"
+    },
+    "vgar:demo/w7-w8/multi_file_invoice:python:function:invoice.py:invoice.invoice_total": {
+      "path": "invoice.py",
+      "symbol": "invoice.invoice_total",
+      "range": {
+        "start_line": 4,
+        "start_col": 0,
+        "end_line": 6,
+        "end_col": 28
+      },
+      "start_byte": 42,
+      "end_byte": 181,
+      "snippet_sha256": "sha256:a779cb59fe40214280a2ec239ac84ef66900f76e16a1e94c03a74d9c43a6c5c8"
+    },
+    "vgar:demo/w7-w8/multi_file_invoice:python:test:tests/test_invoice.py:tests.test_invoice.test_discount_percentage": {
+      "path": "tests/test_invoice.py",
+      "symbol": "tests.test_invoice.test_discount_percentage",
+      "range": {
+        "start_line": 5,
+        "start_col": 0,
+        "end_line": 6,
+        "end_col": 43
+      },
+      "start_byte": 77,
+      "end_byte": 153,
+      "snippet_sha256": "sha256:2535c50d6b202cd542fff68d54ae93513328e4ecb6c7103ec924e16d853cb1b7"
+    },
+    "vgar:demo/w7-w8/multi_file_invoice:python:test:tests/test_invoice.py:tests.test_invoice.test_invoice_without_adjustments": {
+      "path": "tests/test_invoice.py",
+      "symbol": "tests.test_invoice.test_invoice_without_adjustments",
+      "range": {
+        "start_line": 13,
+        "start_col": 0,
+        "end_line": 14,
+        "end_col": 42
+      },
+      "start_byte": 244,
+      "end_byte": 327,
+      "snippet_sha256": "sha256:3d65e802f54786be427d3ac460d7831952c56cfd290c6a561f13ee3e3b1a159f"
+    }
+  },
+  "range_encoding": "utf-8-bytes",
+  "line_base": 1,
+  "end_exclusive": true,
+  "snippet_policy": "whole-range-no-wrapper",
+  "counter_label": "local-hf:Qwen/Qwen3-4B-Instruct-2507@cdbee75f17c01a7cc42f958dc650907174af0554:sha256=aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4:no-special-tokens",
+  "token_budget_unit": "snippets-only"
+}

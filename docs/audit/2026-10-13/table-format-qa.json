@@ -1,0 +1,108 @@
+{
+  "status": "PASS",
+  "renderer": "mistune 3.3.4 with table plugin",
+  "before_rendered_tables": 9,
+  "after_rendered_tables": 17,
+  "task_rows_rendered_in_tables": 150,
+  "changed_lines": [
+    227,
+    253,
+    280,
+    305,
+    329,
+    354,
+    375,
+    396
+  ],
+  "only_separator_lines_changed": true,
+  "headers_and_body_content_unchanged": true,
+  "columns_match_for_all_tables": true,
+  "tables": [
+    {
+      "line": 30,
+      "columns": 3,
+      "rows": 2
+    },
+    {
+      "line": 96,
+      "columns": 3,
+      "rows": 4
+    },
+    {
+      "line": 110,
+      "columns": 6,
+      "rows": 9
+    },
+    {
+      "line": 131,
+      "columns": 4,
+      "rows": 6
+    },
+    {
+      "line": 192,
+      "columns": 3,
+      "rows": 23
+    },
+    {
+      "line": 226,
+      "columns": 5,
+      "rows": 21
+    },
+    {
+      "line": 252,
+      "columns": 5,
+      "rows": 22
+    },
+    {
+      "line": 279,
+      "columns": 5,
+      "rows": 20
+    },
+    {
+      "line": 304,
+      "columns": 5,
+      "rows": 19
+    },
+    {
+      "line": 328,
+      "columns": 5,
+      "rows": 20
+    },
+    {
+      "line": 353,
+      "columns": 5,
+      "rows": 16
+    },
+    {
+      "line": 374,
+      "columns": 5,
+      "rows": 16
+    },
+    {
+      "line": 395,
+      "columns": 5,
+      "rows": 16
+    },
+    {
+      "line": 422,
+      "columns": 4,
+      "rows": 12
+    },
+    {
+      "line": 443,
+      "columns": 3,
+      "rows": 5
+    },
+    {
+      "line": 453,
+      "columns": 3,
+      "rows": 9
+    },
+    {
+      "line": 485,
+      "columns": 4,
+      "rows": 8
+    }
+  ],
+  "report_sha256": "335cf78e8de6c4c6bc0f3c3ba318f45c8e21eb53761535caf6962f056843739e"
+}

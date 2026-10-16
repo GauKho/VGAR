@@ -1,0 +1,43 @@
+{
+  "external_import_unique_name_fallback": {
+    "observation": "unresolved explicit external import receives an internal CALLS target",
+    "call_targets": [
+      {
+        "path": "src/a.py",
+        "qualified_name": "a.unique_helper",
+        "confidence": 0.6,
+        "binding_kind": "heuristic"
+      }
+    ]
+  },
+  "encoded_resource_id": {
+    "raw_id_resolves": true,
+    "encoded_id_error": "NodeNotFoundError",
+    "message": "'Unknown node: vgar%3Aaudit%2Fexternal-binding%3Apython%3Afunction%3Asrc%2Fa.py%3Aa.unique_helper'"
+  },
+  "unconfigured_context_service": {
+    "error": "GraphNotReadyError",
+    "message": "Graph version is not ready: W5 retrieval requires repository root and a verified tokenizer"
+  },
+  "agent_supplied_repository_root": {
+    "alternate_dummy_patch_status": "PASS",
+    "intended_workspace_untouched": true,
+    "alternate_dummy_was_modified": true,
+    "scope": "only throwaway audit folders; no original repository edited"
+  },
+  "skip_only_pytest_is_reported_pass": {
+    "status": "PASS",
+    "exit_code": 0,
+    "counts": {
+      "passed": 0,
+      "failed": 0,
+      "error": 0,
+      "skipped": 1
+    },
+    "stdout": "s                                                                        [100%]\r\n- generated xml file: D:\\Project\\CAPSTONES\\.audit-tmp\\vgar-probes-20261013\\probe-t7iyvtb6\\skip-only-repo\\.m2-pytest-3295b0wn\\junit.xml -\r\n1 skipped in 0.07s\r\n",
+    "stderr": "",
+    "case_statuses": [
+      "NOT_RUN"
+    ]
+  }
+}

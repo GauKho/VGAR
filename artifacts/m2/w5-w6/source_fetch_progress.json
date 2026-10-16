@@ -1,0 +1,262 @@
+{
+  "manifest_hash": "sha256:9ce4e3bdc805d140d13af00253970b3c38c919f7424e363efb27c4dd9891f754",
+  "ended_utc": "2026-10-13T11:46:34.920528+00:00",
+  "results": [
+    {
+      "instance_id": "sympy__sympy-16597",
+      "status": "VERIFIED",
+      "source_file_count": 747,
+      "provenance": {
+        "source_backend": "github_codeload_commit_archive",
+        "snapshot_commit": "6fd65310fa3167b9626c38a5487e171ca407d988",
+        "commit_validation": "immutable_40_SHA_URL_and_archive_root; not_git_object_hash_validation",
+        "source_file_count": 747,
+        "source_bytes": 17036058,
+        "excluded_sources": [],
+        "url": "https://codeload.github.com/sympy/sympy/tar.gz/6fd65310fa3167b9626c38a5487e171ca407d988",
+        "archive_hash": "sha256:f456b3e24117a512a154f1c13f69c21532fb32d02ebe118e8ec0e2bcb42cac6d",
+        "base_commit": "6fd65310fa3167b9626c38a5487e171ca407d988",
+        "cache_path": "D:\\Project\\CAPSTONES\\VGAR\\data\\repositories\\archives\\sympy__sympy-6fd65310fa3167b9626c38a5487e171ca407d988.tar.gz"
+      }
+    },
+    {
+      "instance_id": "django__django-11734",
+      "status": "VERIFIED",
+      "source_file_count": 822,
+      "provenance": {
+        "source_backend": "github_codeload_commit_archive",
+        "snapshot_commit": "999891bd80b3d02dd916731a7a239e1036174885",
+        "commit_validation": "immutable_40_SHA_URL_and_archive_root; not_git_object_hash_validation",
+        "source_file_count": 822,
+        "source_bytes": 4517241,
+        "excluded_sources": [],
+        "url": "https://codeload.github.com/django/django/tar.gz/999891bd80b3d02dd916731a7a239e1036174885",
+        "archive_hash": "sha256:aa9a9e12517fa8efe43f502771c490a94dc8f898fa19c0a5fd521f3fc4e1104e",
+        "base_commit": "999891bd80b3d02dd916731a7a239e1036174885",
+        "cache_path": "D:\\Project\\CAPSTONES\\VGAR\\data\\repositories\\archives\\django__django-999891bd80b3d02dd916731a7a239e1036174885.tar.gz"
+      }
+    },
+    {
+      "instance_id": "sphinx-doc__sphinx-8120",
+      "status": "VERIFIED",
+      "source_file_count": 182,
+      "provenance": {
+        "source_backend": "github_codeload_commit_archive",
+        "snapshot_commit": "795747bdb6b8fb7d717d5bbfc2c3316869e66a73",
+        "commit_validation": "immutable_40_SHA_URL_and_archive_root; not_git_object_hash_validation",
+        "source_file_count": 182,
+        "source_bytes": 2750732,
+        "excluded_sources": [],
+        "url": "https://codeload.github.com/sphinx-doc/sphinx/tar.gz/795747bdb6b8fb7d717d5bbfc2c3316869e66a73",
+        "archive_hash": "sha256:ec684a9a957d2189753bb787ae3548d4f997497a978f9a959b0fbc085d9269de",
+        "base_commit": "795747bdb6b8fb7d717d5bbfc2c3316869e66a73",
+        "cache_path": "D:\\Project\\CAPSTONES\\VGAR\\data\\repositories\\archives\\sphinx-doc__sphinx-795747bdb6b8fb7d717d5bbfc2c3316869e66a73.tar.gz"
+      }
+    },
+    {
+      "instance_id": "sympy__sympy-17318",
+      "status": "VERIFIED",
+      "source_file_count": 754,
+      "provenance": {
+        "source_backend": "github_codeload_commit_archive",
+        "snapshot_commit": "d4e0231b08147337745dcf601e62de7eefe2fb2d",
+        "commit_validation": "immutable_40_SHA_URL_and_archive_root; not_git_object_hash_validation",
+        "source_file_count": 754,
+        "source_bytes": 17339399,
+        "excluded_sources": [],
+        "url": "https://codeload.github.com/sympy/sympy/tar.gz/d4e0231b08147337745dcf601e62de7eefe2fb2d",
+        "archive_hash": "sha256:a8f7a93c97f71d24ed3a8959aab2331841d863afe7c5251a95a41bf6a389953d",
+        "base_commit": "d4e0231b08147337745dcf601e62de7eefe2fb2d",
+        "cache_path": "D:\\Project\\CAPSTONES\\VGAR\\data\\repositories\\archives\\sympy__sympy-d4e0231b08147337745dcf601e62de7eefe2fb2d.tar.gz"
+      }
+    },
+    {
+      "instance_id": "django__django-11885",
+      "status": "VERIFIED",
+      "source_file_count": 823,
+      "provenance": {
+        "source_backend": "github_codeload_commit_archive",
+        "snapshot_commit": "04ac9b45a34440fa447feb6ae934687aacbfc5f4",
+        "commit_validation": "immutable_40_SHA_URL_and_archive_root; not_git_object_hash_validation",
+        "source_file_count": 823,
+        "source_bytes": 4526490,
+        "excluded_sources": [],
+        "url": "https://codeload.github.com/django/django/tar.gz/04ac9b45a34440fa447feb6ae934687aacbfc5f4",
+        "archive_hash": "sha256:e962b5b8d476891ed903b1976d28adf6d9ee4830f5822d59ba30f66fa85c9a5e",
+        "base_commit": "04ac9b45a34440fa447feb6ae934687aacbfc5f4",
+        "cache_path": "D:\\Project\\CAPSTONES\\VGAR\\data\\repositories\\archives\\django__django-04ac9b45a34440fa447feb6ae934687aacbfc5f4.tar.gz"
+      }
+    },
+    {
+      "instance_id": "pydata__xarray-6992",
+      "status": "VERIFIED",
+      "source_file_count": 105,
+      "provenance": {
+        "source_backend": "github_codeload_commit_archive",
+        "snapshot_commit": "45c0a114e2b7b27b83c9618bc05b36afac82183c",
+        "commit_validation": "immutable_40_SHA_URL_and_archive_root; not_git_object_hash_validation",
+        "source_file_count": 105,
+        "source_bytes": 2420338,
+        "excluded_sources": [],
+        "url": "https://codeload.github.com/pydata/xarray/tar.gz/45c0a114e2b7b27b83c9618bc05b36afac82183c",
+        "archive_hash": "sha256:0f084f82da20e914b179eb79fce7959f85a541315e682e14dc6829f0be859232",
+        "base_commit": "45c0a114e2b7b27b83c9618bc05b36afac82183c",
+        "cache_path": "D:\\Project\\CAPSTONES\\VGAR\\data\\repositories\\archives\\pydata__xarray-45c0a114e2b7b27b83c9618bc05b36afac82183c.tar.gz"
+      }
+    },
+    {
+      "instance_id": "sphinx-doc__sphinx-8548",
+      "status": "VERIFIED",
+      "source_file_count": 183,
+      "provenance": {
+        "source_backend": "github_codeload_commit_archive",
+        "snapshot_commit": "dd1615c59dc6fff633e27dbb3861f2d27e1fb976",
+        "commit_validation": "immutable_40_SHA_URL_and_archive_root; not_git_object_hash_validation",
+        "source_file_count": 183,
+        "source_bytes": 2792567,
+        "excluded_sources": [],
+        "url": "https://codeload.github.com/sphinx-doc/sphinx/tar.gz/dd1615c59dc6fff633e27dbb3861f2d27e1fb976",
+        "archive_hash": "sha256:2108a76514897f82e6da2befd2c4805cadaf0e6c6da5d64cf4f83026dd6d4887",
+        "base_commit": "dd1615c59dc6fff633e27dbb3861f2d27e1fb976",
+        "cache_path": "D:\\Project\\CAPSTONES\\VGAR\\data\\repositories\\archives\\sphinx-doc__sphinx-dd1615c59dc6fff633e27dbb3861f2d27e1fb976.tar.gz"
+      }
+    },
+    {
+      "instance_id": "sympy__sympy-20438",
+      "status": "VERIFIED",
+      "source_file_count": 819,
+      "provenance": {
+        "source_backend": "github_codeload_commit_archive",
+        "snapshot_commit": "33b47e4bd60e2302e42616141e76285038b724d6",
+        "commit_validation": "immutable_40_SHA_URL_and_archive_root; not_git_object_hash_validation",
+        "source_file_count": 819,
+        "source_bytes": 18220038,
+        "excluded_sources": [],
+        "url": "https://codeload.github.com/sympy/sympy/tar.gz/33b47e4bd60e2302e42616141e76285038b724d6",
+        "archive_hash": "sha256:5533d3dde82031dacac903e749e177bd76debb655866c729ad715e5515f8909d",
+        "base_commit": "33b47e4bd60e2302e42616141e76285038b724d6",
+        "cache_path": "D:\\Project\\CAPSTONES\\VGAR\\data\\repositories\\archives\\sympy__sympy-33b47e4bd60e2302e42616141e76285038b724d6.tar.gz"
+      }
+    },
+    {
+      "instance_id": "django__django-12155",
+      "status": "VERIFIED",
+      "source_file_count": 824,
+      "provenance": {
+        "source_backend": "github_codeload_commit_archive",
+        "snapshot_commit": "e8fcdaad5c428878d0a5d6ba820d957013f75595",
+        "commit_validation": "immutable_40_SHA_URL_and_archive_root; not_git_object_hash_validation",
+        "source_file_count": 824,
+        "source_bytes": 4544304,
+        "excluded_sources": [],
+        "url": "https://codeload.github.com/django/django/tar.gz/e8fcdaad5c428878d0a5d6ba820d957013f75595",
+        "archive_hash": "sha256:37eeee795498b9baa0620b2f3f71f345e10f7b43aa027db145148ed586a50538",
+        "base_commit": "e8fcdaad5c428878d0a5d6ba820d957013f75595",
+        "cache_path": "D:\\Project\\CAPSTONES\\VGAR\\data\\repositories\\archives\\django__django-e8fcdaad5c428878d0a5d6ba820d957013f75595.tar.gz"
+      }
+    },
+    {
+      "instance_id": "django__django-12325",
+      "status": "VERIFIED",
+      "source_file_count": 825,
+      "provenance": {
+        "source_backend": "github_codeload_commit_archive",
+        "snapshot_commit": "29c126bb349526b5f1cd78facbe9f25906f18563",
+        "commit_validation": "immutable_40_SHA_URL_and_archive_root; not_git_object_hash_validation",
+        "source_file_count": 825,
+        "source_bytes": 4550653,
+        "excluded_sources": [],
+        "url": "https://codeload.github.com/django/django/tar.gz/29c126bb349526b5f1cd78facbe9f25906f18563",
+        "archive_hash": "sha256:0b96a48823f64cedf3ac0d9eee9de5276d6e1d78b2e031e09dde31ab82b35dd9",
+        "base_commit": "29c126bb349526b5f1cd78facbe9f25906f18563",
+        "cache_path": "D:\\Project\\CAPSTONES\\VGAR\\data\\repositories\\archives\\django__django-29c126bb349526b5f1cd78facbe9f25906f18563.tar.gz"
+      }
+    },
+    {
+      "instance_id": "django__django-12741",
+      "status": "VERIFIED",
+      "source_file_count": 827,
+      "provenance": {
+        "source_backend": "github_codeload_commit_archive",
+        "snapshot_commit": "537d422942b53bc0a2b6a51968f379c0de07793c",
+        "commit_validation": "immutable_40_SHA_URL_and_archive_root; not_git_object_hash_validation",
+        "source_file_count": 827,
+        "source_bytes": 4595118,
+        "excluded_sources": [],
+        "url": "https://codeload.github.com/django/django/tar.gz/537d422942b53bc0a2b6a51968f379c0de07793c",
+        "archive_hash": "sha256:874a9e399e833fa5f8461c845bf6445f9eec5ed5b77d6ec9f470ca21c26e7d56",
+        "base_commit": "537d422942b53bc0a2b6a51968f379c0de07793c",
+        "cache_path": "D:\\Project\\CAPSTONES\\VGAR\\data\\repositories\\archives\\django__django-537d422942b53bc0a2b6a51968f379c0de07793c.tar.gz"
+      }
+    },
+    {
+      "instance_id": "django__django-13195",
+      "status": "VERIFIED",
+      "source_file_count": 848,
+      "provenance": {
+        "source_backend": "github_codeload_commit_archive",
+        "snapshot_commit": "156a2138db20abc89933121e4ff2ee2ce56a173a",
+        "commit_validation": "immutable_40_SHA_URL_and_archive_root; not_git_object_hash_validation",
+        "source_file_count": 848,
+        "source_bytes": 4663269,
+        "excluded_sources": [],
+        "url": "https://codeload.github.com/django/django/tar.gz/156a2138db20abc89933121e4ff2ee2ce56a173a",
+        "archive_hash": "sha256:28238be679c5f52a7226e2f429fc3153496f126d3d1c1635399e70703d3e57ed",
+        "base_commit": "156a2138db20abc89933121e4ff2ee2ce56a173a",
+        "cache_path": "D:\\Project\\CAPSTONES\\VGAR\\data\\repositories\\archives\\django__django-156a2138db20abc89933121e4ff2ee2ce56a173a.tar.gz"
+      }
+    },
+    {
+      "instance_id": "django__django-13212",
+      "status": "VERIFIED",
+      "source_file_count": 849,
+      "provenance": {
+        "source_backend": "github_codeload_commit_archive",
+        "snapshot_commit": "f4e93919e4608cfc50849a1f764fd856e0917401",
+        "commit_validation": "immutable_40_SHA_URL_and_archive_root; not_git_object_hash_validation",
+        "source_file_count": 849,
+        "source_bytes": 4667834,
+        "excluded_sources": [],
+        "url": "https://codeload.github.com/django/django/tar.gz/f4e93919e4608cfc50849a1f764fd856e0917401",
+        "archive_hash": "sha256:fbe5a287855ce779fa82a1fb7c97d8407c3e660d5e8b16f017c1467ee9acc373",
+        "base_commit": "f4e93919e4608cfc50849a1f764fd856e0917401",
+        "cache_path": "D:\\Project\\CAPSTONES\\VGAR\\data\\repositories\\archives\\django__django-f4e93919e4608cfc50849a1f764fd856e0917401.tar.gz"
+      }
+    },
+    {
+      "instance_id": "django__django-13344",
+      "status": "VERIFIED",
+      "source_file_count": 849,
+      "provenance": {
+        "source_backend": "github_codeload_commit_archive",
+        "snapshot_commit": "e39e727ded673e74016b5d3658d23cbe20234d11",
+        "commit_validation": "immutable_40_SHA_URL_and_archive_root; not_git_object_hash_validation",
+        "source_file_count": 849,
+        "source_bytes": 4679090,
+        "excluded_sources": [],
+        "url": "https://codeload.github.com/django/django/tar.gz/e39e727ded673e74016b5d3658d23cbe20234d11",
+        "archive_hash": "sha256:e5abee1b7fa0160dfe6e77566184bcc8cb540056300acf93398c8d9d927a904d",
+        "base_commit": "e39e727ded673e74016b5d3658d23cbe20234d11",
+        "cache_path": "D:\\Project\\CAPSTONES\\VGAR\\data\\repositories\\archives\\django__django-e39e727ded673e74016b5d3658d23cbe20234d11.tar.gz"
+      }
+    },
+    {
+      "instance_id": "django__django-13512",
+      "status": "VERIFIED",
+      "source_file_count": 849,
+      "provenance": {
+        "source_backend": "github_codeload_commit_archive",
+        "snapshot_commit": "b79088306513d5ed76d31ac40ab3c15f858946ea",
+        "commit_validation": "immutable_40_SHA_URL_and_archive_root; not_git_object_hash_validation",
+        "source_file_count": 849,
+        "source_bytes": 4699470,
+        "excluded_sources": [],
+        "url": "https://codeload.github.com/django/django/tar.gz/b79088306513d5ed76d31ac40ab3c15f858946ea",
+        "archive_hash": "sha256:2e8822aac7298303f33d7608709ba4c5b7ceadd7a04219357688a3d92ad85a5e",
+        "base_commit": "b79088306513d5ed76d31ac40ab3c15f858946ea",
+        "cache_path": "D:\\Project\\CAPSTONES\\VGAR\\data\\repositories\\archives\\django__django-b79088306513d5ed76d31ac40ab3c15f858946ea.tar.gz"
+      }
+    }
+  ],
+  "complete": true
+}

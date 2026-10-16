@@ -1,0 +1,25 @@
+{
+    "status":  "PASS",
+    "complete":  true,
+    "started_utc":  "2026-10-16T07:15:34.7043795Z",
+    "ended_utc":  "2026-10-16T07:15:34.7734913Z",
+    "duration_ms":  69,
+    "checks":  [
+                   {
+                       "command":  "PowerShell Parser::ParseFile",
+                       "paths":  [
+                                     "D:\\Project\\CAPSTONES\\VGAR\\run_m2_abc.ps1",
+                                     "D:\\Project\\CAPSTONES\\VGAR\\M2_week_7_8\\test_abc_v11_r002.ps1"
+                                 ],
+                       "exit_code":  0,
+                       "stdout":  "No parse errors",
+                       "stderr":  ""
+                   },
+                   {
+                       "command":  "git diff --check",
+                       "exit_code":  0,
+                       "stdout":  "",
+                       "stderr":  ""
+                   }
+               ]
+}

@@ -1,0 +1,58 @@
+# VGAR root environment: M1 graph/retrieval + legacy M3 agent/MCP + root tests.
+# Run from VGAR: python -m pip install -r requirement.txt
+# Then register the CLI: python -m pip install --no-deps -e .
+# Python declared by pyproject.toml: >=3.11,<3.14; Python 3.11 x64 recommended.
+# This is a requirements specification, NOT a fully resolved/qualified lockfile.
+# Runtime entries below mirror [project].dependencies in pyproject.toml.
+
+# Hugging Face / local model runtime.
+# CUDA selection is separate: an unqualified pip install does not prove GPU support.
+torch
+accelerate
+transformers>=4.51.0,<5
+safetensors
+tokenizers>=0.22.0,<=0.23.0
+
+# Agent orchestration and MCP transports.
+langchain>=1.4,<2
+langgraph
+langchain-huggingface>=1.2,<2
+langchain-mcp-adapters==0.3.2
+mcp[cli]>=1.24,<2
+
+# DTO validation, environment, Python graph parsing.
+pydantic>=2
+python-dotenv>=1.0
+tree-sitter==0.25.2
+tree-sitter-python==0.25.0
+
+# Dataset/retrieval dependencies declared by the root project.
+pyarrow==23.0.1
+datasets==4.8.5
+
+# Training libraries already declared by pyproject.toml.
+# Listed for metadata consistency; their presence does NOT mean fine-tuning is complete.
+peft>=0.18,<1
+trl>=0.24,<1
+
+# Both root optional groups are included for tests and graph visualization.
+pytest>=8,<9
+matplotlib>=3.9,<4
+
+# IMPORTANT: do NOT install this root file in M2_week_7_8/.venv.
+# M2 core: use M2_week_7_8/requirement.txt in its OWN Python 3.11 environment.
+# Qualified M2 core pins: pydantic==2.13.5, python-dotenv==1.2.3,
+# tokenizers==0.22.1, jinja2==3.1.6, pytest==8.4.2, mypy==1.20.2, ruff==0.16.7.
+# Qualified M2 HF worker uses a SEPARATE environment:
+# torch==2.11.0+cu128 (PyTorch cu128 index), transformers==4.57.6,
+# tokenizers==0.22.2, accelerate==1.15.0, safetensors==0.8.0.
+# New paths/environments require a reviewed M2 profile/relocation qualification.
+
+# Non-pip prerequisites (install separately; see README.md):
+# - Git; Python 3.11 x64; Windows PowerShell 5.1 for the supplied .ps1 launchers.
+# - NVIDIA GPU/compatible driver for the qualified real M2 CUDA profile.
+# - Local pinned Qwen model snapshot and tokenizer manifest/assets (not pip packages).
+# - Optional Node.js/npm for SCIP/LSP. Install via scripts/install_*_runtime.ps1.
+#   configs/scip: @sourcegraph/scip-python 0.6.6; configs/lsp: pyright 1.1.414.
+# - SQLite is supplied by Python's sqlite3; no separate pip sqlite3 package needed.
+# Docker/Ollama/W&B are NOT prerequisites of the qualified M2 A/B/C native path.
