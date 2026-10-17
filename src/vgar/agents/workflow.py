@@ -1,12 +1,7 @@
-"""Outer LangGraph workflow: deterministic pipeline around one LLM node.
+"""Outer LangGraph workflow.
 
-    START -> initialize -> prepare_workspace -> repair -> verify -+-> finalize -> END
-                                                  ^               |
-                                                  +---- retry ----+-> failed   -> END
-                                                       (attempts < max_iterations)
-
-Only `repair` calls a model. Everything else is plain code, so verification
-never depends on what the agent claims.
+Interim state while M2 W7-W8 moves into src/vgar: only `initialize` runs.
+The M2 pipeline node is wired in by the next migration step.
 """
 from __future__ import annotations
 
@@ -16,53 +11,17 @@ import uuid
 
 from langgraph.graph import END, START, StateGraph
 
-from vgar.agents.nodes import (
-    finalize,
-    finalize_failed,
-    initialize_task,
-    prepare_workspace,
-    repair,
-    verify,
-)
-from vgar.agents.routes import route_after_repair, route_after_verify
+from vgar.agents.nodes import initialize_task
 from vgar.agents.runtime import Runtime, cleanup_work_dir, new_work_dir
 from vgar.agents.state import VGARState
 from vgar.observability.instrumentation import emit, trace_run
 
 
 def build_workflow(runtime: Runtime | None = None):
-    runtime = runtime or Runtime()
-
-    # Nodes need the per-run Runtime, so bind it with small closures.
-    def _prepare(state: VGARState) -> dict:
-        return prepare_workspace(state, runtime)
-
-    async def _repair(state: VGARState) -> dict:
-        return await repair(state, runtime)
-
-    def _verify(state: VGARState) -> dict:
-        return verify(state, runtime)
-
     workflow = StateGraph(VGARState)
     workflow.add_node("initialize", initialize_task)
-    workflow.add_node("prepare_workspace", _prepare)
-    workflow.add_node("repair", _repair)
-    workflow.add_node("verify", _verify)
-    workflow.add_node("finalize", finalize)
-    workflow.add_node("failed", finalize_failed)
-
     workflow.add_edge(START, "initialize")
-    workflow.add_edge("initialize", "prepare_workspace")
-    workflow.add_edge("prepare_workspace", "repair")
-    workflow.add_conditional_edges("repair", route_after_repair, {"verify": "verify", "failed": "failed"})
-    workflow.add_conditional_edges(
-        "verify",
-        route_after_verify,
-        {"finalize": "finalize", "repair": "repair", "failed": "failed"},
-    )
-    workflow.add_edge("finalize", END)
-    workflow.add_edge("failed", END)
-
+    workflow.add_edge("initialize", END)
     return workflow.compile()
 
 
@@ -101,7 +60,6 @@ async def run_task(
         with trace_run(run_id):
             result = await build_workflow(runtime).ainvoke(
                 initial_state,
-                # initialize + prepare + (repair + verify) * N + final, with headroom
                 config={"recursion_limit": 6 + 2 * max_iterations},
             )
         emit(

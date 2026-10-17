@@ -277,40 +277,8 @@ async def cmd_run(args: argparse.Namespace) -> int:
 
 
 async def cmd_solve(args: argparse.Namespace) -> int:
-    """Full outer workflow: index -> repair -> independent verify -> retry."""
-    from vgar.agents.runtime import Runtime
-    from vgar.agents.workflow import run_task
-
-    run_id = new_run_id()
-    with phase(
-        "solve_workflow",
-        run_id,
-        {
-            "repo": str(Path(args.repo).resolve()),
-            "query": args.query,
-            "selectors": args.selector,
-            "keep_workspace": args.keep,
-        },
-    ) as log_output:
-        state = await run_task(
-            repo=Path(args.repo).resolve(),
-            issue_text=args.query,
-            selectors=args.selector,
-            runtime=Runtime(keep_workspace=args.keep),
-        )
-        log_output({
-            "status": state.get("status"),
-            "attempts": state.get("attempts", 0),
-            "tool_call_count": state.get("tool_call_count", 0),
-            "evidence_keys": list((state.get("evidence") or {}).keys()),
-            "failure_reason": state.get("failure_reason"),
-        })
-    print(f"[status] {state['status']} after {state.get('attempts', 0)} attempt(s), "
-          f"{state.get('tool_call_count', 0)} tool call(s)", flush=True)
-    print(json.dumps(state.get("evidence", {}), indent=2, ensure_ascii=False, default=str))
-    if state.get("failure_reason"):
-        print(f"[reason] {state['failure_reason']}")
-    return 0 if state["status"] == "COMPLETED" else 1
+    print("solve is being migrated to the M2 pipeline", flush=True)
+    return 2
 
 
 async def cmd_chat(args: argparse.Namespace) -> int:
