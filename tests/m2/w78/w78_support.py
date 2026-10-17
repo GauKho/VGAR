@@ -1,4 +1,4 @@
-"""Shared helpers for the M2 W7-W8 tests (ported from M2_week_7_8/tests/conftest.py)."""
+"""Shared helpers for the M2 W7-W8 tests (ported from the original M2 package conftest)."""
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[3]
