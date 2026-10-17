@@ -423,6 +423,21 @@ Venv copy có thể chứa editable `.pth` trỏ source standalone cũ. Launcher
 
 ## 7. Chạy M2 A/B/C đã tích hợp
 
+### 7.0. Lệnh tích hợp trong `src/vgar`: `vgar repair` và `vgar solve`
+
+Pipeline M2 tuần 7–8 (prompt V11 → unified diff → worktree riêng → pytest/mypy/Ruff → evidence bundle) nay nằm trong `src/vgar/repair` và `src/vgar/models`, không cần thư mục `M2_week_7_8/`. Task mẫu ở `examples/m2/tasks/`, config ở `configs/m2/demo.json`.
+
+```powershell
+# Fake: dùng patch tham chiếu trong tests/fixtures/m2/reference_patches, không load model.
+.\.venv\Scripts\python.exe -m vgar.cli repair --task examples/m2/tasks/single_file_login.json --mode fake
+# Real: Qwen3-4B (snapshot cdbee75…) chạy trong worker riêng; một generation/task.
+.\.venv\Scripts\python.exe -m vgar.cli repair --task examples/m2/tasks/single_file_login.json --mode real
+# LangGraph: initialize -> repair_run (một lần run_repair) -> finalize|failed; chưa có vòng thử lại.
+.\.venv\Scripts\python.exe -m vgar.cli solve --task examples/m2/tasks/single_file_login.json --mode fake
+```
+
+`vgar repair` in đường dẫn `run_record.json` và trả exit code 0/1/2 cho PASS/FAIL/ERROR. Chỉ chạy native trên fixture đã khớp byte trong `configs/m2/trusted_fixtures.json`.
+
 ### 7.1. Trình tự khuyến nghị trên profile hiện tại
 
 ```powershell
