@@ -11,6 +11,7 @@ class VGARState(TypedDict, total=False):
     # ---------------------------------------------------------
 
     task_id: str
+    task_path: str
     repo_path: str
 
     # ---------------------------------------------------------
@@ -68,6 +69,8 @@ class VGARState(TypedDict, total=False):
     # ---------------------------------------------------------
 
     evidence: dict[str, Any]
+    run_record_path: str
+    repair_status: str
     impact_report: dict[str, Any]
 
     # ---------------------------------------------------------

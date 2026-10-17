@@ -8,8 +8,10 @@ import shutil
 import tempfile
 from dataclasses import dataclass
 from pathlib import Path
+from typing import Any, Literal
 
 from vgar.config.settings import Settings, get_settings
+from vgar.repair.config import CONFIG_DIR, REPO_ROOT
 
 
 def index_repo(repo: Path, db: Path) -> int:
@@ -27,6 +29,10 @@ def index_repo(repo: Path, db: Path) -> int:
 class Runtime:
     settings: Settings | None = None
     keep_workspace: bool = False
+    mode: Literal["fake", "real"] = "fake"
+    config_path: Path = CONFIG_DIR / "demo.json"
+    output_root: Path = REPO_ROOT / "results/solve"
+    generator: Any = None  # test override for the generator build_generation selects
 
     def base_settings(self) -> Settings:
         return self.settings or get_settings()

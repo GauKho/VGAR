@@ -313,8 +313,29 @@ async def cmd_repair(args: argparse.Namespace) -> int:
 
 
 async def cmd_solve(args: argparse.Namespace) -> int:
-    print("solve is being migrated to the M2 pipeline", flush=True)
-    return 2
+    """LangGraph workflow: initialize -> one M2 pipeline run -> finalize/failed."""
+    from vgar.agents.runtime import Runtime
+    from vgar.agents.workflow import run_task
+
+    run_id = new_run_id()
+    with phase(
+        "solve_workflow",
+        run_id,
+        {"task": str(Path(args.task).resolve()), "mode": args.mode, "keep_workspace": args.keep},
+    ) as log_output:
+        state = await run_task(task_path=args.task, runtime=Runtime(mode=args.mode, keep_workspace=args.keep))
+        log_output({
+            "status": state.get("status"),
+            "attempts": state.get("attempts", 0),
+            "repair_status": state.get("repair_status"),
+            "run_record_path": state.get("run_record_path"),
+            "failure_reason": state.get("failure_reason"),
+        })
+    print(f"[status] {state['status']} after {state.get('attempts', 0)} attempt(s)", flush=True)
+    print(f"[run] {state.get('run_record_path')}", flush=True)
+    if state.get("failure_reason"):
+        print(f"[reason] {state['failure_reason']}")
+    return 0 if state["status"] == "COMPLETED" else 1
 
 
 async def cmd_chat(args: argparse.Namespace) -> int:
@@ -366,10 +387,9 @@ def parser() -> argparse.ArgumentParser:
     rp.add_argument("--rerun-reason")
     rp.set_defaults(fn=cmd_repair)
 
-    sv = sub.add_parser("solve", help="run the verified repair workflow (retries until tests pass)")
-    sv.add_argument("query")
-    sv.add_argument("--repo", required=True)
-    sv.add_argument("--selector", action="append", required=True, help="pytest selector; repeatable")
+    sv = sub.add_parser("solve", help="LangGraph workflow running the M2 pipeline once on a task file")
+    sv.add_argument("--task", type=Path, required=True)
+    sv.add_argument("--mode", choices=("fake", "real"), default="fake")
     sv.add_argument("--keep", action="store_true", help="keep temp dir")
     sv.set_defaults(fn=cmd_solve)
 
