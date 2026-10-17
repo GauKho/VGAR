@@ -1,4 +1,4 @@
-# M2 EvidenceBundle contract (W3–W4)
+# M2 EvidenceBundle contract (W3–W4, extended W7–W8)
 
 Python definitions: `vgar.contracts.repair` and `vgar.contracts.evidence`. Both use Pydantic 2 and reject unknown fields. No `schema_version` field is present. M1 `graph_version` is a graph snapshot identifier, not an M2 schema number.
 
@@ -10,8 +10,9 @@ Python definitions: `vgar.contracts.repair` and `vgar.contracts.evidence`. Both 
 | `PatchApplyResult` | `status`, `patch_applied`, `worktree_id` | Reserved patch boundary; no patch engine is implemented at W3–W4. `changed_files` defaults empty, `error` null. |
 | `TestRunResult` | `status`, `command`, `argv`, `exit_code`, `duration_ms`, `stdout`, `stderr` | One pytest process result. Optional JUnit cases/counts, timeout, byte counts, completion and truncation flags. |
 | `CheckResult` | `status` | Defaults to `NOT_RUN`; used for future verification tiers. |
-| `VerificationResult` | `patch_applied`, `tests` | Test result plus typecheck/lint/API/structural checks and reasons. |
-| `EvidenceBundle` | `run_id`, `source_repo`, `source_hash_before`, `source_hash_after`, `worktree_id`, `verification` | Correlates source integrity and verification. `task_id`, artifact path and metadata are optional. |
+| `TestGroupResult` | none (all default) | W7–W8. `status` (`NOT_RUN` when empty, `ERROR` if any case errored or did not run, `FAIL` if any failed, else `PASS`), post-patch `cases`, and `baseline` outcome per case name. |
+| `VerificationResult` | `patch_applied`, `tests` | Test result plus typecheck/lint/API/structural checks and reasons. W7–W8 adds `failing_tests` (tests that failed at baseline and must now pass) and `relevant_tests` (the other selected tests, i.e. regression). |
+| `EvidenceBundle` | `run_id`, `source_repo`, `source_hash_before`, `source_hash_after`, `worktree_id`, `verification` | Correlates source integrity and verification. `task_id`, artifact path and metadata are optional. W7–W8 adds `diff` (the applied unified diff bytes, empty if none) and `recommendation`: `ACCEPT` (run PASS), `REVISE` (patch produced but parse/apply/verification FAIL), `REJECT` (ERROR/incomplete). |
 
 The saved JSON additionally contains `run_id`, UTC timestamps, source/cwd/workspace identifiers, actual command/argv, Python and pytest versions, selected non-secret environment settings, timeout, `status`, record-level `complete`, full `test_result`, and `evidence_bundle` for baseline runs. The JUnit XML is embedded as parsed case data and removed. `test_result.complete=false` on timeout/output interruption; record-level `complete=true` means the JSON was finalized even if the test did not finish. A crash before finalization leaves record-level `complete=false` and `status=NOT_RUN`.
 
@@ -44,3 +45,25 @@ The saved JSON additionally contains `run_id`, UTC timestamps, source/cwd/worksp
 ```
 
 The example is illustrative, not a saved run. For exact serialized output, inspect a generated JSON in `artifacts/m2/test-runs/`. Share the Pydantic JSON schema and sample artifact with M3 before adding MCP tools or changing shared names.
+
+## W7–W8 repair bundle
+
+`vgar repair` / `vgar solve` write `evidence_bundle.json` next to `run_record.json`. The patch/evidence payload M2 hands to M3 is: `diff`, `worktree_id`, `verification.failing_tests` / `relevant_tests` / `tests`, `typecheck`, `lint`, `recommendation` and `verification.reasons`. Fragment from fake task `multi_file_invoice`:
+
+```json
+{
+  "verification": {
+    "patch_applied": true,
+    "failing_tests": {"status": "PASS", "baseline": {"tests/test_invoice.py::test_discount_percentage": "FAIL", "tests/test_invoice.py::test_invoice_percentage_tax": "FAIL"}},
+    "relevant_tests": {"status": "PASS", "baseline": {"tests/test_invoice.py::test_invoice_without_adjustments": "PASS"}},
+    "typecheck": {"status": "PASS", "reason": null},
+    "lint": {"status": "PASS", "reason": null}
+  },
+  "diff": "--- a/invoice.py
++++ b/invoice.py
+...",
+  "recommendation": "ACCEPT"
+}
+```
+
+Bundles saved before these fields existed (for example `tests/fixtures/m2/golden_v11/`) still validate: the new fields default to empty groups, `diff=""` and `recommendation="REJECT"`; read the run's real status from `metadata.repair_status`.

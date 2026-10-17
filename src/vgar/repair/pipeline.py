@@ -41,8 +41,32 @@ class DeadlineExecutor(NativeExecutor):
         return super().run(argv, cwd, min(timeout_seconds, remaining))
 
 
+def recommendation_for(status):
+    """PASS -> ACCEPT; FAIL (patch produced, checks rejected it) -> REVISE; ERROR (incomplete) -> REJECT."""
+    return {'PASS': 'ACCEPT', 'FAIL': 'REVISE'}.get(status, 'REJECT')
+
+
+def _test_groups(vector, baseline):
+    """Split post-patch cases into baseline-failing (must now pass) and the other selected tests."""
+    from vgar.contracts.evidence import TestCaseResult, TestGroupResult
+    before = baseline['tests']['outcomes']
+    required = baseline['required_ids']
+    by_name = {case.name: case for case in vector}
+    failing = [by_name.get(n) or TestCaseResult(name=n, status='NOT_RUN', detail='not run after patch') for n in required]
+    relevant = [case for case in vector if case.name not in set(required)]
+
+    def group(cases):
+        statuses = {case.status for case in cases}
+        status = ('NOT_RUN' if not cases else 'ERROR' if statuses & {'ERROR', 'NOT_RUN'}
+                  else 'FAIL' if 'FAIL' in statuses else 'PASS')
+        return TestGroupResult(status=status, cases=cases,
+                               baseline={case.name: before.get(case.name, 'NOT_RUN') for case in cases})
+    return group(failing), group(relevant)
+
+
 def _project_bundle(run, task, lease, applied, verification):
-    from vgar.contracts.evidence import EvidenceBundle, VerificationResult, TestRunResult, TestCaseResult, CheckResult
+    from vgar.contracts.evidence import (CheckResult, EvidenceBundle, TestCaseResult, TestGroupResult, TestRunResult,
+                                         VerificationResult)
     from vgar.contracts.repair import FailureReason
     tests = verification.get('tests')
     if tests:
@@ -58,9 +82,11 @@ def _project_bundle(run, task, lease, applied, verification):
             exit_code=command['exit_code'], duration_ms=command['duration_ms'], stdout=command['stdout'], stderr=command['stderr'],
             reason=reason, cases=vector, complete=command['complete'], output_truncated=command['output_truncated'],
             stdout_bytes=command['stdout_bytes'], stderr_bytes=command['stderr_bytes'], timeout_seconds=command['timeout_seconds'])
+        failing_tests, relevant_tests = _test_groups(vector, baseline)
     else:
         test_dto = TestRunResult(status='NOT_RUN', command='', argv=[], exit_code=None,
             duration_ms=0, stdout='', stderr='', complete=False)
+        failing_tests, relevant_tests = TestGroupResult(), TestGroupResult()
     static = verification.get('static', {})
     checks = {}
     for key, public, code in (('mypy', 'typecheck', 'TYPECHECK_FAILED'), ('ruff', 'lint', 'LINT_FAILED')):
@@ -72,10 +98,14 @@ def _project_bundle(run, task, lease, applied, verification):
                       for r in verification.get('reasons', [])]
     if verification.get('reason') and not public_reasons:
         public_reasons.append(FailureReason(code='VERIFICATION_INCOMPLETE', message=verification['reason']))
+    applied_diff = run.directory / 'applied.diff'
     bundle = EvidenceBundle(run_id=run.record['run_id'], task_id=task.task_id, source_repo=str(task.source_repo),
         source_hash_before=digest(json.dumps(lease.before, sort_keys=True)),
         source_hash_after=digest(json.dumps(inventory(task.source_repo), sort_keys=True)), worktree_id=lease.worktree_id,
-        verification=VerificationResult(patch_applied=bool(applied and applied.patch_applied), tests=test_dto, reasons=public_reasons, **checks),
+        verification=VerificationResult(patch_applied=bool(applied and applied.patch_applied), tests=test_dto,
+            failing_tests=failing_tests, relevant_tests=relevant_tests, reasons=public_reasons, **checks),
+        diff=applied_diff.read_bytes().decode('utf-8') if applied_diff.is_file() else '',
+        recommendation=recommendation_for(run.record['status']),
         artifact_path=str(run.path), metadata={'repair_status': run.record['status'], 'mode': run.record['mode'],
             'graph_version': task.graph_version, 'canonical_sha256': digest(run.path.read_bytes()),
             'raw_pytest_status': tests.get('status') if tests else 'NOT_RUN',
@@ -211,6 +241,7 @@ def run_repair(task, policy, generator, executor, output_root, *, m1_counter, to
         def publish_bundle(record):
             if bundle:
                 bundle.metadata.update(repair_status=status, canonical_sha256=digest(encode_json(record)))
+                bundle.recommendation = recommendation_for(status)
                 atomic_json(run.directory / 'evidence_bundle.json', bundle)
         try:
             # A terminal PASS is published only after cleanup and bundle persistence.

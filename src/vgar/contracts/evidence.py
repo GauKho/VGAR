@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
@@ -55,11 +55,22 @@ class CheckResult(BaseModel):
     reason: FailureReason | None = None
 
 
+class TestGroupResult(BaseModel):
+    """Post-patch outcomes for one group of tests, with each test's baseline outcome."""
+    model_config = ConfigDict(extra="forbid")
+
+    status: Status = "NOT_RUN"
+    cases: list[TestCaseResult] = Field(default_factory=list)
+    baseline: dict[str, str] = Field(default_factory=dict)
+
+
 class VerificationResult(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     patch_applied: bool = False
     tests: TestRunResult
+    failing_tests: TestGroupResult = Field(default_factory=TestGroupResult)  # failed at baseline, must pass
+    relevant_tests: TestGroupResult = Field(default_factory=TestGroupResult)  # other selected tests (regression)
     typecheck: CheckResult = Field(default_factory=CheckResult)
     lint: CheckResult = Field(default_factory=CheckResult)
     api_check: CheckResult = Field(default_factory=CheckResult)
@@ -77,5 +88,7 @@ class EvidenceBundle(BaseModel):
     source_hash_after: str
     worktree_id: str
     verification: VerificationResult
+    diff: str = ""  # applied unified diff; empty when no patch was applied
+    recommendation: Literal["ACCEPT", "REVISE", "REJECT"] = "REJECT"
     artifact_path: str | None = None
     metadata: dict[str, Any] = Field(default_factory=dict)
