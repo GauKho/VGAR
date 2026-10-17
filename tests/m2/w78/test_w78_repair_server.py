@@ -93,3 +93,17 @@ def test_server_lists_four_repair_tools():
     tools = asyncio.run(create_mcp_client(servers=('repair',)).get_tools())
     assert {t.name for t in tools} == {'repair_get_task_context', 'repair_apply_patch',
                                        'repair_run_relevant_tests', 'repair_verify_patch'}
+
+
+def test_verify_cleans_up_even_if_tokenizer_setup_would_fail(tmp_path, monkeypatch):
+    ctx = context(tmp_path)
+    server.apply_patch(ctx['run_dir'], PATCH)
+    assert server.run_relevant_tests(ctx['run_dir'])['status'] == 'PASS'
+
+    def broken(session):
+        raise RuntimeError('tokenizer manifest missing')
+    monkeypatch.setattr(server, '_tooling', broken, raising=False)
+    verified = server.verify_patch(ctx['run_dir'])
+    assert verified['recommendation'] == 'ACCEPT'
+    assert record_of(ctx['run_dir'])['complete'] is True
+    assert worktrees(tmp_path) == []

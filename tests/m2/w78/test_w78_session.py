@@ -35,7 +35,7 @@ def test_steps_survive_reload_between_each_step(m1_case, tmp_path):
     assert m_session.run_selected_tests(m_session.RepairSession.load(run_dir), counter) is not None
     session = m_session.RepairSession.load(run_dir)
     private = session.state['lease']['private']
-    run = m_session.finish(session, counter)
+    run = m_session.finish(session)
     record = json.loads(run.path.read_text(encoding='utf-8'))
     assert record['status'] == 'PASS' and record['complete'] is True
     assert all(record['stages'][name]['complete'] is True for name in STAGES)
@@ -50,9 +50,9 @@ def test_steps_survive_reload_between_each_step(m1_case, tmp_path):
 def test_finish_twice_raises(m1_case, tmp_path):
     task, counter = m1_case
     session = started(task, tmp_path)
-    m_session.finish(session, counter)
+    m_session.finish(session)
     with pytest.raises(ValueError, match='Run already finished'):
-        m_session.finish(m_session.RepairSession.load(session.run.directory), counter)
+        m_session.finish(m_session.RepairSession.load(session.run.directory))
 
 
 def test_expired_deadline_between_steps_still_finishes_cleanly(m1_case, tmp_path):
@@ -68,7 +68,7 @@ def test_expired_deadline_between_steps_still_finishes_cleanly(m1_case, tmp_path
     private = later.state['lease']['private']
     assert m_session.record_generation(later, FakeGenerator(FIX).generate(prompt, None, 30),
                                        started_utc=utc_now(), duration_ms=1) is None
-    run = m_session.finish(m_session.RepairSession.load(session.run.directory), counter)
+    run = m_session.finish(m_session.RepairSession.load(session.run.directory))
     record = json.loads(run.path.read_text(encoding='utf-8'))
     assert record['status'] == 'ERROR' and record['complete'] is True
     assert not __import__('pathlib').Path(private).exists()

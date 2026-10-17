@@ -64,10 +64,10 @@ def _detail(record: dict[str, Any]) -> str | None:
     return (record.get("error_detail") or {}).get("message")
 
 
-def _finish(session, counter, tool, inputs, started_utc, start) -> dict[str, Any]:
+def _finish(session, tool, inputs, started_utc, start) -> dict[str, Any]:
     from vgar.repair.pipeline import recommendation_for
     from vgar.repair.session import finish
-    run = finish(session, counter, on_record=lambda status: session.run.record["mcp_calls"].append(
+    run = finish(session, on_record=lambda status: session.run.record["mcp_calls"].append(
         _entry(tool, inputs, started_utc, start, status)))
     status, reason = run.record["status"], run.record.get("reason")
     bundle_path = run.directory / "evidence_bundle.json"
@@ -80,28 +80,28 @@ def _finish(session, counter, tool, inputs, started_utc, start) -> dict[str, Any
 @mcp.tool()
 @instrument_mcp_tool("get_task_context")
 def get_task_context(task_path: str, mode: str, output_root: str, work_root: str,
-                     config_path: str | None = None) -> dict[str, Any]:
+                     config_path: str | None = None, keep_workspace: bool = False) -> dict[str, Any]:
     """Start a run on a trusted fixture task: M1 context, private worktree, baseline and the V11 prompt."""
     from vgar.repair.config import CONFIG_DIR, load_config, load_task
     from vgar.repair.executor import utc_now
     from vgar.repair.pipeline import build_tokenizer
     from vgar.repair.session import prepare, start_session
     inputs = {"task_path": task_path, "mode": mode, "output_root": output_root, "work_root": work_root,
-              "config_path": config_path}
+              "config_path": config_path, "keep_workspace": keep_workspace}
     started_utc, start = utc_now(), time.monotonic()
     try:
         policy, profile = load_config(config_path or CONFIG_DIR / "demo.json")
         task = load_task(task_path)
         tokenizer, counter = build_tokenizer(mode, policy, profile, output_root)
         session = start_session(task, policy, mode, output_root, profile=profile if mode == "real" else None,
-                                temp_root=Path(work_root), mcp_scope="repair_server")
+                                temp_root=Path(work_root), keep_workspace=keep_workspace, mcp_scope="repair_server")
         session.state["config_path"] = str(config_path or CONFIG_DIR / "demo.json")
         session.save()
     except Exception as error:
         return _tool_error(error)
     prompt = prepare(session, counter, tokenizer)
     if prompt is None:
-        return _finish(session, counter, "get_task_context", inputs, started_utc, start)
+        return _finish(session, "get_task_context", inputs, started_utc, start)
     _log(session, _entry("get_task_context", inputs, started_utc, start, "PASS"))
     return {"status": "PASS", "run_dir": str(session.run.directory), "run_id": session.run.record["run_id"],
             "worktree_id": session.state["lease"]["worktree_id"], "prompt": asdict(prompt),
@@ -169,10 +169,9 @@ def verify_patch(run_dir: str) -> dict[str, Any]:
     started_utc, start = utc_now(), time.monotonic()
     try:
         session = _load("verify_patch", run_dir)
-        _, counter = _tooling(session)
     except Exception as error:
         return _tool_error(error)
-    return _finish(session, counter, "verify_patch", inputs, started_utc, start)
+    return _finish(session, "verify_patch", inputs, started_utc, start)
 
 
 def main() -> None:

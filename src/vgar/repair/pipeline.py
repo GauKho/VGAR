@@ -132,7 +132,7 @@ def run_repair(task, policy, generator, executor, output_root, *, m1_counter, to
                                       duration_ms=round((time.monotonic()-start)*1000), error=error)
         if raw is not None and steps.apply_candidate(session, raw) is not None:
             steps.run_selected_tests(session, m1_counter)
-    return steps.finish(session, m1_counter)
+    return steps.finish(session)
 
 
 def build_tokenizer(mode, policy, profile, output_root, generator=None):

@@ -110,3 +110,13 @@ def test_solve_tool_error_is_failed_not_raised(tmp_path, monkeypatch):
     state = asyncio.run(run_task(task_path=TASK, runtime=Runtime(output_root=tmp_path / "runs")))
     assert state["status"] == "FAILED" and state["failure_reason"]
     assert [c["tool"] for c in record_of(state)["mcp_calls"]] == ["get_task_context", "verify_patch"]
+
+
+def test_solve_keep_keeps_the_private_worktree(tmp_path):
+    state = asyncio.run(run_task(task_path=TASK, runtime=Runtime(output_root=tmp_path / "runs", keep_workspace=True)))
+    try:
+        worktree = Path(record_of(state)["stages"]["workspace"]["path"])
+        assert state["status"] == "COMPLETED" and worktree.is_dir()
+        assert (worktree / "auth.py").is_file()
+    finally:
+        shutil.rmtree(state["work_dir"], ignore_errors=True)

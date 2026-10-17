@@ -30,7 +30,8 @@ def _reason(result: dict[str, Any]) -> str:
 async def retrieve(state: VGARState, runtime: Runtime) -> dict:
     result = await _call(runtime, "repair_get_task_context", {
         "task_path": state["task_path"], "mode": runtime.mode, "output_root": str(runtime.output_root),
-        "work_root": state["work_dir"], "config_path": str(runtime.config_path)})
+        "work_root": state["work_dir"], "config_path": str(runtime.config_path),
+        "keep_workspace": runtime.keep_workspace})
     if result.get("status") == "PASS":
         return {"run_dir": result["run_dir"], "prompt": result["prompt"], "failure_reason": None}
     return {"run_dir": result.get("run_dir"), "run_record_path": result.get("run_record_path"),

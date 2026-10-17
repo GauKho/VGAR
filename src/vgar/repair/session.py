@@ -269,7 +269,7 @@ def _complete_verification(session):
     session.state['outcome'] = [status, reason]
 
 
-def finish(session, m1_counter=None, *, on_record=None):
+def finish(session, *, on_record=None):
     """Complete verification if tests ran, then integrity check, evidence bundle, cleanup and the final record."""
     if session.phase == 'finished':
         raise ValueError('Run already finished')
