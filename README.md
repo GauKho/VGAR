@@ -93,6 +93,7 @@ Toàn bộ **150 task IDs**: **47 HT / 48 MP / 25 CT / 30 CX**. Riêng tuần 7�
 | Ruff E9,F và PowerShell AST tại integration | PASS                                     | Theo đúng phạm vi kiểm đã ghi, không tuyên bố mọi lint rule đều PASS   |
 | Full VGAR 17/10 sau xóa `M2_week_7_8/`      | **675 PASS, 1 FAIL**                     | FAIL là HF legacy `KeyError: generation_config` có từ trước            |
 | Real A/B/C 17/10 bằng `vgar repair`         | **3/3 PASS**, trùng byte với 15/10       | Generation 148s / 194s / 69s trên RTX 4050, có CPU offload             |
+| Real A/B/C 17/10 bằng `vgar solve` qua MCP  | **3/3 PASS**, trùng byte với 15/10       | 4 MCP calls/run; generation 86s / 148s / 55s; tổng 109s / 174s / 81s   |
 
 Các suite/lượt có thể chồng lấn, **không cộng các hàng thành tổng số tests duy nhất**. Nguồn và paths đầy đủ: [báo cáo tích hợp M2](docs/handoff/M2_W7_W8_INTEGRATION_2026-10-16.md).
 
