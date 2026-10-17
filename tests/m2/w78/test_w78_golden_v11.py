@@ -12,7 +12,6 @@ CASES = [
 ]
 
 
-@pytest.mark.xfail(strict=True, reason="pipeline not migrated yet")
 @pytest.mark.parametrize("letter,case,prompt_sha,tokens", CASES)
 def test_v11_fake_run_reproduces_saved_real_evidence(letter, case, prompt_sha, tokens, tmp_path):
     from vgar.graph.token_counter import LocalTokenizerCounter

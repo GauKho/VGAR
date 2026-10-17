@@ -55,3 +55,4 @@ node_modules/
 
 # Saved local diff.
 /tore -- README.md pyproject.toml
+.workspaces/

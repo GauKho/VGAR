@@ -286,6 +286,32 @@ async def cmd_run(args: argparse.Namespace) -> int:
     return 0 if ok and untouched else 1
 
 
+async def cmd_repair(args: argparse.Namespace) -> int:
+    """One-pass M2 repair on a trusted fixture task; prints the run record path."""
+    from vgar.repair.config import load_config, load_task
+    from vgar.repair.diagnostics import exception_details
+    from vgar.repair.evidence import begin_run
+    from vgar.repair.pipeline import build_generation, run_repair
+
+    try:
+        if bool(args.supersedes_run_id) != bool(args.rerun_reason):
+            raise ValueError("Manual rerun requires both prior run ID and reason")
+        task = load_task(args.task)
+        policy, profile = load_config(args.config)
+        generator, tokenizer, counter = build_generation(args.mode, task, policy, profile, args.output_root)
+        result = run_repair(task, policy, generator, None, args.output_root,
+                            m1_counter=counter, tokenizer=tokenizer,
+                            profile=profile if args.mode == "real" else None,
+                            keep_workspace=args.keep_workspace, supersedes_run_id=args.supersedes_run_id,
+                            rerun_reason=args.rerun_reason)
+    except Exception as error:
+        result = begin_run(args.output_root, "repair-config-error", mode=args.mode,
+                           requested_task=str(args.task), requested_config=str(args.config))
+        result.finish("ERROR", reason=str(error), error_type=type(error).__name__, **exception_details(error))
+    print(result.path, flush=True)
+    return {"PASS": 0, "FAIL": 1, "ERROR": 2}[result.record["status"]]
+
+
 async def cmd_solve(args: argparse.Namespace) -> int:
     print("solve is being migrated to the M2 pipeline", flush=True)
     return 2
@@ -327,6 +353,18 @@ def parser() -> argparse.ArgumentParser:
     ix.add_argument("repo")
     ix.add_argument("--db", default="artifacts/graph.db")
     ix.set_defaults(fn=cmd_index)
+
+    from vgar.repair.config import CONFIG_DIR, REPO_ROOT
+
+    rp = sub.add_parser("repair", help="one-pass M2 repair of a trusted fixture task (no MCP, no retry)")
+    rp.add_argument("--task", type=Path, required=True)
+    rp.add_argument("--config", type=Path, default=CONFIG_DIR / "demo.json")
+    rp.add_argument("--mode", choices=("fake", "real"), required=True)
+    rp.add_argument("--output-root", type=Path, default=REPO_ROOT / "results/repair")
+    rp.add_argument("--keep-workspace", action="store_true")
+    rp.add_argument("--supersedes-run-id")
+    rp.add_argument("--rerun-reason")
+    rp.set_defaults(fn=cmd_repair)
 
     sv = sub.add_parser("solve", help="run the verified repair workflow (retries until tests pass)")
     sv.add_argument("query")
