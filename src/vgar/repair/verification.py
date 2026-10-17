@@ -53,7 +53,8 @@ def assess_transition(baseline, post):
     return 'PASS', []
 
 
-def verify_patch(task, lease, apply_result, baseline, selection, executor, policy):
+def run_patch_tests(task, lease, apply_result, baseline, selection, executor, policy):
+    """First half of verification: collection and the selected tests (no static checks yet)."""
     if apply_result.status != 'PASS' or baseline['status'] != 'PASS':
         return dict(status='ERROR', reason='VERIFICATION_INCOMPLETE')
     related = (collect_tests(lease, selection['related_selectors'], executor, policy.command_timeout)
@@ -62,6 +63,14 @@ def verify_patch(task, lease, apply_result, baseline, selection, executor, polic
     if collection['status'] != 'PASS':
         return dict(status='ERROR', reason='VERIFICATION_INCOMPLETE', related_collection=related, collection=collection)
     tests = run_tests(lease, selection['selected'], executor, policy.command_timeout)
+    return dict(status='TESTED', tests=tests, collection=collection, related_collection=related)
+
+
+def complete_verification(partial, task, lease, apply_result, baseline, executor, policy):
+    """Second half: static checks, assessment and source protection; early ERRORs pass through."""
+    if partial['status'] != 'TESTED':
+        return partial
+    tests, collection, related = partial['tests'], partial['collection'], partial['related_collection']
     static = run_static_checks(lease, task.allowed_source_paths, policy, executor)
     status, reasons = assess_transition(baseline, tests)
     for name, code in (('syntax', 'VERIFICATION_INCOMPLETE'), ('mypy', 'TYPECHECK_FAILED'), ('ruff', 'LINT_FAILED')):
@@ -80,3 +89,7 @@ def verify_patch(task, lease, apply_result, baseline, selection, executor, polic
                 collection=collection, related_collection=related,
                 related_fallback_reason='graph_collection_failed' if related['status'] == 'ERROR' else None)
 
+
+def verify_patch(task, lease, apply_result, baseline, selection, executor, policy):
+    return complete_verification(run_patch_tests(task, lease, apply_result, baseline, selection, executor, policy),
+                                 task, lease, apply_result, baseline, executor, policy)

@@ -38,3 +38,47 @@ def test_required_or_regression_cannot_hide_behind_exit_zero(fault):
     assert status == ('FAIL' if fault == 'regression' else 'ERROR')
     assert reasons
 
+
+
+class RecordingExecutor(m_executor.NativeExecutor):
+    def __init__(self, lease):
+        super().__init__(lease)
+        self.commands = []
+
+    def run(self, argv, cwd, timeout_seconds):
+        self.commands.append(' '.join(argv[1:3]) + (' --collect-only' if '--collect-only' in argv else ''))
+        return super().run(argv, cwd, timeout_seconds)
+
+
+def _verified(task, tmp_path, name, split):
+    raw = '--- a/auth.py\n+++ b/auth.py\n@@ -1,2 +1,2 @@\n def login(value):\n-    return bool(value)\n+    return bool(value.strip())\n'
+    with m_workspace.create_workspace(task.source_repo, tmp_path / name) as lease:
+        executor = RecordingExecutor(lease)
+        policy = m_contracts.RepairPolicy()
+        baseline = m_verification.capture_baseline(task, lease, executor, policy)
+        applied = m_patch.apply_patch(lease, m_patch.parse_unified_diff(raw,
+            m_patch.PatchPolicy(task.allowed_source_paths, task.protected_paths)), executor)
+        selection = {'selected': ('tests',), 'related_selectors': (), 'required_selectors': task.failing_selectors}
+        executor.commands.clear()
+        args = (task, lease, applied, baseline)
+        if split:
+            partial = m_verification.run_patch_tests(*args, selection, executor, policy)
+            result = m_verification.complete_verification(partial, *args, executor, policy)
+        else:
+            result = m_verification.verify_patch(*args, selection, executor, policy)
+        return result, executor.commands
+
+
+def test_verify_patch_equals_tests_then_completion(m1_case, tmp_path):
+    task, _ = m1_case
+    whole, whole_commands = _verified(task, tmp_path, 'whole', split=False)
+    split, split_commands = _verified(task, tmp_path, 'split', split=True)
+    assert (split['status'], split['reasons']) == (whole['status'], whole['reasons']) == ('PASS', [])
+    assert split['tests']['outcomes'] == whole['tests']['outcomes']
+    assert list(split) == list(whole)
+    assert split_commands == whole_commands == ['-m pytest --collect-only', '-m pytest', '-m mypy', '-m ruff']
+
+
+def test_completion_returns_early_error_unchanged():
+    early = dict(status='ERROR', reason='VERIFICATION_INCOMPLETE')
+    assert m_verification.complete_verification(early, None, None, None, None, None, None) is early
