@@ -40,6 +40,13 @@ def recommendation_for(status):
     return {'PASS': 'ACCEPT', 'FAIL': 'REVISE'}.get(status, 'REJECT')
 
 
+def test_vector(tests):
+    """Post-patch pytest outcomes as public TestCaseResult cases."""
+    from vgar.contracts.evidence import TestCaseResult
+    return [TestCaseResult(name=n, status=v if v in ('PASS', 'FAIL', 'ERROR') else 'NOT_RUN',
+            duration_ms=tests['durations_ms'].get(n, 0), detail=v) for n, v in tests['outcomes'].items()]
+
+
 def _test_groups(vector, baseline):
     """Split post-patch cases into baseline-failing (must now pass) and the other selected tests."""
     from vgar.contracts.evidence import TestCaseResult, TestGroupResult
@@ -59,8 +66,7 @@ def _test_groups(vector, baseline):
 
 
 def _project_bundle(run, task, lease, applied, verification):
-    from vgar.contracts.evidence import (CheckResult, EvidenceBundle, TestCaseResult, TestGroupResult, TestRunResult,
-                                         VerificationResult)
+    from vgar.contracts.evidence import CheckResult, EvidenceBundle, TestGroupResult, TestRunResult, VerificationResult
     from vgar.contracts.repair import FailureReason
     tests = verification.get('tests')
     if tests:
@@ -70,8 +76,7 @@ def _project_bundle(run, task, lease, applied, verification):
         reason = (None if assessed_status == 'PASS' else FailureReason(
             code='TEST_TIMEOUT' if command['timed_out'] else 'TEST_FAILED' if assessed_status == 'FAIL' else 'VERIFICATION_INCOMPLETE',
             message=tests.get('reason') or 'Test execution not accepted'))
-        vector = [TestCaseResult(name=n, status=v if v in ('PASS', 'FAIL', 'ERROR') else 'NOT_RUN',
-            duration_ms=tests['durations_ms'].get(n, 0), detail=v) for n, v in tests['outcomes'].items()]
+        vector = test_vector(tests)
         test_dto = TestRunResult(status=assessed_status, command=command['command'], argv=command['argv'],
             exit_code=command['exit_code'], duration_ms=command['duration_ms'], stdout=command['stdout'], stderr=command['stderr'],
             reason=reason, cases=vector, complete=command['complete'], output_truncated=command['output_truncated'],
@@ -130,17 +135,30 @@ def run_repair(task, policy, generator, executor, output_root, *, m1_counter, to
     return steps.finish(session, m1_counter)
 
 
-def build_generation(mode, task, policy, profile, output_root):
-    """Explicit fake or real generation for one task; fake is never a fallback for real."""
+def build_tokenizer(mode, policy, profile, output_root, generator=None):
+    """Prompt tokenizer and M1 token counter for a mode; real mode tokenizes in the pinned HF worker."""
     from vgar.graph.token_counter import LocalTokenizerCounter
     counter = LocalTokenizerCounter(profile.tokenizer_manifest)
     if mode == 'fake':
-        from vgar.models.generator import FakeGenerator
         from vgar.models.huggingface.local_chat import LocalChatTokenizer
-        patch = REPO_ROOT / 'tests/fixtures/m2/reference_patches' / (task.task_id + '.diff')
-        return FakeGenerator(patch.read_text(encoding='utf-8')), LocalChatTokenizer(profile.tokenizer_manifest), counter
+        return LocalChatTokenizer(profile.tokenizer_manifest), counter
     if mode == 'real':
         from vgar.models.huggingface.generator_hf import HFChatTokenizer, HFGenerator
-        generator = HFGenerator(profile, Path(output_root) / 'model-workers', policy)
-        return generator, HFChatTokenizer(generator, policy), counter
+        generator = generator or HFGenerator(profile, Path(output_root) / 'model-workers', policy)
+        return HFChatTokenizer(generator, policy), counter
     raise ValueError('Unknown generation mode: ' + str(mode))
+
+
+def build_generation(mode, task, policy, profile, output_root):
+    """Explicit fake or real generation for one task; fake is never a fallback for real."""
+    if mode == 'fake':
+        from vgar.models.generator import FakeGenerator
+        patch = REPO_ROOT / 'tests/fixtures/m2/reference_patches' / (task.task_id + '.diff')
+        generator = FakeGenerator(patch.read_text(encoding='utf-8'))
+    elif mode == 'real':
+        from vgar.models.huggingface.generator_hf import HFGenerator
+        generator = HFGenerator(profile, Path(output_root) / 'model-workers', policy)
+    else:
+        raise ValueError('Unknown generation mode: ' + str(mode))
+    tokenizer, counter = build_tokenizer(mode, policy, profile, output_root, generator)
+    return generator, tokenizer, counter

@@ -19,7 +19,8 @@ def _child_env(settings: Settings) -> dict[str, str]:
     return env
 
 
-def create_mcp_client(settings: Settings | None = None) -> MultiServerMCPClient:
+def create_mcp_client(settings: Settings | None = None,
+                      servers: tuple[str, ...] = SERVER_NAMES) -> MultiServerMCPClient:
     settings = settings or get_settings()
     env = _child_env(settings)
     # Bind MCP subprocess logs to the workflow invocation that created the agent.
@@ -34,7 +35,7 @@ def create_mcp_client(settings: Settings | None = None) -> MultiServerMCPClient:
             "args": ["-m", f"vgar.mcp.servers.{name}_server"],
             "env": env,
         }
-        for name in SERVER_NAMES
+        for name in servers
     }
 
     return MultiServerMCPClient(

@@ -269,7 +269,7 @@ def _complete_verification(session):
     session.state['outcome'] = [status, reason]
 
 
-def finish(session, m1_counter=None):
+def finish(session, m1_counter=None, *, on_record=None):
     """Complete verification if tests ran, then integrity check, evidence bundle, cleanup and the final record."""
     if session.phase == 'finished':
         raise ValueError('Run already finished')
@@ -316,6 +316,8 @@ def finish(session, m1_counter=None):
             bundle.metadata.update(repair_status=status, canonical_sha256=digest(encode_json(record)))
             bundle.recommendation = recommendation_for(status)
             atomic_json(run.directory / 'evidence_bundle.json', bundle)
+    if on_record is not None:
+        on_record(status)  # last chance to add to the record before it is hashed and published
     try:
         # A terminal PASS is published only after cleanup and bundle persistence.
         run.finish(status, reason=reason, before_publish=publish_bundle)
