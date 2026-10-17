@@ -78,3 +78,13 @@ def begin_run(root: Path, kind: str, **metadata) -> RunHandle:
         started_utc=now.isoformat(), ended_utc=None, duration_ms=None,
         interpreter=sys.executable, python=sys.version, stages={}, **metadata))
 
+
+
+def load_run(directory: Path) -> RunHandle:
+    """Re-open a run written by begin_run in another process; duration_ms keeps counting from started_utc."""
+    directory = Path(directory).resolve()
+    record = json.loads((directory / 'run_record.json').read_text(encoding='utf-8'))
+    handle = RunHandle(directory, record)
+    elapsed = (datetime.now(timezone.utc) - datetime.fromisoformat(record['started_utc'])).total_seconds()
+    handle.start = time.monotonic() - max(elapsed, 0.0)
+    return handle
