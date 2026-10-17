@@ -1,7 +1,0 @@
---- a/auth.py
-+++ b/auth.py
-@@ -1,2 +1,2 @@
--def login(value):
--    return bool(value)
-+def login(value):
-+    return bool(value.strip())

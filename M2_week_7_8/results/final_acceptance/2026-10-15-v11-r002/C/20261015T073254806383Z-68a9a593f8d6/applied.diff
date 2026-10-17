@@ -1,8 +1,0 @@
-diff --git a/formatter.py b/formatter.py
-index cb4429f..ae5896c 100644
---- a/formatter.py
-+++ b/formatter.py
-@@ -1,2 +1,2 @@
- def label(name):
--    return name
-+    return name.strip()

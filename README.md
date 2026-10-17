@@ -4,7 +4,7 @@
 
 VGAR xây đồ thị mã nguồn để tìm context liên quan đến issue, sau đó hướng tới sinh patch và kiểm chứng patch bằng thực thi. Repository hiện chứa **M1 Graph & Retrieval, M2 baseline/evaluation, M2 Repair & Verification tuần 7–8 (đã tích hợp vào `src/vgar`), cùng agent/MCP của M3**. Các thành phần có mức độ nghiệm thu khác nhau; không được hiểu “đã có file/code” là “toàn hệ thống đã hoàn thành”.
 
-> **Đọc trước khi chạy:** Pipeline M2 tuần 7–8 nay nằm trong `src/vgar/repair` + `src/vgar/models` và chạy bằng `vgar repair` / `vgar solve`. Ngày 17/10, code tích hợp chạy lại **3/3 real repairs A/B/C PASS** trên ba fixture phát triển; `prompt.txt`, raw output và `applied.diff` **trùng byte** với lần 15/10. `vgar solve` (LangGraph) gọi pipeline này **đúng một lần**, chưa có vòng thử lại; MCP tools `apply_patch/verify_patch` mới vẫn chưa nối. Full suite VGAR gần nhất **679 PASS, 4 FAIL** (3 test relocation của thư mục `M2_week_7_8/` cũ + 1 test HF legacy). Thư mục `M2_week_7_8/` còn được giữ tạm và sẽ xóa sau.
+> **Đọc trước khi chạy:** Pipeline M2 tuần 7–8 nay nằm trong `src/vgar/repair` + `src/vgar/models` và chạy bằng `vgar repair` / `vgar solve`. Ngày 17/10, code tích hợp chạy lại **3/3 real repairs A/B/C PASS** trên ba fixture phát triển; `prompt.txt`, raw output và `applied.diff` **trùng byte** với lần 15/10. `vgar solve` (LangGraph) gọi pipeline này **đúng một lần**, chưa có vòng thử lại; MCP tools `apply_patch/verify_patch` mới vẫn chưa nối. Full suite VGAR gần nhất **675 PASS, 1 FAIL** (test HF legacy). Package standalone `M2_week_7_8/` đã được xóa; lịch sử của nó còn trong git.
 
 ## Mục lục
 
@@ -74,7 +74,7 @@ Quy ước của [Task Status](<Task Status.md>): **HT** hoàn thành trong ph�
 | M1 W7–8: context/handoff/tests links | Payload/manifest/consumer, source binding, ba handoff bundles                                | Không đồng nhất link suy luận với coverage thực đo; ranking còn MP                  |
 | M2 W7–8: **7/7 task M2 HT**          | Prompt cố định, HF backend, diff parser/apply, test selection, pytest/type/lint, evidence    | HT **trên trusted-fixture prototype**, không phải toàn SWE-bench                    |
 | M2 W7–8: A/B/C cùng profile          | **3 real cases PASS** ngày 15/10 và chạy lại 17/10 bằng code tích hợp, trùng byte            | Chỉ ba trusted dev fixtures                                                         |
-| M2 W7–8 tích hợp vào `src/vgar`      | `vgar repair`, golden test V11, M2 tests port sang `tests/m2/w78/`                           | `M2_week_7_8/` còn giữ tạm; còn cần tái lập trên máy đồng đội                       |
+| M2 W7–8 tích hợp vào `src/vgar`      | `vgar repair`, golden test V11, M2 tests port sang `tests/m2/w78/`                           | Package standalone đã xóa; còn cần tái lập trên máy đồng đội                         |
 | M3 W7–8: vòng agent dùng M2 mới      | `vgar solve`: LangGraph `initialize → repair_run → finalize/failed`, một generation          | Chưa có vòng thử lại và MCP tools `apply_patch/verify_patch` mới                    |
 | Tuần 9–16                            | Có thiết kế và một số thành phần nền/lịch sử                                                 | Chưa được nghiệm thu impact/ablation/held-out/final artifact chỉ từ ba prototype    |
 
@@ -91,7 +91,7 @@ Toàn bộ **150 task IDs**: **47 HT / 48 MP / 25 CT / 30 CX**. Riêng tuần 7�
 | Check / ReadSaved sau relocation            | PASS / **3/3 saved real audits PASS**    | Prerequisite / audit lại lịch sử, không sinh patch mới                 |
 | Full VGAR 16/10                             | **571 PASS, 1 FAIL, 2 SKIP**, 81,14 giây | Lỗi HF legacy `KeyError: generation_config` đã tồn tại trước tích hợp  |
 | Ruff E9,F và PowerShell AST tại integration | PASS                                     | Theo đúng phạm vi kiểm đã ghi, không tuyên bố mọi lint rule đều PASS   |
-| Full VGAR 17/10 sau tích hợp `src/vgar`     | **679 PASS, 4 FAIL**                     | 3 FAIL là test relocation của `M2_week_7_8/` cũ; 1 là HF legacy        |
+| Full VGAR 17/10 sau xóa `M2_week_7_8/`      | **675 PASS, 1 FAIL**                     | FAIL là HF legacy `KeyError: generation_config` có từ trước            |
 | Real A/B/C 17/10 bằng `vgar repair`         | **3/3 PASS**, trùng byte với 15/10       | Generation 148s / 194s / 69s trên RTX 4050, có CPU offload             |
 
 Các suite/lượt có thể chồng lấn, **không cộng các hàng thành tổng số tests duy nhất**. Nguồn và paths đầy đủ: [báo cáo tích hợp M2](docs/handoff/M2_W7_W8_INTEGRATION_2026-10-16.md).
@@ -204,7 +204,6 @@ VGAR/
 ├── data/                        Dataset/cache/source archives/manifest/gold (local)
 ├── results/retrieval/           Kết quả retrieval theo run ID (local)
 ├── logs/                        MCP audit/debug/runtime logs (local)
-├── M2_week_7_8/                 Package standalone cũ, giữ tạm để đối chiếu; sẽ xóa
 └── .venv-m2-w5-w6/              Eval environment local, không bắt buộc có khi clone
 ```
 
@@ -509,7 +508,7 @@ Write-Host "VGAR full-suite exit: $rootExit; evidence: $qa"
 Get-FileHash -Algorithm SHA256 '.\artifacts\sample_graph.db',(Join-Path $qa 'sample_graph.before.db')
 ```
 
-**Biết trước:** full suite 17/10 có 4 failures: 3 test trong `tests/m2/test_w78_integration.py` (kiểm relocation của thư mục `M2_week_7_8/` cũ, cần venv/egg-info của bản standalone; sẽ xóa cùng thư mục) và `tests/test_hf_model.py::test_local_chat_model_uses_one_greedy_generation_config`. Test này dùng mocked loader nhưng đòi model dependencies khi import, không phải một real model invocation. Hai skips lúc đó là quyền symlink Windows và thiếu matplotlib. Requirement root mới có matplotlib, nên skip count trên máy mới có thể đổi.
+**Biết trước:** full suite 17/10 (sau khi xóa `M2_week_7_8/`) có một failure `tests/test_hf_model.py::test_local_chat_model_uses_one_greedy_generation_config`. Test này dùng mocked loader nhưng đòi model dependencies khi import, không phải một real model invocation. Hai skips lúc đó là quyền symlink Windows và thiếu matplotlib. Requirement root mới có matplotlib, nên skip count trên máy mới có thể đổi.
 
 Nếu DB fixture bị tests thay, trước khi khôi phục phải chắc không có phiên khác đang ghi; giữ bản sau-test và chỉ restore đúng backup vừa tạo. Không dùng `git reset --hard`/`git checkout --` để xử lý side effect. Không chạy `pytest .` vì có thể collection lẫn fixtures/package nhúng.
 
@@ -722,7 +721,7 @@ Các findings B01–B12, vị trí code và hướng sửa nằm trong [Task Sta
 ## 13. Bàn giao, tái lập và quy tắc thay đổi
 
 1. Đọc Task Status/PROGRESS trước khi làm tiếp; không thực thi lại kế hoạch đã đóng băng chỉ vì còn file plan.
-2. Code M2 hiện hành nằm trong `src/vgar`. Thư mục `M2_week_7_8/` chỉ còn để đối chiếu và sẽ xóa; không sửa code ở đó.
+2. Code M2 hiện hành nằm trong `src/vgar`. Package standalone `M2_week_7_8/` đã xóa ngày 17/10; cần đối chiếu thì xem lịch sử git trước commit xóa.
 3. Kiểm `git status`/`git diff` trước sửa; giữ các local changes của thành viên khác, đặc biệt retrieval compare/scoring.
 4. Không sửa tests/reference patches/parser guards/verifier/source fixtures để làm benchmark PASS; không đánh dấu ownership M1/M3 thay người phụ trách.
 5. Không xóa failures/campaigns cũ, reset quota hoặc đổi tên campaign để che lịch sử. Mỗi attempt phải có prompt/runtime/input hashes và canonical path.
