@@ -40,3 +40,14 @@ def test_solve_untrusted_task_fails_without_touching_source(tmp_path):
     state = asyncio.run(run_task(task_path=tmp_path / "task.json", runtime=Runtime(output_root=tmp_path / "runs")))
     assert state["status"] == "FAILED" and state["failure_reason"]
     assert (tmp_path / "src/auth.py").read_bytes() == before
+
+
+def test_solve_unregistered_task_id_fails_instead_of_raising(tmp_path):
+    task = json.loads(TASK.read_text(encoding="utf-8"))
+    task.update(task_id="my_new_task",
+                source_repo=str(REPO / "examples/m2/snapshots/single_file_login"),
+                bundle_directory=str(REPO / "examples/m2/handoffs/single_file_login"))
+    (tmp_path / "task.json").write_text(json.dumps(task), encoding="utf-8")
+    state = asyncio.run(run_task(task_path=tmp_path / "task.json", runtime=Runtime(output_root=tmp_path / "runs")))
+    assert state["status"] == "FAILED" and state["repair_status"] == "ERROR"
+    assert "FileNotFoundError" in state["failure_reason"]

@@ -169,7 +169,7 @@ def create_workspace(source: Path, temp_root: Path, policy=None, *, deadline=Non
         # Persist on the private repository: later apply calls must not inherit
         # the host's core.autocrlf=true and alter raw bytes on Windows.
         _git(seed, 'config', '--local', 'core.autocrlf', 'false', deadline=deadline)
-        _git(seed, 'add', '--all', deadline=deadline)
+        _git(seed, 'add', '--all', '--force', deadline=deadline)  # copy gitignored files too
         _git(seed, 'commit', '--no-verify', '-m', 'Private fixture snapshot', deadline=deadline)
         _git(seed, 'worktree', 'add', '--detach', str(worktree), 'HEAD', deadline=deadline)
         lease = WorkspaceLease(worktree.resolve(), private, temp_root, source, before, 'wt-' + uuid.uuid4().hex)

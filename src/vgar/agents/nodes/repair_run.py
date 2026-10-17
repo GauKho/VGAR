@@ -14,9 +14,12 @@ def repair_run(state: VGARState, runtime: Runtime) -> dict:
     from vgar.repair.config import load_config, load_task
     from vgar.repair.pipeline import build_generation, run_repair
 
-    task = load_task(state["task_path"])
-    policy, profile = load_config(runtime.config_path)
-    generator, tokenizer, counter = build_generation(runtime.mode, task, policy, profile, runtime.output_root)
+    try:
+        task = load_task(state["task_path"])
+        policy, profile = load_config(runtime.config_path)
+        generator, tokenizer, counter = build_generation(runtime.mode, task, policy, profile, runtime.output_root)
+    except Exception as exc:  # bad task/config/generator setup ends the run FAILED, like cmd_repair's ERROR record
+        return {"attempts": 0, "repair_status": "ERROR", "failure_reason": f"{type(exc).__name__}: {exc}"}
     if runtime.generator is not None:
         generator = runtime.generator
     run = run_repair(task, policy, generator, None, runtime.output_root,
