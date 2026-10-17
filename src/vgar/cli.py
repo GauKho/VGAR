@@ -5,7 +5,7 @@
     vgar index REPO --db graph.db    # build graph snapshot
     vgar run "Fix ..." --repo REPO --selector tests/test_x.py::test_y
     vgar repair --task TASK.json --mode fake|real   # one-pass M2 repair, prints run record
-    vgar solve --task TASK.json [--mode fake|real]  # LangGraph workflow around one M2 repair run
+    vgar solve --task TASK.json [--mode fake|real]  # LangGraph flow calling the MCP repair server
     vgar chat --repo REPO            # interactive session on a disposable copy
 
 Agent commands never touch REPO: they index it, copy it to a temp workspace

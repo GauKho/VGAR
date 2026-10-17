@@ -1,11 +1,12 @@
-"""Outer LangGraph workflow around the M2 repair pipeline (one generation).
+"""Outer LangGraph workflow: a fixed repair flow whose repair steps are MCP tool calls.
 
-    START -> initialize -> repair_run -+-> finalize -> END
-                                       +-> failed   -> END
+    START -> initialize -> retrieve -+-> generate -> apply -+-> test -> verify -+-> finalize -> END
+                                     |                      +---------> verify  +-> failed   -> END
+                                     +-> failed -> END
 
-`repair_run` calls vgar.repair.pipeline.run_repair exactly once: prompt,
-unified diff, private worktree, tests/mypy/Ruff and the evidence bundle all
-come from M2 code, so verification never depends on what the model claims.
+retrieve/apply/test/verify call the MCP `repair` server (repair_get_task_context,
+repair_apply_patch, repair_run_relevant_tests, repair_verify_patch); generate is the only
+model call. verify is the single finalizer of a started run, so the worktree is always cleaned.
 """
 from __future__ import annotations
 
@@ -15,8 +16,8 @@ import uuid
 
 from langgraph.graph import END, START, StateGraph
 
-from vgar.agents.nodes import finalize, finalize_failed, initialize_task, repair_run
-from vgar.agents.routes import route_after_repair_run
+from vgar.agents.nodes import apply, finalize, finalize_failed, generate, initialize_task, retrieve, test, verify
+from vgar.agents.routes import route_after_apply, route_after_retrieve, route_after_verify
 from vgar.agents.runtime import Runtime, cleanup_work_dir, new_work_dir
 from vgar.agents.state import VGARState
 from vgar.observability.instrumentation import emit, trace_run
@@ -25,18 +26,26 @@ from vgar.observability.instrumentation import emit, trace_run
 def build_workflow(runtime: Runtime | None = None):
     runtime = runtime or Runtime()
 
-    def _repair_run(state: VGARState) -> dict:
-        return repair_run(state, runtime)
+    def bind(node):
+        async def run(state: VGARState) -> dict:
+            return await node(state, runtime)
+        return run
 
     workflow = StateGraph(VGARState)
     workflow.add_node("initialize", initialize_task)
-    workflow.add_node("repair_run", _repair_run)
+    for name, node in (("retrieve", retrieve), ("generate", generate), ("apply", apply), ("test", test),
+                       ("verify", verify)):
+        workflow.add_node(name, bind(node))
     workflow.add_node("finalize", finalize)
     workflow.add_node("failed", finalize_failed)
 
     workflow.add_edge(START, "initialize")
-    workflow.add_edge("initialize", "repair_run")
-    workflow.add_conditional_edges("repair_run", route_after_repair_run, {"finalize": "finalize", "failed": "failed"})
+    workflow.add_edge("initialize", "retrieve")
+    workflow.add_conditional_edges("retrieve", route_after_retrieve, {"generate": "generate", "failed": "failed"})
+    workflow.add_edge("generate", "apply")
+    workflow.add_conditional_edges("apply", route_after_apply, {"test": "test", "verify": "verify"})
+    workflow.add_edge("test", "verify")
+    workflow.add_conditional_edges("verify", route_after_verify, {"finalize": "finalize", "failed": "failed"})
     workflow.add_edge("finalize", END)
     workflow.add_edge("failed", END)
 
@@ -75,7 +84,7 @@ async def run_task(*, task_path: Path, runtime: Runtime | None = None) -> VGARSt
     )
     try:
         with trace_run(run_id):
-            result = await build_workflow(runtime).ainvoke(initial_state, config={"recursion_limit": 8})
+            result = await build_workflow(runtime).ainvoke(initial_state, config={"recursion_limit": 12})
         emit(
             "WORKFLOW_END",
             run_id=run_id,

@@ -4,7 +4,7 @@
 
 VGAR xây đồ thị mã nguồn để tìm context liên quan đến issue, sau đó hướng tới sinh patch và kiểm chứng patch bằng thực thi. Repository hiện chứa **M1 Graph & Retrieval, M2 baseline/evaluation, M2 Repair & Verification tuần 7–8 (đã tích hợp vào `src/vgar`), cùng agent/MCP của M3**. Các thành phần có mức độ nghiệm thu khác nhau; không được hiểu “đã có file/code” là “toàn hệ thống đã hoàn thành”.
 
-> **Đọc trước khi chạy:** Pipeline M2 tuần 7–8 nay nằm trong `src/vgar/repair` + `src/vgar/models` và chạy bằng `vgar repair` / `vgar solve`. Ngày 17/10, code tích hợp chạy lại **3/3 real repairs A/B/C PASS** trên ba fixture phát triển; `prompt.txt`, raw output và `applied.diff` **trùng byte** với lần 15/10. `vgar solve` (LangGraph) gọi pipeline này **đúng một lần**, chưa có vòng thử lại; MCP tools `apply_patch/verify_patch` mới vẫn chưa nối. Full suite VGAR gần nhất **675 PASS, 1 FAIL** (test HF legacy). Package standalone `M2_week_7_8/` đã được xóa; lịch sử của nó còn trong git.
+> **Đọc trước khi chạy:** Pipeline M2 tuần 7–8 nay nằm trong `src/vgar/repair` + `src/vgar/models` và chạy bằng `vgar repair` / `vgar solve`. Ngày 17/10, code tích hợp chạy lại **3/3 real repairs A/B/C PASS** trên ba fixture phát triển; `prompt.txt`, raw output và `applied.diff` **trùng byte** với lần 15/10. `vgar solve` (LangGraph) chạy luồng cố định retrieve → generate → apply → test → verify, trong đó các bước repair là **lời gọi MCP thật** tới server `repair` (`run_record.mcp_calls` ghi lại từng call); một lần generate, chưa có vòng thử lại. Full suite VGAR gần nhất **675 PASS, 1 FAIL** (test HF legacy). Package standalone `M2_week_7_8/` đã được xóa; lịch sử của nó còn trong git.
 
 ## Mục lục
 
@@ -33,7 +33,7 @@ VGAR xây đồ thị mã nguồn để tìm context liên quan đến issue, sa
 | Sinh và kiểm chứng patch A/B/C mới       | `vgar repair --mode real` (mục 7)                             | **Có**, một generation/case                              |
 | Chạy unit/integration tests              | Mục 8                                                         | Không phải nghiệm thu real repair                        |
 | Tìm file, input, patch, stdout/stderr    | Mục 4 và 11                                                   | Không                                                    |
-| Chạy M2 qua LangGraph                    | `vgar solve --task ...` (mục 7)                               | Tùy `--mode`; một generation, chưa có retry/MCP tools    |
+| Chạy M2 qua LangGraph + MCP              | `vgar solve --task ...` (mục 7)                               | Tùy `--mode`; một generation, chưa có retry              |
 
 **Trên máy đã setup**, kiểm nhanh pipeline M2 mà không load model:
 
@@ -75,7 +75,7 @@ Quy ước của [Task Status](<Task Status.md>): **HT** hoàn thành trong ph�
 | M2 W7–8: **7/7 task M2 HT**          | Prompt cố định, HF backend, diff parser/apply, test selection, pytest/type/lint, evidence    | HT **trên trusted-fixture prototype**, không phải toàn SWE-bench                    |
 | M2 W7–8: A/B/C cùng profile          | **3 real cases PASS** ngày 15/10 và chạy lại 17/10 bằng code tích hợp, trùng byte            | Chỉ ba trusted dev fixtures                                                         |
 | M2 W7–8 tích hợp vào `src/vgar`      | `vgar repair`, golden test V11, M2 tests port sang `tests/m2/w78/`                           | Package standalone đã xóa; còn cần tái lập trên máy đồng đội                         |
-| M3 W7–8: vòng agent dùng M2 mới      | `vgar solve`: LangGraph `initialize → repair_run → finalize/failed`, một generation          | Chưa có vòng thử lại và MCP tools `apply_patch/verify_patch` mới                    |
+| M3 W7–8: vòng agent dùng M2 mới      | `vgar solve`: LangGraph gọi MCP `repair_get_task_context/apply_patch/run_relevant_tests/verify_patch` | Chưa có vòng thử lại; model chưa tự chọn tool                                       |
 | Tuần 9–16                            | Có thiết kế và một số thành phần nền/lịch sử                                                 | Chưa được nghiệm thu impact/ablation/held-out/final artifact chỉ từ ba prototype    |
 
 Toàn bộ **150 task IDs**: **47 HT / 48 MP / 25 CT / 30 CX**. Riêng tuần 7–8: **10 HT / 8 MP / 0 CT / 1 CX**. Các mục chung/M1/M2/M3/DoD có giao nhau; **không cộng hoặc quy đổi thành “đã xong 31% hệ thống”**. Xem từng ID/nguyên nhân/giải pháp trong Task Status.
@@ -153,7 +153,8 @@ M1 frozen handoff + source snapshot + task.json (examples/m2/)
   → actual changed paths → M1 test-selection diagnostics
   → collection + required/regression pytest + syntax/mypy/Ruff
   → source integrity + cleanup → canonical JSON/EvidenceBundle
-vgar solve bọc luồng này bằng LangGraph: initialize → repair_run → finalize|failed
+vgar solve chạy luồng này qua MCP server `repair`: initialize → retrieve [MCP] → generate → apply [MCP]
+  → test [MCP] → verify [MCP] → finalize|failed  (vgar repair chạy cùng các bước trong process)
 
 LUỒNG 2: AGENT/MCP EXACT-EDIT CỦA VGAR
 CLI run/chat → LangChain agent → MCP client (stdio)
@@ -163,7 +164,7 @@ CLI run/chat → LangChain agent → MCP client (stdio)
   independent verification của `vgar run` dùng workspace/test runner M2
 ```
 
-Luồng 1 dùng source/consumer/counter của M1 trong chính VGAR, nhưng **`mcp_calls=[]`**: không có MCP call. Luồng 2 có LangChain/MCP, nhưng model vẫn sửa bằng exact-edit chứ không qua prompt V11/parser unified diff.
+Luồng 1 dùng source/consumer/counter của M1 trong chính VGAR. Với `vgar repair`, **`mcp_calls=[]`**; với `vgar solve`, `mcp_calls` liệt kê bốn tool call của server `repair`. Luồng 2 có LangChain/MCP, nhưng model vẫn sửa bằng exact-edit chứ không qua prompt V11/parser unified diff.
 
 ### 3.3. M1 được M2 kế thừa như thế nào?
 
@@ -398,7 +399,7 @@ Pipeline M2 tuần 7–8 (prompt V11 → unified diff → worktree riêng → py
 .\.venv\Scripts\python.exe -m vgar.cli repair --task examples/m2/tasks/single_file_login.json --mode fake
 # Real: Qwen3-4B (snapshot cdbee75…) chạy trong worker riêng; một generation/task.
 .\.venv\Scripts\python.exe -m vgar.cli repair --task examples/m2/tasks/single_file_login.json --mode real
-# LangGraph: initialize -> repair_run (một lần run_repair) -> finalize|failed; chưa có vòng thử lại.
+# LangGraph + MCP: retrieve/apply/test/verify là tool call tới server repair; một generation, chưa có vòng thử lại.
 .\.venv\Scripts\python.exe -m vgar.cli solve --task examples/m2/tasks/single_file_login.json --mode fake
 ```
 
@@ -647,14 +648,14 @@ Thứ tự Settings: environment thật > `.env` > defaults; `get_settings` có 
 - `vgar index REPO --db PATH`: build/load graph snapshot.
 - `vgar run "ISSUE" --repo REPO --selector tests`: gọi agent trên disposable copy và independent pytest theo selector.
 - `vgar repair --task TASK.json --mode fake|real`: một lượt pipeline M2; in `run_record.json`, exit 0/1/2.
-- `vgar solve --task TASK.json [--mode fake|real]`: LangGraph quanh **một** lượt `vgar repair`; chưa có retry.
+- `vgar solve --task TASK.json [--mode fake|real]`: LangGraph gọi bốn tool `repair_*` qua MCP, **một** generation; chưa có retry.
 - `vgar chat --repo REPO`: tương tác; không thay quy trình nghiệm thu có canonical gates.
 - `--keep` giữ temporary folder để xem, có thể chiếm đĩa.
 - Khi chưa đăng ký console CLI, dùng `& $vgarPython -m vgar.cli ...`.
 
 **Không có selector ở `run` thì exit0 có thể chỉ nghĩa agent kết thúc, chưa independent verification.** “Agent says success”, tool discovery PASS và model trả OK đều không đủ để gọi repair thành công.
 
-MCP hiện có graph tools `search_symbols/get_callers/get_callees/find_task_anchors/get_related_context/get_related_tests`; repository `health/read_file/apply_patch`; execution `health/run_pytest`. Client thêm prefix server, ví dụ `graph_search_symbols`. Repository `apply_patch` hiện nhận exact `old_text/new_text`, **không phải strict unified-diff apply M2**. Các MCP tools `apply_patch/run_relevant_tests/verify_patch` dùng engine M2 vẫn cần M3 nối.
+MCP hiện có graph tools `search_symbols/get_callers/get_callees/find_task_anchors/get_related_context/get_related_tests`; repository `health/read_file/apply_patch`; execution `health/run_pytest`. Client thêm prefix server, ví dụ `graph_search_symbols`. Repository `apply_patch` hiện nhận exact `old_text/new_text`, **không phải strict unified-diff apply M2**. Server `repair` (dùng bởi `vgar solve`) có `repair_get_task_context/apply_patch/run_relevant_tests/verify_patch` trên engine M2; xem [MCP contract](docs/mcp_tool_contract.md).
 
 ## 11. Evidence, logs và cách đọc PASS/FAIL
 

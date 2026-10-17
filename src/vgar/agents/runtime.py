@@ -33,9 +33,18 @@ class Runtime:
     config_path: Path = CONFIG_DIR / "demo.json"
     output_root: Path = REPO_ROOT / "results/solve"
     generator: Any = None  # test override for the generator build_generation selects
+    tools: dict[str, Any] | None = None  # MCP repair tools, built once per runtime
 
     def base_settings(self) -> Settings:
         return self.settings or get_settings()
+
+    async def repair_tools(self) -> dict[str, Any]:
+        """The four repair_* MCP tools; only the repair server is connected."""
+        if self.tools is None:
+            from vgar.mcp.client import create_mcp_client
+            client = create_mcp_client(self.base_settings(), servers=("repair",))
+            self.tools = {tool.name: tool for tool in await client.get_tools()}
+        return self.tools
 
 
 def new_work_dir() -> Path:

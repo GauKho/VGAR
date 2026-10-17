@@ -71,6 +71,12 @@ class VGARState(TypedDict, total=False):
     evidence: dict[str, Any]
     run_record_path: str
     repair_status: str
+    run_dir: str
+    prompt: dict[str, Any]
+    diff: str
+    generation: dict[str, Any]
+    apply_status: str
+    recommendation: str
     impact_report: dict[str, Any]
 
     # ---------------------------------------------------------

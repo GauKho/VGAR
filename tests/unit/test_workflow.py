@@ -6,6 +6,8 @@ import json
 import shutil
 from pathlib import Path
 
+import pytest
+
 from vgar.agents.runtime import Runtime
 from vgar.agents.workflow import run_task
 from vgar.models.generator import FakeGenerator
@@ -52,4 +54,59 @@ def test_solve_unregistered_task_id_fails_instead_of_raising(tmp_path):
     (tmp_path / "task.json").write_text(json.dumps(task), encoding="utf-8")
     state = asyncio.run(run_task(task_path=tmp_path / "task.json", runtime=Runtime(output_root=tmp_path / "runs")))
     assert state["status"] == "FAILED" and state["repair_status"] == "ERROR"
-    assert "FileNotFoundError" in state["failure_reason"]
+    assert state["recommendation"] == "REJECT"
+    assert "approved fixtures" in state["failure_reason"]
+
+
+GOLDEN = REPO / "tests/fixtures/m2/golden_v11"
+TOOLS = ["get_task_context", "apply_patch", "run_relevant_tests", "verify_patch"]
+
+
+def record_of(state):
+    return json.loads(Path(state["run_record_path"]).read_text(encoding="utf-8"))
+
+
+@pytest.mark.parametrize("letter,case", [("A", "single_file_login"), ("B", "multi_file_invoice"), ("C", "missing_links")])
+def test_solve_through_mcp_reproduces_golden(letter, case, tmp_path):
+    raw = (GOLDEN / letter / "raw_model_output.txt").read_text(encoding="utf-8")
+    state = asyncio.run(run_task(task_path=REPO / f"examples/m2/tasks/{case}.json",
+                                 runtime=Runtime(output_root=tmp_path / "runs", generator=FakeGenerator(raw))))
+    run_dir = Path(state["run_record_path"]).parent
+    assert (run_dir / "prompt.txt").read_bytes() == (GOLDEN / letter / "prompt.txt").read_bytes()
+    assert (run_dir / "applied.diff").read_bytes() == (GOLDEN / letter / "applied.diff").read_bytes()
+    record = record_of(state)
+    assert [c["tool"] for c in record["mcp_calls"]] == TOOLS and record["mcp_scope"] == "repair_server"
+    assert state["recommendation"] == "ACCEPT" and state["status"] == "COMPLETED"
+
+
+class BrokenGenerator:
+    mode = "fake"
+
+    def generate(self, prompt, profile, timeout_seconds):
+        raise RuntimeError("boom")
+
+
+def test_solve_generator_error_rejects_and_cleans_up(tmp_path):
+    state = asyncio.run(run_task(task_path=TASK, runtime=Runtime(output_root=tmp_path / "runs", generator=BrokenGenerator())))
+    assert state["status"] == "FAILED" and state["recommendation"] == "REJECT"
+    record = record_of(state)
+    assert [c["tool"] for c in record["mcp_calls"]] == ["get_task_context", "apply_patch", "verify_patch"]
+    assert record["stages"]["cleanup"]["status"] == "PASS" and record["complete"] is True
+
+
+def test_solve_tool_error_is_failed_not_raised(tmp_path, monkeypatch):
+    original = Runtime.repair_tools
+
+    class Exploding:
+        async def ainvoke(self, args):
+            raise RuntimeError("transport down")
+
+    async def patched(self):
+        tools = dict(await original(self))
+        tools["repair_apply_patch"] = Exploding()
+        return tools
+
+    monkeypatch.setattr(Runtime, "repair_tools", patched)
+    state = asyncio.run(run_task(task_path=TASK, runtime=Runtime(output_root=tmp_path / "runs")))
+    assert state["status"] == "FAILED" and state["failure_reason"]
+    assert [c["tool"] for c in record_of(state)["mcp_calls"]] == ["get_task_context", "verify_patch"]
