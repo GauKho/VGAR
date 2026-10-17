@@ -34,6 +34,15 @@ from vgar.config.settings import Settings, get_settings
 
 # ----------------------------------------------------------------- shared helpers
 @contextmanager
+def sandbox_workspace(repo: Path, root: Path):
+    """Disposable private worktree copy of `repo` under `root` (M2 workspace)."""
+    from vgar.repair.workspace import create_workspace
+
+    with create_workspace(repo, root) as lease:
+        yield lease
+
+
+@contextmanager
 def sandbox(
     repo: Path,
     settings: Settings,
@@ -42,7 +51,7 @@ def sandbox(
     run_id: str | None = None,
 ):
     """Index `repo`, copy it to a disposable workspace, yield (settings, lease)."""
-    from vgar.repair.workspace import create_workspace
+    from vgar.repair.workspace import fingerprint_source
 
     run_id = run_id or new_run_id()
     work = Path(tempfile.mkdtemp(prefix="vgar-cli-"))
@@ -62,11 +71,11 @@ def sandbox(
             run_id,
             {"source_repo": str(repo), "workspace_root": str(work / "ws")},
         ) as log_output:
-            with create_workspace(repo, work / "ws") as lease:
+            with sandbox_workspace(repo, work / "ws") as lease:
                 print(f"[workspace] {lease.path}", flush=True)
                 log_output({
                     "workspace": str(lease.path),
-                    "source_hash_before": getattr(lease, "source_hash_before", None),
+                    "source_hash_before": fingerprint_source(lease.path),
                 })
                 yield sandboxed, lease
     finally:
@@ -193,6 +202,7 @@ async def cmd_index(args: argparse.Namespace) -> int:
 
 
 async def cmd_run(args: argparse.Namespace) -> int:
+    from vgar.repair.executor import NativeExecutor
     from vgar.repair.test_runner import run_tests
     from vgar.repair.workspace import fingerprint_source
 
@@ -204,6 +214,7 @@ async def cmd_run(args: argparse.Namespace) -> int:
         log_output({"fingerprint_available": before is not None})
 
     with sandbox(repo, settings, args.keep, run_id=run_id) as (s, lease):
+        workspace_before = fingerprint_source(lease.path)
         agent = await build_agent(s, run_id=run_id)
         callback = AgentDebugCallback(run_id)
         prompt = task_prompt(args.query, lease.path, args.selector)
@@ -246,18 +257,17 @@ async def cmd_run(args: argparse.Namespace) -> int:
                 run_id,
                 {"workspace": str(lease.path), "selectors": [args.selector], "timeout_seconds": 120},
             ) as log_output:
-                verdict = run_tests(lease.path, (args.selector,), 120)
-                ok = verdict.status == "PASS"
+                verdict = run_tests(lease, (args.selector,), NativeExecutor(lease), 120)
+                ok = verdict["status"] == "PASS"
                 log_output({
-                    "status": verdict.status,
-                    "passed": getattr(verdict, "passed", None),
-                    "failed": getattr(verdict, "failed", None),
-                    "exit_code": getattr(verdict, "returncode", None),
+                    "status": verdict["status"],
+                    "outcomes": verdict["outcomes"],
+                    "exit_code": verdict["command"]["exit_code"],
                 })
-                print(f"[verify] independent pytest: {verdict.status}", flush=True)
+                print(f"[verify] independent pytest: {verdict['status']}", flush=True)
 
         with phase("workspace_change_check", run_id, {"workspace": str(lease.path)}) as log_output:
-            changed = fingerprint_source(lease.path) != lease.source_hash_before
+            changed = fingerprint_source(lease.path) != workspace_before
             log_output({"workspace_modified": changed})
             print(f"[verify] workspace modified: {changed}", flush=True)
 

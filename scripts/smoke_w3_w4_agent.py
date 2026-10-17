@@ -151,6 +151,7 @@ async def run(args: argparse.Namespace) -> None:
     from vgar.mcp import create_mcp_client
     from vgar.graph.builder import PythonGraphBuilder
     from vgar.graph.sqlite_store import SQLiteGraphStore
+    from vgar.repair.executor import NativeExecutor
     from vgar.repair.test_runner import run_tests
     from vgar.repair.workspace import create_workspace, fingerprint_source
 
@@ -162,8 +163,9 @@ async def run(args: argparse.Namespace) -> None:
     source_hash = fingerprint_source(FAILING_REPO)
     with create_workspace(FAILING_REPO, work / "ws") as lease:
         print("\n== 2. Baseline (must FAIL before the agent acts)")
-        baseline = run_tests(lease.path, (SELECTOR,), 60)
-        check("baseline FAIL", baseline.status == "FAIL")
+        workspace_before = fingerprint_source(lease.path)
+        baseline = run_tests(lease, (SELECTOR,), NativeExecutor(lease), 60)
+        check("baseline FAIL", baseline["status"] == "FAIL")
 
         print(f"\n== 3. Build agent (model={args.model})")
         if args.model == "hf":
@@ -213,9 +215,9 @@ async def run(args: argparse.Namespace) -> None:
         check("tool-call count within budget", len(names) <= args.max_tool_calls, f"{len(names)}/{args.max_tool_calls}")
 
         print("\n== 6. Independent verification (agent's claim is NOT trusted)")
-        final_test = run_tests(lease.path, (SELECTOR,), 60)
-        check("pytest PASS in workspace", final_test.status == "PASS")
-        check("workspace modified", fingerprint_source(lease.path) != lease.source_hash_before)
+        final_test = run_tests(lease, (SELECTOR,), NativeExecutor(lease), 60)
+        check("pytest PASS in workspace", final_test["status"] == "PASS")
+        check("workspace modified", fingerprint_source(lease.path) != workspace_before)
 
     check("source repo untouched", fingerprint_source(FAILING_REPO) == source_hash)
 

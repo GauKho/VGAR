@@ -1,15 +1,188 @@
-"""Disposable repository copies with explicit size and path boundaries."""
-
-from __future__ import annotations
-
+"""Private seed/worktree; never add a worktree to the source repository."""
+from dataclasses import dataclass, field
+import errno
 import hashlib
 import os
-import shutil
-import tempfile
-import uuid
-from dataclasses import dataclass
 from pathlib import Path, PurePosixPath, PureWindowsPath
+import shutil
+import stat
+import tempfile
+import time
+import uuid
 
+from vgar.repair.contracts import safe_path
+from vgar.repair.executor import remaining_timeout
+from vgar.repair.evidence import atomic_json, digest
+from vgar.repair.executor import run_bounded, utc_now
+from vgar.repair.diagnostics import exception_details
+
+IGNORED = {'.git', '__pycache__', '.pytest_cache', '.mypy_cache', '.ruff_cache', '.venv'}
+
+
+def inventory(root: Path) -> dict[str, str]:
+    if root.is_symlink() or (hasattr(root, 'is_junction') and root.is_junction()):
+        raise ValueError('Source root is a link')
+    result, total = {}, 0
+    for directory, names, files in os.walk(root, followlinks=False):
+        names[:] = sorted(n for n in names if n not in IGNORED)
+        for name in [*names, *files]:
+            path = Path(directory) / name
+            if path.is_symlink() or (hasattr(path, 'is_junction') and path.is_junction()):
+                raise ValueError('Source links/junctions are not allowed')
+        for name in sorted(files):
+            if name in IGNORED:
+                continue
+            path = Path(directory) / name
+            relative = safe_path(path.relative_to(root).as_posix())
+            size = path.stat().st_size
+            total += size
+            if size > 16 * 1024 * 1024 or total > 256 * 1024 * 1024:
+                raise ValueError('Source inventory exceeds size limits')
+            result[relative] = digest(path.read_bytes())
+    return result
+
+
+def _git(cwd, *args, deadline=None):
+    argv = ('git', '-c', f'safe.directory={cwd.as_posix()}', '-c', 'core.autocrlf=false',
+            '-c', 'core.hooksPath=', '-c', 'commit.gpgsign=false', '-c', 'user.name=VGAR M2 fixture',
+            '-c', 'user.email=m2@fixture.local', *args)
+    result = run_bounded(argv, cwd, remaining_timeout(deadline))
+    if result['status'] != 'PASS':
+        raise RuntimeError(result['stderr'] or result['stdout'])
+    return result
+
+
+def _remove_owned(private: Path, temp_root: Path):
+    private, temp_root = Path(private).absolute(), Path(temp_root).resolve()
+
+    def assert_owned():
+        if (private.resolve().parent != temp_root or not private.name.startswith('m2-w78-')
+                or private.is_symlink() or (hasattr(private, 'is_junction') and private.is_junction())):
+            raise ValueError('Refusing cleanup outside owned private directory')
+
+    assert_owned()
+    start = time.monotonic()
+    delays = (0.05, 0.1, 0.2, 0.4, 0.8)
+    path = temp_root / '.cleanup-records' / (private.name + '.json')
+    report = dict(status='NOT_RUN', complete=False, private_path=str(private),
+        diagnostics_path=str(path), cleanup_process_id=os.getpid(), lock_owner='not_identified',
+        started_utc=utc_now(), ended_utc=None, duration_ms=None, attempts=[],
+        max_attempts=6, scheduled_wait_limit_ms=1550)
+    operation = None
+
+    def onerror(func, path, exc):
+        nonlocal operation
+        operation = getattr(func, '__name__', str(func))
+        error = exc[1]
+        # Preserve the existing read-only-file repair, not for sharing locks or
+        # unrelated I/O errors. Chmod cannot release another process's handle.
+        if getattr(error, 'winerror', None) == 5 or (
+                getattr(error, 'winerror', None) is None and error.errno in (errno.EACCES, errno.EPERM)):
+            os.chmod(path, stat.S_IWRITE | stat.S_IREAD)
+            func(path)
+        else:
+            raise error.with_traceback(exc[2])
+
+    def finish(status):
+        report.update(status=status, complete=True, ended_utc=utc_now(),
+                      duration_ms=round((time.monotonic() - start) * 1000))
+        atomic_json(path, report)
+
+    for index in range(len(delays) + 1):
+        entry = dict(number=index + 1, started_utc=utc_now(), winerror=None)
+        report['attempts'].append(entry)
+        atomic_json(path, report)
+        try:
+            # Revalidate before every recursive delete; never follow a swapped
+            # root symlink/junction or broaden the target to temp_root/source.
+            assert_owned()
+            shutil.rmtree(private, onerror=onerror)
+        except Exception as error:
+            code = getattr(error, 'winerror', None)
+            entry.update(status='ERROR', ended_utc=utc_now(), winerror=code,
+                errno=getattr(error, 'errno', None), operation=operation,
+                failed_path=str(getattr(error, 'filename', None) or private),
+                **exception_details(error))
+            if code in (32, 33) and index < len(delays):
+                entry['retry_wait_ms'] = round(delays[index] * 1000)
+                atomic_json(path, report)
+                time.sleep(delays[index])
+                continue
+            error.cleanup_diagnostics = report
+            error.add_note('Owned cleanup failed; diagnostics: ' + str(path))
+            finish('ERROR')
+            raise
+        else:
+            entry.update(status='PASS', ended_utc=utc_now())
+            finish('PASS')
+            return report
+
+
+@dataclass
+class WorkspaceLease:
+    path: Path
+    private: Path
+    temp_root: Path
+    source_repo: Path
+    before: dict
+    worktree_id: str
+    active: bool = True
+    keep: bool = False
+    cleanup_diagnostics: dict = field(default_factory=dict)
+
+    def assert_original(self):
+        if inventory(self.source_repo) != self.before:
+            raise ValueError('Original source changed')
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *_exc):
+        self.active = False
+        if not self.keep and self.private.exists():
+            try:
+                self.cleanup_diagnostics = _remove_owned(self.private, self.temp_root)
+            except Exception as error:
+                self.cleanup_diagnostics = getattr(error, 'cleanup_diagnostics', {})
+                raise
+
+
+def create_workspace(source: Path, temp_root: Path, policy=None, *, deadline=None) -> WorkspaceLease:
+    remaining_timeout(deadline)
+    source = Path(source)
+    before = inventory(source)
+    source, temp_root = source.resolve(strict=True), Path(temp_root).resolve()
+    if source == temp_root or source in temp_root.parents or temp_root in source.parents:
+        raise ValueError('Temporary root must not overlap source')
+    if any(Path(name).name == '.gitattributes' for name in before):
+        raise ValueError('Attribute transformations are unsupported in this fixture profile')
+    temp_root.mkdir(parents=True, exist_ok=True)
+    private = Path(tempfile.mkdtemp(prefix='m2-w78-', dir=temp_root)).resolve()
+    seed, worktree = private / 'seed', private / 'worktree'
+    seed.mkdir()
+    try:
+        for relative in before:
+            target = seed / relative
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(source / relative, target)
+        _git(seed, 'init', '--template=', deadline=deadline)
+        # Persist on the private repository: later apply calls must not inherit
+        # the host's core.autocrlf=true and alter raw bytes on Windows.
+        _git(seed, 'config', '--local', 'core.autocrlf', 'false', deadline=deadline)
+        _git(seed, 'add', '--all', deadline=deadline)
+        _git(seed, 'commit', '--no-verify', '-m', 'Private fixture snapshot', deadline=deadline)
+        _git(seed, 'worktree', 'add', '--detach', str(worktree), 'HEAD', deadline=deadline)
+        lease = WorkspaceLease(worktree.resolve(), private, temp_root, source, before, 'wt-' + uuid.uuid4().hex)
+        if inventory(worktree) != before:
+            raise ValueError('Worktree bytes differ from original snapshot')
+        lease.assert_original()
+        return lease
+    except BaseException:
+        _remove_owned(private, temp_root)
+        raise
+
+
+# Helpers kept for vgar run/chat and the MCP repository server.
 _IGNORED = {".git", ".venv", "venv", "__pycache__", ".pytest_cache", ".mypy_cache", ".ruff_cache",
             "artifacts", "logs", ".vgar", "node_modules"}
 
@@ -59,57 +232,3 @@ def fingerprint_source(source_repo: Path) -> str:
             while chunk := stream.read(1024 * 1024):
                 digest.update(chunk)
     return digest.hexdigest()
-
-
-@dataclass
-class WorkspaceLease:
-    path: Path
-    worktree_id: str
-    source_repo: Path
-    source_hash_before: str
-    temp_root: Path
-
-    def __enter__(self) -> "WorkspaceLease":
-        return self
-
-    def __exit__(self, *_exc: object) -> None:
-        self.cleanup()
-
-    def cleanup(self) -> None:
-        resolved = self.path.resolve()
-        if resolved.parent != self.temp_root.resolve() or not resolved.name.startswith("vgar-m2-"):
-            raise ValueError("Refusing cleanup outside the M2 temporary root")
-        if resolved.exists():
-            shutil.rmtree(resolved)
-
-
-def create_workspace(source_repo: Path, temp_root: Path, *, max_file_bytes: int = 16 * 1024 * 1024,
-                     max_total_bytes: int = 256 * 1024 * 1024) -> WorkspaceLease:
-    root = Path(source_repo).resolve(strict=True)
-    if not root.is_dir():
-        raise ValueError(f"Not a repository directory: {root}")
-    target_root = Path(temp_root).resolve()
-    if root == target_root or root in target_root.parents or target_root in root.parents:
-        raise ValueError("Temporary root must be separate from the source repository")
-    files = _source_files(root)
-    total = 0
-    for _, path in files:
-        size = path.stat().st_size
-        total += size
-        if size > max_file_bytes or total > max_total_bytes:
-            raise ValueError(f"Source size limit exceeded: {path}")
-    before = fingerprint_source(root)
-    target_root.mkdir(parents=True, exist_ok=True)
-    workspace = Path(tempfile.mkdtemp(prefix="vgar-m2-", dir=target_root))
-    try:
-        for relative, path in files:
-            destination = workspace / safe_relative_path(relative)
-            destination.parent.mkdir(parents=True, exist_ok=True)
-            shutil.copy2(path, destination)
-        if fingerprint_source(root) != before:
-            raise RuntimeError("Source changed while creating disposable workspace")
-    except BaseException:
-        shutil.rmtree(workspace)
-        raise
-    return WorkspaceLease(path=workspace, worktree_id=f"wt-{uuid.uuid4().hex}", source_repo=root,
-                          source_hash_before=before, temp_root=target_root)
