@@ -1,6 +1,10 @@
 # Preserve byte-attested M2 runtime/fixtures/history across Windows clones.
 # This does not change working-tree source bytes or relax any M2 hash guard.
 M2_week_7_8/** -text
+examples/m2/** -text
+configs/m2/** -text
+tests/fixtures/m2/** -text
+src/vgar/repair/prompts/** -text
 artifacts/m2/** -text
 results/retrieval/** -text
 docs/audit/** -text

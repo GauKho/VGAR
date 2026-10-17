@@ -1,0 +1,127 @@
+{
+  "format": "vgar.test-links.v1",
+  "graph_version": "sha256:e1fe94d21f10f112cd3a5e2a39f88e1fb26a760ee8ea3eaa6d3bac608d1ec371",
+  "repo_key": "demo/w7-w8/single_file_login",
+  "repository_revision": "fixture-v1",
+  "source_digest": "sha256:3121f4240c6e47d67974b4aa550bd8486b53ace95ba478067aa60d876570eedc",
+  "test_links": {
+    "auth.py": [
+      "tests/test_auth.py::test_login_accepts_name",
+      "tests/test_auth.py::test_login_rejects_whitespace"
+    ],
+    "vgar:demo/w7-w8/single_file_login:python:file:auth.py": [
+      "tests/test_auth.py::test_login_accepts_name",
+      "tests/test_auth.py::test_login_rejects_whitespace"
+    ],
+    "vgar:demo/w7-w8/single_file_login:python:test:tests/test_auth.py:tests.test_auth.test_login_accepts_name": [
+      "tests/test_auth.py::test_login_accepts_name"
+    ],
+    "vgar:demo/w7-w8/single_file_login:python:test:tests/test_auth.py:tests.test_auth.test_login_rejects_whitespace": [
+      "tests/test_auth.py::test_login_rejects_whitespace"
+    ]
+  },
+  "link_details": {
+    "auth.py": {
+      "candidates": [
+        {
+          "selector": "tests/test_auth.py::test_login_accepts_name",
+          "node_id": "vgar:demo/w7-w8/single_file_login:python:test:tests/test_auth.py:tests.test_auth.test_login_accepts_name",
+          "distance": 0,
+          "confidence": 0.95,
+          "reason": "direct_call",
+          "via": [
+            "vgar:demo/w7-w8/single_file_login:python:function:auth.py:auth.login"
+          ],
+          "coverage_verified": false
+        },
+        {
+          "selector": "tests/test_auth.py::test_login_rejects_whitespace",
+          "node_id": "vgar:demo/w7-w8/single_file_login:python:test:tests/test_auth.py:tests.test_auth.test_login_rejects_whitespace",
+          "distance": 0,
+          "confidence": 0.95,
+          "reason": "direct_call",
+          "via": [
+            "vgar:demo/w7-w8/single_file_login:python:function:auth.py:auth.login"
+          ],
+          "coverage_verified": false
+        }
+      ],
+      "truncated": false,
+      "traversal_limited": false,
+      "fallback_reason": null
+    },
+    "vgar:demo/w7-w8/single_file_login:python:file:auth.py": {
+      "candidates": [
+        {
+          "selector": "tests/test_auth.py::test_login_accepts_name",
+          "node_id": "vgar:demo/w7-w8/single_file_login:python:test:tests/test_auth.py:tests.test_auth.test_login_accepts_name",
+          "distance": 0,
+          "confidence": 0.95,
+          "reason": "direct_call",
+          "via": [
+            "vgar:demo/w7-w8/single_file_login:python:function:auth.py:auth.login"
+          ],
+          "coverage_verified": false
+        },
+        {
+          "selector": "tests/test_auth.py::test_login_rejects_whitespace",
+          "node_id": "vgar:demo/w7-w8/single_file_login:python:test:tests/test_auth.py:tests.test_auth.test_login_rejects_whitespace",
+          "distance": 0,
+          "confidence": 0.95,
+          "reason": "direct_call",
+          "via": [
+            "vgar:demo/w7-w8/single_file_login:python:function:auth.py:auth.login"
+          ],
+          "coverage_verified": false
+        }
+      ],
+      "truncated": false,
+      "traversal_limited": false,
+      "fallback_reason": null
+    },
+    "vgar:demo/w7-w8/single_file_login:python:test:tests/test_auth.py:tests.test_auth.test_login_accepts_name": {
+      "candidates": [
+        {
+          "selector": "tests/test_auth.py::test_login_accepts_name",
+          "node_id": "vgar:demo/w7-w8/single_file_login:python:test:tests/test_auth.py:tests.test_auth.test_login_accepts_name",
+          "distance": 0,
+          "confidence": 1.0,
+          "reason": "test_target",
+          "via": [
+            "vgar:demo/w7-w8/single_file_login:python:test:tests/test_auth.py:tests.test_auth.test_login_accepts_name"
+          ],
+          "coverage_verified": false
+        }
+      ],
+      "truncated": false,
+      "traversal_limited": false,
+      "fallback_reason": null
+    },
+    "vgar:demo/w7-w8/single_file_login:python:test:tests/test_auth.py:tests.test_auth.test_login_rejects_whitespace": {
+      "candidates": [
+        {
+          "selector": "tests/test_auth.py::test_login_rejects_whitespace",
+          "node_id": "vgar:demo/w7-w8/single_file_login:python:test:tests/test_auth.py:tests.test_auth.test_login_rejects_whitespace",
+          "distance": 0,
+          "confidence": 1.0,
+          "reason": "test_target",
+          "via": [
+            "vgar:demo/w7-w8/single_file_login:python:test:tests/test_auth.py:tests.test_auth.test_login_rejects_whitespace"
+          ],
+          "coverage_verified": false
+        }
+      ],
+      "truncated": false,
+      "traversal_limited": false,
+      "fallback_reason": null
+    }
+  },
+  "failing_selectors": [
+    "tests/test_auth.py::test_login_rejects_whitespace"
+  ],
+  "fallback_scope": [
+    "tests"
+  ],
+  "coverage_verified": false,
+  "collection_verified": false
+}

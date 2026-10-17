@@ -1,0 +1,25 @@
+{
+  "task_id": "multi_file_invoice",
+  "issue_text": "pricing.py discounted_price subtracts a percentage as a flat amount; invoice.py invoice_total adds tax_percent as a flat amount. Both helpers must apply percentages to their relevant prices.",
+  "source_repo": "../snapshots/multi_file_invoice",
+  "bundle_directory": "../handoffs/multi_file_invoice",
+  "repo_key": "demo/w7-w8/multi_file_invoice",
+  "revision": "fixture-v1",
+  "graph_version": "sha256:1bbff47bc1ee5098b1f3d8f37dc5952faa9127224763e651c66630d838adb93e",
+  "failing_selectors": [
+    "tests/test_invoice.py::test_discount_percentage",
+    "tests/test_invoice.py::test_invoice_percentage_tax"
+  ],
+  "fallback_scope": [
+    "tests"
+  ],
+  "allowed_source_paths": [
+    "invoice.py",
+    "pricing.py"
+  ],
+  "protected_paths": [
+    "tests",
+    "pytest.ini"
+  ],
+  "trusted_fixture": true
+}
