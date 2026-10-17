@@ -1,10 +1,10 @@
 # VGAR — Graph-Augmented Reasoning cho sửa lỗi phần mềm Python
 
-**Cập nhật: 16/10/2026 • Ngôn ngữ triển khai chính: Python.**
+**Cập nhật: 17/10/2026 • Ngôn ngữ triển khai chính: Python.**
 
-VGAR xây đồ thị mã nguồn để tìm context liên quan đến issue, sau đó hướng tới sinh patch và kiểm chứng patch bằng thực thi. Repository hiện chứa **M1 Graph & Retrieval, M2 baseline/evaluation và package M2 Repair & Verification tuần 7–8, cùng agent/MCP của M3**. Các thành phần có mức độ nghiệm thu khác nhau; không được hiểu “đã có file/code” là “toàn hệ thống đã hoàn thành”.
+VGAR xây đồ thị mã nguồn để tìm context liên quan đến issue, sau đó hướng tới sinh patch và kiểm chứng patch bằng thực thi. Repository hiện chứa **M1 Graph & Retrieval, M2 baseline/evaluation, M2 Repair & Verification tuần 7–8 (đã tích hợp vào `src/vgar`), cùng agent/MCP của M3**. Các thành phần có mức độ nghiệm thu khác nhau; không được hiểu “đã có file/code” là “toàn hệ thống đã hoàn thành”.
 
-> **Đọc trước khi chạy:** M2 mới đã có **3/3 real repairs A/B/C PASS** với prompt V11/runtime r002 trên ba fixture phát triển. Bản nhúng trong VGAR đã qua **236 core tests PASS**, nhưng **chưa có ba real generations mới sau relocation** và **chưa nối M2 mới vào agent MCP/LangChain**. Full suite VGAR gần nhất là **571 PASS, 1 FAIL, 2 SKIP**, không phải toàn bộ PASS. Các số dưới đây là evidence đã lưu theo ngày/profile, không phải kết quả mới được chạy trong lần viết README này.
+> **Đọc trước khi chạy:** Pipeline M2 tuần 7–8 nay nằm trong `src/vgar/repair` + `src/vgar/models` và chạy bằng `vgar repair` / `vgar solve`. Ngày 17/10, code tích hợp chạy lại **3/3 real repairs A/B/C PASS** trên ba fixture phát triển; `prompt.txt`, raw output và `applied.diff` **trùng byte** với lần 15/10. `vgar solve` (LangGraph) gọi pipeline này **đúng một lần**, chưa có vòng thử lại; MCP tools `apply_patch/verify_patch` mới vẫn chưa nối. Full suite VGAR gần nhất **679 PASS, 4 FAIL** (3 test relocation của thư mục `M2_week_7_8/` cũ + 1 test HF legacy). Thư mục `M2_week_7_8/` còn được giữ tạm và sẽ xóa sau.
 
 ## Mục lục
 
@@ -28,19 +28,19 @@ VGAR xây đồ thị mã nguồn để tìm context liên quan đến issue, sa
 | ---------------------------------------- | ------------------------------------------------------------- | -------------------------------------------------------- |
 | Nắm tiến độ đề tài theo kế hoạch 16 tuần | [Task Status.md](<Task Status.md>) và mục 2                   | Không                                                    |
 | Hiểu graph, retrieval, baseline BM25     | Mục 3, 4, 9 và docs M1/M2 W5–6                                | Không cần weights                                        |
-| Kiểm prerequisite M2 trên máy hiện tại   | `run_m2_abc.ps1 -Mode Check`                                  | Không load weights/generate; có probe môi trường HF/CUDA |
-| Xem lại A/B/C đã thành công              | `run_m2_abc.ps1 -Mode ReadSaved`                              | Không; chỉ audit evidence đã lưu                         |
-| Sinh và kiểm chứng patch A/B/C mới       | `run_m2_abc.ps1 -Mode Run`                                    | **Có**, một generation/case, dừng khi lỗi                |
+| Kiểm pipeline M2 không cần model         | `vgar repair --mode fake` (mục 7)                             | Không; dùng reference patch                              |
+| Đối chiếu với evidence A/B/C đã lưu      | Golden test `tests/m2/w78/test_w78_golden_v11.py` (mục 8)     | Không; so byte prompt/diff với lần chạy thật 15/10       |
+| Sinh và kiểm chứng patch A/B/C mới       | `vgar repair --mode real` (mục 7)                             | **Có**, một generation/case                              |
 | Chạy unit/integration tests              | Mục 8                                                         | Không phải nghiệm thu real repair                        |
 | Tìm file, input, patch, stdout/stderr    | Mục 4 và 11                                                   | Không                                                    |
-| Nối M2 mới vào MCP/LangChain             | Đọc tài liệu bàn giao; đây là phần tích hợp **chưa hoàn tất** | Không có lệnh README nào tự hoàn thành việc này          |
+| Chạy M2 qua LangGraph                    | `vgar solve --task ...` (mục 7)                               | Tùy `--mode`; một generation, chưa có retry/MCP tools    |
 
-**Trên máy đã setup và giữ đúng profile hiện tại**, kiểm trước bằng:
+**Trên máy đã setup**, kiểm nhanh pipeline M2 mà không load model:
 
 ```powershell
-# Không cài lại, không generate. Mặc định của root launcher cũng là Check.
-powershell -NoProfile -ExecutionPolicy Bypass -File 'D:\Project\CAPSTONES\VGAR\run_m2_abc.ps1' -Mode Check
-# Đọc ngay exit code: 0 chỉ là prerequisite/profile đã qua, chưa phải repair PASS.
+# Không generate: dùng reference patch; in đường dẫn run_record.json.
+.\.venv\Scripts\python.exe -m vgar.cli repair --task examples/m2/tasks/single_file_login.json --mode fake
+# 0 = PASS, 1 = FAIL, 2 = ERROR; fake PASS chưa phải model sửa đúng.
 $LASTEXITCODE
 ```
 
@@ -73,9 +73,9 @@ Quy ước của [Task Status](<Task Status.md>): **HT** hoàn thành trong ph�
 | M2 W5–6: phối hợp mapping M1         | Guards identity/range, diagnostics, consumer proof, hồ sơ bàn giao                           | `W05-06-M2-04` còn **MP**, đợi chủ task M1 review/sign-off                          |
 | M1 W7–8: context/handoff/tests links | Payload/manifest/consumer, source binding, ba handoff bundles                                | Không đồng nhất link suy luận với coverage thực đo; ranking còn MP                  |
 | M2 W7–8: **7/7 task M2 HT**          | Prompt cố định, HF backend, diff parser/apply, test selection, pytest/type/lint, evidence    | HT **trên trusted-fixture prototype**, không phải toàn SWE-bench                    |
-| M2 W7–8: A/B/C cùng profile          | **3 real cases PASS**, V11/r002 ngày 15/10                                                   | Bản layout `r002-vgar-i001` chưa chạy lại ba generations thật                       |
-| Package M2 vào VGAR                  | Copy đầy đủ có hashes, launcher, 236 core tests, 7 integration tests                         | Chưa nối vào MCP/LangChain; còn cần tái lập trên máy đồng đội                       |
-| M3 W7–8: vòng agent dùng M2 mới      | Agent cũ và package M2 cùng tồn tại                                                          | Chưa có adapter MCP cho flow M2 mới; common integrated flow vẫn MP                  |
+| M2 W7–8: A/B/C cùng profile          | **3 real cases PASS** ngày 15/10 và chạy lại 17/10 bằng code tích hợp, trùng byte            | Chỉ ba trusted dev fixtures                                                         |
+| M2 W7–8 tích hợp vào `src/vgar`      | `vgar repair`, golden test V11, M2 tests port sang `tests/m2/w78/`                           | `M2_week_7_8/` còn giữ tạm; còn cần tái lập trên máy đồng đội                       |
+| M3 W7–8: vòng agent dùng M2 mới      | `vgar solve`: LangGraph `initialize → repair_run → finalize/failed`, một generation          | Chưa có vòng thử lại và MCP tools `apply_patch/verify_patch` mới                    |
 | Tuần 9–16                            | Có thiết kế và một số thành phần nền/lịch sử                                                 | Chưa được nghiệm thu impact/ablation/held-out/final artifact chỉ từ ba prototype    |
 
 Toàn bộ **150 task IDs**: **47 HT / 48 MP / 25 CT / 30 CX**. Riêng tuần 7–8: **10 HT / 8 MP / 0 CT / 1 CX**. Các mục chung/M1/M2/M3/DoD có giao nhau; **không cộng hoặc quy đổi thành “đã xong 31% hệ thống”**. Xem từng ID/nguyên nhân/giải pháp trong Task Status.
@@ -91,6 +91,8 @@ Toàn bộ **150 task IDs**: **47 HT / 48 MP / 25 CT / 30 CX**. Riêng tuần 7�
 | Check / ReadSaved sau relocation            | PASS / **3/3 saved real audits PASS**    | Prerequisite / audit lại lịch sử, không sinh patch mới                 |
 | Full VGAR 16/10                             | **571 PASS, 1 FAIL, 2 SKIP**, 81,14 giây | Lỗi HF legacy `KeyError: generation_config` đã tồn tại trước tích hợp  |
 | Ruff E9,F và PowerShell AST tại integration | PASS                                     | Theo đúng phạm vi kiểm đã ghi, không tuyên bố mọi lint rule đều PASS   |
+| Full VGAR 17/10 sau tích hợp `src/vgar`     | **679 PASS, 4 FAIL**                     | 3 FAIL là test relocation của `M2_week_7_8/` cũ; 1 là HF legacy        |
+| Real A/B/C 17/10 bằng `vgar repair`         | **3/3 PASS**, trùng byte với 15/10       | Generation 148s / 194s / 69s trên RTX 4050, có CPU offload             |
 
 Các suite/lượt có thể chồng lấn, **không cộng các hàng thành tổng số tests duy nhất**. Nguồn và paths đầy đủ: [báo cáo tích hợp M2](docs/handoff/M2_W7_W8_INTEGRATION_2026-10-16.md).
 
@@ -104,7 +106,7 @@ Các suite/lượt có thể chồng lấn, **không cộng các hàng thành t�
 
 **Baseline FAIL là lỗi được tái hiện trước khi sửa, không phải kết quả cuối bị FAIL.** Cả ba final audits PASS; source snapshots gốc giữ nguyên. Tổng pipeline 290,141s; tổng stage generation 246,906s. Stage generation gồm overhead worker/load/IO; không đồng nhất với timer riêng bên trong model.
 
-Nguồn: [run_manifest.json](M2_week_7_8/results/final_acceptance/2026-10-15-v11-r002/run_manifest.json). Người dùng đã chạy lại `Mode=Run` cùng máy và đạt 3/3, workflow khoảng 429,152s, tại [summary.json](M2_week_7_8/results/manual_abc/20261015T114826234Z-922d5c80/summary.json). Đây **chưa phải đồng đội độc lập/clean-machine acceptance**.
+Nguồn: [run_manifest.json](tests/fixtures/m2/golden_v11/run_manifest.json) và records A/B/C trong [golden_v11/](tests/fixtures/m2/golden_v11/). Ngày 15/10 người dùng chạy lại `Mode=Run` của launcher standalone cùng máy, đạt 3/3 (workflow khoảng 429,152s). Ngày 17/10, `vgar repair --mode real` chạy lại 3/3 PASS với prompt/raw output/applied diff trùng byte. Đây **chưa phải đồng đội độc lập/clean-machine acceptance**.
 
 ### 2.5. Kết quả retrieval — M2 W5–6, 13/10/2026
 
@@ -136,31 +138,32 @@ Hai arm dùng chung 25 dev tasks; BM25 25/25 thành công, Graph 22/25 thành c�
 | Vai trò                          | Chịu trách nhiệm chính                                                                                  | Nơi triển khai                                                                      |
 | -------------------------------- | ------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
 | **M1 — Graph & Retrieval**       | Parse Python, graph/store, task anchors, context, tokenizer manifest, test links và handoff             | `src/vgar/graph/`, DTO/consumer trong `src/vgar/contracts/`                         |
-| **M2 — Repair & Verification**   | Baseline/tests/evidence W3–4; BM25/gold/metrics W5–6; prompt/generation/diff/worktree/verification W7–8 | `src/vgar/repair/`, `src/vgar/evaluation/retrieval/`, `M2_week_7_8/`                |
-| **M3 — MCP, Evaluation & Paper** | MCP servers/client, orchestration, protocol/experiment/report, kết nối agent tới tools                  | `src/vgar/mcp/`, `src/vgar/agents/`, `src/vgar/cli.py`; integration mới còn cần nối |
+| **M2 — Repair & Verification**   | Baseline/tests/evidence W3–4; BM25/gold/metrics W5–6; prompt/generation/diff/worktree/verification W7–8 | `src/vgar/repair/`, `src/vgar/models/`, `src/vgar/evaluation/retrieval/`            |
+| **M3 — MCP, Evaluation & Paper** | MCP servers/client, orchestration, protocol/experiment/report, kết nối agent tới tools                  | `src/vgar/mcp/`, `src/vgar/agents/`, `src/vgar/cli.py`; MCP tools M2 mới còn cần nối |
 
 ### 3.2. Hai luồng đang tồn tại — không được gộp nhầm
 
 ```text
-LUỒNG 1: M2 TUẦN 7–8 ĐÃ NGHIỆM THU PROTOTYPE
-M1 frozen handoff + source snapshot + task.json
+LUỒNG 1: M2 TUẦN 7–8 — vgar repair / vgar solve (src/vgar/repair, src/vgar/models)
+M1 frozen handoff + source snapshot + task.json (examples/m2/)
   → M2 validate identity/source/tokenizer
   → private worktree + chạy baseline
   → prompt V11 + 1 HF/Qwen generation
   → strict unified-diff parser → exact binding → Git check/apply
   → actual changed paths → M1 test-selection diagnostics
   → collection + required/regression pytest + syntax/mypy/Ruff
-  → source integrity + cleanup → canonical JSON/EvidenceBundle + audit
+  → source integrity + cleanup → canonical JSON/EvidenceBundle
+vgar solve bọc luồng này bằng LangGraph: initialize → repair_run → finalize|failed
 
-LUỒNG 2: AGENT/MCP CỦA VGAR HIỆN CÓ
-CLI run/solve/chat → LangChain/LangGraph agent → MCP client (stdio)
+LUỒNG 2: AGENT/MCP EXACT-EDIT CỦA VGAR
+CLI run/chat → LangChain agent → MCP client (stdio)
   ├─ graph server → graph/retrieval/SQLite
-  ├─ repository server → read_file / apply_patch (exact-edit cũ)
-  └─ execution server → run_pytest (runner cũ)
-             ╳ chưa nối sang engine M2 mới ở luồng 1
+  ├─ repository server → read_file / apply_patch (exact-edit)
+  └─ execution server → run_pytest
+  independent verification của `vgar run` dùng workspace/test runner M2
 ```
 
-Luồng 1 dùng source/consumer/counter của M1 trong chính VGAR, nhưng **`mcp_calls=[]`**: không có MCP call. Luồng 2 có LangChain/LangGraph/MCP, nhưng không vì vậy đã dùng V11 hay verifier mới.
+Luồng 1 dùng source/consumer/counter của M1 trong chính VGAR, nhưng **`mcp_calls=[]`**: không có MCP call. Luồng 2 có LangChain/MCP, nhưng model vẫn sửa bằng exact-edit chứ không qua prompt V11/parser unified diff.
 
 ### 3.3. M1 được M2 kế thừa như thế nào?
 
@@ -170,12 +173,12 @@ Test links của M1 là **candidates**, không phải kết quả chạy tests. 
 
 ### 3.4. Prompt và model thực tế
 
-- Final template: [repair_v11.txt](M2_week_7_8/prompts/repair_v11.txt), version `m2-w78-v11`, SHA256 `ba6d147898eaf411b57b12ab70527aadef239ff9d7a2a8fb3f6639aa333d5ef8`.
+- Final template: [repair_v11.txt](src/vgar/repair/prompts/repair_v11.txt), version `m2-w78-v11` (phiên bản duy nhất được đăng ký), SHA256 `ba6d147898eaf411b57b12ab70527aadef239ff9d7a2a8fb3f6639aa333d5ef8`.
 - Yêu cầu chỉ unified diff, chỉ production paths được phép, giữ signatures/indentation; replacement hunk dùng source coordinates và counts riêng. Ví dụ trung tính, không phải lời giải A/B/C.
-- [prompt.py](M2_week_7_8/src/vgar_m2_w78/prompt.py) ghép instruction/issue/context, tính full-chat budget; host không recount/sửa output thay model.
+- [prompt.py](src/vgar/repair/prompt.py) ghép instruction/issue/context, tính full-chat budget; host không recount/sửa output thay model.
 - Model prototype: **`Qwen/Qwen3-4B-Instruct-2507`**, model/tokenizer revision **`cdbee75f17c01a7cc42f958dc650907174af0554`**, greedy, FP16, `device_map=auto`. Có thể offload CPU; không khẳng định toàn model nằm GPU.
 - Input cap **6.000**, output cap **1.536**, reserve **256** tokens; generation **900s**, command **120s**, global **1.800s/run**.
-- `config/demo.json` vẫn giữ default V2 cho lịch sử. **Final launcher chủ động chọn V11**; bare `run_demo.py --mode real` không tương đương final profile.
+- [configs/m2/demo.json](configs/m2/demo.json) chọn V11; `RepairPolicy` cũng mặc định V11. Model snapshot đọc từ `~/.cache/huggingface/...`, interpreter worker là `.venv` gốc.
 - Đây không phải fine-tuned model, không chứng minh mô hình planner/coder kép hay benchmark Qwen32B. Có dependencies training không có nghĩa repo đã fine-tune xong.
 
 ## 4. Cấu trúc repository và vai trò các file
@@ -191,30 +194,17 @@ VGAR/
 ├── .gitignore                   Loại local env, data, results, logs, runtimes
 ├── Task Status.md               Checklist 150 task IDs, evidence, blockers
 ├── PROGRESS.md                  Checkpoint qua các phiên làm việc
-├── run_m2_abc.ps1                Root launcher M2: Check / ReadSaved / Run
-├── src/vgar/                    M1 + M2 tuần cũ/evaluation + M3 agent/MCP
+├── src/vgar/                    M1 + M2 (W3–8, evaluation) + M3 agent/MCP
 ├── tests/                       Tests cấp VGAR; fixtures không tự collection
 ├── scripts/                     CLI tiện ích graph/eval/MCP/baseline/audit
-├── configs/                     Node dependency locks, mẫu handoff target
+├── configs/                     Node dependency locks, mẫu handoff target; m2/ policy/model/trusted fixtures
+├── examples/m2/                 Task configs, source snapshots, M1 bundles của A/B/C
 ├── docs/                        Contracts, method, design, handoff, audit, plans
 ├── artifacts/                   Graph fixtures, tokenizer/graph/handoff/evidence
 ├── data/                        Dataset/cache/source archives/manifest/gold (local)
 ├── results/retrieval/           Kết quả retrieval theo run ID (local)
 ├── logs/                        MCP audit/debug/runtime logs (local)
-├── M2_week_7_8/                 Package repair mới, namespace vgar_m2_w78
-│   ├── src/vgar_m2_w78/         Repair engine/verification/evidence
-│   ├── config/                 Policy, model paths, reference source pin
-│   ├── prompts/                Templates V1–V11 và lịch sử prompt
-│   ├── examples/               Task configs, source snapshots, M1 bundles
-│   ├── tests/                  Unit/regression tests + reference patches
-│   ├── scripts/                Entry points chạy/record/campaign
-│   ├── docs/                   Ba tài liệu bàn giao/báo cáo/lệnh chi tiết
-│   ├── integration/            Relocation receipt và original bytes sáu file
-│   ├── results/                Full lịch sử repair/qualification + runs mới
-│   ├── test_abc_v11_r002.ps1    Runner A/B/C bên trong (default Run!)
-│   ├── requirement.txt         Exact core pins, hướng dẫn HF riêng
-│   ├── pyproject.toml          Package riêng vgar-m2-w78
-│   └── .venv/, .workspaces/    Local env/workspaces; không phải portable source
+├── M2_week_7_8/                 Package standalone cũ, giữ tạm để đối chiếu; sẽ xóa
 └── .venv-m2-w5-w6/              Eval environment local, không bắt buộc có khi clone
 ```
 
@@ -228,42 +218,43 @@ VGAR/
 | [graph/](src/vgar/graph/)                                              | `builder.py` parse/extract/static bindings; `sqlite_store.py` lưu; `sqlite_service.py` truy vấn; `demo_service.py`/`factory.py`/`port.py` backend interface                                                                                                                                                                    |
 | Graph grounding/retrieval                                              | `grounding.py`, `task_overlay.py` nối issue/anchors; `retrieval.py` traverse/rank/pack; `token_counter.py` kiểm local tokenizer; `handoff.py` export bundle; `test_selection.py` suy test candidates                                                                                                                           |
 | Graph enrichers/diagnostics                                            | `scip_resolver.py`/`scip_profile.py`/`scip_wire.py`, `lsp_resolver.py`, `source_evidence.py`, `method_aliases.py`, `return_contracts.py`, `visualization.py`                                                                                                                                                                   |
-| [repair/](src/vgar/repair/)                                            | `workspace.py` copy/fingerprint; `test_runner.py` pytest/JUnit wrapper; `baseline.py` orchestration baseline; `evidence_writer.py` writer. **Không phải unified-diff engine M2 mới**                                                                                                                                           |
+| [repair/](src/vgar/repair/)                                            | Engine M2 W7–8: `pipeline.py` một lượt; `prompt.py` + `prompts/repair_v11.txt`; `patch.py` parser/apply; `workspace.py` private worktree; `test_runner.py` + `pytest_plugin.py`; `static_checks.py`; `verification.py`; `test_selection.py`; `context_*.py`; `evidence.py`, `executor.py`, `config.py`, `contracts.py` (xem mục 4.3)                                         |
 | [evaluation/retrieval/](src/vgar/evaluation/retrieval/)                | `dataset.py` pin/data; `chunks.py` corpus; `bm25.py` baseline; `gold_labels.py` patch labels; `m1_adapter.py`/`graph_arm.py` bridge Graph; `scoring.py`/`metrics.py` scoring; `compare.py` paired guards; `report.py` report; `evidence.py` command recording; `evaluation.py` điều phối; `resolver_comparison.py` so resolver |
-| [agents/](src/vgar/agents/)                                            | `core.py` agent/tools; `runtime.py` build/index; `workflow.py` graph orchestration; `state.py`/`routes.py` state/transitions; `nodes/` prepare/repair/verify/finalize; `prompts/` instruction legacy                                                                                                                           |
+| [agents/](src/vgar/agents/)                                            | `core.py` agent/tools cho `run`/`chat`; `runtime.py` per-run settings; `workflow.py` LangGraph của `solve`; `state.py`/`routes.py` state/transitions; `nodes/` initialize/repair_run/finalize; `prompts/` instruction legacy                                                                                                   |
 | [mcp/](src/vgar/mcp/)                                                  | `client.py` stdio clients; `servers/` ba servers; `registry.py`/`tooling.py` tool requirements/budget; `audit.py` log; `schemas.py`/`result_parser.py` response parsing                                                                                                                                                        |
-| [models/](src/vgar/models/)                                            | Factory/config/base và `huggingface/` local tool-calling model của agent cũ; khác HF worker M2                                                                                                                                                                                                                                 |
+| [models/](src/vgar/models/)                                            | `generator.py` FakeGenerator của M2; `huggingface/` gồm HF worker M2 (`generator_hf.py`, `hf_backend.py`, `hf_worker.py`, `model_worker.py`, `hf_diagnostics.py`, `local_chat.py`) và local tool-calling model của agent `run`/`chat`                                                                                         |
 | [config/](src/vgar/config/), [observability/](src/vgar/observability/) | Settings/env/logging; phase instrumentation/graph trace                                                                                                                                                                                                                                                                        |
-| [cli.py](src/vgar/cli.py)                                              | `vgar doctor/tools/index/run/solve/chat`; `vgar` entrypoint từ package root                                                                                                                                                                                                                                                    |
+| [cli.py](src/vgar/cli.py)                                              | `vgar doctor/tools/index/repair/solve/run/chat`; `vgar` entrypoint từ package root                                                                                                                                                                                                                                             |
 
 **Jedi:** không phải resolver bắt buộc hiện tại. Default là **static** (Tree-sitter + Python bindings); **SCIP/Pyright LSP là enrichment tùy chọn**. Không đúng nếu nói mọi lượt Graph hiện đều chạy SCIP hoặc đã bỏ static.
 
-### 4.3. Bên trong M2 tuần 7–8
+### 4.3. M2 tuần 7–8 trong `src/vgar`
 
-| Module/nhóm                                                              | Vai trò                                                                                                               |
-| ------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------- |
-| `bootstrap.py`, `config.py`, `contracts.py`                              | Reference/source pin, load policy/profile và validated task/artifact contracts                                        |
-| `context_adapter.py`, `context_presentation.py`, `prompt.py`             | Nhận/validate M1 context, trình bày permission/range/counts, render template và full-chat budgeting                   |
-| `generator.py`, `local_chat.py`                                          | Fake generator cho self-test và local chat tokenizer; fake không được tính real                                       |
-| `generator_hf.py`, `hf_backend.py`, `hf_worker.py`, `model_worker.py`    | RPC/process HF riêng, tokenize/generate, timeout/ownership; core env không phải HF env                                |
-| `hf_diagnostics.py`, `diagnostics.py`                                    | Effective generation config, mask/device/token diagnostics, parser detail, Python traceback                           |
-| `patch.py`, `workspace.py`                                               | Strict modify-only diff parser, source binding/preflight/apply/byte attestation; private worktree, protection/cleanup |
-| `executor.py`, `test_runner.py`, `pytest_plugin.py`, `test_selection.py` | Bounded command, real collection/outcomes, required/regression selection và fallback                                  |
-| `checks.py`, `verification.py`                                           | Syntax/mypy/Ruff, aggregate verdict; không gán PASS cho check chưa chạy                                               |
-| `pipeline.py`, `evidence.py`, `cli.py`                                   | Luồng một lượt, durable artifacts/canonical JSON, CLI                                                                 |
-| `campaign.py`, `adaptive_campaign.py`                                    | Campaign/revision/attempt và strict record assessor                                                                   |
-| `b_inputs.py`, `b_experiment.py`, `b_acceptance.py`                      | Frozen B inputs, runtime fingerprints/quota/resume và B-specific acceptance; lịch sử phát triển không được reset      |
+| Module/nhóm                                                                                       | Vai trò                                                                                                               |
+| ------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| `repair/config.py`, `repair/contracts.py`                                                         | Load policy/profile/task (`configs/m2/`, `examples/m2/`), validated task/policy/profile contracts                      |
+| `repair/context_adapter.py`, `repair/context_presentation.py`, `repair/prompt.py`                 | Nhận/validate M1 context, trình bày permission/range/counts, render template V11 và full-chat budgeting               |
+| `models/generator.py`, `models/huggingface/local_chat.py`                                         | Fake generator cho self-test và local chat tokenizer (không Torch); fake không được tính real                         |
+| `models/huggingface/{generator_hf,hf_backend,hf_worker,model_worker}.py`                          | HF chạy trong process riêng (`python -m vgar.models.huggingface.hf_worker`), tokenize/generate, timeout/ownership     |
+| `models/huggingface/hf_diagnostics.py`, `repair/diagnostics.py`                                   | Effective generation config, mask/device/token diagnostics, parser detail, Python traceback                           |
+| `repair/patch.py`, `repair/workspace.py`                                                          | Strict modify-only diff parser, source binding/preflight/apply/byte attestation; private worktree, protection/cleanup |
+| `repair/executor.py`, `repair/test_runner.py`, `repair/pytest_plugin.py`, `repair/test_selection.py` | Bounded command, real collection/outcomes, required/regression selection và fallback                                  |
+| `repair/static_checks.py`, `repair/verification.py`                                               | Syntax/mypy/Ruff với config cố định (`configs/m2/static/`), aggregate verdict; không gán PASS cho check chưa chạy     |
+| `repair/pipeline.py`, `repair/evidence.py`, `cli.py` (`vgar repair`)                              | Luồng một lượt, durable artifacts/canonical JSON, CLI                                                                 |
 
-**Inputs A/B/C ở bản nhúng:**
+Bootstrap/source pin, campaign/adaptive/B-experiment và prompt V1–V10 của bản standalone **không được chuyển sang**; lịch sử của chúng nằm trong [báo cáo M2](docs/handoff/m2-w7-w8/02_BAO_CAO_TOAN_BO_M2_W7_W8.md).
 
-| Input                     | Đường dẫn theo repo                                                                    | Dùng để làm gì?                                       |
-| ------------------------- | -------------------------------------------------------------------------------------- | ----------------------------------------------------- |
-| Task/issue và selectors   | `M2_week_7_8/examples/tasks/{single_file_login,multi_file_invoice,missing_links}.json` | Xác định case/source/bundle/failing tests             |
-| Source gốc trước sửa      | `M2_week_7_8/examples/snapshots/<task_id>/`                                            | Tạo seed/private worktree, giữ nguyên bug để tái hiện |
-| M1 context/manifest/links | `M2_week_7_8/examples/handoffs/<task_id>/`                                             | Context đã source-bound + provenance/test candidates  |
-| Provenance input          | `M2_week_7_8/examples/inputs_receipt.json`                                             | Nguồn handoff, hashes và thông tin chuẩn bị           |
-| Reference patches         | `M2_week_7_8/tests/fixtures/reference_patches/`                                        | Fake tests/guards, **không feed vào real model**      |
-| Source pin/profile        | `M2_week_7_8/config/{source_pin,demo}.json`                                            | Khóa shared VGAR boundary, model paths và budgets     |
+**Inputs A/B/C:**
+
+| Input                     | Đường dẫn theo repo                                                       | Dùng để làm gì?                                       |
+| ------------------------- | ------------------------------------------------------------------------- | ----------------------------------------------------- |
+| Task/issue và selectors   | `examples/m2/tasks/{single_file_login,multi_file_invoice,missing_links}.json` | Xác định case/source/bundle/failing tests             |
+| Source gốc trước sửa      | `examples/m2/snapshots/<task_id>/`                                        | Tạo seed/private worktree, giữ nguyên bug để tái hiện |
+| M1 context/manifest/links | `examples/m2/handoffs/<task_id>/`                                         | Context đã source-bound + provenance/test candidates  |
+| Provenance input          | `examples/m2/inputs_receipt.json`                                         | Nguồn handoff, hashes và thông tin chuẩn bị           |
+| Reference patches         | `tests/fixtures/m2/reference_patches/`                                    | Fake mode/tests, **không feed vào real model**        |
+| Policy/profile/fixtures   | `configs/m2/{demo,trusted_fixtures}.json`, `configs/m2/static/`           | Model paths, budgets, fixture hashes, mypy/Ruff config |
+| Evidence golden 15/10     | `tests/fixtures/m2/golden_v11/{A,B,C}/`                                   | Prompt/raw/applied diff để golden test so byte        |
 
 Ba case lấy từ fixture/handoff M1, nguồn [cases.json](tests/fixtures/w7_w8_handoff/cases.json), **không phải ba SWE-bench tasks**.
 
@@ -278,15 +269,13 @@ Ba case lấy từ fixture/handoff M1, nguồn [cases.json](tests/fixtures/w7_w8
 | `export_m1_handoff.py`, `consume_m1_handoff.py`, `demo_w7_w8_handoff.py`                             | Export/validate/review handoff; không tự là repair                                           |
 | `prepare_manifest.py`, `run_bm25_retrieval.py`, `run_graph_retrieval.py`, `compare_graph_vs_bm25.py` | Dataset manifest → retrieval arms → paired report                                            |
 | `compare_static_vs_scip.py`, `smoke_w5_w6_resolvers.py`                                              | So/kiểm resolver profile, không tự thay kết quả static đã lưu                                |
-| `run_m2_baseline.py`, `record_m2_test.py`                                                            | Baseline repo tin cậy / ghi pytest JSON; baseline không có generation                        |
 | `run_m1_tests.py`, `smoke_real_repo_graph.py`, `smoke_w7_w8_m1.py`, `smoke_w5_w6_retrieval.py`       | Tests/smoke M1, tokenizer/context/retrieval                                                  |
-| `smoke_mcp.py`, `smoke_w3_w4.py`, `smoke_w3_w4_full.py`                                              | MCP/tools/resources hoặc scripted integration; có known resource finding, không cam kết xanh |
-| `run_agent.py`, `smoke_workflow.py`, `smoke_w3_w4_agent.py`, `smoke_w3_w4_repair_loop.py`            | Agent/workflow legacy; khác package M2 mới                                                   |
+| `smoke_mcp.py`, `smoke_w3_w4.py`                                                                     | MCP/tools/resources hoặc scripted integration; có known resource finding, không cam kết xanh |
+| `run_agent.py`, `smoke_workflow.py`, `smoke_w3_w4_agent.py`                                          | Agent `run`/`chat` và vẽ graph workflow `solve`                                              |
 | `smoke_model.py`, `smoke_hf_agent.py`                                                                | Model/agent invocation smoke; “OK” không chứng minh sửa code                                 |
 | `package_m1.py`                                                                                      | Đóng gói scope M1; **không bao gồm toàn bộ package/evidence M2 nhúng**                       |
-| `check_m2_integration.py`                                                                            | So preservation snapshot integration; document drift sau snapshot cũng có thể bị báo         |
 
-Scripts trong M2: `run_demo.py` chạy một case fake/real; `record_tests.py` ghi self-tests; `qualify_model.py` kiểm profile; `prepare_inputs.py` chuẩn bị input có hashes; `run_acceptance.py`/`run_adaptive_acceptance.py`/`run_b_experiment.py` điều phối các campaign lịch sử; `summarize_runs.py` tổng hợp. **Không init/reset campaign cũ hoặc chạy lại prepare_inputs chỉ để xem kết quả.** Dùng root launcher cho final A/B/C.
+Chạy một case M2 bằng `vgar repair` (thay `run_demo.py` của bản standalone). Các script campaign/qualify/prepare_inputs của bản standalone không được chuyển sang; inputs A/B/C đã có sẵn trong `examples/m2/`.
 
 ## 5. Tài liệu quan trọng nên đọc
 
@@ -304,14 +293,15 @@ Scripts trong M2: `run_demo.py` chạy một case fake/real; `record_tests.py` g
 | [Verification design](docs/verification_design.md), [evidence schema](docs/evidence_bundle_schema.md), [M2 W3–4 guide](docs/GIAI_THICH_VGAR_M2_W3_W4_VA_CACH_KIEM_THU.md) | Baseline/test wrapper/evidence thế hệ trước                                                 |
 | [Model backend](docs/model_backend.md)                                                                                                                                    | Backend của agent legacy, không phải profile HF worker M2 mới                               |
 | [Integration plan](docs/superpowers/plans/2026-10-16-integrate-m2-w7-w8-standalone.md), [audit artifacts](docs/audit/)                                                    | Phạm vi được duyệt, backups, command receipts và provenance; không là lệnh tự động mở scope |
+| [Spec](docs/superpowers/specs/2026-10-17-m2-w7-w8-integration-design.md) và [plan](docs/superpowers/plans/2026-10-17-m2-w7-w8-integration.md) tích hợp M2 vào `src/vgar` | Bản đồ module M2 → `src/vgar`, golden test, các giai đoạn còn lại (xóa thư mục, retry)      |
 
-**Năm file bàn giao M2 cần biết:**
+**Ba file bàn giao M2 cần biết** (chép từ bản standalone, giữ nguyên nội dung lịch sử):
 
-1. [01_BAN_GIAO_M2_W7_W8_CHO_M1_M3.md](M2_week_7_8/docs/01_BAN_GIAO_M2_W7_W8_CHO_M1_M3.md): M1/M3 đọc để hiểu input/output, kết quả có số liệu, contract và phần việc phải nối tiếp.
-2. [02_BAO_CAO_TOAN_BO_M2_W7_W8.md](M2_week_7_8/docs/02_BAO_CAO_TOAN_BO_M2_W7_W8.md): giải thích task, cách triển khai, V11, flow, failures, inventory từng file/thư mục; là báo cáo chi tiết, dài hơn README.
-3. [03_LENH_POWERSHELL_A_B_C_V11_R002.md](M2_week_7_8/docs/03_LENH_POWERSHELL_A_B_C_V11_R002.md): giải thích commands/logs A/B/C. Có paths của bản standalone lịch sử; **trong VGAR ưu tiên mục 6–8 của README này và integration handoff**.
-4. [M2 requirement.txt](M2_week_7_8/requirement.txt): cài core pins vào môi trường riêng, không cài lẫn root requirements.
-5. [test_abc_v11_r002.ps1](M2_week_7_8/test_abc_v11_r002.ps1): runner bên trong. Dùng [run_m2_abc.ps1](run_m2_abc.ps1) ở root để mặc định an toàn Check, không vô tình generate.
+1. [01_BAN_GIAO_M2_W7_W8_CHO_M1_M3.md](docs/handoff/m2-w7-w8/01_BAN_GIAO_M2_W7_W8_CHO_M1_M3.md): M1/M3 đọc để hiểu input/output, kết quả có số liệu, contract và phần việc phải nối tiếp.
+2. [02_BAO_CAO_TOAN_BO_M2_W7_W8.md](docs/handoff/m2-w7-w8/02_BAO_CAO_TOAN_BO_M2_W7_W8.md): giải thích task, cách triển khai, V11, flow, failures, inventory từng file/thư mục; là báo cáo chi tiết, dài hơn README.
+3. [03_LENH_POWERSHELL_A_B_C_V11_R002.md](docs/handoff/m2-w7-w8/03_LENH_POWERSHELL_A_B_C_V11_R002.md): commands/logs A/B/C của launcher standalone lịch sử. **Lệnh hiện hành nằm ở mục 7–8 của README này.**
+
+Các tài liệu trên nhắc paths `M2_week_7_8/...` và `vgar_m2_w78` của bản standalone; bản tương ứng hiện hành xem bảng mục 4.3.
 
 Nếu tài liệu lịch sử khác path/status hiện tại: đối chiếu code, receipt mới và ngày/profile; **không sửa manifests/evidence cũ để chúng có vẻ được tạo dưới layout mới**.
 
@@ -337,8 +327,7 @@ SQLite dùng `sqlite3` của Python, không `pip install sqlite3`. **Không cầ
 | ----------------------------------------- | ------------------------------------------------- | -------------------------------------------------------------------- |
 | `.venv-vgar` — gợi ý tạo mới              | Root VGAR, agent/MCP, root tests, đầy đủ metadata | [requirement.txt](requirement.txt), sau đó editable install root     |
 | `.venv-m1` — tùy chọn, thay cho full root | Chỉ graph/handoff/M1 tests, không model stack     | `scripts/requirements_m1.txt`; chủ động `PYTHONPATH=src`             |
-| `M2_week_7_8/.venv`                       | Core M2, pytest/mypy/Ruff và orchestration        | **`M2_week_7_8/requirement.txt`**                                    |
-| HF worker riêng                           | Load Qwen/tokenize full chat/generate trên CUDA   | Năm pins HF ở mục 6.4; **tokenizers 0.22.2**, không trộn core 0.22.1 |
+| HF worker M2                              | Load Qwen/tokenize full chat/generate trên CUDA   | Process riêng, mặc định cùng `.venv` gốc (`configs/m2/demo.json`)    |
 
 Không cần tạo cả `.venv-vgar` lẫn `.venv-m1` nếu chỉ dùng một đường. Environment `.venv-m2-w5-w6` local dùng cho evidence retrieval trước đây (Python 3.13.0), không phải M2 W7–8 đã qualify.
 
@@ -385,41 +374,19 @@ File `requirement.txt` **không chọn CUDA build thay bạn**. CPU Torch vẫn 
 
 **Mỗi lần mở terminal sau này chỉ cần** vào repo, đặt UTF-8 và gán lại `$vgarPython`/`$core` tương ứng. Không chạy lại `venv`/`pip install`/`npm ci`/provision nếu profile không đổi.
 
-### 6.4. M2 trên máy hiện tại và máy mới
+### 6.4. M2 tuần 7–8: dùng chung môi trường gốc
 
-**Máy hiện tại:** core env/weights/HF env/tokenizer đã có. Dùng Check → ReadSaved → Run, **không cài lại**.
+M2 không còn cần venv riêng: `vgar repair` chạy trong `.venv` gốc, gọi pytest/mypy/Ruff bằng chính interpreter đó (`pip install -e .[dev]` có `mypy==2.4.0`, `ruff==0.17.0`), và khởi HF worker bằng `interpreter` trong [configs/m2/demo.json](configs/m2/demo.json) (mặc định `../../.venv/Scripts/python.exe`).
 
-**Máy mới:** có thể chuẩn bị core như sau, nhưng đây **chưa phải lệnh tự động dựng toàn profile nghiệm thu**:
+**Profile đã chạy real A/B/C ngày 17/10:** Python 3.11.0, Torch 2.5.1+cu121, Transformers 4.57.6, tokenizers 0.22.2, Accelerate 1.15.0, safetensors 0.8.0, RTX 4050 Laptop 6 GB (có CPU offload).
 
-```powershell
-# CHỈ LẦN ĐẦU: đứng ở VGAR; tạo core M2 nếu chưa có, không tái sử dụng venv copy từ máy khác.
-if (-not (Test-Path -LiteralPath '.\M2_week_7_8\.venv\Scripts\python.exe')) {
-    py -3.11 -m venv .\M2_week_7_8\.venv
-    if ($LASTEXITCODE -ne 0) { throw 'Không tạo được M2 core venv.' }
-}
-# GÁN INTERPRETER: dùng file .exe có thật, không dùng biến $python chưa khai báo.
-$core = (Resolve-Path '.\M2_week_7_8\.venv\Scripts\python.exe').Path
-# CHỈ LẦN ĐẦU: bảy core pins; KHÔNG dùng root requirement.txt ở đây.
-& $core -m pip install -r .\M2_week_7_8\requirement.txt
-if ($LASTEXITCODE -ne 0) { throw 'M2 core install fail.' }
-& $core -m pip check
-```
+**Paths/profile trong `configs/m2/demo.json`:**
 
-Core pins: pydantic 2.13.5, python-dotenv 1.2.3, tokenizers 0.22.1, Jinja2 3.1.6, pytest 8.4.2, mypy 1.20.2, Ruff 0.16.7.
+- Weights: `~/.cache/huggingface/hub/models--Qwen--Qwen3-4B-Instruct-2507/snapshots/cdbee75f17c01a7cc42f958dc650907174af0554` (`~` được mở rộng theo user hiện tại).
+- Counter manifest: `artifacts/m2/w5-w6/tokenizer_manifest.json`; tokenizer files trong `artifacts/m1/tokenizers/` (local, không commit).
+- Fixtures được phép chạy native: `configs/m2/trusted_fixtures.json` (hash từng file snapshot).
 
-HF worker đã đo dùng **Torch 2.11.0+cu128 / Transformers 4.57.6 / tokenizers 0.22.2 / Accelerate 1.15.0 / safetensors 0.8.0**. Các câu lệnh cài riêng đã ghi trong M2 requirement; Torch CUDA cần PyTorch cu128 index, không mặc định PyPI là đủ. Không đưa root requirements vào env HF đã khóa.
-
-**Paths/profile hiện có:**
-
-- HF interpreter: `D:\Project\CAPSTONES\vgar_mcp_mvp\.venv\Scripts\python.exe`. Chỉ mượn dependencies từ env này, **không chạy source hệ thống cũ**.
-- Weights: `D:\Project\CAPSTONES\.cache\huggingface\hub\models--Qwen--Qwen3-4B-Instruct-2507\snapshots\cdbee75f17c01a7cc42f958dc650907174af0554`.
-- Counter manifest: `VGAR\artifacts\m2\w5-w6\tokenizer_manifest.json`; tokenizer files trong `artifacts/m1/tokenizers/`.
-- Source pin: HEAD `b8e246...` và **12 shared boundary file hashes**, kiểm từ `config/source_pin.json`.
-- Current integration: **`r002-vgar-i001`**; cha là runtime r002, không gọi layout mới là byte-identical r002.
-
-Các paths này phụ thuộc máy. Đổi path/interpreter/weights/profile hoặc HEAD phải có **relocation/profile receipt và qualification mới**, không âm thầm sửa JSON/expected hashes để Check PASS. Chỉ cài pip hoặc truyền `-Python` **không đủ** chuyển toàn profile.
-
-Venv copy có thể chứa editable `.pth` trỏ source standalone cũ. Launchers/scripts được hỗ trợ chủ động chọn source nhúng; **không dùng bare import/console entrypoint cũ để suy rằng chạy đúng bản nhúng**. Không cài lại env hiện tại chỉ để “sửa” điều này.
+Đổi weights/interpreter thì sửa `configs/m2/demo.json` hoặc truyền `--config` khác; không sửa hash trong `trusted_fixtures.json` để một snapshot khác chạy được. Cơ chế source pin (`source_pin.json`) của bản standalone đã bỏ; golden test V11 thay vai trò kiểm drift.
 
 ## 7. Chạy M2 A/B/C đã tích hợp
 
@@ -436,95 +403,58 @@ Pipeline M2 tuần 7–8 (prompt V11 → unified diff → worktree riêng → py
 .\.venv\Scripts\python.exe -m vgar.cli solve --task examples/m2/tasks/single_file_login.json --mode fake
 ```
 
-`vgar repair` in đường dẫn `run_record.json` và trả exit code 0/1/2 cho PASS/FAIL/ERROR. Chỉ chạy native trên fixture đã khớp byte trong `configs/m2/trusted_fixtures.json`.
+`vgar repair` in đường dẫn `run_record.json` và trả exit code 0/1/2 cho PASS/FAIL/ERROR. Chỉ chạy native trên fixture đã khớp byte trong `configs/m2/trusted_fixtures.json`. `vgar solve` in `[status] COMPLETED|FAILED`, đường dẫn run và `[reason]` khi fail.
 
-### 7.1. Trình tự khuyến nghị trên profile hiện tại
+### 7.1. Trình tự khuyến nghị
 
 ```powershell
-# BƯỚC 1: vào VGAR; không vào M2 độc lập cạnh VGAR.
-Set-Location 'D:\Project\CAPSTONES\VGAR'
+# BƯỚC 1: vào repo, UTF-8.
+Set-Location 'D:\kltn\vgar_mcp_mvp_demo'
 $env:PYTHONUTF8 = '1'
+$py = (Resolve-Path '.\.venv\Scripts\python.exe').Path
 
-# BƯỚC 2 — CHECK: kiểm source/runtime/prompt/fixtures/pins/CUDA, không load weights.
-powershell -NoProfile -ExecutionPolicy Bypass -File '.\run_m2_abc.ps1' -Mode Check
-if ($LASTEXITCODE -ne 0) { throw 'Check fail: xem logs, chưa chạy generation.' }
+# BƯỚC 2 — GOLDEN: so byte prompt V11/applied diff với evidence thật 15/10, không load model.
+& $py -m pytest -q -p no:cacheprovider tests\m2\w78\test_w78_golden_v11.py
+if ($LASTEXITCODE -ne 0) { throw 'Golden fail: pipeline/prompt đã drift, chưa chạy generation.' }
 
-# BƯỚC 3 — READSAVED: audit ba real records đã lưu; cần có historical evidence local.
-powershell -NoProfile -ExecutionPolicy Bypass -File '.\run_m2_abc.ps1' -Mode ReadSaved
-if ($LASTEXITCODE -ne 0) { throw 'Saved evidence audit fail hoặc thiếu files.' }
-
-# BƯỚC 4 — RUN: CHỈ chạy khi muốn sinh/kiểm chứng patch MỚI cho A, B, C.
-# Full self-tests + Ruff, rồi từng case một generation; có thể tốn thời gian/GPU/RAM.
-powershell -NoProfile -ExecutionPolicy Bypass -File '.\run_m2_abc.ps1' -Mode Run
-$abcExit = $LASTEXITCODE
-Write-Host "A/B/C workflow exit code: $abcExit"
+# BƯỚC 3 — RUN: CHỈ chạy khi muốn sinh/kiểm chứng patch MỚI; mỗi case một generation.
+$out = Join-Path $PWD ('results\m2-real\' + [DateTime]::UtcNow.ToString('yyyyMMddTHHmmssZ'))
+foreach ($case in 'single_file_login','multi_file_invoice','missing_links') {
+    & $py -m vgar.cli repair --task "examples\m2\tasks\$case.json" --mode real --output-root $out
+    Write-Host "$case exit code: $LASTEXITCODE"
+}
 ```
 
-**Một lệnh chạy mới từ đầu đến cuối trên máy đã đủ prerequisites:**
+- `--mode real` không dùng gold patch, không tự sửa raw diff, không retry/đổi prompt nếu FAIL.
+- Không chạy hai lượt model cùng lúc. Mỗi lần dùng `--output-root` mới, không ghi đè evidence cũ.
+- 3/3 PASS chỉ xác nhận prototype/profile của lượt đó; không phải SWE-bench resolved rate hay MCP integration.
 
-```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File 'D:\Project\CAPSTONES\VGAR\run_m2_abc.ps1' -Mode Run
-```
+### 7.2. Output nằm ở đâu?
 
-- Root default `Check`; runner bên trong default `Run`. Luôn ghi rõ mode.
-- `Run` không dùng gold patch, không tự sửa raw diff, không retry/đổi prompt nếu FAIL.
-- Dừng ở lỗi đầu tiên; case chưa tới là **chưa chạy**, không tính FAIL/PASS thay.
-- Không khuyến nghị `-SkipSelfTests` cho nghiệm thu. Không chạy hai workflow model cùng lúc.
-- Bên trong runner reject `PYTHONOPTIMIZE`, paths reparse và output đã tồn tại. Mỗi lần tạo output mới, không ghi đè evidence cũ.
-- 3/3 PASS trong `Run` chỉ xác nhận prototype/profile của lượt đó; không phải SWE-bench resolved rate hay MCP integration.
-
-### 7.2. Output mới nằm ở đâu?
-
-Tự tạo: `VGAR\M2_week_7_8\results\manual_abc\<UTC-run-id>\`. Console kết thúc in `DONE mode=...; summary=...`.
+Mặc định `results/repair/` (`vgar repair`) hoặc `results/solve/` (`vgar solve`), cả hai bị `.gitignore`. Mỗi run một thư mục:
 
 ```text
 <UTC-run-id>/
-├── summary.json                Verdict toàn workflow, mode/integration_id/cases
-├── all_logs.txt                Console tổng hợp; có command/exit/start-end/duration
-├── preflight.json, profile.json
-├── *.command.json, *.console.log
-├── self_tests/<id>/             Pytest record/JUnit khi Mode Run
-├── audit_A.json, audit_B.json, audit_C.json
-└── A/, B/, C/
-    ├── <canonical-id>/
-    │   ├── run_record.json     Record chuẩn của từng case
-    │   ├── REPORT.md
-    │   ├── prompt.txt         Full prompt đã gửi model
-    │   ├── raw_model_output.txt  Output nguyên bản, không sửa hộ model
-    │   ├── candidate.diff, applied.diff  Candidate và patch thực đã apply
-    │   └── evidence_bundle.json  Bundle liên kết kết quả checks/provenance
-    └── model-workers/         Worker requests/logs/diagnostics
+├── run_record.json        Record chuẩn: stages, commands, outcomes, status/reason
+├── prompt.txt             Full prompt đã gửi model
+├── raw_model_output.txt   Output nguyên bản, không sửa hộ model
+├── candidate.diff, transport.diff, applied.diff   Candidate và patch thực đã apply
+└── evidence_bundle.json   Bundle liên kết kết quả checks/provenance
+<output-root>/model-workers/   Worker requests/logs/diagnostics (mode real)
 ```
 
-Tên artifact cụ thể đọc từ canonical record, không đoán tên hoặc tự nối absolute paths lịch sử.
+Tên artifact cụ thể đọc từ `run_record.json` (`artifacts`), không đoán tên.
 
-### 7.3. Tự chọn Run mới nhất, không dán folder thủ công
-
-Đoạn này **chỉ chọn Mode=Run của r002-vgar-i001**, không nhầm Check/ReadSaved/historical Run:
+### 7.3. Đọc run mới nhất
 
 ```powershell
-# CHỈ ĐỌC: chạy từ VGAR; chỉ duyệt summary của workflow, không quét venv hay toàn source.
-$resultsRoot = Join-Path $PWD 'M2_week_7_8\results\manual_abc'
-if (-not (Test-Path -LiteralPath $resultsRoot)) { throw 'Chưa có results/manual_abc.' }
-$candidates = @(Get-ChildItem -LiteralPath $resultsRoot -Directory | ForEach-Object {
-    $path = Join-Path $_.FullName 'summary.json'
-    if (Test-Path -LiteralPath $path) {
-        $s = Get-Content -Raw -Encoding UTF8 $path | ConvertFrom-Json
-        if ($s.mode -eq 'Run' -and $s.PSObject.Properties['integration_id'] -and $s.integration_id -eq 'r002-vgar-i001') {
-            [pscustomobject]@{ Path = $path; Summary = $s; Started = $s.started_utc }
-        }
-    }
-})
-$selected = $candidates | Sort-Object Started -Descending | Select-Object -First 1
-if (-not $selected) { throw 'Chưa có real Run của layout mới; historical/ReadSaved không thay thế Run.' }
-$run = Split-Path $selected.Path -Parent
-Write-Host "Selected run: $run"
-$selected.Summary | Select-Object status,complete,mode,integration_id,started_utc,ended_utc,reason
-$selected.Summary.cases | Select-Object letter,task_id,status,input_tokens,output_tokens,duration_ms
-Get-Content -Encoding UTF8 (Join-Path $run 'all_logs.txt')
+# CHỈ ĐỌC: chọn run_record.json mới nhất dưới một output root.
+$record = Get-ChildItem -Recurse -Filter run_record.json $out | Sort-Object LastWriteTime -Descending | Select-Object -First 1
+$r = Get-Content -Raw -Encoding UTF8 $record.FullName | ConvertFrom-Json
+$r | Select-Object task_id,status,reason,mode,duration_ms
 ```
 
-Giữ cả latest failed/incomplete run để điều tra; không tự chọn “PASS mới nhất” rồi giấu failures.
+Giữ cả run failed/incomplete để điều tra; không tự chọn “PASS mới nhất” rồi giấu failures.
 
 ## 8. Tự chạy các nhóm test và lưu kết quả
 
@@ -533,34 +463,24 @@ Giữ cả latest failed/incomplete run để điều tra; không tự chọn �
 | Lệnh/nhóm                 | Thực sự làm gì?                                       | Không chứng minh điều gì?                         |
 | ------------------------- | ----------------------------------------------------- | ------------------------------------------------- |
 | `pytest` root             | Kiểm code/contracts/MCP/graph/legacy runner của VGAR  | Không phải real LLM repair A/B/C                  |
-| M2 `record_tests.py`      | Pytest package M2, ghi đầy đủ canonical test evidence | Không phải model giải issue mới                   |
-| `run_demo.py --mode fake` | Đi qua repair/apply/verifier bằng reference patch     | Không chứng minh LLM sinh đúng patch              |
-| `-Mode ReadSaved`         | Audit lại real records có sẵn                         | Không phải chạy lại inference                     |
-| `-Mode Run`               | Self-tests rồi real A/B/C và audit                    | Chỉ ba trusted dev fixtures, không toàn benchmark |
+| `pytest tests/m2/w78`     | Tests M2 W7–8 đã port, gồm golden V11                 | Không phải model giải issue mới                   |
+| `vgar repair --mode fake` | Đi qua repair/apply/verifier bằng reference patch     | Không chứng minh LLM sinh đúng patch              |
+| Golden test V11           | So byte prompt/applied diff với real records 15/10    | Không phải chạy lại inference                     |
+| `vgar repair --mode real` | Real A/B/C, mỗi case một generation                   | Chỉ ba trusted dev fixtures, không toàn benchmark |
 
-### 8.2. Full M2 core suite — không generate
+### 8.2. Tests M2 tuần 7–8 — không generate
 
 ```powershell
-# MỖI TERMINAL: gán core có thật trước; lỗi "& $python" thường do biến rỗng.
-Set-Location 'D:\Project\CAPSTONES\VGAR'
-$core = (Resolve-Path '.\M2_week_7_8\.venv\Scripts\python.exe').Path
+Set-Location 'D:\kltn\vgar_mcp_mvp_demo'
+$py = (Resolve-Path '.\.venv\Scripts\python.exe').Path
 $env:PYTHONUTF8 = '1'
-# Kết quả ghi vào thư mục mới tự sinh dưới package, không đè saved runs.
-Push-Location '.\M2_week_7_8'
-try {
-    & $core .\scripts\record_tests.py tests --timeout-seconds 240 --output-root .\results\tests
-    $suiteExit = $LASTEXITCODE
-    Write-Host "M2 full-suite exit code: $suiteExit"
-    # Lint đúng phạm vi/rules đã dùng; không phải tất cả Ruff rules.
-    & $core -m ruff check --select E9,F src scripts tests
-    $lintExit = $LASTEXITCODE
-    Write-Host "M2 Ruff exit code: $lintExit"
-} finally {
-    Pop-Location
-}
+# Tests M2 đã port + golden V11; vài phút vì chạy pytest/mypy/Ruff thật trong worktree.
+& $py -m pytest -q -p no:cacheprovider tests\m2\w78 tests\unit
+# Lint đúng phạm vi rules M2 đã dùng; không phải tất cả Ruff rules.
+& $py -m ruff check --select E9,F src\vgar\repair src\vgar\models\generator.py src\vgar\models\huggingface\generator_hf.py src\vgar\models\huggingface\hf_backend.py src\vgar\models\huggingface\hf_diagnostics.py src\vgar\models\huggingface\hf_worker.py src\vgar\models\huggingface\model_worker.py src\vgar\models\huggingface\local_chat.py tests\m2\w78
 ```
 
-Recorder in path `results/tests/<id>/run_record.json`. Nó chứa pytest stage stdout/stderr/exit/duration và `junit.xml` cùng run. Baseline đã lưu: 236 PASS; máy/profile thay đổi có thể khác, phải xem log thực tế. Không bỏ test fail khỏi suite để gọi “full PASS”.
+Lần 17/10: `tests/m2/w78` 127 PASS (gồm 3 golden), `tests/unit` 8 PASS. Không bỏ test fail khỏi suite để gọi “full PASS”.
 
 ### 8.3. M1 tests và root full suite
 
@@ -581,7 +501,7 @@ Copy-Item -LiteralPath '.\artifacts\sample_graph.db' -Destination (Join-Path $qa
 $m1Exit = $LASTEXITCODE
 Write-Host "M1 exit: $m1Exit"
 
-# Full ROOT suite: tests/ theo pyproject, không trộn M2 nested suite.
+# Full ROOT suite: tests/ theo pyproject (đã gồm tests/m2/w78).
 & $vgarPython -m pytest -q -p no:cacheprovider "--junitxml=$qa\vgar-junit.xml" tests 2>&1 | Tee-Object -FilePath (Join-Path $qa 'vgar-console.log')
 $rootExit = $LASTEXITCODE
 Write-Host "VGAR full-suite exit: $rootExit; evidence: $qa"
@@ -589,23 +509,9 @@ Write-Host "VGAR full-suite exit: $rootExit; evidence: $qa"
 Get-FileHash -Algorithm SHA256 '.\artifacts\sample_graph.db',(Join-Path $qa 'sample_graph.before.db')
 ```
 
-**Biết trước:** full suite gần nhất có một failure `tests/test_hf_model.py::test_local_chat_model_uses_one_greedy_generation_config`. Test này dùng mocked loader nhưng đòi model dependencies khi import, không phải một real model invocation. Hai skips lúc đó là quyền symlink Windows và thiếu matplotlib. Requirement root mới có matplotlib, nên skip count trên máy mới có thể đổi.
+**Biết trước:** full suite 17/10 có 4 failures: 3 test trong `tests/m2/test_w78_integration.py` (kiểm relocation của thư mục `M2_week_7_8/` cũ, cần venv/egg-info của bản standalone; sẽ xóa cùng thư mục) và `tests/test_hf_model.py::test_local_chat_model_uses_one_greedy_generation_config`. Test này dùng mocked loader nhưng đòi model dependencies khi import, không phải một real model invocation. Hai skips lúc đó là quyền symlink Windows và thiếu matplotlib. Requirement root mới có matplotlib, nên skip count trên máy mới có thể đổi.
 
 Nếu DB fixture bị tests thay, trước khi khôi phục phải chắc không có phiên khác đang ghi; giữ bản sau-test và chỉ restore đúng backup vừa tạo. Không dùng `git reset --hard`/`git checkout --` để xử lý side effect. Không chạy `pytest .` vì có thể collection lẫn fixtures/package nhúng.
-
-### 8.4. Test runner baseline tuần 3–4
-
-`scripts/run_m2_baseline.py` nhận **repo tin cậy + selectors**, tạo workspace rồi chạy baseline. Không có bước LLM/apply patch. Ví dụ chỉ dùng fixture trong repo:
-
-```powershell
-# Chạy từ VGAR bằng root env; selector 'tests' nghĩa toàn thư mục tests của repo đích.
-& $vgarPython .\scripts\run_m2_baseline.py .\tests\fixtures\sample_repo tests --task-id readme-baseline --timeout-seconds 120
-$LASTEXITCODE
-```
-
-Artifact mặc định: `artifacts/m2/test-runs/`. Nếu baseline tái hiện bug và trả FAIL, đó có thể là kết quả mong muốn của bước **trước sửa**, không phải repair engine sửa thất bại.
-
-`record_m2_test.py` còn hỗ trợ ghi unit tests root, nhưng fingerprint toàn workspace trước/sau có thể rất chậm khi đã có data/env/evidence lớn. Timeout pytest không giới hạn phần fingerprint. Không khuyến nghị dùng recorder này để hash cả repo hiện tại chỉ nhằm kiểm nhanh.
 
 ## 9. Sử dụng M1 graph, handoff và retrieval evaluation
 
@@ -703,7 +609,7 @@ Mỗi command in run path mới; giữ path BM25/Graph đúng profile/population
 
 ## 10. Agent MCP/LangChain hiện có và cấu hình
 
-**Phần này là đường legacy/root, không phải cách chạy final M2 A/B/C.** Có known findings về binding/security/evidence; chỉ dùng repository/fixtures tin cậy, không repository ngoài chưa duyệt.
+**`vgar run`/`vgar chat` là đường agent exact-edit, không phải cách chạy final M2 A/B/C (dùng `vgar repair`/`vgar solve`).** Có known findings về binding/security/evidence; chỉ dùng repository/fixtures tin cậy, không repository ngoài chưa duyệt.
 
 ### 10.1. Settings của agent
 
@@ -741,14 +647,15 @@ Thứ tự Settings: environment thật > `.env` > defaults; `get_settings` có 
 
 - `vgar index REPO --db PATH`: build/load graph snapshot.
 - `vgar run "ISSUE" --repo REPO --selector tests`: gọi agent trên disposable copy và independent pytest theo selector.
-- `vgar solve "ISSUE" --repo REPO --selector TEST1 --selector TEST2`: workflow repair/verify/retry; selector bắt buộc, repeatable.
+- `vgar repair --task TASK.json --mode fake|real`: một lượt pipeline M2; in `run_record.json`, exit 0/1/2.
+- `vgar solve --task TASK.json [--mode fake|real]`: LangGraph quanh **một** lượt `vgar repair`; chưa có retry.
 - `vgar chat --repo REPO`: tương tác; không thay quy trình nghiệm thu có canonical gates.
 - `--keep` giữ temporary folder để xem, có thể chiếm đĩa.
 - Khi chưa đăng ký console CLI, dùng `& $vgarPython -m vgar.cli ...`.
 
 **Không có selector ở `run` thì exit0 có thể chỉ nghĩa agent kết thúc, chưa independent verification.** “Agent says success”, tool discovery PASS và model trả OK đều không đủ để gọi repair thành công.
 
-MCP hiện có graph tools `search_symbols/get_callers/get_callees/find_task_anchors/get_related_context/get_related_tests`; repository `health/read_file/apply_patch`; execution `health/run_pytest`. Client thêm prefix server, ví dụ `graph_search_symbols`. Repository `apply_patch` hiện nhận exact `old_text/new_text`, **không phải strict unified-diff apply M2 mới**. Các adapter mới `run_relevant_tests/verify_patch` vẫn cần M3 nối.
+MCP hiện có graph tools `search_symbols/get_callers/get_callees/find_task_anchors/get_related_context/get_related_tests`; repository `health/read_file/apply_patch`; execution `health/run_pytest`. Client thêm prefix server, ví dụ `graph_search_symbols`. Repository `apply_patch` hiện nhận exact `old_text/new_text`, **không phải strict unified-diff apply M2**. Các MCP tools `apply_patch/run_relevant_tests/verify_patch` dùng engine M2 vẫn cần M3 nối.
 
 ## 11. Evidence, logs và cách đọc PASS/FAIL
 
@@ -756,11 +663,9 @@ MCP hiện có graph tools `search_symbols/get_callers/get_callees/find_task_anc
 
 | Phạm vi                       | Đường dẫn/record                                            | Thông tin                                                                    |
 | ----------------------------- | ----------------------------------------------------------- | ---------------------------------------------------------------------------- |
-| Historical real M2            | `M2_week_7_8/results/final_acceptance/2026-10-15-v11-r002/` | Manifest/profile, A/B/C canonical records, final audits                      |
-| Manual A/B/C mới              | `M2_week_7_8/results/manual_abc/<id>/`                      | Summary/all_logs, command receipts, self-tests, per-case records/worker logs |
-| M2 unit test runs             | `M2_week_7_8/results/tests/<id>/`                           | `run_record.json` → `stages.pytest`; command/stdout/stderr/exit/time, JUnit  |
+| Historical real M2 15/10      | `tests/fixtures/m2/golden_v11/`                             | Run manifest, A/B/C prompt/raw/diff/run_record/evidence bundle               |
+| `vgar repair` / `vgar solve`  | `results/repair/<id>/`, `results/solve/<id>/` (local)       | Per-case records, artifacts, worker logs (`model-workers/`)                 |
 | Root manual pytest theo mục 8 | `results/manual_tests/<id>/`                                | Console logs/JUnit và DB backup                                              |
-| M2 baseline tuần 3–4          | `artifacts/m2/test-runs/`                                   | JSON test_result, source before/after, command/outcomes                      |
 | W5–6 retrieval                | `results/retrieval/<id>/`                                   | Run `result.json`, `tasks/<instance_id>.json`, reports khi có                |
 | W5–6 command evidence         | `artifacts/m2/w5-w6/commands/<id>/result.json`              | argv/cwd/interpreter/stdout/stderr/exit/duration/fingerprint                 |
 | Integration audit             | `docs/audit/2026-10-16-m2-w7-w8-integration/`               | Copy/preservation/SQLite receipts, full-suite results/XML, review            |
@@ -783,10 +688,10 @@ Root phase logger dùng `[VGAR] PHASE_START/OUTPUT/END/ERROR` với monotonic du
 ### 11.2. Năm ý nghĩa PASS khác nhau
 
 1. **Pytest PASS:** code self-test đạt; chưa chứng minh LLM sinh patch.
-2. **Check PASS:** profile/assets/source/pins hợp lệ, không repair.
+2. **Golden PASS:** prompt V11/applied diff trùng byte với real records đã lưu, không generation mới.
 3. **Fake PASS:** pipeline chạy với reference candidate, không model success.
-4. **ReadSaved PASS:** audit historical real record đạt, không generation mới.
-5. **Run + case audit PASS:** generation mới qua gates của case/profile đó.
+4. **`vgar solve` COMPLETED:** LangGraph đi hết `repair_run → finalize`, verdict lấy từ chính run M2 bên dưới.
+5. **`vgar repair --mode real` PASS:** generation mới qua gates của case/profile đó.
 
 Với A/B/C, chỉ chốt repair PASS khi raw tự parse, exact apply/attestation thành công, required baseline FAIL → post PASS, regression/collection/type/lint/syntax đã chạy và đạt, source gốc/protected files giữ nguyên, cleanup/evidence đúng. **Riêng B phải có hai production files đổi; C phải có actual fallback collection/execution.**
 
@@ -797,9 +702,9 @@ Các `NOT_RUN`/`SKIP` không được đổi thành PASS. API/structural verific
 | Tình trạng                                          | Giải thích / cách xử lý                                                                                                                |
 | --------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
 | `& $python` báo BadExpression                       | Biến chưa gán hoặc không là executable. Gán lại `$core`/`$vgarPython` bằng Resolve-Path trong terminal hiện tại, không cài lại mọi thứ |
-| Check thiếu Python/core/HF/weights/tokenizer        | Chưa đủ prerequisite hoặc path khác máy. Đọc preflight/console, không sửa expected hash cho qua                                        |
-| “Qualified runtime changed”/reference HEAD mismatch | Runtime/config/source đã drift, kể cả root commit mới. Cần reviewed profile/relocation qualification, không bypass guard               |
-| ReadSaved thiếu records                             | Results thường bị ignore Git; cần team bàn giao evidence kèm hashes. Không kết luận model FAIL vì clone không có evidence              |
+| `Pinned snapshot/interpreter missing`               | Path weights/interpreter trong `configs/m2/demo.json` khác máy. Sửa config hoặc truyền `--config`, không sửa hash fixtures cho qua      |
+| `Native execution only allowed on ... fixtures`     | Task/snapshot không khớp `configs/m2/trusted_fixtures.json`. Đúng thiết kế: chỉ chạy native trên fixture đã duyệt                      |
+| Golden test V11 fail                                | Prompt/parser/tokenizer đã drift so với real records 15/10. Tìm thay đổi gây lệch, không cập nhật golden cho qua                       |
 | Source snapshots vẫn có bug sau PASS                | Đúng thiết kế: sửa ở private worktree, original không bị mutate; xem applied diff/post results                                         |
 | Full VGAR lỗi `generation_config`                   | Known legacy HF constructor/test contract, đã fail trước relocation; chưa sửa trong package integration                                |
 | MCP resources encoded IDs không đọc đúng            | Known legacy decoding/binding finding; xem Task Status, không lấy tool discovery làm resource PASS                                     |
@@ -808,7 +713,6 @@ Các `NOT_RUN`/`SKIP` không được đổi thành PASS. API/structural verific
 | Model OOM/chậm/CPU offload                          | Kiểm actual placement/RAM/VRAM và run diagnostics; không mặc định do prompt, không tự tăng budgets/đổi model                           |
 | M2 parser FAIL                                      | Xem raw/count diagnostics; không sửa `@@`/whitespace/path của output thay model để gọi PASS                                            |
 | Pip cài xong nhưng CUDA False                       | Dependencies cài được không đồng nghĩa đúng CUDA build/driver/profile; root requirements không tự chọn GPU                             |
-| Full preservation auditor báo drift sau sửa docs    | Receipt khóa snapshot cũ. README/Task Status/PROGRESS đã đổi theo yêu cầu sau đó; giữ diff/receipt mới, không sửa lịch sử              |
 | `package_m1.py` thiếu M2                            | Script chủ ý scope M1; không dùng ZIP M1 làm “toàn bộ VGAR + M2/evidence”                                                              |
 
 Các findings B01–B12, vị trí code và hướng sửa nằm trong [Task Status](<Task Status.md>). M2 mới xử lý nhiều gates trong phạm vi riêng; điều đó **không tự vá tương ứng code legacy** khi chưa nối MCP.
@@ -818,16 +722,16 @@ Các findings B01–B12, vị trí code và hướng sửa nằm trong [Task Sta
 ## 13. Bàn giao, tái lập và quy tắc thay đổi
 
 1. Đọc Task Status/PROGRESS trước khi làm tiếp; không thực thi lại kế hoạch đã đóng băng chỉ vì còn file plan.
-2. Giữ original `D:\Project\CAPSTONES\M2_week_7_8` độc lập. Bản đang chạy trong VGAR là `VGAR\M2_week_7_8`; không copy đè khi đã có evidence mới.
+2. Code M2 hiện hành nằm trong `src/vgar`. Thư mục `M2_week_7_8/` chỉ còn để đối chiếu và sẽ xóa; không sửa code ở đó.
 3. Kiểm `git status`/`git diff` trước sửa; giữ các local changes của thành viên khác, đặc biệt retrieval compare/scoring.
 4. Không sửa tests/reference patches/parser guards/verifier/source fixtures để làm benchmark PASS; không đánh dấu ownership M1/M3 thay người phụ trách.
 5. Không xóa failures/campaigns cũ, reset quota hoặc đổi tên campaign để che lịch sử. Mỗi attempt phải có prompt/runtime/input hashes và canonical path.
 6. **Không commit env/weights/secrets/cache lớn.** `.gitignore` loại data/results/logs/tokenizer assets và runtimes; clone không chứa chúng là bình thường. Cần package/release evidence riêng có hashes khi nhóm muốn đọc lại.
 7. Không đảm bảo “clone + pip là chạy final profile ngay”: cần source/layout qualification, model/tokenizer assets, đúng env và bàn giao historical records khi dùng ReadSaved.
-8. Mọi root commit thay HEAD hiện bị source pin bắt. Khi chuẩn bị commit/release, lập qualification/receipt cập nhật minh bạch, không âm thầm bỏ kiểm.
-9. Preserve audit receipts cũ: [copy receipt](docs/audit/2026-10-16-m2-w7-w8-integration/copy.json), [relocation receipt](M2_week_7_8/integration/relocation.json), các command/JUnit trước đó vẫn là lịch sử đúng snapshot của chúng.
+8. Source pin của bản standalone đã bỏ; golden test V11 và full suite là gate khi đổi code M2. Không cập nhật golden fixtures để test qua.
+9. Preserve audit receipts cũ: [copy receipt](docs/audit/2026-10-16-m2-w7-w8-integration/copy.json) và các command/JUnit trước đó vẫn là lịch sử đúng snapshot của chúng.
 10. Sau mỗi thay đổi, chạy đúng checks bị ảnh hưởng, lưu evidence vào output mới và cập nhật PROGRESS/Task Status với **ngày, profile, scope và phần còn thiếu**.
 
 **Gợi ý bàn giao thực tế:** M1 xác nhận context/gold mapping và producer profile; M2 cung cấp engine/fixtures/V11/evidence; M3 nối adapters MCP/LangChain tới engine đã khóa, giữ root/command guards, logging và provenance. Sau đó một đồng đội dựng env riêng và chạy một case/một workflow có evidence mới trước khi gọi toàn flow tích hợp đã nghiệm thu.
 
-README này hướng dẫn đúng các thành phần hiện có, không thay proposal hoặc tự mở rộng scope implementation. Cách nhanh nhất để hiểu repo là: **Task Status → kiến trúc mục 3 → M2 integration handoff → ReadSaved → self-tests → Run có chủ đích**.
+README này hướng dẫn đúng các thành phần hiện có, không thay proposal hoặc tự mở rộng scope implementation. Cách nhanh nhất để hiểu repo là: **Task Status → kiến trúc mục 3 → mục 4.3 → golden test → `vgar repair --mode fake` → `--mode real` có chủ đích**.
