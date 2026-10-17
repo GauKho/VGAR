@@ -28,10 +28,14 @@ def repair_run(state: VGARState, runtime: Runtime) -> dict:
                      temp_root=Path(state["work_dir"]), keep_workspace=runtime.keep_workspace)
     bundle = run.directory / "evidence_bundle.json"
     status = run.record["status"]
+    reason = None if status == "PASS" else run.record.get("reason") or status
+    detail = (run.record.get("error_detail") or {}).get("message")
+    if status == "ERROR" and detail:
+        reason = f"{reason}: {detail}"  # the bare code alone does not say what went wrong
     return {
         "attempts": 1,
         "run_record_path": str(run.path),
         "evidence": json.loads(bundle.read_text(encoding="utf-8")) if bundle.is_file() else {},
         "repair_status": status,
-        "failure_reason": None if status == "PASS" else run.record.get("reason") or status,
+        "failure_reason": reason,
     }

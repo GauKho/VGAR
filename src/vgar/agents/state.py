@@ -15,7 +15,7 @@ class VGARState(TypedDict, total=False):
     repo_path: str
 
     # ---------------------------------------------------------
-    # Sandbox (created by prepare_workspace)
+    # Sandbox (work_dir owned by run_task; source_hash_before checked by finalize)
     # ---------------------------------------------------------
 
     work_dir: str

@@ -38,7 +38,9 @@ def test_solve_untrusted_task_fails_without_touching_source(tmp_path):
                 bundle_directory=str(REPO / "examples/m2/handoffs/single_file_login"))
     (tmp_path / "task.json").write_text(json.dumps(task), encoding="utf-8")
     state = asyncio.run(run_task(task_path=tmp_path / "task.json", runtime=Runtime(output_root=tmp_path / "runs")))
-    assert state["status"] == "FAILED" and state["failure_reason"]
+    assert state["status"] == "FAILED"
+    assert state["failure_reason"].startswith("INTERNAL_ERROR: ")
+    assert "approved fixtures" in state["failure_reason"]
     assert (tmp_path / "src/auth.py").read_bytes() == before
 
 

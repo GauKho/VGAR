@@ -4,11 +4,13 @@
     vgar tools                       # spawn MCP servers, list tools
     vgar index REPO --db graph.db    # build graph snapshot
     vgar run "Fix ..." --repo REPO --selector tests/test_x.py::test_y
-    vgar solve "Fix ..." --repo REPO --selector tests/test_x.py::test_y   # workflow with verify/retry
+    vgar repair --task TASK.json --mode fake|real   # one-pass M2 repair, prints run record
+    vgar solve --task TASK.json [--mode fake|real]  # LangGraph workflow around one M2 repair run
     vgar chat --repo REPO            # interactive session on a disposable copy
 
 Agent commands never touch REPO: they index it, copy it to a temp workspace
-and let the agent edit only the copy.
+and let the agent edit only the copy. repair/solve apply the model's diff in
+a private worktree of the task's trusted fixture snapshot.
 """
 from __future__ import annotations
 
