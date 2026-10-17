@@ -3,7 +3,7 @@
 examples/m2/** -text
 configs/m2/** -text
 tests/fixtures/m2/** -text
-src/vgar/repair/prompts/** -text
+src/vgar/agents/prompts/repair_v11.txt -text
 artifacts/m2/** -text
 results/retrieval/** -text
 docs/audit/** -text

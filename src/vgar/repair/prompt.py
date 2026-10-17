@@ -5,7 +5,8 @@ from pathlib import Path
 
 from vgar.repair.evidence import digest
 
-PROMPTS = Path(__file__).resolve().parent / 'prompts'
+# Prompt templates live with the agent prompts (src/vgar/agents/prompts) so every model prompt is in one place.
+PROMPTS = Path(__file__).resolve().parents[1] / 'agents' / 'prompts'
 
 
 @dataclass

@@ -140,7 +140,7 @@ def start_session(task, policy, mode, output_root, *, profile=None, temp_root=No
     run.save()
     run.record['source_fingerprint'] = {
         p.relative_to(REPO_ROOT).as_posix(): digest(p.read_bytes())
-        for folder in ('src/vgar/repair', 'src/vgar/models', 'src/vgar/contracts', 'configs/m2')
+        for folder in ('src/vgar/repair', 'src/vgar/models', 'src/vgar/contracts', 'src/vgar/agents/prompts', 'configs/m2')
         for p in sorted((REPO_ROOT/folder).rglob('*'))
         if p.is_file() and '__pycache__' not in p.parts and p.suffix in ('.py', '.txt', '.json', '.ini', '.toml')}
     run.save()
