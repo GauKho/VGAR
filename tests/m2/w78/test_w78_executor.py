@@ -38,3 +38,21 @@ def test_descendant_cannot_survive_completed_parent(tmp_path):
     time.sleep(1.3)
     assert not marker.exists(), 'Child escaped owned job after its parent exited'
 
+
+
+
+def test_child_does_not_inherit_stdin(tmp_path):
+    # An MCP stdio server's stdin is a pipe that stays open; a child inheriting it hung on Windows
+    # (git init timed out inside repair_get_task_context). Children must get an empty stdin.
+    import os
+    read_end, write_end = os.pipe()
+    saved = os.dup(0)
+    os.dup2(read_end, 0)
+    try:
+        result = m_executor.run_bounded((sys.executable, '-c', 'import sys; print(repr(sys.stdin.read()))'), tmp_path, 5)
+    finally:
+        os.dup2(saved, 0)
+        for fd in (saved, read_end, write_end):
+            os.close(fd)
+    assert result['status'] == 'PASS', result
+    assert result['stdout'].strip() == "''"

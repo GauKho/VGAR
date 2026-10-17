@@ -90,7 +90,7 @@ def run_bounded(argv: tuple[str, ...], cwd: Path, timeout_seconds: float,
         with tempfile.TemporaryDirectory(prefix='m2-output-') as folder:
             outpath, errpath = Path(folder) / 'stdout.bin', Path(folder) / 'stderr.bin'
             with outpath.open('wb') as out, errpath.open('wb') as err:
-                process = subprocess.Popen(argv, cwd=cwd, stdout=out, stderr=err,
+                process = subprocess.Popen(argv, cwd=cwd, stdin=subprocess.DEVNULL, stdout=out, stderr=err,
                     env=clean_environment(environment), shell=False,
                     creationflags=(subprocess.CREATE_NEW_PROCESS_GROUP | 0x4) if os.name == 'nt' else 0,
                     start_new_session=os.name != 'nt')
