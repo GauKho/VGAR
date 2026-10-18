@@ -26,6 +26,7 @@ class SequenceAgent(BaseChatModel):
     """Calls the given tools in order (one per turn), then stops; `raise_at` makes turn N raise."""
     steps: list[Any]
     raise_at: int | None = None
+    usage: dict[str, int] | None = None
 
     @property
     def _llm_type(self) -> str:
@@ -43,7 +44,8 @@ class SequenceAgent(BaseChatModel):
         step = self.steps[turn]
         name, args = (step, {}) if isinstance(step, str) else step
         call = {"name": name, "args": args, "id": f"call_{turn}"}
-        return ChatResult(generations=[ChatGeneration(message=AIMessage(content="", tool_calls=[call]))])
+        message = AIMessage(content="", tool_calls=[call], usage_metadata=self.usage)
+        return ChatResult(generations=[ChatGeneration(message=message)])
 
 
 def solve(tmp_path, task=TASK, **kwargs):
@@ -209,3 +211,20 @@ def test_tool_call_limit_ends_the_agent_before_the_recursion_limit(tmp_path):
     assert len(calls(trace, "agent")) == 15
     assert result["status"] == "FAILED" and "Recursion" not in result["failure_reason"]
     assert trace["calls"][-1]["by"] == "host" and trace["calls"][-1]["tool"] == "verify_patch"
+
+
+def test_trace_records_latency_and_tokens_of_each_model_turn(tmp_path):
+    usage = {"input_tokens": 100, "output_tokens": 7, "total_tokens": 107}
+    result = solve(tmp_path, model=SequenceAgent(steps=["get_task_context", "verify_patch"], usage=usage))
+    turns = trace_of(result)["model_calls"]
+    assert [t["turn"] for t in turns] == [1, 2, 3] and all(t["status"] == "PASS" for t in turns)
+    assert all(isinstance(t["duration_ms"], int) and t["duration_ms"] >= 0 for t in turns)
+    assert [t["tool_calls"] for t in turns] == [["get_task_context"], ["verify_patch"], []]
+    assert (turns[0]["input_tokens"], turns[0]["output_tokens"]) == (100, 7)
+    assert turns[2]["input_tokens"] is None  # the final answer of SequenceAgent carries no usage
+
+
+def test_trace_records_a_model_turn_that_raised(tmp_path):
+    result = solve(tmp_path, model=SequenceAgent(steps=["get_task_context"], raise_at=1))
+    turns = trace_of(result)["model_calls"]
+    assert [t["status"] for t in turns] == ["PASS", "ERROR"] and turns[1]["tool_calls"] == []

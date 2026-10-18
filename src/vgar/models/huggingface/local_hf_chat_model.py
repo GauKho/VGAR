@@ -122,6 +122,15 @@ class LocalChatModel(BaseChatModel):
             raw_output
         )
 
+        # The pipeline returns text only, so the output count re-tokenizes it.
+        input_tokens = len(self.tokenizer.encode(prompt, add_special_tokens=False))
+        output_tokens = len(self.tokenizer.encode(raw_output, add_special_tokens=False))
+        message.usage_metadata = {
+            "input_tokens": input_tokens,
+            "output_tokens": output_tokens,
+            "total_tokens": input_tokens + output_tokens,
+        }
+
         return ChatResult(
             generations=[
                 ChatGeneration(

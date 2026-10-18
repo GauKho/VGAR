@@ -116,3 +116,20 @@ def test_unpinned_profile_is_refused_before_loading_or_generating(change, monkey
         load_pinned_agent_model(profile, 512)
     with pytest.raises(ValueError, match="pinned"):
         AgentModelGenerator(fake_model()[0], profile, POLICY)
+
+
+def test_local_chat_model_reports_token_usage():
+    from langchain_core.messages import HumanMessage
+    from vgar.models.huggingface.local_hf_chat_model import LocalChatModel
+
+    class Tokenizer:
+        def apply_chat_template(self, messages, **kwargs):
+            return "<|im_start|>user hi<|im_end|>"
+
+        def encode(self, text, add_special_tokens=False):
+            return text.split()
+
+    llm = SimpleNamespace(invoke=lambda prompt, **kwargs: 'ok <tool_call>{"name": "x", "arguments": {}}</tool_call>')
+    model = LocalChatModel.model_construct(llm=llm, tokenizer=Tokenizer(), model_name="m", bound_tools=[], revision=None)
+    message = model._generate([HumanMessage("hi")]).generations[0].message
+    assert message.usage_metadata == {"input_tokens": 2, "output_tokens": 5, "total_tokens": 7}

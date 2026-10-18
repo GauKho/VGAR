@@ -14,6 +14,7 @@ from pathlib import Path
 import time
 from typing import Any
 
+from langchain_core.callbacks import BaseCallbackHandler
 from langchain_core.language_models.chat_models import BaseChatModel
 from langchain_core.messages import BaseMessage
 from langchain_core.tools import BaseTool, StructuredTool
@@ -266,6 +267,31 @@ def default_agent_model(runtime: Runtime, profile) -> BaseChatModel:
     return load_pinned_agent_model(profile, runtime.base_settings().model.max_new_tokens)
 
 
+class ModelTurns(BaseCallbackHandler):
+    """Latency and token usage of each agent model call, in call order."""
+    run_inline = True
+
+    def __init__(self):
+        self.calls: list[dict[str, Any]] = []
+        self.started: dict[Any, float] = {}
+
+    def on_chat_model_start(self, serialized, messages, *, run_id, **kwargs) -> None:
+        self.started[run_id] = time.monotonic()
+
+    def _record(self, run_id, status: str, message: BaseMessage | None) -> None:
+        usage = getattr(message, "usage_metadata", None) or {}
+        self.calls.append({"turn": len(self.calls) + 1, "status": status,
+                           "duration_ms": round((time.monotonic() - self.started.pop(run_id)) * 1000),
+                           "input_tokens": usage.get("input_tokens"), "output_tokens": usage.get("output_tokens"),
+                           "tool_calls": [call["name"] for call in getattr(message, "tool_calls", None) or []]})
+
+    def on_llm_end(self, response, *, run_id, **kwargs) -> None:
+        self._record(run_id, "PASS", response.generations[0][0].message)
+
+    def on_llm_error(self, error, *, run_id, **kwargs) -> None:
+        self._record(run_id, "ERROR", None)
+
+
 def _message(message: BaseMessage) -> dict[str, Any]:
     content = message.content if isinstance(message.content, str) else json.dumps(message.content, default=str)
     return {"type": message.type, "name": getattr(message, "name", None), "content": content,
@@ -273,7 +299,7 @@ def _message(message: BaseMessage) -> dict[str, Any]:
 
 
 def _write_trace(host: AgentRepairHost, runtime: Runtime, duration_ms: int, messages: list[BaseMessage],
-                 result: dict[str, Any]) -> Path:
+                 model_calls: list[dict[str, Any]], result: dict[str, Any]) -> Path:
     runs = []
     for run in host.runs:
         record = json.loads((Path(run["run_dir"]) / "run_record.json").read_text(encoding="utf-8"))
@@ -283,7 +309,7 @@ def _write_trace(host: AgentRepairHost, runtime: Runtime, duration_ms: int, mess
     path = Path(runtime.output_root) / "agent-traces" / f"{stamp}-{host.task.task_id}.json"
     path.parent.mkdir(parents=True, exist_ok=True)
     trace = {"task_id": host.task.task_id, "mode": runtime.mode, "generator": generator_path(host.generator),
-             "duration_ms": duration_ms, "calls": host.trace, "runs": runs,
+             "duration_ms": duration_ms, "calls": host.trace, "model_calls": model_calls, "runs": runs,
              "messages": [_message(m) for m in messages], "result": result}
     path.write_text(json.dumps(trace, indent=2, default=str), encoding="utf-8")
     return path
@@ -333,16 +359,17 @@ async def run_agent_task(*, task_path: Path, runtime: Runtime, model: BaseChatMo
                              middleware=[ToolCallLimitMiddleware(run_limit=MAX_TOOL_CALLS, exit_behavior="end")])
         request = {"messages": [HumanMessage(f"Repair task {task.task_id}. Start with get_task_context.")]}
         messages: list[BaseMessage] = []
-        error = None
+        turns, error = ModelTurns(), None
+        config = {"recursion_limit": RECURSION_LIMIT, "callbacks": [turns]}
         try:
-            async for state in agent.astream(request, config={"recursion_limit": RECURSION_LIMIT}, stream_mode="values"):
+            async for state in agent.astream(request, config=config, stream_mode="values"):
                 messages = state["messages"]
         except Exception as exc:  # recursion limit, unparseable model output: the host still closes the run
             error = f"{type(exc).__name__}: {exc}"
         await host.close()
         result = _result(host, error, fingerprint_source(task.source_repo) == source_before)
         duration_ms = round((time.perf_counter() - started) * 1000)
-        result["trace_path"] = str(_write_trace(host, runtime, duration_ms, messages, result))
+        result["trace_path"] = str(_write_trace(host, runtime, duration_ms, messages, turns.calls, result))
         return result
     finally:
         cleanup_work_dir(work_dir, runtime.keep_workspace)
