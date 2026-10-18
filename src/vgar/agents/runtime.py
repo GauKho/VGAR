@@ -33,6 +33,7 @@ class Runtime:
     config_path: Path = CONFIG_DIR / "demo.json"
     output_root: Path = REPO_ROOT / "results/solve"
     generator: Any = None  # test override for the generator build_generation selects
+    generator_choice: Literal["worker", "agent"] = "worker"  # solve --agent: M2 worker or the agent's own model
     tools: dict[str, Any] | None = None  # MCP repair tools, built once per runtime
 
     def base_settings(self) -> Settings:

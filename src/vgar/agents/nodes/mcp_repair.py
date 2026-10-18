@@ -39,26 +39,40 @@ async def retrieve(state: VGARState, runtime: Runtime) -> dict:
             "failure_reason": _reason(result)}
 
 
+def run_generation(generator, prompt: dict[str, Any], mode: str, profile, policy) -> tuple[str, dict[str, Any]]:
+    """One V11 generation -> (diff text, generation meta for apply_patch); failures become ERROR meta."""
+    from vgar.repair.executor import utc_now
+    from vgar.repair.prompt import PromptArtifact
+
+    started_utc, start = utc_now(), time.monotonic()
+    try:
+        generated = generator.generate(PromptArtifact(**prompt), profile if mode == "real" else None,
+                                       policy.generation_timeout)
+    except Exception as exc:  # recorded by apply_patch as a failed generation, then verify rejects
+        generated = {"status": "ERROR", "reason": f"{type(exc).__name__}: {exc}", "raw_text": "", "truncated": False}
+    meta = {k: v for k, v in generated.items() if k != "raw_text"}
+    meta.update(started_utc=started_utc, duration_ms=round((time.monotonic() - start) * 1000))
+    return generated.get("raw_text") or "", meta
+
+
 @instrument_node("generate")
 async def generate(state: VGARState, runtime: Runtime) -> dict:
     """The only model call: the V11 prompt returned by retrieve -> unified diff text."""
     from vgar.repair.config import load_config, load_task
     from vgar.repair.executor import utc_now
     from vgar.repair.pipeline import build_generation
-    from vgar.repair.prompt import PromptArtifact
 
     started_utc, start = utc_now(), time.monotonic()
     try:
         policy, profile = load_config(runtime.config_path)
         generator = runtime.generator or build_generation(
             runtime.mode, load_task(state["task_path"]), policy, profile, runtime.output_root)[0]
-        generated = generator.generate(PromptArtifact(**state["prompt"]), profile if runtime.mode == "real" else None,
-                                       policy.generation_timeout)
     except Exception as exc:  # recorded by apply_patch as a failed generation, then verify rejects
-        generated = {"status": "ERROR", "reason": f"{type(exc).__name__}: {exc}", "raw_text": "", "truncated": False}
-    meta = {k: v for k, v in generated.items() if k != "raw_text"}
-    meta.update(started_utc=started_utc, duration_ms=round((time.monotonic() - start) * 1000))
-    return {"attempts": 1, "diff": generated.get("raw_text") or "", "generation": meta}
+        meta = {"status": "ERROR", "reason": f"{type(exc).__name__}: {exc}", "truncated": False,
+                "started_utc": started_utc, "duration_ms": round((time.monotonic() - start) * 1000)}
+        return {"attempts": 1, "diff": "", "generation": meta}
+    diff, meta = run_generation(generator, state["prompt"], runtime.mode, profile, policy)
+    return {"attempts": 1, "diff": diff, "generation": meta}
 
 
 @instrument_node("apply")
