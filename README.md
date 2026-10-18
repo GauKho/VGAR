@@ -402,9 +402,13 @@ Pipeline M2 tuần 7–8 (prompt V11 → unified diff → worktree riêng → py
 .\.venv\Scripts\python.exe -m vgar.cli repair --task examples/m2/tasks/single_file_login.json --mode real
 # LangGraph + MCP: retrieve/apply/test/verify là tool call tới server repair; một generation, chưa có vòng thử lại.
 .\.venv\Scripts\python.exe -m vgar.cli solve --task examples/m2/tasks/single_file_login.json --mode fake
+# Agent tự chọn tool (get_task_context/generate_patch/apply_patch/run_relevant_tests/verify_patch); diff vẫn do bộ sinh V11 tạo.
+# Fake: lần sinh 1 cố ý hỏng, lần 2 sinh lại kèm feedback và PASS. Real: --generator worker (mặc định, worker M2) hoặc agent (chính model của agent).
+.\.venv\Scripts\python.exe -m vgar.cli solve --task examples/m2/tasks/single_file_login.json --mode fake --agent
+.\.venv\Scripts\python.exe -m vgar.cli solve --task examples/m2/tasks/single_file_login.json --mode real --agent --generator worker
 ```
 
-`vgar repair` in đường dẫn `run_record.json` và trả exit code 0/1/2 cho PASS/FAIL/ERROR. Chỉ chạy native trên fixture đã khớp byte trong `configs/m2/trusted_fixtures.json`. `vgar solve` in `[status] COMPLETED|FAILED`, đường dẫn run và `[reason]` khi fail.
+`vgar repair` in đường dẫn `run_record.json` và trả exit code 0/1/2 cho PASS/FAIL/ERROR. Chỉ chạy native trên fixture đã khớp byte trong `configs/m2/trusted_fixtures.json`. `vgar solve` in `[status] COMPLETED|FAILED`, đường dẫn run và `[reason]` khi fail. Với `--agent`, mỗi lần thử là một run riêng (`supersedes_run_id`), tối đa 3 lần sinh; `[trace]` trỏ tới `<output-root>/agent-traces/<thời điểm>-<task>.json` (thứ tự tool call, agent hay host gọi, các run). `--output-root` mặc định `results/solve`.
 
 ### 7.1. Trình tự khuyến nghị
 
@@ -650,6 +654,7 @@ Thứ tự Settings: environment thật > `.env` > defaults; `get_settings` có 
 - `vgar run "ISSUE" --repo REPO --selector tests`: gọi agent trên disposable copy và independent pytest theo selector.
 - `vgar repair --task TASK.json --mode fake|real`: một lượt pipeline M2; in `run_record.json`, exit 0/1/2.
 - `vgar solve --task TASK.json [--mode fake|real]`: LangGraph gọi bốn tool `repair_*` qua MCP, **một** generation; chưa có retry.
+- `vgar solve --task TASK.json --agent [--generator worker|agent]`: agent tự chọn tool và có thể sinh lại kèm feedback (tối đa 3 lần); kết quả lấy từ `verify_patch` của run cuối.
 - `vgar chat --repo REPO`: tương tác; không thay quy trình nghiệm thu có canonical gates.
 - `--keep` giữ temporary folder để xem, có thể chiếm đĩa.
 - Khi chưa đăng ký console CLI, dùng `& $vgarPython -m vgar.cli ...`.

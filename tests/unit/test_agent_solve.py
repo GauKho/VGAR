@@ -185,3 +185,18 @@ def test_mcp_transport_error_is_text_and_run_is_closed(tmp_path, monkeypatch):
     assert all(reply.startswith("STATUS: ERROR") for reply in replies(trace, "apply_patch"))
     assert result["status"] == "FAILED"
     assert all(r["mcp_calls"][-1]["tool"] == "verify_patch" for r in records(trace))
+
+
+def test_cli_solve_agent_fake_exits_zero(tmp_path, capsys):
+    from vgar.cli import main
+    assert main(["solve", "--task", str(TASK), "--agent", "--output-root", str(tmp_path / "runs")]) == 0
+    out = capsys.readouterr().out
+    assert "[status] COMPLETED" in out and "[trace]" in out
+    assert list((tmp_path / "runs/agent-traces").glob("*.json"))
+
+
+def test_cli_generator_requires_agent(capsys):
+    from vgar.cli import main
+    with pytest.raises(SystemExit):
+        main(["solve", "--task", str(TASK), "--generator", "agent"])
+    assert "--generator requires --agent" in capsys.readouterr().err

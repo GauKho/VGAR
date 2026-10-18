@@ -6,6 +6,7 @@
     vgar run "Fix ..." --repo REPO --selector tests/test_x.py::test_y
     vgar repair --task TASK.json --mode fake|real   # one-pass M2 repair, prints run record
     vgar solve --task TASK.json [--mode fake|real]  # LangGraph flow calling the MCP repair server
+    vgar solve --task TASK.json --agent [--generator worker|agent]  # the agent chooses the repair tools
     vgar chat --repo REPO            # interactive session on a disposable copy
 
 Agent commands never touch REPO: they index it, copy it to a temp workspace
@@ -319,13 +320,16 @@ async def cmd_solve(args: argparse.Namespace) -> int:
     from vgar.agents.runtime import Runtime
     from vgar.agents.workflow import run_task
 
+    if args.agent:
+        return await cmd_solve_agent(args)
     run_id = new_run_id()
     with phase(
         "solve_workflow",
         run_id,
         {"task": str(Path(args.task).resolve()), "mode": args.mode, "keep_workspace": args.keep},
     ) as log_output:
-        state = await run_task(task_path=args.task, runtime=Runtime(mode=args.mode, keep_workspace=args.keep))
+        state = await run_task(task_path=args.task, runtime=Runtime(mode=args.mode, keep_workspace=args.keep,
+                                                                    output_root=args.output_root))
         log_output({
             "status": state.get("status"),
             "attempts": state.get("attempts", 0),
@@ -338,6 +342,22 @@ async def cmd_solve(args: argparse.Namespace) -> int:
     if state.get("failure_reason"):
         print(f"[reason] {state['failure_reason']}")
     return 0 if state["status"] == "COMPLETED" else 1
+
+
+async def cmd_solve_agent(args: argparse.Namespace) -> int:
+    """Agent mode: the agent chooses the repair tools; diffs still come from the V11 generator."""
+    from vgar.agents.runtime import Runtime
+    from vgar.agents.tool_agent import run_agent_task
+
+    runtime = Runtime(mode=args.mode, keep_workspace=args.keep, output_root=args.output_root,
+                      generator_choice=args.generator or "worker")
+    result = await run_agent_task(task_path=args.task, runtime=runtime)
+    print(f"[status] {result['status']} after {result['attempts']} attempt(s)", flush=True)
+    print(f"[run] {result.get('run_record_path')}", flush=True)
+    print(f"[trace] {result['trace_path']}", flush=True)
+    if result.get("failure_reason"):
+        print(f"[reason] {result['failure_reason']}")
+    return 0 if result["status"] == "COMPLETED" else 1
 
 
 async def cmd_chat(args: argparse.Namespace) -> int:
@@ -393,6 +413,10 @@ def parser() -> argparse.ArgumentParser:
     sv.add_argument("--task", type=Path, required=True)
     sv.add_argument("--mode", choices=("fake", "real"), default="fake")
     sv.add_argument("--keep", action="store_true", help="keep temp dir")
+    sv.add_argument("--output-root", type=Path, default=REPO_ROOT / "results/solve")
+    sv.add_argument("--agent", action="store_true", help="let the agent choose the repair tools")
+    sv.add_argument("--generator", choices=("worker", "agent"),
+                    help="with --agent: diff from the M2 worker (default) or the agent's own model")
     sv.set_defaults(fn=cmd_solve)
 
     for name, fn in (("run", cmd_run), ("chat", cmd_chat)):
@@ -409,7 +433,10 @@ def parser() -> argparse.ArgumentParser:
 def main(argv: list[str] | None = None) -> int:
     if hasattr(sys.stdout, "reconfigure"):
         sys.stdout.reconfigure(encoding="utf-8", errors="replace")
-    args = parser().parse_args(argv)
+    p = parser()
+    args = p.parse_args(argv)
+    if args.command == "solve" and args.generator and not args.agent:
+        p.error("--generator requires --agent")
     return asyncio.run(args.fn(args))
 
 
