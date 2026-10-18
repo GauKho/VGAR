@@ -1,6 +1,6 @@
 # Task Status — VGAR sau tích hợp M1 và M2 tuần 7–8
 
-**Audit nền:** 13/10/2026. **Cập nhật trạng thái:** 16/10/2026, múi giờ Asia/Saigon.
+**Audit nền:** 13/10/2026. **Cập nhật trạng thái:** 16/10/2026; tuần 7–8 cập nhật 18/10/2026, múi giờ Asia/Saigon.
 **Repository:** `D:\Project\CAPSTONES\VGAR`.
 **Căn cứ chính:** `D:\Project\CAPSTONES\New_task\project_plan_16_weeks.md`.
 
@@ -11,6 +11,28 @@
 > **Chưa nối M2 mới vào MCP/LangChain của M3, chưa chạy ba real generations mới
 > dưới layout r002-vgar-i001**. Full VGAR còn1 lỗi HF cũ (571PASS/2SKIP/1FAIL).
 > Không đồng nhất hoàn thành M2 với hoàn thành toàn tuần7–8/toàn hệ thống.
+
+### Phạm vi cập nhật ngày 18/10/2026 (M3 tuần 7–8)
+
+> **Kết luận tuần 7–8 sau cập nhật này:** M2 mới đã được nối vào MCP/LangChain của
+> M3. `vgar solve` gọi server MCP `repair` (`repair_get_task_context/apply_patch/
+> run_relevant_tests/verify_patch`) trên engine M2 trong `src/vgar/repair`; luồng cố
+> định real A/B/C **3/3 PASS** ngày 17/10, và chế độ `--agent` (agent tự chọn tool,
+> diff vẫn do bộ sinh V11 đơn lượt tạo, sinh lại kèm feedback tối đa 3 lần) real
+> **6/6 PASS** ngày 18/10 (3 task × `--generator worker|agent`), mọi lần đều trùng byte
+> golden V11. Còn mở trong tuần 7–8: **W07-08-M3-04 Draft Methodology (CX)** và
+> **W07-08-M1-02 ranking (MP, thuộc M1)**.
+
+- Chuyển 7 mục tuần 7–8 sang HT: CHUNG-01/02/03, M3-01/02/03, DOD-02; DOD-01 giữ HT và
+  bổ sung căn cứ real mới qua MCP. Phạm vi vẫn là **3 trusted fixtures, Qwen3-4B pinned,
+  Native worktree**; không phải SWE-bench, không phải retrieval sống từ graph (bundle M1
+  đã xuất sẵn; retrieval sống thuộc tuần 9–10).
+- Server `repository`/`execution` legacy (E14) và agent exact-edit `vgar run/chat`
+  **không đổi**; B02, B04, B05, B07, B10, B12 của chúng vẫn mở (xem §6.1.2).
+- Code ở nhánh `feature/m3-w7-w8-repair-loop`, chưa merge và chưa review chéo. Full VGAR
+  sau đợt này **747 PASS, 1 FAIL** (FAIL là B01 cũ). Không đổi trạng thái tuần 1–6 và 9–16.
+- Đường dẫn `M2_week_7_8/...` trong các evidence ngày 15–16/10 bên dưới là lịch sử: thư
+  mục đó đã xóa ngày 17/10, nội dung còn trong git history.
 
 ### Phạm vi cập nhật ngày16/10/2026
 
@@ -143,13 +165,14 @@ task thành viên, nên **không lấy tỷ lệ checkbox làm % tiến độ ho
 | 1–2      |       21 |      6 |      5 |      0 |     10 |
 | 3–4      |       22 |     16 |      5 |      0 |      1 |
 | 5–6      |       20 |     13 |      4 |      1 |      2 |
-| 7–8      |       19 |     10 |      8 |      0 |      1 |
+| 7–8      |       19 |     17 |      1 |      0 |      1 |
 | 9–10     |       20 |      0 |      4 |     14 |      2 |
 | 11–12    |       16 |      1 |      8 |      6 |      1 |
 | 13–14    |       16 |      0 |      6 |      4 |      6 |
 | 15–16    |       16 |      1 |      8 |      0 |      7 |
-| **Tổng** |  **150** | **47** | **48** | **25** | **30** |
+| **Tổng** |  **150** | **54** | **41** | **25** | **30** |
 
+Dòng 7–8 và dòng Tổng đã cập nhật ngày 18/10; các tuần khác giữ số ngày 16/10.
 Các số này là **số dòng checklist được phân loại**, không phải47 features
 độc lập hay % đồ án. Mục HT về README/schema có thể thuộc tuần15–16 dù
 research experiment của tuần ấy chưa chạy. [report-qa.json](docs/audit/2026-10-13/report-qa.json)
@@ -232,6 +255,9 @@ file source bị commit thiếu.
 | Check16/10 | CUDA True/RTX4050, profile/pinsPASS | [receipt](docs/audit/2026-10-16-m2-w7-w8-integration/commands/20261016T070621462828Z-dd0d36d6e606/result.json) | Không load weights/generate |
 | Full VGAR16/10 sau review | **571PASS,2SKIP,1FAIL**,81,14s | [receipt](docs/audit/2026-10-16-m2-w7-w8-integration/commands/20261016T071014208534Z-364e407364e4/result.json), [JUnit](docs/audit/2026-10-16-m2-w7-w8-integration/final-vgar-suite.xml) | FAIL đúng B01 cũ; symlink/Matplotlib skip không phải PASS |
 | Ruff/AST/preservation16/10 | PASS; nguồn M2 độc lập và protected VGAR zero changed/missing | [Ruff](docs/audit/2026-10-16-m2-w7-w8-integration/commands/20261016T071231030790Z-8adba3d79c5c/result.json), [static](docs/audit/2026-10-16-m2-w7-w8-integration/static-checks.json), [preservation](docs/audit/2026-10-16-m2-w7-w8-integration/preservation-20261016T071223180685Z.json) | Snapshot trước đợt cập nhật Task Status này; không sửa receipt cũ |
+| Real A/B/C 17/10 `vgar solve` qua MCP | **3/3 PASS**, trùng byte golden V11; 4 MCP calls/run | E36, README §2.3 | Luồng cố định một generation; trusted fixtures |
+| Real A/B/C 18/10 `vgar solve --agent` | **6/6 PASS** (`--generator worker` và `agent`), 1 run/task, agent tự gọi đủ 5 tool, không host gọi thay | E36 | Nhánh sinh lại chỉ kiểm bằng fake; real chưa gặp lần thất bại nào |
+| Full VGAR 18/10 | **747 PASS, 1 FAIL** | Chạy trong phiên, không lưu receipt | FAIL đúng B01 cũ |
 
 HF M2 dùng `Qwen/Qwen3-4B-Instruct-2507` tại revision
 `cdbee75f17c01a7cc42f958dc650907174af0554`, greedy/FP16/device_map=auto, input6000,
@@ -296,6 +322,14 @@ kết luận package mới `M2_week_7_8/src/vgar_m2_w78/` chưa có parser/verif
 | E31 | [integration report](docs/handoff/M2_W7_W8_INTEGRATION_2026-10-16.md), [launcher](run_m2_abc.ps1), [relocation receipt](M2_week_7_8/integration/relocation.json) | Bản nhúng đầy đủ; r002-vgar-i001; chưaMCP, chưafresh real generation trênlayout mới |
 | E32 | [236 core tests](M2_week_7_8/results/integration-qualification/final-core-suite/20261016T070502676971Z-3cde4ebc98db/run_record.json), [integration7](docs/audit/2026-10-16-m2-w7-w8-integration/commands/20261016T071003225820Z-424ac56f6133/result.json), [full VGAR](docs/audit/2026-10-16-m2-w7-w8-integration/commands/20261016T071014208534Z-364e407364e4/result.json) | Suites riêng, không cộng số; VGAR còn B01 |
 | E33 | [W5–6 report](docs/handoff/m2-w5-w6/COMPLETION_REPORT.md), [comparison table](results/retrieval/20261013T125307312086Z-6d6b0b52b105/REPORT.md), [acceptance](artifacts/m2/w5-w6/final-verification/20261013T125343095888Z-13d9f9501ba3/result.json) | Dev25 source profile13/10,22valid pairs,3SymPytimeouts; owner review còn pending; không gán metrics thành profile HEAD14/10 |
+
+### Evidence bổ sung ngày 18/10
+
+| Mã | File/thư mục | Vai trò và giới hạn |
+|---|---|---|
+| E34 | [repair_server.py](src/vgar/mcp/servers/repair_server.py), [workflow.py](src/vgar/agents/workflow.py), [mcp_repair.py](src/vgar/agents/nodes/mcp_repair.py), [server tests](tests/m2/w78/test_w78_repair_server.py), [workflow tests](tests/unit/test_workflow.py), [spec](docs/superpowers/specs/2026-10-17-m3-w7-w8-mcp-repair-loop-design.md) | Server MCP `repair`: 4 tool trên engine M2, thứ tự chặt, state trong run_dir, mọi call ghi `run_record.mcp_calls` (tool, input_sha256, thời điểm, duration_ms, status); verify luôn đóng run và dọn worktree. Có test đúng/sai thứ tự, gọi 2 lần, run_dir lạ, task không tin cậy |
+| E35 | [tool_agent.py](src/vgar/agents/tool_agent.py), [feedback.py](src/vgar/agents/feedback.py), [fakes.py](src/vgar/agents/fakes.py), [agent_generator.py](src/vgar/agents/agent_generator.py), [repair_agent.md](src/vgar/agents/prompts/repair_agent.md), [tests](tests/unit/test_agent_solve.py), [spec](docs/superpowers/specs/2026-10-18-m3-w7-w8-agent-tool-choice-design.md) | `solve --agent`: 5 tool không tham số, host giữ diff/run, mỗi lần thử là một run mới (`supersedes_run_id`, feedback do host tạo). Trace `<output-root>/agent-traces/` ghi từng tool call (agent hay host gọi, status, duration), từng lượt model (latency, token vào/ra), các run và tin nhắn. Fake A/B/C kiểm nhánh sinh lại; có test cho hết lượt, dừng sớm, sai thứ tự, exception, lỗi transport |
+| E36 | `results/solve/` (local, bị `.gitignore`), [README §2.3](README.md) | Real 17/10 (luồng cố định) và 18/10 (agent, 6 trace trong `results/solve/agent-traces/`); thời gian sinh và tổng từng task ở README. Không phải benchmark |
 
 ## 5. Trạng thái từng task theo 16 tuần
 
@@ -387,12 +421,14 @@ Mỗi dòng có ID duy nhất đối chiếu được với số dòng plan tron
 acceptance V11/r002 đã lưu và bản nhúng offline-qualified. Không phải sửa repo
 bất kỳ, official SWE-bench hay MCP/LangChain end-to-end. Các mục chung/M3 giữMP
 khi thiếu wiring/security của luồng integrated agent; không bắt M2 làm lại core.
+**Cập nhật 18/10:** các mục chung/M3 dưới đây đánh giá theo luồng integrated `vgar solve`
+(E34–E36), cùng phạm vi trusted fixtures.
 
 | ID              | Task                                                     | Trạng thái | Đã có / thiếu / nguyên nhân                                                                                            | Giải pháp để đóng task                                                                                                  |
 | --------------- | -------------------------------------------------------- | ---------- | ---------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
-| W07-08-CHUNG-01 | Agent sinh unified diff từ issue + context | **MP** | M2 E24–E30 đã validate M1 context, model sinh raw diff và verify3realcases; agent legacy E15 vẫn exact-edit, chưa gọi pipeline mới. | M3 nối mandatory retrieval/consumer và diff-output vào LangChain; không viết lại M2 hoặc dùng scripted smoke thay real repair. |
-| W07-08-CHUNG-02 | Apply trong worktree | **MP** | M2 E27 đã có private seed/worktree/lease, whole-patch preflight/apply/attestation; root MCP E14 chưa delegate và B04 còn hở. | Đóng lease/ownership tại MCP và giữ cùng workspace xuyên tool calls; phần M2 trusted-fixture đã HT. |
-| W07-08-CHUNG-03 | Tests/type/lint evidence | **MP** | M2 E28–E30 có actual baseline/post/collection/pytest/mypy/Ruff và bundle; legacy verify.py vẫn NOT_RUN cho type/lint. | M3 dùng M2 verification/evidence trong integrated flow; không đổi NOT_RUN của agent cũ thành PASS. |
+| W07-08-CHUNG-01 | Agent sinh unified diff từ issue + context | **HT** | E34–E36: `vgar solve` (LangGraph) và `solve --agent` (LangChain agent) lấy context M1 qua MCP, sinh diff V11 và đưa qua parser M2; real 3/3 (17/10) và 6/6 (18/10), trùng byte golden. | Context là bundle M1 đã xuất sẵn; retrieval sống từ graph thuộc tuần 9–10. Agent không tự viết diff (quyết định sau spike). |
+| W07-08-CHUNG-02 | Apply trong worktree | **HT** | E34: `repair_apply_patch` dùng lease/worktree M2 của run; một apply mỗi run, worktree giữ xuyên các tool call của run và được dọn ở verify, kể cả khi agent dừng sớm, exception hay lỗi transport (E35 tests). | Áp dụng cho luồng integrated qua server `repair`; server `repository` legacy (E14) và B04 vẫn mở. |
+| W07-08-CHUNG-03 | Tests/type/lint evidence | **HT** | E34: `repair_run_relevant_tests`/`repair_verify_patch` chạy verification M2 (required/regression tests, syntax/mypy/Ruff) và trả evidence bundle; 9 lần real đều ACCEPT. | API/structural vẫn NOT_RUN, thuộc tuần 11–12; legacy verify.py không đổi. |
 | W07-08-M1-01 | Payload snippets/IDs/paths/metadata/relevance, versioned | **HT** | E24 consumer/DTO/sidecars validate identity/source/ranges/token counts; M2 đã dùng bundles trong3realrepairs. | Giữ M1 payload unchanged; M2 kiểm full-chat budget riêng; wrapper version không phải public schema_version. |
 | W07-08-M1-02 | Cải thiện ranking trên dev, ghi heuristic/tuning | **MP** | E06 có v10/heuristics; M1 handoff14/10 không nghiệm thu ranking improvement, M2 fixturePASS không chứng minh retrieval tốt hơn. | Giữ frozen dev protocol; cần raw paired before/after report, không tự đánh HT từ434/236unit tests. |
 | W07-08-M1-03 | Test-to-function links nếu suy ra được | **HT** | E24 direct/caller routes/limits/fallback; E28 tiêu thụ actual changed paths, collection thật và fallback cho caseC. | Static links không phải coverage; giữ required failing selectors và runtime collection/regression. |
@@ -403,12 +439,12 @@ khi thiếu wiring/security của luồng integrated agent; không bắt M2 làm
 | W07-08-M2-05 | Relevant-test selection cơ bản | **HT** | E24/E28 hints từ actual changed paths trên snapshot trước patch, required selectors, actual collection/full-fixture regression; caseC fallback chạy thật. | Đã đạt fixture scope tests; hints không phải measured coverage, chưa mở rộng sang repo ngoài. |
 | W07-08-M2-06 | Chạy pytest + typecheck + lint | **HT** | E28/E30 requiredFAIL→PASS, regressionPASS, syntax/mypy/RuffPASS; command/stdout/stderr/exit/time đầy đủ; E32 fullM2=236PASS. | Không cộng số tests giữa suites; API/structural checks vẫn NOT_RUN, thuộc tuần sau; fullVGAR còn B01. |
 | W07-08-M2-07 | Bundle patch/failing/relevant/type/lint | **HT** | E29/E30 canonical+EvidenceBundle có applied patch, baseline failing IDs/post outcomes, selection/collection/regression, type/lint, hashes/config/tokens/tracebacks/time. | Đã có durable artifacts ngoài worktree/hash binding; M3 cần trả run/artifact refs. Chưa phải actual MCP logs. |
-| W07-08-M3-01 | MCP apply_patch/run_relevant_tests/verify_patch | **MP** | Legacy E14 có exact-edit/run_pytest; M2 E27–E29 đã bàn giao nhưng chưa MCP adapters gọi đúng pipeline/lease/baseline. | Bọc shared M2 services, chốt lifecycle/ownership/public envelopes; actual MCP positive/negative tests. |
-| W07-08-M3-02 | Loop retrieve→generate→patch→verify | **MP** | M2 standalone E29/E31 đã one-pass issue/context/diff/worktree/evidence; LangChain workflow E15 chưa dùng flow này. | Nối M1→M2 qua M3, giữ identity/baseline/worktree; chạy integrated smoke riêng, không lấy package copy làm MCP E2E. |
-| W07-08-M3-03 | Prompt/model config/calls/latency/token usage logs | **MP** | M2 E26/E29 có prompt/model hashes, token/time/config/mask và commands; mcp_calls rỗng, chưa đầy đủ logging integrated agent. | M3 nối actual tool names/args/results/durations với canonical run_id/usage; không gán standalone logs thành MCP calls. |
+| W07-08-M3-01 | MCP apply_patch/run_relevant_tests/verify_patch | **HT** | E34: server `repair` có 4 tool (thêm `get_task_context`) bọc engine M2, lifecycle chặt, lỗi trả envelope `status/reason/detail`; test MCP đúng/sai thứ tự và real qua stdio. Từ 18/10 `get_task_context` nhận feedback để mở run sinh lại. | Chỉ trusted fixtures; chưa auth/rate limit (tuần 11–12). |
+| W07-08-M3-02 | Loop retrieve→generate→patch→verify | **HT** | E34: LangGraph initialize→retrieve→generate→apply→test→verify, real 3/3. E35: agent tự chọn tool và có thể sinh lại kèm feedback (tối đa 3 lần), real 6/6. | Nhánh sinh lại với model thật chưa được kích hoạt (real không thất bại lần nào). |
+| W07-08-M3-03 | Prompt/model config/calls/latency/token usage logs | **HT** | `run_record`: prompt version/template hash/prompt hash, model id/revision/dtype, policy caps, `mcp_calls` với duration_ms, token vào/ra của generation. E35 trace: tool calls (agent/host), latency từng call, latency và token từng lượt agent. | Token ra của lượt agent đếm bằng tokenize lại text (pipeline chỉ trả text). Token/latency theo lượt agent thêm sau real 18/10, mới kiểm bằng test; chưa có real trace chứa `model_calls`. |
 | W07-08-M3-04 | Draft Methodology overview/graph/retrieval | **CX** | Có technical/handoff docs E19/E24 và báo cáo M2; chưa nhận paper draft Methodology đã đối chiếu/chốt. | Nhận draft M3 và kiểm claims/config với evidence; không đánh HT paper từ README. |
-| W07-08-DOD-01 | ≥3 task diff hợp lệ + verification | **HT** | E30 realA/B/C cùngV11/r002PASS15/10; B sửa2files, required/regression/static/integrityPASS;16/10 ReadSaved3/3 và fake3/3 trên bản nhúng. | HT minimum3prototypecases; chưa real generation mới dưới r002-vgar-i001, chưa MCP/independent teammate/SWE-bench resolved rate. |
-| W07-08-DOD-02 | Không ghi repo gốc | **MP** | M2 E27/E30/E31 source/integrity/cleanupPASS, nguồn độc lập preserved13071files; root MCP B04/legacy all-terminal integrity chưa hoàn thiện. | M2 đạt trusted profile; DoD toàn integrated agent còn chờ M3 enforce lease/jail và kiểm mọi terminal path. |
+| W07-08-DOD-01 | ≥3 task diff hợp lệ + verification | **HT** | E30 real 15/10; thêm E36: real mới dưới `src/vgar` qua MCP 3/3 (17/10) và agent 6/6 (18/10), prompt/raw/applied trùng byte golden V11. | 3 prototype cases; chưa independent teammate/SWE-bench resolved rate. |
+| W07-08-DOD-02 | Không ghi repo gốc | **HT** | E34/E35: patch chỉ áp trong worktree riêng do server tạo; task phải là trusted fixture khớp byte; cả hai luồng so fingerprint repo gốc trước/sau (đổi thì FAILED); mọi run kết thúc bằng verify/cleanup, kể cả dừng sớm, exception, lỗi transport (tests). | Cho luồng integrated `solve`; server `repository` legacy (B04) và `vgar run/chat` không đổi. |
 
 ### 5.5. Tuần 9–10 — Impact analysis và ablation sơ bộ
 
@@ -538,6 +574,17 @@ integration không tự sửa nó. Không quy mọi vấn đề cho code M1.
 | B08 verification tiers | M2 syntax/mypy/Ruff/tests PASS trong E30 | Legacy verify.py type/lint NOT_RUN; API/structural ở cả prototype vẫn NOT_RUN, chưa tuần11–12 |
 | B09 durable evidence | E29/E30 canonical+bundle/raw/diffs/full outcomes/hash/timing tồn tại ngoài worktree | M3 cần nối refs/audit vào agent tools; không lấy standalone mcp_calls rỗng làm MCP evidence |
 | B02/B10/B11/B12 | Không sửa các modules liên quan trong đợt nhúng M2 | Giữ findings mở/theo audit cũ; không rerun hoặc tuyên bố đã fix transport/binding/CLI/secrets |
+
+### 6.1.2. Đối chiếu findings với luồng integrated ngày 18/10
+
+| Findings | Luồng `vgar solve` / `solve --agent` (E34–E35) | Còn lại |
+|---|---|---|
+| B01 HF constructor | Không nằm trên đường repair; `--generator agent` nạp snapshot pinned và kiểm profile như worker M2 | B01 còn nguyên; full suite vẫn đúng 1 FAIL này |
+| B03 context/prompt wiring | Context M1 bắt buộc qua `repair_get_task_context` trước generation; prompt V11 dựng ở server | Agent legacy `vgar run/chat` không đổi |
+| B04/B05/B07 mutation/runner/diff | Server `repair` dùng lease, runner và strict diff của M2; agent không thấy path/run_dir, tool không có tham số | Server `repository`/`execution` legacy vẫn nguyên findings |
+| B09 durable evidence | `mcp_calls` thật trong run_record và trace agent nằm ngoài worktree | — |
+| B11 verdict CLI | `solve` chỉ COMPLETED khi verify của run cuối là ACCEPT và repo gốc không đổi | `vgar run` không đổi |
+| B02/B06/B10/B12 | Không đụng tới | Giữ mở |
 
 ### 6.2. Sai lệch có thể có chủ đích, cần nhóm quyết định
 
