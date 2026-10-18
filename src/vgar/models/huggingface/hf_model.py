@@ -25,7 +25,16 @@ def create_local_chat_model(
     max_new_tokens: int = 256,
     device_map: str = "auto",
     torch_dtype: str = "auto",
+    revision: str | None = None,
+    local_files_only: bool = False,
 ) -> LocalChatModel:
+
+    # Only passed when set, so the default load stays exactly as before.
+    pinned = {}
+    if revision is not None:
+        pinned["revision"] = revision
+    if local_files_only:
+        pinned["local_files_only"] = True
 
     print(
         f"[HF] Loading tokenizer: {model_id}"
@@ -33,6 +42,7 @@ def create_local_chat_model(
 
     tokenizer = AutoTokenizer.from_pretrained(
         model_id,
+        **pinned,
     )
 
     if not tokenizer.chat_template:
@@ -49,6 +59,7 @@ def create_local_chat_model(
         model_id,
         torch_dtype=torch_dtype,
         device_map=device_map,
+        **pinned,
     )
 
     print(
@@ -102,4 +113,5 @@ def create_local_chat_model(
         llm=llm,
         tokenizer=tokenizer,
         model_name=model_id,
+        revision=revision,
     )

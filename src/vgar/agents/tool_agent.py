@@ -251,14 +251,19 @@ def select_generator(runtime: Runtime, task, policy, profile, model):
     if runtime.mode == "fake":
         reference = (REFERENCE_PATCHES / f"{task.task_id}.diff").read_text(encoding="utf-8")
         return ScriptedPatchGenerator([break_diff(reference), reference])
+    if runtime.generator_choice == "agent":
+        from vgar.agents.agent_generator import AgentModelGenerator
+        return AgentModelGenerator(model, profile, policy)
     from vgar.repair.pipeline import build_generation
     return build_generation("real", task, policy, profile, runtime.output_root)[0]
 
 
 def default_agent_model(runtime: Runtime, profile) -> BaseChatModel:
+    """Scripted agent in fake mode; in real mode the pinned snapshot, for both --generator values."""
     if runtime.mode == "fake":
         return ScriptedRepairAgent()
-    raise NotImplementedError("Real agent mode needs a model")
+    from vgar.agents.agent_generator import load_pinned_agent_model
+    return load_pinned_agent_model(profile, runtime.base_settings().model.max_new_tokens)
 
 
 def _message(message: BaseMessage) -> dict[str, Any]:

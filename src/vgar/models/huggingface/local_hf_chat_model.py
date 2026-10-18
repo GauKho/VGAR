@@ -41,6 +41,7 @@ class LocalChatModel(BaseChatModel):
     llm: HuggingFacePipeline
     tokenizer: Any
     model_name: str
+    revision: str | None = None  # pinned snapshot revision, when loaded from one
 
     bound_tools: list[dict[str, Any]] = Field(
         default_factory=list
