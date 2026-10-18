@@ -279,6 +279,8 @@ class ModelTurns(BaseCallbackHandler):
         self.started[run_id] = time.monotonic()
 
     def _record(self, run_id, status: str, message: BaseMessage | None) -> None:
+        if run_id not in self.started:  # e.g. the inner HuggingFacePipeline run of LocalChatModel
+            return
         usage = getattr(message, "usage_metadata", None) or {}
         self.calls.append({"turn": len(self.calls) + 1, "status": status,
                            "duration_ms": round((time.monotonic() - self.started.pop(run_id)) * 1000),
@@ -286,7 +288,7 @@ class ModelTurns(BaseCallbackHandler):
                            "tool_calls": [call["name"] for call in getattr(message, "tool_calls", None) or []]})
 
     def on_llm_end(self, response, *, run_id, **kwargs) -> None:
-        self._record(run_id, "PASS", response.generations[0][0].message)
+        self._record(run_id, "PASS", getattr(response.generations[0][0], "message", None))
 
     def on_llm_error(self, error, *, run_id, **kwargs) -> None:
         self._record(run_id, "ERROR", None)

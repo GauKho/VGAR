@@ -228,3 +228,18 @@ def test_trace_records_a_model_turn_that_raised(tmp_path):
     result = solve(tmp_path, model=SequenceAgent(steps=["get_task_context"], raise_at=1))
     turns = trace_of(result)["model_calls"]
     assert [t["status"] for t in turns] == ["PASS", "ERROR"] and turns[1]["tool_calls"] == []
+
+
+def test_model_turns_ignore_the_inner_llm_run_of_a_chat_model():
+    """LocalChatModel calls a HuggingFacePipeline LLM inside its chat run: that child run must not be counted."""
+    import uuid
+    from langchain_core.outputs import Generation, LLMResult
+    from vgar.agents.tool_agent import ModelTurns
+
+    turns, outer, inner = ModelTurns(), uuid.uuid4(), uuid.uuid4()
+    turns.on_chat_model_start({}, [[]], run_id=outer)
+    turns.on_llm_start({}, ["prompt"], run_id=inner)
+    turns.on_llm_end(LLMResult(generations=[[Generation(text="raw")]]), run_id=inner)
+    turns.on_llm_error(RuntimeError("inner"), run_id=uuid.uuid4())
+    turns.on_llm_end(LLMResult(generations=[[ChatGeneration(message=AIMessage(content="done"))]]), run_id=outer)
+    assert [(t["turn"], t["status"]) for t in turns.calls] == [(1, "PASS")]
