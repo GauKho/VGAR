@@ -4,7 +4,7 @@
 
 VGAR xây đồ thị mã nguồn để tìm context liên quan đến issue, sau đó hướng tới sinh patch và kiểm chứng patch bằng thực thi. Repository hiện chứa **M1 Graph & Retrieval, M2 baseline/evaluation, M2 Repair & Verification tuần 7–8 (đã tích hợp vào `src/vgar`), cùng agent/MCP của M3**. Các thành phần có mức độ nghiệm thu khác nhau; không được hiểu “đã có file/code” là “toàn hệ thống đã hoàn thành”.
 
-> **Đọc trước khi chạy:** Pipeline M2 tuần 7–8 nay nằm trong `src/vgar/repair` + `src/vgar/models` và chạy bằng `vgar repair` / `vgar solve`. Ngày 17/10, code tích hợp chạy lại **3/3 real repairs A/B/C PASS** trên ba fixture phát triển; `prompt.txt`, raw output và `applied.diff` **trùng byte** với lần 15/10. `vgar solve` (LangGraph) chạy luồng cố định retrieve → generate → apply → test → verify, trong đó các bước repair là **lời gọi MCP thật** tới server `repair` (`run_record.mcp_calls` ghi lại từng call); một lần generate, chưa có vòng thử lại. Full suite VGAR gần nhất **675 PASS, 1 FAIL** (test HF legacy). Package standalone `M2_week_7_8/` đã được xóa; lịch sử của nó còn trong git.
+> **Đọc trước khi chạy:** Pipeline M2 tuần 7–8 nay nằm trong `src/vgar/repair` + `src/vgar/models` và chạy bằng `vgar repair` / `vgar solve`. Ngày 17/10, code tích hợp chạy lại **3/3 real repairs A/B/C PASS** trên ba fixture phát triển; `prompt.txt`, raw output và `applied.diff` **trùng byte** với lần 15/10. `vgar solve` (LangGraph) chạy luồng cố định retrieve → generate → apply → test → verify, trong đó các bước repair là **lời gọi MCP thật** tới server `repair` (`run_record.mcp_calls` ghi lại từng call); một lần generate, chưa có vòng thử lại. Ngày 18/10 có thêm `vgar solve --agent`: agent tự chọn tool, diff vẫn do bộ sinh V11 tạo, có thể sinh lại kèm feedback (tối đa 3 lần); real A/B/C **6/6 PASS** (3 task × `--generator worker|agent`), đi thẳng một mạch, trùng byte với golden. Full suite VGAR gần nhất **744 PASS, 1 FAIL** (test HF legacy). Package standalone `M2_week_7_8/` đã được xóa; lịch sử của nó còn trong git.
 
 ## Mục lục
 
@@ -33,7 +33,7 @@ VGAR xây đồ thị mã nguồn để tìm context liên quan đến issue, sa
 | Sinh và kiểm chứng patch A/B/C mới       | `vgar repair --mode real` (mục 7)                             | **Có**, một generation/case                              |
 | Chạy unit/integration tests              | Mục 8                                                         | Không phải nghiệm thu real repair                        |
 | Tìm file, input, patch, stdout/stderr    | Mục 4 và 11                                                   | Không                                                    |
-| Chạy M2 qua LangGraph + MCP              | `vgar solve --task ...` (mục 7)                               | Tùy `--mode`; một generation, chưa có retry              |
+| Chạy M2 qua LangGraph + MCP              | `vgar solve --task ...` (mục 7)                               | Tùy `--mode`; luồng cố định một generation; `--agent` cho agent tự chọn tool, sinh lại tối đa 3 lần |
 
 **Trên máy đã setup**, kiểm nhanh pipeline M2 mà không load model:
 
@@ -75,7 +75,7 @@ Quy ước của [Task Status](<Task Status.md>): **HT** hoàn thành trong ph�
 | M2 W7–8: **7/7 task M2 HT**          | Prompt cố định, HF backend, diff parser/apply, test selection, pytest/type/lint, evidence    | HT **trên trusted-fixture prototype**, không phải toàn SWE-bench                    |
 | M2 W7–8: A/B/C cùng profile          | **3 real cases PASS** ngày 15/10 và chạy lại 17/10 bằng code tích hợp, trùng byte            | Chỉ ba trusted dev fixtures                                                         |
 | M2 W7–8 tích hợp vào `src/vgar`      | `vgar repair`, golden test V11, M2 tests port sang `tests/m2/w78/`                           | Package standalone đã xóa; còn cần tái lập trên máy đồng đội                         |
-| M3 W7–8: vòng agent dùng M2 mới      | `vgar solve`: LangGraph gọi MCP `repair_get_task_context/apply_patch/run_relevant_tests/verify_patch` | Chưa có vòng thử lại; model chưa tự chọn tool                                       |
+| M3 W7–8: vòng agent dùng M2 mới      | `vgar solve`: LangGraph gọi MCP `repair_get_task_context/apply_patch/run_relevant_tests/verify_patch` | `--agent`: agent tự chọn tool, sinh lại kèm feedback; nhánh sinh lại mới kiểm bằng fake, real chưa gặp lần thất bại nào |
 | Tuần 9–16                            | Có thiết kế và một số thành phần nền/lịch sử                                                 | Chưa được nghiệm thu impact/ablation/held-out/final artifact chỉ từ ba prototype    |
 
 Toàn bộ **150 task IDs**: **47 HT / 48 MP / 25 CT / 30 CX**. Riêng tuần 7–8: **10 HT / 8 MP / 0 CT / 1 CX**. Các mục chung/M1/M2/M3/DoD có giao nhau; **không cộng hoặc quy đổi thành “đã xong 31% hệ thống”**. Xem từng ID/nguyên nhân/giải pháp trong Task Status.
@@ -94,6 +94,9 @@ Toàn bộ **150 task IDs**: **47 HT / 48 MP / 25 CT / 30 CX**. Riêng tuần 7�
 | Full VGAR 17/10 sau xóa `M2_week_7_8/`      | **675 PASS, 1 FAIL**                     | FAIL là HF legacy `KeyError: generation_config` có từ trước            |
 | Real A/B/C 17/10 bằng `vgar repair`         | **3/3 PASS**, trùng byte với 15/10       | Generation 148s / 194s / 69s trên RTX 4050, có CPU offload             |
 | Real A/B/C 17/10 bằng `vgar solve` qua MCP  | **3/3 PASS**, trùng byte với 15/10       | 4 MCP calls/run; generation 86s / 148s / 55s; tổng 109s / 174s / 81s   |
+| Real A/B/C 18/10 `solve --agent --generator worker` | **3/3 PASS**, 1 run/task, trùng byte golden | Agent tự gọi đủ 5 tool, không host gọi thay; generation 179s / 395s / 106s; tổng 408s / 517s / 213s; hai bản model cùng lúc (offload CPU, lần đầu cả đĩa), không treo/hết RAM |
+| Real A/B/C 18/10 `solve --agent --generator agent`  | **3/3 PASS**, 1 run/task, trùng byte golden | Một bản model; generation 24s / 95s / 28s; tổng 121s / 191s / 137s |
+| Full VGAR 18/10 sau giai đoạn 2 (agent chọn tool) | **744 PASS, 1 FAIL**                | FAIL là HF legacy `KeyError: generation_config` có từ trước            |
 
 Các suite/lượt có thể chồng lấn, **không cộng các hàng thành tổng số tests duy nhất**. Nguồn và paths đầy đủ: [báo cáo tích hợp M2](docs/handoff/M2_W7_W8_INTEGRATION_2026-10-16.md).
 
