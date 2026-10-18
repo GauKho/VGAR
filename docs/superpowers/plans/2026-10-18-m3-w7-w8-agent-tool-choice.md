@@ -27,7 +27,7 @@
 - Tool reply text format (the scripted fake agent parses it, the real agent reads it). Every reply is plain text, first line `STATUS: <PASS|FAIL|ERROR>`; optional lines `REASON: …`, `DETAIL: …` (one line, ≤ 300 chars), `ATTEMPT: <n> of 3`, `ATTEMPTS LEFT: <k>`, `FILES: a.py, b.py`, and a last line `NEXT: …` telling the usual next tool.
 - Generation meta sent to `apply_patch` carries `generator_path` ∈ `{"fake", "worker", "agent_model"}` in addition to the keys the fixed flow already sends.
 - The user runs every real-mode (GPU) command. Do not start or stop real runs.
-- Tests: `.venv/Scripts/python.exe -m pytest -p no:cacheprovider` from the repo root. Baseline 2026-10-18: see Task 0 (known failure `tests/test_hf_model.py::test_local_chat_model_uses_one_greedy_generation_config`).
+- Tests: `.venv/Scripts/python.exe -m pytest -p no:cacheprovider` from the repo root. Baseline 2026-10-18: 706 passed, 1 failed (known failure `tests/test_hf_model.py::test_local_chat_model_uses_one_greedy_generation_config`).
 - **Ruling (deviation from spec §6 table, agent row):** in real mode the agent model is always loaded from the pinned profile snapshot (`profile.snapshot`, `profile.revision`, `local_files_only=True`), for both `--generator` values. Option B needs a pinned agent model; using one loader for both keeps A and B comparable. `create_core_model` and `vgar run/chat` are untouched.
 
 ## Review Focus
