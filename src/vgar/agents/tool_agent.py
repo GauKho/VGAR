@@ -27,7 +27,7 @@ from vgar.repair.config import REPO_ROOT
 
 MAX_ATTEMPTS = 3
 MAX_TOOL_CALLS = 15
-RECURSION_LIMIT = 40
+RECURSION_LIMIT = 3 * MAX_TOOL_CALLS + 10  # ~3 graph steps per tool call, so the tool-call limit ends the run first
 PROMPT_PATH = Path(__file__).parent / "prompts" / "repair_agent.md"
 REFERENCE_PATCHES = REPO_ROOT / "tests/fixtures/m2/reference_patches"
 

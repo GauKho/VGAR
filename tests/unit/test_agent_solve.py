@@ -200,3 +200,12 @@ def test_cli_generator_requires_agent(capsys):
     with pytest.raises(SystemExit):
         main(["solve", "--task", str(TASK), "--generator", "agent"])
     assert "--generator requires --agent" in capsys.readouterr().err
+
+
+def test_tool_call_limit_ends_the_agent_before_the_recursion_limit(tmp_path):
+    steps = ["get_task_context"] + ["run_relevant_tests"] * 30
+    result = solve(tmp_path, model=SequenceAgent(steps=steps))
+    trace = trace_of(result)
+    assert len(calls(trace, "agent")) == 15
+    assert result["status"] == "FAILED" and "Recursion" not in result["failure_reason"]
+    assert trace["calls"][-1]["by"] == "host" and trace["calls"][-1]["tool"] == "verify_patch"

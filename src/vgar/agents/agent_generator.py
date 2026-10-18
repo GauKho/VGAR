@@ -7,13 +7,22 @@ from __future__ import annotations
 
 from copy import deepcopy
 import hashlib
+from pathlib import Path
 import time
 
 from vgar.repair.contracts import ModelProfile
 
 
+def check_pinned_profile(profile) -> None:
+    """The same profile guard as the M2 worker: approved, pinned model id and a snapshot of that revision."""
+    from vgar.models.huggingface.hf_backend import MODEL, REVISION
+    if not profile.approved_prototype or profile.model_id != MODEL or profile.revision != REVISION             or Path(profile.snapshot).name != profile.revision:
+        raise ValueError(f"Agent model profile is not the pinned {MODEL}@{REVISION} snapshot")
+
+
 def load_pinned_agent_model(profile: ModelProfile, max_new_tokens: int):
     """The agent model loaded from the pinned profile snapshot (both --generator values use it)."""
+    check_pinned_profile(profile)
     import torch
     from vgar.models.huggingface.hf_model import create_local_chat_model
     return create_local_chat_model(model_id=str(profile.snapshot), revision=profile.revision, local_files_only=True,
@@ -30,6 +39,7 @@ class AgentModelGenerator:
     generator_path = "agent_model"
 
     def __init__(self, model, profile, policy):
+        check_pinned_profile(profile)
         revision = getattr(model, "revision", None)
         if revision != profile.revision:
             raise ValueError(f"Agent model revision {revision} does not match pinned {profile.revision}")

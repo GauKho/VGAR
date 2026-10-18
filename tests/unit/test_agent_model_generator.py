@@ -2,11 +2,12 @@
 from __future__ import annotations
 
 import hashlib
+from pathlib import Path
 from types import SimpleNamespace
 
 import pytest
 
-from vgar.agents.agent_generator import AgentModelGenerator
+from vgar.agents.agent_generator import AgentModelGenerator, load_pinned_agent_model
 
 REVISION = "cdbee75f17c01a7cc42f958dc650907174af0554"
 RENDERED = "<|im_start|>user\nfix<|im_end|>\n<|im_start|>assistant\n"
@@ -45,7 +46,8 @@ def fake_model(revision=REVISION, rendered=RENDERED):
                            llm=SimpleNamespace(pipeline=SimpleNamespace(model=hf))), hf
 
 
-PROFILE = SimpleNamespace(model_id="Qwen/Qwen3-4B-Instruct-2507", revision=REVISION)
+PROFILE = SimpleNamespace(model_id="Qwen/Qwen3-4B-Instruct-2507", revision=REVISION, approved_prototype=True,
+                          snapshot=Path("models/snapshots") / REVISION)
 POLICY = SimpleNamespace(output_cap=1536)
 PROMPT = SimpleNamespace(messages=[{"role": "user", "content": "fix"}], input_tokens=3,
                          prompt_hash="sha256:" + hashlib.sha256(RENDERED.encode("utf-8")).hexdigest())
@@ -102,3 +104,15 @@ def test_local_chat_model_loads_a_pinned_revision_offline(monkeypatch):
     assert seen["tokenizer"] == {"revision": REVISION, "local_files_only": True}
     assert seen["model"]["revision"] == REVISION and seen["model"]["local_files_only"] is True
     assert chat.revision == REVISION
+
+
+@pytest.mark.parametrize("change", [{"approved_prototype": False}, {"snapshot": Path("models/snapshots/main")},
+                                    {"model_id": "other/model"}])
+def test_unpinned_profile_is_refused_before_loading_or_generating(change, monkeypatch):
+    from vgar.models.huggingface import hf_model
+    monkeypatch.setattr(hf_model, "create_local_chat_model", lambda **kwargs: pytest.fail("model loaded"))
+    profile = SimpleNamespace(**dict(vars(PROFILE), **change))
+    with pytest.raises(ValueError, match="pinned"):
+        load_pinned_agent_model(profile, 512)
+    with pytest.raises(ValueError, match="pinned"):
+        AgentModelGenerator(fake_model()[0], profile, POLICY)
