@@ -197,6 +197,15 @@ The CLI has three repair paths over the same M2 engine, plus an older agent:
 | `vgar solve --agent` | LangChain agent over 5 argument-less tools | `repair` server | Yes, new run with host feedback | ≤ 3 |
 | `vgar run` / `vgar chat` (legacy) | Agent with exact-edit tools on a disposable copy | `graph`, `repository`, `execution` | No | — |
 
+What the LLM does in each command:
+
+| Command | Role of the LLM | Who orchestrates | Evidence in code |
+|---|---|---|---|
+| `vgar repair` | Generates the diff only: one turn, V11 prompt | Sequential code, no MCP | `cli.py` `cmd_repair` → `run_repair()` → `generator.generate(prompt, ...)` (`repair/pipeline.py`) |
+| `vgar solve` | Generates the diff only, in the single `generate` node | Fixed LangGraph flow: initialize → retrieve → generate → apply → test → verify | `agents/nodes/mcp_repair.py` docstring ("only `generate` runs the model"); `agents/workflow.py` `build_workflow` |
+| `vgar solve --agent` | Two roles: (1) picks one of 5 argument-less tools, following the `NEXT:` hint computed by the host; (2) generates the diff, through the V11 worker or, with `--generator agent`, the agent's own model | In practice the host's state machine; the LLM mostly follows it | `agents/tool_agent.py` (`NoArgs`, `AgentRepairHost._next`); `agents/agent_generator.py` |
+| `vgar run` / `vgar chat` | Full control, Claude Code style: chooses the tools, writes the edits (`old_text`/`new_text`), decides when to stop and writes the answer | The LLM | `agents/core.py` `create_agent(...)`; `cli.py` `cmd_run`, `cmd_chat` |
+
 Steps of one repair run:
 
 1. **Load** the task file and check that the snapshot matches its trusted hash.
