@@ -147,14 +147,14 @@ class WorkspaceLease:
                 raise
 
 
-def create_workspace(source: Path, temp_root: Path, policy=None, *, deadline=None) -> WorkspaceLease:
+def create_workspace(source: Path, temp_root: Path, policy=None, *, deadline=None, allow_attributes=False) -> WorkspaceLease:
     remaining_timeout(deadline)
     source = Path(source)
     before = inventory(source)
     source, temp_root = source.resolve(strict=True), Path(temp_root).resolve()
     if source == temp_root or source in temp_root.parents or temp_root in source.parents:
         raise ValueError('Temporary root must not overlap source')
-    if any(Path(name).name == '.gitattributes' for name in before):
+    if not allow_attributes and any(Path(name).name == '.gitattributes' for name in before):
         raise ValueError('Attribute transformations are unsupported in this fixture profile')
     temp_root.mkdir(parents=True, exist_ok=True)
     private = Path(tempfile.mkdtemp(prefix='m2-w78-', dir=temp_root)).resolve()
@@ -169,6 +169,10 @@ def create_workspace(source: Path, temp_root: Path, policy=None, *, deadline=Non
         # Persist on the private repository: later apply calls must not inherit
         # the host's core.autocrlf=true and alter raw bytes on Windows.
         _git(seed, 'config', '--local', 'core.autocrlf', 'false', deadline=deadline)
+        if allow_attributes:
+            # Highest-precedence attributes disable target-defined clean/smudge/EOL transformations.
+            (seed/'.git/info').mkdir(exist_ok=True)
+            (seed/'.git/info/attributes').write_text('* -text -filter -ident -working-tree-encoding\n', encoding='utf-8')
         _git(seed, 'add', '--all', '--force', deadline=deadline)  # copy gitignored files too
         _git(seed, 'commit', '--no-verify', '-m', 'Private fixture snapshot', deadline=deadline)
         _git(seed, 'worktree', 'add', '--detach', str(worktree), 'HEAD', deadline=deadline)

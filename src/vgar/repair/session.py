@@ -6,15 +6,18 @@ from it. A step returns None once the run has an outcome; finish() always comple
 cleans the worktree.
 """
 from dataclasses import asdict
+import copy
 import json
 from pathlib import Path
 import time
 
+from vgar.repair.admission import check_session_admission, prepare_admitted_workspace, validate_admission
 from vgar.repair.config import REPO_ROOT
 from vgar.repair.context_adapter import load_handoff
 from vgar.repair.contracts import ModelProfile, RepairPolicy, RepairTask
 from vgar.repair.diagnostics import exception_details
 from vgar.repair.evidence import atomic_json, begin_run, digest, encode_json, load_run
+from vgar.repair.experiment import check_session_experiment, validate_experiment
 from vgar.repair.executor import remaining_timeout, utc_now
 from vgar.repair.patch import PatchPolicy, apply_patch, parse_unified_diff
 from vgar.repair import pipeline
@@ -37,10 +40,39 @@ class RepairSession:
         path = run_dir / 'session.json'
         if not path.is_file() or not (run_dir / 'run_record.json').is_file():
             raise ValueError('Not a repair run directory: ' + str(run_dir))
-        return cls(load_run(run_dir), json.loads(path.read_text(encoding='utf-8')))
+        state = json.loads(path.read_text(encoding='utf-8'))
+        record = json.loads((run_dir / 'run_record.json').read_text(encoding='utf-8'))
+        check_session_experiment(state, record)  # load_run writes, so validate BOTH files first.
+        admission = check_session_admission(state, record)
+        if admission is not None:
+            validate_admission(RepairTask.model_validate(state['task']), admission)
+        return cls(load_run(run_dir), state)
 
     def save(self):
+        self.assert_experiment()
+        self.assert_admission()
         atomic_json(self.run.directory / 'session.json', self.state)
+
+    def assert_experiment(self):
+        return check_session_experiment(self.state, self.run.record)
+
+    def assert_admission(self):
+        return check_session_admission(self.state, self.run.record)
+
+    @property
+    def experiment(self):
+        return self.assert_experiment()
+
+    def variant_kwargs(self):
+        value = self.experiment
+        return {'variant': value.variant_policy} if value is not None else {}
+
+    def handoff_kwargs(self):
+        value = self.experiment
+        if value is None:
+            return {}
+        snapshot = self.state['experiment']
+        return {'arm': value.arm, 'expected_hashes': snapshot['bundle_hashes'] or value.expected_hashes}
 
     @property
     def phase(self):
@@ -73,6 +105,8 @@ class RepairSession:
         lease = WorkspaceLease(Path(data['path']), Path(data['private']), Path(data['temp_root']),
                                Path(data['source_repo']), data['before'], data['worktree_id'])
         lease.keep = data['keep']
+        if 'execution_before' in data:
+            lease.execution_before = data['execution_before']
         return lease
 
     def applied(self):
@@ -80,6 +114,11 @@ class RepairSession:
         return PatchApplyResult.model_validate(self.state['applied']) if self.state['applied'] else None
 
     def executor(self, lease):
+        admission = self.assert_admission()
+        if admission is not None:
+            from vgar.repair.docker_executor import DockerExecutor
+            return DockerExecutor(lease, self.task, admission, self.deadline, self.policy.max_output_bytes,
+                                  evidence_root=self.run.directory/'docker')
         return DeadlineExecutor(lease, self.deadline, self.policy.max_output_bytes)
 
     def observe(self, name, action, summary=lambda x: x):
@@ -104,6 +143,8 @@ class RepairSession:
 
 def _step(session, action):
     """Run one step unless the run already has an outcome; map failures exactly like run_repair did."""
+    session.assert_experiment()
+    session.assert_admission()
     if session.phase == 'finished':
         raise ValueError('Run already finished')
     if session.outcome:
@@ -126,12 +167,24 @@ def _step(session, action):
 
 def start_session(task, policy, mode, output_root, *, profile=None, temp_root=None, keep_workspace=False,
                   supersedes_run_id=None, rerun_reason=None, feedback=None, deadline=None,
-                  mcp_scope='standalone_not_executed'):
+                  mcp_scope='standalone_not_executed', experiment=None, admission=None):
+    if policy.runtime == 'docker_admitted':
+        task = RepairTask.model_validate(task.model_dump())
+        admission = validate_admission(task, admission)
+        if experiment is None:
+            # Docker must use the explicit W9 required-check policy, never legacy strict host static.
+            raise ValueError('Docker admission requires an explicit W9 experiment policy')
+    elif admission is not None:
+        raise ValueError('Admission cannot redirect native fixture execution')
+    admission_meta = {'admission_required': True, 'admission': admission.snapshot()} if admission is not None else {}
+    experiment = validate_experiment(experiment)
+    experiment_meta = {'experiment_required': True, 'experiment': experiment.snapshot()} if experiment is not None else {}
     deadline = min(time.monotonic() + policy.global_timeout, deadline) if deadline is not None else time.monotonic() + policy.global_timeout
     run = begin_run(output_root, 'repair', task_id=task.task_id, mode=mode,
         context_origin='m1-retrieval', task=task.model_dump(mode='json'), policy=policy.model_dump(),
         model=profile.model_dump(mode='json') if profile else None, mcp_calls=[], mcp_scope=mcp_scope,
-        artifacts={'raw_output': None, 'candidate': None, 'applied': None, 'bundle': None}, original_source_unchanged=None)
+        artifacts={'raw_output': None, 'candidate': None, 'applied': None, 'bundle': None}, original_source_unchanged=None,
+        **copy.deepcopy(experiment_meta), **copy.deepcopy(admission_meta))
     run.record.update(supersedes_run_id=supersedes_run_id, rerun_reason=rerun_reason)
     if feedback is not None:
         run.record.update(prompt_feedback=feedback)
@@ -149,7 +202,7 @@ def start_session(task, policy, mode, output_root, *, profile=None, temp_root=No
         profile=profile.model_dump(mode='json') if profile else None, mode=mode,
         deadline_utc=time.time() + (deadline - time.monotonic()), phase='started', outcome=None, current='context',
         temp_root=str(temp_root or REPO_ROOT / '.workspaces'), keep_workspace=keep_workspace, feedback=feedback,
-        lease=None, baseline=None, applied=None, verification=None))
+        lease=None, baseline=None, applied=None, verification=None, **copy.deepcopy(experiment_meta), **copy.deepcopy(admission_meta)))
     session.save()
     return session
 
@@ -158,23 +211,38 @@ def prepare(session, m1_counter, tokenizer, *, executor=None):
     """Trusted-fixture gate, M1 context, private worktree, baseline and the V11 prompt (prompt.txt)."""
     def action():
         task = session.task
-        require_trusted_fixture(task)
-        handoff = session.observe('context', lambda: load_handoff(task, m1_counter, m1_counter.counter_label),
+        admission = session.assert_admission()
+        if admission is None:
+            require_trusted_fixture(task)
+        handoff_kwargs = session.handoff_kwargs()
+        handoff = session.observe('context', lambda: load_handoff(task, m1_counter, m1_counter.counter_label, **handoff_kwargs),
             lambda h: dict(status='PASS', metadata=h.metadata, inputs=h.inputs, hashes=h.hashes,
                            context=h.context.model_dump(mode='json')))
+        if 'experiment' in session.state:
+            snapshot = {**session.state['experiment'], 'bundle_hashes': handoff.hashes.copy()}
+            session.state['experiment'] = copy.deepcopy(snapshot)
+            session.run.record['experiment'] = copy.deepcopy(snapshot)
+            session.run.save()
+            session.save()
         task = task.model_copy(update={'failing_selectors': tuple(sorted(set(task.failing_selectors) | set(handoff.inputs['failing_selectors'])))})
+        if admission is not None:
+            validate_admission(task, admission)
         session.state['task'] = task.model_dump(mode='json')
-        lease = session.observe('workspace', lambda: create_workspace(task.source_repo, Path(session.state['temp_root']), deadline=session.deadline),
+        lease = session.observe('workspace', lambda: (prepare_admitted_workspace(task, admission, Path(session.state['temp_root']), deadline=session.deadline)
+                       if admission is not None else create_workspace(task.source_repo, Path(session.state['temp_root']), deadline=session.deadline)),
             lambda w: dict(status='PASS', lease=w.worktree_id, path=str(w.path), original_hashes=w.before))
         lease.keep = session.state['keep_workspace']
         session.state['lease'] = dict(path=str(lease.path), private=str(lease.private), temp_root=str(lease.temp_root),
                                       source_repo=str(lease.source_repo), before=lease.before,
                                       worktree_id=lease.worktree_id, keep=lease.keep)
+        if admission is not None:
+            session.state['lease']['execution_before'] = lease.execution_before
         session.save()
         # A caller cannot redirect execution to a different root/interpreter.
         if executor is not None:
             raise ValueError('External executor requires an approved integration adapter; Native owns this lease')
-        baseline = session.observe('baseline', lambda: capture_baseline(task, lease, session.executor(lease), session.policy))
+        baseline = session.observe('baseline', lambda: capture_baseline(task, lease, session.executor(lease), session.policy,
+                                                                      **session.variant_kwargs()))
         session.state['baseline'] = baseline
         if baseline['status'] != 'PASS':
             raise StopRun('ERROR', 'VERIFICATION_INCOMPLETE')
@@ -244,7 +312,7 @@ def run_selected_tests(session, m1_counter):
     """Relevant-test selection and the test half of verification (stored as the verification stage)."""
     def action():
         task, lease, applied = session.task, session.lease(), session.applied()
-        handoff = load_handoff(task, m1_counter, m1_counter.counter_label)
+        handoff = load_handoff(task, m1_counter, m1_counter.counter_label, **session.handoff_kwargs())
         selection = session.observe('selection', lambda: select_relevant_tests(tuple(applied.changed_files), handoff, task))
         partial = session.observe('verification', lambda: run_patch_tests(task, lease, applied, session.state['baseline'],
                                                                          selection, session.executor(lease), session.policy))
@@ -258,7 +326,8 @@ def _complete_verification(session):
     run, task, lease, applied = session.run, session.task, session.lease(), session.applied()
     first = run.record['stages']['verification']
     verification = session.observe('verification', lambda: complete_verification(
-        session.state['verification'], task, lease, applied, session.state['baseline'], session.executor(lease), session.policy))
+        session.state['verification'], task, lease, applied, session.state['baseline'], session.executor(lease), session.policy,
+        **session.variant_kwargs()))
     stage = run.record['stages']['verification']
     stage.update(started_utc=first['started_utc'], duration_ms=first['duration_ms'] + stage['duration_ms'])
     run.save()
@@ -271,6 +340,7 @@ def _complete_verification(session):
 
 def finish(session, *, on_record=None):
     """Complete verification if tests ran, then integrity check, evidence bundle, cleanup and the final record."""
+    session.assert_experiment()
     if session.phase == 'finished':
         raise ValueError('Run already finished')
     if not session.outcome:
@@ -313,6 +383,10 @@ def finish(session, *, on_record=None):
 
     def publish_bundle(record):
         if bundle:
+            if 'experiment' in record:
+                bundle.metadata['experiment'] = copy.deepcopy(record['experiment'])
+            if 'admission' in record:
+                bundle.metadata['admission'] = copy.deepcopy(record['admission'])
             bundle.metadata.update(repair_status=status, canonical_sha256=digest(encode_json(record)))
             bundle.recommendation = recommendation_for(status)
             atomic_json(run.directory / 'evidence_bundle.json', bundle)

@@ -1,0 +1,27 @@
+{
+  "counter_mode": "fixture-only",
+  "counter_label": "fixture-only:characters",
+  "counting_policy": "len(text):unicode-characters:sum-item-counts",
+  "tokenizer_identity": null,
+  "recipe": "scripts/build_w9_bundle_fixture.py",
+  "resolver": "static",
+  "snippet_budget": 8000,
+  "origin": "tests/fixtures/w7_w8_handoff/single_file_login/repo (initial byte copy)",
+  "identity": {
+    "task_id": "w9-single-file-login",
+    "repo_key": "fixture/w9/single-file-login",
+    "revision": "w9-fixture-v1",
+    "graph_version": "sha256:1a480ca3a792aa1433747d13818743841e7f4c30beafbd2fe286721a25bdf8cd"
+  },
+  "source_digest": "sha256:3121f4240c6e47d67974b4aa550bd8486b53ace95ba478067aa60d876570eedc",
+  "files": {
+    "task.json": "sha256:8d885ac5c14ada752ff1c06727b68f665cb1cd5a6c2fa7cef5deb4da67cfe448",
+    "repo/auth.py": "sha256:d6d89aae3fb09d77d7fcab3aa9b53ebbbb0d2f87e995f95e2ccc09fe3d18b74a",
+    "repo/pytest.ini": "sha256:82fd55d62e39ad5dc83c58bd005c337e4e9810ef96f7356c370d7069de775a16",
+    "repo/tests/test_auth.py": "sha256:82a4f022c58d27e2769b64a86ec068681edafc3b99ab404d0079dbc8ac5f62c4",
+    "bundle/context.json": "sha256:530566ecea4d1558bbe57a1f2c71d2dcc8ec1fc6ab930c282adc4ba7a9cd3f90",
+    "bundle/context_manifest.json": "sha256:9e2ed9432e57cccf51e0b22062ffbe90d2a0d9a278200425145a7360c2a5dd3b",
+    "bundle/test_links.json": "sha256:8e719ea68901a73b0a209c211532a63501d7d34cb639ed08a8806f738af96fcd",
+    "bundle/repair-context.txt": "sha256:0e5dcaf3b28148225e9bc7e24228238b886ced7bb2cb75cce390f96f8c35c8a3"
+  }
+}

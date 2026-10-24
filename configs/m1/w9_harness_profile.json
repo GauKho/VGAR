@@ -1,0 +1,15 @@
+{
+  "profile": "w9-gold-swebench-4.1.0-v1",
+  "harness_version": "4.1.0",
+  "harness_commit": "726c5461e2ef52d83cf1ea2107870a8bb3328d57",
+  "dataset_revision": "c104f840cc67f8b6eec6f759ebc8b2693d585d4a",
+  "qualification_state": "UNQUALIFIED",
+  "python": null,
+  "harness_repo": null,
+  "docker_host": null,
+  "dataset_parquet": null,
+  "images": {},
+  "max_workers": 1,
+  "test_timeout_seconds": 1800,
+  "process_timeout_seconds": 3600
+}

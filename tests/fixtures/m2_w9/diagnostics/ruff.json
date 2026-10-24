@@ -1,0 +1,9 @@
+[
+  {
+    "code": "F821",
+    "filename": "pkg/debt.py",
+    "location": {"row": 2, "column": 12},
+    "end_location": {"row": 2, "column": 19},
+    "message": "Undefined name `missing`"
+  }
+]

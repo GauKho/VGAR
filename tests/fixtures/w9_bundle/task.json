@@ -1,0 +1,23 @@
+{
+  "task_id": "w9-single-file-login",
+  "issue_text": "auth.py login accepts whitespace-only names; trim the name before checking whether it is empty.",
+  "source_repo": "repo",
+  "repo_key": "fixture/w9/single-file-login",
+  "revision": "w9-fixture-v1",
+  "graph_version": "sha256:1a480ca3a792aa1433747d13818743841e7f4c30beafbd2fe286721a25bdf8cd",
+  "bundle_directory": "bundle",
+  "failing_selectors": [
+    "tests/test_auth.py::test_login_rejects_whitespace"
+  ],
+  "fallback_scope": [
+    "tests"
+  ],
+  "allowed_source_paths": [
+    "auth.py"
+  ],
+  "protected_paths": [
+    "tests",
+    "pytest.ini"
+  ],
+  "trusted_fixture": false
+}

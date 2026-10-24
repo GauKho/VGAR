@@ -74,7 +74,7 @@ class RepairPolicy(BaseModel):
     max_diff_bytes: int = Field(default=256 * 1024, gt=0)
     max_files: int = Field(default=5, gt=0)
     max_changed_lines: int = Field(default=500, gt=0)
-    runtime: Literal['native_trusted_fixtures'] = 'native_trusted_fixtures'
+    runtime: Literal['native_trusted_fixtures', 'docker_admitted'] = 'native_trusted_fixtures'
 
 
 class ModelProfile(BaseModel):

@@ -1,0 +1,8 @@
+{
+  "variant_id": "A1",
+  "arm": null,
+  "required_checks": ["tests"],
+  "recorded_checks": ["tests", "syntax", "mypy", "ruff"],
+  "static_mode": "baseline_delta",
+  "diagnostic_identity_version": "m2-static-delta-v1"
+}
