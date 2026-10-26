@@ -1,0 +1,11 @@
+{
+  "schema": "vgar-m3-experiment-v1",
+  "source": {"type": "fixture", "tasks": ["../../examples/m2/tasks/single_file_login.json"]},
+  "repair_config": "../m2/demo.json",
+  "generation": "fake",
+  "variants": [
+    {"path": "../m2/variants/A0.json", "arm": "bm25"},
+    {"path": "../m2/variants/A1.json", "arm": "graph"},
+    {"path": "../m2/variants/A2.json", "arm": "graph"}
+  ]
+}

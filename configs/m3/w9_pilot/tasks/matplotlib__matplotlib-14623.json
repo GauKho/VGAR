@@ -1,0 +1,7 @@
+{
+  "source_roots": ["lib/matplotlib"],
+  "failing_selectors": ["tests/vgar_w9_repro_log_invert.py::test_log_axis_inverted_by_limits"],
+  "fallback_scope": ["tests/vgar_w9_repro_log_invert.py", "lib/matplotlib/tests/test_scale.py"],
+  "protected_paths": ["lib/matplotlib/testing", "lib/matplotlib/tests", "tests"],
+  "overlay": {"tests/vgar_w9_repro_log_invert.py": "matplotlib__matplotlib-14623.repro.py"}
+}
