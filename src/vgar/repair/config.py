@@ -1,5 +1,6 @@
 """M2 repair configuration files and repository-relative locations."""
 import json
+import os
 from pathlib import Path
 
 from vgar.repair.contracts import ModelProfile, RepairPolicy, RepairTask
@@ -14,8 +15,10 @@ def load_config(path):
     if set(data) != {'policy', 'model'}:
         raise ValueError('Unexpected config fields')
     model = data['model']
-    for field in ('snapshot', 'interpreter', 'tokenizer_manifest'):
+    for field in ('snapshot', 'tokenizer_manifest'):
         model[field] = (path.parent / Path(model[field]).expanduser()).resolve()
+    # A venv interpreter is a symlink on POSIX; resolving it loses the venv's site-packages.
+    model['interpreter'] = Path(os.path.abspath(path.parent / Path(model['interpreter']).expanduser()))
     return RepairPolicy.model_validate(data['policy']), ModelProfile.model_validate(model)
 
 
