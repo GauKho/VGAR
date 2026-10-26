@@ -117,3 +117,67 @@ def test_tokenizer_identity_must_match_approved_model(tmp_path):
     relocated.write_text(json.dumps(value), encoding='utf-8')
     with pytest.raises(ValueError):
         require_tokenizer_identity(relocated, approved)
+
+
+def test_export_task_applies_one_budget_to_both_arms(tmp_path):
+    # M3-W9 D5: repair bundles need a smaller snippet budget than the 8000 retrieval budget.
+    from vgar.evaluation.retrieval.pilot_export import export_task
+    root = tmp_path / 'repo'
+    (root / 'tests').mkdir(parents=True)
+    (root / 'app.py').write_text('def normalize(value):\n    return value.strip()\n', encoding='utf-8')
+    (root / 'tests/test_app.py').write_text('def test_normalize(): assert True\n', encoding='utf-8')
+    task = {'instance_id':'astropy__astropy-13398', 'repo':'fixture/project', 'base_commit':'a'*40,
+            'problem_statement':'normalize value'}
+    result = export_task(task, root, tmp_path / 'export', count_tokens=len, counter_label='fixture:characters',
+                         budget_tokens=1000)
+    assert [a['status'] for a in result['arms']] == ['PASS', 'PASS']
+    assert all(a['snippet_budget'] == 1000 for a in result['arms'])
+
+
+def test_controller_passes_budget_of_an_approved_repair_profile(tmp_path, monkeypatch):
+    import importlib.util
+    import json
+    from pathlib import Path
+    from types import SimpleNamespace
+
+    root = Path(__file__).resolve().parents[1]
+    spec = importlib.util.spec_from_file_location('w9_export_controller_budget', root/'scripts/export_w9_pilot_bundles.py')
+    script = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(script)
+    pinned = json.loads((root/'configs/m1/w9_bundle_profile.json').read_text(encoding='utf-8'))
+    repair = tmp_path/'repair_profile.json'
+    repair.write_text(json.dumps(pinned | {'profile': 'w9-repair-test', 'budget_tokens': 3500}), encoding='utf-8')
+    monkeypatch.setattr(script, 'APPROVED_PROFILES', (root/'configs/m1/w9_bundle_profile.json', repair))
+    tokenizer = tmp_path/'tokenizer.json'
+    tokenizer.write_text((root/'artifacts/m1/tokenizer-acceptance/tokenizer_manifest.json').read_text(encoding='utf-8'), encoding='utf-8')
+    commands = []
+    def fake_worker(command, **kwargs):
+        commands.append(command)
+        directory = Path(command[command.index('--directory')+1])
+        directory.mkdir()
+        (directory/'worker_result.json').write_text(json.dumps({'source_unchanged': True,
+            'task': {'arms': [{'arm': 'graph', 'status': 'PASS'}, {'arm': 'bm25', 'status': 'PASS'}]}}), encoding='utf-8')
+        return SimpleNamespace(returncode=0)
+    monkeypatch.setattr(script.subprocess, 'run', fake_worker)
+    monkeypatch.setattr(script.sys, 'argv', ['export', '--manifest', str(root/'configs/m1/w9_pilot_manifest.json'),
+        '--profile', str(repair), '--tokenizer-manifest', str(tokenizer), '--output-root', str(tmp_path/'out')])
+    assert script.main() == 0
+    assert all(c[c.index('--profile')+1] == str(repair.resolve()) for c in commands) and len(commands) == 5
+    unknown = tmp_path/'unknown_profile.json'
+    unknown.write_text(json.dumps(pinned | {'budget_tokens': 10}), encoding='utf-8')
+    monkeypatch.setattr(script.sys, 'argv', ['export', '--manifest', str(root/'configs/m1/w9_pilot_manifest.json'),
+        '--profile', str(unknown), '--tokenizer-manifest', str(tokenizer), '--output-root', str(tmp_path/'out2')])
+    with pytest.raises(ValueError, match='Profile differs'):
+        script.main()
+
+
+def test_worker_reads_budget_from_profile(tmp_path):
+    import importlib.util
+    from pathlib import Path
+    root = Path(__file__).resolve().parents[1]
+    spec = importlib.util.spec_from_file_location('w9_export_controller_budget2', root/'scripts/export_w9_pilot_bundles.py')
+    script = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(script)
+    assert script.profile_budget({'budget_tokens': 3500}) == 3500
+    with pytest.raises(ValueError, match='budget'):
+        script.profile_budget({'budget_tokens': 0})

@@ -28,7 +28,8 @@ def write_json(path, value):
         json.dump(value, stream, indent=2, ensure_ascii=False)
 
 
-def export_task(task, source_repo, output, *, count_tokens, counter_label) -> dict:
+def export_task(task, source_repo, output, *, count_tokens, counter_label, budget_tokens=8000) -> dict:
+    """budget_tokens is shared by both arms; 8000 is the retrieval-evaluation budget, repair uses a smaller one."""
     task = project_retrieval_task(task)
     output = Path(output)
     output.mkdir(parents=True, exist_ok=False)
@@ -45,14 +46,15 @@ def export_task(task, source_repo, output, *, count_tokens, counter_label) -> di
         try:
             if arm == 'bm25':
                 bundle = create_bm25_handoff(document, source_repo, issue_text=task['problem_statement'],
-                    count_tokens=count_tokens, counter_label=counter_label, selected_tests=fallback)
+                    count_tokens=count_tokens, counter_label=counter_label, selected_tests=fallback,
+                    budget_tokens=budget_tokens)
                 diagnostics = bundle.pop('retrieval_diagnostics')
             else:
                 overlay = TaskOverlayBuilder(document).build(task['instance_id'], task['problem_statement'], [])
                 retriever = GraphContextRetriever(document, source_repo, count_tokens=count_tokens, counter_label=counter_label)
                 usable = usable_node_ids(document, retriever._verify_snapshot())
                 anchors = [a.node_id for a in overlay.grounding.anchors]
-                result = retriever.retrieve(anchors, 8000, issue_text=task['problem_statement'], overlay=overlay,
+                result = retriever.retrieve(anchors, budget_tokens, issue_text=task['problem_statement'], overlay=overlay,
                                             include=lambda node, usable=usable: node['id'] in usable)
                 diagnostics = {'candidates':result.candidates, 'omissions':result.omissions,
                                'config':result.config, 'traversal_limited':result.traversal_limited}
