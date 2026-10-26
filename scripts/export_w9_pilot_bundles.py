@@ -21,6 +21,16 @@ from vgar.evaluation.retrieval.pilot_manifest import (
 )
 from vgar.graph.token_counter import LocalTokenizerCounter
 
+# Retrieval evaluation profile (8000) and the M3 repair profile (smaller budget, D5 in docs/m3_w9_decisions.md).
+APPROVED_PROFILES = (ROOT/'configs/m1/w9_bundle_profile.json', ROOT/'configs/m1/w9_bundle_profile_repair.json')
+
+
+def profile_budget(profile):
+    budget = profile.get('budget_tokens')
+    if type(budget) is not int or budget <= 0:
+        raise ValueError('Profile snippet budget must be a positive integer')
+    return budget
+
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
@@ -37,8 +47,8 @@ def main():
     validate_manifest(manifest, expected_hash=approved_manifest['manifest_hash'])
     require_tokenizer_identity(args.tokenizer_manifest, ROOT/'artifacts/m1/tokenizer-acceptance/tokenizer_manifest.json')
     profile = json.loads(args.profile.read_text(encoding='utf-8'))
-    expected = json.loads((ROOT/'configs/m1/w9_bundle_profile.json').read_text(encoding='utf-8'))
-    if profile != expected:
+    approved = [json.loads(p.read_text(encoding='utf-8')) for p in APPROVED_PROFILES if p.is_file()]
+    if profile not in approved:
         raise ValueError('Profile differs from implementation pinned W9 profile')
     if args.worker is not None:
         task = manifest['tasks'][args.worker]
@@ -51,7 +61,8 @@ def main():
                 raise ValueError('Full source checkout commit/integrity mismatch')
         check_source()
         counter = LocalTokenizerCounter(args.tokenizer_manifest)
-        result = export_task(task, source, args.directory, count_tokens=counter, counter_label=counter.counter_label)
+        result = export_task(task, source, args.directory, count_tokens=counter, counter_label=counter.counter_label,
+                             budget_tokens=profile_budget(profile))
         check_source()
         write_json(args.directory/'worker_result.json', {'task':result, 'tokenizer':counter.provenance,
             'source_head':task['base_commit'], 'source_unchanged':True})
