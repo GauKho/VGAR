@@ -159,6 +159,36 @@ def test_timeout_always_calls_cleanup_and_never_publishes_pass(
         e.lease.__exit__()
 
 
+@pytest.mark.skipif(sys.platform == "win32", reason="POSIX modes only")
+def test_control_dir_is_usable_by_capless_container_root(
+    admitted_case, tmp_path, monkeypatch
+):
+    # docker cp keeps host uid/mode; root with --cap-drop ALL cannot bypass them.
+    from pathlib import Path
+
+    e = make_executor(admitted_case, tmp_path)
+    modes = {}
+
+    def checked(args, directory, deadline):
+        if args[0] == "cp":
+            control = Path(args[1])
+            modes.update({p.name: p.stat().st_mode & 0o777 for p in control.iterdir()})
+            modes["."] = control.stat().st_mode & 0o777
+            raise RuntimeError("stop after transport")
+        return {"stdout": ""}
+
+    monkeypatch.setattr(e, "_identity", lambda d: None)
+    monkeypatch.setattr(e, "_checked", checked)
+    monkeypatch.setattr(e, "_cleanup", lambda *a: {"status": "PASS"})
+    try:
+        with pytest.raises(RuntimeError, match="stop after transport"):
+            e.execute_operation({"kind": "syntax", "targets": ["xarray/core.py"]}, 60)
+        assert modes["."] == 0o777
+        assert all(mode & 0o444 == 0o444 for name, mode in modes.items() if name != ".")
+    finally:
+        e.lease.__exit__()
+
+
 def test_cleanup_failure_is_fatal_even_after_success(
     admitted_case, tmp_path, monkeypatch
 ):

@@ -297,6 +297,10 @@ class DockerExecutor:
             runtime=dict(self.profile["runtime"]),
         )
         atomic_json(control / "config.json", config)
+        # docker cp keeps the host uid and mode; container root has no CAP_DAC_OVERRIDE.
+        for path in control.iterdir():
+            path.chmod(0o644)
+        control.chmod(0o777)
         self._checked(
             ["cp", str(control), self.name + ":/vgar"],
             directory,
