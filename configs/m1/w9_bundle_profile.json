@@ -1,0 +1,12 @@
+{
+  "profile": "w9-repair-node-range-issue-only-v1",
+  "resolver": "static",
+  "arms": ["graph", "bm25"],
+  "budget_tokens": 8000,
+  "query_policy": "problem_statement_only_no_hints_or_gold",
+  "test_hint_policy": "issue-only",
+  "task_timeout_seconds": 600,
+  "bm25": {"k1": 1.2, "b": 0.75},
+  "scope": "production-source-nodes",
+  "confidence_meaning_bm25": "exact-source-binding-not-relevance-probability"
+}

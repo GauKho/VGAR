@@ -114,12 +114,12 @@ def _project_bundle(run, task, lease, applied, verification):
 
 def run_repair(task, policy, generator, executor, output_root, *, m1_counter, tokenizer,
                profile=None, temp_root=None, keep_workspace=False, supersedes_run_id=None, rerun_reason=None,
-               feedback=None, deadline=None):
+               feedback=None, deadline=None, experiment=None, admission=None):
     """One generation, in-process: the persisted session steps run back to back."""
     from vgar.repair import session as steps
     session = steps.start_session(task, policy, generator.mode, output_root, profile=profile, temp_root=temp_root,
         keep_workspace=keep_workspace, supersedes_run_id=supersedes_run_id, rerun_reason=rerun_reason,
-        feedback=feedback, deadline=deadline)
+        feedback=feedback, deadline=deadline, experiment=experiment, admission=admission)
     prompt = steps.prepare(session, m1_counter, tokenizer, executor=executor)
     if prompt is not None:
         started_utc, start = utc_now(), time.monotonic()

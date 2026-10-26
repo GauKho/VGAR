@@ -47,5 +47,9 @@ where = ["src"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-addopts = ["--ignore=tests/fixtures"]
+addopts = ["--ignore=tests/fixtures", "--strict-markers"]
 pythonpath = ["src"]
+markers = [
+    "hf: needs model weights or a GPU",
+    "docker: needs a Docker daemon or SWE-bench images",
+]

@@ -1,0 +1,1 @@
+{"file":"pkg/debt.py","line":2,"column":11,"message":"Incompatible return value type (got \"str\", expected \"int\")","hint":null,"code":"return-value","severity":"error"}

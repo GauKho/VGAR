@@ -1,0 +1,7 @@
+{
+  "source_roots": ["pylint/pyreverse"],
+  "failing_selectors": ["tests/vgar_w9_repro_type_hints.py::test_type_hint_shown_for_none_default"],
+  "fallback_scope": ["tests/vgar_w9_repro_type_hints.py", "tests/unittest_pyreverse_diadefs.py", "tests/unittest_pyreverse_inspector.py"],
+  "protected_paths": ["tests"],
+  "overlay": {"tests/vgar_w9_repro_type_hints.py": "pylint-dev__pylint-4551.repro.py"}
+}

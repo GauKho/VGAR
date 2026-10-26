@@ -2,12 +2,20 @@
 from __future__ import annotations
 
 import json
+from collections.abc import Callable
 from pathlib import Path
-from typing import Callable
 
 from vgar.contracts.context import ContextPayload, SourceRange
-from vgar.contracts.handoff import (ContextManifest, ItemBinding, SourceScope, TestHints,
-                                    adapt_test_hints, byte_digest, payload_digest, validate_context_handoff)
+from vgar.contracts.handoff import (
+    ContextManifest,
+    ItemBinding,
+    SourceScope,
+    TestHints,
+    adapt_test_hints,
+    byte_digest,
+    payload_digest,
+    validate_context_handoff,
+)
 from vgar.contracts.prompt_context import CONTEXT_FORMAT, render_context_for_repair
 from vgar.graph.builder import IGNORED_DIRECTORY_NAMES
 from vgar.graph.retrieval import GraphContextRetriever
@@ -41,7 +49,8 @@ def create_test_hints(document: dict, manifest: ContextManifest | dict, *, chang
 def create_context_handoff(document: dict, response: dict, source_repo: str | Path, *,
                             count_tokens: Callable[[str], int], counter_label: str,
                             changed_paths: list[str] | None = None, failing_tests: list[str] | None = None,
-                            selected_tests: list[str] | None = None) -> dict:
+                            selected_tests: list[str] | None = None,
+                            test_hint_policy: str = 'graph') -> dict:
     """Consume get_related_context's data wrapper, bind exact bytes, validate export."""
     if (response.get('graph_version'), response.get('repository_revision'), response.get('context_format'),
             response.get('counter_label')) != (document['graph_version'], document['repository_revision'],
@@ -78,8 +87,21 @@ def create_context_handoff(document: dict, response: dict, source_repo: str | Pa
         expected_repo_key=document['repo_key'], expected_revision=document['repository_revision'],
         count_tokens=count_tokens, counter_label=counter_label)
     paths = sorted({item.path for item in context.items}) if changed_paths is None else changed_paths
-    hints = create_test_hints(document, manifest, changed_paths=paths,
-                              failing_tests=failing_tests, selected_tests=selected_tests)
+    if test_hint_policy == 'graph':
+        hints = create_test_hints(document, manifest, changed_paths=paths,
+                                  failing_tests=failing_tests, selected_tests=selected_tests)
+    elif test_hint_policy == 'issue-only':
+        if failing_tests:
+            raise ValueError('Issue-only export does not admit failing-test oracle inputs')
+        targets = sorted(set(paths) | set(bindings))
+        hints = TestHints(graph_version=manifest.graph_version, repo_key=manifest.repo_key,
+            repository_revision=manifest.repository_revision, source_digest=manifest.source_digest,
+            test_links={target: [] for target in targets},
+            link_details={target: {'candidates': [], 'truncated': False, 'traversal_limited': False,
+                          'fallback_reason': 'W9_ISSUE_ONLY_NO_TEST_ORACLE'} for target in targets},
+            failing_selectors=[], fallback_scope=selected_tests or []).model_dump(mode='json')
+    else:
+        raise ValueError('Unknown test hint policy')
     adapt_test_hints(hints, manifest, source_repo)
     return {'context': validated.model_dump(mode='json'), 'manifest': manifest.model_dump(mode='json'), 'test_hints': hints}
 

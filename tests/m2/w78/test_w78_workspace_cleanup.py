@@ -31,6 +31,11 @@ def windows_error(code, path):
     return error
 
 
+def is_seed(path):
+    # Linux shutil.rmtree calls os.rmdir('seed', dir_fd=...), so match the name.
+    return Path(path).name == 'seed'
+
+
 def saved_cleanup(root, private):
     return json.loads((root / '.cleanup-records' / (private.name + '.json')).read_text(encoding='utf-8'))
 
@@ -43,9 +48,9 @@ def test_owned_cleanup_retries_sharing_lock_and_records_actual_outcome(tmp_path,
     remaining = [2]
 
     def rmdir(path, *args, **kwargs):
-        if Path(path) == private / 'seed' and remaining[0]:
+        if is_seed(path) and remaining[0]:
             remaining[0] -= 1
-            raise windows_error(code, path)
+            raise windows_error(code, private / 'seed')
         return original(path, *args, **kwargs)
 
     monkeypatch.setattr(os, 'rmdir', rmdir)
@@ -67,8 +72,8 @@ def test_owned_cleanup_does_not_swallow_persistent_sharing_lock(tmp_path, monkey
     original = os.rmdir
 
     def rmdir(path, *args, **kwargs):
-        if Path(path) == private / 'seed':
-            raise windows_error(32, path)
+        if is_seed(path):
+            raise windows_error(32, private / 'seed')
         return original(path, *args, **kwargs)
 
     monkeypatch.setattr(os, 'rmdir', rmdir)
@@ -89,7 +94,7 @@ def test_owned_cleanup_propagates_non_sharing_error_without_backoff(tmp_path, mo
     failure = OSError(errno.EIO, 'Controlled non-sharing I/O error', str(private / 'seed'))
 
     def rmdir(path, *args, **kwargs):
-        if Path(path) == private / 'seed':
+        if is_seed(path):
             raise failure
         return original(path, *args, **kwargs)
 
@@ -116,7 +121,7 @@ def test_pipeline_links_cleanup_evidence_and_never_passes_a_locked_workspace(m1_
     original = os.rmdir
 
     def rmdir(path, *args, **kwargs):
-        if blocked and Path(path).name == 'seed' and Path(path).parent.name.startswith('m2-w78-'):
+        if blocked and is_seed(path):
             raise windows_error(32, path)
         return original(path, *args, **kwargs)
 

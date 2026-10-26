@@ -1,0 +1,71 @@
+{
+  "graph_version": "sha256:1a480ca3a792aa1433747d13818743841e7f4c30beafbd2fe286721a25bdf8cd",
+  "anchor_ids": [
+    "vgar:fixture/w9/single-file-login:python:function:auth.py:auth.login"
+  ],
+  "items": [
+    {
+      "node_id": "vgar:fixture/w9/single-file-login:python:file:auth.py",
+      "path": "auth.py",
+      "symbol": "auth.py",
+      "range": {
+        "start_line": 1,
+        "start_col": 0,
+        "end_line": 3,
+        "end_col": 0
+      },
+      "snippet": "def login(value):\r\n    return bool(value)\r\n",
+      "relevance_score": 0.5800000000000001,
+      "graph_distance": 1,
+      "graph_rationale": [
+        "TASK_ANCHOR",
+        "SOURCE_FILE:vgar:fixture/w9/single-file-login:python:function:auth.py:auth.login->vgar:fixture/w9/single-file-login:python:file:auth.py"
+      ],
+      "confidence": 0.4,
+      "token_count": 43
+    },
+    {
+      "node_id": "vgar:fixture/w9/single-file-login:python:test:tests/test_auth.py:tests.test_auth.test_login_accepts_name",
+      "path": "tests/test_auth.py",
+      "symbol": "tests.test_auth.test_login_accepts_name",
+      "range": {
+        "start_line": 8,
+        "start_col": 0,
+        "end_line": 9,
+        "end_col": 33
+      },
+      "snippet": "def test_login_accepts_name():\r\n    assert login(\"alice\") is True",
+      "relevance_score": 0.526108334917017,
+      "graph_distance": 1,
+      "graph_rationale": [
+        "TASK_ANCHOR",
+        "CALLERS:vgar:fixture/w9/single-file-login:python:function:auth.py:auth.login->vgar:fixture/w9/single-file-login:python:test:tests/test_auth.py:tests.test_auth.test_login_accepts_name"
+      ],
+      "confidence": 0.4,
+      "token_count": 65
+    },
+    {
+      "node_id": "vgar:fixture/w9/single-file-login:python:test:tests/test_auth.py:tests.test_auth.test_login_rejects_whitespace",
+      "path": "tests/test_auth.py",
+      "symbol": "tests.test_auth.test_login_rejects_whitespace",
+      "range": {
+        "start_line": 4,
+        "start_col": 0,
+        "end_line": 5,
+        "end_col": 32
+      },
+      "snippet": "def test_login_rejects_whitespace():\r\n    assert login(\"   \") is False",
+      "relevance_score": 0.5223616318458042,
+      "graph_distance": 1,
+      "graph_rationale": [
+        "TASK_ANCHOR",
+        "CALLERS:vgar:fixture/w9/single-file-login:python:function:auth.py:auth.login->vgar:fixture/w9/single-file-login:python:test:tests/test_auth.py:tests.test_auth.test_login_rejects_whitespace"
+      ],
+      "confidence": 0.4,
+      "token_count": 70
+    }
+  ],
+  "total_token_count": 178,
+  "token_budget": 8000,
+  "truncated": false
+}

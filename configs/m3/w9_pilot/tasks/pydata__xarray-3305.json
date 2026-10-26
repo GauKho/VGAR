@@ -1,0 +1,7 @@
+{
+  "source_roots": ["xarray/core"],
+  "failing_selectors": ["tests/vgar_w9_repro_quantile.py::test_quantile_keeps_attrs"],
+  "fallback_scope": ["tests/vgar_w9_repro_quantile.py", "xarray/tests/test_dataarray.py"],
+  "protected_paths": ["tests", "xarray/tests"],
+  "overlay": {"tests/vgar_w9_repro_quantile.py": "pydata__xarray-3305.repro.py"}
+}

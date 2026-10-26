@@ -25,6 +25,7 @@ results/
 .m1-test-tmp*/
 artifacts/m1/w5-w6/
 artifacts/m1/w7-w8/
+artifacts/m1/w9/
 node_modules/
 *.scip
 

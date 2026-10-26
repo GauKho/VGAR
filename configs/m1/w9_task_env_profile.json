@@ -1,0 +1,29 @@
+{
+  "schema_version": "vgar-task-env-v1",
+  "qualification_state": "UNQUALIFIED",
+  "docker_host": "unix:///var/run/docker.sock",
+  "sdk_python": "/home/vgar/w9/venvs/harness/bin/python",
+  "collection_timeout_seconds": 300,
+  "images": {
+    "astropy__astropy-13398": {
+      "reference": "swebench/sweb.eval.x86_64.astropy_1776_astropy-13398@sha256:4d7e922ae3b796147f85b37861f6dec5463001a964bd941ed6933109245fe69f",
+      "image_id": "sha256:4d7e922ae3b796147f85b37861f6dec5463001a964bd941ed6933109245fe69f"
+    },
+    "django__django-11138": {
+      "reference": "swebench/sweb.eval.x86_64.django_1776_django-11138@sha256:811f9bf0ca067b334b574cd3589cdc989b350b2a24b68e1ddcd288fbb97d61f4",
+      "image_id": "sha256:811f9bf0ca067b334b574cd3589cdc989b350b2a24b68e1ddcd288fbb97d61f4"
+    },
+    "matplotlib__matplotlib-14623": {
+      "reference": "swebench/sweb.eval.x86_64.matplotlib_1776_matplotlib-14623@sha256:52cdd8ac0f4a8b05f40507d500680ec613092186310cbaf7895d1554e9d654dc",
+      "image_id": "sha256:52cdd8ac0f4a8b05f40507d500680ec613092186310cbaf7895d1554e9d654dc"
+    },
+    "pydata__xarray-3305": {
+      "reference": "swebench/sweb.eval.x86_64.pydata_1776_xarray-3305@sha256:0e234daddf9a42b85a77ba0436f3fcbad90759921c978b127dff90d55cba0f89",
+      "image_id": null
+    },
+    "pylint-dev__pylint-4551": {
+      "reference": "swebench/sweb.eval.x86_64.pylint-dev_1776_pylint-4551@sha256:f0f898ca4ef3fec27a985b1c2c6ca6ed3cb8fbf5be393e0bb6caf4aaf1512c8c",
+      "image_id": null
+    }
+  }
+}

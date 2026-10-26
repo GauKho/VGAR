@@ -82,7 +82,7 @@ def _finish(session, tool, inputs, started_utc, start) -> dict[str, Any]:
 def get_task_context(task_path: str, mode: str, output_root: str, work_root: str,
                      config_path: str | None = None, keep_workspace: bool = False,
                      feedback: dict[str, Any] | None = None, supersedes_run_id: str | None = None,
-                     rerun_reason: str | None = None) -> dict[str, Any]:
+                     rerun_reason: str | None = None, experiment: dict[str, Any] | None = None) -> dict[str, Any]:
     """Start a run on a trusted fixture task: M1 context, private worktree, baseline and the V11 prompt.
 
     With feedback the run is a rerun: the feedback is appended to the V11 prompt and the run records
@@ -91,18 +91,22 @@ def get_task_context(task_path: str, mode: str, output_root: str, work_root: str
     from vgar.repair.executor import utc_now
     from vgar.repair.pipeline import build_tokenizer
     from vgar.repair.session import prepare, start_session
+    from vgar.repair.experiment import validate_experiment
     inputs = {"task_path": task_path, "mode": mode, "output_root": output_root, "work_root": work_root,
               "config_path": config_path, "keep_workspace": keep_workspace}
     rerun = {"feedback": feedback, "supersedes_run_id": supersedes_run_id, "rerun_reason": rerun_reason}
     inputs.update({key: value for key, value in rerun.items() if value is not None})
+    if experiment is not None:
+        inputs['experiment'] = experiment
     started_utc, start = utc_now(), time.monotonic()
     try:
+        experiment = validate_experiment(experiment)
         policy, profile = load_config(config_path or CONFIG_DIR / "demo.json")
         task = load_task(task_path)
         tokenizer, counter = build_tokenizer(mode, policy, profile, output_root)
         session = start_session(task, policy, mode, output_root, profile=profile if mode == "real" else None,
                                 temp_root=Path(work_root), keep_workspace=keep_workspace, mcp_scope="repair_server",
-                                **rerun)
+                                experiment=experiment, **rerun)
         session.state["config_path"] = str(config_path or CONFIG_DIR / "demo.json")
         session.save()
     except Exception as error:

@@ -1,0 +1,16 @@
+# Primary owner first, secondary owner second (plan W9-W16 v2, §0).
+# TODO(M3-W9-4): replace @<m1> @<m2> @<m3> with the members' GitHub handles.
+/src/vgar/graph/                     @<m1> @<m3>
+/src/vgar/evaluation/retrieval/      @<m1> @<m3>
+/src/vgar/contracts/impact.py        @<m1> @<m3>
+/src/vgar/evaluation/harness/        @<m1> @<m2>
+/scripts/prepare_task_env.py         @<m1> @<m2>
+/src/vgar/repair/                    @<m2> @<m1>
+/src/vgar/contracts/evidence.py      @<m2> @<m1> @<m3>
+/configs/m2/                         @<m2> @<m1>
+/src/vgar/mcp/                       @<m3> @<m2>
+/src/vgar/agents/                    @<m3> @<m2>
+/src/vgar/evaluation/repair/         @<m3> @<m2>
+/src/vgar/cli.py                     @<m3>
+/pyproject.toml                      @<m3>
+/configs/*.yaml                      @<m3>

@@ -1,0 +1,47 @@
+name: tests
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    # Local full suite takes ~14 min; tighten once the first GitHub run is timed (target < 10 min).
+    timeout-minutes: 30
+    env:
+      TOKENIZER_MODEL: Qwen/Qwen3-4B-Instruct-2507
+      TOKENIZER_REVISION: cdbee75f17c01a7cc42f958dc650907174af0554
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: pyproject.toml
+
+      # GitHub-hosted runners have no GPU: the CPU wheel avoids several GB of CUDA packages.
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install torch --index-url https://download.pytorch.org/whl/cpu
+          pip install -e ".[dev]"
+
+      # Tokenizer files only (no weights); tests read them through the committed manifests.
+      - uses: actions/cache@v4
+        id: tokenizer
+        with:
+          path: artifacts/m1/tokenizers
+          key: tokenizer-${{ env.TOKENIZER_REVISION }}-${{ hashFiles('artifacts/m2/w5-w6/tokenizer_manifest.json', 'artifacts/m1/tokenizer-acceptance/tokenizer_manifest.json') }}
+
+      - name: Provision tokenizer
+        if: steps.tokenizer.outputs.cache-hit != 'true'
+        run: >
+          python scripts/provision_m1_tokenizer.py
+          --model-id "$TOKENIZER_MODEL" --revision "$TOKENIZER_REVISION"
+          --assets-root artifacts/m1/tokenizers --manifest "$RUNNER_TEMP/tokenizer_manifest.json"
+
+      - name: Run tests
+        run: pytest -m "not hf and not docker" -q
