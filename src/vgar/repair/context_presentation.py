@@ -30,13 +30,21 @@ def present_context(handoff, *, absolute_lines=False, patch_contract=False) -> t
                 raise ValueError('Source changed after M1 validation: ' + path)
             files[path] = data
         metadata = describe_item(item, files[path])
-        permission = ''
+        snippet, permission = item.snippet, ''
         if patch_contract:
             allowed = (path in handoff.task.allowed_source_paths and not any(
                 path == p or path.startswith(p + '/') for p in handoff.task.protected_paths))
             source_lines = files[path].decode('utf-8').splitlines()
-            snippet_lines = item.snippet.splitlines()
             first = metadata['start_line'] - 1
+            # M1 node ranges start a method at its indentation; replacement needs whole lines, so take back
+            # the source's own leading whitespace. Any other code before the snippet is still rejected.
+            prefix = (files[path].splitlines()[first][:metadata['start_column']].decode('utf-8')
+                      if allowed and 0 <= first < len(source_lines) else '')
+            if prefix and not prefix.strip():
+                snippet = prefix + snippet
+                metadata.update(start_column=0)
+            metadata.update(leading_whitespace_added=len(snippet) - len(item.snippet))
+            snippet_lines = snippet.splitlines()
             if allowed and (metadata['start_column'] != 0 or not snippet_lines
                     or source_lines[first:first + len(snippet_lines)] != snippet_lines):
                 raise ValueError('Replacement requires complete source lines: ' + path)
@@ -58,6 +66,6 @@ def present_context(handoff, *, absolute_lines=False, patch_contract=False) -> t
             f'Full_file_line_count: {metadata["source_line_count"]}\n'
             f'Snippet_has_final_newline: {str(metadata["snippet_has_final_newline"]).lower()}\n'
             f'Relevance: {item.relevance_score:.4f}; confidence: {item.confidence:.4f}\n'
-            + absolute + '--- BEGIN SOURCE ---\n' + item.snippet + ('' if item.snippet.endswith('\n') else '\n') + '--- END SOURCE ---')
+            + absolute + '--- BEGIN SOURCE ---\n' + snippet + ('' if snippet.endswith('\n') else '\n') + '--- END SOURCE ---')
     return '\n'.join(parts), dict(presentation_version='source-lines-v10' if patch_contract else 'source-lines-v3', source_items=items,
         original_m1_context=handoff.context_text, original_m1_context_sha256=digest(handoff.context_text))
