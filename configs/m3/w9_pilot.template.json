@@ -1,0 +1,143 @@
+{
+  "schema": "vgar-m3-experiment-v1",
+  "source": {
+    "type": "swebench",
+    "manifest": {
+      "path": "../m1/w9_pilot_manifest.json",
+      "sha256": "sha256:98984466d59da122d4798d436359275030f79e1190936d7d9a6f9a0a58458425"
+    },
+    "profiles": {
+      "astropy__astropy-13398": {
+        "path": "@data/profiles/astropy__astropy-13398.json",
+        "sha256": "sha256:FILL_PROFILE_HASH"
+      },
+      "django__django-11138": {
+        "path": "@data/profiles/django__django-11138.json",
+        "sha256": "sha256:FILL_PROFILE_HASH"
+      },
+      "matplotlib__matplotlib-14623": {
+        "path": "@data/profiles/matplotlib__matplotlib-14623.json",
+        "sha256": "sha256:FILL_PROFILE_HASH"
+      },
+      "pydata__xarray-3305": {
+        "path": "@data/profiles/pydata__xarray-3305.json",
+        "sha256": "sha256:FILL_PROFILE_HASH"
+      },
+      "pylint-dev__pylint-4551": {
+        "path": "@data/profiles/pylint-dev__pylint-4551.json",
+        "sha256": "sha256:FILL_PROFILE_HASH"
+      }
+    },
+    "checkouts": "@data/repositories/{task_id}",
+    "bundles": {
+      "astropy__astropy-13398": {
+        "bm25": {
+          "path": "@data/bundles/astropy__astropy-13398/bm25",
+          "hashes": {
+            "context.json": "sha256:FILL_FROM_AUDIT",
+            "context_manifest.json": "sha256:FILL_FROM_AUDIT",
+            "test_links.json": "sha256:FILL_FROM_AUDIT"
+          }
+        },
+        "graph": {
+          "path": "@data/bundles/astropy__astropy-13398/graph",
+          "hashes": {
+            "context.json": "sha256:FILL_FROM_AUDIT",
+            "context_manifest.json": "sha256:FILL_FROM_AUDIT",
+            "test_links.json": "sha256:FILL_FROM_AUDIT"
+          }
+        }
+      },
+      "django__django-11138": {
+        "bm25": {
+          "path": "@data/bundles/django__django-11138/bm25",
+          "hashes": {
+            "context.json": "sha256:FILL_FROM_AUDIT",
+            "context_manifest.json": "sha256:FILL_FROM_AUDIT",
+            "test_links.json": "sha256:FILL_FROM_AUDIT"
+          }
+        },
+        "graph": {
+          "path": "@data/bundles/django__django-11138/graph",
+          "hashes": {
+            "context.json": "sha256:FILL_FROM_AUDIT",
+            "context_manifest.json": "sha256:FILL_FROM_AUDIT",
+            "test_links.json": "sha256:FILL_FROM_AUDIT"
+          }
+        }
+      },
+      "matplotlib__matplotlib-14623": {
+        "bm25": {
+          "path": "@data/bundles/matplotlib__matplotlib-14623/bm25",
+          "hashes": {
+            "context.json": "sha256:FILL_FROM_AUDIT",
+            "context_manifest.json": "sha256:FILL_FROM_AUDIT",
+            "test_links.json": "sha256:FILL_FROM_AUDIT"
+          }
+        },
+        "graph": {
+          "path": "@data/bundles/matplotlib__matplotlib-14623/graph",
+          "hashes": {
+            "context.json": "sha256:FILL_FROM_AUDIT",
+            "context_manifest.json": "sha256:FILL_FROM_AUDIT",
+            "test_links.json": "sha256:FILL_FROM_AUDIT"
+          }
+        }
+      },
+      "pydata__xarray-3305": {
+        "bm25": {
+          "path": "@data/bundles/pydata__xarray-3305/bm25",
+          "hashes": {
+            "context.json": "sha256:FILL_FROM_AUDIT",
+            "context_manifest.json": "sha256:FILL_FROM_AUDIT",
+            "test_links.json": "sha256:FILL_FROM_AUDIT"
+          }
+        },
+        "graph": {
+          "path": "@data/bundles/pydata__xarray-3305/graph",
+          "hashes": {
+            "context.json": "sha256:FILL_FROM_AUDIT",
+            "context_manifest.json": "sha256:FILL_FROM_AUDIT",
+            "test_links.json": "sha256:FILL_FROM_AUDIT"
+          }
+        }
+      },
+      "pylint-dev__pylint-4551": {
+        "bm25": {
+          "path": "@data/bundles/pylint-dev__pylint-4551/bm25",
+          "hashes": {
+            "context.json": "sha256:FILL_FROM_AUDIT",
+            "context_manifest.json": "sha256:FILL_FROM_AUDIT",
+            "test_links.json": "sha256:FILL_FROM_AUDIT"
+          }
+        },
+        "graph": {
+          "path": "@data/bundles/pylint-dev__pylint-4551/graph",
+          "hashes": {
+            "context.json": "sha256:FILL_FROM_AUDIT",
+            "context_manifest.json": "sha256:FILL_FROM_AUDIT",
+            "test_links.json": "sha256:FILL_FROM_AUDIT"
+          }
+        }
+      }
+    },
+    "task_inputs": "w9_pilot/tasks",
+    "docker_host": "unix:///var/run/docker.sock"
+  },
+  "repair_config": "../m2/w9_pilot_linux.json",
+  "generation": "real",
+  "variants": [
+    {
+      "path": "../m2/variants/A0.json",
+      "arm": "bm25"
+    },
+    {
+      "path": "../m2/variants/A1.json",
+      "arm": "graph"
+    },
+    {
+      "path": "../m2/variants/A2.json",
+      "arm": "graph"
+    }
+  ]
+}
