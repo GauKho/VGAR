@@ -47,6 +47,21 @@ def test_skipped_tasks_reported_as_error(swebench_config, monkeypatch):
     assert 'no docker image' in rejected[0]['detail']
 
 
+def test_static_unavailability_is_frozen_from_the_profile(swebench_config, monkeypatch):
+    from vgar.evaluation.repair import preflight as module
+    from vgar.evaluation.repair.manifest import load_experiment
+    config, data = swebench_config
+    exp = load_experiment(config, data)
+    monkeypatch.setattr(module, 'admit_task', lambda *a, **k: (_ for _ in ()).throw(ValueError('no docker')))
+    rows = [r for r in module.preflight(exp, data, data/'out') if r['task_id'] == 'demo__demo-1']
+    assert {json.dumps(r['static_unavailable']) for r in rows} == {'{}'}  # Synthetic profile runs Python 3.11.
+    monkeypatch.setattr(module, 'mypy_unavailable_reason', lambda version: 'TESTBED_PYTHON_UNSUPPORTED')
+    rows = [r for r in module.preflight(exp, data, data/'out') if r['task_id'] == 'demo__demo-1']
+    assert all(r['static_unavailable'] == {'mypy': 'TESTBED_PYTHON_UNSUPPORTED'} for r in rows)
+    excluded = [r for r in module.preflight(exp, data, data/'out') if r['task_id'] == 'demo__demo-2']
+    assert all(r['static_unavailable'] is None for r in excluded)
+
+
 def test_failing_selector_outside_fallback_scope_is_error(fixture_config, tmp_path, monkeypatch):
     # The engine's baseline collects only fallback_scope, then requires every failing selector in it.
     import dataclasses

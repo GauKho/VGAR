@@ -150,6 +150,7 @@ def run(config):
                 "-C",
                 root,
                 "reset",
+                "-q",
                 "--hard",
                 config["base_commit"],
             ],

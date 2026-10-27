@@ -11,9 +11,10 @@ Nguyên tắc của plan: không đổi model, prompt, budget hay manifest mà k
 | D4 | Test tái hiện viết tay từ issue, không dùng F2P/P2P | Đề xuất |
 | D5 | Giữ `input_cap` 6000; một budget snippet chung **B = 1500** cho cả hai arm | **Chốt 25/10** (người dùng duyệt), M1 review code |
 | D7 | Qwen3-4B-Instruct-2507 fp16, policy `demo.json`, `docker_admitted`, global 1800 s | Đề xuất |
-| D9 | A2 khi image thiếu mypy/Ruff: chạy và ghi ERROR, không dựng image mới | Đề xuất |
+| D9 | A2 khi image thiếu mypy/Ruff: chạy và ghi ERROR, không dựng image mới | **Thay bằng D12** (27/10) |
 | D10 | Dữ liệu pilot do M3 tự sinh lại thì ghi rõ nguồn gốc của hash | **Áp dụng 25/10** |
 | D11 | Trình bày snippet method thụt lề thành dòng nguyên (prompt V11) | **Chốt 25/10** (người dùng duyệt), M2 review code |
+| D12 | A2 dùng bộ tool mypy/Ruff pin sẵn, copy vào container; testbed < 3.7 thì mypy `UNAVAILABLE`; giữ đủ population, báo thêm subgroup | **Chốt 27/10** (người dùng duyệt phương án a), M2 review code |
 
 ## D1. Variant → arm
 
@@ -105,3 +106,17 @@ Toàn bộ dữ liệu nằm dưới `~/w9` trong WSL Ubuntu trên laptop.
   - Image được pull trước theo đúng digest đã pin, thay cho `--prepare-images`.
   - Ngưỡng tài nguyên không hạ. Đã chạy `drop_caches=1` một lần trong WSL trước collection để RAM Windows vượt ngưỡng 4 GiB.
 - **Hash trong `configs/m3/w9_pilot.json`** đọc từ chính output ở trên, nên **không độc lập**. Nếu M1 muốn duyệt thì so với lần chạy của họ.
+
+## D12. Bộ tool static cho A2 (thay D9)
+
+- **Chọn:** `scripts/build_static_tools.sh` dựng bộ tool theo `configs/m2/static/tools.lock.json`: Python 3.11.17 standalone có mypy 2.4.0, cùng binary Ruff 0.17.0 (musl). `DockerExecutor` `docker cp` bộ này vào `/vgar/tools`, **chỉ** ở các lệnh static. mypy luôn chạy với `--python-executable <testbed> --python-version 3.10`. Image digest không đổi.
+- **Lý do:** image SWE-bench không có mypy/Ruff và container chạy `--network none`. mypy 2.4.0 cần Python ≥ 3.10 và gói biên dịch (`librt`, `ast-serialize`), nên không chạy bằng Python của testbed được. Spike 27/10 trên 5 image pilot: Ruff chạy trên mọi task; mypy chạy với testbed 3.8/3.9/3.10; testbed 3.6 làm mypy crash (`pyinfo.py` dùng `from __future__ import annotations`).
+- **Testbed < 3.7 (`mypy_min_testbed_python`):** mypy ghi `UNAVAILABLE` / `TESTBED_PYTHON_UNSUPPORTED`. Quyết định này lấy từ `runtime.python` của profile đã pin, không lấy từ kết quả chạy. Preflight ghi vào cột `static_unavailable` trước khi sinh patch. `UNAVAILABLE` không bao giờ được tính là PASS. Ruff vẫn bắt buộc. Nếu tình trạng khả dụng khác nhau giữa baseline và post thì kết quả là ERROR.
+- **Population (phương án a):** giữ đủ dev task. Bảng A0–A2 báo tổng, kèm hai subgroup "testbed ≥ 3.7 (đủ mypy + Ruff)" và "testbed 3.6 (chỉ Ruff)". Số N của mỗi nhóm đếm từ `static_unavailable` trong preflight.
+- **Sửa kèm:**
+  - `mypy.ini` dùng `follow_imports = silent`: chỉ báo lỗi trên file trong scope, không xả lỗi từ module được import.
+  - `docker_probe.py` dùng `git reset -q`, vì tiến trình git in ra stderr làm parser coi tool là lỗi (gặp ở Matplotlib).
+  - Parser đổi `/testbed/...` của Ruff về đường dẫn tương đối (gặp ở Xarray).
+  - Parser nhận cột `-1` của mypy ("không có cột") thành cột 1 (gặp ở Matplotlib `backend_ps.py`). Điểm này sửa lại test cũ của M2, cần M2 duyệt.
+- **Kiểm 27/10, Docker thật, chỉ baseline A2, không nạp model:** Matplotlib, Xarray, Pylint đều PASS. Số diagnostic baseline lần lượt là mypy 1468 / 358 / 17 và Ruff 237 / 7 / 0; mỗi task 41–92 s. Chưa kiểm thật đường `UNAVAILABLE`, vì Django (3.6) bị EXCLUDED trong pilot; đường này mới chỉ có unit test.
+- **Hệ quả:** `interpreter_ref` của Docker thêm hash của lock file, nên đổi lock là đổi binding. Bộ tool nằm ngoài Git (`VGAR_STATIC_TOOLS`, mặc định `~/.cache/vgar/static-tools`), `manifest.json` ghi version quan sát được và danh sách package.

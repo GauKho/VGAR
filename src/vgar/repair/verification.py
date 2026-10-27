@@ -38,7 +38,8 @@ def capture_baseline(task, lease, executor, policy, *, variant=None):
         from vgar.repair.static_diagnostics import DiagnosticReport
         checks = required_checks(variant) - {'tests'}
         static_ready = (set(static['source_snapshot']) == set(task.allowed_source_paths)
-            and all(DiagnosticReport.model_validate(static[k]['report']).execution_status == 'COMPLETE' for k in checks))
+            and all(DiagnosticReport.model_validate(static[k]['report']).execution_status in ('COMPLETE', 'UNAVAILABLE')
+                    for k in checks))
         result.update(variant_policy_hash=policy_hash(variant), variant_id=variant.variant_id)
     ready = (tests['status'] == 'FAIL' and any(tests['outcomes'].get(n) == 'FAIL' for n in required)
              and all(tests['outcomes'].get(n) in ('FAIL', 'PASS') for n in required)
@@ -144,7 +145,7 @@ def _assess_w9_static(baseline, static, variant, status, reasons):
         checks[name] = dict(status=delta.status, raw_status=static[name]['status'],
                             required=name in required, delta=delta.model_dump(mode='json'))
         static[name].update(required=name in required, delta=delta.model_dump(mode='json'))
-        if name in required and delta.status != 'PASS':
+        if name in required and delta.status not in ('PASS', 'UNAVAILABLE'):
             reasons.append(code)
             status = 'ERROR' if delta.status == 'ERROR' or status == 'ERROR' else 'FAIL'
     return status, reasons, checks
