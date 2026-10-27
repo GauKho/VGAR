@@ -17,6 +17,13 @@ from vgar.repair.contracts import safe_selector
 from vgar.repair.evidence import atomic_json, digest
 from vgar.repair.executor import remaining_timeout, run_bounded
 from vgar.repair.pipeline import DeadlineExecutor
+from vgar.repair.static_tools import (
+    CONTAINER_ROOT,
+    LOCK_PATH,
+    load_bundle,
+    lock,
+    mypy_unavailable_reason,
+)
 from vgar.repair.workspace import inventory
 
 
@@ -39,6 +46,8 @@ class DockerExecutor:
             + self.profile["python"]
             + "|"
             + self.profile["runtime"]["python"]
+            + "|static-tools:"
+            + digest(LOCK_PATH.read_bytes())
         )
         self.reserved = False
 
@@ -96,9 +105,8 @@ class DockerExecutor:
                     )
                 )
                 if argv == prefix + ("--version",):
-                    return [self.profile["python"], "-m", name, "--version"], {}
+                    return self._static_argv(name, ["--version"]), {}
                 if argv == full:
-                    mapped = [self.profile["python"], *argv[1:]]
                     mapped = [
                         (
                             "/vgar/" + config.name
@@ -107,9 +115,9 @@ class DockerExecutor:
                             if a == str(self.lease.private / "mypy-cache")
                             else a
                         )
-                        for a in mapped
+                        for a in argv[3:]
                     ]
-                    return mapped, {}
+                    return self._static_argv(name, mapped), {}
             raise ValueError("Unapproved target command")
         prefix = (
             sys.executable,
@@ -167,6 +175,27 @@ class DockerExecutor:
             "--junitxml=/vgar/junit.xml",
             *tail,
         ], {"nodeids.json": report, "junit.xml": junit}
+
+    @property
+    def unavailable_checks(self):
+        reason = mypy_unavailable_reason(self.profile["runtime"]["python"])
+        return {"mypy": reason} if reason else {}
+
+    def _static_argv(self, name, tail):
+        load_bundle()
+        if name == "ruff":
+            return [CONTAINER_ROOT + "/bin/ruff", *tail]
+        target = (
+            []
+            if tail == ["--version"]
+            else [
+                "--python-executable",
+                self.profile["python"],
+                "--python-version",
+                lock()["mypy_target_version"],
+            ]
+        )
+        return [CONTAINER_ROOT + "/py/bin/python3", "-m", "mypy", *target, *tail]
 
     def run(self, argv, cwd, timeout_seconds):
         if Path(cwd).resolve() != self.lease.path or not self.lease.active:
@@ -306,6 +335,12 @@ class DockerExecutor:
             directory,
             self.operation_deadline,
         )
+        if (operation.get("argv") or [""])[0].startswith(CONTAINER_ROOT + "/"):
+            self._checked(
+                ["cp", str(load_bundle()), self.name + ":" + CONTAINER_ROOT],
+                directory,
+                self.operation_deadline,
+            )
         result = self._cli(
             [
                 "exec",
@@ -322,6 +357,7 @@ class DockerExecutor:
         )
         result.update(
             target_argv=operation.get("argv"),
+            target_cwd="/testbed",
             environment_ref=self.profile["env_ref"],
             admission_hash=self.admission["admission_hash"],
         )

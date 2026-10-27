@@ -132,7 +132,14 @@ def test_malformed_row_does_not_drop_earlier_valid_diagnostic(tmp_path):
     assert len(parsed.diagnostics) == 1
 
 
-@pytest.mark.parametrize('column', [True, False, -1, 0.5, 1.0, '0', None])
+def test_mypy_unknown_column_sentinel_is_column_one(tmp_path):
+    # Real mypy 2.4 output (matplotlib backend_ps.py str-bytes-safe) uses -1 for "no column".
+    parsed = api().parse_tool_report('mypy', command(tmp_path, rows=[row(column=-1)]), '2.4.0')
+    assert parsed.execution_status == 'COMPLETE', parsed.reason
+    assert parsed.diagnostics[0].column == 1
+
+
+@pytest.mark.parametrize('column', [True, False, -2, 0.5, 1.0, '0', None])
 def test_invalid_mypy_column_is_not_normalized_into_valid_diagnostic(tmp_path, column):
     parsed = api().parse_tool_report(
         'mypy', command(tmp_path, rows=[row(), row(column=column)]), '2.4.0')

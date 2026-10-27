@@ -83,7 +83,14 @@ def _run_w9_static_checks(lease, targets, policy, executor, variant):
     result['syntax'] = dict(status='ERROR' if syntax_error else 'FAIL' if diagnostics else 'PASS',
         operation='target ast.parse via Docker' if hasattr(executor, 'syntax_report') else 'in-process ast.parse on native interpreter', report=report.model_dump(mode='json'),
         exception=syntax_error, **({'command': target_syntax} if hasattr(executor, 'syntax_report') else {}), duration_ms=round((time.monotonic()-started)*1000))
+    unavailable = getattr(executor, 'unavailable_checks', {})
     for name, config in configs.items():
+        if name in unavailable:
+            # Decided from the pinned profile, never from a failed run; not a PASS.
+            report = DiagnosticReport(tool=name, tool_version='', config_hash=hashes[name],
+                execution_status='UNAVAILABLE', reason=unavailable[name], **binding)
+            result[name] = dict(status='UNAVAILABLE', reason=unavailable[name], report=report.model_dump(mode='json'))
+            continue
         version_command = _invoke_static(executor, (sys.executable, '-m', name, '--version'), lease, policy.command_timeout)
         match = (re.match(r'^' + name + r' (\S+)', version_command.get('stdout', '').strip())
                  if version_command.get('complete') and version_command.get('exit_code') == 0 else None)

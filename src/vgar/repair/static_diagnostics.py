@@ -24,7 +24,7 @@ class Diagnostic(BaseModel):
 
 class DiagnosticReport(BaseModel):
     model_config = ConfigDict(frozen=True, extra='forbid')
-    execution_status: Literal['COMPLETE', 'ERROR']
+    execution_status: Literal['COMPLETE', 'ERROR', 'UNAVAILABLE']
     tool: str
     tool_version: str
     config_hash: str = ''
@@ -39,7 +39,7 @@ class DiagnosticReport(BaseModel):
 class DiagnosticDelta(BaseModel):
     model_config = ConfigDict(frozen=True, extra='forbid')
     complete: bool
-    status: Literal['PASS', 'FAIL', 'ERROR']
+    status: Literal['PASS', 'FAIL', 'ERROR', 'UNAVAILABLE']
     introduced: tuple[Diagnostic, ...] = ()
     resolved: tuple[Diagnostic, ...] = ()
     persisting: tuple[Diagnostic, ...] = ()
@@ -79,6 +79,8 @@ def parse_tool_report(tool: str, command: dict, tool_version: str) -> Diagnostic
                 or command.get('status') not in ('PASS', 'FAIL') or command.get('stderr')):
             raise ValueError('Tool execution incomplete, unsupported exit, or stderr requires diagnosis')
         root = Path(command['cwd']).resolve()
+        # Docker runs report container paths (/testbed/...), not host lease paths.
+        target = command.get('target_cwd', '').rstrip('/')
         raw = command['stdout']
         if not isinstance(raw, str):
             raise TypeError('Missing text output')
@@ -94,7 +96,9 @@ def parse_tool_report(tool: str, command: dict, tool_version: str) -> Diagnostic
                 raise TypeError('Invalid diagnostic path')
             filename = filename.replace('\\', '/')
             path = Path(filename)
-            if path.is_absolute():
+            if target and filename.startswith(target + '/'):
+                filename = filename[len(target) + 1:]
+            elif path.is_absolute():
                 filename = path.resolve().relative_to(root).as_posix()
             filename = safe_path(filename)
             if filename not in scope:
@@ -103,7 +107,7 @@ def parse_tool_report(tool: str, command: dict, tool_version: str) -> Diagnostic
             code = item['code'] or ('note' if severity == 'note' else '')
             message = item['message'].replace('\r\n', '\n')
             # Strip only workspace prefixes, not symbols, types or meaningful text.
-            for prefix in (str(root) + '/', str(root) + '\\', root.as_posix() + '/'):
+            for prefix in (str(root) + '/', str(root) + '\\', root.as_posix() + '/', *([target + '/'] if target else [])):
                 message = message.replace(prefix, '')
             line = item['location']['row'] if tool == 'ruff' else item['line']
             if tool == 'ruff':
@@ -111,9 +115,9 @@ def parse_tool_report(tool: str, command: dict, tool_version: str) -> Diagnostic
             else:
                 column = item['column']
                 # Validate before arithmetic: bool + 1 would hide malformed JSON.
-                if type(column) is not int or column < 0:
-                    raise ValueError('mypy column must be a non-negative integer')
-                column += 1
+                if type(column) is not int or column < -1:
+                    raise ValueError('mypy column must be a non-negative integer or -1')
+                column = 1 if column == -1 else column + 1  # mypy writes -1 when no column is known.
             diagnostics.append(Diagnostic(tool=tool, path=filename, line=line, column=column,
                                           code=code, severity=severity, message=message))
         has_errors = any(d.severity in ('error', 'warning') for d in diagnostics)
@@ -153,9 +157,13 @@ def _identity(diagnostic):
 
 def compare_diagnostics(before: DiagnosticReport, after: DiagnosticReport, line_map: dict) -> DiagnosticDelta:
     """Compare one tool, with a baseline/post binding and a one-to-one line map."""
+    binding = ('tool', 'tool_version', 'config_hash', 'scope', 'scope_hash', 'interpreter_ref')
+    if before.execution_status == after.execution_status == 'UNAVAILABLE':
+        if before.reason != after.reason or any(getattr(before, key) != getattr(after, key) for key in binding):
+            return DiagnosticDelta(complete=False, status='ERROR', reason='STATIC_BINDING_CHANGED')
+        return DiagnosticDelta(complete=True, status='UNAVAILABLE', reason=after.reason)
     if before.execution_status != 'COMPLETE' or after.execution_status != 'COMPLETE':
         return DiagnosticDelta(complete=False, status='ERROR', reason='STATIC_TOOL_INCOMPLETE')
-    binding = ('tool', 'tool_version', 'config_hash', 'scope', 'scope_hash', 'interpreter_ref')
     if any(getattr(before, key) != getattr(after, key) for key in binding):
         return DiagnosticDelta(complete=False, status='ERROR', reason='STATIC_BINDING_CHANGED')
     available = defaultdict(list)
