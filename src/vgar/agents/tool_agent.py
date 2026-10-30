@@ -1,8 +1,9 @@
 """Agent mode of `vgar solve`: a LangChain agent chooses which repair tool to call and when to stop.
 
-The agent sees five tools without arguments. Four forward to the MCP `repair` server with the
+The agent sees six tools without arguments. Four forward to the MCP `repair` server with the
 current run bound by the host; generate_patch runs the V11 single-turn generator in this process
-and the host holds the diff, so the agent never writes a diff, a path or feedback. A failed attempt
+and the host holds the diff, so the agent never writes a diff, a path or feedback. The optional
+analyze_patch_impact sends the failed attempt's applied diff to the MCP `graph` server. A failed attempt
 is closed (verified) and the next attempt is a new run with host-built feedback. Every run the host
 opens ends with repair_verify_patch, called by the agent or, as a safety net, by the host.
 """
@@ -21,9 +22,10 @@ from langchain_core.tools import BaseTool, StructuredTool
 from pydantic import BaseModel
 
 from vgar.agents.fakes import ScriptedPatchGenerator, ScriptedRepairAgent, break_diff
-from vgar.agents.feedback import build_feedback
+from vgar.agents.feedback import build_feedback, impact_message
 from vgar.agents.nodes.mcp_repair import _call, _reason, run_generation
-from vgar.agents.runtime import Runtime, cleanup_work_dir, new_work_dir
+from vgar.agents.runtime import Runtime, cleanup_work_dir, impact_graph_tool, new_work_dir
+from vgar.mcp.result_parser import parse_mcp_json_result
 from vgar.repair.config import REPO_ROOT
 
 MAX_ATTEMPTS = 3
@@ -70,6 +72,7 @@ class AgentRepairHost:
         self.attempts = 0
         self.prompt: dict[str, Any] | None = None
         self.diff: tuple[str, dict[str, Any]] | None = None
+        self.graph: tuple[Any, str] | None = None
         self.context_called = False
 
     @property
@@ -124,7 +127,8 @@ class AgentRepairHost:
         self.prompt = result.get("prompt") if result.get("status") == "PASS" else None
         if result.get("run_dir"):
             self.runs.append({"run_dir": result["run_dir"], "generated": False, "applied": False, "tested": False,
-                              "failed": False, "verified": False, "recommendation": None})
+                              "failed": False, "verified": False, "recommendation": None,
+                              "applied_diff": None, "impact_called": False, "impact": None})
             if "recommendation" in result:  # the server already finished a run it could not start
                 self._verified(result)
         self._log("get_task_context", by, result.get("status", "ERROR"), result.get("reason"), start)
@@ -166,7 +170,7 @@ class AgentRepairHost:
                 return self._refuse("generate_patch", "No attempts left; call verify_patch.")
             if not run["verified"] and "recommendation" not in await self._verify("host"):
                 return self._refuse("generate_patch", "The failed attempt could not be closed; call verify_patch.")
-            feedback = build_feedback(self._record())
+            feedback = build_feedback(self._record(), impact=run["impact"])
             opened = await self._open_run("host", feedback=feedback, supersedes_run_id=feedback["source_run_id"],
                                           rerun_reason=feedback["category"])
             if opened.get("status") != "PASS":
@@ -195,7 +199,7 @@ class AgentRepairHost:
         result = await self._mcp("apply_patch", {"run_dir": self.run["run_dir"], "diff": diff, "generation": meta}, "agent")
         status = result.get("status", "ERROR")
         if status == "PASS":
-            self.run["applied"] = True
+            self.run.update(applied=True, applied_diff=diff)
             return _reply("PASS", [("FILES", ", ".join(result.get("changed_files") or []))], self._next())
         self.run["failed"] = True
         detail = result.get("detail") or (self._record().get("error_detail") or {}).get("message")
@@ -227,6 +231,35 @@ class AgentRepairHost:
             ("RECOMMENDATION", result.get("recommendation")), ("REASON", result.get("reason")),
             ("DETAIL", result.get("detail")), ("ATTEMPTS LEFT", None if accepted else self._left())], self._next())
 
+    async def analyze_patch_impact(self) -> str:
+        start, run = time.monotonic(), self.run
+        if run is None:
+            return self._refuse("analyze_patch_impact", "No task yet; call get_task_context first.")
+        if not (run["applied"] and run["failed"]):
+            return self._refuse("analyze_patch_impact", "Impact needs an applied patch that failed its tests.")
+        if run["impact_called"]:
+            return self._refuse("analyze_patch_impact", "Impact was already analyzed for this attempt.")
+        if self._left() <= 0:
+            return self._refuse("analyze_patch_impact", "No attempts left; call verify_patch.")
+        run["impact_called"] = True
+        try:
+            if self.graph is None:
+                self.graph = await impact_graph_tool(self.runtime.base_settings(), Path(self.task.source_repo),
+                                                     self.work_dir / "impact-graph.db")
+            tool, version = self.graph
+            result = parse_mcp_json_result(await tool.ainvoke({"diff": run["applied_diff"], "graph_version": version}))
+        except Exception as exc:  # index or transport failure: the retry goes on without impact
+            result = {"status": "ERROR", "reason": "TOOL_ERROR", "detail": f"{type(exc).__name__}: {exc}"}
+        if result.get("status") == "PASS":
+            run["impact"] = result["data"]
+            self._log("analyze_patch_impact", "agent", "PASS", None, start)
+            line = impact_message(result["data"]) or "No dependent code was computed for this patch."
+            return _reply("PASS", [("IMPACT", line)], self._next())
+        error = result.get("error") or {}
+        code, detail = error.get("code") or result.get("reason") or "ERROR", error.get("message") or result.get("detail")
+        self._log("analyze_patch_impact", "agent", "ERROR", code, start)
+        return _reply("ERROR", [("REASON", code), ("DETAIL", detail)], self._next())
+
     def langchain_tools(self) -> list[BaseTool]:
         specs = [
             ("get_task_context", self.get_task_context,
@@ -236,6 +269,9 @@ class AgentRepairHost:
             ("apply_patch", self.apply_patch, "Apply the patch the generator just wrote."),
             ("run_relevant_tests", self.run_relevant_tests, "Run the relevant tests after apply_patch passed."),
             ("verify_patch", self.verify_patch, "Final checks; closes the current attempt. Always call it last."),
+            ("analyze_patch_impact", self.analyze_patch_impact,
+             "After an applied patch failed its tests, show which callers, importers and tests depend on the code "
+             "it changed. Optional; call before generate_patch."),
         ]
         return [StructuredTool.from_function(coroutine=fn, name=name, description=description, args_schema=NoArgs)
                 for name, fn, description in specs]

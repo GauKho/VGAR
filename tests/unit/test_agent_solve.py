@@ -20,6 +20,7 @@ TASK = REPO / "examples/m2/tasks/single_file_login.json"
 GOLDEN = REPO / "tests/fixtures/m2/golden_v11"
 CASES = [("A", "single_file_login"), ("B", "multi_file_invoice"), ("C", "missing_links")]
 REF = (REPO / "tests/fixtures/m2/reference_patches/single_file_login.diff").read_text(encoding="utf-8")
+WRONG = REPO / "tests/fixtures/m2/wrong_patches"
 
 
 class SequenceAgent(BaseChatModel):
@@ -243,3 +244,15 @@ def test_model_turns_ignore_the_inner_llm_run_of_a_chat_model():
     turns.on_llm_error(RuntimeError("inner"), run_id=uuid.uuid4())
     turns.on_llm_end(LLMResult(generations=[[ChatGeneration(message=AIMessage(content="done"))]]), run_id=outer)
     assert [(t["turn"], t["status"]) for t in turns.calls] == [(1, "PASS")]
+
+
+@pytest.mark.parametrize("letter,case", CASES)
+def test_wrong_patch_applies_and_still_fails(letter, case, tmp_path):
+    raw = (WRONG / f"{case}.diff").read_text(encoding="utf-8")
+    steps = ["get_task_context", "generate_patch", "apply_patch", "run_relevant_tests", "verify_patch"]
+    result = solve(tmp_path, task=REPO / f"examples/m2/tasks/{case}.json",
+                   model=SequenceAgent(steps=steps), generator=ScriptedPatchGenerator([raw]))
+    trace = trace_of(result)
+    assert replies(trace, "apply_patch")[0].startswith("STATUS: PASS")
+    assert replies(trace, "run_relevant_tests")[0].startswith("STATUS: FAIL")
+    assert result["status"] == "FAILED"
