@@ -35,6 +35,16 @@ class LaunchResult:
     timed_out: bool = False
     detail: str | None = None
     command_timed_out: bool = False
+    failure: dict | None = None
+
+
+def runner_failure(result: LaunchResult) -> dict | None:
+    """Engine failures come from the run record; runner-side outcomes (plan, admission, launch) are built here."""
+    if result.failure is not None or result.status == 'PASS':
+        return result.failure
+    lines = [line for line in (result.detail or '').splitlines() if line.strip()]
+    return {'stage': result.stage, 'code': result.reason, 'cause': lines[-1].strip() if lines else None,
+            'evidence_ref': None}
 
 
 Launch = Callable[[TaskPlan, Path, 'str | None', 'str | None'], LaunchResult]
@@ -104,7 +114,7 @@ def _attempt(exp, data_root, exp_dir, launch, sampler_factory, plan_variant, num
                   attempt=number, parent_attempt=parent and parent['attempt'], rerun_reason=rerun_reason,
                   state='RESERVED', status=None, reason=None, stage=None, source=None, engine_run_dir=None,
                   engine_complete=None, engine_output_root=str(engine_root), timed_out=False, command_timed_out=False,
-                  detail=None,
+                  detail=None, failure=None,
                   started_utc=_now(), ended_utc=None, wall_ms=None, gpu_peak_mib=None, gpu_peak_scope=None,
                   host=platform.node())
     path = _attempt_path(exp_dir, record)
@@ -138,7 +148,7 @@ def _attempt(exp, data_root, exp_dir, launch, sampler_factory, plan_variant, num
     record.update(ended_utc=_now(), wall_ms=round((time.monotonic() - start) * 1000), gpu_peak_mib=peak,
                   gpu_peak_scope='device' if peak is not None else None)
     if result is not None:
-        record.update({k: v for k, v in asdict(result).items() if k != 'interrupted'})
+        record.update({k: v for k, v in asdict(result).items() if k != 'interrupted'}, failure=runner_failure(result))
     interrupted = result is None or result.interrupted
     record['state'] = 'INTERRUPTED' if interrupted else 'TERMINAL'
     atomic_json(path, record)

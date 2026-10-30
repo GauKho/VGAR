@@ -1,0 +1,17 @@
+{
+  "source_roots": [
+    "sphinx"
+  ],
+  "failing_selectors": [
+    "tests/vgar_w9_repro_10673.py"
+  ],
+  "fallback_scope": [
+    "tests/vgar_w9_repro_10673.py"
+  ],
+  "protected_paths": [
+    "tests"
+  ],
+  "overlay": {
+    "tests/vgar_w9_repro_10673.py": "sphinx-doc__sphinx-10673.repro.py"
+  }
+}

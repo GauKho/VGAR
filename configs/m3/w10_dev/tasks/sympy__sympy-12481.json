@@ -1,0 +1,17 @@
+{
+  "source_roots": [
+    "sympy"
+  ],
+  "failing_selectors": [
+    "sympy/vgar_w9_repro_12481/test_repro.py"
+  ],
+  "fallback_scope": [
+    "sympy/vgar_w9_repro_12481/test_repro.py"
+  ],
+  "protected_paths": [
+    "sympy/vgar_w9_repro_12481"
+  ],
+  "overlay": {
+    "sympy/vgar_w9_repro_12481/test_repro.py": "sympy__sympy-12481.repro.py"
+  }
+}

@@ -11,6 +11,7 @@ from pathlib import Path
 from vgar.evaluation.repair.manifest import Experiment, TaskPlan
 from vgar.evaluation.repair.runner import Launch, LaunchResult
 from vgar.repair.admission import admit_task
+from vgar.repair.failure import failure_of
 from vgar.repair.pipeline import build_generation, run_repair
 
 # Message of the engine's TimeoutError when the global run deadline is used up (repair/executor.py, pipeline.py).
@@ -35,9 +36,11 @@ def classify_record(record: dict, run_dir: str) -> LaunchResult:
     interrupted = _found(record, lambda d: d.get('type') == 'KeyboardInterrupt' or d.get('error_type') == 'KeyboardInterrupt')
     timed_out = _found(record, lambda d: GLOBAL_DEADLINE in str(d.get('message', '')))
     command_timed_out = _found(record.get('stages', {}), lambda d: d.get('timed_out') is True)
-    return LaunchResult(record.get('status') or 'ERROR', record.get('reason'), detail.get('stage'), 'engine', run_dir,
-                        record.get('complete'), interrupted=interrupted, timed_out=timed_out,
-                        detail=detail.get('message'), command_timed_out=command_timed_out)
+    # Records written before W10 have no 'failure'; derive it the same way the engine does.
+    failure = record.get('failure') or failure_of(record)
+    return LaunchResult(record.get('status') or 'ERROR', record.get('reason'), (failure or {}).get('stage'), 'engine',
+                        run_dir, record.get('complete'), interrupted=interrupted, timed_out=timed_out,
+                        detail=detail.get('message'), command_timed_out=command_timed_out, failure=failure)
 
 
 def read_engine_record(path: Path) -> LaunchResult:

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import os
 from pathlib import Path
 from typing import Any
@@ -150,6 +151,18 @@ def get_related_tests(symbol_ids: list[str], graph_version: str, changed_paths: 
         selected_tests=selected_tests, max_hops=max_hops, limit=limit),
         {"graph_version": graph_version, "symbol_ids": symbol_ids, "max_hops": max_hops, "limit": limit},
         lambda data: {"test_count": len(data["tests"]), "selection_mode": data["selection_mode"]})
+
+
+@mcp.tool()
+@instrument_mcp_tool("analyze_patch_impact")
+def analyze_patch_impact(diff: str, graph_version: str, max_hops: int = 2, max_nodes: int = 200) -> dict[str, Any]:
+    """Map a unified diff to changed baseline symbols, then walk callers/importers/subclasses/tests backwards."""
+    patch_sha256 = "sha256:" + hashlib.sha256(diff.encode("utf-8")).hexdigest()
+    return _tool("analyze_patch_impact", lambda: graph_service.analyze_patch_impact(
+        diff, graph_version=graph_version, max_hops=max_hops, max_nodes=max_nodes),
+        {"graph_version": graph_version, "patch_sha256": patch_sha256, "max_hops": max_hops, "max_nodes": max_nodes},
+        lambda data: {"changed_count": len(data["changed"]), "impacted_count": len(data["impacted"]["items"]),
+                      "impacted_status": data["impacted"]["status"]})
 
 
 @mcp.resource("vgar://graph/subgraph/{node_id}")

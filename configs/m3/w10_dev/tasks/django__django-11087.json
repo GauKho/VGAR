@@ -1,0 +1,19 @@
+{
+  "source_roots": [
+    "django"
+  ],
+  "failing_selectors": [
+    "tests/vgar_w9_repro_11087/tests.py::Repro::test_delete_does_not_fetch_unneeded_related_fields"
+  ],
+  "fallback_scope": [
+    "tests/vgar_w9_repro_11087/tests.py"
+  ],
+  "protected_paths": [
+    "tests"
+  ],
+  "overlay": {
+    "tests/vgar_w9_repro_11087/__init__.py": "django__django-10914.app_init.py",
+    "tests/vgar_w9_repro_11087/models.py": "django__django-11087.models.py",
+    "tests/vgar_w9_repro_11087/tests.py": "django__django-11087.repro.py"
+  }
+}

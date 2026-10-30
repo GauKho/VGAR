@@ -18,6 +18,24 @@ def test_fixture_preflight_fits(fixture_config, tmp_path):
     assert saved['experiment_id'] == exp.experiment_id and saved['rows'] == rows
 
 
+@pytest.mark.parametrize('folder, expected', [('', 'all'), ('w10', 'context')])
+def test_preflight_measures_the_variant_path_listing(fixture_config, tmp_path, monkeypatch, folder, expected):
+    from vgar.evaluation.repair import preflight as module
+    from vgar.evaluation.repair.manifest import load_experiment
+    config = json.loads(fixture_config.read_text(encoding='utf-8'))
+    for item in config['variants']:
+        item['path'] = str(ROOT/'configs/m2/variants'/folder/(item['path'].rsplit('/', 1)[-1].rsplit('\\', 1)[-1]))
+    write_json(fixture_config, config)
+    seen, real = [], module.build_repair_prompt
+
+    def spy(*args, path_listing='all', **kwargs):
+        seen.append(path_listing)
+        return real(*args, path_listing=path_listing, **kwargs)
+    monkeypatch.setattr(module, 'build_repair_prompt', spy)
+    module.preflight(load_experiment(fixture_config, tmp_path), tmp_path, tmp_path/'out')
+    assert seen == [expected]*3
+
+
 def test_over_cap_reported_not_raised(fixture_config, tmp_path):
     from vgar.evaluation.repair.manifest import load_experiment
     from vgar.evaluation.repair.preflight import preflight

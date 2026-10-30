@@ -1,0 +1,17 @@
+{
+  "source_roots": [
+    "xarray"
+  ],
+  "failing_selectors": [
+    "tests/vgar_w9_repro_3993.py"
+  ],
+  "fallback_scope": [
+    "tests/vgar_w9_repro_3993.py"
+  ],
+  "protected_paths": [
+    "tests"
+  ],
+  "overlay": {
+    "tests/vgar_w9_repro_3993.py": "pydata__xarray-3993.repro.py"
+  }
+}

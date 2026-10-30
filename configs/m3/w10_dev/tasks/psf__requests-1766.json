@@ -1,0 +1,17 @@
+{
+  "source_roots": [
+    "requests"
+  ],
+  "failing_selectors": [
+    "tests/vgar_w9_repro_1766.py"
+  ],
+  "fallback_scope": [
+    "tests/vgar_w9_repro_1766.py"
+  ],
+  "protected_paths": [
+    "tests"
+  ],
+  "overlay": {
+    "tests/vgar_w9_repro_1766.py": "psf__requests-1766.repro.py"
+  }
+}

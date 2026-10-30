@@ -1,0 +1,17 @@
+{
+  "source_roots": [
+    "astropy"
+  ],
+  "failing_selectors": [
+    "tests/vgar_w9_repro_13977.py"
+  ],
+  "fallback_scope": [
+    "tests/vgar_w9_repro_13977.py"
+  ],
+  "protected_paths": [
+    "tests"
+  ],
+  "overlay": {
+    "tests/vgar_w9_repro_13977.py": "astropy__astropy-13977.repro.py"
+  }
+}

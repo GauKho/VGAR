@@ -1,0 +1,17 @@
+{
+  "source_roots": [
+    "pylint"
+  ],
+  "failing_selectors": [
+    "tests/vgar_w9_repro_4604.py"
+  ],
+  "fallback_scope": [
+    "tests/vgar_w9_repro_4604.py"
+  ],
+  "protected_paths": [
+    "tests"
+  ],
+  "overlay": {
+    "tests/vgar_w9_repro_4604.py": "pylint-dev__pylint-4604.repro.py"
+  }
+}

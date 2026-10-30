@@ -1,0 +1,18 @@
+{
+  "source_roots": [
+    "django"
+  ],
+  "failing_selectors": [
+    "tests/vgar_w9_repro_10914/tests.py::Repro::test_default_file_upload_permissions"
+  ],
+  "fallback_scope": [
+    "tests/vgar_w9_repro_10914/tests.py"
+  ],
+  "protected_paths": [
+    "tests"
+  ],
+  "overlay": {
+    "tests/vgar_w9_repro_10914/__init__.py": "django__django-10914.app_init.py",
+    "tests/vgar_w9_repro_10914/tests.py": "django__django-10914.repro.py"
+  }
+}
