@@ -30,7 +30,7 @@ def _test_message(verification: dict[str, Any]) -> str | None:
 IMPACT_ITEMS, IMPACT_CHARS = 5, 400
 
 
-def _impact_message(impact: Any) -> str | None:
+def impact_message(impact: Any) -> str | None:
     """One bounded line from an ImpactReport; static graph evidence, never a test result."""
     from vgar.contracts.impact import ImpactReport
     report = impact if isinstance(impact, ImpactReport) else ImpactReport.model_validate(impact)
@@ -62,7 +62,7 @@ def build_feedback(record: dict[str, Any], impact: Any = None) -> dict[str, str]
     else:
         verification = (record.get("stages") or {}).get("verification") or {}
         message = _test_message(verification) or f"Previous attempt ended with {status} {reason}."
-    impact_line = _impact_message(impact) if impact is not None else None
+    impact_line = impact_message(impact) if impact is not None else None
     if impact_line:
         message += "\n" + impact_line
     return {"task_id": record["task_id"], "source_run_id": record["run_id"],

@@ -4,9 +4,10 @@ State must stay serializable; settings and other per-run objects live here.
 """
 from __future__ import annotations
 
+import asyncio
 import shutil
 import tempfile
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from pathlib import Path
 from typing import Any, Literal
 
@@ -23,6 +24,21 @@ def index_repo(repo: Path, db: Path) -> int:
     db.parent.mkdir(parents=True, exist_ok=True)
     SQLiteGraphStore(db).ingest(doc)
     return len(doc["nodes"])
+
+
+async def impact_graph_tool(settings: Settings, source_repo: Path, database: Path) -> tuple[Any, str]:
+    """Index `source_repo` into `database` once; return the graph server's analyze_patch_impact tool and graph version."""
+    from vgar.graph.sqlite_store import SQLiteGraphStore
+    from vgar.mcp.client import create_mcp_client
+
+    if not database.exists():  # a retry after a failed call reuses the snapshot already ingested
+        await asyncio.to_thread(index_repo, source_repo, database)
+    version = SQLiteGraphStore(database).resolve_graph_version()
+    graph = replace(settings.graph, backend="sqlite", database=database, version=version)
+    client = create_mcp_client(replace(settings, graph=graph), servers=("graph",),
+                               extra_env={"VGAR_REPOSITORY_ROOT": str(source_repo)})
+    tools = {tool.name: tool for tool in await client.get_tools()}
+    return tools["graph_analyze_patch_impact"], version
 
 
 @dataclass

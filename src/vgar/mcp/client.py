@@ -19,10 +19,11 @@ def _child_env(settings: Settings) -> dict[str, str]:
     return env
 
 
-def create_mcp_client(settings: Settings | None = None,
-                      servers: tuple[str, ...] = SERVER_NAMES) -> MultiServerMCPClient:
+def create_mcp_client(settings: Settings | None = None, servers: tuple[str, ...] = SERVER_NAMES,
+                      extra_env: dict[str, str] | None = None) -> MultiServerMCPClient:
     settings = settings or get_settings()
     env = _child_env(settings)
+    env.update(extra_env or {})
     # Bind MCP subprocess logs to the workflow invocation that created the agent.
     run_id = current_run_id()
     if run_id:

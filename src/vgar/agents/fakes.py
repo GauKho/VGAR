@@ -58,11 +58,13 @@ class ScriptedRepairAgent(BaseChatModel):
         status = _field(text, "STATUS")
         if name == "verify_patch":
             return None
+        if name == "analyze_patch_impact":
+            return "generate_patch"
         if status == "PASS":
             return {"get_task_context": "generate_patch", "generate_patch": "apply_patch",
                     "apply_patch": "run_relevant_tests", "run_relevant_tests": "verify_patch"}[name]
         if name in ("apply_patch", "run_relevant_tests") and int(_field(text, "ATTEMPTS LEFT") or 0) > 0:
-            return "generate_patch"
+            return "analyze_patch_impact" if name == "run_relevant_tests" else "generate_patch"
         return "verify_patch"
 
     def _generate(self, messages: list[BaseMessage], stop=None, run_manager=None, **kwargs) -> ChatResult:  # noqa: ARG002
