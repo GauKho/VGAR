@@ -1,0 +1,31 @@
+--- a/pylint/pyreverse/diagrams.py
++++ b/pylint/pyreverse/diagrams.py
+@@ -347,7 +347,7 @@
+             if not isinstance(node, astroid.FunctionDef):
+                 continue
+             # Get the function signature
+-            sig = node.signature
++            sig = node.signature or ""
+             # Extract the parameters and their types
+             for param in node.params:
+                 param_name = param.name
+@@ -355,7 +355,7 @@
+                 if param.annotation:
+                     # Extract the annotation type
+                     annotation = param.annotation
+-                    if isinstance(annotation, astroid.Name):
++                    if isinstance(annotation, astroid.Name) and annotation.name:
+                         type_name = annotation.name
+                     elif isinstance(annotation, astroid.Subscript):
+                         # Handle subscripted types like List[str]
+                         type_name = annotation.value.name
+                     else:
+                         type_name = str(annotation)
+                 else:
+                     type_name = ""
+                 # Add the parameter with type to the class attributes
+                 if param_name not in self._class_attributes:
+                     self._class_attributes[param_name] = type_name
+             # Add the function signature to the class attributes
+             if sig:
+                 self._class_attributes[sig] = "Function"

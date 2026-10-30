@@ -60,6 +60,28 @@ def test_incomplete_or_invalid_output_never_becomes_empty_pass(tmp_path, updates
     assert parsed.reason
 
 
+NOQA_WARNINGS = (
+    'warning: Invalid `# noqa` directive on django/template/base.py:58: expected a comma-separated list of '
+    'codes (e.g., `# noqa: F401, F841`).\n'
+    'warning: Invalid `# noqa` directive on sphinx/transforms/i18n.py:126: expected `:` followed by a '
+    'comma-separated list of codes (e.g., `# noqa: F401, F841`).\n')
+
+
+def test_ruff_invalid_noqa_warnings_in_repository_source_are_benign(tmp_path):
+    # Seen on django-10914 / sphinx-10673 baselines (W10 stage 1): old-style noqa comments in the repo.
+    parsed = api().parse_tool_report('ruff', command(tmp_path, 'ruff', stderr=NOQA_WARNINGS), '0.17.0')
+    assert parsed.execution_status == 'COMPLETE' and len(parsed.diagnostics) == 1
+
+
+@pytest.mark.parametrize(('tool', 'version', 'stderr'), [
+    ('ruff', '0.17.0', NOQA_WARNINGS + 'error: Failed to parse pkg/debt.py\n'),
+    ('ruff', '0.17.0', 'warning: something else\n'),
+    ('mypy', '2.4.0', NOQA_WARNINGS)])
+def test_other_stderr_still_requires_diagnosis(tmp_path, tool, version, stderr):
+    parsed = api().parse_tool_report(tool, command(tmp_path, tool, stderr=stderr), version)
+    assert parsed.execution_status == 'ERROR'
+
+
 @pytest.mark.parametrize('filename', ['../escape.py', '/outside.py', 'pkg/other.py'])
 def test_out_of_scope_diagnostic_is_not_silently_discarded(tmp_path, filename):
     item = row()

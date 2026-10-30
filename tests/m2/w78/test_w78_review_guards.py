@@ -28,6 +28,18 @@ def test_public_bundle_uses_assessed_tests_not_raw_exit_zero(m1_case, tmp_path):
     assert bundle.metadata['raw_pytest_status'] == 'PASS'
 
 
+def test_public_bundle_maps_unavailable_static_tool_to_not_run(m1_case, tmp_path):
+    # W10 stage 1, django-10914 (Python 3.6 testbed): mypy UNAVAILABLE must not break finalization.
+    task, _ = m1_case
+    run = m_evidence.begin_run(tmp_path / 'runs', 'repair', task_id=task.task_id, mode='fake')
+    run.record['stages']['baseline'] = {'required_ids': ['required'], 'tests': {'outcomes': {'required': 'FAIL'}}}
+    verification = {'status': 'FAIL', 'reasons': ['TEST_FAILED'],
+                    'static': {'mypy': {'status': 'UNAVAILABLE'}, 'ruff': {'status': 'PASS'}}}
+    lease = SimpleNamespace(before=m_workspace.inventory(task.source_repo), worktree_id='test-worktree')
+    bundle = m_pipeline._project_bundle(run, task, lease, None, verification)
+    assert bundle.verification.typecheck.status == 'NOT_RUN' and bundle.verification.lint.status == 'PASS'
+
+
 def test_applied_diff_export_failure_is_error(m1_case, tmp_path):
     task, _ = m1_case
     with m_workspace.create_workspace(task.source_repo, tmp_path / 'temp') as lease:

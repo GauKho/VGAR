@@ -137,9 +137,12 @@ def run(config):
     )
     root = config["root"]
     try:
-        import pytest
+        try:
+            import pytest
 
-        result["runtime"]["pytest"] = pytest.__version__
+            result["runtime"]["pytest"] = pytest.__version__
+        except ImportError:  # repository-native runner images (Django, sympy); profile pins None
+            result["runtime"]["pytest"] = None
         if result["runtime"] != config["runtime"]:
             raise ValueError("Target interpreter version/identity mismatch")
         # Only the fresh owned container is reset, before loading private patched bytes.
@@ -168,10 +171,12 @@ def run(config):
             result["exit_code"] = 0 if not result["syntax"]["diagnostics"] else 1
         elif config["kind"] == "command":
             env = os.environ.copy()
+            # Load the digest-pinned image's own pytest plugins (e.g. doctestplus behind astropy's
+            # addopts), as qualification and the official harness do (W10 D22).
+            env.pop("PYTEST_DISABLE_PLUGIN_AUTOLOAD", None)
             env.update(
                 PYTHONPATH="/vgar",
                 PYTHONDONTWRITEBYTECODE="1",
-                PYTEST_DISABLE_PLUGIN_AUTOLOAD="1",
                 PYTHONUTF8="1",
             )
             result["exit_code"] = subprocess.call(config["argv"], cwd=root, env=env)
@@ -185,7 +190,8 @@ def run(config):
 
 
 def main():
-    with open(sys.argv[1]) as stream:
+    # Python 3.5/3.6 testbeds default to ASCII under the C locale; the config carries non-ASCII paths.
+    with open(sys.argv[1], encoding="utf-8") as stream:
         config = json.load(stream)
     result = run(config)
     with open(sys.argv[2], "x") as stream:

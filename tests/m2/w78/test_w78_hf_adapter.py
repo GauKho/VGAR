@@ -32,3 +32,17 @@ def test_worker_runs_the_vgar_module_with_repo_src_on_path(tmp_path, monkeypatch
     m_generator_hf.HFGenerator(profile, tmp_path).request('tokenize', [], m_contracts.RepairPolicy(), 5)
     assert seen['command'][1:4] == ('-B', '-m', 'vgar.models.huggingface.hf_worker')
     assert seen['pythonpath'] == str(REPO_ROOT / 'src')
+
+
+@pytest.mark.parametrize('timed_out', [True, False])
+def test_failed_generation_reports_whether_the_worker_timed_out(tmp_path, monkeypatch, timed_out):
+    import sys
+    from types import SimpleNamespace
+    def worker(command, folder, response, timeout):
+        return dict(status='ERROR', reason='Worker failed or response missing', command=dict(timed_out=timed_out))
+    monkeypatch.setattr(m_generator_hf, 'invoke_worker', worker)
+    profile = m_contracts.ModelProfile(snapshot=tmp_path / m_hf_backend.REVISION, interpreter=sys.executable,
+                                       tokenizer_manifest=tmp_path / 'manifest.json', approved_prototype=True)
+    prompt = SimpleNamespace(messages=[], input_tokens=1, prompt_hash='sha256:x')
+    result = m_generator_hf.HFGenerator(profile, tmp_path, m_contracts.RepairPolicy()).generate(prompt, profile, 5)
+    assert result['status'] == 'ERROR' and result['timed_out'] is timed_out

@@ -1,0 +1,23 @@
+Python 3.9.20
+============================= test process starts ==============================
+executable:         /opt/miniconda3/envs/testbed/bin/python  (3.9.20-final-0) [CPython]
+architecture:       64-bit
+cache:              no
+ground types:       python 
+random seed:        33507921
+hash randomization: on (PYTHONHASHSEED=1487826883)
+
+sympy/vgar_repro/tests/test_repro.py[2] 
+test_pass ok
+test_fail F                                                               [FAIL]
+
+
+________________________________________________________________________________
+________________ sympy/vgar_repro/tests/test_repro.py:test_fail ________________
+  File "/testbed/sympy/vgar_repro/tests/test_repro.py", line 4, in test_fail
+    assert 1 == 2
+AssertionError
+
+============= tests finished: 1 passed, 1 failed, in 0.00 seconds ==============
+DO *NOT* COMMIT!
+EXIT=1

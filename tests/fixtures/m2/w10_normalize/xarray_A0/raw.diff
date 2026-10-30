@@ -1,0 +1,11 @@
+--- a/xarray/core/ops.py
++++ b/xarray/core/ops.py
+@@ -1027,7 +1027,7 @@
+     def quantile(self, q, dim=None, keep_attrs=False, **kwargs):
+         """Compute quantiles along a given dimension."""
+         if dim is not None:
+-            result = self._reduce('quantile', q, dim=dim, keep_attrs=False, **kwargs)
++            result = self._reduce('quantile', q, dim=dim, keep_attrs=keep_attrs, **kwargs)
+         else:
+             result = self._reduce('quantile', q, keep_attrs=keep_attrs, **kwargs)
+         return result

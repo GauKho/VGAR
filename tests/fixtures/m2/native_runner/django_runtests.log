@@ -1,0 +1,23 @@
+Python 3.6.13 :: Anaconda, Inc.
+test_doc (vgar_repro.tests.Repro)
+Docstring first line. ... ok
+test_fail (vgar_repro.tests.Repro) ... FAIL
+test_pass (vgar_repro.tests.Repro) ... ok
+
+======================================================================
+FAIL: test_fail (vgar_repro.tests.Repro)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/testbed/tests/vgar_repro/tests.py", line 6, in test_fail
+    self.assertEqual(1, 2)
+AssertionError: 1 != 2
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.002s
+
+FAILED (failures=1)
+Testing against Django installed in '/testbed/django'
+Importing application vgar_repro
+Skipping setup of unused database(s): default, other.
+System check identified no issues (0 silenced).
+EXIT=1

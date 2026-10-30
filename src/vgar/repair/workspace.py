@@ -3,6 +3,7 @@ from dataclasses import dataclass, field
 import errno
 import hashlib
 import os
+import posixpath
 from pathlib import Path, PurePosixPath, PureWindowsPath
 import shutil
 import stat
@@ -19,21 +20,42 @@ from vgar.repair.diagnostics import exception_details
 IGNORED = {'.git', '__pycache__', '.pytest_cache', '.mypy_cache', '.ruff_cache', '.venv'}
 
 
+LINK_PREFIX = 'symlink:'
+
+
+def link_entry(target: str) -> str:
+    """Inventory value of a file symlink: its target string, never the bytes it points to."""
+    return LINK_PREFIX + digest(target.encode('utf-8'))
+
+
+def _link_target(path: Path, relative: str) -> str:
+    # Tracked in-repo file links (e.g. Django docs/_theme/*.png) only; code and directories are never links.
+    target = os.readlink(path)
+    resolved = posixpath.normpath(posixpath.join(posixpath.dirname(relative), target))
+    if (relative.endswith('.py') or path.is_dir() or '\\' in target or posixpath.isabs(target)
+            or resolved == '..' or resolved.startswith('../')):
+        raise ValueError('Unsupported source link: ' + relative)
+    return target
+
+
 def inventory(root: Path) -> dict[str, str]:
     if root.is_symlink() or (hasattr(root, 'is_junction') and root.is_junction()):
         raise ValueError('Source root is a link')
     result, total = {}, 0
     for directory, names, files in os.walk(root, followlinks=False):
         names[:] = sorted(n for n in names if n not in IGNORED)
-        for name in [*names, *files]:
+        for name in names:
             path = Path(directory) / name
             if path.is_symlink() or (hasattr(path, 'is_junction') and path.is_junction()):
-                raise ValueError('Source links/junctions are not allowed')
+                raise ValueError('Source directory links/junctions are not allowed')
         for name in sorted(files):
             if name in IGNORED:
                 continue
             path = Path(directory) / name
             relative = safe_path(path.relative_to(root).as_posix())
+            if path.is_symlink():
+                result[relative] = link_entry(_link_target(path, relative))
+                continue
             size = path.stat().st_size
             total += size
             if size > 16 * 1024 * 1024 or total > 256 * 1024 * 1024:
@@ -161,10 +183,13 @@ def create_workspace(source: Path, temp_root: Path, policy=None, *, deadline=Non
     seed, worktree = private / 'seed', private / 'worktree'
     seed.mkdir()
     try:
-        for relative in before:
+        for relative, value in before.items():
             target = seed / relative
             target.parent.mkdir(parents=True, exist_ok=True)
-            shutil.copy2(source / relative, target)
+            if value.startswith(LINK_PREFIX):
+                os.symlink(os.readlink(source / relative), target)  # copy2 would follow the link
+            else:
+                shutil.copy2(source / relative, target)
         _git(seed, 'init', '--template=', deadline=deadline)
         # Persist on the private repository: later apply calls must not inherit
         # the host's core.autocrlf=true and alter raw bytes on Windows.

@@ -5,7 +5,7 @@ import time
 
 from vgar.repair.config import CONFIG_DIR, REPO_ROOT
 from vgar.repair.evidence import digest
-from vgar.repair.executor import NativeExecutor, remaining_timeout, utc_now
+from vgar.repair.executor import GLOBAL_DEADLINE, NativeExecutor, remaining_timeout, utc_now
 from vgar.repair.verification import assess_transition
 from vgar.repair.workspace import inventory
 
@@ -31,7 +31,7 @@ class DeadlineExecutor(NativeExecutor):
     def run(self, argv, cwd, timeout_seconds):
         remaining = self.deadline - time.monotonic()
         if remaining <= 0:
-            raise TimeoutError('Global run deadline exhausted')
+            raise TimeoutError(GLOBAL_DEADLINE)
         return super().run(argv, cwd, min(timeout_seconds, remaining))
 
 
@@ -90,6 +90,8 @@ def _project_bundle(run, task, lease, applied, verification):
     checks = {}
     for key, public, code in (('mypy', 'typecheck', 'TYPECHECK_FAILED'), ('ruff', 'lint', 'LINT_FAILED')):
         status = static.get(key, {}).get('status', 'NOT_RUN')
+        if status == 'UNAVAILABLE':  # e.g. mypy on a Python < 3.7 testbed (D12); the run record keeps UNAVAILABLE
+            status = 'NOT_RUN'
         checks[public] = CheckResult(status=status, reason=None if status in ('PASS', 'NOT_RUN') else
                                     FailureReason(code=code, message='See canonical stage command evidence'))
     allowed_codes = {'TEST_FAILED', 'TYPECHECK_FAILED', 'LINT_FAILED', 'VERIFICATION_INCOMPLETE'}

@@ -1,5 +1,6 @@
 """Structured static evidence and conservative, baseline-relative multiset matching."""
 import json
+import re
 from collections import Counter, defaultdict
 from difflib import SequenceMatcher
 from pathlib import Path
@@ -52,6 +53,17 @@ def scope_digest(scope):
     return digest(json.dumps(sorted(scope), separators=(',', ':')))
 
 
+# Ruff warns on stderr about malformed `# noqa` comments already in the repository; it still lints the file.
+_RUFF_BENIGN_STDERR = re.compile(r'warning: Invalid `# noqa` directive on [^\s:]+:\d+: .+')
+
+
+def _unexplained_stderr(tool, stderr):
+    lines = [line for line in (stderr or '').splitlines() if line.strip()]
+    if tool == 'ruff':
+        lines = [line for line in lines if not _RUFF_BENIGN_STDERR.fullmatch(line)]
+    return lines
+
+
 def parse_tool_report(tool: str, command: dict, tool_version: str) -> DiagnosticReport:
     """Parse Ruff JSON / mypy JSON-lines; never interpret lost output as zero errors.
 
@@ -76,7 +88,7 @@ def parse_tool_report(tool: str, command: dict, tool_version: str) -> Diagnostic
                       config_hash=context['config_hash'], interpreter_ref=context['interpreter_ref'])
         if (command.get('complete') is not True or command.get('timed_out')
                 or command.get('output_truncated') or command.get('exit_code') not in (0, 1)
-                or command.get('status') not in ('PASS', 'FAIL') or command.get('stderr')):
+                or command.get('status') not in ('PASS', 'FAIL') or _unexplained_stderr(tool, command.get('stderr'))):
             raise ValueError('Tool execution incomplete, unsupported exit, or stderr requires diagnosis')
         root = Path(command['cwd']).resolve()
         # Docker runs report container paths (/testbed/...), not host lease paths.

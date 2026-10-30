@@ -46,3 +46,17 @@ def test_regression_disappearing_or_skipping_is_incomplete():
         post = {'status': 'PASS', 'outcomes': {'fix': 'PASS', 'regression': state}}
         status, reasons = m_verification.assess_transition(baseline, post)
         assert status == 'ERROR' and 'VERIFICATION_INCOMPLETE' in reasons
+
+
+def test_failure_follows_status_when_bundle_publish_fails(m1_case, tmp_path, monkeypatch):
+    from vgar.repair import session as m_session
+    original = m_session.atomic_json
+
+    def failing(path, value):
+        if path.name == 'evidence_bundle.json':
+            raise OSError('injected publish failure')
+        return original(path, value)
+    monkeypatch.setattr(m_session, 'atomic_json', failing)
+    record = json.loads(repair(m1_case, tmp_path).path.read_text(encoding='utf-8'))
+    assert (record['status'], record['reason']) == ('ERROR', 'FINALIZATION_ERROR')
+    assert record['failure']['stage'] == 'finalization' and record['failure']['code'] == 'FINALIZATION_ERROR'

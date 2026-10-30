@@ -1,0 +1,24 @@
+Python 3.11.10
+Testing against Django installed in '/testbed/django'
+Importing application vgar_repro
+Found 3 test(s).
+Skipping setup of unused database(s): default, other.
+System check identified no issues (0 silenced).
+test_doc (vgar_repro.tests.Repro.test_doc)
+Docstring first line. ... ok
+test_fail (vgar_repro.tests.Repro.test_fail) ... FAIL
+test_pass (vgar_repro.tests.Repro.test_pass) ... ok
+
+======================================================================
+FAIL: test_fail (vgar_repro.tests.Repro.test_fail)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/testbed/tests/vgar_repro/tests.py", line 6, in test_fail
+    self.assertEqual(1, 2)
+AssertionError: 1 != 2
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.001s
+
+FAILED (failures=1)
+EXIT=1

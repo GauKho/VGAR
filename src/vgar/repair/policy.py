@@ -10,7 +10,7 @@ import json
 from pathlib import Path
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict, model_validator
+from pydantic import BaseModel, ConfigDict, model_serializer, model_validator
 
 CheckName = Literal['tests', 'syntax', 'mypy', 'ruff']
 _ALL_CHECKS = frozenset({'tests', 'syntax', 'mypy', 'ruff'})
@@ -27,6 +27,19 @@ class VariantPolicy(BaseModel):
     arm: Literal['bm25', 'graph'] | None = None
     static_mode: Literal['baseline_delta'] = 'baseline_delta'
     diagnostic_identity_version: Literal['m2-static-delta-v1'] = 'm2-static-delta-v1'
+    patch_mode: Literal['strict', 'normalized'] = 'strict'
+    # 'context' lists only allowed paths shown in the bundle context; enforcement still uses every allowed path.
+    path_listing: Literal['all', 'context'] = 'all'
+
+    @model_serializer(mode='wrap')
+    def _omit_w9_defaults(self, handler):
+        # W9 policies predate patch_mode and path_listing; omitting their defaults keeps hashes and snapshots.
+        data = handler(self)
+        if self.patch_mode == 'strict':
+            data.pop('patch_mode', None)
+        if self.path_listing == 'all':
+            data.pop('path_listing', None)
+        return data
 
     @model_validator(mode='after')
     def validate_checks(self) -> VariantPolicy:

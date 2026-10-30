@@ -31,7 +31,8 @@ def template_path(version: str) -> Path:
     return path
 
 
-def build_repair_prompt(task, handoff, baseline, tokenizer, policy, *, feedback=None) -> PromptArtifact:
+def build_repair_prompt(task, handoff, baseline, tokenizer, policy, *, feedback=None,
+                        path_listing='all') -> PromptArtifact:
     handoff.assert_unchanged()
     template = template_path(policy.prompt_version).read_text(encoding='utf-8')
     context, metadata = handoff.context_text, {}
@@ -65,8 +66,19 @@ def build_repair_prompt(task, handoff, baseline, tokenizer, policy, *, feedback=
                               'protected_paths': task.protected_paths})
     # Baseline is host-produced execution evidence, never a developer/gold patch.
     failure_text = json.dumps(baseline.get('failed_cases', []), ensure_ascii=False)
+    listed, omitted_note = task.allowed_source_paths, ''
+    if path_listing == 'context':
+        # Listing every allowed path overflows the cap on large repos (W10 OVER_CAP); the patch policy is unchanged.
+        if not replacement:
+            raise ValueError('Context path listing requires a replacement-contract prompt version')
+        shown = {item.path for item in handoff.context.items}
+        listed = tuple(p for p in task.allowed_source_paths if p in shown)
+        omitted_note = '\nOther non-protected production paths are also allowed but not listed.'
+        metadata['path_listing'] = {'mode': 'context', 'listed': len(listed), 'allowed': len(task.allowed_source_paths)}
+    elif path_listing != 'all':
+        raise ValueError('Unsupported path listing: ' + str(path_listing))
     permission_text = ('\nPermission metadata (not files):\nAllowed production paths:\n' +
-        '\n'.join('- ' + p for p in task.allowed_source_paths) + '\nProtected paths:\n' +
+        '\n'.join('- ' + p for p in listed) + omitted_note + '\nProtected paths:\n' +
         '\n'.join('- ' + p for p in task.protected_paths)) if replacement else '\nHost path policy: ' + policy_text
     messages = [dict(role='system', content=template + permission_text),
                 dict(role='user', content='Issue:\n' + task.issue_text + '\nBaseline failed cases:\n' +

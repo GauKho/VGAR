@@ -1,0 +1,14 @@
+--- a/lib/matplotlib/axes/_base.py
++++ b/lib/matplotlib/axes/_base.py
+@@ -3666,9 +3666,9 @@
+     def get_yscale(self):
+         """
+         Return the y-axis scale as string.
+-
+         See Also
+         --------
+         set_yscale
+         """
+-        return self.yaxis.get_scale()
++        scale = self.yaxis.get_scale()
++        return scale

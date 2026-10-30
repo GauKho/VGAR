@@ -18,8 +18,10 @@ from vgar.repair.contracts import ModelProfile, RepairPolicy, RepairTask
 from vgar.repair.diagnostics import exception_details
 from vgar.repair.evidence import atomic_json, begin_run, digest, encode_json, load_run
 from vgar.repair.experiment import check_session_experiment, validate_experiment
-from vgar.repair.executor import remaining_timeout, utc_now
-from vgar.repair.patch import PatchPolicy, apply_patch, parse_unified_diff
+from vgar.repair.executor import GLOBAL_DEADLINE, remaining_timeout, utc_now
+from vgar.repair.failure import failure_of
+from vgar.repair.patch import PatchPolicy, _bind, apply_patch, parse_unified_diff
+from vgar.repair.patch_normalize import NormalizationError, normalize_unified_diff
 from vgar.repair import pipeline
 from vgar.repair.pipeline import DeadlineExecutor, StopRun, recommendation_for, require_trusted_fixture
 from vgar.repair.prompt import build_repair_prompt
@@ -156,7 +158,10 @@ def _step(session, action):
     except BaseException as error:
         current = session.state['current']
         status = 'FAIL' if current == 'parse_patch' and isinstance(error, ValueError) else 'ERROR'
-        reason = 'PATCH_PARSE_ERROR' if status == 'FAIL' else 'WORKTREE_ERROR' if current == 'workspace' else 'INTERNAL_ERROR'
+        # The global deadline is a run budget outcome, not an engine fault (spec §7.2).
+        timed_out = isinstance(error, TimeoutError) and str(error) == GLOBAL_DEADLINE
+        reason = ('RUN_TIMEOUT' if timed_out else 'PATCH_PARSE_ERROR' if status == 'FAIL'
+                  else 'WORKTREE_ERROR' if current == 'workspace' else 'INTERNAL_ERROR')
         session.state['outcome'] = [status, reason]
         session.run.record['error_detail'] = dict(exception_details(error), stage=current)
         session.run.save()
@@ -248,8 +253,11 @@ def prepare(session, m1_counter, tokenizer, *, executor=None):
             raise StopRun('ERROR', 'VERIFICATION_INCOMPLETE')
         if hasattr(tokenizer, 'deadline'):
             tokenizer.deadline = session.deadline
+        experiment = session.experiment
+        listing = experiment.variant_policy.path_listing if experiment is not None else 'all'
         prompt = session.observe('prompt', lambda: build_repair_prompt(task, handoff, baseline, tokenizer, session.policy,
-                                                                      feedback=session.state['feedback']),
+                                                                      feedback=session.state['feedback'],
+                                                                      path_listing=listing),
                                  lambda p: dict(status='PASS', **asdict(p)))
         (session.run.directory / 'prompt.txt').write_bytes(prompt.rendered.encode('utf-8'))
         session.state['phase'] = 'prepared'
@@ -271,7 +279,8 @@ def record_generation(session, generated, *, started_utc, duration_ms, error=Non
         run.stage('generation', dict(generated, complete=True, started_utc=started_utc, ended_utc=utc_now(),
                                      duration_ms=duration_ms))
         if generated['status'] != 'PASS':
-            raise StopRun('ERROR', 'INTERNAL_ERROR')
+            # The worker hit generation_timeout while the global deadline still had time left.
+            raise StopRun('ERROR', 'GENERATION_TIMEOUT' if generated.get('timed_out') else 'INTERNAL_ERROR')
         raw = generated['raw_text']
         (run.directory / 'raw_model_output.txt').write_bytes(raw.encode('utf-8'))
         run.record['artifacts']['raw_output'] = 'raw_model_output.txt'
@@ -289,8 +298,12 @@ def apply_candidate(session, raw):
         run, task, policy, lease = session.run, session.task, session.policy, session.lease()
         pp = PatchPolicy(task.allowed_source_paths, task.protected_paths, policy.max_diff_bytes,
                          policy.max_files, policy.max_changed_lines)
-        parsed = session.observe('parse_patch', lambda: parse_unified_diff(raw, pp),
-                                 lambda p: dict(status='PASS', files=p.files, raw_sha256=digest(raw)))
+        experiment = session.experiment
+        if experiment is not None and experiment.variant_policy.patch_mode == 'normalized':
+            parsed = _parse_normalized(session, raw, pp, lease)
+        else:
+            parsed = session.observe('parse_patch', lambda: parse_unified_diff(raw, pp),
+                                     lambda p: dict(status='PASS', files=p.files, raw_sha256=digest(raw)))
         (run.directory / 'candidate.diff').write_bytes(raw.encode('utf-8'))
         run.record['artifacts']['candidate'] = 'candidate.diff'
         applied = session.observe('apply', lambda: apply_patch(lease, parsed, session.executor(lease)),
@@ -308,12 +321,47 @@ def apply_candidate(session, raw):
     return _step(session, action)
 
 
+def _parse_normalized(session, raw, pp, lease):
+    """Record the strict outcome on the raw output, then parse the normalized diff (variant patch_mode)."""
+    run, started_utc, start = session.run, utc_now(), time.monotonic()
+    evidence = dict(mode='normalized', strict_parse_ok=False, strict_apply_ok=False)
+    try:
+        strict = parse_unified_diff(raw, pp)
+        evidence['strict_parse_ok'] = True
+        _bind(strict, lease.path)  # read-only prediction; never writes the worktree
+        evidence['strict_apply_ok'] = True
+    except (ValueError, OSError):
+        pass
+    session.state['current'] = 'parse_patch'
+    try:
+        normalized = normalize_unified_diff(raw, lease.path, pp)
+    except ValueError as error:  # NormalizationError codes, or the strict file-level rules (path, size, header)
+        code = error.code if isinstance(error, NormalizationError) else 'PATCH_PARSE_ERROR'
+        counts = dict(hunks_total=None, hunks_noop_dropped=None, hunks_relocated=None)
+        counts.update(getattr(error, 'stats', {}))
+        (run.directory / 'candidate.diff').write_bytes(raw.encode('utf-8'))
+        run.record['artifacts']['candidate'] = 'candidate.diff'
+        run.stage('parse_patch', dict(status='FAIL', complete=True, raw_sha256=digest(raw),
+            patch_normalization=dict(evidence, **counts, normalized_diff_sha256=None),
+            error=dict(code=code, message=str(error)), started_utc=started_utc, ended_utc=utc_now(),
+            duration_ms=round((time.monotonic()-start)*1000)))
+        raise StopRun('FAIL', code)
+    (run.directory / 'normalized.diff').write_bytes(normalized.diff.encode('utf-8'))
+    evidence.update(hunks_total=normalized.hunks_total, hunks_noop_dropped=normalized.hunks_noop_dropped,
+                    hunks_relocated=normalized.hunks_relocated, normalized_diff_sha256=digest(normalized.diff))
+    return session.observe('parse_patch', lambda: parse_unified_diff(normalized.diff, pp),
+                           lambda p: dict(status='PASS', files=p.files, raw_sha256=digest(raw),
+                                          patch_normalization=evidence))
+
+
 def run_selected_tests(session, m1_counter):
     """Relevant-test selection and the test half of verification (stored as the verification stage)."""
     def action():
         task, lease, applied = session.task, session.lease(), session.applied()
         handoff = load_handoff(task, m1_counter, m1_counter.counter_label, **session.handoff_kwargs())
-        selection = session.observe('selection', lambda: select_relevant_tests(tuple(applied.changed_files), handoff, task))
+        admitted = session.assert_admission() is not None
+        selection = session.observe('selection', lambda: select_relevant_tests(tuple(applied.changed_files), handoff, task,
+                                                                               admitted=admitted))
         partial = session.observe('verification', lambda: run_patch_tests(task, lease, applied, session.state['baseline'],
                                                                          selection, session.executor(lease), session.policy))
         session.state['verification'] = partial
@@ -390,6 +438,7 @@ def finish(session, *, on_record=None):
             bundle.metadata.update(repair_status=status, canonical_sha256=digest(encode_json(record)))
             bundle.recommendation = recommendation_for(status)
             atomic_json(run.directory / 'evidence_bundle.json', bundle)
+    run.record['failure'] = failure_of({**run.record, 'status': status, 'reason': reason})
     if on_record is not None:
         on_record(status)  # last chance to add to the record before it is hashed and published
     try:
@@ -399,6 +448,7 @@ def finish(session, *, on_record=None):
         finalization_failure('bundle_publish', error)
         run.record.update(complete=False)
         run.record['artifacts']['bundle'] = None
+        run.record['failure'] = failure_of({**run.record, 'status': status, 'reason': reason})
         run.finish(status, reason=reason)
     session.state.update(phase='finished', outcome=[status, reason])
     session.save()

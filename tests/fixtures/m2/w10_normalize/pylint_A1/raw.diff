@@ -1,0 +1,115 @@
+--- a/pylint/pyreverse/diadefslib.py
++++ b/pylint/pyreverse/diadefslib.py
+@@ -32,7 +32,7 @@
+ class DiaDefGenerator:
+     """handle diagram generation options"""
+
+-    def __init__(self, linker, handler):
++    def __init__(self, linker: Optional[Linker], handler: Optional[Handler]):
+         """common Diagram Handler initialization"""
+         self.config = handler.config
+         self._set_default_options()
+@@ -48,7 +48,7 @@
+         all_ancestors = self._set_option(self.config.all_ancestors)
+         all_associated = self._set_option(self.config.all_associated)
+         anc_level, association_level = (0, 0)
+-        if all_ancestors:
++        if all_ancestors is not None:
+             anc_level = -1
+         if all_associated:
+             association_level = -1
+@@ -120,7 +120,7 @@
+     def get_associated(self, klass_node, level):
+         """return associated nodes of a class node"""
+         if level == 0:
+-            return
++            return
+         for association_nodes in list(klass_node.instance_attrs_type.values()) + list(
+             klass_node.locals_type.values()
+         ):
+@@ -150,7 +150,7 @@
+     def extract_classes(self, klass_node, anc_level, association_level):
+         """extract recursively classes related to klass_node"""
+         if self.classdiagram.has_node(klass_node) or not self.show_node(klass_node):
+-            return
++            return
+         self.add_class(klass_node)
+
+         for ancestor in self.get_ancestors(klass_node, anc_level):
+@@ -218,7 +218,7 @@
+     def get_diadefs(self, project, linker):
+         """Get the diagrams configuration data
+
+         :param project:The pyreverse project
+-        :type project: pyreverse.utils.Project
+-        :param linker: The linker
+-        :type linker: pyreverse.inspector.Linker(IdGeneratorMixIn, LocalsVisitor)
+
++        :type project: pyreverse.utils.Project
++        :param linker: The linker
++        :type linker: pyreverse.inspector.Linker
+         :returns: The list of diagram definitions
+         :rtype: list(:class:`pylint.pyreverse.diagrams.ClassDiagram`)
+         """
+--- a/pylint/pyreverse/writer.py
++++ b/pylint/pyreverse/writer.py
+@@ -60,7 +60,7 @@
+     def write_classes(self, diagram):
+         """write a class diagram"""
+         # sorted to get predictable (hence testable) results
+-        for i, obj in enumerate(sorted(diagram.objects, key=lambda x: x.title)):
++        for i, obj in enumerate(sorted(diagram.objects, key=lambda x: x.title)):
+             self.printer.emit_node(i, **self.get_values(obj))
+             obj.fig_id = i
+         # inheritance links
+@@ -34,7 +34,7 @@
+     def write(self, diadefs):
+         """write files for <project> according to <diadefs>"""
+         for diagram in diadefs:
+-            basename = diagram.title.strip().replace(" ", "_")
++            basename = diagram.title.strip().replace(" ", "_")
+             file_name = f"{basename}.{self.config.output_format}"
+             if os.path.exists(self.config.output_directory):
+                 file_name = os.path.join(self.config.output_directory, file_name)
+--- a/pylint/pyreverse/diagrams.py
++++ b/pylint/pyreverse/diagrams.py
+@@ -29,7 +29,7 @@
+     def __init__(self, from_object, to_object, relation_type, name=None):
+         Figure.__init__(self)
+         self.from_object = from_object
+-        self.to_object = to_object
+-        self.type = relation_type
+-        self.name = name
++        self.to_object: Optional[DiagramEntity] = to_object
++        self.type: str = relation_type
++        self.name: Optional[str] = name
+@@ -111,7 +111,7 @@
+     def add_object(self, title, node):
+         """create a diagram object"""
+         assert node not in self._nodes
+-        ent = DiagramEntity(title, node)
++        ent = DiagramEntity(title, node)
+         self._nodes[node] = ent
+         self.objects.append(ent)
+--- a/pylint/pyreverse/diagrams.py
++++ b/pylint/pyreverse/diagrams.py
+@@ -142,7 +142,7 @@
+     def object_from_node(self, node):
+         """return the diagram object mapped to node"""
+         return self._nodes[node]
+--- a/pylint/pyreverse/diagrams.py
++++ b/pylint/pyreverse/diagrams.py
+@@ -146,7 +146,7 @@
+     def classes(self):
+         """return all class nodes in the diagram"""
+         return [o for o in self.objects if isinstance(o.node, astroid.ClassDef)]
+--- a/pylint/pyreverse/diagrams.py
++++ b/pylint/pyreverse/diagrams.py
+@@ -150,7 +150,7 @@
+     def classe(self, name):
+         """return a class by its name, raise KeyError if not found"""
+         for klass in self.classes():
+-            if klass.node.name == name:
++            if klass.node.name == name:
+                 return klass
+         raise KeyError(name)
