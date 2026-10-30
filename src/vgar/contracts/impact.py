@@ -90,16 +90,65 @@ class UnmappedChange(_Located):
                     'UNSUPPORTED_SOURCE', 'MAPPING_LIMIT']
 
 
+ImpactRelation = Literal['CALLS', 'IMPORTS', 'INHERITS', 'TESTS']
+
+
+class ImpactedNode(_Located):
+    """Baseline node reached by walking a relation backwards from a changed node."""
+    node_id: Text
+    qualified_name: Text  # display only; node_id stays the identity
+    kind: Literal['Module', 'Class', 'Function', 'Method', 'Test']
+    hops: int = Field(ge=1)
+    relation: ImpactRelation
+    via: Text  # node one hop closer to a changed node
+
+    @model_validator(mode='after')
+    def not_self(self) -> ImpactedNode:
+        if self.via == self.node_id:
+            raise ValueError('Impacted node cannot be reached through itself')
+        return self
+
+
+class UnsupportedRelation(_Contract):
+    """Relation the walk does not follow, so impact through it is unknown, not absent."""
+    relation: Text
+    reason: Literal['NOT_TRAVERSED', 'UNRESOLVED_CALL_SITES']
+    count: int | None = Field(default=None, ge=0)
+
+
 class ImpactedNodes(_Contract):
-    status: Literal['NOT_COMPUTED'] = 'NOT_COMPUTED'
-    items: list[Text] = Field(default_factory=list, max_length=0)
+    status: Literal['NOT_COMPUTED', 'COMPLETE', 'PARTIAL'] = 'NOT_COMPUTED'
+    items: list[ImpactedNode] = Field(default_factory=list)
+    max_hops: int | None = Field(default=None, ge=1)
+    max_nodes: int | None = Field(default=None, ge=1)
+    min_confidence: float | None = Field(default=None, ge=0, le=1)
+    traversed: list[ImpactRelation] = Field(default_factory=list)
+    unsupported: list[UnsupportedRelation] = Field(default_factory=list)
+
+    @model_validator(mode='after')
+    def consistent(self) -> ImpactedNodes:
+        limits = (self.max_hops, self.max_nodes, self.min_confidence)
+        if self.status == 'NOT_COMPUTED':
+            if self.items or self.traversed or self.unsupported or limits != (None, None, None):
+                raise ValueError('NOT_COMPUTED impact cannot carry traversal results')
+            return self
+        if None in limits or not self.traversed:
+            raise ValueError('Computed impact needs its limits and traversed relations')
+        ids = [item.node_id for item in self.items]
+        if len(ids) != len(set(ids)) or len(self.traversed) != len(set(self.traversed)):
+            raise ValueError('Duplicate impacted node or relation')
+        if any(item.relation not in self.traversed or item.hops > self.max_hops for item in self.items):
+            raise ValueError('Impacted node outside the declared traversal')
+        if len(self.items) > self.max_nodes:
+            raise ValueError('Impacted nodes exceed max_nodes')
+        return self
 
 
 class UnavailableRiskFeature(_Contract):
     name: Text
     available: Literal[False] = False
     value: None = None
-    reason: Literal['NOT_COMPUTED'] = 'NOT_COMPUTED'
+    reason: Literal['NOT_COMPUTED', 'NO_CHANGED_NODES'] = 'NOT_COMPUTED'
 
     @field_validator('available', mode='before')
     @classmethod
@@ -109,9 +158,24 @@ class UnavailableRiskFeature(_Contract):
         return value
 
 
+class AvailableRiskFeature(_Contract):
+    name: Text
+    available: Literal[True]
+    value: bool | int
+
+
 class RiskReport(_Contract):
-    status: Literal['NOT_COMPUTED'] = 'NOT_COMPUTED'
-    features: list[UnavailableRiskFeature] = Field(default_factory=list)
+    status: Literal['NOT_COMPUTED', 'COMPLETE'] = 'NOT_COMPUTED'
+    features: list[AvailableRiskFeature | UnavailableRiskFeature] = Field(default_factory=list)
+
+    @model_validator(mode='after')
+    def consistent(self) -> RiskReport:
+        names = [feature.name for feature in self.features]
+        if len(names) != len(set(names)):
+            raise ValueError('Duplicate risk feature')
+        if self.status == 'NOT_COMPUTED' and any(feature.available for feature in self.features):
+            raise ValueError('NOT_COMPUTED risk cannot carry measured features')
+        return self
 
 
 class MappingLimits(_Contract):
@@ -165,6 +229,9 @@ class ImpactReport(_Contract):
             node['spans'].sort(key=lambda span: tuple(span.values()))
         data['changed'].sort(key=lambda node: (node['path'], node['node_id']))
         data['unmapped'].sort(key=lambda item: json.dumps(item, sort_keys=True))
+        data['impacted']['items'].sort(key=lambda item: (item['hops'], item['path'], item['node_id']))
+        data['impacted']['traversed'].sort()
+        data['impacted']['unsupported'].sort(key=lambda item: json.dumps(item, sort_keys=True))
         data['risk']['features'].sort(key=lambda item: item['name'])
         data['limits']['reasons'].sort()
         data['limits']['unsupported_operations'].sort()

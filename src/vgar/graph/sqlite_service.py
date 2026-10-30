@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 from dataclasses import asdict
 from pathlib import Path
 from typing import Callable, Any
@@ -107,6 +108,25 @@ class SQLiteGraphService:
     def get_importers(self, module_id: str) -> SymbolRelationsResult:
         symbols = self.store.get_importers(module_id)
         return SymbolRelationsResult(symbol_id=module_id, symbols=[_to_symbol_contract(s) for s in symbols])
+
+    def analyze_patch_impact(self, diff: str, *, graph_version: str, max_hops: int = 2,
+                             max_nodes: int = 200) -> dict[str, Any]:
+        """ImpactReport (canonical JSON object) of a unified diff against the snapshot's baseline source."""
+        if self.repository_root is None:
+            raise GraphNotReadyError("Patch impact requires the repository root of the snapshot")
+        from vgar.graph.impact import analyze_patch_impact
+        from vgar.repair.patch import PatchPolicy
+        document = self.store.load_document(graph_version)
+        paths = tuple(sorted(node["path"] for node in document["nodes"] if node["type"] == "File"))
+        report = analyze_patch_impact(diff, document, self.repository_root, patch_policy=PatchPolicy(paths, ()),
+                                      max_hops=max_hops, max_nodes=max_nodes)
+        return json.loads(report.canonical_json())
+
+    def get_reverse_edges(self, node_ids: list[str], edge_types: list[str]) -> list[GraphEdgeRef]:
+        return [_to_edge_contract(edge) for edge in self.store.get_reverse_edges(node_ids, edge_types)]
+
+    def find_nodes_at(self, path: str, line: int) -> list[GraphNodeRef]:
+        return [_to_node_contract(node) for node in self.store.find_nodes_at(path, line)]
 
 
 def _to_symbol_contract(symbol: StoredSymbol) -> SymbolRef:

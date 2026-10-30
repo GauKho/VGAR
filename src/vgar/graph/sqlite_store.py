@@ -4,6 +4,7 @@ import json
 import sqlite3
 from collections.abc import Mapping
 from collections.abc import Iterator
+from collections.abc import Sequence
 from contextlib import contextmanager
 from dataclasses import dataclass
 from pathlib import Path
@@ -16,7 +17,7 @@ from vgar.contracts.error import (
     InvalidQueryError,
     NodeNotFoundError,
 )
-from vgar.contracts.schema import validate_graph_document
+from vgar.contracts.schema import EDGE_ENDPOINTS, validate_graph_document
 
 
 SYMBOL_NODE_TYPES = ("Module", "Class", "Function", "Method", "Test")
@@ -593,6 +594,60 @@ class SQLiteGraphStore:
             ).fetchall()
 
         return [_row_to_symbol(row) for row in rows]
+
+    def get_reverse_edges(
+        self,
+        node_ids: Sequence[str],
+        edge_types: Sequence[str],
+        *,
+        min_confidence: float = 0.60,
+    ) -> list[StoredEdge]:
+        """Edges of the given types that point at any of node_ids (the impact walk's reverse step)."""
+        _validate_confidence_threshold(min_confidence)
+        if not edge_types or any(t not in EDGE_ENDPOINTS for t in edge_types):
+            raise ValueError("edge_types must be non-empty graph edge types")
+        if not node_ids:
+            return []
+        graph_version = self.resolve_graph_version()
+        ids, types = sorted(set(node_ids)), sorted(set(edge_types))
+        with self._connect() as connection:
+            rows = connection.execute(
+                f"""
+                SELECT id, type, source_id, target_id, confidence,
+                       resolution, provenance_json, properties_json
+                FROM edges
+                WHERE graph_version = ?
+                  AND target_id IN ({", ".join("?" for _ in ids)})
+                  AND type IN ({", ".join("?" for _ in types)})
+                  AND confidence >= ?
+                ORDER BY id
+                """,
+                (graph_version, *ids, *types, min_confidence),
+            ).fetchall()
+        return [_row_to_edge(row) for row in rows]
+
+    def find_nodes_at(self, path: str, line: int) -> list[StoredNode]:
+        """Symbols whose range covers a one-based line, innermost first (range end is exclusive)."""
+        if isinstance(line, bool) or not isinstance(line, int) or line < 1:
+            raise ValueError("line must be a positive integer")
+        graph_version = self.resolve_graph_version()
+        with self._connect() as connection:
+            rows = connection.execute(
+                """
+                SELECT id, type, repo_key, name, qualified_name, path,
+                       start_line, start_col, end_line, end_col,
+                       content_hash, properties_json
+                FROM nodes
+                WHERE graph_version = ?
+                  AND path = ?
+                  AND type IN ('Class', 'Function', 'Method', 'Test')
+                  AND start_line <= ?
+                  AND (end_line > ? OR (end_line = ? AND end_col > 0))
+                ORDER BY end_line - start_line, start_line DESC, id
+                """,
+                (graph_version, path, line, line, line),
+            ).fetchall()
+        return [_row_to_node(row) for row in rows]
 
     def resolve_graph_version(self) -> str:
         self.initialize()

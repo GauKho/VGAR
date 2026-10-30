@@ -41,17 +41,22 @@ def main():
     parser.add_argument('--output-root', type=Path, default=ROOT/'artifacts/m1/w9/bundles')
     parser.add_argument('--worker', type=int, help=argparse.SUPPRESS)
     parser.add_argument('--directory', type=Path, help=argparse.SUPPRESS)
+    parser.add_argument('--approved-manifest', type=Path, default=ROOT/'configs/m1/w9_pilot_manifest.json')
+    parser.add_argument('--limit', type=int, help='export only the first N manifest tasks')
     args = parser.parse_args()
     manifest = json.loads(args.manifest.read_text(encoding='utf-8'))
-    approved_manifest = json.loads((ROOT/'configs/m1/w9_pilot_manifest.json').read_text(encoding='utf-8'))
-    validate_manifest(manifest, expected_hash=approved_manifest['manifest_hash'])
+    approved_manifest = json.loads(args.approved_manifest.read_text(encoding='utf-8'))
+    pilot = args.approved_manifest.resolve() == (ROOT/'configs/m1/w9_pilot_manifest.json').resolve()
+    validate_manifest(manifest, expected_hash=approved_manifest['manifest_hash'],
+                      **({} if pilot else {'expected_ids': None}))
+    tasks = manifest['tasks'][:args.limit]
     require_tokenizer_identity(args.tokenizer_manifest, ROOT/'artifacts/m1/tokenizer-acceptance/tokenizer_manifest.json')
     profile = json.loads(args.profile.read_text(encoding='utf-8'))
     approved = [json.loads(p.read_text(encoding='utf-8')) for p in APPROVED_PROFILES if p.is_file()]
     if profile not in approved:
         raise ValueError('Profile differs from implementation pinned W9 profile')
     if args.worker is not None:
-        task = manifest['tasks'][args.worker]
+        task = tasks[args.worker]
         source = (args.sources_root/task['instance_id']).resolve()
         git = ['git', '-c', 'safe.directory='+str(source), '-C', str(source)]
         def check_source():
@@ -75,11 +80,13 @@ def main():
     records = []
     clock = time.perf_counter()
     started = datetime.now(UTC).isoformat()
-    for index, task in enumerate(manifest['tasks']):
+    for index, task in enumerate(tasks):
         directory = run/task['instance_id']
         command = [sys.executable,'-B',str(Path(__file__).resolve()),'--manifest',str(args.manifest.resolve()),
             '--profile',str(args.profile.resolve()),'--tokenizer-manifest',str(args.tokenizer_manifest.resolve()),
-            '--sources-root',str(args.sources_root.resolve()),'--worker',str(index),'--directory',str(directory)]
+            '--sources-root',str(args.sources_root.resolve()),'--worker',str(index),'--directory',str(directory),
+            '--approved-manifest',str(args.approved_manifest.resolve()),
+            *(['--limit',str(args.limit)] if args.limit is not None else [])]
         task_start, task_clock = datetime.now(UTC).isoformat(), time.perf_counter()
         print('START', task['instance_id'], flush=True)
         timed_out, error = False, None
@@ -115,16 +122,17 @@ def main():
         print('END', task['instance_id'], record['status'], round(record['duration_seconds'],2), flush=True)
     passed = sum(a['status']=='PASS' for r in records for a in r['arms'])
     accepted = sum(len(r['arms']) for r in records if r['status']=='PASS')
-    success = passed == 10 and accepted == 10
+    expected = 2*len(tasks)
+    success = passed == expected and accepted == expected
     report = {'scope':'w9_dual_arm_export_no_generation_no_collection', 'complete':True,
         'status':'PASS' if success else 'INCOMPLETE', 'passed_bundles':passed,
-        'accepted_bundles':accepted, 'expected_bundles':10,
+        'accepted_bundles':accepted, 'expected_bundles':expected,
         'tasks':records, 'manifest_hash':manifest['manifest_hash'], 'profile_hash':payload_digest(profile),
         'tokenizer_manifest_hash':byte_digest(args.tokenizer_manifest.read_bytes()),
         'started_utc':started, 'ended_utc':datetime.now(UTC).isoformat(),
         'duration_seconds':time.perf_counter()-clock, 'output_directory':str(run)}
     write_json(run/'run_record.json', report)
-    print('RESULT:', run/'run_record.json', f'{passed}/10', flush=True)
+    print('RESULT:', run/'run_record.json', f'{passed}/{expected}', flush=True)
     return 0 if success else 1
 
 

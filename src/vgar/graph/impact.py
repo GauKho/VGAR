@@ -1,9 +1,10 @@
-"""Read-only mapping from exact baseline diff blocks to source graph symbols."""
+"""Read-only mapping from exact baseline diff blocks to source graph symbols, then reverse impact."""
 from __future__ import annotations
 
 import hashlib
 import os
 import stat
+from collections import defaultdict
 from pathlib import Path
 
 from vgar.contracts.impact import (
@@ -168,3 +169,108 @@ def diff_to_nodes(raw_diff: str, document: dict, source_repo: Path, *,
         patch_hash=_digest(raw_diff.encode('utf-8')), changed=list(changed.values()), unmapped=unmapped,
         limits=MappingLimits(max_diff_bytes=patch_policy.max_bytes, max_files=patch_policy.max_files,
                              max_changed_lines=patch_policy.max_changed_lines))
+
+
+# Walk order; a node reached by several relations keeps the first one found.
+_RELATIONS = ('CALLS', 'IMPORTS', 'INHERITS', 'TESTS')
+_CALLERS = {'Function', 'Method', 'Test'}
+
+
+def _public(qualified_name: str) -> bool:
+    return all(not part.startswith('_') or (part.startswith('__') and part.endswith('__'))
+               for part in qualified_name.split('.'))
+
+
+def compute_impact(report: ImpactReport, document: dict, *, max_hops: int = 2, max_nodes: int = 200,
+                   min_confidence: float = 0.6) -> ImpactReport:
+    """Fill `impacted` and `risk` by walking CALLS/IMPORTS/INHERITS/TESTS backwards from the changed nodes.
+
+    Only edges present in the graph with confidence >= min_confidence are followed; nothing is inferred.
+    Relations the walk cannot see (REFERENCES, call sites with no resolved target) are listed as unsupported.
+    """
+    if type(max_hops) is not int or not 1 <= max_hops <= 5:
+        raise ValueError('max_hops must be within [1, 5]')
+    if type(max_nodes) is not int or not 1 <= max_nodes <= 1000:
+        raise ValueError('max_nodes must be within [1, 1000]')
+    if isinstance(min_confidence, bool) or not isinstance(min_confidence, (int, float)) or not 0 <= min_confidence <= 1:
+        raise ValueError('min_confidence must be within [0, 1]')
+    validate_graph_document(document)
+    if canonical_hash(document) != report.graph_hash:
+        raise ValueError('Impact graph differs from the mapped graph snapshot')
+    nodes = {n['id']: n for n in document['nodes']}
+    parent, incoming, resolved = {}, defaultdict(lambda: defaultdict(list)), set()
+    for edge in document['edges']:
+        if edge['type'] == 'CONTAINS':
+            parent[edge['target_id']] = edge['source_id']
+        elif edge['type'] in _RELATIONS and edge['confidence'] >= min_confidence:
+            incoming[edge['target_id']][edge['type']].append(edge['source_id'])
+            if edge['type'] == 'CALLS':
+                resolved.add(edge['source_id'])
+
+    def module_of(node_id):
+        while node_id is not None and nodes[node_id]['type'] != 'Module':
+            node_id = parent.get(node_id)
+        return node_id
+
+    def callers(node_id):
+        return sorted({parent[cs] for cs in incoming[node_id]['CALLS']
+                       if cs in parent and nodes[parent[cs]]['type'] in _CALLERS})
+
+    def neighbours(node_id):
+        node = nodes[node_id]
+        yield from (('CALLS', caller) for caller in callers(node_id))
+        module = module_of(node_id)
+        if module is not None:
+            importers = {module_of(imp) for imp in incoming[module]['IMPORTS']}
+            yield from (('IMPORTS', m) for m in sorted(importers - {None, module}))
+        owner = parent.get(node_id) if node['type'] == 'Method' else node_id if node['type'] == 'Class' else None
+        if owner is not None and nodes[owner]['type'] == 'Class':
+            yield from (('INHERITS', sub) for sub in sorted(set(incoming[owner]['INHERITS'])))
+        yield from (('TESTS', test) for test in sorted(set(incoming[node_id]['TESTS'])))
+
+    seeds = sorted(c.node_id for c in report.changed)
+    seen, items, frontier, truncated = set(seeds), [], seeds, False
+    for hops in range(1, max_hops + 1):
+        reached = []
+        for source in frontier:
+            for relation, target in neighbours(source):
+                if target in seen:
+                    continue
+                if len(items) == max_nodes:
+                    truncated = True
+                    break
+                seen.add(target)
+                reached.append(target)
+                items.append({'node_id': target, 'qualified_name': nodes[target]['qualified_name'],
+                              'path': nodes[target]['path'], 'kind': nodes[target]['type'],
+                              'hops': hops, 'relation': relation, 'via': source})
+            if truncated:
+                break
+        if truncated:
+            break
+        frontier = reached
+    unresolved = sum(n['type'] == 'CallSite' and n['id'] not in resolved for n in document['nodes'])
+    impacted = {'status': 'PARTIAL' if truncated else 'COMPLETE', 'items': items, 'max_hops': max_hops,
+                'max_nodes': max_nodes, 'min_confidence': float(min_confidence), 'traversed': list(_RELATIONS),
+                'unsupported': [{'relation': 'REFERENCES', 'reason': 'NOT_TRAVERSED'},
+                                {'relation': 'CALLS', 'reason': 'UNRESOLVED_CALL_SITES', 'count': unresolved}]}
+    names = ('public_symbol_changed', 'fan_in', 'impacted_callers', 'impacted_tests')
+    if seeds:
+        values = (any(_public(nodes[s]['qualified_name']) for s in seeds),
+                  max(len(callers(s)) for s in seeds),
+                  sum(item['kind'] in ('Function', 'Method') for item in items),
+                  sum(item['kind'] == 'Test' for item in items))
+        features = [{'name': n, 'available': True, 'value': v} for n, v in zip(names, values)]
+        # Signature/export comparison needs the patched source; it belongs to the API check (M2-W11-1).
+        features.append({'name': 'signature_changed', 'available': False, 'reason': 'NOT_COMPUTED'})
+    else:
+        features = [{'name': n, 'available': False, 'reason': 'NO_CHANGED_NODES'}
+                    for n in names + ('signature_changed',)]
+    return ImpactReport.model_validate({**report.model_dump(), 'impacted': impacted,
+                                        'risk': {'status': 'COMPLETE', 'features': features}})
+
+
+def analyze_patch_impact(raw_diff: str, document: dict, source_repo: Path, *, patch_policy: PatchPolicy,
+                         **limits) -> ImpactReport:
+    """diff_to_nodes, then compute_impact on the same graph snapshot."""
+    return compute_impact(diff_to_nodes(raw_diff, document, source_repo, patch_policy=patch_policy), document, **limits)

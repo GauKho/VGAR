@@ -13,7 +13,10 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'src'))
 from vgar.contracts.handoff import byte_digest
 from vgar.evaluation.retrieval.dataset import select_tasks
-from vgar.evaluation.retrieval.pilot_manifest import DATASET_REVISION, make_manifest
+from vgar.evaluation.harness.test_cmds import load_test_cmds, lookup
+from vgar.evaluation.retrieval.pilot_manifest import DATASET_REVISION, PILOT_IDS, W10_SELECTION, make_manifest
+
+W10_MANIFEST = ROOT/'configs/m1/w10_dev_manifest.json'
 
 
 def locked_json(path, value):
@@ -25,6 +28,21 @@ def locked_json(path, value):
         path.write_text(json.dumps(value, indent=2, ensure_ascii=False)+'\n', encoding='utf-8')
 
 
+def build_w10_manifest(rows, *, parquet_hash, count, table):
+    """W10 dev population: pilot tasks removed, single- and multi-file, every (repo, version) has a pinned runner."""
+    rows = [r for r in rows if r['instance_id'] not in PILOT_IDS]
+    selected, _ = select_tasks(rows, count, split='dev', min_source_files=1)
+    missing = []
+    for row in selected:
+        try:
+            lookup(table, row['repo'], row['version'])
+        except ValueError as error:
+            missing.append(str(error))
+    if missing:
+        raise ValueError('W10 population has tasks without a pinned test command: ' + '; '.join(missing))
+    return make_manifest(selected, parquet_hash=parquet_hash, selection_policy=W10_SELECTION)
+
+
 def main():
     import pyarrow.parquet as pq
     parser = argparse.ArgumentParser(description=__doc__)
@@ -32,6 +50,9 @@ def main():
     parser.add_argument('--tokenizer-cache', type=Path, required=True)
     parser.add_argument('--sources-root', type=Path, default=ROOT / 'data/w9/repositories')
     parser.add_argument('--prepare-sources', action='store_true')
+    parser.add_argument('--population', choices=('w9-pilot', 'w10-dev'), default='w9-pilot')
+    parser.add_argument('--count', type=int, default=50, help='w10-dev candidate count (locked)')
+    parser.add_argument('--limit', type=int, help='prepare sources for the first N manifest tasks only')
     args = parser.parse_args()
     metadata = json.loads((args.dataset_cache/'hf_metadata.json').read_text(encoding='utf-8'))
     if metadata['sha'] != DATASET_REVISION or metadata['id'] != 'princeton-nlp/SWE-bench_Verified':
@@ -43,9 +64,13 @@ def main():
     if actual != expected:
         raise ValueError('Cached Parquet differs from recorded download hash')
     rows = [r for batch in pq.ParquetFile(parquet).iter_batches(batch_size=64) for r in batch.to_pylist()]
-    selected, _ = select_tasks(rows, 5, split='dev', min_source_files=2)
-    manifest = make_manifest(selected, parquet_hash=actual)
-    locked_json(ROOT/'configs/m1/w9_pilot_manifest.json', manifest)
+    if args.population == 'w10-dev':
+        manifest = build_w10_manifest(rows, parquet_hash=actual, count=args.count, table=load_test_cmds())
+        locked_json(W10_MANIFEST, manifest)
+    else:
+        selected, _ = select_tasks(rows, 5, split='dev', min_source_files=2)
+        manifest = make_manifest(selected, parquet_hash=actual)
+        locked_json(ROOT/'configs/m1/w9_pilot_manifest.json', manifest)
     original = ROOT/'artifacts/m1/tokenizer-acceptance/tokenizer_manifest.json'
     tokenizer_manifest = json.loads(original.read_text(encoding='utf-8'))
     assets = (original.parent/tokenizer_manifest['assets_directory']).resolve()
@@ -64,7 +89,7 @@ def main():
     print('INPUTS READY', manifest['manifest_hash'], counter.counter_label, flush=True)
     if not args.prepare_sources:
         return
-    for task in manifest['tasks']:
+    for task in manifest['tasks'][:args.limit]:
         started = time.perf_counter()
         directory = args.sources_root/task['instance_id']
         directory.parent.mkdir(parents=True, exist_ok=True)

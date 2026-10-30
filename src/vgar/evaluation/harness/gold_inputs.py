@@ -19,10 +19,20 @@ def write_json(path: Path, data) -> None:
 
 
 def select_gold_rows(rows, manifest, instance_ids):
-    approved = json.loads((ROOT/'configs/m1/w9_pilot_manifest.json').read_text(encoding='utf-8'))
-    validate_manifest(manifest, expected_hash=approved['manifest_hash'])
     if tuple(instance_ids) != GOLD_IDS:
         raise ValueError('Gold qualification requires the fixed first three pilot IDs in order')
+    return select_rows(rows, manifest, instance_ids, approved_manifest=ROOT/'configs/m1/w9_pilot_manifest.json')
+
+
+def select_rows(rows, manifest, instance_ids, *, approved_manifest: Path):
+    """Harness rows (with gold and tests) for instance_ids of an approved manifest, in instance_ids order."""
+    approved_path = Path(approved_manifest)
+    approved = json.loads(approved_path.read_text(encoding='utf-8'))
+    pilot = approved_path.resolve() == (ROOT/'configs/m1/w9_pilot_manifest.json').resolve()
+    validate_manifest(manifest, expected_hash=approved['manifest_hash'], **({} if pilot else {'expected_ids': None}))
+    tasks = {task['instance_id']: task for task in manifest['tasks']}
+    if any(i not in tasks for i in instance_ids) or len(set(instance_ids)) != len(instance_ids):
+        raise ValueError('Requested instances are not distinct tasks of the approved manifest')
     indexed = {}
     for row in rows:
         key = row['instance_id']
@@ -30,7 +40,7 @@ def select_gold_rows(rows, manifest, instance_ids):
             raise ValueError('Duplicate dataset instance')
         indexed[key] = row
     selected = []
-    for task in manifest['tasks'][:3]:
+    for task in (tasks[i] for i in instance_ids):
         row = copy.deepcopy(indexed.get(task['instance_id']))
         if row is None or any(row.get(k) != task[k] for k in ('repo', 'base_commit', 'problem_statement')):
             raise ValueError('Cached task identity differs from pilot manifest')
@@ -46,7 +56,7 @@ def select_gold_rows(rows, manifest, instance_ids):
                 raise ValueError('Invalid harness test metadata')
             row[key] = value
         if not row['FAIL_TO_PASS']:
-            raise ValueError('Gold qualification needs nonempty FAIL_TO_PASS')
+            raise ValueError('Harness grading needs nonempty FAIL_TO_PASS')
         selected.append(row)
     return selected
 

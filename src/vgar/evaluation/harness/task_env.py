@@ -17,6 +17,7 @@ import uuid
 
 from vgar.evaluation.harness.gold_inputs import ROOT, write_json
 from vgar.evaluation.harness.official import cleanup_owned, invoke, utc_now
+from vgar.evaluation.harness.test_cmds import load_test_cmds, lookup
 from vgar.evaluation.retrieval.pilot_manifest import PILOT_IDS, validate_manifest
 from vgar.repair.executor import run_bounded
 
@@ -24,6 +25,30 @@ from vgar.repair.executor import run_bounded
 PYTHON = '/opt/miniconda3/envs/testbed/bin/python'
 SCHEMA = 'vgar-task-env-v1'
 PROTOCOL = 'vgar-pytest-collection-v1'
+# v2 = a repository-native runner qualified by a tool-owned sentinel test; pytest profiles stay v1.
+SCHEMA_V2 = 'vgar-task-env-v2'
+NATIVE_PROTOCOL = 'vgar-native-sentinel-v1'
+NATIVE_SCOPE = ['@native-sentinel']
+NATIVE_RUNNER = '/tmp/vgar_native_runner.py'
+SENTINELS = {
+    'django_runtests': {
+        'files': {'tests/vgar_sentinel/__init__.py': '',
+                  'tests/vgar_sentinel/tests.py': ('from django.test import SimpleTestCase\n\n\n'
+                                                   'class Sentinel(SimpleTestCase):\n'
+                                                   '    def test_ok(self):\n        self.assertTrue(True)\n')},
+        'selector': 'tests/vgar_sentinel/tests.py', 'node_id': 'tests/vgar_sentinel/tests.py::Sentinel::test_ok'},
+    'sympy_bin_test': {
+        'files': {'sympy/vgar_sentinel/__init__.py': '', 'sympy/vgar_sentinel/tests/__init__.py': '',
+                  'sympy/vgar_sentinel/tests/test_sentinel.py': 'def test_ok():\n    assert True\n'},
+        'selector': 'sympy/vgar_sentinel/tests/test_sentinel.py',
+        'node_id': 'sympy/vgar_sentinel/tests/test_sentinel.py::test_ok'},
+}
+# W10 pytest qualification: whole-repo discovery fails on modules unrelated to the reproduction test
+# (spike 29/10, user decision), so pytest is qualified by a tool-owned sentinel like the native runners.
+PYTEST_SCOPE = ['@pytest-sentinel']
+PYTEST_SENTINEL = {'files': {'vgar_sentinel/test_vgar_sentinel.py': 'def test_ok():\n    assert True\n'},
+                   'selector': 'vgar_sentinel/test_vgar_sentinel.py',
+                   'node_id': 'vgar_sentinel/test_vgar_sentinel.py::test_ok'}
 
 
 def canonical_hash(value):
@@ -32,8 +57,9 @@ def canonical_hash(value):
 
 
 def normalize_scope(scope):
-    if scope == ['@pytest-default'] or scope == ('@pytest-default',):
-        return ['@pytest-default']
+    for sentinel in ('@pytest-default', '@pytest-sentinel'):
+        if scope == [sentinel] or scope == (sentinel,):
+            return [sentinel]
     if not isinstance(scope, (list, tuple)) or not scope or any(not isinstance(p, str) for p in scope):
         raise ValueError('Nonempty test path scope required')
     if len(scope) != len(set(scope)):
@@ -48,23 +74,49 @@ def normalize_scope(scope):
 
 
 def command(scope, *, collect=False):
-    return [PYTHON, '-m', 'pytest', '-q', '-p', 'no:cacheprovider',
-            *(['--collect-only'] if collect else []),
-            *([] if normalize_scope(scope) == ['@pytest-default'] else normalize_scope(scope))]
-
-
-def build_profile(task, image, scope, probe, *, daemon_id):
-    if probe.get('protocol') != PROTOCOL:
-        raise ValueError('Unexpected probe protocol')
     scope = normalize_scope(scope)
-    result = {'schema_version': SCHEMA, 'task_id': task['instance_id'], 'repo': task['repo'],
+    paths = {'@pytest-default': [], '@pytest-sentinel': [PYTEST_SENTINEL['selector']]}.get(scope[0], scope)
+    return [PYTHON, '-m', 'pytest', '-q', '-p', 'no:cacheprovider',
+            *(['--collect-only'] if collect else []), *paths]
+
+
+def native_argv(runner, cmd, *, collect=False):
+    return [PYTHON, NATIVE_RUNNER, '--runner', runner, '--command-json', json.dumps(cmd, sort_keys=True),
+            *(['--collect-only'] if collect else [])]
+
+
+def runner_for(repo, version, table):
+    """Pinned upstream runner for (repo, version); unknown pairs raise instead of defaulting to pytest."""
+    return lookup(table, repo, version)
+
+
+def profile_runner(profile):
+    return profile.get('test_runner', 'pytest')
+
+
+def build_profile(task, image, scope, probe, *, daemon_id, test_runner='pytest', native_command=None):
+    native = test_runner != 'pytest'
+    if probe.get('protocol') != (NATIVE_PROTOCOL if native else PROTOCOL):
+        raise ValueError('Unexpected probe protocol')
+    if native:
+        if list(scope) != NATIVE_SCOPE:
+            raise ValueError('Native runner profiles are qualified by the sentinel scope only')
+        scope = list(scope)
+        commands = (native_argv(test_runner, native_command),
+                    native_argv(test_runner, native_command, collect=True))
+    else:
+        scope = normalize_scope(scope)
+        commands = (command(scope), command(scope, collect=True))
+    result = {'schema_version': SCHEMA_V2 if native else SCHEMA, 'task_id': task['instance_id'], 'repo': task['repo'],
         'base_commit': task['base_commit'], 'env_ref': 'docker://'+image['reference'],
         'image_id': image['image_id'], 'daemon_id': daemon_id, 'cwd': '/testbed', 'python': PYTHON,
-        'scope': scope, 'scope_hash': canonical_hash(scope), 'test_command': command(scope),
-        'collection_command': command(scope, collect=True), 'visibility': 'base_only_no_oracle',
-        'probe_protocol': PROTOCOL, 'status': probe['status'], 'reason': probe['reason'],
+        'scope': scope, 'scope_hash': canonical_hash(scope), 'test_command': commands[0],
+        'collection_command': commands[1], 'visibility': 'base_only_no_oracle',
+        'probe_protocol': NATIVE_PROTOCOL if native else PROTOCOL, 'status': probe['status'], 'reason': probe['reason'],
         'source_before': copy.deepcopy(probe['source_before']), 'source_after': copy.deepcopy(probe['source_after']),
         'runtime': copy.deepcopy(probe['runtime']), 'collection': copy.deepcopy(probe['collection'])}
+    if native:
+        result.update(test_runner=test_runner, native_command=copy.deepcopy(native_command))
     result['profile_hash'] = canonical_hash(result)
     return validate_profile(result, expected_task=task)
 
@@ -73,13 +125,77 @@ def validate_profile(profile, *, expected_task=None):
     fields = {'schema_version', 'task_id', 'repo', 'base_commit', 'env_ref', 'image_id', 'daemon_id',
         'cwd', 'python', 'scope', 'scope_hash', 'test_command', 'collection_command', 'visibility',
         'probe_protocol', 'status', 'reason', 'source_before', 'source_after', 'runtime', 'collection', 'profile_hash'}
+    native = isinstance(profile, dict) and profile.get('schema_version') == SCHEMA_V2
+    if native:
+        fields = fields | {'test_runner', 'native_command'}
     if not isinstance(profile, dict) or set(profile) != fields:
         raise ValueError('Unexpected task environment profile fields')
     p = profile
     if p['profile_hash'] != canonical_hash({k: v for k, v in p.items() if k != 'profile_hash'}):
         raise ValueError('Profile hash mismatch')
-    if p['schema_version'] != SCHEMA or p['probe_protocol'] != PROTOCOL or p['visibility'] != 'base_only_no_oracle':
+    if ((p['schema_version'], p['probe_protocol']) not in ((SCHEMA, PROTOCOL), (SCHEMA_V2, NATIVE_PROTOCOL))
+            or p['visibility'] != 'base_only_no_oracle'):
         raise ValueError('Unsupported profile/report/visibility protocol')
+    _validate_identity(p, expected_task)
+    if native:
+        _validate_native(p)
+    else:
+        _validate_pytest(p)
+    return copy.deepcopy(p)
+
+
+def _validate_native(p):
+    cmd, c = p['native_command'], p['collection']
+    if p['test_runner'] not in SENTINELS or not isinstance(cmd, dict) or set(cmd) != {'env', 'argv'}:
+        raise ValueError('Unsupported native runner or command')
+    if (not isinstance(cmd['argv'], list) or not cmd['argv'] or any(not isinstance(a, str) or not a for a in cmd['argv'])
+            or not isinstance(cmd['env'], dict) or any(not isinstance(v, str) for v in cmd['env'].values())):
+        raise ValueError('Invalid native command')
+    if p['scope'] != NATIVE_SCOPE or p['scope_hash'] != canonical_hash(NATIVE_SCOPE):
+        raise ValueError('Native runner profiles are qualified by the sentinel scope only')
+    if (p['test_command'] != native_argv(p['test_runner'], cmd)
+            or p['collection_command'] != native_argv(p['test_runner'], cmd, collect=True)):
+        raise ValueError('Fixed native argv mismatch')
+    qualified = c['exit_code'] == 0 and c['node_ids'] == [SENTINELS[p['test_runner']]['node_id']] and not c['errors']
+    if p['status'] == 'COLLECTED':
+        if not qualified or p['reason'] is not None:
+            raise ValueError('Native sentinel identity mismatch')
+    elif p['status'] == 'EXCLUDED':
+        if p['reason'] != 'NATIVE_SENTINEL_FAILED' or qualified:
+            raise ValueError('Concrete consistent native exclusion reason required')
+    else:
+        raise ValueError('Infrastructure/source error cannot become qualified profile')
+
+
+def _validate_pytest(p):
+    scope = normalize_scope(p['scope'])
+    if scope != p['scope'] or p['scope_hash'] != canonical_hash(scope):
+        raise ValueError('Collection scope hash/order mismatch')
+    if p['test_command'] != command(scope) or p['collection_command'] != command(scope, collect=True):
+        raise ValueError('Fixed pytest argv mismatch')
+    runtime, c = p['runtime'], p['collection']
+    if p['status'] == 'COLLECTED':
+        if not isinstance(runtime['pytest'], str) or type(c['exit_code']) is not int or c['exit_code'] != 0 or not c['node_ids'] or c['errors'] or p['reason'] is not None:
+            raise ValueError('Cannot qualify empty/failed collection')
+        if scope == PYTEST_SCOPE and c['node_ids'] != [PYTEST_SENTINEL['node_id']]:
+            raise ValueError('Pytest sentinel identity mismatch')
+    elif p['status'] == 'EXCLUDED':
+        if p['reason'] == 'PYTEST_UNAVAILABLE':
+            valid = runtime['pytest'] is None and c['exit_code'] is None and not c['node_ids']
+        elif p['reason'] == 'EMPTY_COLLECTION':
+            valid = isinstance(runtime['pytest'], str) and type(c['exit_code']) is int and c['exit_code'] in (0, 5) and not c['node_ids'] and not c['errors']
+        elif p['reason'] == 'COLLECTION_FAILED':
+            valid = isinstance(runtime['pytest'], str) and type(c['exit_code']) is int and (c['exit_code'] != 0 or bool(c['errors']))
+        else:
+            valid = False
+        if not valid:
+            raise ValueError('Concrete consistent collection exclusion reason required')
+    else:
+        raise ValueError('Infrastructure/source error cannot become qualified profile')
+
+
+def _validate_identity(p, expected_task):
+    """Rules shared by pytest (v1) and native (v2) profiles: identity, image, source, runtime, report shape."""
     if not isinstance(p['task_id'], str) or not re.fullmatch(r'[a-z0-9_-]+', p['task_id']):
         raise ValueError('Invalid task ID')
     if not re.fullmatch(r'[0-9a-f]{40}', p['base_commit'] or ''):
@@ -91,11 +207,6 @@ def validate_profile(profile, *, expected_task=None):
         raise ValueError('Observed image/daemon identity required')
     if p['cwd'] != '/testbed' or p['python'] != PYTHON:
         raise ValueError('Unexpected target interpreter or cwd')
-    scope = normalize_scope(p['scope'])
-    if scope != p['scope'] or p['scope_hash'] != canonical_hash(scope):
-        raise ValueError('Collection scope hash/order mismatch')
-    if p['test_command'] != command(scope) or p['collection_command'] != command(scope, collect=True):
-        raise ValueError('Fixed pytest argv mismatch')
     if expected_task is not None and any(p[k] != expected_task[v] for k, v in
             (('task_id', 'instance_id'), ('repo', 'repo'), ('base_commit', 'base_commit'))):
         raise ValueError('Profile differs from expected manifest task')
@@ -115,23 +226,6 @@ def validate_profile(profile, *, expected_task=None):
     if (not isinstance(c['node_ids'], list) or any(not isinstance(n, str) or not n for n in c['node_ids'])
             or len(c['node_ids']) != len(set(c['node_ids'])) or not isinstance(c['errors'], list)):
         raise ValueError('Invalid collected node identities')
-    if p['status'] == 'COLLECTED':
-        if not isinstance(runtime['pytest'], str) or type(c['exit_code']) is not int or c['exit_code'] != 0 or not c['node_ids'] or c['errors'] or p['reason'] is not None:
-            raise ValueError('Cannot qualify empty/failed collection')
-    elif p['status'] == 'EXCLUDED':
-        if p['reason'] == 'PYTEST_UNAVAILABLE':
-            valid = runtime['pytest'] is None and c['exit_code'] is None and not c['node_ids']
-        elif p['reason'] == 'EMPTY_COLLECTION':
-            valid = isinstance(runtime['pytest'], str) and type(c['exit_code']) is int and c['exit_code'] in (0, 5) and not c['node_ids'] and not c['errors']
-        elif p['reason'] == 'COLLECTION_FAILED':
-            valid = isinstance(runtime['pytest'], str) and type(c['exit_code']) is int and (c['exit_code'] != 0 or bool(c['errors']))
-        else:
-            valid = False
-        if not valid:
-            raise ValueError('Concrete consistent collection exclusion reason required')
-    else:
-        raise ValueError('Infrastructure/source error cannot become qualified profile')
-    return copy.deepcopy(p)
 
 BUNDLE_RUN = '20261023T071017Z-4ab71bbef7a0'
 
@@ -186,14 +280,17 @@ def capture_collection(argv, directory, *, env, timeout, output_cap=8*1024*1024)
     return result
 
 
-def qualify_task(task, image, scope, directory, *, docker_host, daemon_id, timeout=300):
+def qualify_task(task, image, scope, directory, *, docker_host, daemon_id, timeout=300, native=None):
+    """native = {'runner', 'native_command'} qualifies a repository-native runner with the sentinel test."""
     directory = Path(directory)
     directory.mkdir(parents=True, exist_ok=False)
     env = docker_environment(docker_host)
     name = 'vgar-w95-'+uuid.uuid4().hex
     report = {'task_id': task['instance_id'], 'base_commit': task['base_commit'], 'status': 'ERROR',
         'reason': None, 'profile': None, 'started_utc': utc_now(), 'container_name': name,
-        'image': image, 'daemon_id': daemon_id, 'scope': normalize_scope(scope)}
+        'image': image, 'daemon_id': daemon_id, 'scope': list(NATIVE_SCOPE) if native else normalize_scope(scope)}
+    if native and list(scope) != NATIVE_SCOPE:
+        raise ValueError('Native runner qualification uses the sentinel scope only')
     reserved = False
     candidate = None
     try:
@@ -234,15 +331,29 @@ def qualify_task(task, image, scope, directory, *, docker_host, daemon_id, timeo
             raise ValueError('Base checkout did not reach expected commit')
         report['base_preparation'] = {'repository_root': toplevel, 'head_before': before_head, 'head_after': after_head}
         config = directory/'probe-input.json'
-        write_json(config, {'source_root': '/testbed', 'base_commit': task['base_commit'], 'scope': report['scope']})
+        probe_config = {'source_root': '/testbed', 'base_commit': task['base_commit'], 'scope': report['scope']}
+        if native:
+            probe_config.update(runner=native['runner'], native_command=native['native_command'],
+                                sentinel=SENTINELS[native['runner']], native_runner=NATIVE_RUNNER)
+        elif report['scope'] == PYTEST_SCOPE:
+            probe_config['sentinel'] = PYTEST_SENTINEL
+        write_json(config, probe_config)
         probe_source = Path(__file__).with_name('collection_probe.py')
         report['probe_source_hash'] = 'sha256:'+hashlib.sha256(probe_source.read_bytes()).hexdigest()
         remote = '/tmp/'+name
         checked(['docker', 'cp', str(probe_source.resolve()), cid+':'+remote+'.py'], directory, 'copy-probe', env=env)
+        if native:
+            runner_source = Path(__file__).resolve().parents[2]/'repair/native_runner.py'
+            report['native_runner_hash'] = 'sha256:'+hashlib.sha256(runner_source.read_bytes()).hexdigest()
+            checked(['docker', 'cp', str(runner_source), cid+':'+NATIVE_RUNNER], directory, 'copy-native-runner', env=env)
         checked(['docker', 'cp', str(config.resolve()), cid+':'+remote+'.input.json'], directory, 'copy-input', env=env)
         process = capture_collection(['docker', 'exec', '--workdir', '/testbed', cid, PYTHON, '-B', remote+'.py',
                           remote+'.input.json', remote+'.result.json'], directory, env=env, timeout=timeout)
         report['process'] = process
+        # A base that hangs collecting is a task property (user decision 28/10); cleanup failure below still vetoes it.
+        if process['status'] == 'TIMEOUT' and process.get('process_terminated') and process.get('output_drain_complete'):
+            report.update(status='EXCLUDED', reason='COLLECTION_TIMEOUT')
+            return report
         if process['status'] != 'OK' or process.get('process_terminated') is False or process.get('output_drain_complete') is False:
             raise RuntimeError('Collection process incomplete: '+process['status'])
         result_path = directory/'probe-result.json'
@@ -251,9 +362,10 @@ def qualify_task(task, image, scope, directory, *, docker_host, daemon_id, timeo
             raise ValueError('Untrusted/missing probe result')
         probe = json.loads(result_path.read_text(encoding='utf-8'))
         report['probe'] = probe
-        if probe['protocol'] != PROTOCOL:
+        if probe['protocol'] != (NATIVE_PROTOCOL if native else PROTOCOL):
             raise ValueError('Unexpected collection protocol')
-        candidate = build_profile(task, image, report['scope'], probe, daemon_id=daemon_id)
+        candidate = build_profile(task, image, report['scope'], probe, daemon_id=daemon_id,
+                                  **({'test_runner': native['runner'], 'native_command': native['native_command']} if native else {}))
         report.update(status=candidate['status'], reason=candidate['reason'])
     except BaseException:
         report.update(status='ERROR', reason='ENVIRONMENT_QUALIFICATION_ERROR', traceback=traceback.format_exc())
@@ -278,13 +390,17 @@ def qualify_task(task, image, scope, directory, *, docker_host, daemon_id, timeo
     return report
 
 
-def load_runtime(path):
+def load_runtime(path, expected_ids=PILOT_IDS):
+    """Pilot runtime pins all five images; any other population pins a prefix of its approved manifest order."""
     config = json.loads(Path(path).read_text(encoding='utf-8'))
     fields = {'schema_version', 'qualification_state', 'docker_host', 'sdk_python', 'collection_timeout_seconds', 'images'}
+    pinned = list(config.get('images', {}))
+    population_ok = (set(pinned) == set(PILOT_IDS) if tuple(expected_ids) == PILOT_IDS
+                     else pinned == list(expected_ids[:len(pinned)]))
     if (set(config) != fields or config['schema_version'] != SCHEMA
             or config['qualification_state'] not in ('UNQUALIFIED', 'PINNED')
             or type(config['collection_timeout_seconds']) is not int or config['collection_timeout_seconds'] != 300
-            or set(config['images']) != set(PILOT_IDS)):
+            or not population_ok):
         raise ValueError('Runtime schema/population/timeout mismatch')
     docker_environment(config['docker_host'])
     if not isinstance(config['sdk_python'], str) or not PurePosixPath(config['sdk_python']).is_absolute():
@@ -324,6 +440,13 @@ def load_scopes(bundle_root, tasks):
     return scopes, bindings
 
 
+def gate_met(state):
+    # Windows side lowered 4 -> 2 GiB on 27/10 (user decision): the WSL VM holds most host RAM as page cache.
+    gib = 1024**3
+    return (state['windows_available_bytes'] >= 2*gib and state['linux_available_bytes'] >= 4*gib
+            and state['c_free_bytes'] >= 10*gib and state['d_free_bytes'] >= 20*gib)
+
+
 def resource_gate(directory):
     if platform.system() != 'Linux' or platform.machine().lower() not in ('amd64', 'x86_64'):
         raise ValueError('Collection controller requires Linux amd64')
@@ -336,27 +459,57 @@ def resource_gate(directory):
     state = {'windows_available_bytes': host, 'linux_available_bytes': linux,
              'c_free_bytes': shutil.disk_usage('/mnt/c').free, 'd_free_bytes': shutil.disk_usage('/mnt/d').free}
     write_json(Path(directory)/'resources.json', state)
-    if host < 4*1024**3 or linux < 4*1024**3 or state['c_free_bytes'] < 10*1024**3 or state['d_free_bytes'] < 20*1024**3:
+    if not gate_met(state):
         raise ValueError('RAM/disk resource gate not met')
     return state
 
 
-def prepare(manifest_path, runtime_path, bundle_root, output_root, *, execute=False, prepare_images=False):
+def native_plans(tasks, table):
+    """Per task: (scope, native) where native is None for pytest or {runner, native_command} from the pinned table."""
+    plans = {}
+    for task in tasks:
+        entry = runner_for(task['repo'], task['version'], table)
+        if entry['runner'] == 'pytest':
+            plans[task['instance_id']] = (list(PYTEST_SCOPE), None)
+        else:
+            plans[task['instance_id']] = (list(NATIVE_SCOPE), {'runner': entry['runner'],
+                                                               'native_command': {'env': entry['env'], 'argv': entry['argv']}})
+    return plans
+
+
+def prepare(manifest_path, runtime_path, bundle_root, output_root, *, execute=False, prepare_images=False,
+            approved_manifest=ROOT/'configs/m1/w9_pilot_manifest.json', limit=None, offset=0):
+    """offset (W10 D23): qualify only tasks offset+1..limit of the prefix; earlier tasks come from another run."""
     run_id = 'w95-'+uuid.uuid4().hex
     directory = Path(output_root).resolve()/run_id
     directory.mkdir(parents=True, exist_ok=False)
+    pilot = Path(approved_manifest).resolve() == (ROOT/'configs/m1/w9_pilot_manifest.json').resolve()
     report = {'run_id': run_id, 'started_utc': utc_now(), 'complete': False, 'status': 'BLOCKED',
               'mode': 'execute' if execute else 'preflight',
-              'tasks': [{'task_id': key, 'status': 'NOT_RUN'} for key in PILOT_IDS]}
+              'tasks': [{'task_id': key, 'status': 'NOT_RUN'} for key in PILOT_IDS] if pilot else []}
     print('RUN DIRECTORY:', directory, flush=True)
     try:
         manifest = json.loads(Path(manifest_path).read_text(encoding='utf-8'))
-        approved = json.loads((ROOT/'configs/m1/w9_pilot_manifest.json').read_text(encoding='utf-8'))
-        validate_manifest(manifest, expected_hash=approved['manifest_hash'])
-        config = load_runtime(runtime_path)
+        approved = json.loads(Path(approved_manifest).read_text(encoding='utf-8'))
+        validate_manifest(manifest, expected_hash=approved['manifest_hash'], **({} if pilot else {'expected_ids': None}))
+        ids = tuple(t['instance_id'] for t in manifest['tasks'])
+        config = load_runtime(runtime_path, **({} if pilot else {'expected_ids': ids}))
         write_json(directory/'runtime-input.json', config)
         report['manifest_hash'] = canonical_hash(manifest)
-        scopes, bindings = load_scopes(bundle_root, manifest['tasks'])
+        if type(offset) is not int or offset < 0 or (offset and (pilot or limit is None or offset >= limit)):
+            raise ValueError('offset must be a non-negative int below an explicit W10 limit')
+        tasks = manifest['tasks'][offset:limit]
+        if pilot:
+            scopes, bindings = load_scopes(bundle_root, tasks)
+            plans = {key: (scope, None) for key, scope in scopes.items()}
+        else:
+            # Default pytest discovery ignores bundle hints anyway (see load_scopes); W10 binds no bundle here.
+            plans, bindings = native_plans(tasks, load_test_cmds()), {}
+            missing = [t['instance_id'] for t in tasks if t['instance_id'] not in config['images']]
+            if missing:
+                raise ValueError('Runtime has no pinned image for: '+', '.join(missing))
+        # The report covers exactly the processed prefix, so a limited run is never read as the full population.
+        report.update(limit=limit, offset=offset, tasks=[{'task_id': t['instance_id'], 'status': 'NOT_RUN'} for t in tasks])
         report['scope_bindings'] = bindings
         if config['qualification_state'] != 'PINNED':
             report['reason'] = 'Runtime profile is UNQUALIFIED'
@@ -371,7 +524,7 @@ def prepare(manifest_path, runtime_path, bundle_root, output_root, *, execute=Fa
                 raise ValueError('CLI/SDK daemon identity mismatch')
             report['daemon_id'] = daemon
             frozen = copy.deepcopy(config['images'])
-            for index, task in enumerate(manifest['tasks']):
+            for index, task in enumerate(tasks):
                 image = frozen[task['instance_id']]
                 if prepare_images:
                     resource_gate(directory/('image-resources-'+str(index)))
@@ -386,11 +539,12 @@ def prepare(manifest_path, runtime_path, bundle_root, output_root, *, execute=Fa
             report['ready'] = True
             report['status'] = 'NOT_RUN'
             if execute:
-                for index, task in enumerate(manifest['tasks']):
+                for index, task in enumerate(tasks):
                     resource_gate(directory/('collection-resources-'+str(index)))
-                    outcome = qualify_task(task, frozen[task['instance_id']], scopes[task['instance_id']],
+                    scope, native = plans[task['instance_id']]
+                    outcome = qualify_task(task, frozen[task['instance_id']], scope,
                         directory/task['instance_id'], docker_host=config['docker_host'], daemon_id=daemon,
-                        timeout=config['collection_timeout_seconds'])
+                        timeout=config['collection_timeout_seconds'], **({'native': native} if native else {}))
                     report['tasks'][index] = outcome
                     if outcome['status'] == 'ERROR':
                         report.update(status='ERROR', reason='Stopped after identity/process/cleanup failure')
@@ -415,7 +569,12 @@ def main(argv=None):
     parser.add_argument('--output-root', type=Path, default=ROOT/'results/m1/w9/m1-w9-5/runs')
     parser.add_argument('--prepare-images', action='store_true', help='Explicitly pull only pre-pinned missing digests')
     parser.add_argument('--execute', action='store_true', help='Explicit base-only collection; no test execution or repair')
+    parser.add_argument('--approved-manifest', type=Path, default=ROOT/'configs/m1/w9_pilot_manifest.json')
+    parser.add_argument('--limit', type=int, help='qualify only the first N manifest tasks (W10 prefix population)')
+    parser.add_argument('--offset', type=int, default=0,
+                        help='skip the first K tasks of the prefix (already qualified by an earlier run; W10 D23)')
     args = parser.parse_args(argv)
     result = prepare(args.manifest, args.runtime, args.bundle_root, args.output_root,
-                     execute=args.execute, prepare_images=args.prepare_images)
+                     execute=args.execute, prepare_images=args.prepare_images,
+                     approved_manifest=args.approved_manifest, limit=args.limit, offset=args.offset)
     return 0 if result['status'] in ('COMPLETE', 'NOT_RUN') else 2 if result['status'] == 'BLOCKED' else 1

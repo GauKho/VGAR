@@ -24,6 +24,10 @@ class DemoGraphService:
                           selected_tests: list[str] | None = None, max_hops: int = 2, limit: int = 50) -> dict[str, Any]:
         raise GraphNotReadyError("Test selection requires a SQLite repository snapshot")
 
+    def analyze_patch_impact(self, diff: str, *, graph_version: str, max_hops: int = 2,
+                             max_nodes: int = 200) -> dict[str, Any]:
+        raise GraphNotReadyError("Patch impact requires a SQLite repository snapshot")
+
     def find_task_anchors(self, issue_text: str, failing_tests: list[str] | None = None, *,
                           graph_version: str, task_id: str) -> dict[str, Any]:
         raise GraphNotReadyError("Task retrieval requires a SQLite repository snapshot")

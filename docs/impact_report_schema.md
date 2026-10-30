@@ -115,6 +115,59 @@ Hashes dưới đây synthetic để minh họa schema, không là evidence grap
 }
 ```
 
+## 3b. Mở rộng W10: impacted và risk (M1-W10-1)
+
+Producer: `vgar.graph.impact.compute_impact(report, document, *, max_hops=2, max_nodes=200,
+min_confidence=0.6)`, hoặc `analyze_patch_impact(raw_diff, document, source_repo, *, patch_policy, ...)`
+(`diff_to_nodes` rồi `compute_impact` trên cùng snapshot). Graph phải có đúng `graph_hash` của report.
+Report W9 (`NOT_COMPUTED`) vẫn hợp lệ, không đổi.
+
+**Đi ngược từ các node trong `changed`**, theo từng hop (BFS), chỉ theo edge có trong graph với
+`confidence >= min_confidence`. Không suy ra edge:
+
+| relation | Từ node X tới | Cách đi |
+|---|---|---|
+| CALLS | Function/Method/Test chứa CallSite gọi X | CallSite `CALLS` X, rồi `CONTAINS` ngược |
+| IMPORTS | Module import module chứa X | Import `IMPORTS` module(X), rồi module chứa Import |
+| INHERITS | Class con | Class con `INHERITS` X, hoặc `INHERITS` class chủ của Method X |
+| TESTS | Test trỏ tới X | Test `TESTS` X |
+
+Một node được giữ một lần, ở hop nhỏ nhất. Nếu nhiều quan hệ cùng tới nó ở cùng hop, giữ quan hệ
+gặp trước theo thứ tự CALLS, IMPORTS, INHERITS, TESTS. `via` là node gần changed hơn một hop.
+
+`impacted` khi đã tính:
+- `status`: `COMPLETE`, hoặc `PARTIAL` khi đạt `max_nodes` (các con số risk khi đó là cận dưới).
+- `items`: `{node_id, qualified_name, path, kind, hops, relation, via}`. `qualified_name` chỉ để hiển
+  thị; identity vẫn là `node_id`.
+- `max_hops` (1–5), `max_nodes` (1–1000), `min_confidence`, `traversed` (bốn quan hệ trên).
+- `unsupported`: quan hệ walk **không** thấy, nên impact qua đó là "chưa biết", không phải "không có":
+  `REFERENCES/NOT_TRAVERSED`, và `CALLS/UNRESOLVED_CALL_SITES` với `count` = số CallSite trong graph
+  không có edge CALLS đủ confidence (gọi động, gọi builtin, resolver không resolve được).
+
+`risk.status = COMPLETE`, mỗi feature có cờ `available`:
+
+| name | available=true → value | Định nghĩa |
+|---|---|---|
+| public_symbol_changed | bool | Có node changed mà không thành phần nào của `qualified_name` bắt đầu bằng `_` (trừ dunder) |
+| fan_in | int | Số caller trực tiếp (CALLS) lớn nhất trong các node changed |
+| impacted_callers | int | Số Function/Method trong `items` |
+| impacted_tests | int | Số Test trong `items` |
+| signature_changed | luôn `available=false`, `reason=NOT_COMPUTED` | Cần source sau patch; thuộc API check M2-W11-1 |
+
+Không có node changed thì mọi feature là `available=false`, `reason=NO_CHANGED_NODES`.
+Không có score tổng hay ngưỡng risk.
+
+**Truy vấn SQLite (M1-W10-2):** `SQLiteGraphStore.get_reverse_edges(node_ids, edge_types, *, min_confidence)`
+và `find_nodes_at(path, line)` (symbol chứa dòng, trong cùng trước; end range là exclusive).
+
+**MCP (M3-W10-3):** tool `analyze_patch_impact(diff, graph_version, max_hops=2, max_nodes=200)` của
+graph server, cần backend SQLite có `VGAR_REPOSITORY_ROOT` (nếu không: `GRAPH_NOT_READY`). Diff hoặc
+giới hạn sai: `INVALID_ARGUMENT`. Audit ghi `patch_sha256`, không ghi nội dung diff.
+
+**Retry feedback (M3-W10-4):** `build_feedback(record, impact=...)` thêm một dòng tối đa 400 ký tự,
+tối đa 5 node (test trước trong cùng hop), đặt **sau** thông tin lỗi để phần cắt theo budget 300 token
+của prompt bỏ impact trước.
+
 ## 4. Review và kiểm chứng
 
 Codex review theo ủy quyền của người dùng đảm nhiệm M1/M2: parser coordinates/

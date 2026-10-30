@@ -181,3 +181,37 @@ def test_worker_reads_budget_from_profile(tmp_path):
     assert script.profile_budget({'budget_tokens': 3500}) == 3500
     with pytest.raises(ValueError, match='budget'):
         script.profile_budget({'budget_tokens': 0})
+
+
+def test_controller_accepts_approved_w10_manifest_with_limit(tmp_path, monkeypatch):
+    import importlib.util
+    import json
+    from pathlib import Path
+    from types import SimpleNamespace
+
+    root = Path(__file__).resolve().parents[1]
+    spec = importlib.util.spec_from_file_location('w10_export_controller', root/'scripts/export_w9_pilot_bundles.py')
+    script = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(script)
+    manifest_path = root/'configs/m1/w10_dev_manifest.json'
+    tokenizer = tmp_path/'tokenizer.json'
+    tokenizer.write_text((root/'artifacts/m1/tokenizer-acceptance/tokenizer_manifest.json').read_text(encoding='utf-8'), encoding='utf-8')
+    base = ['export', '--manifest', str(manifest_path), '--profile', str(root/'configs/m1/w9_bundle_profile_repair.json'),
+            '--tokenizer-manifest', str(tokenizer), '--output-root', str(tmp_path/'out')]
+
+    def fake_worker(command, **kwargs):
+        directory = Path(command[command.index('--directory')+1])
+        directory.mkdir()
+        (directory/'worker_result.json').write_text(json.dumps({'source_unchanged': True, 'task': {'arms': [
+            {'arm': 'graph', 'status': 'PASS'}, {'arm': 'bm25', 'status': 'PASS'}]}}), encoding='utf-8')
+        return SimpleNamespace(returncode=0)
+    monkeypatch.setattr(script.subprocess, 'run', fake_worker)
+    monkeypatch.setattr(script.sys, 'argv', base)
+    with pytest.raises(ValueError):
+        script.main()  # without --approved-manifest only the pilot manifest is accepted
+    monkeypatch.setattr(script.sys, 'argv', base + ['--approved-manifest', str(manifest_path), '--limit', '2'])
+    assert script.main() == 0
+    report = json.loads(next((tmp_path/'out').glob('*/run_record.json')).read_text(encoding='utf-8'))
+    assert report['expected_bundles'] == 4 and report['passed_bundles'] == 4 and report['status'] == 'PASS'
+    assert [t['task_id'] for t in report['tasks']] == [t['instance_id'] for t in json.loads(
+        manifest_path.read_text(encoding='utf-8'))['tasks'][:2]]
