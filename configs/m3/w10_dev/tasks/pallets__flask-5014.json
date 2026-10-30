@@ -1,0 +1,17 @@
+{
+  "source_roots": [
+    "src/flask"
+  ],
+  "failing_selectors": [
+    "tests/vgar_w9_repro_5014.py"
+  ],
+  "fallback_scope": [
+    "tests/vgar_w9_repro_5014.py"
+  ],
+  "protected_paths": [
+    "tests"
+  ],
+  "overlay": {
+    "tests/vgar_w9_repro_5014.py": "pallets__flask-5014.repro.py"
+  }
+}

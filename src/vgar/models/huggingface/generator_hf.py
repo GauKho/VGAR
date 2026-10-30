@@ -52,7 +52,8 @@ class HFGenerator:
     def generate(self, prompt, profile, timeout_seconds):
         result = self.request('generate', prompt.messages, self.policy, timeout_seconds, prompt.input_tokens)
         if result['status'] != 'PASS':
-            return dict(status='ERROR', mode='real', reason=result.get('reason'), worker=result)
+            return dict(status='ERROR', mode='real', reason=result.get('reason'), worker=result,
+                        timed_out=bool((result.get('command') or {}).get('timed_out')))
         response = result['response']
         if response['input_sha256'] != prompt.prompt_hash.removeprefix('sha256:'):
             return dict(status='ERROR', mode='real', reason='Worker prompt bytes differ', worker=result)

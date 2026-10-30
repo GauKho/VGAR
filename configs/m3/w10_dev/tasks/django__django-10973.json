@@ -1,0 +1,18 @@
+{
+  "source_roots": [
+    "django"
+  ],
+  "failing_selectors": [
+    "tests/vgar_w9_repro_10973/tests.py::Repro::test_runshell_uses_subprocess_run_with_pgpassword"
+  ],
+  "fallback_scope": [
+    "tests/vgar_w9_repro_10973/tests.py"
+  ],
+  "protected_paths": [
+    "tests"
+  ],
+  "overlay": {
+    "tests/vgar_w9_repro_10973/__init__.py": "django__django-10973.app_init.py",
+    "tests/vgar_w9_repro_10973/tests.py": "django__django-10973.repro.py"
+  }
+}

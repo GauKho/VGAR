@@ -14,6 +14,7 @@ from vgar.models.huggingface.local_chat import LocalChatTokenizer
 from vgar.repair.admission import admit_task
 from vgar.repair.context_adapter import load_handoff
 from vgar.repair.evidence import atomic_json
+from vgar.repair.policy import VariantPolicy
 from vgar.repair.prompt import build_repair_prompt
 from vgar.repair.static_tools import mypy_unavailable_reason
 
@@ -62,8 +63,9 @@ def _check(exp, task_id, variant, data_root, counter, tokenizer):
         hashes = plan.admission_args['bundle_hashes'] if plan.admission_args else None
         handoff = load_handoff(plan.task, counter, counter.counter_label, arm=variant.arm, expected_hashes=hashes)
         uncapped = exp.policy.model_copy(update={'input_cap': 10**9})
+        listing = VariantPolicy.model_validate_json(json.dumps(variant.policy)).path_listing
         prompt = build_repair_prompt(plan.task, handoff, {'failed_cases': list(plan.task.failing_selectors)},
-                                     tokenizer, uncapped)
+                                     tokenizer, uncapped, path_listing=listing)
     except Exception:
         return _row(task_id, variant, cap, 'ERROR', reason='PROMPT_ERROR', detail=traceback.format_exc(), **audit)
     return _row(task_id, variant, cap, 'FITS' if prompt.input_tokens <= cap else 'OVER_CAP', prompt.input_tokens, **audit)

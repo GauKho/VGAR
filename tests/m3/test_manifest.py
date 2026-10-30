@@ -66,6 +66,23 @@ def test_excluded_profile_gives_task_excluded(swebench_config):
     assert plan.task is None and plan.admission_args is None
 
 
+def test_preregistered_exclusion_skips_every_arm_and_changes_identity(swebench_config):
+    # W10 D25: a task OVER_CAP in any arm is excluded in all arms before running (D18), with its reason.
+    from vgar.evaluation.repair.manifest import load_experiment, plan_task
+    config, data = swebench_config
+    before = load_experiment(config, data).experiment_id
+    edit(config, lambda c: c['source'].update(excluded={'demo__demo-1': 'OVER_CAP graph arm (preflight 7202 > 6000)'}))
+    exp = load_experiment(config, data)
+    plans = [plan_task(exp, 'demo__demo-1', v, data) for v in exp.variants]
+    assert {(p.skip_reason, p.skip_detail) for p in plans} == {('TASK_EXCLUDED', 'OVER_CAP graph arm (preflight 7202 > 6000)')}
+    assert all(p.task is None and p.admission_args is None for p in plans)
+    assert exp.experiment_id != before
+    for bad in ({'demo__demo-9': 'x'}, {'demo__demo-1': ''}, ['demo__demo-1']):
+        edit(config, lambda c: c['source'].update(excluded=bad))
+        with pytest.raises(ValueError, match='excluded'):
+            load_experiment(config, data)
+
+
 def test_missing_inputs_gives_task_input_missing(swebench_config):
     from vgar.evaluation.repair.manifest import load_experiment, plan_task
     config, data = swebench_config
@@ -101,3 +118,64 @@ def test_fixture_plan_uses_task_file_without_admission(fixture_config, tmp_path)
     exp = load_experiment(fixture_config, tmp_path)
     plan = plan_task(exp, 'single_file_login', exp.variants[2], tmp_path)
     assert plan.task.trusted_fixture is True and plan.admission_args is None and plan.skip_reason is None
+
+
+def test_pilot_experiment_id_is_unchanged_by_w10_fields():
+    from pathlib import Path
+    from vgar.evaluation.repair.manifest import load_experiment
+    root = Path(__file__).resolve().parents[2]
+    try:
+        exp = load_experiment(root/'configs/m3/w9_pilot.json', Path.home()/'w9')
+    except FileNotFoundError:
+        pytest.skip('pilot repair config only resolves on the WSL runner host')
+    assert exp.experiment_id == '55ee3300aca339e8'
+
+
+def test_task_ids_select_ordered_subset_and_change_identity(swebench_config):
+    from vgar.evaluation.repair.manifest import load_experiment
+    path, data = swebench_config
+    full = load_experiment(path, data)
+    edit(path, lambda c: c['source'].update(task_ids=['demo__demo-2']))
+    subset = load_experiment(path, data)
+    assert full.task_ids == ('demo__demo-1', 'demo__demo-2') and subset.task_ids == ('demo__demo-2',)
+    assert subset.experiment_id != full.experiment_id
+    for bad in (['demo__demo-9'], ['demo__demo-2', 'demo__demo-2'], []):
+        edit(path, lambda c: c['source'].update(task_ids=bad))
+        with pytest.raises(ValueError, match='task_ids'):
+            load_experiment(path, data)
+
+
+def test_bundle_profile_and_graph_document_are_hash_pinned(swebench_config, tmp_path):
+    from vgar.repair.evidence import digest
+    from vgar.evaluation.repair.manifest import load_experiment, load_graph
+    path, data = swebench_config
+    profile = write_json(tmp_path/'bundle_profile.json', {'budget_tokens': 4096})
+    graph = write_json(data/'bundles/demo__demo-1/graph.json', {'repo_key': 'demo/demo', 'nodes': [], 'edges': []})
+
+    def pin(c, graph_sha):
+        c['source']['bundle_profile'] = {'path': str(profile), 'sha256': digest(profile.read_bytes())}
+        c['source']['graph_documents'] = {'demo__demo-1': {'path': '@data/bundles/demo__demo-1/graph.json',
+                                                           'sha256': graph_sha}}
+    edit(path, lambda c: pin(c, digest(graph.read_bytes())))
+    exp = load_experiment(path, data)
+    with pytest.raises(ValueError, match='repository_revision'):  # identity checked, not just bytes
+        load_graph(exp, 'demo__demo-1', data)
+    assert load_graph(exp, 'demo__demo-2', data) is None
+    edit(path, lambda c: pin(c, 'sha256:' + '0'*64))
+    with pytest.raises(ValueError, match='graph'):
+        load_experiment(path, data)
+    edit(path, lambda c: (pin(c, digest(graph.read_bytes())), c['source']['bundle_profile'].update(sha256='sha256:' + '0'*64)))
+    with pytest.raises(ValueError, match='bundle profile'):
+        load_experiment(path, data)
+
+
+def test_load_graph_accepts_matching_identity(swebench_config):
+    from vgar.repair.evidence import digest
+    from vgar.evaluation.repair.manifest import load_experiment, load_graph
+    path, data = swebench_config
+    base = json.loads((data/'profiles/demo__demo-1.json').read_text())['base_commit']
+    graph = write_json(data/'bundles/demo__demo-1/graph.json',
+                       {'repo_key': 'demo/demo', 'repository_revision': base, 'nodes': [], 'edges': []})
+    edit(path, lambda c: c['source'].update(graph_documents={'demo__demo-1': {
+        'path': '@data/bundles/demo__demo-1/graph.json', 'sha256': digest(graph.read_bytes())}}))
+    assert load_graph(load_experiment(path, data), 'demo__demo-1', data)['repository_revision'] == base

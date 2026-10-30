@@ -133,7 +133,7 @@ def docker_environment(profile):
     return environment
 
 
-def preflight(profile, directory):
+def preflight(profile, directory, instance_ids=GOLD_IDS):
     blockers = []
     if platform.system() != 'Linux' or platform.machine().lower() not in {'x86_64', 'amd64'}:
         blockers.append('Requires qualified Linux x86_64 harness host, not Windows native')
@@ -144,8 +144,9 @@ def preflight(profile, directory):
     if not isinstance(profile.get('docker_host'), str) or not re.fullmatch(
             r'(unix:///[^\s\x00]+|tcp://[A-Za-z0-9.\-:\[\]]+)', profile.get('docker_host') or ''):
         blockers.append('Explicit qualified Docker endpoint required; ambient CLI context is not sufficient')
-    if set(profile['images']) != set(GOLD_IDS):
-        blockers.append('All three pinned instance image identities are required')
+    if (set(profile['images']) != set(GOLD_IDS) if tuple(instance_ids) == GOLD_IDS
+            else not set(instance_ids) <= set(profile['images'])):
+        blockers.append('All pinned instance image identities are required')
     if blockers:
         return {'ready': False, 'blockers': blockers, 'checks': []}
     checks = []
@@ -179,7 +180,7 @@ def preflight(profile, directory):
         sdk = json.loads(checked([profile['python'], '-B', '-c', sdk_probe], 'sdk-daemon'))
         if not isinstance(docker.get('ID'), str) or not docker['ID'] or sdk.get('ID') != docker['ID']:
             raise ValueError('Docker CLI and harness SDK address different daemons')
-        for index, instance_id in enumerate(GOLD_IDS):
+        for index, instance_id in enumerate(instance_ids):
             image = profile['images'][instance_id]
             if not re.fullmatch(r'[A-Za-z0-9_.-]+', image['tag']):
                 raise ValueError('Invalid image tag')

@@ -153,6 +153,72 @@ def test_schema_zero_count_boundary_before_first_line(api):
     assert api.ImpactReport.model_validate(data).changed[0].spans[0].old_start == 0
 
 
+def computed():
+    data = example()
+    data['impacted'] = {'status': 'COMPLETE', 'max_hops': 2, 'max_nodes': 200, 'min_confidence': 0.6,
+                        'traversed': ['CALLS', 'IMPORTS', 'INHERITS', 'TESTS'],
+                        'unsupported': [{'relation': 'REFERENCES', 'reason': 'NOT_TRAVERSED'},
+                                        {'relation': 'CALLS', 'reason': 'UNRESOLVED_CALL_SITES', 'count': 3}],
+                        'items': [{'node_id': 'opaque:caller', 'qualified_name': 'api.use', 'path': 'api.py',
+                                   'kind': 'Function', 'hops': 1, 'relation': 'CALLS', 'via': 'opaque:fn'},
+                                  {'node_id': 'opaque:test', 'qualified_name': 'tests.test_app.test_fn',
+                                   'path': 'tests/test_app.py', 'kind': 'Test', 'hops': 1,
+                                   'relation': 'TESTS', 'via': 'opaque:fn'}]}
+    data['risk'] = {'status': 'COMPLETE', 'features': [
+        {'name': 'fan_in', 'available': True, 'value': 1},
+        {'name': 'public_symbol_changed', 'available': True, 'value': True},
+        {'name': 'signature_changed', 'available': False, 'reason': 'NOT_COMPUTED'}]}
+    return data
+
+
+def test_schema_computed_impact_and_risk_roundtrip(api):
+    report = api.ImpactReport.model_validate(computed())
+    assert report.impacted.status == 'COMPLETE' and report.impacted.items[0].via == 'opaque:fn'
+    assert [f.available for f in report.risk.features] == [True, True, False]
+    reloaded = api.ImpactReport.model_validate_json(report.canonical_json())
+    assert reloaded.canonical_json() == report.canonical_json()
+    data = computed()
+    data['impacted']['items'].reverse()
+    assert api.ImpactReport.model_validate(data).canonical_json() == report.canonical_json()
+
+
+@pytest.mark.parametrize('fault', ['not_computed_items', 'missing_limits', 'no_traversal', 'duplicate_item',
+                                   'zero_hops', 'unsupported_relation_item', 'self_via', 'risk_not_computed',
+                                   'available_without_value', 'unavailable_with_value', 'duplicate_feature',
+                                   'float_value', 'unknown_reason'])
+def test_schema_rejects_inconsistent_computed_impact(api, fault):
+    data = computed()
+    impacted, item, features = data['impacted'], data['impacted']['items'][0], data['risk']['features']
+    if fault == 'not_computed_items':
+        impacted['status'] = 'NOT_COMPUTED'
+    elif fault == 'missing_limits':
+        del impacted['max_hops']
+    elif fault == 'no_traversal':
+        impacted['traversed'] = []
+    elif fault == 'duplicate_item':
+        impacted['items'].append(copy.deepcopy(item))
+    elif fault == 'zero_hops':
+        item['hops'] = 0
+    elif fault == 'unsupported_relation_item':
+        item['relation'] = 'REFERENCES'
+    elif fault == 'self_via':
+        item['via'] = item['node_id']
+    elif fault == 'risk_not_computed':
+        data['risk']['status'] = 'NOT_COMPUTED'
+    elif fault == 'available_without_value':
+        del features[0]['value']
+    elif fault == 'unavailable_with_value':
+        features[2]['value'] = 0
+    elif fault == 'duplicate_feature':
+        features.append(copy.deepcopy(features[0]))
+    elif fault == 'float_value':
+        features[0]['value'] = 1.5
+    else:
+        features[2]['reason'] = 'GUESSED'
+    with pytest.raises(ValidationError):
+        api.ImpactReport.model_validate(data)
+
+
 @pytest.fixture
 def mapping_case(tmp_path):
     import shutil
@@ -365,3 +431,95 @@ def test_diff_to_nodes_decorator_outside_symbol_remains_unmapped(mapping_case):
     document = PythonGraphBuilder(repo_key='demo/impact', repository_revision='fixture-v1').build(root)
     report = map_diff(root, document, patch('@@ -1 +1 @@\n-@old\n+@new\n'))
     assert not report.changed and report.unmapped[0].reason == 'MODULE_LEVEL_CHANGE'
+
+
+@pytest.fixture
+def impact_case(tmp_path):
+    import shutil
+    from pathlib import Path
+
+    from vgar.graph.builder import PythonGraphBuilder
+    root = tmp_path / 'repo'
+    shutil.copytree(Path(__file__).parent / 'fixtures/m1_w10_impact', root)
+    document = PythonGraphBuilder(repo_key='demo/w10', repository_revision='fixture-v1').build(root)
+    return root, document
+
+
+CORE_HELPER = patch('@@ -11 +11 @@\n-    return x + 1\n+    return x + 2\n', 'pkg/core.py')
+
+
+def analyze(root, document, raw, **limits):
+    from vgar.graph.impact import analyze_patch_impact
+    from vgar.repair.patch import PatchPolicy
+    policy = PatchPolicy(('pkg/__init__.py', 'pkg/core.py', 'pkg/api.py'), ('tests',))
+    return analyze_patch_impact(raw, document, root, patch_policy=policy, **limits)
+
+
+def by_name(document, qualified_name):
+    return next(n['id'] for n in document['nodes'] if n['qualified_name'] == qualified_name
+                and n['type'] in ('Module', 'Class', 'Function', 'Method', 'Test'))
+
+
+def test_impact_walks_calls_imports_inherits_and_tests(impact_case):
+    root, document = impact_case
+    original = copy.deepcopy(document)
+    report = analyze(root, document, CORE_HELPER)
+    found = {item.node_id: (item.hops, item.relation, item.via) for item in report.impacted.items}
+    helper, use, run = (by_name(document, q) for q in ('pkg.core.helper', 'pkg.api.use', 'pkg.core.Base.run'))
+    assert found == {
+        use: (1, 'CALLS', helper), run: (1, 'CALLS', helper), by_name(document, 'pkg.core._private'): (1, 'CALLS', helper),
+        by_name(document, 'tests.test_core.test_helper'): (1, 'CALLS', helper),
+        by_name(document, 'pkg.api'): (1, 'IMPORTS', helper), by_name(document, 'tests.test_core'): (1, 'IMPORTS', helper),
+        by_name(document, 'pkg.api.outer'): (2, 'CALLS', use), by_name(document, 'pkg.core.Child'): (2, 'INHERITS', run)}
+    assert report.impacted.status == 'COMPLETE' and report.impacted.traversed == ['CALLS', 'IMPORTS', 'INHERITS', 'TESTS']
+    unsupported = {(u.relation, u.reason): u.count for u in report.impacted.unsupported}
+    assert unsupported == {('REFERENCES', 'NOT_TRAVERSED'): None, ('CALLS', 'UNRESOLVED_CALL_SITES'): 1}
+    assert document == original
+
+
+def test_impact_risk_features(impact_case):
+    root, document = impact_case
+    risk = {f.name: f for f in analyze(root, document, CORE_HELPER).risk.features}
+    assert {n: f.value for n, f in risk.items() if f.available} == {
+        'public_symbol_changed': True, 'fan_in': 4, 'impacted_callers': 4, 'impacted_tests': 1}
+    assert risk['signature_changed'].available is False and risk['signature_changed'].reason == 'NOT_COMPUTED'
+
+
+def test_impact_private_symbol_has_only_module_importers(impact_case):
+    root, document = impact_case
+    report = analyze(root, document, patch('@@ -15 +15 @@\n-    return helper(x)\n+    return helper(x) + 0\n', 'pkg/core.py'))
+    assert {i.node_id for i in report.impacted.items} == {by_name(document, 'pkg.api'), by_name(document, 'tests.test_core')}
+    risk = {f.name: f.value for f in report.risk.features if f.available}
+    assert risk['public_symbol_changed'] is False and risk['fan_in'] == 0
+
+
+def test_impact_without_changed_nodes_is_computed_but_risk_unavailable(impact_case):
+    root, document = impact_case
+    report = analyze(root, document, patch('@@ -0,0 +1 @@\n+import os\n', 'pkg/core.py'))
+    assert report.impacted.status == 'COMPLETE' and report.impacted.items == [] and report.unmapped
+    assert report.risk.status == 'COMPLETE'
+    assert {(f.available, f.reason) for f in report.risk.features} == {(False, 'NO_CHANGED_NODES')}
+
+
+def test_impact_limits_hops_nodes_and_confidence(impact_case):
+    root, document = impact_case
+    one_hop = analyze(root, document, CORE_HELPER, max_hops=1)
+    assert {i.hops for i in one_hop.impacted.items} == {1} and len(one_hop.impacted.items) == 6
+    capped = analyze(root, document, CORE_HELPER, max_nodes=3)
+    assert capped.impacted.status == 'PARTIAL' and len(capped.impacted.items) == 3
+    assert capped.canonical_json() == analyze(root, document, CORE_HELPER, max_nodes=3).canonical_json()
+    strict = analyze(root, document, CORE_HELPER, min_confidence=0.92)
+    assert by_name(document, 'pkg.core.Child') not in {i.node_id for i in strict.impacted.items}
+    for bad in ({'max_hops': 0}, {'max_hops': 6}, {'max_nodes': 0}, {'min_confidence': 1.5}):
+        with pytest.raises(ValueError):
+            analyze(root, document, CORE_HELPER, **bad)
+
+
+def test_impact_rejects_a_different_graph(impact_case):
+    from vgar.graph.impact import compute_impact
+    root, document = impact_case
+    report = analyze(root, document, CORE_HELPER)
+    changed = copy.deepcopy(document)
+    changed['edges'] = [e for e in changed['edges'] if e['type'] != 'INHERITS']
+    with pytest.raises(ValueError, match='graph'):
+        compute_impact(report, changed)

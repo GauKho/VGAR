@@ -391,3 +391,42 @@ def test_target_identity_ignores_git_replacement_tree(admitted_case):
     identity = base_identity(str(task.source_repo))
     assert identity["head"] == task.revision
     assert identity["clean"] is False
+
+
+def test_w10_manifest_population_is_admitted_by_hash_pin(admitted_case):
+    from vgar.contracts.handoff import payload_digest
+    from vgar.evaluation.retrieval.pilot_manifest import W10_SELECTION
+    from vgar.repair.admission import validate_admission
+
+    task, mp, pp, kwargs = admitted_case
+    manifest = json.loads(mp.read_text(encoding="utf-8"))
+    manifest["selection_policy"] = W10_SELECTION
+    manifest["tasks"] = [dict(r, version="0.12") for r in manifest["tasks"] if r["instance_id"] == TASK_ID]
+    manifest["manifest_hash"] = payload_digest({k: v for k, v in manifest.items() if k != "manifest_hash"})
+    mp.write_text(json.dumps(manifest), encoding="utf-8")
+    kwargs = dict(kwargs, expected_manifest_hash=manifest["manifest_hash"])
+    value = admit((task, mp, pp, kwargs))
+    assert validate_admission(task, value.snapshot()).snapshot() == value.snapshot()
+
+
+def test_repo_native_reproduction_layout_is_admitted(admitted_case):
+    # sympy bin/test only runs test_*.py inside the package, so its reproduction lives in xarray-like roots.
+    task, mp, pp, kw = admitted_case
+    overlay = {"xarray/vgar_w9_repro_issue/test_repro.py": "def test_issue():\n    assert False\n"}
+    task = task.model_copy(update={"protected_paths": ("tests", "xarray/vgar_w9_repro_issue"),
+                                   "failing_selectors": ("xarray/vgar_w9_repro_issue/test_repro.py::test_issue",),
+                                   "fallback_scope": ("xarray/vgar_w9_repro_issue/test_repro.py",)})
+    from vgar.repair.admission import admit_task
+
+    assert admit_task(task, mp, pp, **dict(kw, overlay=overlay)).snapshot()["overlay"] == overlay
+
+
+@pytest.mark.parametrize("path", ["xarray/repro_issue/test_repro.py", "xarray/vgar_w9_repro_issue/test_repro.txt"])
+def test_overlay_without_reserved_marker_or_python_suffix_is_rejected(admitted_case, path):
+    task, mp, pp, kw = admitted_case
+    task = task.model_copy(update={"protected_paths": ("tests", "xarray/repro_issue", "xarray/vgar_w9_repro_issue"),
+                                   "fallback_scope": ("tests/vgar_w9_repro_issue.py",)})
+    from vgar.repair.admission import admit_task
+
+    with pytest.raises(ValueError, match="reproduction test overlays"):
+        admit_task(task, mp, pp, **dict(kw, overlay={**OVERLAY, path: "def test_x():\n    pass\n"}))

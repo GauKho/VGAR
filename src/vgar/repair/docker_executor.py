@@ -24,7 +24,12 @@ from vgar.repair.static_tools import (
     lock,
     mypy_unavailable_reason,
 )
-from vgar.repair.workspace import inventory
+from vgar.repair.workspace import LINK_PREFIX, inventory
+
+
+def transport_snapshot(expected):
+    """Regular files only: the container resets /testbed to the base commit, which already holds the links."""
+    return {path: value for path, value in expected.items() if not value.startswith(LINK_PREFIX)}
 
 
 class DockerExecutor:
@@ -162,6 +167,23 @@ class DockerExecutor:
                 raise ValueError("Selector outside admitted test scope")
         if not selectors:
             raise ValueError("Empty admitted pytest selection")
+        reports = {"nodeids.json": report, "junit.xml": junit}
+        runner = self.profile.get("test_runner", "pytest")
+        if runner != "pytest":
+            # Same host-side pytest contract; inside the container the repository-native runner writes it.
+            return [
+                self.profile["python"],
+                "/vgar/vgar_native_runner.py",
+                "--runner",
+                runner,
+                "--command-json",
+                json.dumps(self.profile["native_command"], sort_keys=True),
+                "--report",
+                "/vgar/nodeids.json",
+                "--junit",
+                "/vgar/junit.xml",
+                *tail,
+            ], reports
         return [
             self.profile["python"],
             "-m",
@@ -312,6 +334,7 @@ class DockerExecutor:
         for source, name in (
             (Path(__file__).with_name("docker_probe.py"), "docker_probe.py"),
             (Path(__file__).with_name("pytest_plugin.py"), "vgar_pytest_reporter.py"),
+            (Path(__file__).with_name("native_runner.py"), "vgar_native_runner.py"),
             (CONFIG_DIR / "static/mypy.ini", "mypy.ini"),
             (CONFIG_DIR / "static/ruff.toml", "ruff.toml"),
         ):
@@ -344,6 +367,9 @@ class DockerExecutor:
         result = self._cli(
             [
                 "exec",
+                # UTF-8 file-name encoding on Python 3.5/3.6 targets (no PEP 538 locale coercion there).
+                "-e",
+                "LC_ALL=C.UTF-8",
                 "-w",
                 "/testbed",
                 self.name,
@@ -449,7 +475,7 @@ class DockerExecutor:
         result = None
         try:
             self._identity(directory)
-            result = self._execute(directory, operation, reports or {}, expected)
+            result = self._execute(directory, operation, reports or {}, transport_snapshot(expected))
             # Check again after Docker, including protected host files and original source.
             if self.verify_snapshot() != expected:
                 raise ValueError("Host snapshot changed during execution")

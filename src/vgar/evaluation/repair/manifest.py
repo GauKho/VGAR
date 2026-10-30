@@ -103,6 +103,19 @@ def load_experiment(path: Path, data_root: Path) -> Experiment:
         if manifest.get('manifest_hash') != source['manifest']['sha256']:
             raise ValueError('Pilot manifest differs from the pinned manifest hash')
         task_sources = {row['instance_id']: row for row in manifest['tasks']}
+        if 'task_ids' in source:
+            # W10 stages run an ordered, locked subset of one manifest; absent key keeps W9 identities unchanged.
+            ids = source['task_ids']
+            if not ids or len(set(ids)) != len(ids) or any(i not in task_sources for i in ids):
+                raise ValueError('source.task_ids must be distinct tasks of the pinned manifest')
+            task_sources = {i: task_sources[i] for i in ids}
+            identity['task_ids'] = list(ids)
+        profile_pin = source.get('bundle_profile')
+        if profile_pin and digest(resolve(profile_pin['path'], base, data_root).read_bytes()) != profile_pin['sha256']:
+            raise ValueError('Pinned bundle profile hash mismatch')
+        for task_id, pin in sorted(source.get('graph_documents', {}).items()):
+            if digest(resolve(pin['path'], base, data_root).read_bytes()) != pin['sha256']:
+                raise ValueError(f'Pinned graph document hash mismatch for {task_id}')
         inputs_dir = resolve(source['task_inputs'], base, data_root)
         identity['source'] = {
             'manifest': source['manifest']['sha256'],
@@ -110,6 +123,17 @@ def load_experiment(path: Path, data_root: Path) -> Experiment:
             'bundles': {t: {a: b['hashes'] for a, b in sorted(arms.items())}
                         for t, arms in sorted(source['bundles'].items())},
             'task_inputs': {t: _read_inputs(inputs_dir / f'{t}.json') for t in task_sources}}
+        for key in ('bundle_profile', 'graph_documents'):
+            if key in source:
+                identity['source'][key] = source[key]['sha256'] if key == 'bundle_profile' else {
+                    t: p['sha256'] for t, p in sorted(source[key].items())}
+        if 'excluded' in source:
+            # W10 D25: tasks excluded before running (e.g. OVER_CAP in any arm), skipped in every arm with the reason.
+            excluded = source['excluded']
+            if (not isinstance(excluded, dict) or any(t not in task_sources for t in excluded)
+                    or any(not isinstance(r, str) or not r.strip() for r in excluded.values())):
+                raise ValueError('source.excluded must map tasks of this experiment to a non-empty reason')
+            identity['source']['excluded'] = dict(sorted(excluded.items()))
     else:
         task_sources = {}
         for task_file in source['tasks']:
@@ -119,6 +143,22 @@ def load_experiment(path: Path, data_root: Path) -> Experiment:
     experiment_id = digest(_canonical(identity)).removeprefix('sha256:')[:16]
     return Experiment(experiment_id, source['type'], generation, policy, profile, tuple(variants),
                       tuple(task_sources), raw, base, task_sources)
+
+
+def load_graph(exp: Experiment, task_id: str, data_root: Path) -> dict | None:
+    """The hash-pinned baseline graph of one task, checked against the manifest repo/base; None when not pinned."""
+    pin = exp.raw['source'].get('graph_documents', {}).get(task_id)
+    if pin is None:
+        return None
+    raw = resolve(pin['path'], exp.base, data_root).read_bytes()
+    if digest(raw) != pin['sha256']:
+        raise ValueError(f'Pinned graph document hash mismatch for {task_id}')
+    document = json.loads(raw)
+    row = exp.task_sources[task_id]
+    for field, expected in (('repo_key', row['repo']), ('repository_revision', row['base_commit'])):
+        if document.get(field) != expected:
+            raise ValueError(f'Graph document {field} differs from the manifest task {task_id}')
+    return document
 
 
 def production_paths(files, roots) -> tuple[str, ...]:
@@ -138,6 +178,8 @@ def plan_task(exp: Experiment, task_id: str, variant: Variant, data_root: Path) 
     if exp.source_type == 'fixture':
         return TaskPlan(task_id, variant, load_task(exp.task_sources[task_id]), None, None, None)
     source, row = exp.raw['source'], exp.task_sources[task_id]
+    if task_id in source.get('excluded', {}):
+        return _skip(task_id, variant, 'TASK_EXCLUDED', source['excluded'][task_id])
     where = lambda value: resolve(value, exp.base, data_root)
     pin = source['profiles'].get(task_id)
     if pin is None or not where(pin['path']).is_file():

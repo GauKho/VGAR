@@ -1,0 +1,17 @@
+{
+  "source_roots": [
+    "seaborn"
+  ],
+  "failing_selectors": [
+    "tests/vgar_w9_repro_3069.py"
+  ],
+  "fallback_scope": [
+    "tests/vgar_w9_repro_3069.py"
+  ],
+  "protected_paths": [
+    "tests"
+  ],
+  "overlay": {
+    "tests/vgar_w9_repro_3069.py": "mwaskom__seaborn-3069.repro.py"
+  }
+}

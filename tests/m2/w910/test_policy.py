@@ -132,3 +132,38 @@ def test_w78_default_runtime_and_budget_unchanged():
     assert policy.runtime == 'native_trusted_fixtures'
     assert policy.prompt_version == 'm2-w78-v11'
     assert (policy.input_cap, policy.output_cap, policy.reserved_margin) == (6000, 1536, 256)
+
+
+W9_HASHES = {'A0': 'sha256:bca5f7b7f208f217ce72373305e8325922ed6a43ebe378305920bc50ebfacbbf',
+             'A1': 'sha256:2b29abdb298d364685edf0236556cb648eb61d7cb5160d2380783a3a894bef00',
+             'A2': 'sha256:2f7c85d1124c77b5f5c67160e8acc644e64cf638d9bdcc10bbab4eb768be55ca'}
+
+
+@pytest.mark.parametrize('variant', ['A0', 'A1', 'A2'])
+def test_w9_variant_hashes_unchanged(variant):
+    policy = module().load_variant(VARIANTS / f'{variant}.json')
+    assert policy.patch_mode == 'strict' and policy.path_listing == 'all'
+    assert 'patch_mode' not in policy.model_dump(mode='json') and 'path_listing' not in policy.model_dump(mode='json')
+    assert module().policy_hash(policy) == W9_HASHES[variant]
+
+
+@pytest.mark.parametrize('variant', ['A0', 'A1', 'A2'])
+def test_w10_variants_are_normalized_and_hash_differs(variant):
+    policy = module().load_variant(VARIANTS / 'w10' / f'{variant}.json')
+    assert policy.patch_mode == 'normalized'
+    assert policy.model_dump(mode='json')['patch_mode'] == 'normalized'
+    assert policy.model_dump(mode='json')['path_listing'] == 'context'
+    assert module().policy_hash(policy) != W9_HASHES[variant]
+    w9 = json.loads((VARIANTS / f'{variant}.json').read_text(encoding='utf-8'))
+    assert json.loads((VARIANTS / 'w10' / f'{variant}.json').read_text(encoding='utf-8')) == w9 | {
+        'patch_mode': 'normalized', 'path_listing': 'context'}
+
+
+def test_unknown_path_listing_rejected(tmp_path):
+    with pytest.raises(Exception):
+        module().load_variant(write_policy(tmp_path, path_listing='some'))
+
+
+def test_unknown_patch_mode_rejected(tmp_path):
+    with pytest.raises(Exception):
+        module().load_variant(write_policy(tmp_path, patch_mode='fuzzy'))

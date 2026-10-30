@@ -50,6 +50,10 @@ class GraphService(Protocol):
     ) -> SymbolRelationsResult:
         ...
 
+    def analyze_patch_impact(self, diff: str, *, graph_version: str, max_hops: int = 2,
+                             max_nodes: int = 200) -> dict[str, Any]:
+        ...
+
     def get_repository_summary(self) -> RepositorySummaryResult:
         ...
 

@@ -16,10 +16,13 @@ def utc_now():
     return datetime.now(timezone.utc).isoformat()
 
 
+GLOBAL_DEADLINE = 'Global run deadline exhausted'
+
+
 def remaining_timeout(deadline=None, cap=30):
     remaining = cap if deadline is None else min(cap, deadline - time.monotonic())
     if remaining <= 0:
-        raise TimeoutError('Global run deadline exhausted')
+        raise TimeoutError(GLOBAL_DEADLINE)
     return remaining
 
 

@@ -248,10 +248,12 @@ def synthetic_runtime(api, inputs, tmp_path_factory, monkeypatch):
             elif outcome != 'missing_report':
                 key = argv[argv.index('--instance_ids')+1]
                 run = argv[argv.index('--run_id')+1]
-                save_report(Path(kwargs['cwd'])/'logs/run_evaluation'/run/'vgar-w9-gold'/key,
-                            key, outcome == 'resolved')
+                prediction = json.loads(Path(argv[argv.index('--predictions_path')+1]).read_text(encoding='utf-8').splitlines()[0])
+                label = prediction['model_name_or_path']
+                save_report(Path(kwargs['cwd'])/'logs/run_evaluation'/run/label/key,
+                            key, outcome == 'resolved', prediction['model_patch'])
                 if outcome == 'test_timeout':
-                    log_dir = Path(kwargs['cwd'])/'logs/run_evaluation'/run/'vgar-w9-gold'/key
+                    log_dir = Path(kwargs['cwd'])/'logs/run_evaluation'/run/label/key
                     (log_dir/'report.json').unlink()
                     (log_dir/'test_output.txt').write_text('SYNTHETIC\n\nTimeout error: 1800 seconds exceeded.')
                     (log_dir/'run_instance.log').write_text('SYNTHETIC\nEvaluationError: Test timed out after 1800 seconds.')
@@ -413,3 +415,75 @@ def test_campaign_reads_pinned_upstream_run_evaluation_directory(api, synthetic_
                     /task['invocation_id']/'vgar-w9-gold'/task['instance_id']/'report.json')
         assert Path(task['raw_report']) == expected
         assert expected.is_file()
+
+
+def write_engine_pair(exp_dir, task_id, variant_id, *, applied, attempt=1, state='TERMINAL'):
+    run_dir = exp_dir/'engine'/f'{task_id}__{variant_id}'/f'attempt-{attempt}'/'run-1'
+    run_dir.mkdir(parents=True)
+    (run_dir/'run_record.json').write_text(json.dumps({'run_id': f'run-{task_id}-{variant_id}', 'status': 'FAIL',
+        'stages': {'apply': {'status': 'PASS' if applied else 'FAIL'}}}), encoding='utf-8')
+    if applied:
+        (run_dir/'applied.diff').write_bytes(f'--- a/x.py\n+++ b/x.py\n@@ -1 +1 @@\n-a\n+{variant_id}\n'.encode())
+    attempt_dir = exp_dir/'attempts'/f'{task_id}__{variant_id}'
+    attempt_dir.mkdir(parents=True, exist_ok=True)
+    (attempt_dir/f'attempt-{attempt}.json').write_text(json.dumps({'experiment_id': exp_dir.name, 'task_id': task_id,
+        'variant_id': variant_id, 'arm': 'graph', 'attempt': attempt, 'state': state,
+        'engine_run_dir': str(run_dir)}), encoding='utf-8')
+
+
+def test_collect_candidates_takes_only_applied_terminal_runs(tmp_path):
+    from vgar.evaluation.harness.candidates import collect_candidates
+    exp = tmp_path/'exp1'
+    write_engine_pair(exp, IDS[0], 'A0', applied=True)
+    write_engine_pair(exp, IDS[0], 'A1', applied=False)
+    write_engine_pair(exp, IDS[1], 'A2', applied=True, state='INTERRUPTED')
+    found = collect_candidates(exp)
+    assert [(c['task_id'], c['variant_id']) for c in found] == [(IDS[0], 'A0')]
+    assert found[0]['model_patch'].endswith('+A0\n') and found[0]['experiment_id'] == 'exp1'
+    assert found[0]['run_id'] == f'run-{IDS[0]}-A0'
+
+
+def test_grade_candidates_preflight_writes_one_prediction_per_candidate(api, synthetic_runtime, tmp_path):
+    from vgar.evaluation.harness.candidates import grade_candidates
+    path, _, state = synthetic_runtime
+    exp = tmp_path/'exp1'
+    write_engine_pair(exp, IDS[0], 'A0', applied=True)
+    write_engine_pair(exp, IDS[0], 'A1', applied=True)
+    manifest = ROOT/'configs/m1/w9_pilot_manifest.json'
+    result = grade_candidates(manifest, path, [exp], path.parent/'r', approved_manifest=manifest, execute=False)
+    assert state['launches'] == 0 and result['status'] == 'NOT_RUN', result.get('traceback')
+    predictions = [json.loads(Path(g['predictions']).read_text(encoding='utf-8')) for g in result['grades']]
+    assert [p['model_name_or_path'] for p in predictions] == ['vgar-w10-A0', 'vgar-w10-A1']
+    assert all(p['instance_id'] == IDS[0] for p in predictions)
+
+
+def test_grade_candidates_execute_records_harness_status(api, synthetic_runtime, tmp_path):
+    from vgar.evaluation.harness.candidates import grade_candidates
+    path, _, state = synthetic_runtime
+    state['outcomes'] = ['resolved', 'unresolved', 'exit_error']
+    exp = tmp_path/'exp1'
+    for variant in ('A0', 'A1', 'A2'):
+        write_engine_pair(exp, IDS[0], variant, applied=True)
+    manifest = ROOT/'configs/m1/w9_pilot_manifest.json'
+    result = grade_candidates(manifest, path, [exp], path.parent/'r', approved_manifest=manifest, execute=True)
+    assert [g['harness_status'] for g in result['grades']] == ['RESOLVED', 'UNRESOLVED', 'ERROR']
+    saved = json.loads((Path(result['directory'])/'grades.json').read_text(encoding='utf-8'))
+    assert saved['grades'][0] == {k: result['grades'][0][k] for k in saved['grades'][0]}
+    assert set(saved['grades'][0]) >= {'experiment_id', 'task_id', 'variant_id', 'run_id', 'patch_sha256', 'harness_status'}
+
+
+def test_gold_rows_selector_still_pins_first_three_pilot_ids(api, inputs):
+    from vgar.evaluation.harness.gold_inputs import select_rows
+    manifest, rows = inputs
+    approved = ROOT/'configs/m1/w9_pilot_manifest.json'
+    assert [r['instance_id'] for r in select_rows(rows, manifest, IDS[1:2], approved_manifest=approved)] == [IDS[1]]
+    with pytest.raises(ValueError):
+        select_rows(rows, manifest, ('unknown__task-1',), approved_manifest=approved)
+
+
+def test_collect_candidates_uses_latest_terminal_attempt_like_aggregate(tmp_path):
+    from vgar.evaluation.harness.candidates import collect_candidates
+    exp = tmp_path/'exp1'
+    write_engine_pair(exp, IDS[0], 'A0', applied=True, attempt=1)
+    write_engine_pair(exp, IDS[0], 'A0', applied=False, attempt=2, state='INTERRUPTED')
+    assert [(c['task_id'], c['variant_id']) for c in collect_candidates(exp)] == [(IDS[0], 'A0')]

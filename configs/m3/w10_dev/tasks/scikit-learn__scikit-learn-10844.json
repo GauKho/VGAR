@@ -1,0 +1,17 @@
+{
+  "source_roots": [
+    "sklearn"
+  ],
+  "failing_selectors": [
+    "tests/vgar_w9_repro_10844.py"
+  ],
+  "fallback_scope": [
+    "tests/vgar_w9_repro_10844.py"
+  ],
+  "protected_paths": [
+    "tests"
+  ],
+  "overlay": {
+    "tests/vgar_w9_repro_10844.py": "scikit-learn__scikit-learn-10844.repro.py"
+  }
+}

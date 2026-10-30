@@ -1,0 +1,424 @@
+{
+  "schema": "vgar-m3-experiment-v1",
+  "source": {
+    "type": "swebench",
+    "manifest": {
+      "path": "../m1/w10_dev_manifest.json",
+      "sha256": "sha256:11e0b7b1168236e246dc8334db45ad932223a16ae7af0de149f30f25585f4177"
+    },
+    "task_ids": [
+      "sympy__sympy-11618",
+      "astropy__astropy-13453",
+      "django__django-10973",
+      "matplotlib__matplotlib-20488",
+      "psf__requests-1766",
+      "pydata__xarray-4629",
+      "pylint-dev__pylint-4970",
+      "pytest-dev__pytest-7205",
+      "scikit-learn__scikit-learn-10844",
+      "sphinx-doc__sphinx-11510",
+      "sympy__sympy-12481",
+      "astropy__astropy-13977",
+      "django__django-11087",
+      "matplotlib__matplotlib-20676"
+    ],
+    "profiles": {
+      "sympy__sympy-11618": {
+        "path": "@data/profiles/sympy__sympy-11618.json",
+        "sha256": "sha256:0c612fd591c484ce9c3c289106b48a831f0bb955dbb114771f1590d6dae39b89"
+      },
+      "astropy__astropy-13453": {
+        "path": "@data/profiles/astropy__astropy-13453.json",
+        "sha256": "sha256:4112a1a056ca22d5bca609c7787cbd2b1f812c8d29e2ed48dc6c63cf91bab911"
+      },
+      "django__django-10973": {
+        "path": "@data/profiles/django__django-10973.json",
+        "sha256": "sha256:693bbfea40e4a02a7ee79523a019ea31b61cb941f2da632309acc45dac0d1493"
+      },
+      "matplotlib__matplotlib-20488": {
+        "path": "@data/profiles/matplotlib__matplotlib-20488.json",
+        "sha256": "sha256:a7125ecf6af5da0fd68f48703b662ff348db9a3f184c9e5fbde0ebb3f182cd76"
+      },
+      "psf__requests-1766": {
+        "path": "@data/profiles/psf__requests-1766.json",
+        "sha256": "sha256:8e5ed5c76ac36fe4b0941a0b1f6b3685b519c6bb64ccb734bdf621b29a62efd9"
+      },
+      "pydata__xarray-4629": {
+        "path": "@data/profiles/pydata__xarray-4629.json",
+        "sha256": "sha256:2a9d849e0a5a0d1078fb2fc1457ba54729cb94d3b2b9529913b587430fbf944b"
+      },
+      "pylint-dev__pylint-4970": {
+        "path": "@data/profiles/pylint-dev__pylint-4970.json",
+        "sha256": "sha256:69815903ec8592030dd70c58847ddc98e7021b56a52504011a23f2a306ff8498"
+      },
+      "pytest-dev__pytest-7205": {
+        "path": "@data/profiles/pytest-dev__pytest-7205.json",
+        "sha256": "sha256:5681428b43322a637ecb7bbc609b2b193302d32200a02793cfbf5658b04c95b1"
+      },
+      "scikit-learn__scikit-learn-10844": {
+        "path": "@data/profiles/scikit-learn__scikit-learn-10844.json",
+        "sha256": "sha256:f4b7a3afeac596408c286a2c64cf6cc8dd7e81f56a42d958666c9faed75249f2"
+      },
+      "sphinx-doc__sphinx-11510": {
+        "path": "@data/profiles/sphinx-doc__sphinx-11510.json",
+        "sha256": "sha256:9ba5800111a7f7c8a0898a986d179664ab0bfdbbba469d80882744d3cee2a799"
+      },
+      "sympy__sympy-12481": {
+        "path": "@data/profiles/sympy__sympy-12481.json",
+        "sha256": "sha256:057abdf97d74ee52638ab292a373edf45941f8aa497fe0f76fe3f8103e6f63c7"
+      },
+      "astropy__astropy-13977": {
+        "path": "@data/profiles/astropy__astropy-13977.json",
+        "sha256": "sha256:c38b80b057b7834307eefef26f3cdd8aceb61d2419c2cfa695975bf52f81a128"
+      },
+      "django__django-11087": {
+        "path": "@data/profiles/django__django-11087.json",
+        "sha256": "sha256:41dcfc5fd8c6a9fbd467078da2a6f6cb5a58d0e411f75c9e922a891ad52a1915"
+      },
+      "matplotlib__matplotlib-20676": {
+        "path": "@data/profiles/matplotlib__matplotlib-20676.json",
+        "sha256": "sha256:f6957e86c45d247db97b7d7f3e4eba45afca87068e9ecb6fa5d1970ad02fa8ab"
+      }
+    },
+    "checkouts": "@data/repositories/{task_id}",
+    "bundles": {
+      "sympy__sympy-11618": {
+        "bm25": {
+          "path": "@data/bundles/repair/sympy__sympy-11618/bm25",
+          "hashes": {
+            "context.json": "sha256:0c210224cd034a085c08ab768bf30f315593b33bebb23c16fb7dd832f5b27132",
+            "context_manifest.json": "sha256:ff5e75dc028e25b27f23bc845d2c090dd33cea67b9f811c4f00a7a4c50f43e4d",
+            "test_links.json": "sha256:b4d3d49cf317bc49e5162a4d9056d6ef03d3cc0aa6402267c98abe70d597514d"
+          }
+        },
+        "graph": {
+          "path": "@data/bundles/repair/sympy__sympy-11618/graph",
+          "hashes": {
+            "context.json": "sha256:f75cf11f5c4a7d409dcc118d51ae86afca72e0b2d524eadbabeb3c40faf8b17d",
+            "context_manifest.json": "sha256:dccf78ebba1ecb0e45af107e525a9487c522a1f8114b9d946fa18159947976e9",
+            "test_links.json": "sha256:1d0a1551745cf244339d13cb1dc6ab5d6a6b4a798361db4ff597a15ccecc2fe7"
+          }
+        }
+      },
+      "astropy__astropy-13453": {
+        "bm25": {
+          "path": "@data/bundles/repair/astropy__astropy-13453/bm25",
+          "hashes": {
+            "context.json": "sha256:fb1691c7a10a622f47c544cdce3cf98d2df8192565d028dc0a0f63c6f83dad7e",
+            "context_manifest.json": "sha256:248d8d93efea851a84896f9a589198c666d8159e46e9cd775e571244e7d5dcc4",
+            "test_links.json": "sha256:4100b76899c16f62f299784afadcf1129aff5e0c698d0dea19fe13fac787359a"
+          }
+        },
+        "graph": {
+          "path": "@data/bundles/repair/astropy__astropy-13453/graph",
+          "hashes": {
+            "context.json": "sha256:6b8fd23b325f58c51a5a388910c364b8ea456caf1cdb578bf4f4c5faaa1bd6f2",
+            "context_manifest.json": "sha256:959a14a895bcc3986f0532cfb4bfc492d8b8f0a6bc6b238301079bb792f14dd6",
+            "test_links.json": "sha256:27e74d2037bb00726bbf4e6f9a37b76943f81cfb39f8c37f8bd3973b05e6db58"
+          }
+        }
+      },
+      "django__django-10973": {
+        "bm25": {
+          "path": "@data/bundles/repair/django__django-10973/bm25",
+          "hashes": {
+            "context.json": "sha256:2d685e529e975a6a3d9547a7d30dced4797762d5532c3e47c78e29a3189a4f6d",
+            "context_manifest.json": "sha256:be635cd38e1b2c59b27afd496dc9fdf8ca953abf87cb49c64d3458ee12ecc44f",
+            "test_links.json": "sha256:ef235b54a4ca1bf6517cfce157c15ef4863f8057aeb9db9ff6686406cce2cc48"
+          }
+        },
+        "graph": {
+          "path": "@data/bundles/repair/django__django-10973/graph",
+          "hashes": {
+            "context.json": "sha256:def68ec829a8f990b33b094d8dc8b2aaf70e7a29ce946778916756d04173307c",
+            "context_manifest.json": "sha256:7932c8724da9d7d0d988244026aa8f3bd3aaefa9b4b792e24025155427c8b79a",
+            "test_links.json": "sha256:39cf89a4a0ffdbd6d7a4d92c696133e527b1f17add1ef1b6088dda3778abcc0d"
+          }
+        }
+      },
+      "matplotlib__matplotlib-20488": {
+        "bm25": {
+          "path": "@data/bundles/repair/matplotlib__matplotlib-20488/bm25",
+          "hashes": {
+            "context.json": "sha256:3d2431229814780879868c857c5b11658c84219319682465d5daa04b4027dcc7",
+            "context_manifest.json": "sha256:1bf8df06b02678d4d1c5a82fafae78280d2ec8d4be4dcf4909601d7617fde0d7",
+            "test_links.json": "sha256:b8bcbe962fd7211d07d82aec96f68c7da42c91fb1a1a918bd93dbe66eae8187c"
+          }
+        },
+        "graph": {
+          "path": "@data/bundles/repair/matplotlib__matplotlib-20488/graph",
+          "hashes": {
+            "context.json": "sha256:f593512f5988cb7688df459d6680072cc6b991abe9f642c6c03fe789b85a2404",
+            "context_manifest.json": "sha256:097c0b514f77143a4dd02f0c17ef441a6396e19590c69fb93ec823623e5c1041",
+            "test_links.json": "sha256:9499cb8a7ddc2190bf986db1da86fb191736cf2d816a3de26f0d01c24a2be8e0"
+          }
+        }
+      },
+      "psf__requests-1766": {
+        "bm25": {
+          "path": "@data/bundles/repair/psf__requests-1766/bm25",
+          "hashes": {
+            "context.json": "sha256:30d332501ab1b83b763f4546f80fb3a0151b4f71201f61c9be7462d1edcae6fb",
+            "context_manifest.json": "sha256:e9ec6c6d2bffdc553cef52fc9f538ea96c4969c88070a7988a6717fe9c2565c1",
+            "test_links.json": "sha256:64cf1660a25904fc8421e5b000d3b5f88898addf2a2bb86356ad5ecbdf883ecc"
+          }
+        },
+        "graph": {
+          "path": "@data/bundles/repair/psf__requests-1766/graph",
+          "hashes": {
+            "context.json": "sha256:90273d9ece03e1bf972a735a14ff5c6a40a2a2bad209ddbed17f171dd6d20262",
+            "context_manifest.json": "sha256:72f58f0b98e2c1f45bdd20e30c574073d980dd7def8799cc2eb0014948d25428",
+            "test_links.json": "sha256:299aee40614439a35ef5f5f9b0e5f1464720de07d9505f3cfbdb6bd1ac88039d"
+          }
+        }
+      },
+      "pydata__xarray-4629": {
+        "bm25": {
+          "path": "@data/bundles/repair/pydata__xarray-4629/bm25",
+          "hashes": {
+            "context.json": "sha256:9fb92630aab8fe546c5f544c3da024729d71b90dd5f022c9ef47b536e3ce09e4",
+            "context_manifest.json": "sha256:6dd446225aa4b9f4847e70e46d9d3ce50e1bbf7b2c6d87fbe67deffc7c3534db",
+            "test_links.json": "sha256:94f7f1521c8f3467212c3a503b5fe0368470bf2a556d1e5b657a7024e67febd8"
+          }
+        },
+        "graph": {
+          "path": "@data/bundles/repair/pydata__xarray-4629/graph",
+          "hashes": {
+            "context.json": "sha256:d6fb439440fbf7281ab0fe7c2980ffd1db2c023691139a189d0b2548daaec034",
+            "context_manifest.json": "sha256:797868dcf08776724853fe9f004b3a2425b2b5c5c25009a710e1ed73ad7fd9f1",
+            "test_links.json": "sha256:d02b7a9c7798fe5238b276c768c7358e9b16caca1615f6108a9f7f8ab30cbd08"
+          }
+        }
+      },
+      "pylint-dev__pylint-4970": {
+        "bm25": {
+          "path": "@data/bundles/repair/pylint-dev__pylint-4970/bm25",
+          "hashes": {
+            "context.json": "sha256:d25560767289c4a47c545ab668a17f56412b3f4c2646dad47515409945f600d1",
+            "context_manifest.json": "sha256:b0904c20b39321fbccb48e59655bc2a1043e10276784f62d618926fe8bbabd4a",
+            "test_links.json": "sha256:bf3f34576d71cd8171838f37886c32e3ca44d4882dd8bf442b626df571fae76c"
+          }
+        },
+        "graph": {
+          "path": "@data/bundles/repair/pylint-dev__pylint-4970/graph",
+          "hashes": {
+            "context.json": "sha256:272f4cb402ce341f534b3c18d1c29985e45f39a77b9c96ccfcc494d86284b040",
+            "context_manifest.json": "sha256:a81b2f6c28b12c89571c86c110eebf9612529d7bb9e5599482483de05f730fea",
+            "test_links.json": "sha256:f209de400062215ee2ae323aaf4089673ee540a402ec67af2e2a17b47de4738f"
+          }
+        }
+      },
+      "pytest-dev__pytest-7205": {
+        "bm25": {
+          "path": "@data/bundles/repair/pytest-dev__pytest-7205/bm25",
+          "hashes": {
+            "context.json": "sha256:929a69adae3ae2dce4375b65882b0e57ffc99b7b8e42eee49dc8fec221fccfba",
+            "context_manifest.json": "sha256:b729c1066d1a82a4c15a51a6f60d891d6da1aebff7e446f1e4d0afa9e81ae5e1",
+            "test_links.json": "sha256:2213e8e16f1761d91ad938acf376920b9fde480be7800db43c57f915155e7931"
+          }
+        },
+        "graph": {
+          "path": "@data/bundles/repair/pytest-dev__pytest-7205/graph",
+          "hashes": {
+            "context.json": "sha256:b7cf649cfa4f3dcfeb9e13a5add1304e9188bc224e61c8de6696913fba051d40",
+            "context_manifest.json": "sha256:7d1f25fece1bef3712241226117d8c55febc71a9a5804b3c569f2baa7f21433a",
+            "test_links.json": "sha256:59201bba40269d2113fd27e652a237934bac2c5d699006a27ee57777dd1bd711"
+          }
+        }
+      },
+      "scikit-learn__scikit-learn-10844": {
+        "bm25": {
+          "path": "@data/bundles/repair/scikit-learn__scikit-learn-10844/bm25",
+          "hashes": {
+            "context.json": "sha256:51038a7ec5cd21fba3a2932c8b118475945284ebaf6f722d74bd979b2243be37",
+            "context_manifest.json": "sha256:a76d48a52211f1ea2cc8f5f684cef609ad8cb008ab4f7348cad425fea2da8c66",
+            "test_links.json": "sha256:4d9784f7e9268dd2a3faec60cc6b4028d97ac997aba24e5af57acc0a566746be"
+          }
+        },
+        "graph": {
+          "path": "@data/bundles/repair/scikit-learn__scikit-learn-10844/graph",
+          "hashes": {
+            "context.json": "sha256:71ce02924c04c205af19b8e2874cf5697e92b1d634e42c6cef4e62ec11f07a3c",
+            "context_manifest.json": "sha256:cb47199db20a2394d460ca42ce7a37a43051ae05f0f8e07b3fe9f29692255df2",
+            "test_links.json": "sha256:3f05c45e34507566e8de71c209abd040bd70dc8d0c36534a4707b10d072ffd2d"
+          }
+        }
+      },
+      "sphinx-doc__sphinx-11510": {
+        "bm25": {
+          "path": "@data/bundles/repair/sphinx-doc__sphinx-11510/bm25",
+          "hashes": {
+            "context.json": "sha256:67302583ae4707420d8a42c8872c6a16b6edf4cb275ac353a8354ab0a64eca89",
+            "context_manifest.json": "sha256:20c20d796ac76e5e9a240ea6fa32619721de60c17037a7422a9941572803016c",
+            "test_links.json": "sha256:bcef0ab64523471f6053e1cc9485417ba4a237cb4bf3b0fdf0de900595caeb41"
+          }
+        },
+        "graph": {
+          "path": "@data/bundles/repair/sphinx-doc__sphinx-11510/graph",
+          "hashes": {
+            "context.json": "sha256:fa9f063dabddf364c5bd5fc2a895716fc47b28096239f6861144382e15ccd05f",
+            "context_manifest.json": "sha256:4564c79d95f9190a7d741f530e2fbeb8aab3790aabae5fd1ebf8ed7262977565",
+            "test_links.json": "sha256:f6d0707128257546daba26557799dae5f6147a219df7cdba185f017417e55ec9"
+          }
+        }
+      },
+      "sympy__sympy-12481": {
+        "bm25": {
+          "path": "@data/bundles/repair/sympy__sympy-12481/bm25",
+          "hashes": {
+            "context.json": "sha256:fd34420df52e4dcc4547e2d1243098ea350d91c7bbb1ef178455540290c2cc65",
+            "context_manifest.json": "sha256:364ce3daca982669ac6a977785a1da1d4b312db1480b8793c5f94a08aa077c6b",
+            "test_links.json": "sha256:6770f6cce8a29eaba8c6f7f05f840e5f906f140aa2fb0c57a1eb3ae6fee4c546"
+          }
+        },
+        "graph": {
+          "path": "@data/bundles/repair/sympy__sympy-12481/graph",
+          "hashes": {
+            "context.json": "sha256:7e1b7ed1e0cda53cab4000e6f8f105f6e085fa98e281b5641b6de4c7be4c4124",
+            "context_manifest.json": "sha256:73371bc30a15899dcefd3953c2f6744b287defd85028c0962b1efa053789e9fe",
+            "test_links.json": "sha256:4e55d8f2f4a034d9f7905c12a64a36098a1e28b8edd82a5eff94cec19605c4c1"
+          }
+        }
+      },
+      "astropy__astropy-13977": {
+        "bm25": {
+          "path": "@data/bundles/repair/astropy__astropy-13977/bm25",
+          "hashes": {
+            "context.json": "sha256:715ca85c4372b99e7f5e39d6ead64cdf4ef702b7d472e7bed47d090fad449da3",
+            "context_manifest.json": "sha256:d50df12658335de8f9017d6701e5c60be3f1770491ffd676fb3564200b4d3323",
+            "test_links.json": "sha256:ee2b53d5014c5871eda588eef2b15eee915b9db1e61a917d8cfc2e4902095fb6"
+          }
+        },
+        "graph": {
+          "path": "@data/bundles/repair/astropy__astropy-13977/graph",
+          "hashes": {
+            "context.json": "sha256:ef178afbb9210d9e63cb6e78c799bd369d7bde1002d33a7af19d4d5df66f6ea0",
+            "context_manifest.json": "sha256:c5d60bcd19f145824aff5a895ac9757ff7f61ca2aa24e42f6acb5ad7d31499df",
+            "test_links.json": "sha256:5e7d1c786654c85c12c74c3db655c8b12a50a21770c271de2b50d1cf3fe251da"
+          }
+        }
+      },
+      "django__django-11087": {
+        "bm25": {
+          "path": "@data/bundles/repair/django__django-11087/bm25",
+          "hashes": {
+            "context.json": "sha256:0235c25e64701c991cf5e4330a87b083bf0c53552e2aa83618fc7aec993a2151",
+            "context_manifest.json": "sha256:3fe0cbea15b4dab54e2d580bc5ffbc3a46c3e19a82b2464817331b419fb8d475",
+            "test_links.json": "sha256:eef248296cb2194d822ec0d39d39c5a7c974d0f08984f9265fe6b20a7388e407"
+          }
+        },
+        "graph": {
+          "path": "@data/bundles/repair/django__django-11087/graph",
+          "hashes": {
+            "context.json": "sha256:214785f83dab07af6c5ee3a980accb45aa0d5df2d17ead604bfce415706de527",
+            "context_manifest.json": "sha256:dc77179f2cbd68621eca34ca10042caa06ddae910e6e079fd87b2079864b66c7",
+            "test_links.json": "sha256:8fb8b66c12118bde045111051dfcae41d15315df3ae43e0979f494b4d775a601"
+          }
+        }
+      },
+      "matplotlib__matplotlib-20676": {
+        "bm25": {
+          "path": "@data/bundles/repair/matplotlib__matplotlib-20676/bm25",
+          "hashes": {
+            "context.json": "sha256:b660f8ac0f1fa52a41737fa5cbb6d4a1be1ba47bdbb683481aee22eb8210562e",
+            "context_manifest.json": "sha256:ede77abe270bb5b1012534636cd9dff1975d215cd953c829c09398b4473cc49e",
+            "test_links.json": "sha256:1a4eeed6327e58b93da5e96988b3bdac08cf061a40bc9694e74466ca25e31bb7"
+          }
+        },
+        "graph": {
+          "path": "@data/bundles/repair/matplotlib__matplotlib-20676/graph",
+          "hashes": {
+            "context.json": "sha256:0cf54cd1c43df9d2a8820a87bcfcab4349ebec2b22f1a31174732a34c57f67f7",
+            "context_manifest.json": "sha256:d14876c14d743a10a58fd0432ea381fd5a1b00fe1443f093a6f81fc75fe5b3f8",
+            "test_links.json": "sha256:17fd9ee9f35122f34107f637f97af3845e3bf4b8517b27958fddf1743a20e620"
+          }
+        }
+      }
+    },
+    "bundle_profile": {
+      "path": "../m1/w9_bundle_profile_repair.json",
+      "sha256": "sha256:325dd4d42d77fa2113fffa74fa0004d2152bf1113b9633f7dfd693f0b760686d"
+    },
+    "graph_documents": {
+      "sympy__sympy-11618": {
+        "path": "@data/bundles/repair/sympy__sympy-11618/graph.json",
+        "sha256": "sha256:228db15205f01294fce9158c353179229fe3a4b714eef56bff7beeb4ee35903b"
+      },
+      "astropy__astropy-13453": {
+        "path": "@data/bundles/repair/astropy__astropy-13453/graph.json",
+        "sha256": "sha256:d3c50e865d213baf5ebd3b412c04d56439182c44c13c16547dcf9d4fcf615cff"
+      },
+      "django__django-10973": {
+        "path": "@data/bundles/repair/django__django-10973/graph.json",
+        "sha256": "sha256:42450e1212d98ae30463a0af07c4f5cd1bd81ca0ec93d929be2fb677a7c7920b"
+      },
+      "matplotlib__matplotlib-20488": {
+        "path": "@data/bundles/repair/matplotlib__matplotlib-20488/graph.json",
+        "sha256": "sha256:fcb55b06a5ca9dd3995dd4ebeeae402d65c3e46915a1337be13e4ac7259dbc61"
+      },
+      "psf__requests-1766": {
+        "path": "@data/bundles/repair/psf__requests-1766/graph.json",
+        "sha256": "sha256:5bba8720537a21c8b65e5e1e26bcad60d54c178d7b6a2efe5cbc40e70cc0847a"
+      },
+      "pydata__xarray-4629": {
+        "path": "@data/bundles/repair/pydata__xarray-4629/graph.json",
+        "sha256": "sha256:97687a6d09d88d0b1b27c3ffeb1d743d8c321c42035faf81f3caf2dc7c348d51"
+      },
+      "pylint-dev__pylint-4970": {
+        "path": "@data/bundles/repair/pylint-dev__pylint-4970/graph.json",
+        "sha256": "sha256:858a574ce68842a499ed04cf808d4a4e2f3a92849844e4cfbd580fcaa5a6f750"
+      },
+      "pytest-dev__pytest-7205": {
+        "path": "@data/bundles/repair/pytest-dev__pytest-7205/graph.json",
+        "sha256": "sha256:c0638eeb802a1ffb01c8651d2a72094ba835b63458de7dfc3b4ac7b664a4062e"
+      },
+      "scikit-learn__scikit-learn-10844": {
+        "path": "@data/bundles/repair/scikit-learn__scikit-learn-10844/graph.json",
+        "sha256": "sha256:3ff7076c50ac2111b91d0f2c2dbd9e8aeedd847e69c9a2928aaaab1ede6eb19f"
+      },
+      "sphinx-doc__sphinx-11510": {
+        "path": "@data/bundles/repair/sphinx-doc__sphinx-11510/graph.json",
+        "sha256": "sha256:c85ed10947b000b70cb262552e79ec92e9032433cc04e9854f53b33595c6b77a"
+      },
+      "sympy__sympy-12481": {
+        "path": "@data/bundles/repair/sympy__sympy-12481/graph.json",
+        "sha256": "sha256:391f55dc8cec9eefd151b1d5e790c49f1fb63b5c6c967df1baffb848d1d79ddd"
+      },
+      "astropy__astropy-13977": {
+        "path": "@data/bundles/repair/astropy__astropy-13977/graph.json",
+        "sha256": "sha256:67eb69e7beb81b31b43ee96c3dbca57147326f77336970dd51e44d191fb61b71"
+      },
+      "django__django-11087": {
+        "path": "@data/bundles/repair/django__django-11087/graph.json",
+        "sha256": "sha256:5b118430f59d8867f0073bb9b61696054085306009f07ec3630f0ddef2174255"
+      },
+      "matplotlib__matplotlib-20676": {
+        "path": "@data/bundles/repair/matplotlib__matplotlib-20676/graph.json",
+        "sha256": "sha256:4505e8cff1329f980e369229dde57c85d73dceaa37570016b96dea0c79117ce7"
+      }
+    },
+    "task_inputs": "w10_dev/tasks",
+    "docker_host": "unix:///var/run/docker.sock",
+    "excluded": {
+      "astropy__astropy-13453": "OVER_CAP before running (D18/D25): A1 10439 > 6000; A2 10439 > 6000",
+      "astropy__astropy-13977": "OVER_CAP before running (D18/D25): A1 6570 > 6000; A2 6570 > 6000",
+      "django__django-11087": "OVER_CAP before running (D18/D25): A1 7202 > 6000; A2 7202 > 6000"
+    }
+  },
+  "repair_config": "../m2/w9_pilot_linux.json",
+  "generation": "real",
+  "variants": [
+    {
+      "path": "../m2/variants/w10/A0.json",
+      "arm": "bm25"
+    },
+    {
+      "path": "../m2/variants/w10/A1.json",
+      "arm": "graph"
+    },
+    {
+      "path": "../m2/variants/w10/A2.json",
+      "arm": "graph"
+    }
+  ]
+}

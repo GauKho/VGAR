@@ -31,6 +31,19 @@ def test_mapping_gaps_require_approved_fallback(m1_case, mapping):
     assert result['fallback_required'] and result['selected'] == ('tests',)
 
 
+def test_admitted_task_runs_only_its_own_scope(m1_case):
+    """Docker admission executes only task.fallback_scope (W10 D15); bundle hints are recorded, not run."""
+    task, counter = m1_case
+    context = m_context_adapter.load_handoff(task, counter, counter.counter_label)
+    assert list(context.hints['fallback_scope']) == ['tests']  # the bundle hints the whole test tree
+    task = task.model_copy(update={'fallback_scope': ('tests/test_auth.py',)})
+    result = m_test_selection.select_relevant_tests(('auth.py',), context, task, admitted=True)
+    assert result['selected'] == result['fallback_scope'] == ('tests/test_auth.py',)
+    assert list(result['report']['fallback_scope']) == ['tests']
+    widened = m_test_selection.select_relevant_tests(('auth.py',), context, task)
+    assert set(widened['selected']) > {'tests/test_auth.py'}  # native fixtures keep the approved hint scope
+
+
 def test_limited_links_and_missing_scope_is_incomplete(m1_case):
     task, counter = m1_case
     context = m_context_adapter.load_handoff(task, counter, counter.counter_label)

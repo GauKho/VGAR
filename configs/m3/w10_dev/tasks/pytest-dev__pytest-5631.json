@@ -1,0 +1,17 @@
+{
+  "source_roots": [
+    "src"
+  ],
+  "failing_selectors": [
+    "tests/vgar_w9_repro_5631.py"
+  ],
+  "fallback_scope": [
+    "tests/vgar_w9_repro_5631.py"
+  ],
+  "protected_paths": [
+    "tests"
+  ],
+  "overlay": {
+    "tests/vgar_w9_repro_5631.py": "pytest-dev__pytest-5631.repro.py"
+  }
+}

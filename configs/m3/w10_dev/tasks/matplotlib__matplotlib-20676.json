@@ -1,0 +1,17 @@
+{
+  "source_roots": [
+    "lib/matplotlib"
+  ],
+  "failing_selectors": [
+    "tests/vgar_w9_repro_20676.py"
+  ],
+  "fallback_scope": [
+    "tests/vgar_w9_repro_20676.py"
+  ],
+  "protected_paths": [
+    "tests"
+  ],
+  "overlay": {
+    "tests/vgar_w9_repro_20676.py": "matplotlib__matplotlib-20676.repro.py"
+  }
+}

@@ -9,6 +9,7 @@ from __future__ import annotations
 import copy
 import hashlib
 import json
+import os
 import re
 from dataclasses import dataclass
 from pathlib import Path
@@ -18,12 +19,12 @@ from vgar.evaluation.harness.task_env import (
     docker_environment,
     validate_profile,
 )
-from vgar.evaluation.retrieval.pilot_manifest import validate_manifest
+from vgar.evaluation.retrieval.pilot_manifest import W10_SELECTION, validate_manifest
 from vgar.repair.contracts import RepairTask, safe_path
 from vgar.repair.evidence import digest
 from vgar.repair.executor import run_bounded
 from vgar.repair.experiment import validate_hashes
-from vgar.repair.workspace import IGNORED, create_workspace, inventory
+from vgar.repair.workspace import IGNORED, create_workspace, inventory, link_entry
 
 SCHEMA = "vgar-repair-admission-v1"
 VISIBILITY = "issue_reproduction_no_benchmark_oracle"
@@ -59,17 +60,24 @@ def base_inventory(source, commit):
         metadata, relative = row.split("\t", 1)
         mode, kind, oid = metadata.split()
         safe_path(relative)
-        if kind != "blob" or mode not in ("100644", "100755"):
-            raise ValueError("Base tree contains unsupported link/submodule")
+        if kind != "blob" or mode not in ("100644", "100755", "120000"):
+            raise ValueError("Base tree contains unsupported submodule/object")
         if any(part in IGNORED for part in Path(relative).parts):
             raise ValueError("Tracked file overlaps ignored execution inventory")
-        raw = (source / relative).read_bytes()
+        if mode == "120000":
+            # A Git link blob is its target string; inventory() already refused unsafe targets.
+            if not (source / relative).is_symlink():
+                raise ValueError("Source bytes differ from pinned Git blob: " + relative)
+            target = os.readlink(source / relative)
+            raw = target.encode("utf-8")
+        else:
+            raw = (source / relative).read_bytes()
         git_hash = hashlib.sha1(
             b"blob " + str(len(raw)).encode() + b"\0" + raw
         ).hexdigest()
         if git_hash != oid:
             raise ValueError("Source bytes differ from pinned Git blob: " + relative)
-        expected[relative] = digest(raw)
+        expected[relative] = link_entry(target) if mode == "120000" else digest(raw)
     if expected != actual:
         raise ValueError("Source inventory differs from exact pinned base tree")
     return actual
@@ -82,7 +90,9 @@ def _inputs(task, manifest_path, profile_path, manifest_hash, profile_hash):
     ):
         raise ValueError("Independent nonempty manifest/profile SHA-256 pins required")
     manifest = json.loads(Path(manifest_path).read_text(encoding="utf-8"))
-    validate_manifest(manifest, expected_hash=manifest_hash)
+    # The independent hash pin fixes the population; the pilot also keeps its five-task order check.
+    validate_manifest(manifest, expected_hash=manifest_hash,
+                      **({'expected_ids': None} if manifest.get('selection_policy') == W10_SELECTION else {}))
     rows = [r for r in manifest["tasks"] if r["instance_id"] == task.task_id]
     if len(rows) != 1:
         raise ValueError("Task missing/duplicated in approved manifest")
@@ -139,7 +149,9 @@ def _scope(task, roots, files, overlay):
     for path, text in overlay.items():
         safe_path(path)
         if (
-            not path.startswith("tests/vgar_w9_repro_")
+            # Reserved marker in any component: repo-native runners need e.g. tests/vgar_w9_repro_x/ (Django app)
+            # or <package>/vgar_w9_repro_x/test_*.py (sympy bin/test ignores files outside the package).
+            not any(part.startswith("vgar_w9_repro_") for part in path.split("/"))
             or not path.endswith(".py")
             or path in files
             or not isinstance(text, str)
