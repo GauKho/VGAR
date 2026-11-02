@@ -30,6 +30,7 @@ def _tool(tool: str, call, audit_fields: dict[str, Any], summarize) -> dict[str,
         call=call,
         audit_fields=audit_fields,
         summarize=summarize,
+        untrusted=True,  # S12: names, paths and snippets come from the repository
     )
 
 

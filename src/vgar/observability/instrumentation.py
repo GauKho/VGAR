@@ -20,6 +20,8 @@ from contextvars import ContextVar
 from collections.abc import Mapping
 from typing import Any, Callable
 
+from vgar.observability.redact import redact_text
+
 _SECRET_KEY = re.compile(r"(secret|password|token|api[_-]?key|authorization|credential)", re.I)
 _PRIVATE_TEXT_KEY = re.compile(
     r"(content|old_text|new_text|prompt|messages|stdout|stderr|output_tail|diff|patch|issue_text)",
@@ -28,8 +30,6 @@ _PRIVATE_TEXT_KEY = re.compile(
 _MAX_DEPTH = 4
 _MAX_ITEMS = 24
 _MAX_STRING = 240
-_BEARER_RE = re.compile(r"(?i)\\bBearer\\s+[A-Za-z0-9._~+/=-]+")
-_KEY_VALUE_RE = re.compile(r"(?i)(api[_-]?key|access[_-]?token|password|secret)\\s*[:=]\\s*[^\\s,;]+")
 _CURRENT_RUN_ID: ContextVar[str | None] = ContextVar("vgar_trace_run_id", default=None)
 
 
@@ -47,8 +47,7 @@ def trace_run(run_id: str):
 
 
 def _redact_text(value: str) -> str:
-    value = _BEARER_RE.sub("Bearer [REDACTED]", value)
-    return _KEY_VALUE_RE.sub(r"\\1=[REDACTED]", value)
+    return redact_text(value)
 
 
 def _text_summary(value: str) -> dict[str, Any]:

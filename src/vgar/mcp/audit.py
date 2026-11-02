@@ -6,6 +6,8 @@ import json
 from pathlib import Path
 from typing import Any
 
+from vgar.observability.redact import redact
+
 
 @dataclass(frozen=True)
 class AuditEvent:
@@ -35,7 +37,7 @@ class AuditLogger:
                 timezone.utc
             ).isoformat(),
             event_type=event_type,
-            payload=payload,
+            payload=redact(payload),
         )
 
         with self._path.open(

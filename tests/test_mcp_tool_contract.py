@@ -177,3 +177,19 @@ def test_leased_root_and_inside(tmp_path, monkeypatch):
         inside(root, root / ".." / "x")
     assert escaped.value.code == "PATH_OUTSIDE_ROOT"
     assert inside(root, root / "a.py") == (tmp_path / "a.py").resolve()
+
+
+def test_retryable_follows_the_code_table():
+    # S10: retryable is derived from the code table, never trusted from the caller.
+    from vgar.mcp.schemas import KNOWN_ERROR_CODES, ToolError
+    assert ToolError(code="GRAPH_NOT_READY", message="x").retryable is True
+    assert ToolError(code="TIMEOUT", message="x", retryable=True).retryable is False
+    assert "TOOL_ERROR" not in KNOWN_ERROR_CODES
+    assert [c for c, r in KNOWN_ERROR_CODES.items() if r] == ["GRAPH_NOT_READY"]
+
+
+def test_unknown_coded_error_becomes_internal_error():
+    from vgar.mcp.schemas import CodedToolError, error_from_exception
+    error = error_from_exception(CodedToolError("MADE_UP", "secret detail"))
+    assert (error.code, error.retryable) == ("INTERNAL_ERROR", False)
+    assert "secret detail" not in error.message

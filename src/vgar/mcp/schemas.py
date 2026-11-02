@@ -13,11 +13,14 @@ Rules:
 """
 from __future__ import annotations
 
+from collections.abc import Mapping
+from types import MappingProxyType
 from typing import Any, Literal
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 from vgar.contracts.error import GraphError
+from vgar.observability.redact import redact, redact_text
 
 ToolStatus = Literal["PASS", "FAIL", "ERROR", "NOT_RUN"]
 
@@ -28,6 +31,16 @@ ROOT_NOT_LEASED = "ROOT_NOT_LEASED"
 PATH_OUTSIDE_ROOT = "PATH_OUTSIDE_ROOT"
 SELECTOR_REJECTED = "SELECTOR_REJECTED"
 TIMEOUT = "TIMEOUT"
+
+# S10: every error code a tool may return -> retryable (the same call, unchanged, may succeed).
+# Table from C4 in docs/m3_w11_decisions.md; TOOL_ERROR (legacy repair) is deliberately absent.
+KNOWN_ERROR_CODES: Mapping[str, bool] = MappingProxyType({
+    INVALID_ARGUMENT: False, INTERNAL_ERROR: False,
+    "INVALID_QUERY": False, "INVALID_LIMIT": False, "NODE_NOT_FOUND": False, "GRAPH_ERROR": False,
+    "GRAPH_NOT_READY": True,
+    PATH_OUTSIDE_ROOT: False, ROOT_NOT_LEASED: False, SELECTOR_REJECTED: False, TIMEOUT: False,
+    "TOOL_ORDER_VIOLATION": False, "RUN_NOT_FOUND": False, "MCP_TRANSPORT_ERROR": False,
+})
 
 
 class CodedToolError(Exception):
@@ -42,6 +55,12 @@ class ToolError(BaseModel):
     code: str
     message: str
     details: dict[str, Any] = Field(default_factory=dict)
+    retryable: bool = False
+
+    @model_validator(mode="after")
+    def _retryable_from_code(self) -> "ToolError":
+        self.retryable = KNOWN_ERROR_CODES.get(self.code, False)
+        return self
 
 
 class ToolMetadata(BaseModel):
@@ -67,12 +86,14 @@ def error_from_exception(exc: BaseException) -> ToolError:
     Anything else is INTERNAL_ERROR with only the exception type exposed; the
     full message goes to the audit log, not to the model.
     """
+    if isinstance(exc, (CodedToolError, GraphError)) and exc.code not in KNOWN_ERROR_CODES:
+        return ToolError(code=INTERNAL_ERROR, message=f"Unexpected server error: {type(exc).__name__}")
     if isinstance(exc, CodedToolError):
-        return ToolError(code=exc.code, message=exc.message)
+        return ToolError(code=exc.code, message=redact_text(exc.message))
     if isinstance(exc, GraphError):  # must precede ValueError: some are both
-        return ToolError(code=exc.code, message=exc.message, details=exc.details)
+        return ToolError(code=exc.code, message=redact_text(exc.message), details=redact(exc.details))
     if isinstance(exc, ValueError):
-        return ToolError(code=INVALID_ARGUMENT, message=str(exc))
+        return ToolError(code=INVALID_ARGUMENT, message=redact_text(str(exc)))
     return ToolError(
         code=INTERNAL_ERROR,
         message=f"Unexpected server error: {type(exc).__name__}",

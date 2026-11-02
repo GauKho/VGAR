@@ -50,5 +50,9 @@ execution_run_pytest(selector) -> data {selector, verdict: PASS|FAIL, exit_code,
   tree on timeout (Windows job object, POSIX process group) and stops the child once output passes the cap.
 - Error codes (C4, none retryable with unchanged arguments): `ROOT_NOT_LEASED`, `PATH_OUTSIDE_ROOT`,
   `SELECTOR_REJECTED`, `TIMEOUT`, `INVALID_ARGUMENT` (for example a non-UTF-8 file), `INTERNAL_ERROR`.
+- `error.retryable` (S10, every envelope tool): derived from `vgar.mcp.schemas.KNOWN_ERROR_CODES`, never set by
+  the tool. Only `GRAPH_NOT_READY` is `true`; every other code, `TIMEOUT` included, is `false`. A code outside
+  the table is returned as `INTERNAL_ERROR`. `TOOL_ERROR` (legacy repair server, until the C4 envelope) is not
+  in the table.
 - Removed in W11: `repository_apply_patch` and every `repo_path` / `timeout_seconds` parameter.
 

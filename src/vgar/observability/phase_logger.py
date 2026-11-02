@@ -8,16 +8,19 @@ import uuid
 from contextlib import contextmanager
 from typing import Any, Iterator
 
+from vgar.observability.redact import redact_text
+
 
 def new_run_id() -> str:
     return uuid.uuid4().hex[:12]
 
 
 def summarize(value: Any, *, depth: int = 0, max_string: int = 240) -> Any:
-    """Bound log volume; this is not a secrets redactor."""
+    """Bound log volume and redact secrets in strings."""
     if value is None or isinstance(value, (bool, int, float)):
         return value
     if isinstance(value, str):
+        value = redact_text(value)
         return value[:max_string] + ("..." if len(value) > max_string else "")
     if depth >= 3:
         return f"<{type(value).__name__}>"

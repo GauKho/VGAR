@@ -218,3 +218,18 @@ def test_summary_table_has_one_row_per_pair_and_marks_timeouts(fixture_config, t
     assert '| A0 | TERMINAL | PASS |' in rows[0] and '| 2048 |' in rows[0]
     assert '≥ 30.0' in rows[1] and 'VERIFICATION_INCOMPLETE' in rows[1]
     assert '| A2 | TERMINAL | PASS |' in rows[2]
+
+
+class FlakySampler(FakeSampler):
+    samples_failed = 3
+
+
+def test_runner_records_failed_gpu_samples(fixture_config, tmp_path):
+    # C7 / D14: runner.py records the sampler's failed-sample count next to the peak.
+    exp = load(fixture_config, tmp_path)
+    run(exp, tmp_path, tmp_path/'out', FakeLaunch(), sampler_factory=FlakySampler)
+    [record] = attempts(tmp_path/'out', exp, 'single_file_login', 'A0')
+    assert record['gpu_peak_mib'] == 2048 and record['gpu_samples_failed'] == 3
+    run(exp, tmp_path, tmp_path/'old', FakeLaunch(), sampler_factory=FakeSampler)
+    [old] = attempts(tmp_path/'old', exp, 'single_file_login', 'A0')
+    assert old['gpu_samples_failed'] is None  # a sampler without the C7 field (pre-M2 gpu.py)

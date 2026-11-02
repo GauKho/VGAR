@@ -116,6 +116,7 @@ def _attempt(exp, data_root, exp_dir, launch, sampler_factory, plan_variant, num
                   engine_complete=None, engine_output_root=str(engine_root), timed_out=False, command_timed_out=False,
                   detail=None, failure=None,
                   started_utc=_now(), ended_utc=None, wall_ms=None, gpu_peak_mib=None, gpu_peak_scope=None,
+                  gpu_samples_failed=None,
                   host=platform.node())
     path = _attempt_path(exp_dir, record)
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -146,7 +147,9 @@ def _attempt(exp, data_root, exp_dir, launch, sampler_factory, plan_variant, num
     finally:
         peak = sampler.stop() if sampler else None
     record.update(ended_utc=_now(), wall_ms=round((time.monotonic() - start) * 1000), gpu_peak_mib=peak,
-                  gpu_peak_scope='device' if peak is not None else None)
+                  gpu_peak_scope='device' if peak is not None else None,
+                  # C7: None = sampler without the field (pre-M2 gpu.py) or no sampler
+                  gpu_samples_failed=getattr(sampler, 'samples_failed', None) if sampler else None)
     if result is not None:
         record.update({k: v for k, v in asdict(result).items() if k != 'interrupted'}, failure=runner_failure(result))
     interrupted = result is None or result.interrupted

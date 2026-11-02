@@ -8,17 +8,23 @@ run's private worktree; every accepted call is appended to run_record.mcp_calls.
 from __future__ import annotations
 
 from dataclasses import asdict
+import functools
 import hashlib
+import inspect
 import json
+import os
 from pathlib import Path
 import time
 from typing import Any
+import uuid
 
 from mcp.server.fastmcp import FastMCP
 
+from vgar.mcp.audit import AuditLogger
 from vgar.observability.instrumentation import instrument_mcp_tool
 
 mcp = FastMCP("vgar-repair")
+_audit_logger = AuditLogger(Path(os.getenv("VGAR_MCP_AUDIT_LOG", "logs/mcp_audit.jsonl")))
 
 # Phases a run must be in for each tool (verify_patch accepts any unfinished phase).
 REQUIRED_PHASE = {"apply_patch": ("prepared",), "run_relevant_tests": ("applied",),
@@ -36,11 +42,42 @@ def _log(session, entry: dict[str, Any]) -> None:
     session.run.save()
 
 
+class _ToolErrorResult(dict):
+    """Marks a result built by _tool_error, so the audit can tell a tool failure from an engine verdict."""
+
+
 def _tool_error(error: BaseException) -> dict[str, Any]:
     from vgar.mcp.schemas import CodedToolError
     if isinstance(error, CodedToolError):  # C4 security codes (run root) keep their code
-        return {"status": "ERROR", "reason": error.code, "detail": error.message}
-    return {"status": "ERROR", "reason": "TOOL_ERROR", "detail": f"{type(error).__name__}: {error}"}
+        return _ToolErrorResult(status="ERROR", reason=error.code, detail=error.message)
+    return _ToolErrorResult(status="ERROR", reason="TOOL_ERROR", detail=f"{type(error).__name__}: {error}")
+
+
+def _audited(tool: str):
+    """S8: one tool_call line in the shared MCP audit log per call, failures included; the result is unchanged."""
+    def decorator(fn):
+        signature = inspect.signature(fn)
+
+        @functools.wraps(fn)
+        def wrapper(*args, **kwargs):
+            inputs = signature.bind(*args, **kwargs).arguments
+            payload = {"server": "repair", "tool": tool, "request_id": uuid.uuid4().hex,
+                       "input_sha256": hashlib.sha256(json.dumps(inputs, sort_keys=True, default=str)
+                                                      .encode("utf-8")).hexdigest()}
+            start = time.monotonic()
+            try:
+                result = fn(*args, **kwargs)
+            except Exception:
+                _audit_logger.write("tool_call", dict(payload, status="ERROR", error_code="INTERNAL_ERROR",
+                                                      duration_ms=round((time.monotonic() - start) * 1000)))
+                raise
+            payload.update(status=result.get("status"), duration_ms=round((time.monotonic() - start) * 1000))
+            if isinstance(result, _ToolErrorResult):
+                payload["error_code"] = result["reason"]
+            _audit_logger.write("tool_call", payload)
+            return result
+        return wrapper
+    return decorator
 
 
 def _run_root_path(path: str) -> Path:
@@ -89,6 +126,7 @@ def _finish(session, tool, inputs, started_utc, start) -> dict[str, Any]:
 
 @mcp.tool()
 @instrument_mcp_tool("get_task_context")
+@_audited("get_task_context")
 def get_task_context(task_path: str, mode: str, output_root: str, work_root: str,
                      config_path: str | None = None, keep_workspace: bool = False,
                      feedback: dict[str, Any] | None = None, supersedes_run_id: str | None = None,
@@ -134,6 +172,7 @@ def get_task_context(task_path: str, mode: str, output_root: str, work_root: str
 
 @mcp.tool()
 @instrument_mcp_tool("apply_patch")
+@_audited("apply_patch")
 def apply_patch(run_dir: str, diff: str, generation: dict[str, Any] | None = None) -> dict[str, Any]:
     """Record the client's generation, strictly parse the unified diff and git-apply it in the worktree."""
     from vgar.repair.executor import utc_now
@@ -157,6 +196,7 @@ def apply_patch(run_dir: str, diff: str, generation: dict[str, Any] | None = Non
 
 @mcp.tool()
 @instrument_mcp_tool("run_relevant_tests")
+@_audited("run_relevant_tests")
 def run_relevant_tests(run_dir: str) -> dict[str, Any]:
     """Select the relevant tests for the changed files and run them in the worktree."""
     from vgar.repair.executor import utc_now
@@ -185,6 +225,7 @@ def run_relevant_tests(run_dir: str) -> dict[str, Any]:
 
 @mcp.tool()
 @instrument_mcp_tool("verify_patch")
+@_audited("verify_patch")
 def verify_patch(run_dir: str) -> dict[str, Any]:
     """Static checks and final assessment, clean the worktree and publish the evidence bundle."""
     from vgar.repair.executor import utc_now
