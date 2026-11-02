@@ -15,7 +15,7 @@ Lập 01/11/2026. Phạm vi: W11–12. Spec chia việc: `docs/superpowers/specs
 | E3 | Viết luật nhận một bước tune trước khi tune | M1 | M1-W11-2 | Đề xuất |
 | E4 | Nâng xử lý anchor nhiễu (D5) từ "nếu còn thời gian" thành bước bắt buộc | M1 | M1-W11-2 | Đề xuất |
 | E5 | Chỉ chạy lại các ô (task, arm) có context hoặc test link đổi, kèm ô đối chứng | M1 + M3 | N3 | **Chốt hướng (iii)** (02/11); export + so hash chưa chạy, cần chọn chủ |
-| E6 | Attempt record ghi hash ranking và `graph_version`; aggregate và fairness không gộp record khác hash | M3, M2 | C3, C5 | Đề xuất |
+| E6 | Attempt record ghi hash ranking và `graph_version`; aggregate và fairness không gộp record khác hash | M3, M2 | C3, C5 | Đề xuất; phần M3 (`context_manifest.ranking_config_hash` + runner) đã làm 02/11, chờ M2 duyệt; `fairness.py` (M2) và `aggregate.py` (W12) chưa làm |
 | E7 | `solve --agent` (RQ5) chỉ chạy sau H3 | M3 | M3-W12-1 | Đề xuất |
 
 ## E1. B10 phải đổi `graph_version`
@@ -136,6 +136,8 @@ Trạng thái: **đã implement trên working tree ngày 01/11** (plan `docs/sup
 - **Không ảnh hưởng `policy_hash`:** `policy_hash` của A0–A2 không chứa config ranking (D17). Vì vậy E6 mới là chỗ chặn việc trộn record của hai config ranking khác nhau.
 
 ## C4. Envelope và enum mã lỗi MCP (M3 đề xuất, M1 và M2 duyệt)
+
+> **Trạng thái 02/11:** đã làm cho cả 4 server theo đề xuất dưới đây (giữ tên `status`/`request_id`; `TIMEOUT` không retryable). `repair_server` trả envelope, verdict của engine ở `data.verdict`; client đọc qua `agents/nodes/mcp_repair._unwrap`. Hai câu hỏi ở cuối mục vẫn cần M1 và M2 xác nhận khi review PR.
 
 ### Hiện trạng (kiểm code 01/11)
 

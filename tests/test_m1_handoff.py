@@ -469,6 +469,18 @@ def test_consumer_cli_invalid_changed_path_produces_no_prompt(consumer_cli_case)
     assert not (output / 'repair-context.txt').exists()
 
 
+def test_ranking_config_hash_is_recorded_in_context_sidecar(handoff_case):
+    # E6: the bundle names the ranking config it was retrieved with, so the runner can record it.
+    from vgar.contracts.handoff import ContextManifest
+    from vgar.graph.retrieval import RetrievalConfig, ranking_config_hash
+    root, doc, bundle, targets = handoff_case
+    manifest = bundle['manifest']
+    assert manifest['ranking_config_hash'] == ranking_config_hash(RetrievalConfig())
+    assert 'ranking_config_hash' not in bundle['test_hints']
+    older = {k: v for k, v in manifest.items() if k != 'ranking_config_hash'}
+    assert ContextManifest.model_validate(older).ranking_config_hash is None  # pre-E6 and BM25 sidecars
+
+
 def test_resolver_profile_binds_graph_to_context_sidecar(handoff_case):
     # E5 option (iii): the resolver profile lives in the context manifest, not in graph_version, and not in
     # test_links.json (E5 compares that file's hash with the W10 records).

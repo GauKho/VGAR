@@ -77,5 +77,6 @@
   "snippet_policy": "whole-range-no-wrapper",
   "counter_label": "fixture-only:characters",
   "token_budget_unit": "snippets-only",
-  "resolver_profile": "tree-sitter+python-static-v4-external-import"
+  "resolver_profile": "tree-sitter+python-static-v4-external-import",
+  "ranking_config_hash": "sha256:993f02c962dde7b1d506497798b44bcc4316ed5b5d64a9c84c5ab2a296bbb14a"
 }

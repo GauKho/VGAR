@@ -24,6 +24,9 @@ resolver is recorded in `statistics.resolver.profile`, currently `tree-sitter+py
 repository symbol). The context sidecar (`context_manifest.json`) carries the same value as `resolver_profile`;
 `validate_context_handoff(..., expected_resolver_profile=...)` and `create_test_hints` reject a graph or sidecar
 built with another profile. `test_links.json` does not carry it, so its hash stays comparable with W10 records.
+The context sidecar also carries `ranking_config_hash` (E6), the C5 hash of the retrieval config the context
+was packed with; it is `null` in pre-E6 and BM25 sidecars. The M3 runner copies it, with `graph_version`, into
+every attempt record.
 The file-range profile is `full-bytes-v1`. The builder does not use Jedi. These
 profiles are not schema versions.
 Direct, unambiguous class method aliases are stored in the implementation's

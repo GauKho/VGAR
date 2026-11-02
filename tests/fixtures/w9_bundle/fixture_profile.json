@@ -20,7 +20,7 @@
     "repo/pytest.ini": "sha256:82fd55d62e39ad5dc83c58bd005c337e4e9810ef96f7356c370d7069de775a16",
     "repo/tests/test_auth.py": "sha256:82a4f022c58d27e2769b64a86ec068681edafc3b99ab404d0079dbc8ac5f62c4",
     "bundle/context.json": "sha256:530566ecea4d1558bbe57a1f2c71d2dcc8ec1fc6ab930c282adc4ba7a9cd3f90",
-    "bundle/context_manifest.json": "sha256:2e71b30d545623b246d8cd6215a76c309f7dfff615c57560c639e8b72fdf0179",
+    "bundle/context_manifest.json": "sha256:c6f69e98e3777ae6974d0021c088cd684a86fe531676c0a5e66b9483848565c8",
     "bundle/test_links.json": "sha256:8e719ea68901a73b0a209c211532a63501d7d34cb639ed08a8806f738af96fcd",
     "bundle/repair-context.txt": "sha256:0e5dcaf3b28148225e9bc7e24228238b886ced7bb2cb75cce390f96f8c35c8a3"
   }

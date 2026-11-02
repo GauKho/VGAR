@@ -233,3 +233,27 @@ def test_runner_records_failed_gpu_samples(fixture_config, tmp_path):
     run(exp, tmp_path, tmp_path/'old', FakeLaunch(), sampler_factory=FakeSampler)
     [old] = attempts(tmp_path/'old', exp, 'single_file_login', 'A0')
     assert old['gpu_samples_failed'] is None  # a sampler without the C7 field (pre-M2 gpu.py)
+
+
+def test_runner_records_bundle_graph_version_and_ranking_hash(fixture_config, tmp_path):
+    # E6: every attempt names the graph snapshot and ranking config its context bundle came from.
+    exp = load(fixture_config, tmp_path)
+    task = json.loads((tmp_path/'examples/tasks/single_file_login.json').read_text(encoding='utf-8'))
+    run(exp, tmp_path, tmp_path/'old', FakeLaunch())
+    [old] = attempts(tmp_path/'old', exp, 'single_file_login', 'A0')
+    assert old['graph_version'] == task['graph_version'] and old['ranking_config_hash'] is None  # pre-E6 bundle
+    manifest_path = tmp_path/'examples/handoffs/single_file_login/context_manifest.json'
+    manifest = json.loads(manifest_path.read_text(encoding='utf-8'))
+    manifest['ranking_config_hash'] = 'sha256:' + 'e'*64
+    manifest_path.write_text(json.dumps(manifest), encoding='utf-8')
+    run(exp, tmp_path, tmp_path/'new', FakeLaunch())
+    [new] = attempts(tmp_path/'new', exp, 'single_file_login', 'A1')
+    assert new['ranking_config_hash'] == 'sha256:' + 'e'*64 and new['graph_version'] == task['graph_version']
+
+
+def test_skipped_plan_records_no_bundle_identity(swebench_config):
+    config, data = swebench_config
+    exp = load(config, data)
+    run(exp, data, data/'out', FakeLaunch())
+    [skipped] = attempts(data/'out', exp, 'demo__demo-2', 'A0')
+    assert skipped['graph_version'] is None and skipped['ranking_config_hash'] is None

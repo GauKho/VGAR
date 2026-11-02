@@ -67,6 +67,8 @@ class ContextManifest(_Sidecar):
     token_budget_unit: Literal['snippets-only'] = 'snippets-only'
     # E5 option (iii): graph resolver profile (statistics.resolver.profile); None in pre-W11 sidecars.
     resolver_profile: str | None = None
+    # E6: ranking config the context was retrieved with (C5 hash); None in pre-E6 and BM25 sidecars.
+    ranking_config_hash: str | None = None
 
 
 class TestHints(_Sidecar):

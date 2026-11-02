@@ -116,7 +116,7 @@ def _attempt(exp, data_root, exp_dir, launch, sampler_factory, plan_variant, num
                   engine_complete=None, engine_output_root=str(engine_root), timed_out=False, command_timed_out=False,
                   detail=None, failure=None,
                   started_utc=_now(), ended_utc=None, wall_ms=None, gpu_peak_mib=None, gpu_peak_scope=None,
-                  gpu_samples_failed=None,
+                  gpu_samples_failed=None, graph_version=None, ranking_config_hash=None,
                   host=platform.node())
     path = _attempt_path(exp_dir, record)
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -138,6 +138,10 @@ def _attempt(exp, data_root, exp_dir, launch, sampler_factory, plan_variant, num
             else:
                 engine_root.mkdir(parents=True, exist_ok=True)
                 try:
+                    # E6: the snapshot and ranking config behind this attempt's context bundle.
+                    bundle = json.loads((plan.task.bundle_directory / 'context_manifest.json').read_text(encoding='utf-8'))
+                    record.update(graph_version=plan.task.graph_version,
+                                  ranking_config_hash=bundle.get('ranking_config_hash'))
                     result = launch(plan, engine_root, supersedes, rerun_reason)
                 except Exception:
                     result = LaunchResult('ERROR', 'RUNNER_INFRA_ERROR', 'launch', 'runner', None, None,
