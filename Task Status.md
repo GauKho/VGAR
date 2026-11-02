@@ -56,7 +56,7 @@
 > `PASS`. **Phần M2 tuần 11 chưa có trong repo** (`api_check`, `structural_check`, `A3.json`):
 > các dòng M2-01..04 giữ CT, và bàn giao H3/H5 sang W12 đang bị chặn.
 
-- Chỉ đổi §5.6 và dòng 11–12/Tổng của bảng tổng hợp; không đổi tuần khác.
+- Đổi §5.6 và dòng 11–12/Tổng của bảng tổng hợp. Ngoài tuần 11 chỉ sửa một dòng: W09-10-M3-02 chuyển MP → HT (việc đã merge trong PR #6 nhưng bảng chưa cập nhật), kéo theo dòng 9–10.
 - Code nằm trên 10 nhánh xếp chồng: `docs/w11-planning` → `m1/w11-graph` → `m1/w11-ranking-hash` →
   `m3/w11-legacy-servers` → `m3/w11-run-chat` → `m3/w11-security` → `m3/w11-day5` → `m3/w11-e6` →
   `m3/w11-c4-s15` → `m2/w11-static-line-map`. Tất cả đã push nhưng **chưa merge vào `main` và chưa
@@ -207,13 +207,13 @@ task thành viên, nên **không lấy tỷ lệ checkbox làm % tiến độ ho
 | 3–4      |       22 |     16 |      5 |      0 |      1 |
 | 5–6      |       20 |     13 |      4 |      1 |      2 |
 | 7–8      |       19 |     17 |      1 |      0 |      1 |
-| 9–10     |       20 |     13 |      6 |      1 |      0 |
+| 9–10     |       20 |     14 |      5 |      1 |      0 |
 | 11–12    |       16 |      7 |      3 |      5 |      1 |
 | 13–14    |       16 |      0 |      6 |      4 |      6 |
 | 15–16    |       16 |      1 |      8 |      0 |      7 |
-| **Tổng** |  **150** | **73** | **38** | **11** | **28** |
+| **Tổng** |  **150** | **74** | **37** | **11** | **28** |
 
-Dòng 7–8 cập nhật ngày 18/10; dòng 9–10 cập nhật ngày 30/10; dòng 11–12 và dòng Tổng cập nhật ngày 02/11; các tuần khác giữ số ngày 16/10.
+Dòng 7–8 cập nhật ngày 18/10; dòng 9–10 cập nhật ngày 30/10 (W09-10-M3-02 sửa ngày 02/11); dòng 11–12 và dòng Tổng cập nhật ngày 02/11; các tuần khác giữ số ngày 16/10.
 Các số này là **số dòng checklist được phân loại**, không phải47 features
 độc lập hay % đồ án. Mục HT về README/schema có thể thuộc tuần15–16 dù
 research experiment của tuần ấy chưa chạy. [report-qa.json](docs/audit/2026-10-13/report-qa.json)
@@ -506,7 +506,7 @@ khi thiếu wiring/security của luồng integrated agent; không bắt M2 làm
 | W09-10-M2-06    | Patch success/false accept proxy/tokens/latency             | **HT**     | Phễu F1–F8, false accept/reject, token/latency/số lần generate theo task, tổng hợp từ record (`aggregate.py`); VRAM thiếu ở 7 run (sampler).                                                                    | Sửa sampler VRAM (W11).                                                                        |
 | W09-10-M2-07    | Failure reason có cấu trúc                                  | **HT**     | `repair/failure.py`: stage/code/cause/evidence_ref cho mọi kết cục, kể cả `RUN_TIMEOUT`/`GENERATION_TIMEOUT` (D20); 0/75 record thiếu stage.                                                                   | —                                                                                              |
 | W09-10-M3-01    | MCP analyze_patch_impact                                    | **HT**     | Tool `analyze_patch_impact` trong `mcp/servers/graph_server.py`, lỗi theo schema, có audit; `tests/test_w10_impact_mcp.py` PASS.                                                                               | —                                                                                              |
-| W09-10-M3-02    | Impact report trong feedback prompt                         | **MP**     | `agents/feedback.py::build_feedback(record, impact=)` ≤ 400 ký tự, test PASS; **vòng retry của `tool_agent` chưa gọi tool impact**.                                                                           | Nối tool impact vào runtime retry (W11).                                                       |
+| W09-10-M3-02    | Impact report trong feedback prompt                         | **HT**     | Cập nhật 02/11. Vòng retry của `solve --agent` có tool `analyze_patch_impact` (`agents/tool_agent.py`): sau khi một patch apply được mà test vẫn fail, agent gọi tool, graph server tính `ImpactReport` cho diff vừa apply, và `feedback.py::impact_message` thêm đúng một dòng có giới hạn vào feedback của lần sinh lại. Commit `483f4394`, đã merge trong PR #6. Test: `tests/unit/test_agent_impact_tool.py`. Chạy thật 30/10 với Qwen pinned (`scripts/check_agent_impact_real.py`): 3/3 fixture có impact được gọi, `PASS`, feedback có dòng impact, kết quả `ACCEPT`; GATE PASS. Patch là kịch bản (sai rồi đúng), nên lần chạy này đo **lựa chọn tool của agent và đường dữ liệu**, không đo việc impact giúp sinh patch tốt hơn. | Đo ích lợi của impact (nếu cần) là việc của ablation, không phải điều kiện đóng task này. |
 | W09-10-M3-03    | Draft Methodology repair/impact/verification                | **CT**     | Chưa có draft trong `docs/paper/`.                                                                                                                                                                             | Viết Methodology v1 theo engine thật, M1/M2 review.                                            |
 | W09-10-M3-04    | Draft Experimental Design datasets/split/baselines/fairness | **MP**     | Spec W10, quyết định D13–D26 và kiểm fairness tự động có; chưa có draft paper.                                                                                                                                 | Viết draft từ spec/quyết định đã duyệt.                                                        |
 | W09-10-DOD-01   | A0–A2 E2E cùng subset/config                                | **HT**     | Cùng population (tiền tố manifest khóa trước khi chạy), cùng config, kiểm tự động cả giữa hai experiment.                                                                                                     | —                                                                                              |
