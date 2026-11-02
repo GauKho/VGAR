@@ -88,11 +88,12 @@ def sandbox(
             shutil.rmtree(work, ignore_errors=True)
 
 
-async def build_agent(settings: Settings, *, run_id: str | None = None):
+async def build_agent(settings: Settings, *, run_id: str | None = None, **options):
+    """`options` (servers, extra_env, exclude_tools, model) go to create_core_agent unchanged."""
     from vgar.agents.core import create_core_agent
     run_id = run_id or new_run_id()
     with phase("build_agent", run_id, {"settings_type": type(settings).__name__}) as log_output:
-        agent = await create_core_agent(settings, run_id=run_id)
+        agent = await create_core_agent(settings, run_id=run_id, **options)
         log_output({"agent_type": type(agent).__name__})
         return agent
 
@@ -155,7 +156,7 @@ class AgentDebugCallback(BaseCallbackHandler):
 
 
 def task_prompt(query: str, workspace: Path, selector: str | None) -> str:
-    lines = [query, "", f"Repository working copy (use this exact value as `repo_path` in repository_* and execution_* tools): {workspace}"]
+    lines = [query, "", f"Repository working copy (repository_* and execution_* tools are already rooted here): {workspace}"]
     if selector:
         lines.append(f"Test selector: {selector}")
     lines.append("Never claim success without execution_run_pytest evidence.")
@@ -192,7 +193,10 @@ async def cmd_doctor(args: argparse.Namespace) -> int:
 async def cmd_tools(args: argparse.Namespace) -> int:
     from vgar.mcp import create_mcp_client
 
+    from vgar.mcp.registry import validate_public_tools
+
     tools = await create_mcp_client(get_settings()).get_tools()
+    validate_public_tools(tools)
     for t in sorted(tools, key=lambda t: t.name):
         print(f"  {t.name}")
     print(f"{len(tools)} tools")
@@ -218,7 +222,9 @@ async def cmd_run(args: argparse.Namespace) -> int:
 
     with sandbox(repo, settings, args.keep, run_id=run_id) as (s, lease):
         workspace_before = fingerprint_source(lease.path)
-        agent = await build_agent(s, run_id=run_id)
+        lease_env = {"VGAR_LEASE_ROOT": str(lease.path),
+                     "VGAR_ALLOWED_SELECTORS": json.dumps([args.selector] if args.selector else [])}
+        agent = await build_agent(s, run_id=run_id, servers=("graph", "repository", "execution"), extra_env=lease_env)
         callback = AgentDebugCallback(run_id)
         prompt = task_prompt(args.query, lease.path, args.selector)
         with phase(
@@ -251,7 +257,7 @@ async def cmd_run(args: argparse.Namespace) -> int:
         calls = print_trace(messages)
         print(f"\nagent says: {final_text(messages)[:500]}", flush=True)
 
-        ok = True
+        ok = False  # D9: without an independent check the run is never reported as verified
         if calls > s.agent.max_tool_calls:
             print(f"[WARN] {calls} tool calls > budget {s.agent.max_tool_calls}", flush=True)
         if args.selector:  # never trust the agent's own claim
@@ -268,6 +274,8 @@ async def cmd_run(args: argparse.Namespace) -> int:
                     "exit_code": verdict["command"]["exit_code"],
                 })
                 print(f"[verify] independent pytest: {verdict['status']}", flush=True)
+        else:
+            print("[verify] UNVERIFIED: no selector", flush=True)
 
         with phase("workspace_change_check", run_id, {"workspace": str(lease.path)}) as log_output:
             changed = fingerprint_source(lease.path) != workspace_before
@@ -282,10 +290,12 @@ async def cmd_run(args: argparse.Namespace) -> int:
         "RUN_END",
         run_id=run_id,
         phase="run",
-        status="OK" if ok and untouched else "FAILED",
+        status="OK" if ok and untouched else ("UNVERIFIED" if not args.selector else "FAILED"),
         verified=ok,
         source_repo_untouched=untouched,
     )
+    if not args.selector:
+        return 2
     return 0 if ok and untouched else 1
 
 
@@ -361,28 +371,25 @@ async def cmd_solve_agent(args: argparse.Namespace) -> int:
 
 
 async def cmd_chat(args: argparse.Namespace) -> int:
-    repo = Path(args.repo).resolve()
-    with sandbox(repo, get_settings(), args.keep) as (s, lease):
-        agent = await build_agent(s)
-        history: list[BaseMessage] = []
-        print("Type a task (empty line or Ctrl-D to quit).")
+    """Chat on a declared task: the agent edits only through repair_*; the engine verdict is the outcome."""
+    from vgar.agents.chat import run_chat
+    from vgar.agents.runtime import Runtime
+
+    def lines():
+        print("Type a request (empty line or Ctrl-D to finish).")
         while True:
             try:
                 text = input("\nyou> ").strip()
             except EOFError:
-                break
+                return
             if not text:
-                break
-            if not history:
-                text = task_prompt(text, lease.path, args.selector)
-            start = len(history) + 1
-            history = (await agent.ainvoke(
-                {"messages": [*history, HumanMessage(content=text)]},
-                config={"recursion_limit": s.agent.recursion_limit},
-            ))["messages"]
-            print_trace(history, start)
-            print(f"\nvgar> {final_text(history)}")
-    return 0
+                return
+            yield text
+
+    runtime = Runtime(mode=args.mode, keep_workspace=args.keep, output_root=args.output_root,
+                      **({"config_path": args.config} if args.config else {}))
+    result = await run_chat(args.task, runtime, lines())
+    return 0 if result["verdict"] == "PASS" else 1
 
 
 # -------------------------------------------------------------------------- main
@@ -419,14 +426,20 @@ def parser() -> argparse.ArgumentParser:
                     help="with --agent: diff from the M2 worker (default) or the agent's own model")
     sv.set_defaults(fn=cmd_solve)
 
-    for name, fn in (("run", cmd_run), ("chat", cmd_chat)):
-        sp = sub.add_parser(name, help=f"{name} the agent on a disposable copy of --repo")
-        if name == "run":
-            sp.add_argument("query")
-        sp.add_argument("--repo", required=True)
-        sp.add_argument("--selector", help="pytest selector, e.g. tests/test_x.py::test_y")
-        sp.add_argument("--keep", action="store_true", help="keep temp dir")
-        sp.set_defaults(fn=fn)
+    rn = sub.add_parser("run", help="run the agent read-only on a disposable copy of --repo (no code edits)")
+    rn.add_argument("query")
+    rn.add_argument("--repo", required=True)
+    rn.add_argument("--selector", help="pytest selector, e.g. tests/test_x.py::test_y (without it: UNVERIFIED)")
+    rn.add_argument("--keep", action="store_true", help="keep temp dir")
+    rn.set_defaults(fn=cmd_run)
+
+    ch = sub.add_parser("chat", help="chat with the agent on a declared task; edits go through the M2 engine")
+    ch.add_argument("--task", type=Path, required=True, help="task JSON, e.g. examples/m2/tasks/single_file_login.json")
+    ch.add_argument("--config", type=Path, help="repair config (default: configs/m2/demo.json)")
+    ch.add_argument("--mode", choices=("fake", "real"), default="real")
+    ch.add_argument("--output-root", type=Path, default=REPO_ROOT / "results/chat")
+    ch.add_argument("--keep", action="store_true", help="keep temp dir")
+    ch.set_defaults(fn=cmd_chat)
     return p
 
 
