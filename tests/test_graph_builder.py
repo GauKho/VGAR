@@ -1,10 +1,11 @@
 from __future__ import annotations
 
 import unittest
+from unittest import mock
 import tempfile
 from pathlib import Path
 
-from vgar.graph.builder import PythonGraphBuilder
+from vgar.graph.builder import GRAPH_VERSION_RESOLVER_LABEL, RESOLVER_PROFILE, PythonGraphBuilder
 from vgar.contracts.schema import validate_graph_document
 
 
@@ -118,29 +119,102 @@ class PythonGraphBuilderTests(unittest.TestCase):
             },
         )
 
-    def test_unique_repository_symbol_is_low_confidence_fallback(self) -> None:
+    @staticmethod
+    def _build_files(files: dict[str, str]) -> dict:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
-            (root / "src").mkdir()
-            (root / "src" / "a.py").write_text(
-                "def unique_helper():\n    return 1\n",
-                encoding="utf-8",
-            )
-            (root / "src" / "b.py").write_text(
-                "from wrong.module import unique_helper\n\n"
-                "def caller():\n    return unique_helper()\n",
-                encoding="utf-8",
-            )
-            document = PythonGraphBuilder(
+            for relative, text in files.items():
+                path = root / relative
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text(text, encoding="utf-8")
+            return PythonGraphBuilder(
                 repo_key="demo/heuristic",
                 repository_revision="fixture-revision",
             ).build(root)
 
-        call_edge = next(
-            edge for edge in document["edges"] if edge["type"] == "CALLS"
-        )
+    @staticmethod
+    def _call_targets(document: dict) -> set[str]:
+        names = {node["id"]: node["qualified_name"] for node in document["nodes"]}
+        return {names[edge["target_id"]] for edge in document["edges"] if edge["type"] == "CALLS"}
+
+    def test_explicit_external_import_not_bound_to_internal_unique_name(self) -> None:
+        # G1 (B10): an explicit import from a module outside the repo must not
+        # be rebound to a same-named repository function.
+        document = self._build_files({
+            "src/a.py": "def unique_helper():\n    return 1\n",
+            "src/b.py": "from wrong.module import unique_helper\n\n"
+                        "def caller():\n    return unique_helper()\n",
+        })
+
+        self.assertNotIn("a.unique_helper", self._call_targets(document))
+        self.assertEqual(document["statistics"]["unresolved_call_count"], 1)
+
+    def test_unique_name_fallback_without_import_still_resolves(self) -> None:
+        # G2: with no import of the name, the unique-name fallback is unchanged.
+        document = self._build_files({
+            "src/a.py": "def unique_helper():\n    return 1\n",
+            "src/b.py": "def caller():\n    return unique_helper()\n",
+        })
+
+        call_edge = next(edge for edge in document["edges"] if edge["type"] == "CALLS")
+        self.assertEqual(self._call_targets(document), {"a.unique_helper"})
         self.assertEqual(call_edge["properties"]["binding_kind"], "heuristic")
         self.assertEqual(call_edge["confidence"], 0.60)
+
+    def test_reexport_from_repository_package_still_resolves(self) -> None:
+        # G2b: `from pkg import helper` where pkg is in the repo but only
+        # re-exports helper keeps resolving to the real definition.
+        document = self._build_files({
+            "src/pkg/__init__.py": "from .impl import helper\n",
+            "src/pkg/impl.py": "def helper():\n    return 1\n",
+            "src/c.py": "from pkg import helper\n\n"
+                        "def caller():\n    return helper()\n",
+        })
+
+        self.assertIn("pkg.impl.helper", self._call_targets(document))
+
+    def test_relative_import_inside_repository_package_still_resolves(self) -> None:
+        # G2c: a relative import inside a repository package keeps resolving.
+        document = self._build_files({
+            "src/pkg/__init__.py": "",
+            "src/pkg/impl.py": "def helper():\n    return 1\n",
+            "src/pkg/user.py": "from .impl import helper\n\n"
+                               "def caller():\n    return helper()\n",
+        })
+
+        self.assertIn("pkg.impl.helper", self._call_targets(document))
+
+    def test_b10_keeps_graph_version_and_records_resolver_profile(self) -> None:
+        # G7 under E5 option (iii): graph_version (printed in every W10 prompt) must not change with the
+        # resolver; the resolver change is carried by statistics.resolver.profile and checked at handoff.
+        # Checkout-independent (no pinned hash: CRLF/LF checkouts hash different source bytes).
+        self.assertEqual(GRAPH_VERSION_RESOLVER_LABEL, "tree-sitter+python-static-v3-method-aliases")
+        with mock.patch("vgar.graph.builder.RESOLVER_PROFILE", "another-resolver-profile"):
+            other = PythonGraphBuilder(repo_key="demo/vgar-fixture",
+                                       repository_revision="fixture-revision").build(SAMPLE_REPOSITORY)
+        self.assertEqual(other["graph_version"], self.document["graph_version"])
+        self.assertEqual(other["statistics"]["resolver"]["profile"], "another-resolver-profile")
+        self.assertEqual(self.document["statistics"]["resolver"]["profile"], RESOLVER_PROFILE)
+        self.assertIn("-v4-", RESOLVER_PROFILE)
+
+    def test_build_uses_overridable_hooks(self) -> None:
+        # Incremental Task 2: validation and alias AST parsing go through methods a subclass can override.
+        calls: dict[str, list] = {"validate": [], "parse": []}
+
+        class Recording(PythonGraphBuilder):
+            def _validate(self, document):
+                calls["validate"].append(document["graph_version"])
+                super()._validate(document)
+
+            def _parse_python_ast(self, root, path):
+                calls["parse"].append(path)
+                return super()._parse_python_ast(root, path)
+
+        document = Recording(repo_key="demo/static", repository_revision="fixture-revision").build(TYPED_REPOSITORY)
+
+        class_paths = {node["path"] for node in document["nodes"] if node["type"] in {"Class", "Method"}}
+        self.assertEqual(calls["validate"], [document["graph_version"]])
+        self.assertEqual(set(calls["parse"]), class_paths)
 
     def test_static_resolver_resolves_typed_receiver_method(self) -> None:
         document = PythonGraphBuilder(

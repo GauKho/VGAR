@@ -4,6 +4,7 @@ import hashlib
 import os
 from pathlib import Path
 from typing import Any
+from urllib.parse import unquote
 
 from mcp.server.fastmcp import FastMCP
 
@@ -135,6 +136,7 @@ def get_related_context(anchor_ids: list[str], budget_tokens: int, graph_version
 
 @mcp.resource("vgar://graph/node/{node_id}")
 def graph_node(node_id: str) -> str:
+    node_id = unquote(node_id)  # B02: clients percent-encode "/" and ":"; decode exactly once
     with _resource("vgar://graph/node/{node_id}", node_id=node_id):
         result = graph_service.get_node(node_id)
         return result.model_dump_json(indent=2)
@@ -167,6 +169,7 @@ def analyze_patch_impact(diff: str, graph_version: str, max_hops: int = 2, max_n
 
 @mcp.resource("vgar://graph/subgraph/{node_id}")
 def graph_subgraph(node_id: str) -> str:
+    node_id = unquote(node_id)  # B02: decode exactly once, as in graph_node
     with _resource("vgar://graph/subgraph/{node_id}", node_id=node_id, depth=2) as out:
         result = graph_service.get_subgraph(node_id, depth=2)
         out.update(node_count=len(result.nodes), edge_count=len(result.edges))

@@ -16,6 +16,7 @@ from tree_sitter import Language, Node, Parser
 from vgar.contracts.schema import validate_graph_document
 from vgar.graph.scip_resolver import ScipConfig, ScipResolver, prepare_scip, current_fingerprint
 from vgar.graph.lsp_resolver import LspConfig, resolve_lsp_calls
+from vgar.graph.method_aliases import annotate_method_aliases, file_alias_candidates
 from vgar.observability.graph_trace import GraphTrace
 
 
@@ -35,6 +36,12 @@ IGNORED_DIRECTORY_NAMES = {
     "node_modules",
 }
 _MISSING = object()
+# Bump whenever call/import resolution changes (B10 -> v4). Recorded in statistics.resolver.profile and bound
+# to the context sidecar at handoff; NOT part of graph_version (E5 option (iii), docs/m3_w11_decisions.md).
+RESOLVER_PROFILE = "tree-sitter+python-static-v4-external-import"
+# Frozen resolver label inside graph_version. graph_version is printed in every repair prompt, so keeping it
+# stable lets W10 cells whose context is unchanged be reused (E5). Never bump this; bump RESOLVER_PROFILE.
+GRAPH_VERSION_RESOLVER_LABEL = "tree-sitter+python-static-v3-method-aliases"
 
 
 def discover_python_files(root: Path) -> list[Path]:
@@ -173,8 +180,7 @@ class PythonGraphBuilder:
         for file_path in python_files:
             self._extract_file(root, file_path, repository_id)
 
-        from vgar.graph.method_aliases import annotate_method_aliases
-        for qualified, target in annotate_method_aliases(root, self.nodes):
+        for qualified, target in annotate_method_aliases(root, self.nodes, candidates=self._alias_candidates):
             self.symbols_by_qualified_name[qualified] = target
         self._build_unique_symbol_index()
         self._link_imports()
@@ -228,12 +234,28 @@ class PythonGraphBuilder:
             "edges": self.edges,
             "statistics": self._statistics(started_at),
         }
-        validate_graph_document(document)
-        document["statistics"]["resolver"] = self.resolver_report
+        self._validate(document)
+        document["statistics"]["resolver"] = dict(self.resolver_report, profile=RESOLVER_PROFILE)
         self.trace.emit("build_complete", graph_version=self.graph_version, node_count=len(self.nodes),
                         edge_count=len(self.edges), unresolved_call_count=document["statistics"]["unresolved_call_count"],
                         resolver=self.resolver_report)
         return document
+
+    def _validate(self, document: dict[str, Any]) -> None:
+        """Validation hook; the incremental builder trusts items replayed from its cache."""
+        validate_graph_document(document)
+
+    def _parse_python_ast(self, root: Path, path: str) -> ast.Module:
+        """AST of one repository file for method-alias annotation; a hook so it can be cached."""
+        return ast.parse((root / path).read_bytes(), filename=path)
+
+    def _alias_candidates(self, root: Path, path: str, symbols: list[dict[str, Any]]) -> list[tuple[str, str, dict]]:
+        """Per-file method-alias analysis; a hook so the incremental builder can cache it per file content."""
+        try:
+            tree = self._parse_python_ast(root, path)
+        except (SyntaxError, UnicodeError):
+            return []
+        return file_alias_candidates(tree, symbols)
 
     def _discover_python_files(self, root: Path) -> list[Path]:
         return discover_python_files(root)
@@ -248,7 +270,7 @@ class PythonGraphBuilder:
         digest.update(b"\0")
         digest.update(self.repository_revision.encode("utf-8"))
         digest.update(b"\0resolver:")
-        digest.update(b"tree-sitter+python-static-v3-method-aliases")
+        digest.update(GRAPH_VERSION_RESOLVER_LABEL.encode("utf-8"))
         if self.scip_config is not None:
             digest.update(b"\0scip-enrichment-v5-subset-root:")
             digest.update(self.resolver_report.get("semantic_sha256", self.resolver_report.get("error_type", "unavailable")).encode())
@@ -1334,6 +1356,10 @@ class PythonGraphBuilder:
             )
             if imported_target is not None:
                 return imported_target
+            if imported_module not in self.modules:
+                # B10: an explicit import from outside the repository never
+                # falls back to a same-named repository symbol.
+                return None
 
         if "." in expression:
             prefix, name = expression.split(".", 1)

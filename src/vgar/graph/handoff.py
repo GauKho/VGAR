@@ -22,6 +22,10 @@ from vgar.graph.retrieval import GraphContextRetriever
 from vgar.graph.test_selection import select_related_tests
 
 
+def _resolver_profile(document: dict) -> str | None:
+    return document.get('statistics', {}).get('resolver', {}).get('profile')
+
+
 def create_test_hints(document: dict, manifest: ContextManifest | dict, *, changed_paths: list[str],
                       symbol_ids: list[str] | None = None, failing_tests: list[str] | None = None,
                       selected_tests: list[str] | None = None) -> dict:
@@ -29,6 +33,8 @@ def create_test_hints(document: dict, manifest: ContextManifest | dict, *, chang
     if (document['graph_version'], document['repo_key'], document['repository_revision']) != (
             sidecar.graph_version, sidecar.repo_key, sidecar.repository_revision):
         raise ValueError('Test graph differs from context snapshot')
+    if _resolver_profile(document) != sidecar.resolver_profile:
+        raise ValueError('Test graph resolver profile differs from context snapshot')
     requested_symbols = list(sidecar.items) if symbol_ids is None else symbol_ids
     if any(node_id not in sidecar.items for node_id in requested_symbols):
         raise ValueError('Use packed node IDs or changed_paths for test-link targets')
@@ -82,10 +88,10 @@ def create_context_handoff(document: dict, response: dict, source_repo: str | Pa
         repository_revision=document['repository_revision'], context_sha256=payload_digest(context.model_dump(mode='json')),
         source_digest=payload_digest(files), files=files,
         source_scope=SourceScope(excluded_directories=sorted(IGNORED_DIRECTORY_NAMES)), items=bindings,
-        counter_label=counter_label)
+        counter_label=counter_label, resolver_profile=_resolver_profile(document))
     validated = validate_context_handoff(context, manifest, source_repo, expected_graph_version=document['graph_version'],
         expected_repo_key=document['repo_key'], expected_revision=document['repository_revision'],
-        count_tokens=count_tokens, counter_label=counter_label)
+        count_tokens=count_tokens, counter_label=counter_label, expected_resolver_profile=_resolver_profile(document))
     paths = sorted({item.path for item in context.items}) if changed_paths is None else changed_paths
     if test_hint_policy == 'graph':
         hints = create_test_hints(document, manifest, changed_paths=paths,

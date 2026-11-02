@@ -467,3 +467,23 @@ def test_consumer_cli_invalid_changed_path_produces_no_prompt(consumer_cli_case)
     code, record, output = run_consumer_cli(command + ['--changed-path', '../escape.py'])
     assert code == 2 and record['error_stage'] == 'receive_handoff'
     assert not (output / 'repair-context.txt').exists()
+
+
+def test_resolver_profile_binds_graph_to_context_sidecar(handoff_case):
+    # E5 option (iii): the resolver profile lives in the context manifest, not in graph_version, and not in
+    # test_links.json (E5 compares that file's hash with the W10 records).
+    from vgar.graph.handoff import create_test_hints
+    root, doc, bundle, targets = handoff_case
+    manifest = bundle['manifest']
+    assert manifest['resolver_profile'] == doc['statistics']['resolver']['profile']
+    assert 'resolver_profile' not in bundle['test_hints']
+    kwargs = dict(expected_graph_version=manifest['graph_version'], expected_repo_key=manifest['repo_key'],
+                  expected_revision=manifest['repository_revision'], count_tokens=len, counter_label='test:characters')
+    assert validate_context_handoff(bundle['context'], manifest, root,
+                                    expected_resolver_profile=manifest['resolver_profile'], **kwargs)
+    with pytest.raises(ValueError):
+        validate_context_handoff(bundle['context'], manifest, root, expected_resolver_profile='stale-v3', **kwargs)
+    stale = copy.deepcopy(doc)
+    stale['statistics']['resolver']['profile'] = 'stale-v3'
+    with pytest.raises(ValueError):
+        create_test_hints(stale, manifest, changed_paths=targets)

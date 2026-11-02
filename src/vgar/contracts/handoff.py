@@ -65,6 +65,8 @@ class ContextManifest(_Sidecar):
     snippet_policy: Literal['whole-range-no-wrapper'] = 'whole-range-no-wrapper'
     counter_label: str = Field(min_length=1)
     token_budget_unit: Literal['snippets-only'] = 'snippets-only'
+    # E5 option (iii): graph resolver profile (statistics.resolver.profile); None in pre-W11 sidecars.
+    resolver_profile: str | None = None
 
 
 class TestHints(_Sidecar):
@@ -142,7 +144,8 @@ def _position(data: bytes, offset: int) -> tuple[int, int]:
 def validate_context_handoff(payload: ContextPayload | dict, manifest: ContextManifest | dict,
                              source_repo: str | Path, *, expected_graph_version: str,
                              expected_repo_key: str, expected_revision: str,
-                             count_tokens: Callable[[str], int], counter_label: str) -> ContextPayload:
+                             count_tokens: Callable[[str], int], counter_label: str,
+                             expected_resolver_profile: str | None = None) -> ContextPayload:
     """Validate a cloned snapshot before prompt assembly; return the frozen DTO.
 
     Token counts cover snippets only. M2 must separately count its whole prompt.
@@ -153,6 +156,8 @@ def validate_context_handoff(payload: ContextPayload | dict, manifest: ContextMa
     if (sidecar.graph_version, sidecar.repo_key, sidecar.repository_revision) != (
             expected_graph_version, expected_repo_key, expected_revision) or context.graph_version != sidecar.graph_version:
         raise ValueError('Context identity differs from the approved target snapshot')
+    if expected_resolver_profile is not None and sidecar.resolver_profile != expected_resolver_profile:
+        raise ValueError('Context was built with a different graph resolver profile')
     if not callable(count_tokens) or not counter_label or counter_label != sidecar.counter_label:
         raise ValueError('Use the same explicit snippet token counter as the producer')
     if not context.items or any(not item.snippet.strip() for item in context.items):

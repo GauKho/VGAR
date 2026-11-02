@@ -39,6 +39,33 @@ class GraphSchemaTests(unittest.TestCase):
         with self.assertRaises(GraphValidationError):
             validate_graph_document(invalid)
 
+    def _first(self, kind: str) -> dict:
+        return next(node for node in self.document["nodes"] if node["type"] == kind)
+
+    def test_trusted_node_skips_field_checks(self) -> None:
+        # Incremental Task 1: items replayed from cache skip per-item field checks.
+        node = self._first("Function")
+        node["name"] = ""
+
+        validate_graph_document(self.document, trusted_ids=frozenset({node["id"]}))
+        with self.assertRaisesRegex(GraphValidationError, r"\.name must be a non-empty string"):
+            validate_graph_document(self.document)
+
+    def test_trusted_edge_to_missing_node_still_fails(self) -> None:
+        # Structural checks run for trusted items too: a dangling edge is caught.
+        edge = self.document["edges"][-1]
+        edge["target_id"] = "missing:symbol"
+
+        with self.assertRaisesRegex(GraphValidationError, "target_id does not exist"):
+            validate_graph_document(self.document, trusted_ids=frozenset({edge["id"]}))
+
+    def test_trusted_items_still_need_matching_graph_version(self) -> None:
+        node = self._first("Function")
+        node["graph_version"] = "sha256:other"
+
+        with self.assertRaisesRegex(GraphValidationError, "graph_version must match"):
+            validate_graph_document(self.document, trusted_ids=frozenset({node["id"]}))
+
 
 if __name__ == "__main__":
     unittest.main()

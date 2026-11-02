@@ -108,8 +108,12 @@ class GraphValidationError(ValueError):
         super().__init__("Invalid graph document:\n- " + "\n- ".join(errors))
 
 
-def validate_graph_document(document: Mapping[str, Any]) -> None:
-    """Validate the portable JSON graph document used by M1 and M3."""
+def validate_graph_document(document: Mapping[str, Any], *, trusted_ids: frozenset[str] = frozenset()) -> None:
+    """Validate the portable JSON graph document used by M1 and M3.
+
+    Items whose id is in ``trusted_ids`` (incremental replay of already-validated items) skip the per-item
+    field checks; every structural check (ids, types, endpoints, graph_version, cycles, CallSite counts) still runs.
+    """
 
     errors: list[str] = []
 
@@ -151,12 +155,15 @@ def validate_graph_document(document: Mapping[str, Any]) -> None:
         if node_type == "Repository":
             repository_count += 1
 
+        if node.get("graph_version") != graph_version:
+            errors.append(f"{prefix}.graph_version must match document graph_version")
+
+        if node_id in trusted_ids:
+            continue
+
         for field in ("repo_key", "name", "qualified_name"):
             if not isinstance(node.get(field), str) or not node[field]:
                 errors.append(f"{prefix}.{field} must be a non-empty string")
-
-        if node.get("graph_version") != graph_version:
-            errors.append(f"{prefix}.graph_version must match document graph_version")
 
         if not isinstance(node.get("properties"), Mapping):
             errors.append(f"{prefix}.properties must be an object")
@@ -220,27 +227,28 @@ def validate_graph_document(document: Mapping[str, Any]) -> None:
                     f"{endpoint[0]} -> {endpoint[1]}"
                 )
 
-        confidence = edge.get("confidence")
-        if (
-            isinstance(confidence, bool)
-            or not isinstance(confidence, (int, float))
-            or not 0.0 <= confidence <= 1.0
-        ):
-            errors.append(f"{prefix}.confidence must be within [0, 1]")
-
         if edge.get("graph_version") != graph_version:
             errors.append(f"{prefix}.graph_version must match document graph_version")
 
-        provenance = edge.get("provenance")
-        if not isinstance(provenance, Mapping):
-            errors.append(f"{prefix}.provenance must be an object")
-        else:
-            for field in ("source_tool", "rule_id", "source_revision"):
-                if not isinstance(provenance.get(field), str) or not provenance[field]:
-                    errors.append(f"{prefix}.provenance.{field} is required")
+        if edge_id not in trusted_ids:
+            confidence = edge.get("confidence")
+            if (
+                isinstance(confidence, bool)
+                or not isinstance(confidence, (int, float))
+                or not 0.0 <= confidence <= 1.0
+            ):
+                errors.append(f"{prefix}.confidence must be within [0, 1]")
 
-        if not isinstance(edge.get("properties"), Mapping):
-            errors.append(f"{prefix}.properties must be an object")
+            provenance = edge.get("provenance")
+            if not isinstance(provenance, Mapping):
+                errors.append(f"{prefix}.provenance must be an object")
+            else:
+                for field in ("source_tool", "rule_id", "source_revision"):
+                    if not isinstance(provenance.get(field), str) or not provenance[field]:
+                        errors.append(f"{prefix}.provenance.{field} is required")
+
+            if not isinstance(edge.get("properties"), Mapping):
+                errors.append(f"{prefix}.properties must be an object")
 
         if edge_type == "CONTAINS" and source_id and target_id:
             contains_adjacency[source_id].append(target_id)

@@ -15,9 +15,16 @@ for shared-contract review.
 A graph document has `repo_key`, `repository_revision`, `graph_version`,
 `nodes`, `edges` and `statistics`. There is no public `schema_version`.
 `graph_version` identifies a snapshot: SHA-256 over repo key, supplied revision,
-resolver/range profiles, source roots, sorted repository-relative Python paths
-and source bytes. The resolver profile is `tree-sitter+python-static-v3-method-aliases` and the
-file-range profile is `full-bytes-v1`. The builder does not use Jedi. These
+a frozen resolver label, range profile, source roots, sorted repository-relative
+Python paths and source bytes. The frozen label is `tree-sitter+python-static-v3-method-aliases`
+(`GRAPH_VERSION_RESOLVER_LABEL` in `builder.py`) and is never bumped, so a resolver fix does not change
+`graph_version` (printed in every repair prompt; E5 option (iii) in `docs/m3_w11_decisions.md`). The actual
+resolver is recorded in `statistics.resolver.profile`, currently `tree-sitter+python-static-v4-external-import`
+(`RESOLVER_PROFILE`; v4 = B10: explicit imports from outside the repository never fall back to a same-named
+repository symbol). The context sidecar (`context_manifest.json`) carries the same value as `resolver_profile`;
+`validate_context_handoff(..., expected_resolver_profile=...)` and `create_test_hints` reject a graph or sidecar
+built with another profile. `test_links.json` does not carry it, so its hash stays comparable with W10 records.
+The file-range profile is `full-bytes-v1`. The builder does not use Jedi. These
 profiles are not schema versions.
 Direct, unambiguous class method aliases are stored in the implementation's
 `properties.symbol_aliases`, with qualified names and assignment-token ranges.
