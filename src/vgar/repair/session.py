@@ -109,6 +109,8 @@ class RepairSession:
         lease.keep = data['keep']
         if 'execution_before' in data:
             lease.execution_before = data['execution_before']
+        if 'applied_inventory_hash' in data:
+            lease.applied_inventory_hash = data['applied_inventory_hash']
         return lease
 
     def applied(self):
@@ -247,6 +249,8 @@ def prepare(session, m1_counter, tokenizer, *, executor=None):
         if executor is not None:
             raise ValueError('External executor requires an approved integration adapter; Native owns this lease')
         baseline = session.observe('baseline', lambda: capture_baseline(task, lease, session.executor(lease), session.policy,
+                                                                      artifact_root=session.run.directory,
+                                                                      guard=lambda: remaining_timeout(session.deadline),
                                                                       **session.variant_kwargs()))
         session.state['baseline'] = baseline
         if baseline['status'] != 'PASS':
@@ -306,12 +310,19 @@ def apply_candidate(session, raw):
                                      lambda p: dict(status='PASS', files=p.files, raw_sha256=digest(raw)))
         (run.directory / 'candidate.diff').write_bytes(raw.encode('utf-8'))
         run.record['artifacts']['candidate'] = 'candidate.diff'
-        applied = session.observe('apply', lambda: apply_patch(lease, parsed, session.executor(lease)),
+        def apply_bound():
+            from vgar.repair.verification_checks import assert_checks_baseline
+            assert_checks_baseline(task, lease, session.state['baseline']['compatibility_snapshot'],
+                session.run.directory, guard=lambda: remaining_timeout(session.deadline))
+            return apply_patch(lease, parsed, session.executor(lease))
+        applied = session.observe('apply', apply_bound,
                                   lambda a: dict(a.model_dump(), commands=lease.patch_evidence,
                                                  exception=getattr(lease, 'patch_exception', None)))
         session.state['applied'] = applied.model_dump(mode='json')
         if applied.status != 'PASS':
             raise StopRun(applied.status, applied.error.code)
+        session.state['lease']['applied_inventory_hash'] = lease.applied_inventory_hash
+        run.record['stages']['apply']['source_inventory_hash'] = lease.applied_inventory_hash
         (run.directory / 'transport.diff').write_bytes((lease.private / 'candidate.diff').read_bytes())
         (run.directory / 'applied.diff').write_bytes(lease.applied_diff['stdout'].encode('utf-8'))
         run.record['artifacts']['applied'] = 'applied.diff'
@@ -375,6 +386,7 @@ def _complete_verification(session):
     first = run.record['stages']['verification']
     verification = session.observe('verification', lambda: complete_verification(
         session.state['verification'], task, lease, applied, session.state['baseline'], session.executor(lease), session.policy,
+        artifact_root=session.run.directory, guard=lambda: remaining_timeout(session.deadline),
         **session.variant_kwargs()))
     stage = run.record['stages']['verification']
     stage.update(started_utc=first['started_utc'], duration_ms=first['duration_ms'] + stage['duration_ms'])

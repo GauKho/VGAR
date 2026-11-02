@@ -2,9 +2,10 @@
 
 from __future__ import annotations
 
+import re
 from typing import Any, Literal
 
-from pydantic import BaseModel, ConfigDict, Field, model_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 from .repair import FailureReason, Status
 
@@ -55,6 +56,54 @@ class CheckResult(BaseModel):
     reason: FailureReason | None = None
 
 
+class AnalysisCheckResult(BaseModel):
+    """C1 API/structural result, with a reader for legacy CheckResult placeholders.
+
+    References are paths relative to the evidence bundle's artifact directory.
+    Their existence and binding are checked by the producer, not this DTO.
+    """
+
+    model_config = ConfigDict(extra="forbid", strict=True)
+
+    status: Status = "NOT_RUN"
+    reasons: list[str] = Field(default_factory=list)
+    details_ref: str | None = None
+
+    @model_validator(mode="before")
+    @classmethod
+    def normalize_legacy(cls, value: Any) -> Any:
+        if isinstance(value, CheckResult):
+            value = value.model_dump(mode='json')
+        if not isinstance(value, dict) or 'reason' not in value:
+            return value
+        normalized = dict(value)
+        legacy_reason = normalized.pop('reason')
+        if legacy_reason is not None:
+            if 'reasons' in normalized:
+                raise ValueError('Cannot combine legacy reason with C1 reasons')
+            reason = FailureReason.model_validate(legacy_reason)
+            normalized['reasons'] = [reason.code]
+        return normalized
+
+    @field_validator('reasons')
+    @classmethod
+    def validate_reason_codes(cls, values: list[str]) -> list[str]:
+        if any(re.fullmatch(r'[A-Z][A-Z0-9_]*', code) is None for code in values):
+            raise ValueError('Analysis reasons must be nonempty uppercase reason codes')
+        return values
+
+    @field_validator('details_ref')
+    @classmethod
+    def validate_details_ref(cls, value: str | None) -> str | None:
+        if value is not None and (
+            not value.strip() or value != value.strip() or '\\' in value or ':' in value
+            or any(ord(char) < 32 for char in value)
+            or any(part in ('', '.', '..') for part in value.split('/'))
+        ):
+            raise ValueError('details_ref must be a normalized relative artifact path')
+        return value
+
+
 class TestGroupResult(BaseModel):
     """Post-patch outcomes for one group of tests, with each test's baseline outcome."""
     model_config = ConfigDict(extra="forbid")
@@ -73,8 +122,8 @@ class VerificationResult(BaseModel):
     relevant_tests: TestGroupResult = Field(default_factory=TestGroupResult)  # other selected tests (regression)
     typecheck: CheckResult = Field(default_factory=CheckResult)
     lint: CheckResult = Field(default_factory=CheckResult)
-    api_check: CheckResult = Field(default_factory=CheckResult)
-    structural_check: CheckResult = Field(default_factory=CheckResult)
+    api_check: AnalysisCheckResult = Field(default_factory=AnalysisCheckResult)
+    structural_check: AnalysisCheckResult = Field(default_factory=AnalysisCheckResult)
     reasons: list[FailureReason] = Field(default_factory=list)
 
 

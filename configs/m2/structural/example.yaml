@@ -1,0 +1,11 @@
+# Synthetic fixture policy only. This does not impose architecture on a real repo.
+repo_key: demo/structural
+forbidden_imports:
+  - source: a
+    target: forbidden_lib
+layers:
+  upper: [a]
+  lower: [b]
+allowed_layer_imports:
+  upper: [upper, lower]
+  lower: [lower]

@@ -94,7 +94,10 @@ def _project_bundle(run, task, lease, applied, verification):
             status = 'NOT_RUN'
         checks[public] = CheckResult(status=status, reason=None if status in ('PASS', 'NOT_RUN') else
                                     FailureReason(code=code, message='See canonical stage command evidence'))
-    allowed_codes = {'TEST_FAILED', 'TYPECHECK_FAILED', 'LINT_FAILED', 'VERIFICATION_INCOMPLETE'}
+    from vgar.repair.verification_checks import project_compatibility
+    checks.update(project_compatibility(verification, run.directory))
+    allowed_codes = {'TEST_FAILED', 'TYPECHECK_FAILED', 'LINT_FAILED', 'VERIFICATION_INCOMPLETE',
+                     'API_BREAK', 'STRUCTURAL_VIOLATION'}
     public_reasons = [FailureReason(code=r if r in allowed_codes else 'VERIFICATION_INCOMPLETE', message=r)
                       for r in verification.get('reasons', [])]
     if verification.get('reason') and not public_reasons:

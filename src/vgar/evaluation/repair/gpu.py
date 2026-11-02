@@ -9,10 +9,15 @@ QUERY = ['nvidia-smi', '--query-gpu=memory.used', '--format=csv,noheader,nounits
 
 
 class GpuPeakSampler:
-    """Max memory.used (MiB) over all GPUs while running; None if any sample is missing or unreadable."""
+    """Max successful memory.used (MiB) across GPUs/polls; None until a valid sample.
+
+    samples_failed counts failed polls, including a missing executable at start.
+    The legacy ok flag describes complete sampling; it no longer gates the peak.
+    """
 
     def __init__(self, interval: float = 0.5):
         self.interval, self.peak, self.ok = interval, None, True
+        self.samples_failed = 0
         self._stop, self._thread = threading.Event(), None
 
     def _sample(self) -> None:
@@ -21,8 +26,9 @@ class GpuPeakSampler:
             values = [int(v) for v in result.stdout.split()] if result.returncode == 0 else []
         except (OSError, subprocess.SubprocessError, ValueError):
             values = []
-        if not values:
+        if not values or any(value < 0 for value in values):
             self.ok = False
+            self.samples_failed += 1
             return
         self.peak = max(self.peak or 0, *values)
 
@@ -33,6 +39,7 @@ class GpuPeakSampler:
     def start(self) -> None:
         if shutil.which('nvidia-smi') is None:
             self.ok = False
+            self.samples_failed += 1
             return
         self._sample()
         self._thread = threading.Thread(target=self._loop, daemon=True)
@@ -42,4 +49,4 @@ class GpuPeakSampler:
         self._stop.set()
         if self._thread:
             self._thread.join()
-        return self.peak if self.ok else None
+        return self.peak

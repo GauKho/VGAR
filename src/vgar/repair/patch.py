@@ -5,6 +5,7 @@ import json
 import re
 
 from vgar.repair.contracts import safe_path
+from vgar.repair.evidence import digest
 from vgar.repair.workspace import inventory
 from vgar.repair.diagnostics import exception_details, patch_diagnostics
 
@@ -183,6 +184,7 @@ def apply_patch(lease, patch: ParsedPatch, executor):
         lease.patch_evidence.append(lease.applied_diff)
         if lease.applied_diff['status'] != 'PASS' or not lease.applied_diff.get('complete', False):
             raise RuntimeError('Applied diff export incomplete: ' + lease.applied_diff['stderr'])
+        lease.applied_inventory_hash = digest(json.dumps(after, sort_keys=True))
         return PatchApplyResult(status='PASS', patch_applied=True, worktree_id=lease.worktree_id, changed_files=changed)
     except ValueError as error:
         lease.patch_exception = exception_details(error)

@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "VGAR host-owned structural policy",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["repo_key"],
+  "properties": {
+    "repo_key": {"type": "string", "minLength": 1},
+    "forbidden_imports": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["source", "target"],
+        "properties": {
+          "source": {"$ref": "#/$defs/modulePrefix"},
+          "target": {"$ref": "#/$defs/modulePrefix"}
+        }
+      }
+    },
+    "layers": {
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": {"type": "string", "minLength": 1},
+      "additionalProperties": {
+        "type": "array", "minItems": 1, "uniqueItems": true,
+        "items": {"$ref": "#/$defs/modulePrefix"}
+      }
+    },
+    "allowed_layer_imports": {
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": {"type": "string", "minLength": 1},
+      "additionalProperties": {
+        "type": "array", "uniqueItems": true,
+        "items": {"type": "string", "minLength": 1}
+      }
+    }
+  },
+  "dependentRequired": {
+    "layers": ["allowed_layer_imports"],
+    "allowed_layer_imports": ["layers"]
+  },
+  "$defs": {
+    "modulePrefix": {
+      "type": "string", "minLength": 1,
+      "pattern": "^[^.\\s]+(?:\\.[^.\\s]+)*$",
+      "description": "Dot-separated Python identifiers; runtime also checks isidentifier(), layer references and unique prefix ownership. No wildcard, expression or regex syntax."
+    }
+  }
+}

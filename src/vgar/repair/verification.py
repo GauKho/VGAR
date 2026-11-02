@@ -16,9 +16,12 @@ def expand_required(selectors, node_ids):
     return sorted(required)
 
 
-def capture_baseline(task, lease, executor, policy, *, variant=None):
+def capture_baseline(task, lease, executor, policy, *, variant=None, artifact_root=None, guard=None):
+    from vgar.repair.verification_checks import assert_checks_baseline, capture_checks_baseline
+    snapshot = capture_checks_baseline(task, lease, artifact_root, guard=guard)
     collection = collect_tests(lease, task.fallback_scope, executor, policy.command_timeout)
-    result = dict(status='ERROR', collection=collection, reason='VERIFICATION_INCOMPLETE')
+    result = dict(status='ERROR', collection=collection, reason='VERIFICATION_INCOMPLETE',
+                  compatibility_snapshot=snapshot)
     if collection['status'] != 'PASS':
         return result
     try:
@@ -30,13 +33,14 @@ def capture_baseline(task, lease, executor, policy, *, variant=None):
     tests = run_tests(lease, task.fallback_scope, executor, policy.command_timeout)
     static = run_static_checks(lease, task.allowed_source_paths, policy, executor,
                                **({'variant': variant} if variant is not None else {}))
+    assert_checks_baseline(task, lease, snapshot, artifact_root, guard=guard)
     result.update(tests=tests, static=static, required_ids=required,
         failed_cases=[n for n, value in tests['outcomes'].items() if value == 'FAIL'])
     static_ready = all(static[k]['status'] == 'PASS' for k in ('syntax', 'mypy', 'ruff'))
     if variant is not None:
         from vgar.repair.policy import policy_hash, required_checks
         from vgar.repair.static_diagnostics import DiagnosticReport
-        checks = required_checks(variant) - {'tests'}
+        checks = required_checks(variant) & {'syntax', 'mypy', 'ruff'}
         static_ready = (set(static['source_snapshot']) == set(task.allowed_source_paths)
             and all(DiagnosticReport.model_validate(static[k]['report']).execution_status in ('COMPLETE', 'UNAVAILABLE')
                     for k in checks))
@@ -67,16 +71,23 @@ def run_patch_tests(task, lease, apply_result, baseline, selection, executor, po
     """First half of verification: collection and the selected tests (no static checks yet)."""
     if apply_result.status != 'PASS' or baseline['status'] != 'PASS':
         return dict(status='ERROR', reason='VERIFICATION_INCOMPLETE')
+    from vgar.repair.verification_checks import inventory_hash
+    candidate_hash = inventory_hash(inventory(lease.path))
+    pinned = getattr(lease, 'applied_inventory_hash', candidate_hash)
+    if candidate_hash != pinned:
+        return dict(status='ERROR', reason='CHECK_INTEGRITY_ERROR')
     related = (collect_tests(lease, selection['related_selectors'], executor, policy.command_timeout)
                if selection['related_selectors'] else {'status': 'NOT_RUN', 'reason': 'no_graph_candidates'})
     collection = collect_tests(lease, selection['selected'], executor, policy.command_timeout)
     if collection['status'] != 'PASS':
         return dict(status='ERROR', reason='VERIFICATION_INCOMPLETE', related_collection=related, collection=collection)
     tests = run_tests(lease, selection['selected'], executor, policy.command_timeout)
-    return dict(status='TESTED', tests=tests, collection=collection, related_collection=related)
+    return dict(status='TESTED', tests=tests, collection=collection, related_collection=related,
+                candidate_inventory_hash=pinned)
 
 
-def complete_verification(partial, task, lease, apply_result, baseline, executor, policy, *, variant=None):
+def complete_verification(partial, task, lease, apply_result, baseline, executor, policy, *, variant=None,
+                          artifact_root=None, guard=None):
     """Static checks, assessment and source protection; early ERRORs pass through.
 
     Session.observe owns the before/after global-deadline guard. A direct caller
@@ -93,6 +104,15 @@ def complete_verification(partial, task, lease, apply_result, baseline, executor
         return dict(partial, status='ERROR', reasons=['VARIANT_POLICY_MISSING'])
     static = run_static_checks(lease, task.allowed_source_paths, policy, executor,
                                **({'variant': variant} if variant is not None else {}))
+    from vgar.repair.verification_checks import CheckIntegrityError, assess_compatibility, run_compatibility_checks
+    try:
+        compatibility = run_compatibility_checks(task, lease, apply_result,
+            baseline['compatibility_snapshot'], artifact_root, guard=guard,
+            expected_candidate_hash=partial.get('candidate_inventory_hash'))
+    except CheckIntegrityError as error:
+        # Integrity is a run error even when API/structural are supplemental.
+        return dict(partial, status='ERROR', reason='CHECK_INTEGRITY_ERROR',
+                    reasons=['VERIFICATION_INCOMPLETE'], static=static, exception=exception_details(error))
     status, reasons = assess_transition(baseline, tests)
     policy_checks = None
     if variant is None:
@@ -102,6 +122,9 @@ def complete_verification(partial, task, lease, apply_result, baseline, executor
                 status = 'ERROR' if static[name]['status'] == 'ERROR' or status == 'ERROR' else 'FAIL'
     else:
         status, reasons, policy_checks = _assess_w9_static(baseline, static, variant, status, reasons)
+    from vgar.repair.policy import required_checks
+    required = required_checks(variant) if variant is not None else set()
+    status, reasons = assess_compatibility(compatibility, required, status, reasons)
     if static['config_hashes'] != baseline['static']['config_hashes']:
         status, reasons = 'ERROR', reasons + ['STATIC_CONFIG_CHANGED']
     lease.assert_original()
@@ -112,6 +135,8 @@ def complete_verification(partial, task, lease, apply_result, baseline, executor
     if unexpected:
         status, reasons = 'ERROR', reasons + ['PROTECTED_SOURCE_CHANGED'] + unexpected
     result = dict(status=status, reasons=reasons, tests=tests, static=static,
+                compatibility={n: compatibility[n] for n in ('api', 'structural')},
+                compatibility_hashes=compatibility['hashes'],
                 collection=collection, related_collection=related,
                 related_fallback_reason='graph_collection_failed' if related['status'] == 'ERROR' else None)
     if policy_checks is not None:
@@ -120,9 +145,11 @@ def complete_verification(partial, task, lease, apply_result, baseline, executor
     return result
 
 
-def verify_patch(task, lease, apply_result, baseline, selection, executor, policy, *, variant=None):
+def verify_patch(task, lease, apply_result, baseline, selection, executor, policy, *, variant=None,
+                 artifact_root=None, guard=None):
     return complete_verification(run_patch_tests(task, lease, apply_result, baseline, selection, executor, policy),
-                                 task, lease, apply_result, baseline, executor, policy, variant=variant)
+                                 task, lease, apply_result, baseline, executor, policy, variant=variant,
+                                 artifact_root=artifact_root, guard=guard)
 
 
 def _assess_w9_static(baseline, static, variant, status, reasons):
