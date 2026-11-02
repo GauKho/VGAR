@@ -47,6 +47,34 @@
   (mục tuần 10), quyết định `docs/m3_w10_decisions.md` D13–D26.
 - Code W10 chưa commit; phần M1/M2 do M3 làm, chờ review theo CODEOWNERS.
 
+### Phạm vi cập nhật ngày 02/11/2026 (M1 và M3 tuần 11)
+
+> **Kết luận tuần 11 sau cập nhật này:** phần **M1 và M3 của tuần 11 đã xong về code**. Cả 4 MCP
+> server đã dùng chung envelope C4 và qua guard bảo mật S1–S16. Incremental graph update khớp
+> full rebuild. Config ranking đã đóng băng (`sha256:993f02c9…`). `solve --agent` chạy được trên
+> task SWE-bench đã qua admission: smoke S15 trên `psf__requests-1766` ra `COMPLETED`, verdict
+> `PASS`. **Phần M2 tuần 11 chưa có trong repo** (`api_check`, `structural_check`, `A3.json`):
+> các dòng M2-01..04 giữ CT, và bàn giao H3/H5 sang W12 đang bị chặn.
+
+- Chỉ đổi §5.6 và dòng 11–12/Tổng của bảng tổng hợp; không đổi tuần khác.
+- Code nằm trên 10 nhánh xếp chồng: `docs/w11-planning` → `m1/w11-graph` → `m1/w11-ranking-hash` →
+  `m3/w11-legacy-servers` → `m3/w11-run-chat` → `m3/w11-security` → `m3/w11-day5` → `m3/w11-e6` →
+  `m3/w11-c4-s15` → `m2/w11-static-line-map`. Tất cả đã push nhưng **chưa merge vào `main` và chưa
+  được M2 review**.
+- Full CI (`-m "not hf and not docker"`, 02/11): 1524 PASS, 1 FAIL. FAIL là
+  `tests/test_official_harness.py::test_campaign_reads_pinned_upstream_run_evaluation_directory`, và nó
+  cũng fail trên HEAD sạch (có từ trước, harness M1). Sau đó có thêm bản sửa `static_diagnostics.py`,
+  `tests/m2` 510 PASS.
+- Phát hiện từ smoke S15: verifier A2 từ chối nhầm gold patch, vì `build_line_map` bỏ qua dòng lặp
+  trong file không bị sửa. Đã sửa trên nhánh `m2/w11-static-line-map` (module M2, cần M2 duyệt). Chạy
+  lại offline trên 75 record W10: lỗi "mới" giảm từ 2.684 xuống 22, verdict W10 không đổi.
+  Chi tiết ở `docs/m3_w11_s15_smoke.md`.
+- Thay đổi chạm tới M2: hai test M2 sửa theo envelope; `ContextManifest` thêm `resolver_profile` và
+  `ranking_config_hash`; `repair_get_task_context` nhận `admission`; phần E6 trong `fairness.py` và C7
+  trong `gpu.py` còn chờ M2.
+- Quyết định: `docs/m3_w11_decisions.md` (C4, C5, E1–E8; E8: agent trên repo bất kỳ là future work).
+  Trạng thái phiên: `docs/status/m3_w11_session_2026-11-01.md`.
+
 ### Phạm vi cập nhật ngày16/10/2026
 
 - Giữ đủ150 task IDs. Đối chiếu code/evidence đã có từ M2 W5–6, M1 W7–8 và
@@ -180,12 +208,12 @@ task thành viên, nên **không lấy tỷ lệ checkbox làm % tiến độ ho
 | 5–6      |       20 |     13 |      4 |      1 |      2 |
 | 7–8      |       19 |     17 |      1 |      0 |      1 |
 | 9–10     |       20 |     13 |      6 |      1 |      0 |
-| 11–12    |       16 |      1 |      8 |      6 |      1 |
+| 11–12    |       16 |      7 |      3 |      5 |      1 |
 | 13–14    |       16 |      0 |      6 |      4 |      6 |
 | 15–16    |       16 |      1 |      8 |      0 |      7 |
-| **Tổng** |  **150** | **67** | **43** | **12** | **28** |
+| **Tổng** |  **150** | **73** | **38** | **11** | **28** |
 
-Dòng 7–8 cập nhật ngày 18/10; dòng 9–10 và dòng Tổng cập nhật ngày 30/10; các tuần khác giữ số ngày 16/10.
+Dòng 7–8 cập nhật ngày 18/10; dòng 9–10 cập nhật ngày 30/10; dòng 11–12 và dòng Tổng cập nhật ngày 02/11; các tuần khác giữ số ngày 16/10.
 Các số này là **số dòng checklist được phân loại**, không phải47 features
 độc lập hay % đồ án. Mục HT về README/schema có thể thuộc tuần15–16 dù
 research experiment của tuần ấy chưa chạy. [report-qa.json](docs/audit/2026-10-13/report-qa.json)
@@ -486,24 +514,24 @@ khi thiếu wiring/security của luồng integrated agent; không bắt M2 làm
 
 ### 5.6. Tuần 11–12 — MCP hoàn chỉnh, security/performance
 
-| ID              | Task                                                   | Trạng thái | Đã có / thiếu / nguyên nhân                                                                                       | Giải pháp để đóng task                                                                                               |
-| --------------- | ------------------------------------------------------ | ---------- | ----------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
-| W11-12-CHUNG-01 | MCP tool surface cần thiết                             | **MP**     | Có11 tools, thiếu run_relevant_tests/verify_patch/impact; envelopes khác nhau giữa servers.                       | Hoàn thiện surface từ services M1/M2, không nhân bản implementation ở server.                                        |
-| W11-12-CHUNG-02 | Security guardrails tối thiểu                          | **MP**     | Có safe-relative-path, fixed pytest command, secrets lọc một phần; B04/B05/B12 còn hở.                            | Lease allowlist/read-only default/selector/timeout/output bounds + minimal child env + redaction tests.              |
-| W11-12-CHUNG-03 | Performance và incremental measurements                | **MP**     | Có duration fields/full-build stats; chưa incremental service và benchmark report.                                | Đo cold/warm đúng changed-file updater, MCP overhead và cache rate; không gọi load cache là incremental.             |
-| W11-12-M1-01    | Incremental graph update changed files                 | **CT**     | E02 full build + E03 ingest snapshot; cache snapshot không reparse delta.                                         | Reparse changed inventory, relink dependencies, tạo version mới; kiểm equivalence với full rebuild.                  |
-| W11-12-M1-02    | Reparse/relink/cache invalidate                        | **MP**     | E09 cache keys source/profile/implementation + source guards có; thiếu affected-symbol update.                    | Thêm update transaction và invalidation đúng dependency closure, giữ nguồn truth rõ.                                 |
-| W11-12-M1-03    | Cold/warm times/node count/cache hit report            | **MP**     | Builder/trace có timing/hit diagnostics; không report cold-vs-incremental warm theo patch.                        | Repeated bounded benchmark cùng source/delta, ghi distribution và counters thực.                                     |
-| W11-12-M2-01    | Export/signature API compatibility                     | **CT**     | api_check fields NOT_RUN, không actual API comparator.                                                            | So exported names/signature baseline/postpatch; policy có exceptions/config, fixtures API delete/change.             |
-| W11-12-M2-02    | Forbidden import/layer/cycle theo config               | **CT**     | Schema CONTAINS-cycle validation không kiểm vi phạm do patch hay architecture layers.                             | Repo-config rules với baseline comparison; không áp “mọi CALLS/IMPORTS phải acyclic” mặc định.                       |
-| W11-12-M2-03    | A3 graph + graph/API verification                      | **CT**     | Required checks và repair variant driver chưa có.                                                                 | Nối checks vào policyA3 cùng arms A0–A2; lưu check results và unknowns.                                              |
-| W11-12-M2-04    | False accept/reject trên pool/mutations                | **CT**     | Chưa labeled patch pool/verification classifier evaluation. Probe skip-only là một finding, không metric dataset. | Labeled synthetic mutants/good patches, independent expected outcomes, TP/FP/FN/TN và denominator.                   |
-| W11-12-M3-01    | Tool schemas + error responses hoàn chỉnh              | **MP**     | E13 graph envelope nhất quán; E14 legacy payload/status/errors khác và surface thiếu.                             | Thống nhất typed schema/error taxonomy/audit sau contract review; test MCP transport failures.                       |
-| W11-12-M3-02    | Path jail/read-only/allowlist/timeout/audit            | **MP**     | E10 guards không enforce root của E14; timeout không hard maximum, complete audit/secret policy thiếu.            | Shared runner, lease capabilities, read-only mutation gate, bound argv/output, all-tool durable audit.               |
-| W11-12-M3-03    | Latency/tokens/calls/read redundancy                   | **MP**     | Duration và counts có logs; LocalChatModel không usage metadata, chưa aggregation/read redundancy report.         | Meter từng actual invocation/tool, aggregate p50/p95/calls/duplicate reads với run config.                           |
-| W11-12-M3-04    | Draft Results retrieval/repair/verification/efficiency | **CX**     | Technical/handoff tables không thay paper Results; thiếu repair/verification metrics.                             | Viết từ reproducible runs, giữ thiếu evidence là pending thay vì tự ước lượng số.                                    |
-| W11-12-DOD-01   | Tools không chạy command tùy ý                         | **HT**     | E11/E14 executable/argv pytest cố định, shell=False; không tool nhận raw shell command.                           | Đây là điều kiện hẹp: pytest vẫn chạy code target, selectors/root/secrets còn lỗi; không đồng nghĩa sandbox an toàn. |
-| W11-12-DOD-02   | Cold/warm và MCP overhead số liệu                      | **CT**     | Không combined incremental/performance benchmark report hiện tại.                                                 | Sau updater, benchmark cùng workload; tách pure service time khỏi transport/process spawn.                           |
+| ID | Task | Trạng thái | Đã có / thiếu / nguyên nhân (cập nhật 02/11) | Giải pháp để đóng task |
+| --- | --- | --- | --- | --- |
+| W11-12-CHUNG-01 | MCP tool surface cần thiết | **HT** | 4 server: graph (7 tool, có `analyze_patch_impact`), repository (`read_file`), execution (`run_pytest`), repair (`get_task_context`, `apply_patch`, `run_relevant_tests`, `verify_patch`) bọc service của M1/M2. Cả 4 server dùng chung envelope C4. | Chờ M2 review và merge. |
+| W11-12-CHUNG-02 | Security guardrails tối thiểu | **HT** | Lease root (`VGAR_LEASE_ROOT`, `VGAR_RUN_ROOT`), allowlist selector, read-only mặc định, timeout cứng kill cả cây tiến trình, trần output, env con theo allowlist, redact secret, audit mọi call kể cả lỗi; test S1–S16. | — |
+| W11-12-CHUNG-03 | Performance và incremental measurements | **MP** | Incremental updater đã có (M1-01/02). Chưa có benchmark cold/warm và số đo MCP overhead. | `bench_incremental.py` (M1-W12-1), số đo M3-W12-1. |
+| W11-12-M1-01 | Incremental graph update changed files | **HT** | `graph/incremental.py`: parse lại file đổi, link lại, tăng `graph_version`; G3 incremental khớp full rebuild cho modify/add_file/delete_file/rename_function/move_import (`tests/test_incremental.py`). | — |
+| W11-12-M1-02 | Reparse/relink/cache invalidate | **HT** | G4 caller bị gỡ edge khi callee bị xóa; G5 no-op giữ version, cache hit 100%. | — |
+| W11-12-M1-03 | Cold/warm times/node count/cache hit report | **MP** | Updater và timing đã có; chưa có báo cáo cold so với warm theo patch. | M1-W12-1. |
+| W11-12-M2-01 | Export/signature API compatibility | **CT** | 02/11: chưa có `src/vgar/repair/api_check.py` trong repo (M2-W11-1). Kéo theo H3 (`signature_changed` của M1) vẫn `NOT_COMPUTED`. | M2 làm theo M2-W11-1. |
+| W11-12-M2-02 | Forbidden import/layer/cycle theo config | **CT** | 02/11: chưa có `structural_check.py`, `configs/m2/structural/` (M2-W11-2). | M2 làm theo M2-W11-2. |
+| W11-12-M2-03 | A3 graph + graph/API verification | **CT** | 02/11: chưa có `A3.json` (H5, đường găng của GPU W12). | M2-W12-1, cần trước GPU W12 ngày 1. |
+| W11-12-M2-04 | False accept/reject trên pool/mutations | **CT** | Chưa có mutant pool. Bản sửa `build_line_map` (S15) phải merge trước, nếu không FRR sẽ bị tính sai. | M2-W12-2. |
+| W11-12-M3-01 | Tool schemas + error responses hoàn chỉnh | **HT** | Envelope C4 `{status, data, error{code, message, retryable}, metadata}` cho cả 4 server; `repair_server` để verdict trong `data.verdict`; enum `KNOWN_ERROR_CODES` (thêm `TOOL_ORDER_VIOLATION`, `RUN_NOT_FOUND`, `MCP_TRANSPORT_ERROR`; bỏ `TOOL_ERROR`); `docs/mcp_tool_contract.md`; `tests/test_mcp_tool_contract.py`, `tests/test_mcp_day5.py`. | Hai câu hỏi C4 chờ M1/M2 xác nhận khi review. |
+| W11-12-M3-02 | Path jail/read-only/allowlist/timeout/audit | **HT** | Như CHUNG-02; `tests/test_mcp_security.py`, `test_mcp_legacy_servers.py`, `test_mcp_day5.py`, `test_redaction.py`. | — |
+| W11-12-M3-03 | Latency/tokens/calls/read redundancy | **MP** | Nguồn số liệu RQ5 đã chốt là `solve --agent` (D20). S15 chứng minh chạy được trên task SWE-bench. Chưa có usage metadata, invalid call rate, p50/p95. | M3-W12-1; sửa F4 ở `tool_agent.close()` trước lần đo thật W12 ngày 4. |
+| W11-12-M3-04 | Draft Results retrieval/repair/verification/efficiency | **CX** | Chưa có draft; thuộc W12 (M3-W12-3). | Viết từ record tái tạo được. |
+| W11-12-DOD-01 | Tools không chạy command tùy ý | **HT** | argv pytest cố định, `shell=False`, selector phải nằm trong allowlist của task, root theo lease, timeout và trần output do server đặt, repository server không còn tool ghi. | Điều kiện hẹp: pytest vẫn chạy code của target; không đồng nghĩa sandbox an toàn tuyệt đối. |
+| W11-12-DOD-02 | Cold/warm và MCP overhead số liệu | **CT** | Chưa có số đo. | M1-W12-1 và M3-W12-1. |
 
 ### 5.7. Tuần 13–14 — Held-out và failure analysis
 

@@ -17,6 +17,7 @@ Lập 01/11/2026. Phạm vi: W11–12. Spec chia việc: `docs/superpowers/specs
 | E5 | Chỉ chạy lại các ô (task, arm) có context hoặc test link đổi, kèm ô đối chứng | M1 + M3 | N3 | **Chốt hướng (iii)** (02/11); export + so hash chưa chạy, cần chọn chủ |
 | E6 | Attempt record ghi hash ranking và `graph_version`; aggregate và fairness không gộp record khác hash | M3, M2 | C3, C5 | Đề xuất; phần M3 (`context_manifest.ranking_config_hash` + runner) đã làm 02/11, chờ M2 duyệt; `fairness.py` (M2) và `aggregate.py` (W12) chưa làm |
 | E7 | `solve --agent` (RQ5) chỉ chạy sau H3 | M3 | M3-W12-1 | Đề xuất |
+| E8 | Agent sửa nhiều file trên repo bất kỳ là future work; demo chỉ trên fixture và task SWE-bench | M3 | Demo W15, Limitations W16 | **Người dùng chốt** (02/11) |
 
 ## E1. B10 phải đổi `graph_version`
 
@@ -107,6 +108,16 @@ Lập 01/11/2026. Phạm vi: W11–12. Spec chia việc: `docs/superpowers/specs
 - **Đề xuất:** smoke ở W11 ngày 5 (D20) vẫn chạy chế độ fake như cũ. Lần chạy thật × 5 task ở W12 ngày 4 phải dùng graph sau B10 và config đóng băng. Record ghi hash ranking theo E6.
 - **Lý do:** `solve --agent` chạy "config như A2", mà A2 dùng graph retrieval. Chạy trước H3 thì số RQ5 đo trên config khác với config đã ghi trong protocol freeze.
 - **Ảnh hưởng lịch:** không đổi. Lịch của spec chia việc (W12 ngày 4) đã nằm sau H3. Phần mới duy nhất là ghi hash theo E6. Mục này chỉ để ghi rõ rằng **không được** chạy `solve --agent` thật sớm hơn lịch.
+
+## E8. Agent trên repo bất kỳ là future work (người dùng chốt 02/11)
+
+- **Quyết định:** không làm `vgar chat --repo R` có sửa code trên repo tùy ý trong khóa luận. Demo chỉ chạy trên fixture đã khai báo (`single_file_login`, `multi_file_invoice`) và task SWE-bench đã qua admission (`solve --agent --experiment`, sau này cả `chat` dùng `AgentRepairHost` ở W13–W14). `vgar run --repo` vẫn giữ, nhưng chỉ đọc.
+- **Lý do (theo code 02/11):**
+  1. Engine chỉ nhận fixture tin cậy hoặc task Docker đã qua admission. Chạy test của repo chưa được kiểm thì vi phạm cổng W12 "tool không chạy lệnh tùy ý".
+  2. Repo lạ cùng một câu yêu cầu tự do thì không có test fail làm trọng tài. Qwen3-4B tự viết test tái hiện thì kết quả không đáng tin.
+  3. Chưa có bước dựng task từ (repo, câu hỏi), và việc này không có trong plan W9–W16.
+- **Bản nhỏ nhất cho future work:** `vgar chat --repo R --selector S` với repo đã có sẵn test fail do người dùng chỉ định. Cần có thêm: dựng task tạm, chế độ admission "repo cục bộ, người dùng xác nhận" kèm test bảo mật, và agent dùng `AgentRepairHost`. Ước tính 4–6 ngày. Repo không có test fail thì cần thêm bước sinh test tái hiện đáng tin.
+- **Ghi vào:** mục Limitations/Future work (M2-W16) và Discussion của paper. Không được claim agent sửa được repo bất kỳ.
 
 ## C5. Schema config ranking và cách tính hash (M1 đề xuất, M3 duyệt; vì một người giữ cả M1 và M3 nên M2 duyệt thay)
 
