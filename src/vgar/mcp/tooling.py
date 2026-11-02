@@ -1,19 +1,46 @@
 """Run an MCP tool/resource body with the shared envelope and audit trail."""
 from __future__ import annotations
 
+import os
 import time
 import uuid
 from collections.abc import Callable, Iterator
 from contextlib import contextmanager
+from pathlib import Path
 from typing import Any
 
 from vgar.mcp.audit import AuditLogger
 from vgar.mcp.schemas import (
     INTERNAL_ERROR,
+    PATH_OUTSIDE_ROOT,
+    ROOT_NOT_LEASED,
+    CodedToolError,
     ToolMetadata,
     ToolResponse,
     error_from_exception,
 )
+
+# Server-set limits (security design §4.4); no tool accepts these as arguments.
+READ_FILE_MAX_BYTES = 64 * 1024
+PYTEST_TIMEOUT_SECONDS = 120
+PYTEST_OUTPUT_CAP = 12_000
+
+
+def leased_root(env_name: str) -> Path:
+    """The root the host leased to this server through ``env_name``; never chosen by the model."""
+    value = os.environ.get(env_name)
+    root = Path(value).resolve() if value else None
+    if root is None or not root.is_dir():
+        raise CodedToolError(ROOT_NOT_LEASED, f"No leased root: {env_name} is not set to a directory")
+    return root
+
+
+def inside(root: Path, candidate: Path) -> Path:
+    """``candidate`` resolved (symlinks, ``..``) and guaranteed to stay under ``root``."""
+    target = Path(candidate).resolve()
+    if target != root and root not in target.parents:
+        raise CodedToolError(PATH_OUTSIDE_ROOT, "Path is outside the leased root")
+    return target
 
 
 def _elapsed_ms(started: float) -> int:
@@ -36,6 +63,7 @@ def run_tool(
     call: Callable[[], dict[str, Any]],
     audit_fields: dict[str, Any] | None = None,
     summarize: Callable[[dict[str, Any]], dict[str, Any]] | None = None,
+    untrusted: bool = False,
 ) -> dict[str, Any]:
     """Execute `call`, always return a ToolResponse dict, always write one audit line.
 
@@ -78,6 +106,7 @@ def run_tool(
             request_id=request_id,
             backend=backend,
             tool=tool,
+            **({"untrusted": True} if untrusted else {}),
         ),
     )
     return response.model_dump(mode="json")

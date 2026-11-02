@@ -23,6 +23,19 @@ ToolStatus = Literal["PASS", "FAIL", "ERROR", "NOT_RUN"]
 
 INVALID_ARGUMENT = "INVALID_ARGUMENT"
 INTERNAL_ERROR = "INTERNAL_ERROR"
+# C4 security codes (docs/m3_w11_decisions.md); none of them is retryable with unchanged arguments.
+ROOT_NOT_LEASED = "ROOT_NOT_LEASED"
+PATH_OUTSIDE_ROOT = "PATH_OUTSIDE_ROOT"
+SELECTOR_REJECTED = "SELECTOR_REJECTED"
+TIMEOUT = "TIMEOUT"
+
+
+class CodedToolError(Exception):
+    """A tool failure with a stable C4 code; the message is safe to show to the model."""
+
+    def __init__(self, code: str, message: str) -> None:
+        super().__init__(message)
+        self.code, self.message = code, message
 
 
 class ToolError(BaseModel):
@@ -54,6 +67,8 @@ def error_from_exception(exc: BaseException) -> ToolError:
     Anything else is INTERNAL_ERROR with only the exception type exposed; the
     full message goes to the audit log, not to the model.
     """
+    if isinstance(exc, CodedToolError):
+        return ToolError(code=exc.code, message=exc.message)
     if isinstance(exc, GraphError):  # must precede ValueError: some are both
         return ToolError(code=exc.code, message=exc.message, details=exc.details)
     if isinstance(exc, ValueError):

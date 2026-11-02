@@ -144,3 +144,36 @@ def test_demo_backend_uses_the_same_error_code(monkeypatch, tmp_path):
     monkeypatch.setattr(graph_server, "_audit_logger", AuditLogger(tmp_path / "a.jsonl"))
     response = graph_server.get_callers("missing:symbol")
     assert response["error"]["code"] == "NODE_NOT_FOUND"
+
+
+def test_coded_tool_error_keeps_its_code():
+    # Legacy-server plan Task 1: C4 codes raised by servers survive the envelope mapping.
+    from vgar.mcp.schemas import ROOT_NOT_LEASED, CodedToolError, error_from_exception
+    error = error_from_exception(CodedToolError(ROOT_NOT_LEASED, "no lease"))
+    assert (error.code, error.message) == ("ROOT_NOT_LEASED", "no lease")
+
+
+def test_run_tool_marks_untrusted_text(tmp_path):
+    from vgar.mcp.tooling import run_tool
+    response = run_tool(server="t", tool="x", backend="b", audit=AuditLogger(tmp_path / "audit.jsonl"),
+                        call=lambda: {"v": 1}, untrusted=True)
+    plain = run_tool(server="t", tool="x", backend="b", audit=AuditLogger(tmp_path / "audit.jsonl"),
+                     call=lambda: {"v": 1})
+    assert response["metadata"]["untrusted"] is True
+    assert "untrusted" not in plain["metadata"]
+
+
+def test_leased_root_and_inside(tmp_path, monkeypatch):
+    # S1 / S2 shared guards (security design §4.2)
+    from vgar.mcp.schemas import CodedToolError
+    from vgar.mcp.tooling import inside, leased_root
+    monkeypatch.delenv("VGAR_TEST_ROOT", raising=False)
+    with pytest.raises(CodedToolError) as missing:
+        leased_root("VGAR_TEST_ROOT")
+    assert missing.value.code == "ROOT_NOT_LEASED"
+    monkeypatch.setenv("VGAR_TEST_ROOT", str(tmp_path))
+    root = leased_root("VGAR_TEST_ROOT")
+    with pytest.raises(CodedToolError) as escaped:
+        inside(root, root / ".." / "x")
+    assert escaped.value.code == "PATH_OUTSIDE_ROOT"
+    assert inside(root, root / "a.py") == (tmp_path / "a.py").resolve()

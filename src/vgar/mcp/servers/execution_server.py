@@ -1,72 +1,64 @@
+"""Run one host-allowed pytest selector inside the leased root (D7, M3-W11-2; S3-S5 of M3-W11-1).
+
+The root comes from ``VGAR_LEASE_ROOT`` and the allowed selectors from ``VGAR_ALLOWED_SELECTORS`` (JSON list),
+both set by the host. Timeout and output cap are server constants; argv is fixed and never goes through a shell.
+"""
 from __future__ import annotations
 
+import json
 import os
-import subprocess
-import sys
 from pathlib import Path
 from typing import Any
 
 from mcp.server.fastmcp import FastMCP
 
+from vgar.mcp import pytest_runner
+from vgar.mcp.audit import AuditLogger
+from vgar.mcp.schemas import SELECTOR_REJECTED, CodedToolError
+from vgar.mcp.tooling import PYTEST_OUTPUT_CAP, PYTEST_TIMEOUT_SECONDS, inside, leased_root, run_tool
 from vgar.observability.instrumentation import instrument_mcp_tool
 
 mcp = FastMCP("vgar-execution")
-
-
-def _root(repo_path: str) -> Path:
-    root = Path(repo_path).resolve(strict=True)
-    if not root.is_dir():
-        raise ValueError(f"Not a repository directory: {repo_path}")
-    return root
+_audit_logger = AuditLogger(Path(os.getenv("VGAR_MCP_AUDIT_LOG", "logs/mcp_audit.jsonl")))
+__all__ = ["PYTEST_OUTPUT_CAP", "PYTEST_TIMEOUT_SECONDS", "health", "mcp", "run_pytest"]
 
 
 @mcp.tool()
 @instrument_mcp_tool("health")
 def health() -> dict[str, Any]:
-    return {"status": "OK", "server": "execution", "phase": "W3-W4-repair"}
+    return run_tool(server="execution", tool="health", backend="pytest", audit=_audit_logger,
+                    call=lambda: {"server": "execution", "phase": "W11-leased-allow-listed"})
+
+
+def _check_selector(root: Path, selector: str) -> None:
+    allowed = json.loads(os.environ.get("VGAR_ALLOWED_SELECTORS", "[]"))
+    if (not isinstance(selector, str) or not selector or selector.startswith("-")
+            or any(char.isspace() for char in selector) or ".." in selector):
+        raise CodedToolError(SELECTOR_REJECTED, "Selector is not a plain pytest node id or path")
+    if not any(selector == entry or selector.startswith((entry + "/", entry + "::")) for entry in allowed):
+        raise CodedToolError(SELECTOR_REJECTED, "Selector is not allowed for this task")
+    try:
+        inside(root, root / selector.split("::", 1)[0])
+    except CodedToolError:
+        raise CodedToolError(SELECTOR_REJECTED, "Selector path leaves the leased root") from None
+
+
+def _run(selector: str) -> dict[str, Any]:
+    root = leased_root("VGAR_LEASE_ROOT")
+    _check_selector(root, selector)
+    result = pytest_runner.run_selector(root, selector, timeout_seconds=PYTEST_TIMEOUT_SECONDS,
+                                        output_cap=PYTEST_OUTPUT_CAP)
+    return {"selector": selector, "verdict": "PASS" if result["exit_code"] == 0 else "FAIL", **result}
 
 
 @mcp.tool()
 @instrument_mcp_tool("run_pytest")
-def run_pytest(repo_path: str, selector: str, timeout_seconds: int = 30) -> dict[str, Any]:
-    """Run one bounded pytest selector inside the supplied disposable workspace."""
-    if not selector or selector.startswith("-") or "\n" in selector or "\r" in selector:
-        raise ValueError("Invalid pytest selector")
-    root = _root(repo_path)
-    env = dict(os.environ)
-    env["PYTHONPATH"] = str(root / "src") + os.pathsep + str(root)
-    env["PYTHONDONTWRITEBYTECODE"] = "1"
-    env["PYTEST_DISABLE_PLUGIN_AUTOLOAD"] = "1"
-    env["PYTHONIOENCODING"] = "utf-8"
-    argv = [sys.executable, "-m", "pytest", "-q", "-p", "no:cacheprovider", selector]
-    try:
-        proc = subprocess.run(
-            argv,
-            cwd=root,
-            env=env,
-            # The MCP stdio pipe is this process's stdin/stdout: the child must
-            # never inherit stdin (hangs/handle errors on Windows).
-            stdin=subprocess.DEVNULL,
-            capture_output=True,
-            text=True,
-            encoding="utf-8",
-            errors="replace",  # Windows default cp1252 would raise on pytest's UTF-8 output
-            timeout=timeout_seconds,
-            shell=False,
-        )
-    except subprocess.TimeoutExpired:
-        return {"status": "ERROR", "exit_code": None, "selector": selector, "stdout": "", "stderr": "",
-                "error": {"code": "TEST_TIMEOUT", "message": f"pytest exceeded {timeout_seconds}s"}}
-    except OSError as exc:
-        return {"status": "ERROR", "exit_code": None, "selector": selector, "stdout": "", "stderr": "",
-                "error": {"code": "INTERNAL_ERROR", "message": f"cannot start pytest: {exc}"}}
-    return {
-        "status": "PASS" if proc.returncode == 0 else "FAIL",
-        "exit_code": proc.returncode,
-        "selector": selector,
-        "stdout": proc.stdout[-12000:],
-        "stderr": proc.stderr[-12000:],
-    }
+def run_pytest(selector: str) -> dict[str, Any]:
+    """Run one allowed pytest selector in the leased workspace (server-set timeout and output cap)."""
+    return run_tool(server="execution", tool="run_pytest", backend="pytest", audit=_audit_logger,
+                    call=lambda: _run(selector), audit_fields={"selector": selector},
+                    summarize=lambda data: {"verdict": data["verdict"], "truncated": data["truncated"]},
+                    untrusted=True)
 
 
 def main() -> None:

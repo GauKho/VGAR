@@ -11,6 +11,8 @@ from langchain_core.tools import BaseTool
 
 from vgar.config.settings import Settings, get_settings
 from vgar.mcp import create_mcp_client
+from vgar.mcp.client import SERVER_NAMES
+from vgar.mcp.registry import validate_public_tools
 from vgar.models.factory import create_core_model
 
 
@@ -31,11 +33,16 @@ async def load_mcp_tools(
     settings: Settings | None = None,
     *,
     run_id: str | None = None,
+    servers: tuple[str, ...] = SERVER_NAMES,
+    extra_env: dict[str, str] | None = None,
+    exclude_tools: frozenset[str] = frozenset(),
 ) -> list[BaseTool]:
+    """MCP tools of `servers`; `extra_env` carries the host-leased roots (VGAR_LEASE_ROOT, ...)."""
     run_id = run_id or new_run_id()
     with phase("load_mcp_tools", run_id, {"settings_provided": settings is not None}) as log_output:
-        client = create_mcp_client(settings)
-        tools = await client.get_tools()
+        client = create_mcp_client(settings, servers=servers, extra_env=extra_env)
+        tools = [tool for tool in await client.get_tools() if getattr(tool, "name", None) not in exclude_tools]
+        validate_public_tools(tools)
 
         if not tools:
             raise RuntimeError("MCP returned no tools.")
@@ -95,6 +102,10 @@ async def create_core_agent(
     settings: Settings | None = None,
     *,
     run_id: str | None = None,
+    servers: tuple[str, ...] = SERVER_NAMES,
+    extra_env: dict[str, str] | None = None,
+    exclude_tools: frozenset[str] = frozenset(),
+    model: BaseChatModel | None = None,
 ):
     settings = settings or get_settings()
     run_id = run_id or new_run_id()
@@ -107,14 +118,15 @@ async def create_core_agent(
             "max_tool_calls": settings.agent.max_tool_calls,
         },
     ) as log_output:
-        tools = await load_mcp_tools(settings, run_id=run_id)
+        tools = await load_mcp_tools(settings, run_id=run_id, servers=servers, extra_env=extra_env,
+                                     exclude_tools=exclude_tools)
 
         with phase(
             "create_model",
             run_id,
             {"factory": "create_core_model", "model_config_type": type(settings.model).__name__},
         ) as model_output:
-            model = create_core_model(settings.model)
+            model = model or create_core_model(settings.model)
             model_output({"model_type": type(model).__name__})
 
         agent = build_core_agent(model, tools, settings, run_id=run_id)
