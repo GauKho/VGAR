@@ -148,6 +148,24 @@ def test_line_map_keeps_unique_unchanged_lines_and_rejects_repeated_anchors():
     assert ambiguous['a.py'] == {}
 
 
+def test_line_map_maps_every_line_of_an_unchanged_file_even_repeated_or_large():
+    # S15 smoke (02/11): a gold patch to requests/auth.py was rejected because untouched urllib3 files repeat
+    # lines such as `extra_params = {}`; an identical file proves every line kept its position.
+    repeated = 'extra_params = {}\nx = 1\nextra_params = {}\n'
+    assert api().build_line_map({'a.py': repeated}, {'a.py': repeated})['a.py'] == {1: 1, 2: 2, 3: 3}
+    large = 'pass\n' * 10001
+    assert api().build_line_map({'big.py': large}, {'big.py': large})['big.py'] == {n: n for n in range(1, 10002)}
+
+
+def test_unchanged_file_with_repeated_lines_introduces_no_error(tmp_path):
+    source = {'pkg/debt.py': 'def f():\n    extra_params = {}\n    extra_params = {}\n'}
+    rows = [row(line=2, code='var-annotated', message='Need type annotation'),
+            row(line=3, code='var-annotated', message='Need type annotation')]
+    delta = api().compare_diagnostics(report(tmp_path, rows), report(tmp_path, rows),
+                                      api().build_line_map(source, dict(source)))
+    assert delta.status == 'PASS' and not delta.introduced and len(delta.persisting) == 2
+
+
 def test_malformed_row_does_not_drop_earlier_valid_diagnostic(tmp_path):
     parsed = api().parse_tool_report('mypy', command(tmp_path, rows=[row(), {'file': 'pkg/debt.py'}]), '2.4.0')
     assert parsed.execution_status == 'ERROR'

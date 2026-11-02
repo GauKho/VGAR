@@ -145,11 +145,16 @@ def build_line_map(before: dict[str, str], after: dict[str, str]) -> dict:
     """Map equal, uniquely anchored source lines; repeated lines remain ambiguous.
 
     This intentionally favors false rejects over declaring an unproven error old.
-    Large/unsupported snapshots yield no matches rather than quadratic matching.
+    An unchanged file is the exception: identical text proves every line kept its position,
+    repeated or not, at any size. Large changed snapshots yield no matches rather than
+    quadratic matching.
     """
     result = {}
     for path in before.keys() & after.keys():
         old, new = before[path].splitlines(), after[path].splitlines()
+        if old == new:
+            result[path] = {n: n for n in range(1, len(old) + 1)}
+            continue
         result[path] = {}
         if len(old) > 10000 or len(new) > 10000:
             continue
