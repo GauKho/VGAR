@@ -38,3 +38,20 @@ def validate_required_tools(
             "Missing required MCP tools: "
             f"{formatted}"
         )
+
+
+# S9 (M3-W11-1): every tool an agent may see. A tool added to a server is refused until it is listed here,
+# i.e. until someone has checked it takes no root/path/timeout chosen by the model and does not write files.
+PUBLIC_TOOLS = frozenset({
+    "graph_search_symbols", "graph_get_callers", "graph_get_callees", "graph_find_task_anchors",
+    "graph_get_related_context", "graph_get_related_tests", "graph_analyze_patch_impact",
+    "repository_health", "repository_read_file",
+    "execution_health", "execution_run_pytest",
+    "repair_get_task_context", "repair_apply_patch", "repair_run_relevant_tests", "repair_verify_patch",
+})
+
+
+def validate_public_tools(tools: Iterable[BaseTool]) -> None:
+    unknown = sorted(get_tool_names(tools) - PUBLIC_TOOLS)
+    if unknown:
+        raise RuntimeError("Unguarded MCP tool(s): " + ", ".join(unknown))

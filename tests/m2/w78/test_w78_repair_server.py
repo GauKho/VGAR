@@ -5,10 +5,18 @@ import json
 import shutil
 from pathlib import Path
 
+import pytest
+
 from vgar.mcp.servers import repair_server as server
 from w78_support import REPO
 
 TASK = REPO / 'examples/m2/tasks/single_file_login.json'
+
+
+@pytest.fixture(autouse=True)
+def _leased_run_root(tmp_path, monkeypatch):
+    # M3-W11-1 (S2): repair_server only accepts run dirs inside the host-leased VGAR_RUN_ROOT.
+    monkeypatch.setenv('VGAR_RUN_ROOT', str(tmp_path))
 PATCH = (REPO / 'tests/fixtures/m2/reference_patches/single_file_login.diff').read_text(encoding='utf-8')
 
 

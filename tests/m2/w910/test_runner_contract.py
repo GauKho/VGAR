@@ -59,8 +59,9 @@ def test_bundle_drift_is_error_and_owned_workspace_is_cleaned(w9_case, experimen
     assert not Path(session.state['lease']['private']).exists()
 
 
-def test_mcp_optional_experiment_survives_fresh_session_tools(tmp_path, experiment_input):
+def test_mcp_optional_experiment_survives_fresh_session_tools(tmp_path, experiment_input, monkeypatch):
     from vgar.mcp.servers import repair_server as server
+    monkeypatch.setenv('VGAR_RUN_ROOT', str(tmp_path))  # M3-W11-1 (S2): host-leased run root
     result = server.get_task_context(str(ROOT/'examples/m2/tasks/single_file_login.json'), 'fake',
         str(tmp_path/'runs'), str(tmp_path/'work'), experiment=experiment_input)
     assert result['status'] == 'PASS', result

@@ -37,12 +37,22 @@ def _log(session, entry: dict[str, Any]) -> None:
 
 
 def _tool_error(error: BaseException) -> dict[str, Any]:
+    from vgar.mcp.schemas import CodedToolError
+    if isinstance(error, CodedToolError):  # C4 security codes (run root) keep their code
+        return {"status": "ERROR", "reason": error.code, "detail": error.message}
     return {"status": "ERROR", "reason": "TOOL_ERROR", "detail": f"{type(error).__name__}: {error}"}
+
+
+def _run_root_path(path: str) -> Path:
+    """S1/S2: run directories and output roots must stay inside the host-leased VGAR_RUN_ROOT."""
+    from vgar.mcp.tooling import inside, leased_root
+    root = leased_root("VGAR_RUN_ROOT")
+    return inside(root, root / Path(path)) if not Path(path).is_absolute() else inside(root, Path(path))
 
 
 def _load(tool: str, run_dir: str):
     from vgar.repair.session import RepairSession
-    session = RepairSession.load(Path(run_dir))
+    session = RepairSession.load(_run_root_path(run_dir))
     if session.phase not in REQUIRED_PHASE[tool]:
         raise ValueError(f"Tool order violation: {tool} needs phase {'/'.join(REQUIRED_PHASE[tool])}, "
                          f"run is {session.phase}")
@@ -100,6 +110,7 @@ def get_task_context(task_path: str, mode: str, output_root: str, work_root: str
         inputs['experiment'] = experiment
     started_utc, start = utc_now(), time.monotonic()
     try:
+        _run_root_path(output_root)
         experiment = validate_experiment(experiment)
         policy, profile = load_config(config_path or CONFIG_DIR / "demo.json")
         task = load_task(task_path)

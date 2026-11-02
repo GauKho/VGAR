@@ -59,7 +59,9 @@ class Runtime:
         """The four repair_* MCP tools; only the repair server is connected."""
         if self.tools is None:
             from vgar.mcp.client import create_mcp_client
-            client = create_mcp_client(self.base_settings(), servers=("repair",))
+            Path(self.output_root).mkdir(parents=True, exist_ok=True)  # the leased run root must exist
+            client = create_mcp_client(self.base_settings(), servers=("repair",),
+                                       extra_env={"VGAR_RUN_ROOT": str(self.output_root)})
             self.tools = {tool.name: tool for tool in await client.get_tools()}
         return self.tools
 
