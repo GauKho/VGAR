@@ -113,7 +113,7 @@ def test_impact_error_keeps_retry_going(tmp_path, monkeypatch):
                    generator=ScriptedPatchGenerator([WRONG_LOGIN, REF]))
     trace = trace_of(result)
     reply = replies(trace, "analyze_patch_impact")[0]
-    assert reply.startswith("STATUS: ERROR\nREASON: TOOL_ERROR") and "graph server did not start" in reply
+    assert reply.startswith("STATUS: ERROR\nREASON: MCP_TRANSPORT_ERROR") and "graph server did not start" in reply
     assert len(trace["runs"]) == 2 and IMPACT_LINE not in records(trace)[1]["prompt_feedback"]["message"]
     assert result["status"] == "COMPLETED"
 

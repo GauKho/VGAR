@@ -64,12 +64,12 @@ def test_mcp_optional_experiment_survives_fresh_session_tools(tmp_path, experime
     monkeypatch.setenv('VGAR_RUN_ROOT', str(tmp_path))  # M3-W11-1 (S2): host-leased run root
     result = server.get_task_context(str(ROOT/'examples/m2/tasks/single_file_login.json'), 'fake',
         str(tmp_path/'runs'), str(tmp_path/'work'), experiment=experiment_input)
-    assert result['status'] == 'PASS', result
-    directory = Path(result['run_dir'])
+    assert result['status'] == 'PASS' and result['data']['verdict'] == 'PASS', result  # C4 envelope
+    directory = Path(result['data']['run_dir'])
     snapshot = read(directory/'run_record.json')['experiment']
-    assert server.apply_patch(str(directory), FIX)['status'] == 'PASS'
-    assert server.run_relevant_tests(str(directory))['status'] == 'PASS'
-    final = server.verify_patch(str(directory))
+    assert server.apply_patch(str(directory), FIX)['data']['verdict'] == 'PASS'
+    assert server.run_relevant_tests(str(directory))['data']['verdict'] == 'PASS'
+    final = server.verify_patch(str(directory))['data']
     assert final['recommendation'] == 'ACCEPT', final
     assert final['evidence']['metadata']['experiment'] == snapshot
     record = read(directory/'run_record.json')

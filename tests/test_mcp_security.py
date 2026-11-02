@@ -100,7 +100,7 @@ def _open_run(root: Path) -> str:
     from vgar.mcp.servers import repair_server
     result = repair_server.get_task_context(str(TASK), "fake", str(root / "runs"), str(root / "work"))
     assert result["status"] == "PASS", result
-    return result["run_dir"]
+    return result["data"]["run_dir"]
 
 
 def test_repair_rejects_run_dir_outside_run_root(tmp_path, monkeypatch):
@@ -115,7 +115,7 @@ def test_repair_rejects_run_dir_outside_run_root(tmp_path, monkeypatch):
 
     result = repair_server.apply_patch(run_dir, REF)
 
-    assert result["status"] == "ERROR" and result["reason"] == "PATH_OUTSIDE_ROOT"
+    assert result["status"] == "ERROR" and result["error"]["code"] == "PATH_OUTSIDE_ROOT"
     assert (Path(run_dir) / "session.json").read_bytes() == before
 
 
@@ -123,8 +123,8 @@ def test_repair_without_run_root_is_root_not_leased(tmp_path, monkeypatch):
     from vgar.mcp.servers import repair_server
     monkeypatch.delenv("VGAR_RUN_ROOT", raising=False)
     result = repair_server.get_task_context(str(TASK), "fake", str(tmp_path / "runs"), str(tmp_path / "work"))
-    assert result["status"] == "ERROR" and result["reason"] == "ROOT_NOT_LEASED"
-    assert repair_server.verify_patch(str(tmp_path / "runs" / "x"))["reason"] == "ROOT_NOT_LEASED"
+    assert result["status"] == "ERROR" and result["error"]["code"] == "ROOT_NOT_LEASED"
+    assert repair_server.verify_patch(str(tmp_path / "runs" / "x"))["error"]["code"] == "ROOT_NOT_LEASED"
 
 
 def test_runtime_repair_tools_lease_output_root(tmp_path, monkeypatch):

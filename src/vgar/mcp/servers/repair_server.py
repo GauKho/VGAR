@@ -4,23 +4,25 @@ Order inside a run is strict: get_task_context -> apply_patch (once) -> run_rele
 -> verify_patch. Each process may be a fresh server (the adapter opens a session per tool call), so
 all state lives in the run directory. Tools only run on trusted fixtures and only write inside the
 run's private worktree; every accepted call is appended to run_record.mcp_calls.
+Every tool returns the shared C4 envelope (docs/mcp_tool_contract.md): the engine's answer is in
+``data`` with its status as ``data.verdict``; ``status: ERROR`` only means the tool could not answer.
 """
 from __future__ import annotations
 
+from collections.abc import Callable
 from dataclasses import asdict
-import functools
 import hashlib
-import inspect
 import json
 import os
 from pathlib import Path
 import time
 from typing import Any
-import uuid
 
 from mcp.server.fastmcp import FastMCP
 
 from vgar.mcp.audit import AuditLogger
+from vgar.mcp.schemas import RUN_NOT_FOUND, TOOL_ORDER_VIOLATION, CodedToolError
+from vgar.mcp.tooling import run_tool
 from vgar.observability.instrumentation import instrument_mcp_tool
 
 mcp = FastMCP("vgar-repair")
@@ -42,42 +44,16 @@ def _log(session, entry: dict[str, Any]) -> None:
     session.run.save()
 
 
-class _ToolErrorResult(dict):
-    """Marks a result built by _tool_error, so the audit can tell a tool failure from an engine verdict."""
+def _respond(tool: str, inputs: dict[str, Any], body: Callable[[], dict[str, Any]]) -> dict[str, Any]:
+    """C4 envelope + S8 audit: the engine's answer goes to data (its status renamed verdict); a tool that
+    could not answer raises, and run_tool maps that to a coded error. The audit logs an input hash, never text."""
+    def call() -> dict[str, Any]:
+        result = body()
+        return {"verdict": result.pop("status"), **result}
 
-
-def _tool_error(error: BaseException) -> dict[str, Any]:
-    from vgar.mcp.schemas import CodedToolError
-    if isinstance(error, CodedToolError):  # C4 security codes (run root) keep their code
-        return _ToolErrorResult(status="ERROR", reason=error.code, detail=error.message)
-    return _ToolErrorResult(status="ERROR", reason="TOOL_ERROR", detail=f"{type(error).__name__}: {error}")
-
-
-def _audited(tool: str):
-    """S8: one tool_call line in the shared MCP audit log per call, failures included; the result is unchanged."""
-    def decorator(fn):
-        signature = inspect.signature(fn)
-
-        @functools.wraps(fn)
-        def wrapper(*args, **kwargs):
-            inputs = signature.bind(*args, **kwargs).arguments
-            payload = {"server": "repair", "tool": tool, "request_id": uuid.uuid4().hex,
-                       "input_sha256": hashlib.sha256(json.dumps(inputs, sort_keys=True, default=str)
-                                                      .encode("utf-8")).hexdigest()}
-            start = time.monotonic()
-            try:
-                result = fn(*args, **kwargs)
-            except Exception:
-                _audit_logger.write("tool_call", dict(payload, status="ERROR", error_code="INTERNAL_ERROR",
-                                                      duration_ms=round((time.monotonic() - start) * 1000)))
-                raise
-            payload.update(status=result.get("status"), duration_ms=round((time.monotonic() - start) * 1000))
-            if isinstance(result, _ToolErrorResult):
-                payload["error_code"] = result["reason"]
-            _audit_logger.write("tool_call", payload)
-            return result
-        return wrapper
-    return decorator
+    digest = hashlib.sha256(json.dumps(inputs, sort_keys=True, default=str).encode("utf-8")).hexdigest()
+    return run_tool(server="repair", tool=tool, backend="m2-engine", audit=_audit_logger, call=call,
+                    audit_fields={"input_sha256": digest}, summarize=lambda data: {"verdict": data["verdict"]})
 
 
 def _run_root_path(path: str) -> Path:
@@ -89,10 +65,13 @@ def _run_root_path(path: str) -> Path:
 
 def _load(tool: str, run_dir: str):
     from vgar.repair.session import RepairSession
-    session = RepairSession.load(_run_root_path(run_dir))
+    path = _run_root_path(run_dir)
+    if not (path / "session.json").is_file() or not (path / "run_record.json").is_file():
+        raise CodedToolError(RUN_NOT_FOUND, f"Not a repair run directory: {run_dir}")
+    session = RepairSession.load(path)
     if session.phase not in REQUIRED_PHASE[tool]:
-        raise ValueError(f"Tool order violation: {tool} needs phase {'/'.join(REQUIRED_PHASE[tool])}, "
-                         f"run is {session.phase}")
+        raise CodedToolError(TOOL_ORDER_VIOLATION, f"Tool order violation: {tool} needs phase "
+                             f"{'/'.join(REQUIRED_PHASE[tool])}, run is {session.phase}")
     return session
 
 
@@ -126,15 +105,25 @@ def _finish(session, tool, inputs, started_utc, start) -> dict[str, Any]:
 
 @mcp.tool()
 @instrument_mcp_tool("get_task_context")
-@_audited("get_task_context")
 def get_task_context(task_path: str, mode: str, output_root: str, work_root: str,
                      config_path: str | None = None, keep_workspace: bool = False,
                      feedback: dict[str, Any] | None = None, supersedes_run_id: str | None = None,
-                     rerun_reason: str | None = None, experiment: dict[str, Any] | None = None) -> dict[str, Any]:
+                     rerun_reason: str | None = None, experiment: dict[str, Any] | None = None,
+                     admission: dict[str, Any] | None = None) -> dict[str, Any]:
     """Start a run on a trusted fixture task: M1 context, private worktree, baseline and the V11 prompt.
 
     With feedback the run is a rerun: the feedback is appended to the V11 prompt and the run records
-    which run it supersedes and why."""
+    which run it supersedes and why. A SWE-bench task needs the host's admission snapshot (S15); the
+    engine re-validates it against the task, manifest, profile and source."""
+    args = dict(task_path=task_path, mode=mode, output_root=output_root, work_root=work_root,
+                config_path=config_path, keep_workspace=keep_workspace, feedback=feedback,
+                supersedes_run_id=supersedes_run_id, rerun_reason=rerun_reason, experiment=experiment,
+                admission=admission)
+    return _respond("get_task_context", args, lambda: _get_task_context(**args))
+
+
+def _get_task_context(task_path, mode, output_root, work_root, config_path, keep_workspace, feedback,
+                      supersedes_run_id, rerun_reason, experiment, admission) -> dict[str, Any]:
     from vgar.repair.config import CONFIG_DIR, load_config, load_task
     from vgar.repair.executor import utc_now
     from vgar.repair.pipeline import build_tokenizer
@@ -146,20 +135,19 @@ def get_task_context(task_path: str, mode: str, output_root: str, work_root: str
     inputs.update({key: value for key, value in rerun.items() if value is not None})
     if experiment is not None:
         inputs['experiment'] = experiment
+    if admission is not None:
+        inputs['admission'] = admission
     started_utc, start = utc_now(), time.monotonic()
-    try:
-        _run_root_path(output_root)
-        experiment = validate_experiment(experiment)
-        policy, profile = load_config(config_path or CONFIG_DIR / "demo.json")
-        task = load_task(task_path)
-        tokenizer, counter = build_tokenizer(mode, policy, profile, output_root)
-        session = start_session(task, policy, mode, output_root, profile=profile if mode == "real" else None,
-                                temp_root=Path(work_root), keep_workspace=keep_workspace, mcp_scope="repair_server",
-                                experiment=experiment, **rerun)
-        session.state["config_path"] = str(config_path or CONFIG_DIR / "demo.json")
-        session.save()
-    except Exception as error:
-        return _tool_error(error)
+    _run_root_path(output_root)
+    experiment = validate_experiment(experiment)
+    policy, profile = load_config(config_path or CONFIG_DIR / "demo.json")
+    task = load_task(task_path)
+    tokenizer, counter = build_tokenizer(mode, policy, profile, output_root)
+    session = start_session(task, policy, mode, output_root, profile=profile if mode == "real" else None,
+                            temp_root=Path(work_root), keep_workspace=keep_workspace, mcp_scope="repair_server",
+                            experiment=experiment, admission=admission, **rerun)
+    session.state["config_path"] = str(config_path or CONFIG_DIR / "demo.json")
+    session.save()
     prompt = prepare(session, counter, tokenizer)
     if prompt is None:
         return _finish(session, "get_task_context", inputs, started_utc, start)
@@ -172,17 +160,18 @@ def get_task_context(task_path: str, mode: str, output_root: str, work_root: str
 
 @mcp.tool()
 @instrument_mcp_tool("apply_patch")
-@_audited("apply_patch")
 def apply_patch(run_dir: str, diff: str, generation: dict[str, Any] | None = None) -> dict[str, Any]:
     """Record the client's generation, strictly parse the unified diff and git-apply it in the worktree."""
+    args = dict(run_dir=run_dir, diff=diff, generation=generation)
+    return _respond("apply_patch", args, lambda: _apply_patch(**args))
+
+
+def _apply_patch(run_dir, diff, generation) -> dict[str, Any]:
     from vgar.repair.executor import utc_now
     from vgar.repair.session import apply_candidate, record_generation
     inputs = {"run_dir": run_dir, "diff": diff, "generation": generation}
     started_utc, start = utc_now(), time.monotonic()
-    try:
-        session = _load("apply_patch", run_dir)
-    except Exception as error:
-        return _tool_error(error)
+    session = _load("apply_patch", run_dir)
     meta = dict(generation or {"status": "PASS", "mode": "tool_input", "truncated": False})
     gen_started = meta.pop("started_utc", started_utc)
     gen_duration = meta.pop("duration_ms", 0)
@@ -196,19 +185,19 @@ def apply_patch(run_dir: str, diff: str, generation: dict[str, Any] | None = Non
 
 @mcp.tool()
 @instrument_mcp_tool("run_relevant_tests")
-@_audited("run_relevant_tests")
 def run_relevant_tests(run_dir: str) -> dict[str, Any]:
     """Select the relevant tests for the changed files and run them in the worktree."""
+    return _respond("run_relevant_tests", {"run_dir": run_dir}, lambda: _run_relevant_tests(run_dir))
+
+
+def _run_relevant_tests(run_dir) -> dict[str, Any]:
     from vgar.repair.executor import utc_now
     from vgar.repair.pipeline import _test_groups, test_vector
     from vgar.repair.session import run_selected_tests
     inputs = {"run_dir": run_dir}
     started_utc, start = utc_now(), time.monotonic()
-    try:
-        session = _load("run_relevant_tests", run_dir)
-        _, counter = _tooling(session)
-    except Exception as error:
-        return _tool_error(error)
+    session = _load("run_relevant_tests", run_dir)
+    _, counter = _tooling(session)
     partial = run_selected_tests(session, counter)
     if partial is None or partial["status"] != "TESTED":
         status = "ERROR"
@@ -225,16 +214,16 @@ def run_relevant_tests(run_dir: str) -> dict[str, Any]:
 
 @mcp.tool()
 @instrument_mcp_tool("verify_patch")
-@_audited("verify_patch")
 def verify_patch(run_dir: str) -> dict[str, Any]:
     """Static checks and final assessment, clean the worktree and publish the evidence bundle."""
+    return _respond("verify_patch", {"run_dir": run_dir}, lambda: _verify_patch(run_dir))
+
+
+def _verify_patch(run_dir) -> dict[str, Any]:
     from vgar.repair.executor import utc_now
     inputs = {"run_dir": run_dir}
     started_utc, start = utc_now(), time.monotonic()
-    try:
-        session = _load("verify_patch", run_dir)
-    except Exception as error:
-        return _tool_error(error)
+    session = _load("verify_patch", run_dir)
     return _finish(session, "verify_patch", inputs, started_utc, start)
 
 

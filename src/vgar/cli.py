@@ -361,7 +361,16 @@ async def cmd_solve_agent(args: argparse.Namespace) -> int:
 
     runtime = Runtime(mode=args.mode, keep_workspace=args.keep, output_root=args.output_root,
                       generator_choice=args.generator or "worker")
-    result = await run_agent_task(task_path=args.task, runtime=runtime)
+    task_path, run_args = args.task, None
+    if args.experiment:  # S15/D20: an admitted SWE-bench task, planned and admitted like the runner does
+        from vgar.agents.admitted import prepare_admitted_task
+        from vgar.agents.fakes import ScriptedPatchGenerator
+        prepared = prepare_admitted_task(args.experiment, args.task_id, args.variant, args.data_root,
+                                         Path(args.output_root) / "tasks")
+        task_path, run_args, runtime.config_path = prepared.task_path, prepared.run_args, prepared.config_path
+        if args.mode == "fake":  # smoke only: the given patch stands in for the generator
+            runtime.generator = ScriptedPatchGenerator([Path(args.scripted_patch).read_text(encoding="utf-8")])
+    result = await run_agent_task(task_path=task_path, runtime=runtime, run_args=run_args)
     print(f"[status] {result['status']} after {result['attempts']} attempt(s)", flush=True)
     print(f"[run] {result.get('run_record_path')}", flush=True)
     print(f"[trace] {result['trace_path']}", flush=True)
@@ -417,13 +426,19 @@ def parser() -> argparse.ArgumentParser:
     rp.set_defaults(fn=cmd_repair)
 
     sv = sub.add_parser("solve", help="LangGraph workflow running the M2 pipeline once on a task file")
-    sv.add_argument("--task", type=Path, required=True)
+    sv.add_argument("--task", type=Path, help="task JSON (trusted fixture); or use --experiment/--task-id")
     sv.add_argument("--mode", choices=("fake", "real"), default="fake")
     sv.add_argument("--keep", action="store_true", help="keep temp dir")
     sv.add_argument("--output-root", type=Path, default=REPO_ROOT / "results/solve")
     sv.add_argument("--agent", action="store_true", help="let the agent choose the repair tools")
     sv.add_argument("--generator", choices=("worker", "agent"),
                     help="with --agent: diff from the M2 worker (default) or the agent's own model")
+    sv.add_argument("--experiment", type=Path, help="with --agent: M3 experiment config of a SWE-bench task (S15)")
+    sv.add_argument("--task-id", help="with --experiment: task to plan and admit")
+    sv.add_argument("--variant", default="A2", help="with --experiment: variant whose policy the runs use")
+    sv.add_argument("--data-root", type=Path, default=REPO_ROOT / "data", help="with --experiment: '@data' root")
+    sv.add_argument("--scripted-patch", type=Path,
+                    help="with --experiment --mode fake: patch file used instead of the generator (smoke only)")
     sv.set_defaults(fn=cmd_solve)
 
     rn = sub.add_parser("run", help="run the agent read-only on a disposable copy of --repo (no code edits)")
@@ -448,8 +463,15 @@ def main(argv: list[str] | None = None) -> int:
         sys.stdout.reconfigure(encoding="utf-8", errors="replace")
     p = parser()
     args = p.parse_args(argv)
-    if args.command == "solve" and args.generator and not args.agent:
-        p.error("--generator requires --agent")
+    if args.command == "solve":
+        if args.generator and not args.agent:
+            p.error("--generator requires --agent")
+        if args.experiment and not (args.agent and args.task_id):
+            p.error("--experiment requires --agent and --task-id")
+        if args.experiment and args.mode == "fake" and not args.scripted_patch:
+            p.error("--experiment --mode fake requires --scripted-patch")
+        if not args.experiment and not args.task:
+            p.error("solve requires --task (or --agent --experiment --task-id)")
     return asyncio.run(args.fn(args))
 
 

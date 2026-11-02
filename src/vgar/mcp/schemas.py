@@ -31,6 +31,9 @@ ROOT_NOT_LEASED = "ROOT_NOT_LEASED"
 PATH_OUTSIDE_ROOT = "PATH_OUTSIDE_ROOT"
 SELECTOR_REJECTED = "SELECTOR_REJECTED"
 TIMEOUT = "TIMEOUT"
+# C4 repair codes: a call in the wrong run phase, or a run_dir that is not a repair run.
+TOOL_ORDER_VIOLATION = "TOOL_ORDER_VIOLATION"
+RUN_NOT_FOUND = "RUN_NOT_FOUND"
 
 # S10: every error code a tool may return -> retryable (the same call, unchanged, may succeed).
 # Table from C4 in docs/m3_w11_decisions.md; TOOL_ERROR (legacy repair) is deliberately absent.
@@ -39,7 +42,7 @@ KNOWN_ERROR_CODES: Mapping[str, bool] = MappingProxyType({
     "INVALID_QUERY": False, "INVALID_LIMIT": False, "NODE_NOT_FOUND": False, "GRAPH_ERROR": False,
     "GRAPH_NOT_READY": True,
     PATH_OUTSIDE_ROOT: False, ROOT_NOT_LEASED: False, SELECTOR_REJECTED: False, TIMEOUT: False,
-    "TOOL_ORDER_VIOLATION": False, "RUN_NOT_FOUND": False, "MCP_TRANSPORT_ERROR": False,
+    TOOL_ORDER_VIOLATION: False, RUN_NOT_FOUND: False, "MCP_TRANSPORT_ERROR": False,
 })
 
 

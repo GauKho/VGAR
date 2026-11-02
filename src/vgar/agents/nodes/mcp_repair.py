@@ -10,13 +10,23 @@ from vgar.mcp.result_parser import parse_mcp_json_result
 from vgar.observability.instrumentation import instrument_node
 
 
+def _unwrap(response: dict[str, Any]) -> dict[str, Any]:
+    """C4 envelope -> the flat result the hosts read: the engine verdict as status, or the error code as reason."""
+    if response.get("status") == "ERROR":
+        error = response.get("error") or {}
+        return {"status": "ERROR", "reason": error.get("code"), "detail": error.get("message")}
+    data = dict(response["data"])
+    return {"status": data.pop("verdict"), **data}
+
+
 async def _call(runtime: Runtime, tool: str, args: dict[str, Any]) -> dict[str, Any]:
     """One MCP tool call; transport/tool failures become an ERROR result instead of an exception."""
     try:
         tools = await runtime.repair_tools()
-        return parse_mcp_json_result(await tools[tool].ainvoke(args))
+        response = parse_mcp_json_result(await tools[tool].ainvoke(args))
     except Exception as exc:
-        return {"status": "ERROR", "reason": "TOOL_ERROR", "detail": f"{type(exc).__name__}: {exc}"}
+        return {"status": "ERROR", "reason": "MCP_TRANSPORT_ERROR", "detail": f"{type(exc).__name__}: {exc}"}
+    return _unwrap(response)
 
 
 def _reason(result: dict[str, Any]) -> str:

@@ -61,9 +61,11 @@ def generator_path(generator) -> str:
 class AgentRepairHost:
     """Owns the current run, the held diff, the attempt counter and the trace of one agent solve."""
 
-    def __init__(self, runtime: Runtime, task_path: Path, work_dir: Path, generator):
+    def __init__(self, runtime: Runtime, task_path: Path, work_dir: Path, generator, *,
+                 run_args: dict[str, Any] | None = None):
         from vgar.repair.config import load_config, load_task
         self.runtime, self.task_path, self.work_dir, self.generator = runtime, Path(task_path), Path(work_dir), generator
+        self.run_args = dict(run_args or {})  # S15: experiment + admission of a SWE-bench task, on every run
         self.task = load_task(task_path)
         self.policy, self.profile = load_config(runtime.config_path)
         self.trace: list[dict[str, Any]] = []
@@ -123,7 +125,7 @@ class AgentRepairHost:
         result = await _call(self.runtime, "repair_get_task_context", {
             "task_path": str(self.task_path), "mode": self.runtime.mode, "output_root": str(self.runtime.output_root),
             "work_root": str(self.work_dir), "config_path": str(self.runtime.config_path),
-            "keep_workspace": self.runtime.keep_workspace, **rerun})
+            "keep_workspace": self.runtime.keep_workspace, **self.run_args, **rerun})
         self.prompt = result.get("prompt") if result.get("status") == "PASS" else None
         if result.get("run_dir"):
             self.runs.append({"run_dir": result["run_dir"], "generated": False, "applied": False, "tested": False,
@@ -249,7 +251,7 @@ class AgentRepairHost:
             tool, version = self.graph
             result = parse_mcp_json_result(await tool.ainvoke({"diff": run["applied_diff"], "graph_version": version}))
         except Exception as exc:  # index or transport failure: the retry goes on without impact
-            result = {"status": "ERROR", "reason": "TOOL_ERROR", "detail": f"{type(exc).__name__}: {exc}"}
+            result = {"status": "ERROR", "reason": "MCP_TRANSPORT_ERROR", "detail": f"{type(exc).__name__}: {exc}"}
         if result.get("status") == "PASS":
             run["impact"] = result["data"]
             self._log("analyze_patch_impact", "agent", "PASS", None, start)
@@ -375,7 +377,8 @@ def _result(host: AgentRepairHost, error: str | None, source_unchanged: bool) ->
             "failure_reason": failure}
 
 
-async def run_agent_task(*, task_path: Path, runtime: Runtime, model: BaseChatModel | None = None) -> dict:
+async def run_agent_task(*, task_path: Path, runtime: Runtime, model: BaseChatModel | None = None,
+                         run_args: dict[str, Any] | None = None) -> dict:
     """Solve one M2 task with the agent choosing the tools. Owns the temp dir like run_task."""
     from langchain.agents import create_agent
     from langchain.agents.middleware import ToolCallLimitMiddleware
@@ -391,7 +394,8 @@ async def run_agent_task(*, task_path: Path, runtime: Runtime, model: BaseChatMo
     try:
         policy, profile = load_config(runtime.config_path)
         model = model or default_agent_model(runtime, profile)
-        host = AgentRepairHost(runtime, task_path, work_dir, select_generator(runtime, task, policy, profile, model))
+        host = AgentRepairHost(runtime, task_path, work_dir, select_generator(runtime, task, policy, profile, model),
+                               run_args=run_args)
         agent = create_agent(model=model, tools=host.langchain_tools(),
                              system_prompt=PROMPT_PATH.read_text(encoding="utf-8"),
                              middleware=[ToolCallLimitMiddleware(run_limit=MAX_TOOL_CALLS, exit_behavior="end")])
