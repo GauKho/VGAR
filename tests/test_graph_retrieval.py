@@ -14,12 +14,13 @@ from pathlib import Path
 from vgar.contracts.context import ContextPayload
 from vgar.contracts.error import GraphError, InvalidLimitError, InvalidQueryError, NodeNotFoundError
 from vgar.graph.builder import PythonGraphBuilder
-from vgar.graph.retrieval import GraphContextRetriever, RetrievalConfig
+from vgar.graph.retrieval import GraphContextRetriever, RetrievalConfig, ranking_config_hash
 from vgar.graph.task_overlay import TaskOverlayBuilder
 
 
 ROOT = Path(__file__).resolve().parents[1]
 SAMPLE = ROOT / "tests" / "fixtures" / "sample_repo"
+FROZEN_RANKING_HASH = "sha256:993f02c962dde7b1d506497798b44bcc4316ed5b5d64a9c84c5ab2a296bbb14a"
 
 
 def counter(text: str) -> int:
@@ -39,6 +40,30 @@ class GraphRetrievalTests(unittest.TestCase):
     def node_id(self, name, kind="Function", graph=None):
         return next(node["id"] for node in (graph or self.graph)["nodes"]
                     if name in (node["name"], node["qualified_name"]) and node["type"] == kind)
+
+    def test_ranking_config_hash_recorded(self) -> None:
+        # G6: retrieval output carries the ranking hash; changing a weight changes it.
+        default = RetrievalConfig()
+        bumped = RetrievalConfig(weights={**default.weights, "public_api_risk": 0.1})
+        result = self.retriever(config=bumped).retrieve([self.node_id("login")], 1000)
+
+        self.assertRegex(ranking_config_hash(default), r"^sha256:[0-9a-f]{64}$")
+        self.assertNotEqual(ranking_config_hash(default), ranking_config_hash(bumped))
+        self.assertEqual(result.config["ranking_config_hash"], ranking_config_hash(bumped))
+        self.assertTrue(result.config["public_api_risk_is_default_rank_signal"])
+
+    def test_frozen_ranking_config_hash(self) -> None:
+        # G6c (E2, W11 freeze 01/11): the frozen ranking config IS the code default. No tune step was
+        # accepted on dev-25 (docs/m1_retrieval_method.md, "Giao thức tune W11"), so the frozen weights are
+        # the pre-tune defaults on the B10 graph. Changing any field fails here: that is a protocol change.
+        self.assertEqual(ranking_config_hash(RetrievalConfig()), FROZEN_RANKING_HASH)
+
+    def test_ranking_config_hash_ignores_weight_key_order(self) -> None:
+        # G6b: same weights in a different key order hash identically.
+        weights = RetrievalConfig().weights
+        reordered = dict(reversed(list(weights.items())))
+        self.assertEqual(ranking_config_hash(RetrievalConfig(weights=weights)),
+                         ranking_config_hash(RetrievalConfig(weights=reordered)))
 
     def test_callers_callees_are_one_semantic_hop_not_callsite_hops(self) -> None:
         result = self.retriever(config=RetrievalConfig(max_hops=1)).retrieve([self.node_id("login")], 1000)

@@ -4,6 +4,7 @@ from __future__ import annotations
 import copy
 import hashlib
 import heapq
+import json
 import math
 import re
 from collections import defaultdict, deque
@@ -65,6 +66,11 @@ class RetrievalConfig:
         ) or sum(self.weights.values()) <= 0:
             raise InvalidQueryError("weights must contain all six features with finite nonnegative values")
 
+
+def ranking_config_hash(config: RetrievalConfig) -> str:
+    """Identity of a ranking config (C5): canonical JSON of every field, key order ignored."""
+    encoded = json.dumps(asdict(config), sort_keys=True, separators=(",", ":"))
+    return "sha256:" + hashlib.sha256(encoded.encode("utf-8")).hexdigest()
 
 @dataclass
 class RetrievalResult:
@@ -339,6 +345,7 @@ class GraphContextRetriever:
                                 items=items, total_token_count=total,
                                 token_budget=budget_tokens, truncated=truncated)
         diagnostics = asdict(self.config)
+        diagnostics["ranking_config_hash"] = ranking_config_hash(self.config)
         diagnostics.update({"profile": "semantic-context-v10-source-cache", "active_features": available,
                             "topic_words": sorted(topic_words),
                             "similarity_cache_limit": 8192,
@@ -352,7 +359,7 @@ class GraphContextRetriever:
                             "reference_reserved_ids": reference_selected,
                             "name_similarity": "corpus-idf+executable-source" if self._source_evidence else "corpus-idf",
                             "frontier_selection": "global-relevance",
-                            "public_api_risk_is_default_rank_signal": False,
+                            "public_api_risk_is_default_rank_signal": self.config.weights["public_api_risk"] > 0,
                             "distance_uses_anchor_confidence": True,
                             "file_scope_folding": True,
                             "anchor_seed_limit": self._anchor_seed_limit(),

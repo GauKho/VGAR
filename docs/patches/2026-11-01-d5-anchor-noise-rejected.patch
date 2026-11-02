@@ -1,0 +1,136 @@
+diff --git a/src/vgar/graph/grounding.py b/src/vgar/graph/grounding.py
+index f496250e..98d95f6a 100644
+--- a/src/vgar/graph/grounding.py
++++ b/src/vgar/graph/grounding.py
+@@ -1,7 +1,9 @@
+ from __future__ import annotations
+ 
+ import ast
++import io
+ import re
++import tokenize
+ from collections import defaultdict
+ from dataclasses import dataclass, field
+ from typing import Any
+@@ -147,6 +149,44 @@ def _code_scopes(text: str) -> list[_CodeScope]:
+     return scopes
+ 
+ 
++_PROSE_TOKEN_TYPES = frozenset({tokenize.STRING, tokenize.COMMENT} | {
++    getattr(tokenize, name) for name in ("FSTRING_START", "FSTRING_MIDDLE", "FSTRING_END") if hasattr(tokenize, name)})
++
++
++def _explicit_code_spans(text: str) -> tuple[list[tuple[int, int]], list[tuple[int, int]]]:
++    """Spans that make a symbol explicit, and the spans inside them that do not (D5, W11).
++
++    Inline code counts. A fenced block counts only if it parses as Python (R2: logs, shell output and
++    tracebacks are not code), and its string literals and comments do not (R3).
++    """
++    explicit, excluded = [], []
++    for match in _CODE.finditer(text):
++        fence = match.group("fence")
++        if not fence:
++            explicit.append(match.span())
++            continue
++        body = match.group().split("\n", 1)[1].rsplit(fence, 1)[0]
++        body_start = match.start() + match.group().index("\n") + 1
++        try:
++            ast.parse(body)
++            tokens = list(tokenize.generate_tokens(io.StringIO(body).readline))
++        except (SyntaxError, ValueError, RecursionError, tokenize.TokenError):
++            continue
++        explicit.append(match.span())
++        starts = [body_start]
++        for line in io.StringIO(body).readlines():
++            starts.append(starts[-1] + len(line))
++        for token in tokens:
++            if token.type in _PROSE_TOKEN_TYPES:
++                excluded.append((starts[token.start[0] - 1] + token.start[1], starts[token.end[0] - 1] + token.end[1]))
++    return explicit, excluded
++
++
++def _starts_sentence(text: str, position: int) -> bool:
++    prefix = text[:position].rstrip(" \t")
++    return not prefix or prefix[-1] in ".!?\n"
++
++
+ def issue_symbol_text(text: str) -> str:
+     """Remove snippet-local bare variables from lexical ranking, preserving members."""
+     text = _IGNORED_PROSE.sub(lambda match: " " * len(match.group()), text)
+@@ -287,6 +327,7 @@ class TaskAnchorFinder:
+                 text = _mask_environment(text)
+             code_spans = [match.span() for match in _CODE.finditer(text)]
+             code_scopes = _code_scopes(text) if source == "issue" else []
++            explicit_spans, prose_spans = _explicit_code_spans(text)
+             consumed: list[tuple[int, int]] = []
+             # Tracebacks carry their line number after a comma, rather than a colon.
+             for pattern in (_TRACEBACK, _QUOTED_LOCATION, _LOCATION):
+@@ -361,7 +402,8 @@ class TaskAnchorFinder:
+                         imported = True
+                 qualified = "." in token
+                 explicit = (source == "failing_test"
+-                            or any(start <= match.start() < end for start, end in code_spans)
++                            or (any(start <= match.start() < end for start, end in explicit_spans)
++                                and not any(start <= match.start() < end for start, end in prose_spans))
+                             or bool(re.match(r"\s*\(", text[match.end():])))
+                 matches = (self._symbols_by_qualified_name.get(canonical, []) if qualified or imported
+                            else self._symbols_by_name.get(token, []))
+@@ -385,6 +427,9 @@ class TaskAnchorFinder:
+                         prose_fallbacks.append((matches, evidence))
+                         continue
+                     code_like = "_" in token or any(char.isupper() for char in token)
++                    if (code_like and "_" not in token and token[0].isupper()
++                            and not any(char.isupper() for char in token[1:]) and _starts_sentence(text, match.start())):
++                        code_like = False  # D5 R1: capitalised only because it starts a sentence
+                     score = (0.8 if qualified or imported else 0.6 if source == "failing_test"
+                              else 0.75 if explicit else 0.6 if code_like else 0.4)
+                     if receiver_fallback:
+diff --git a/tests/test_task_anchors.py b/tests/test_task_anchors.py
+index 467af3c2..645f7436 100644
+--- a/tests/test_task_anchors.py
++++ b/tests/test_task_anchors.py
+@@ -283,6 +283,44 @@ class TaskAnchorTests(unittest.TestCase):
+         result = finder.find_task_anchors("```python\nimport external as a\na.process()\n```")
+         self.assertEqual(result.anchors, [])
+ 
++    @staticmethod
++    def _scores(source: str, issue: str) -> dict[str, float]:
++        with tempfile.TemporaryDirectory() as directory:
++            root = Path(directory)
++            (root / "app.py").write_text(source, encoding="utf-8")
++            finder = TaskAnchorFinder(PythonGraphBuilder(repo_key="demo/d5", repository_revision="fixture").build(root))
++        return {anchor.symbol: anchor.score for anchor in finder.find_task_anchors(issue).anchors}
++
++    def test_sentence_initial_capitalised_word_is_not_code_like(self) -> None:
++        # D5 R1 (pylint-6386 "Similar behaviour ..."): a capital only because it starts a sentence is prose.
++        source = "def When(): pass\n"
++        self.assertLessEqual(self._scores(source, "When the option is set, the checker crashes.")["app.When"], 0.4)
++        self.assertEqual(self._scores(source, "The checker crashes in When.")["app.When"], 0.6)
++
++    def test_real_class_at_sentence_start_is_still_anchored(self) -> None:
++        # D5c (Review Focus 5): demoted, never dropped.
++        self.assertGreater(self._scores("class Session: pass\n", "Session objects leak connections.")["app.Session"], 0)
++
++    def test_tokens_in_unparseable_fence_are_not_explicit(self) -> None:
++        # D5 R2 (pylint-4604 "Module a", pylint-6386 "usage: pylint"): log output is not code.
++        issue = "Crash\n```\n************* Module x\nChecker failed: see log\n```"
++        self.assertLess(self._scores("class Checker: pass\n", issue)["app.Checker"], 0.75)
++
++    def test_inline_code_stays_explicit(self) -> None:
++        # D5d
++        self.assertEqual(self._scores("class Checker: pass\n", "`Checker` crashes")["app.Checker"], 0.75)
++
++    def test_tokens_in_strings_and_comments_of_python_fence_are_not_explicit(self) -> None:
++        # D5 R3 (pylint-4604 '"""Docstring."""' and '# type: abc.ABC'): only real code tokens are explicit.
++        source = "class Docstring: pass\ndef mark(): pass\n"
++        issue = '```python\n"""Docstring."""\nimport abc\nX = 1  # mark this\n```'
++        scores = self._scores(source, issue)
++        self.assertLess(scores["app.Docstring"], 0.75)
++        self.assertLess(scores.get("app.mark", 0), 0.75)
++
++    def test_code_tokens_of_python_fence_stay_explicit(self) -> None:
++        self.assertEqual(self._scores("def mark(): pass\n", "```python\ny = mark\n```")["app.mark"], 0.75)
++
+     def test_invalid_reproduction_keeps_lexical_fallback(self) -> None:
+         result = self._prose_finder().find_task_anchors("```python\nif ???\nobj.login()\n```")
+         self.assertEqual([a.symbol for a in result.anchors], ["app.login"])

@@ -23,6 +23,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
+from vgar.graph.builder import RESOLVER_PROFILE
 from vgar.evaluation.retrieval.dataset import read_repository_sources, require_split, validate_task
 from vgar.evaluation.retrieval.evaluation import DEFAULT_BUDGET_TOKENS, DEFAULT_SNIPPET_LINES
 from vgar.evaluation.retrieval.evidence import new_run, sha256, source_fingerprint, utc_now, write_json
@@ -34,6 +35,20 @@ from vgar.evaluation.retrieval.scoring import (FALLBACK_COUNTER_LABEL, SCORING_V
 
 KEY_METRICS = ("file_recall@5", "function_recall@5", "file_mrr", "function_mrr", "packed_gold_function_in_context",
                "no_anchors", "unmapped_count", "context_tokens")
+
+
+def retrieval_config_from_args(args):
+    """RetrievalConfig for this run: CLI hop/candidate limits plus an optional JSON override file (tuning steps)."""
+    from dataclasses import fields
+    from vgar.graph.retrieval import RetrievalConfig
+    values = {"max_hops": args.max_hops, "max_candidates": args.max_candidates}
+    if args.retrieval_config:
+        overrides = json.loads(Path(args.retrieval_config).read_text(encoding="utf-8"))
+        unknown = sorted(set(overrides) - {item.name for item in fields(RetrievalConfig)})
+        if unknown:
+            raise ValueError(f"Unknown RetrievalConfig fields in {args.retrieval_config}: {unknown}")
+        values.update(overrides)
+    return RetrievalConfig(**values)
 
 
 def key_of(row: dict) -> str:
@@ -90,7 +105,7 @@ def load_or_build_graph(root: Path, row: dict, tree: Path, *, rebuild: bool, bui
 
 def evaluate_one(root, row, fail_to_pass, args, builder_hash):
     """One bounded task. Each worker owns its graph, parser and tokenizer."""
-    from vgar.graph.retrieval import GraphContextRetriever, RetrievalConfig
+    from vgar.graph.retrieval import GraphContextRetriever
     from vgar.graph.task_overlay import TaskOverlayBuilder
     from vgar.graph.scip_resolver import ScipConfig
     from vgar.observability.graph_trace import GraphTrace
@@ -101,7 +116,7 @@ def evaluate_one(root, row, fail_to_pass, args, builder_hash):
     else:
         counter, label = bytes_div4_counter, FALLBACK_COUNTER_LABEL
     task_start = time.perf_counter()
-    retrieval_config = RetrievalConfig(max_hops=args.max_hops, max_candidates=args.max_candidates)
+    retrieval_config = retrieval_config_from_args(args)
     patch_path = (root / row["gold_patch_path"]).resolve()
     if not patch_path.is_relative_to(root.resolve() / "data" / "gold"):
         raise ValueError("Gold patch path outside data/gold")
@@ -266,6 +281,7 @@ def main() -> int:
     parser.add_argument("--cache-graphs", action="store_true", help="Opt in to saving full graph JSON; existing caches can be reused")
     parser.add_argument("--max-hops", type=int, default=2)
     parser.add_argument("--max-candidates", type=int, default=100)
+    parser.add_argument("--retrieval-config", type=Path, help="JSON overrides of RetrievalConfig fields (W11 tuning steps)")
     parser.add_argument("--allow-heldout", action="store_true", help="FINAL evaluation only; never use while tuning")
     group = parser.add_mutually_exclusive_group(required=True)
     group.add_argument("--tokenizer-manifest", type=Path)
@@ -274,7 +290,7 @@ def main() -> int:
     if not math.isfinite(args.task_timeout) or args.task_timeout <= 0 or (args.limit is not None and args.limit <= 0):
         parser.error("task-timeout and limit must be positive")
 
-    from vgar.graph.retrieval import GraphContextRetriever, RetrievalConfig
+    from vgar.graph.retrieval import GraphContextRetriever, ranking_config_hash
     from vgar.graph.task_overlay import TaskOverlayBuilder
     if args.tokenizer_manifest:
         from vgar.graph.token_counter import LocalTokenizerCounter
@@ -293,15 +309,17 @@ def main() -> int:
     tasks = manifest["tasks"][:args.limit] if args.limit else manifest["tasks"]
     fail_to_pass = load_fail_to_pass(root, manifest)
     builder_hash = source_fingerprint(ROOT)["digest"]
-    retrieval_config = RetrievalConfig(max_hops=args.max_hops, max_candidates=args.max_candidates)
+    retrieval_config = retrieval_config_from_args(args)
 
     config = {"manifest_hash": sha256(manifest_bytes), "budget_tokens": args.budget_tokens, "scoring_version": SCORING_VERSION,
               "counter_label": label, "counter_is_fallback": fallback,
               "snippet_policy": {"max_snippet_lines": DEFAULT_SNIPPET_LINES, "header": True, "overlap": "skip_if_overlaps_different_group"},
               "arms": {arm: {"uses_fail_to_pass": uses} for arm, uses in ARMS.items()},
-              "graph": {"resolver": "tree-sitter+python-static-v3-method-aliases", "builder_hash": builder_hash, "source_roots": ["src"]},
+              "graph": {"resolver": RESOLVER_PROFILE, "builder_hash": builder_hash, "source_roots": ["src"]},
               "retrieval": {"max_hops": args.max_hops, "max_candidates": args.max_candidates,
                             "min_edge_confidence": retrieval_config.min_edge_confidence, "weights": retrieval_config.weights,
+                            "ranking_config_hash": ranking_config_hash(retrieval_config),
+                            "override_file": str(args.retrieval_config) if args.retrieval_config else None,
                             "include": "make_include(corpus): not Test and path in is_source corpus"}, "limit": args.limit, "task_timeout_seconds": args.task_timeout}
     directory, record = new_run(root / "results" / "retrieval", "retrieval_graph")
     record.update(config=config, source=source_fingerprint(root), dataset_id=manifest["dataset_id"],

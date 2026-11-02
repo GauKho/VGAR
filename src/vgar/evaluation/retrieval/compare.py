@@ -172,3 +172,35 @@ def compare_runs(bm25_run, graph_run, results_root, cap: int = 100, seed: int = 
                   complete=True, exit_code=0, stdout="", stderr="")
     write_json(directory / "result.json", report)
     return directory, report
+
+
+TUNE_SECONDARY = ("function_recall@5", "file_mrr")
+
+
+def compare_graph_runs(previous, candidate, arm: str = "graph", metric: str = "file_recall@5",
+                       seed: int = 0) -> dict[str, Any]:
+    """W11 tune-step rule (E3): ACCEPT iff the paired mean delta of ``metric`` is > 0 and its CI95 lower bound is > 0.
+
+    Only tasks SUCCEEDED in both runs are paired; the rest are listed in ``excluded``.
+    """
+    if metric not in DELTA_METRICS:
+        raise ValueError(f"Unknown metric {metric!r}; expected one of {DELTA_METRICS}")
+    previous, candidate = Path(previous), Path(candidate)
+    prev, cand = _load(previous), _load(candidate)
+    for key in SAME_CONFIG:
+        if prev["config"][key] != cand["config"][key]:
+            raise ValueError(f"Config mismatch on {key}: {prev['config'][key]!r} vs {cand['config'][key]!r}")
+    done = [{s["instance_id"]: s for s in run["task_results"] if s["status"] == "SUCCEEDED"} for run in (prev, cand)]
+    ids = sorted(done[0].keys() & done[1].keys())
+    every = {s["instance_id"] for run in (prev, cand) for s in run["task_results"]}
+    base = {i: _task(previous, done[0][i])["arms"][arm]["metrics"] for i in ids}
+    other = {i: _task(candidate, done[1][i])["arms"][arm]["metrics"] for i in ids}
+    stats = paired_stats(base, other, seed)
+    main = stats[metric]
+    accepted = bool(main.get("n")) and main["mean_delta"] > 0 and main["ci95"][0] > 0
+    return {"metric": metric, "arm": arm, "seed": seed, "n": main.get("n", 0), "mean_delta": main.get("mean_delta"),
+            "ci95": main.get("ci95"), "wins": main.get("wins", 0), "losses": main.get("losses", 0),
+            "verdict": "ACCEPT" if accepted else "REJECT", "excluded": sorted(every - set(ids)),
+            "previous_hash": prev["config"].get("retrieval", {}).get("ranking_config_hash"),
+            "candidate_hash": cand["config"].get("retrieval", {}).get("ranking_config_hash"),
+            "secondary": {name: stats[name] for name in TUNE_SECONDARY}}

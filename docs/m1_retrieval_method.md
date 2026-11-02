@@ -144,14 +144,14 @@ Instance giữ bản sao graph/config; base graph và source không bị ghi b�
 
 ## Ranking theo sáu đặc trưng của proposal
 
-| Feature | Cách tính baseline | Trọng số gốc |
-|---|---|---:|
-| task_similarity | Jaccard từ vựng giữa issue và name/qualified name/path/signature; split camelCase, underscore; ASCII word tokens | 0.20 |
-| graph_distance | 1 / (1 + shortest semantic distance từ anchors) | 0.30 |
-| edge_confidence | Bottleneck confidence trên path ngắn nhất, gồm anchor score nếu có; chọn strongest path khi cùng độ dài | 0.20 |
-| failing_test_proximity | 1 / (1 + distance từ Test có REPRODUCES rõ ràng); ngoài bounded frontier là 0 | 0.20 |
-| public_api_risk | Với visibility=public: 0.5 + 0.5 × unique callers / (1 + unique callers); node khác là 0 | 0.10 |
-| recent_change_frequency | Counts theo node ID, fallback path, chia max supplied counts; chỉ khi có mapping kèm history_label | 0.10 |
+| Feature | Cách tính baseline | Trọng số gốc (proposal, 03/10) | Mặc định trong code (từ `73814b8f`, 12/10) |
+|---|---|---:|---:|
+| task_similarity | Jaccard từ vựng giữa issue và name/qualified name/path/signature; split camelCase, underscore; ASCII word tokens | 0.20 | 0.50 |
+| graph_distance | 1 / (1 + shortest semantic distance từ anchors) | 0.30 | 0.20 |
+| edge_confidence | Bottleneck confidence trên path ngắn nhất, gồm anchor score nếu có; chọn strongest path khi cùng độ dài | 0.20 | 0.10 |
+| failing_test_proximity | 1 / (1 + distance từ Test có REPRODUCES rõ ràng); ngoài bounded frontier là 0 | 0.20 | 0.20 |
+| public_api_risk | Với visibility=public: 0.5 + 0.5 × unique callers / (1 + unique callers); node khác là 0 | 0.10 | 0.00 |
+| recent_change_frequency | Counts theo node ID, fallback path, chia max supplied counts; chỉ khi có mapping kèm history_label | 0.10 | 0.10 |
 
 Score = tổng(weight × feature) / tổng weights của **active features**. History
 không được cung cấp thì feature là null và bị loại khỏi mẫu số. Không có test
@@ -224,3 +224,40 @@ runtime truyền counter đã khởi tạo thay vì load lại. Option cũ
 Standalone tokenizer/revision/8000 snippet budget đã nghiệm thu; model revision và
 total prompt allocation M3 vẫn cần đồng bộ. Milestone 4 mới chạy dev retrieval evaluation/Graph-vs-BM25; chưa
 claim Recall/MRR hoặc lợi ích repair chỉ từ tests và các task tổng hợp này.
+
+## Giao thức tune W11 (viết 01/11/2026, trước khi chạy bước nào)
+
+Nguồn: `docs/superpowers/plans/2026-11-01-m1-w11-graph-ranking.md` (Q1–Q5) và `docs/m3_w11_decisions.md` (E2–E4).
+
+- **Tập task:** `data/manifests/verified-c104f840cc67-dev-25.json`, split dev. Manifest này có gold patch và đã có run BM25 và graph từ W5–6. Tập ablation W10 (`configs/m1/w10_dev_manifest.json`) không có gold và chỉ trùng 5 task, nên không dùng để tune. Không dùng held-out.
+- **Thứ tự bước:**
+  - (a) graph sau B10, trọng số mặc định cũ. Đây là dòng "graph trước tune" của bảng R1.
+  - (d) sửa anchor nhiễu D5.
+  - (b) `public_api_risk` ∈ {0.05, 0.10}. Các trọng số khác giữ nguyên.
+  - (c) "giảm IMPORTS hop 2": **không làm trong retrieval**, vì `RetrievalConfig` không có trọng số theo loại edge và bằng chứng D3 đến từ `graph/impact.py`. Chuyển sang phép đo impact (RQ3, W12).
+- **Luật nhận một bước:** so với bước được nhận gần nhất bằng `scripts/compare_tune_steps.py` (`compare_graph_runs`). Nhận khi chênh lệch trung bình `file_recall@5` > 0 **và** cận dưới CI95 bootstrap ghép cặp > 0 (seed 0, 2000 vòng). Chỉ ghép task `SUCCEEDED` ở cả hai run; số task bị loại được ghi lại. Báo thêm `function_recall@5`, `file_mrr`, số task lợi và số task hại. Bước nào không đạt thì bỏ, giữ config của bước trước. Bước (a) là sửa lỗi nên luôn được nhận.
+- **Hash:** mỗi run ghi `config.retrieval.ranking_config_hash` (`ranking_config_hash`, `src/vgar/graph/retrieval.py`). Config đóng băng là **giá trị mặc định** của `RetrievalConfig`; hash của nó được ghim trong `tests/test_graph_retrieval.py`.
+
+### Kết quả tune W11 (01/11/2026, dev-25, `file_recall@5` là metric quyết định)
+
+Mọi run đều ở `results/retrieval/<run>` (không commit). Cột graph lấy arm `graph`, chỉ dùng issue, không dùng FAIL_TO_PASS. n = 22 vì 3 task sympy (16597, 17318, 20438) timeout ở 300 giây trong mọi run graph. Δ so với BM25 là trung bình chênh lệch ghép cặp trên 22 task đó, với CI95 bootstrap (seed 0).
+
+| Dòng | Run | Hash ranking | N | File R@3 | File R@5 | File R@10 | Function R@5 | File MRR | Token context | Δ File R@5 so BM25 [CI95] | Verdict E3 |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| BM25 | `20261013T105428274182Z-5b0743bf6087` | — | 25 | 0.360 | 0.527 | 0.593 | 0.278 | 0.591 | 7997 | — | — |
+| Graph trước B10 (13/10) | `20261013T105509163743Z-ec10aa54db96` | (chưa ghi) | 22 | 0.360 | 0.447 | 0.572 | 0.315 | 0.605 | 7967 | −0.091 [−0.292, 0.121] | — |
+| (a) Sau B10, **trước tune** | `20261101T093903486801Z-cfb08e637061` | `993f02c9…` | 22 | 0.360 | 0.447 | 0.572 | 0.315 | 0.605 | 7968 | −0.091 [−0.292, 0.121] | nhận (sửa lỗi) |
+| (d) D5: R1, R2, R3 chống anchor nhiễu | `20261101T104841498720Z-e6158ca9d69f` | `993f02c9…` (sửa code, không đổi config) | 22 | 0.360 | 0.447 | 0.572 | 0.315 | 0.607 | 7884 | −0.091 [−0.292, 0.121] | **REJECT**: Δ so (a) = 0.000, 0/0 |
+| (b) `public_api_risk` = 0.05 | `20261101T112537433733Z-babce42f7d76` | `3c611d21…` | 22 | 0.390 | 0.447 | 0.595 | 0.277 | 0.623 | 7982 | −0.091 [−0.292, 0.121] | **REJECT**: Δ so (a) = 0.000; Function R@5 −0.038, 0 lợi / 2 hại |
+| (b) `public_api_risk` = 0.10 | — | `98a02ab0…` | — | — | — | — | — | — | — | — | **không chạy** (xem dưới) |
+
+**Config đóng băng (H3):** trọng số mặc định trước tune, chạy trên graph đã sửa B10, `ranking_config_hash = sha256:993f02c962dde7b1d506497798b44bcc4316ed5b5d64a9c84c5ab2a296bbb14a`. Hash này được ghim trong `tests/test_graph_retrieval.py::test_frozen_ranking_config_hash` (G6c).
+
+**Lệch so với giao thức, ghi rõ để báo cáo:**
+- **Bỏ mức 0.10 của bước (b).** Run bị dừng giữa chừng ở 6/25 task vì máy hết RAM (Claude Code tự dừng tiến trình nền). Người dùng quyết định không chạy lại, vì ở mức 0.05 metric quyết định đã đứng yên còn Function R@5 thì giảm. Đây là quyết định đưa ra **sau khi** đã thấy kết quả 0.05.
+- **D5 bị gỡ khỏi code**, không chỉ khỏi config. D5 sửa `grounding.py`, nên chỉ để nó ngoài config thì phép đo không còn khớp với code. Bản sửa được lưu ở `docs/patches/2026-11-01-d5-anchor-noise-rejected.patch`.
+
+**Nhận xét cho RQ2:**
+- B10 không đổi ranking trên dev-25: cả ba metric giống hệt run 13/10 ở mọi task.
+- D5 làm bớt anchor nhiễu ở 9/22 task, nhưng không đổi top-5 ở task nào.
+- Graph vẫn **thấp hơn BM25** ở File R@5 (−0.091), dù CI chứa 0. Graph chỉ hơn BM25 ở Function R@5 (0.315 so với 0.278) và File MRR.
