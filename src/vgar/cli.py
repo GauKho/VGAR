@@ -360,7 +360,8 @@ async def cmd_solve_agent(args: argparse.Namespace) -> int:
     from vgar.agents.tool_agent import run_agent_task
 
     runtime = Runtime(mode=args.mode, keep_workspace=args.keep, output_root=args.output_root,
-                      generator_choice=args.generator or "worker")
+                      generator_choice=args.generator or "worker",
+                      **({"config_path": args.config} if args.config else {}))
     task_path, run_args = args.task, None
     if args.experiment:  # S15/D20: an admitted SWE-bench task, planned and admitted like the runner does
         from vgar.agents.admitted import prepare_admitted_task
@@ -437,6 +438,7 @@ def parser() -> argparse.ArgumentParser:
     sv.add_argument("--task-id", help="with --experiment: task to plan and admit")
     sv.add_argument("--variant", default="A2", help="with --experiment: variant whose policy the runs use")
     sv.add_argument("--data-root", type=Path, default=REPO_ROOT / "data", help="with --experiment: '@data' root")
+    sv.add_argument("--config", type=Path, help="with --agent: repair config (default: configs/m2/demo.json)")
     sv.add_argument("--scripted-patch", type=Path,
                     help="with --experiment --mode fake: patch file used instead of the generator (smoke only)")
     sv.set_defaults(fn=cmd_solve)

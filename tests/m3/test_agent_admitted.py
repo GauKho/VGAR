@@ -69,6 +69,7 @@ def test_repair_server_forwards_admission_to_the_session(tmp_path, monkeypatch):
 
 def test_agent_host_opens_every_run_with_the_admission(tmp_path, monkeypatch):
     from m3_support import ROOT
+    from pathlib import Path
     from vgar.agents import tool_agent
     from vgar.agents.runtime import Runtime
     calls = []
@@ -95,3 +96,27 @@ def test_cli_solve_agent_takes_experiment_task_and_requires_a_scripted_patch_in_
     with pytest.raises(SystemExit):
         cli.main(['solve', '--agent', '--experiment', 'e.json', '--task-id', 't', '--variant', 'A2', '--mode', 'fake'])
     assert '--scripted-patch' in capsys.readouterr().err
+
+
+def test_cli_solve_agent_config_reaches_the_runtime(monkeypatch, capsys):
+    # Demo on WSL: configs/m2/demo.json names the Windows interpreter, so solve needs --config like chat.
+    from vgar import cli
+    from pathlib import Path
+    from vgar.agents import tool_agent
+    seen = {}
+
+    async def fake_run(task_path, runtime, run_args):
+        seen['config'] = runtime.config_path
+        return {'status': 'COMPLETED', 'attempts': 1, 'trace_path': 't'}
+    monkeypatch.setattr(tool_agent, 'run_agent_task', fake_run)
+    cli.main(['solve', '--agent', '--task', 't.json', '--config', 'configs/m2/demo_linux.json'])
+    assert Path(seen['config']) == Path('configs/m2/demo_linux.json')
+
+
+def test_linux_demo_config_differs_from_demo_only_in_host_paths():
+    from pathlib import Path
+    root = Path(__file__).resolve().parents[2] / 'configs/m2'
+    demo, linux = (json.loads((root / name).read_text(encoding='utf-8')) for name in ('demo.json', 'demo_linux.json'))
+    for config in (demo, linux):
+        config['model'].pop('interpreter'), config['model'].pop('snapshot')
+    assert linux == demo
