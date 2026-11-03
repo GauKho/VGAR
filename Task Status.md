@@ -75,6 +75,21 @@
 - Quyết định: `docs/m3_w11_decisions.md` (C4, C5, E1–E8; E8: agent trên repo bất kỳ là future work).
   Trạng thái phiên: `docs/status/m3_w11_session_2026-11-01.md`.
 
+### Phạm vi cập nhật ngày 03/11/2026 (M2 tuần 11)
+
+> **Kết luận tuần 11 sau cập nhật này:** cả 8 deliverable tuần 11 (M1, M2, M3) đã xong về code.
+> Phần M2 có trong commit `32fd4723` (nhánh `origin/m2/w11-checkers-evidence-c7-20261102`):
+> `api_check.py`, `structural_check.py`, `configs/m2/structural/`, `api_check`/`structural_check`
+> trong evidence. **Chưa merge vào `main`** (main vẫn ở PR #6).
+
+- Chỉ đổi W11-12-M2-01, W11-12-M2-02 (CT → HT) và dòng 11–12/Tổng của bảng tổng hợp.
+- Kiểm ngày 03/11: `tests/test_incremental.py`, `tests/test_mcp_tool_contract.py`,
+  `tests/test_mcp_security.py`, `tests/test_mcp_legacy_servers.py`, `tests/m2/w1112`: 323 PASS, 1 skip.
+- H3 chưa đóng: M2 có `with_api_risk()` để điền `signature_changed`, nhưng hàm này chỉ được gọi
+  trong test; `graph/impact.py` vẫn trả `NOT_COMPUTED`. Cần M1 nối vào luồng impact.
+- M2-03 (`A3.json`, H5) và M2-04 (mutant pool) vẫn CT, thuộc W12.
+- Chi tiết M2: `docs/status/m2.md` §6.1–6.3, `docs/m2_w11_{1_api_check,2_structural_check,3_evidence}.md`.
+
 ### Phạm vi cập nhật ngày16/10/2026
 
 - Giữ đủ150 task IDs. Đối chiếu code/evidence đã có từ M2 W5–6, M1 W7–8 và
@@ -208,12 +223,12 @@ task thành viên, nên **không lấy tỷ lệ checkbox làm % tiến độ ho
 | 5–6      |       20 |     13 |      4 |      1 |      2 |
 | 7–8      |       19 |     17 |      1 |      0 |      1 |
 | 9–10     |       20 |     14 |      5 |      1 |      0 |
-| 11–12    |       16 |      7 |      3 |      5 |      1 |
+| 11–12    |       16 |      9 |      3 |      3 |      1 |
 | 13–14    |       16 |      0 |      6 |      4 |      6 |
 | 15–16    |       16 |      1 |      8 |      0 |      7 |
-| **Tổng** |  **150** | **74** | **37** | **11** | **28** |
+| **Tổng** |  **150** | **76** | **37** |  **9** | **28** |
 
-Dòng 7–8 cập nhật ngày 18/10; dòng 9–10 cập nhật ngày 30/10 (W09-10-M3-02 sửa ngày 02/11); dòng 11–12 và dòng Tổng cập nhật ngày 02/11; các tuần khác giữ số ngày 16/10.
+Dòng 7–8 cập nhật ngày 18/10; dòng 9–10 cập nhật ngày 30/10 (W09-10-M3-02 sửa ngày 02/11); dòng 11–12 và dòng Tổng cập nhật ngày 03/11; các tuần khác giữ số ngày 16/10.
 Các số này là **số dòng checklist được phân loại**, không phải47 features
 độc lập hay % đồ án. Mục HT về README/schema có thể thuộc tuần15–16 dù
 research experiment của tuần ấy chưa chạy. [report-qa.json](docs/audit/2026-10-13/report-qa.json)
@@ -522,8 +537,8 @@ khi thiếu wiring/security của luồng integrated agent; không bắt M2 làm
 | W11-12-M1-01 | Incremental graph update changed files | **HT** | `graph/incremental.py`: parse lại file đổi, link lại, tăng `graph_version`; G3 incremental khớp full rebuild cho modify/add_file/delete_file/rename_function/move_import (`tests/test_incremental.py`). | — |
 | W11-12-M1-02 | Reparse/relink/cache invalidate | **HT** | G4 caller bị gỡ edge khi callee bị xóa; G5 no-op giữ version, cache hit 100%. | — |
 | W11-12-M1-03 | Cold/warm times/node count/cache hit report | **MP** | Updater và timing đã có; chưa có báo cáo cold so với warm theo patch. | M1-W12-1. |
-| W11-12-M2-01 | Export/signature API compatibility | **CT** | 02/11: chưa có `src/vgar/repair/api_check.py` trong repo (M2-W11-1). Kéo theo H3 (`signature_changed` của M1) vẫn `NOT_COMPUTED`. | M2 làm theo M2-W11-1. |
-| W11-12-M2-02 | Forbidden import/layer/cycle theo config | **CT** | 02/11: chưa có `structural_check.py`, `configs/m2/structural/` (M2-W11-2). | M2 làm theo M2-W11-2. |
+| W11-12-M2-01 | Export/signature API compatibility | **HT** | 03/11: `src/vgar/repair/api_check.py` so export và signature giữa baseline và sau patch; điền `api_check` vào evidence (M2-W11-3); `tests/m2/w1112/test_api_check.py`, `test_evidence_*.py` PASS (commit `32fd4723`). `with_api_risk()` có nhưng chưa nối vào `graph/impact.py`, nên H3 (`signature_changed`) vẫn `NOT_COMPUTED`. | Chờ review và merge; M1 nối `with_api_risk()` để đóng H3. |
+| W11-12-M2-02 | Forbidden import/layer/cycle theo config | **HT** | 03/11: `src/vgar/repair/structural_check.py` và `configs/m2/structural/` (`schema.json`, `example.yaml`): import cấm/layer/cycle theo config từng repo, có so baseline, repo không có config thì `NOT_RUN`; điền `structural_check` vào evidence; `tests/m2/w1112/test_structural_check.py` PASS (commit `32fd4723`). | Chờ review và merge. |
 | W11-12-M2-03 | A3 graph + graph/API verification | **CT** | 02/11: chưa có `A3.json` (H5, đường găng của GPU W12). | M2-W12-1, cần trước GPU W12 ngày 1. |
 | W11-12-M2-04 | False accept/reject trên pool/mutations | **CT** | Chưa có mutant pool. Bản sửa `build_line_map` (S15) phải merge trước, nếu không FRR sẽ bị tính sai. | M2-W12-2. |
 | W11-12-M3-01 | Tool schemas + error responses hoàn chỉnh | **HT** | Envelope C4 `{status, data, error{code, message, retryable}, metadata}` cho cả 4 server; `repair_server` để verdict trong `data.verdict`; enum `KNOWN_ERROR_CODES` (thêm `TOOL_ORDER_VIOLATION`, `RUN_NOT_FOUND`, `MCP_TRANSPORT_ERROR`; bỏ `TOOL_ERROR`); `docs/mcp_tool_contract.md`; `tests/test_mcp_tool_contract.py`, `tests/test_mcp_day5.py`. | Hai câu hỏi C4 chờ M1/M2 xác nhận khi review. |
