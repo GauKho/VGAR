@@ -40,6 +40,8 @@ def test_tool_returns_a_valid_impact_report_and_audits_without_the_diff(snapshot
     assert result['status'] == 'PASS' and result['error'] is None
     report = ImpactReport.model_validate_json(json.dumps(result['data']))
     assert len(report.changed) == 1 and report.impacted.status == 'COMPLETE' and len(report.impacted.items) == 8
+    signature = next(f for f in report.risk.features if f.name == 'signature_changed')
+    assert (signature.available, signature.reason) == (False, 'NOT_COMPUTED')  # check_api NOT_RUN: Child inherits __init__
     entry = audit_lines(tmp_path)[-1]
     assert entry['tool'] == 'analyze_patch_impact' and entry['status'] == 'PASS'
     assert entry['patch_sha256'] == report.patch_hash and entry['changed_count'] == 1 and entry['impacted_count'] == 8

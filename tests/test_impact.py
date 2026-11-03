@@ -482,7 +482,66 @@ def test_impact_risk_features(impact_case):
     risk = {f.name: f for f in analyze(root, document, CORE_HELPER).risk.features}
     assert {n: f.value for n, f in risk.items() if f.available} == {
         'public_symbol_changed': True, 'fan_in': 4, 'impacted_callers': 4, 'impacted_tests': 1}
+    # check_api is NOT_RUN for pkg/core.py (Child inherits its constructor), so this risk stays unavailable.
     assert risk['signature_changed'].available is False and risk['signature_changed'].reason == 'NOT_COMPUTED'
+
+
+API_SOURCE = 'def helper(x):\n    return x + 1\n\n\ndef use():\n    return helper(1)\n'
+
+
+@pytest.fixture
+def api_case(tmp_path):
+    from vgar.graph.builder import PythonGraphBuilder
+    root = tmp_path / 'repo'
+    (root / 'pkg').mkdir(parents=True)
+    (root / 'pkg/__init__.py').write_text('', encoding='utf-8')
+    (root / 'pkg/mod.py').write_text(API_SOURCE, encoding='utf-8')
+    document = PythonGraphBuilder(repo_key='demo/h3', repository_revision='fixture-v1',
+                                  source_roots=('pkg',)).build(root)
+    return root, document
+
+
+def analyze_api(case, body):
+    from vgar.graph.impact import analyze_patch_impact
+    from vgar.repair.patch import PatchPolicy
+    root, document = case
+    return analyze_patch_impact(patch(body, 'pkg/mod.py'), document, root,
+                                patch_policy=PatchPolicy(('pkg/__init__.py', 'pkg/mod.py'), ()))
+
+
+def _signature(report):
+    feature = next(f for f in report.risk.features if f.name == 'signature_changed')
+    return feature.available, getattr(feature, 'value', None), getattr(feature, 'reason', None)
+
+
+def test_signature_body_only_change_is_false(api_case):
+    assert _signature(analyze_api(api_case, '@@ -2 +2 @@\n-    return x + 1\n+    return x + 2\n')) == (True, False, None)
+
+
+def test_signature_added_required_parameter(api_case):
+    raw = '@@ -1 +1 @@\n-def helper(x):\n+def helper(x, y):\n'
+    assert _signature(analyze_api(api_case, raw)) == (True, True, None)
+
+
+def test_signature_removed_public_function(api_case):
+    raw = '@@ -1,3 +0,0 @@\n-def helper(x):\n-    return x + 1\n-\n'
+    assert _signature(analyze_api(api_case, raw)) == (True, True, None)
+
+
+def test_signature_parse_error_is_not_computed(api_case):
+    raw = '@@ -2 +2 @@\n-    return x + 1\n+    return x +\n'
+    assert _signature(analyze_api(api_case, raw)) == (False, None, 'NOT_COMPUTED')
+
+
+def test_signature_without_changed_nodes_is_still_measured(api_case):
+    # A public `import os` would be API_UNSUPPORTED_EXPORT (NOT_RUN); a private constant is analysable.
+    report = analyze_api(api_case, '@@ -0,0 +1 @@\n+_LIMIT = 1\n')
+    assert not report.changed and _signature(report) == (True, False, None)
+
+
+def test_python_only_keeps_python_sources():
+    from vgar.graph.impact import _python_only
+    assert _python_only({'a.txt': b'', 'pkg/a.py': b'x = 1\n'}) == {'pkg/a.py': b'x = 1\n'}
 
 
 def test_impact_private_symbol_has_only_module_importers(impact_case):
@@ -498,7 +557,9 @@ def test_impact_without_changed_nodes_is_computed_but_risk_unavailable(impact_ca
     report = analyze(root, document, patch('@@ -0,0 +1 @@\n+import os\n', 'pkg/core.py'))
     assert report.impacted.status == 'COMPLETE' and report.impacted.items == [] and report.unmapped
     assert report.risk.status == 'COMPLETE'
-    assert {(f.available, f.reason) for f in report.risk.features} == {(False, 'NO_CHANGED_NODES')}
+    features = {f.name: (f.available, f.reason) for f in report.risk.features}
+    assert features.pop('signature_changed') == (False, 'NOT_COMPUTED')  # check_api NOT_RUN: Child inherits __init__
+    assert set(features.values()) == {(False, 'NO_CHANGED_NODES')}
 
 
 def test_impact_limits_hops_nodes_and_confidence(impact_case):

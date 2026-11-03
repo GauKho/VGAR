@@ -15,6 +15,7 @@ from vgar.contracts.impact import (
 )
 from vgar.contracts.schema import validate_graph_document
 from vgar.repair.contracts import safe_path
+from vgar.repair.api_check import check_api, with_api_risk
 from vgar.repair.patch import PatchPolicy, _bind, parse_unified_diff
 
 _SYMBOLS = {'Function', 'Method', 'Class'}
@@ -114,6 +115,12 @@ def diff_to_nodes(raw_diff: str, document: dict, source_repo: Path, *,
     A block can support several symbols and an unmapped reason simultaneously.
     Full block coordinates are retained in every supporting record.
     """
+    return _map_patch(raw_diff, document, source_repo, patch_policy=patch_policy)[0]
+
+
+def _map_patch(raw_diff: str, document: dict, source_repo: Path, *,
+               patch_policy: PatchPolicy) -> tuple[ImpactReport, dict[str, bytes], dict[str, bytes]]:
+    """diff_to_nodes plus the baseline and predicted bytes of every patched file (same snapshot)."""
     validate_graph_document(document)
     root = Path(source_repo).absolute()
     sources = _snapshot(document, root)
@@ -121,7 +128,7 @@ def diff_to_nodes(raw_diff: str, document: dict, source_repo: Path, *,
     parsed = parse_unified_diff(raw_diff, patch_policy)
     if not set(parsed.files) <= set(sources):
         raise ValueError('Patch must modify existing files in graph source inventory')
-    _bind(parsed, root)  # Pure read/prediction: validates exact source, offsets and EOF markers.
+    predicted, _ = _bind(parsed, root)  # Pure read/prediction: validates exact source, offsets and EOF markers.
     changed, unmapped = {}, []
     for path, hunks in parsed.files.items():
         nodes = [n for n in document['nodes'] if n['type'] in _SYMBOLS and n['path'] == path]
@@ -163,12 +170,17 @@ def diff_to_nodes(raw_diff: str, document: dict, source_repo: Path, *,
                     unmapped.append({'path': path, 'span': span, 'reason': reason})
     if sources != _snapshot(document, root) or canonical_hash(document) != graph_hash:
         raise ValueError('Source or graph changed during mapping')
-    return ImpactReport(repo_key=document['repo_key'], repository_revision=document['repository_revision'],
+    report = ImpactReport(repo_key=document['repo_key'], repository_revision=document['repository_revision'],
         graph_version=document['graph_version'], graph_hash=graph_hash,
         source_hash=canonical_hash({p: _digest(b) for p, b in sorted(sources.items())}),
         patch_hash=_digest(raw_diff.encode('utf-8')), changed=list(changed.values()), unmapped=unmapped,
         limits=MappingLimits(max_diff_bytes=patch_policy.max_bytes, max_files=patch_policy.max_files,
                              max_changed_lines=patch_policy.max_changed_lines))
+    return report, {path: sources[path] for path in parsed.files}, predicted
+
+
+def _python_only(files: dict[str, bytes]) -> dict[str, bytes]:
+    return {path: data for path, data in files.items() if path.endswith('.py')}
 
 
 # Walk order; a node reached by several relations keeps the first one found.
@@ -261,7 +273,7 @@ def compute_impact(report: ImpactReport, document: dict, *, max_hops: int = 2, m
                   sum(item['kind'] in ('Function', 'Method') for item in items),
                   sum(item['kind'] == 'Test' for item in items))
         features = [{'name': n, 'available': True, 'value': v} for n, v in zip(names, values)]
-        # Signature/export comparison needs the patched source; it belongs to the API check (M2-W11-1).
+        # Default only: analyze_patch_impact overwrites it with the API check result (M2-W11-1, H3).
         features.append({'name': 'signature_changed', 'available': False, 'reason': 'NOT_COMPUTED'})
     else:
         features = [{'name': n, 'available': False, 'reason': 'NO_CHANGED_NODES'}
@@ -272,5 +284,9 @@ def compute_impact(report: ImpactReport, document: dict, *, max_hops: int = 2, m
 
 def analyze_patch_impact(raw_diff: str, document: dict, source_repo: Path, *, patch_policy: PatchPolicy,
                          **limits) -> ImpactReport:
-    """diff_to_nodes, then compute_impact on the same graph snapshot."""
-    return compute_impact(diff_to_nodes(raw_diff, document, source_repo, patch_policy=patch_policy), document, **limits)
+    """diff_to_nodes, then compute_impact on the same graph snapshot; signature risk from the API check."""
+    mapped, before, after = _map_patch(raw_diff, document, source_repo, patch_policy=patch_policy)
+    report = compute_impact(mapped, document, **limits)
+    if _python_only(after):
+        report = with_api_risk(report, check_api(_python_only(before), _python_only(after)))
+    return report
