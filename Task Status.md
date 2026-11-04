@@ -223,10 +223,10 @@ task thành viên, nên **không lấy tỷ lệ checkbox làm % tiến độ ho
 | 5–6      |       20 |     13 |      4 |      1 |      2 |
 | 7–8      |       19 |     17 |      1 |      0 |      1 |
 | 9–10     |       20 |     14 |      5 |      1 |      0 |
-| 11–12    |       16 |      9 |      3 |      3 |      1 |
+| 11–12    |       16 |      9 |      4 |      3 |      0 |
 | 13–14    |       16 |      0 |      6 |      4 |      6 |
 | 15–16    |       16 |      1 |      8 |      0 |      7 |
-| **Tổng** |  **150** | **76** | **37** |  **9** | **28** |
+| **Tổng** |  **150** | **76** | **38** |  **9** | **27** |
 
 Dòng 7–8 cập nhật ngày 18/10; dòng 9–10 cập nhật ngày 30/10 (W09-10-M3-02 sửa ngày 02/11); dòng 11–12 và dòng Tổng cập nhật ngày 03/11; các tuần khác giữ số ngày 16/10.
 Các số này là **số dòng checklist được phân loại**, không phải47 features
@@ -543,8 +543,8 @@ khi thiếu wiring/security của luồng integrated agent; không bắt M2 làm
 | W11-12-M2-04 | False accept/reject trên pool/mutations | **CT** | Chưa có mutant pool. Bản sửa `build_line_map` (S15) phải merge trước, nếu không FRR sẽ bị tính sai. | M2-W12-2. |
 | W11-12-M3-01 | Tool schemas + error responses hoàn chỉnh | **HT** | Envelope C4 `{status, data, error{code, message, retryable}, metadata}` cho cả 4 server; `repair_server` để verdict trong `data.verdict`; enum `KNOWN_ERROR_CODES` (thêm `TOOL_ORDER_VIOLATION`, `RUN_NOT_FOUND`, `MCP_TRANSPORT_ERROR`; bỏ `TOOL_ERROR`); `docs/mcp_tool_contract.md`; `tests/test_mcp_tool_contract.py`, `tests/test_mcp_day5.py`. | Hai câu hỏi C4 chờ M1/M2 xác nhận khi review. |
 | W11-12-M3-02 | Path jail/read-only/allowlist/timeout/audit | **HT** | Như CHUNG-02; `tests/test_mcp_security.py`, `test_mcp_legacy_servers.py`, `test_mcp_day5.py`, `test_redaction.py`. | — |
-| W11-12-M3-03 | Latency/tokens/calls/read redundancy | **MP** | Nguồn số liệu RQ5 đã chốt là `solve --agent` (D20). S15 chứng minh chạy được trên task SWE-bench. Chưa có usage metadata, invalid call rate, p50/p95. | M3-W12-1; sửa F4 ở `tool_agent.close()` trước lần đo thật W12 ngày 4. |
-| W11-12-M3-04 | Draft Results retrieval/repair/verification/efficiency | **CX** | Chưa có draft; thuộc W12 (M3-W12-3). | Viết từ record tái tạo được. |
+| W11-12-M3-03 | Latency/tokens/calls/read redundancy | **MP** | 03/11: trace `solve --agent` đã có latency từng tool và token từng lượt model; `scripts/aggregate_agent_traces.py` tính p50/p95, invalid call rate, audit completeness (read redundancy ghi n/a có lý do); `tests/test_agent_metrics.py` PASS; chưa commit. Chưa có số thật: chưa chạy M3-X2b. | Chạy `docs/m3_w12_agent_runbook.md` trên 5 dev task. |
+| W11-12-M3-04 | Draft Results retrieval/repair/verification/efficiency | **MP** | 03/11: `docs/paper/results_draft_v1.md` có R1 và P1 (dev W10) kèm nguồn; V1/V2, I1, G1, U1, M1 ghi `Đang chờ`; `scripts/check_results_sources.py` kiểm nguồn trong CI; chưa commit. | Điền các bảng khi có số; thêm A3 sau batch W12. |
 | W11-12-DOD-01 | Tools không chạy command tùy ý | **HT** | argv pytest cố định, `shell=False`, selector phải nằm trong allowlist của task, root theo lease, timeout và trần output do server đặt, repository server không còn tool ghi. | Điều kiện hẹp: pytest vẫn chạy code của target; không đồng nghĩa sandbox an toàn tuyệt đối. |
 | W11-12-DOD-02 | Cold/warm và MCP overhead số liệu | **CT** | Chưa có số đo; script U1 đã có (03/11), chưa chạy. | M1-W12-1 và M3-W12-1. |
 
