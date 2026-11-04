@@ -66,3 +66,17 @@ def test_child_environment_is_allow_listed(monkeypatch):
     assert "HF_TOKEN" not in env and "SOME_PRIVATE_THING" not in env
     assert env["PATH"] == "/usr/bin" and env["VGAR_CUSTOM_FLAG"] == "1"
     assert HF not in json.dumps(env)
+
+
+@pytest.mark.parametrize("key", ["input_tokens", "output_tokens", "feedback_tokens", "total_token_count",
+                                 "token_budget", "token_budget_unit", "tokenizer_label"])
+def test_token_counts_are_not_redacted(key):
+    # 03/11: the secret-key regex matched "token" and hid token counts in every MCP trace line.
+    from vgar.observability.instrumentation import summarize
+    assert summarize({key: 4886})[key] == 4886
+
+
+@pytest.mark.parametrize("key", ["token", "access_token", "api_key", "authorization", "password", "HF_TOKEN"])
+def test_secret_keys_stay_redacted(key):
+    from vgar.observability.instrumentation import summarize
+    assert summarize({key: "abc"})[key] == "[REDACTED]"

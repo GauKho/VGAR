@@ -20,6 +20,7 @@ class AdmittedTask:
     task_path: Path
     config_path: Path  # the experiment's repair config (policy + model profile)
     run_args: dict[str, Any]  # experiment + admission, passed to every repair_get_task_context
+    experiment_id: str | None = None  # header only; never sent to the repair server
 
 
 def prepare_admitted_task(experiment_path: Path, task_id: str, variant_id: str, data_root: Path,
@@ -37,4 +38,5 @@ def prepare_admitted_task(experiment_path: Path, task_id: str, variant_id: str, 
     task_path.write_text(json.dumps(plan.task.model_dump(mode='json'), indent=2), encoding='utf-8')
     return AdmittedTask(task_path=task_path, config_path=resolve(exp.raw['repair_config'], exp.base, Path(data_root)),
                         run_args={'experiment': {'variant_policy': variant.policy, 'arm': variant.arm},
-                                  'admission': admission.snapshot()})
+                                  'admission': admission.snapshot()},
+                        experiment_id=exp.experiment_id)

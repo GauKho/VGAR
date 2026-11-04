@@ -57,8 +57,10 @@ def build_feedback(record: dict[str, Any], impact: Any = None) -> dict[str, str]
     prompt's budget truncation drops it before the failure itself.
     """
     status, reason = record["status"], record.get("reason")
-    if record.get("error_detail"):
-        message = _parse_message(record["error_detail"])
+    # Normalized patch_mode keeps the parse failure in stages.parse_patch.error, not error_detail (X2b 04/11).
+    detail = record.get("error_detail") or ((record.get("stages") or {}).get("parse_patch") or {}).get("error")
+    if detail:
+        message = _parse_message(detail)
     else:
         verification = (record.get("stages") or {}).get("verification") or {}
         message = _test_message(verification) or f"Previous attempt ended with {status} {reason}."

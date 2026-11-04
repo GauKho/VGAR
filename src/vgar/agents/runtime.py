@@ -51,6 +51,7 @@ class Runtime:
     generator: Any = None  # test override for the generator build_generation selects
     generator_choice: Literal["worker", "agent"] = "worker"  # solve --agent: M2 worker or the agent's own model
     tools: dict[str, Any] | None = None  # MCP repair tools, built once per runtime
+    experiment_id: str | None = None  # solve --agent --experiment: shown in the console header and trace v2
 
     def base_settings(self) -> Settings:
         return self.settings or get_settings()

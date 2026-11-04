@@ -181,3 +181,14 @@ def test_impact_without_computed_dependents_still_says_so(tmp_path, monkeypatch)
                    generator=ScriptedPatchGenerator([WRONG_LOGIN, REF]))
     reply = replies(trace_of(result), "analyze_patch_impact")[0]
     assert reply.startswith("STATUS: PASS\nIMPACT: No dependent code was computed for this patch.")
+
+
+def test_impact_error_detail_is_in_the_trace(tmp_path, monkeypatch):
+    # X2b 03/11: two INVALID_ARGUMENT impact calls left no reason in the trace or the audit.
+    async def broken(*args):
+        raise RuntimeError("graph server did not start")
+    monkeypatch.setattr(tool_agent, "impact_graph_tool", broken)
+    result = solve(tmp_path, model=SequenceAgent(steps=FAIL_THEN_IMPACT),
+                   generator=ScriptedPatchGenerator([WRONG_LOGIN, REF]))
+    [call] = [c for c in trace_of(result)["calls"] if c["tool"] == "analyze_patch_impact"]
+    assert call["metrics"]["detail"] == "RuntimeError: graph server did not start"

@@ -145,3 +145,23 @@ def test_system_prompt_routes_edits_through_repair():
     assert "repair_apply_patch" in text and "repair_verify_patch" in text
     assert "Use MCP repository and graph tools before" not in text
     assert "untrusted" in text.lower()
+
+
+# ------------------------------------------------------------- chat console (trace spec 2026-11-03 §6.3)
+def test_chat_console_has_header_steps_and_result(tmp_path, capsys):
+    _chat(tmp_path, [("repair_apply_patch", {"diff": REF}), ("repair_run_relevant_tests", {}),
+                     ("repair_verify_patch", {})])
+    lines = capsys.readouterr().out.strip().splitlines()
+    header = next(i for i, line in enumerate(lines) if line.startswith("== chat · single_file_login"))
+    step = next(i for i, line in enumerate(lines) if "repair_verify_patch" in line and "agent" in line)
+    result = next(i for i, line in enumerate(lines) if line.startswith("== RESULT PASS · class VERIFIED"))
+    assert header < step < result
+    assert any("model turn 1" in line for line in lines)
+    assert any("followed NEXT n/a" in line for line in lines)
+    assert lines[-1].startswith("[verdict] PASS")
+
+
+def test_chat_console_shows_the_host_close(tmp_path, capsys):
+    _chat(tmp_path, [])
+    out = capsys.readouterr().out
+    assert "verify_patch (close)" in out and "verified by host" in out

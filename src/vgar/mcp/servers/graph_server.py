@@ -15,7 +15,7 @@ from vgar.mcp.audit import AuditLogger
 from vgar.mcp.tooling import audit_resource, run_tool
 
 
-mcp = FastMCP("vgar-graph")
+mcp = FastMCP("vgar-graph", log_level="WARNING")  # no per-request INFO lines (trace spec P8)
 graph_service = create_graph_service()
 _audit_logger = AuditLogger(Path(os.getenv("VGAR_MCP_AUDIT_LOG", "logs/mcp_audit.jsonl")))
 

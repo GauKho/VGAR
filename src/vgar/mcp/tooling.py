@@ -51,6 +51,8 @@ def _error_audit_fields(exc: BaseException, code: str) -> dict[str, Any]:
     fields: dict[str, Any] = {"error_code": code}
     if code == INTERNAL_ERROR:  # keep the real message out of the response only
         fields["error_message"] = f"{type(exc).__name__}: {exc}"
+    else:  # the redacted message the caller already got (X2b 03/11: INVALID_ARGUMENT left no reason)
+        fields["error_message"] = error_from_exception(exc).message[:240]
     return fields
 
 

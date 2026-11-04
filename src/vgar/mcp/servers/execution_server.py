@@ -18,7 +18,7 @@ from vgar.mcp.schemas import SELECTOR_REJECTED, CodedToolError
 from vgar.mcp.tooling import PYTEST_OUTPUT_CAP, PYTEST_TIMEOUT_SECONDS, inside, leased_root, run_tool
 from vgar.observability.instrumentation import instrument_mcp_tool
 
-mcp = FastMCP("vgar-execution")
+mcp = FastMCP("vgar-execution", log_level="WARNING")  # no per-request INFO lines (trace spec P8)
 _audit_logger = AuditLogger(Path(os.getenv("VGAR_MCP_AUDIT_LOG", "logs/mcp_audit.jsonl")))
 __all__ = ["PYTEST_OUTPUT_CAP", "PYTEST_TIMEOUT_SECONDS", "health", "mcp", "run_pytest"]
 

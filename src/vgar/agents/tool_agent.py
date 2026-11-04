@@ -13,7 +13,7 @@ from datetime import datetime, timezone
 import json
 from pathlib import Path
 import time
-from typing import Any
+from typing import Any, Awaitable, Callable
 
 from langchain_core.callbacks import BaseCallbackHandler
 from langchain_core.language_models.chat_models import BaseChatModel
@@ -50,8 +50,53 @@ def _reply(status: str, fields: list[tuple[str, Any]], next_step: str) -> str:
     return "\n".join(lines + [f"NEXT: {next_step}"])
 
 
+TOOL_NAMES = ("get_task_context", "generate_patch", "apply_patch", "run_relevant_tests", "verify_patch",
+              "analyze_patch_impact")
+LONG_TOOLS = frozenset({"get_task_context", "generate_patch", "run_relevant_tests", "verify_patch"})
+
+
+def hint_tools(next_line: str | None) -> frozenset[str]:
+    """Tools named in a NEXT hint (E1); 'stop' or no hint names none."""
+    return frozenset(name for name in TOOL_NAMES if next_line and name in next_line)
+
+
+def _next_line(reply: str) -> str | None:
+    return next((line[len("NEXT: "):] for line in reversed(reply.splitlines()) if line.startswith("NEXT: ")), None)
+
+
+def _utc(epoch: float) -> str:
+    return datetime.fromtimestamp(epoch, timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+
+def _metrics(tool: str, result: dict[str, Any], input_cap: int) -> dict[str, Any]:
+    """A few numbers per step for the console and trace v2 (no text: spec §2)."""
+    out: dict[str, Any] = {}
+    if tool == "get_task_context":
+        prompt, context = result.get("prompt") or {}, result.get("context") or {}
+        if isinstance(prompt.get("input_tokens"), int):
+            out.update(input_tokens=prompt["input_tokens"], input_cap=input_cap)
+        if isinstance(context.get("items"), list):
+            out["context_items"] = len(context["items"])
+        if "truncated" in context:
+            out["truncated"] = bool(context["truncated"])
+        if isinstance(result.get("failed_cases"), list):
+            out["failing_tests"] = len(result["failed_cases"])
+    elif tool == "apply_patch" and result.get("changed_files"):
+        out["files"] = list(result["changed_files"])
+    elif tool == "run_relevant_tests":
+        cases = [case for group in ("failing_tests", "relevant_tests")
+                 for case in (result.get(group) or {}).get("cases", [])]
+        if cases:
+            out.update(passed=sum(c.get("status") == "PASS" for c in cases),
+                       failed=sum(c.get("status") != "PASS" for c in cases))
+    elif tool == "verify_patch" and result.get("recommendation"):
+        out["recommendation"] = result["recommendation"]
+    return out
+
+
 def _diff_files(diff: str) -> str:
-    return ", ".join(line[6:].strip() for line in diff.splitlines() if line.startswith("+++ b/"))
+    # dict.fromkeys: a diff may hold several sections for one file (X2b 03/11), list each file once
+    return ", ".join(dict.fromkeys(line[6:].strip() for line in diff.splitlines() if line.startswith("+++ b/")))
 
 
 def generator_path(generator) -> str:
@@ -76,15 +121,33 @@ class AgentRepairHost:
         self.diff: tuple[str, dict[str, Any]] | None = None
         self.graph: tuple[Any, str] | None = None
         self.context_called = False
+        self.next_hint = "get_task_context"  # the user message: "Start with get_task_context"
+        self.on_event: Callable[[str, dict[str, Any]], None] | None = None
 
     @property
     def run(self) -> dict[str, Any] | None:
         return self.runs[-1] if self.runs else None
 
-    def _log(self, tool: str, by: str, status: str, reason: str | None, start: float) -> None:
-        self.trace.append({"tool": tool, "by": by, "status": status, "reason": reason,
-                           "duration_ms": round((time.monotonic() - start) * 1000),
-                           "run_dir": self.run["run_dir"] if self.run else None})
+    def notify(self, kind: str, payload: dict[str, Any]) -> None:
+        """Console hook (spec §3.1); a broken printer never changes the run."""
+        if self.on_event is None:
+            return
+        try:
+            self.on_event(kind, payload)
+        except Exception:
+            pass
+
+    def _log(self, tool: str, by: str, status: str, reason: str | None, start: float,
+             metrics: dict[str, Any] | None = None) -> None:
+        elapsed = time.monotonic() - start
+        run_dir = self.run["run_dir"] if self.run else None
+        call = {"tool": tool, "by": by, "status": status, "reason": reason, "duration_ms": round(elapsed * 1000),
+                "run_dir": run_dir, "t": _utc(time.time() - elapsed), "attempt": self.attempts,
+                "run_id": Path(run_dir).name if run_dir else None,
+                "transport_status": "ERROR" if reason == "MCP_TRANSPORT_ERROR" else "OK",
+                "metrics": metrics or {}, "next_hint": None}
+        self.trace.append(call)
+        self.notify("end", call)
 
     def _left(self) -> int:
         return MAX_ATTEMPTS - self.attempts
@@ -107,6 +170,13 @@ class AgentRepairHost:
             return "generate_patch"
         return "run_relevant_tests" if run["applied"] and not run["tested"] else "verify_patch"
 
+    def optional_tools(self) -> frozenset[str]:
+        """Tools the system prompt allows besides NEXT: analyze_patch_impact once after applied tests failed."""
+        run = self.run
+        if run is not None and run["applied"] and run["failed"] and not run["impact_called"] and self._left() > 0:
+            return frozenset({"analyze_patch_impact"})
+        return frozenset()
+
     def _refuse(self, tool: str, message: str) -> str:
         self._log(tool, "agent", "ERROR", "HOST_REFUSED", time.monotonic())
         return _reply("ERROR", [("DETAIL", message)], self._next())
@@ -117,7 +187,8 @@ class AgentRepairHost:
     async def _mcp(self, tool: str, args: dict[str, Any], by: str) -> dict[str, Any]:
         start = time.monotonic()
         result = await _call(self.runtime, f"repair_{tool}", args)
-        self._log(tool, by, result.get("status", "ERROR"), result.get("reason"), start)
+        self._log(tool, by, result.get("status", "ERROR"), result.get("reason"), start,
+                  _metrics(tool, result, self.policy.input_cap))
         return result
 
     async def _open_run(self, by: str, **rerun: Any) -> dict[str, Any]:
@@ -133,7 +204,8 @@ class AgentRepairHost:
                               "applied_diff": None, "impact_called": False, "impact": None})
             if "recommendation" in result:  # the server already finished a run it could not start
                 self._verified(result)
-        self._log("get_task_context", by, result.get("status", "ERROR"), result.get("reason"), start)
+        self._log("get_task_context", by, result.get("status", "ERROR"), result.get("reason"), start,
+                  _metrics("get_task_context", result, self.policy.input_cap))
         return result
 
     def _verified(self, result: dict[str, Any]) -> None:
@@ -181,6 +253,7 @@ class AgentRepairHost:
             run = self.run
         elif run["generated"]:
             return self._refuse("generate_patch", "The current attempt has not failed; continue it.")
+        start = time.monotonic()  # generation only: the host's close and reopen above are logged as their own calls
         diff, meta = run_generation(self.generator, self.prompt, self.runtime.mode, self.profile, self.policy)
         meta.setdefault("generator_path", generator_path(self.generator))
         self.attempts += 1
@@ -188,10 +261,15 @@ class AgentRepairHost:
         attempt = [("ATTEMPT", f"{self.attempts} of {MAX_ATTEMPTS}"), ("ATTEMPTS LEFT", self._left())]
         if meta.get("status") != "PASS":
             run["failed"] = True
-            self._log("generate_patch", "agent", "ERROR", meta.get("reason"), start)
+            # A code in the trace (E3/P5); the generator's own text stays in metrics and in the agent's reply.
+            code = "GENERATION_TIMEOUT" if meta.get("timed_out") else "GENERATION_ERROR"
+            self._log("generate_patch", "agent", "ERROR", code, start,
+                      {"detail": meta.get("reason")} if meta.get("reason") else None)
             return _reply("ERROR", [("REASON", "GENERATION_ERROR"), ("DETAIL", meta.get("reason"))] + attempt, self._next())
         self.diff = (diff, meta)
-        self._log("generate_patch", "agent", "PASS", None, start)
+        self._log("generate_patch", "agent", "PASS", None, start,
+                  {"files": [f for f in _diff_files(diff).split(", ") if f],
+                   **({"output_truncated": True} if meta.get("truncated") else {})})
         return _reply("PASS", attempt + [("FILES", _diff_files(diff))], self._next())
 
     async def apply_patch(self) -> str:
@@ -201,7 +279,10 @@ class AgentRepairHost:
         result = await self._mcp("apply_patch", {"run_dir": self.run["run_dir"], "diff": diff, "generation": meta}, "agent")
         status = result.get("status", "ERROR")
         if status == "PASS":
-            self.run.update(applied=True, applied_diff=diff)
+            # The engine's applied.diff, not the raw text: normalization may merge or relocate hunks (X2b 04/11).
+            applied = Path(self.run["run_dir"]) / "applied.diff"
+            self.run.update(applied=True,
+                            applied_diff=applied.read_text(encoding="utf-8") if applied.is_file() else diff)
             return _reply("PASS", [("FILES", ", ".join(result.get("changed_files") or []))], self._next())
         self.run["failed"] = True
         detail = result.get("detail") or (self._record().get("error_detail") or {}).get("message")
@@ -259,7 +340,7 @@ class AgentRepairHost:
             return _reply("PASS", [("IMPACT", line)], self._next())
         error = result.get("error") or {}
         code, detail = error.get("code") or result.get("reason") or "ERROR", error.get("message") or result.get("detail")
-        self._log("analyze_patch_impact", "agent", "ERROR", code, start)
+        self._log("analyze_patch_impact", "agent", "ERROR", code, start, {"detail": str(detail)[:240]} if detail else None)
         return _reply("ERROR", [("REASON", code), ("DETAIL", detail)], self._next())
 
     def langchain_tools(self) -> list[BaseTool]:
@@ -275,8 +356,24 @@ class AgentRepairHost:
              "After an applied patch failed its tests, show which callers, importers and tests depend on the code "
              "it changed. Optional; call before generate_patch."),
         ]
-        return [StructuredTool.from_function(coroutine=fn, name=name, description=description, args_schema=NoArgs)
+        return [StructuredTool.from_function(coroutine=self._observed(name, fn), name=name, description=description,
+                                             args_schema=NoArgs)
                 for name, fn, description in specs]
+
+    def _observed(self, name: str, fn: Callable[[], Awaitable[str]]) -> Callable[[], Awaitable[str]]:
+        """Start line for long steps; the reply's NEXT line becomes the current hint (E1) and the call's next_hint."""
+        async def call() -> str:
+            if name in LONG_TOOLS:
+                self.notify("start", {"tool": name, "by": "agent", "attempt": self.attempts, "t": _utc(time.time())})
+            logged = len(self.trace)
+            reply = await fn()
+            hint = _next_line(reply)
+            if hint is not None:
+                self.next_hint = hint
+                if len(self.trace) > logged:
+                    self.trace[-1]["next_hint"] = hint
+            return reply
+        return call
 
     async def close(self) -> None:
         """Safety net: a run the agent left open is verified by the host."""
@@ -309,21 +406,32 @@ class ModelTurns(BaseCallbackHandler):
     """Latency and token usage of each agent model call, in call order."""
     run_inline = True
 
-    def __init__(self):
+    def __init__(self, hint: Callable[[], str | None] = lambda: None,
+                 on_turn: Callable[[dict[str, Any]], None] | None = None,
+                 optional: Callable[[], frozenset[str]] = frozenset):
         self.calls: list[dict[str, Any]] = []
         self.started: dict[Any, float] = {}
+        self.hints: dict[Any, tuple[str | None, frozenset[str]]] = {}
+        self.hint, self.on_turn, self.optional = hint, on_turn, optional
 
     def on_chat_model_start(self, serialized, messages, *, run_id, **kwargs) -> None:
         self.started[run_id] = time.monotonic()
+        self.hints[run_id] = (self.hint(), self.optional())
 
     def _record(self, run_id, status: str, message: BaseMessage | None) -> None:
         if run_id not in self.started:  # e.g. the inner HuggingFacePipeline run of LocalChatModel
             return
         usage = getattr(message, "usage_metadata", None) or {}
-        self.calls.append({"turn": len(self.calls) + 1, "status": status,
-                           "duration_ms": round((time.monotonic() - self.started.pop(run_id)) * 1000),
-                           "input_tokens": usage.get("input_tokens"), "output_tokens": usage.get("output_tokens"),
-                           "tool_calls": [call["name"] for call in getattr(message, "tool_calls", None) or []]})
+        tools = [call["name"] for call in getattr(message, "tool_calls", None) or []]
+        hint, optional = self.hints.pop(run_id, (None, frozenset()))
+        turn = {"turn": len(self.calls) + 1, "status": status,
+                "duration_ms": round((time.monotonic() - self.started.pop(run_id)) * 1000),
+                "input_tokens": usage.get("input_tokens"), "output_tokens": usage.get("output_tokens"),
+                "tool_calls": tools, "next_hint": hint,
+                "followed": (tools[0] in hint_tools(hint) | optional) if tools and hint is not None else None}
+        self.calls.append(turn)
+        if self.on_turn is not None:
+            self.on_turn(turn)
 
     def on_llm_end(self, response, *, run_id, **kwargs) -> None:
         self._record(run_id, "PASS", getattr(response.generations[0][0], "message", None))
@@ -338,11 +446,29 @@ def _message(message: BaseMessage) -> dict[str, Any]:
             "tool_calls": getattr(message, "tool_calls", None) or []}
 
 
+TRACE_SCHEMA = "vgar-agent-trace-v2"
+
+
+def _safely(fn, *args):
+    """A summary that fails is recorded as null; it never fails the run (spec §2)."""
+    try:
+        return fn(*args)
+    except Exception:
+        return None
+
+
+def hf_model_of(model) -> Any:
+    """The transformers model behind a LocalChatModel, for placement (E5); None for fakes."""
+    return getattr(getattr(getattr(model, "llm", None), "pipeline", None), "model", None)
+
+
 def _write_trace(host: AgentRepairHost, runtime: Runtime, duration_ms: int, messages: list[BaseMessage],
-                 model_calls: list[dict[str, Any]], result: dict[str, Any]) -> Path:
-    runs = []
+                 model_calls: list[dict[str, Any]], result: dict[str, Any], header: dict[str, Any] | None = None) -> Path:
+    from vgar.agents import trace_report
+    runs, records = [], {}
     for run in host.runs:
         record = json.loads((Path(run["run_dir"]) / "run_record.json").read_text(encoding="utf-8"))
+        records[Path(run["run_dir"]).name] = record
         runs.append({"run_dir": run["run_dir"], **{k: record.get(k) for k in ("run_id", "supersedes_run_id",
                                                                                  "status", "reason")}})
     stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
@@ -350,7 +476,11 @@ def _write_trace(host: AgentRepairHost, runtime: Runtime, duration_ms: int, mess
     path.parent.mkdir(parents=True, exist_ok=True)
     trace = {"task_id": host.task.task_id, "mode": runtime.mode, "generator": generator_path(host.generator),
              "duration_ms": duration_ms, "calls": host.trace, "model_calls": model_calls, "runs": runs,
-             "messages": [_message(m) for m in messages], "result": result}
+             "messages": [_message(m) for m in messages], "result": result,
+             "schema": TRACE_SCHEMA, "header": header,
+             "attempts": _safely(trace_report.attempt_funnel, host.trace, records),
+             "failure_class": _safely(trace_report.failure_class, host.trace, records, result),
+             "time_breakdown": _safely(trace_report.time_breakdown, duration_ms, host.trace, model_calls, records)}
     path.write_text(json.dumps(trace, indent=2, default=str), encoding="utf-8")
     return path
 
@@ -377,18 +507,29 @@ def _result(host: AgentRepairHost, error: str | None, source_unchanged: bool) ->
             "failure_reason": failure}
 
 
+def source_fingerprint(source_repo: Path) -> str:
+    """Hash of the source inventory, computed like the engine's source_hash (repair/pipeline.py).
+
+    Uses workspace.inventory, which records file symlinks (django docs has some) instead of rejecting them;
+    directory links are still refused.
+    """
+    from vgar.repair.evidence import digest
+    from vgar.repair.workspace import inventory
+    return digest(json.dumps(inventory(Path(source_repo).resolve(strict=True)), sort_keys=True))
+
+
 async def run_agent_task(*, task_path: Path, runtime: Runtime, model: BaseChatModel | None = None,
-                         run_args: dict[str, Any] | None = None) -> dict:
+                         run_args: dict[str, Any] | None = None,
+                         on_event: Callable[[str, dict[str, Any]], None] | None = None) -> dict:
     """Solve one M2 task with the agent choosing the tools. Owns the temp dir like run_task."""
     from langchain.agents import create_agent
     from langchain.agents.middleware import ToolCallLimitMiddleware
     from langchain_core.messages import HumanMessage
     from vgar.repair.config import load_config, load_task
-    from vgar.repair.workspace import fingerprint_source
 
     task_path = Path(task_path).resolve()
     task = load_task(task_path)
-    source_before = fingerprint_source(task.source_repo)
+    source_before = source_fingerprint(task.source_repo)
     work_dir = new_work_dir()
     started = time.perf_counter()
     try:
@@ -396,12 +537,17 @@ async def run_agent_task(*, task_path: Path, runtime: Runtime, model: BaseChatMo
         model = model or default_agent_model(runtime, profile)
         host = AgentRepairHost(runtime, task_path, work_dir, select_generator(runtime, task, policy, profile, model),
                                run_args=run_args)
+        host.on_event = on_event
+        from vgar.agents.trace_report import trace_header
+        header = _safely(trace_header, host, runtime, hf_model_of(model))
+        host.notify("header", header or {})
         agent = create_agent(model=model, tools=host.langchain_tools(),
                              system_prompt=PROMPT_PATH.read_text(encoding="utf-8"),
                              middleware=[ToolCallLimitMiddleware(run_limit=MAX_TOOL_CALLS, exit_behavior="end")])
         request = {"messages": [HumanMessage(f"Repair task {task.task_id}. Start with get_task_context.")]}
         messages: list[BaseMessage] = []
-        turns, error = ModelTurns(), None
+        turns, error = ModelTurns(hint=lambda: host.next_hint, on_turn=lambda turn: host.notify("turn", turn),
+                                  optional=host.optional_tools), None
         config = {"recursion_limit": RECURSION_LIMIT, "callbacks": [turns]}
         try:
             async for state in agent.astream(request, config=config, stream_mode="values"):
@@ -409,9 +555,9 @@ async def run_agent_task(*, task_path: Path, runtime: Runtime, model: BaseChatMo
         except Exception as exc:  # recursion limit, unparseable model output: the host still closes the run
             error = f"{type(exc).__name__}: {exc}"
         await host.close()
-        result = _result(host, error, fingerprint_source(task.source_repo) == source_before)
+        result = _result(host, error, source_fingerprint(task.source_repo) == source_before)
         duration_ms = round((time.perf_counter() - started) * 1000)
-        result["trace_path"] = str(_write_trace(host, runtime, duration_ms, messages, turns.calls, result))
+        result["trace_path"] = str(_write_trace(host, runtime, duration_ms, messages, turns.calls, result, header))
         return result
     finally:
         cleanup_work_dir(work_dir, runtime.keep_workspace)

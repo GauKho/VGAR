@@ -44,6 +44,10 @@ def summarize(value: Any, *, depth: int = 0, max_string: int = 240) -> Any:
 
 
 def emit(event: str, *, run_id: str, phase: str, **fields: Any) -> None:
+    """[VGAR] JSON line on stdout, only with VGAR_TRACE=debug (trace spec 2026-11-03 §3.3)."""
+    import os
+    if os.getenv("VGAR_TRACE", "").lower() != "debug":
+        return
     payload = {
         "event": event,
         "run_id": run_id,

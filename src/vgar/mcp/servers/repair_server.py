@@ -25,7 +25,7 @@ from vgar.mcp.schemas import RUN_NOT_FOUND, TOOL_ORDER_VIOLATION, CodedToolError
 from vgar.mcp.tooling import run_tool
 from vgar.observability.instrumentation import instrument_mcp_tool
 
-mcp = FastMCP("vgar-repair")
+mcp = FastMCP("vgar-repair", log_level="WARNING")  # no per-request INFO lines (trace spec P8)
 _audit_logger = AuditLogger(Path(os.getenv("VGAR_MCP_AUDIT_LOG", "logs/mcp_audit.jsonl")))
 
 # Phases a run must be in for each tool (verify_patch accepts any unfinished phase).

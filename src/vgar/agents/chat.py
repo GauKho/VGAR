@@ -40,10 +40,26 @@ def _final_text(messages: list[BaseMessage]) -> str:
 
 async def run_chat(task_path: Path, runtime: Runtime, inputs: Iterable[str], *,
                    model: BaseChatModel | None = None) -> dict[str, Any]:
-    from vgar.repair.config import load_task
+    import time
+
+    from vgar.agents import trace_report
+    from vgar.observability.code_state import code_state
+    from vgar.observability.machine import machine_info
+    from vgar.repair.config import REPO_ROOT, load_task
     from vgar.repair.pipeline import recommendation_for
     from vgar.repair.session import RepairSession
 
+    def say(line: str) -> None:
+        print(line, flush=True)
+
+    started = time.monotonic()
+    try:  # console header (trace spec §6.3); never blocks the chat
+        say("\n".join(trace_report.render_header(
+            {"task_id": load_task(task_path).task_id, "code": code_state(REPO_ROOT), "machine": machine_info(None),
+             "mode": runtime.mode}, title="chat")))
+    except Exception:
+        pass
+    steps = trace_report.chat_steps(say)
     work_dir = new_work_dir()
     try:
         opened = await _call(runtime, "repair_get_task_context", {
@@ -73,16 +89,28 @@ async def run_chat(task_path: Path, runtime: Runtime, inputs: Iterable[str], *,
             if not history:
                 text = _first_prompt(text, run_dir, worktree)
             history = (await agent.ainvoke({"messages": [*history, HumanMessage(content=text)]},
-                                           config={"recursion_limit": settings.agent.recursion_limit}))["messages"]
+                                           config={"recursion_limit": settings.agent.recursion_limit,
+                                                   "callbacks": [steps]}))["messages"]
             print(f"\nvgar> {_final_text(history)}", flush=True)
 
         verified_by = "agent"
         if RepairSession.load(Path(run_dir)).phase != "finished":
             verified_by = "host"
-            await _call(runtime, "repair_verify_patch", {"run_dir": run_dir})
+            close_start, close_wall = time.monotonic(), time.time()
+            closed = await _call(runtime, "repair_verify_patch", {"run_dir": run_dir})
+            say(trace_report.render_step("end", {
+                "tool": "verify_patch", "by": "host", "status": closed.get("recommendation") or closed.get("status"),
+                "reason": closed.get("reason"), "attempt": 1, "t": time.strftime("%Y-%m-%dT%H:%M:%SZ",
+                                                                                   time.gmtime(close_wall)),
+                "duration_ms": round((time.monotonic() - close_start) * 1000), "metrics": {}}, 1))
         record = json.loads((Path(run_dir) / "run_record.json").read_text(encoding="utf-8"))
         verdict = record["status"]
         recommendation = recommendation_for(verdict)
+        try:
+            say("\n".join(trace_report.render_chat_result(record, steps.steps, steps.turns.calls, verified_by=verified_by,
+                                                         duration_ms=round((time.monotonic() - started) * 1000))))
+        except Exception:
+            pass
         print(f"[verdict] {verdict} ({recommendation}), verified by {verified_by}", flush=True)
         return {"run_dir": run_dir, "verdict": verdict, "recommendation": recommendation,
                 "verified_by": verified_by, "lease_root": str(worktree), "allowed_selectors": allowed}

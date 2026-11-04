@@ -17,12 +17,15 @@ import traceback
 import uuid
 from contextlib import contextmanager
 from contextvars import ContextVar
+from pathlib import Path
 from collections.abc import Mapping
 from typing import Any, Callable
 
 from vgar.observability.redact import redact_text
 
 _SECRET_KEY = re.compile(r"(secret|password|token|api[_-]?key|authorization|credential)", re.I)
+# Token *counts* are metrics, not credentials (03/11: they showed as [REDACTED] in every MCP trace line).
+_COUNT_KEY = re.compile(r"(_tokens$|^tokens$|token_count|token_budget|tokenizer)", re.I)
 _PRIVATE_TEXT_KEY = re.compile(
     r"(content|old_text|new_text|prompt|messages|stdout|stderr|output_tail|diff|patch|issue_text)",
     re.I,
@@ -57,7 +60,7 @@ def _text_summary(value: str) -> dict[str, Any]:
 
 def summarize(value: Any, *, key: str = "", depth: int = 0) -> Any:
     """Summarize contracts without dumping source, prompts, patch text, or secrets."""
-    if _SECRET_KEY.search(key):
+    if _SECRET_KEY.search(key) and not _COUNT_KEY.search(key):
         return "[REDACTED]"
     if isinstance(value, str):
         value = _redact_text(value)
@@ -100,7 +103,14 @@ def summarize(value: Any, *, key: str = "", depth: int = 0) -> Any:
     return {"type": type(value).__name__}
 
 
+def debug_enabled() -> bool:
+    return os.getenv("VGAR_TRACE", "").lower() == "debug"
+
+
 def emit(event: str, **fields: Any) -> None:
+    """One [VGAR_TRACE] JSON line on stderr, only with VGAR_TRACE=debug; a run_id field overrides the context one."""
+    if not debug_enabled():
+        return
     payload = {
         "timestamp": time.strftime("%Y-%m-%dT%H:%M:%S", time.gmtime()) + "Z",
         "event": event,
@@ -161,36 +171,50 @@ def instrument_node(name: str) -> Callable:
     return decorate
 
 
+def _input_run_id(kwargs: dict[str, Any]) -> str | None:
+    run_dir = kwargs.get("run_dir")
+    return Path(str(run_dir)).name if run_dir else current_run_id()
+
+
+def _output_run_id(result: Any, fallback: str | None) -> str | None:
+    if not isinstance(result, Mapping):
+        return fallback
+    data = result.get("data")
+    return result.get("run_id") or (data.get("run_id") if isinstance(data, Mapping) else None) or fallback
+
+
 def instrument_mcp_tool(name: str) -> Callable:
     """Decorate MCP tool implementations without changing their return values."""
     def decorate(fn: Callable) -> Callable:
         if inspect.iscoroutinefunction(fn):
             @functools.wraps(fn)
             async def async_wrapper(*args: Any, **kwargs: Any) -> Any:
-                started = time.perf_counter()
-                emit("MCP_TOOL_START", tool=name, input=_state_summary(args, kwargs))
+                started, run_id = time.perf_counter(), _input_run_id(kwargs)
+                emit("MCP_TOOL_START", tool=name, run_id=run_id, input=_state_summary(args, kwargs))
                 try:
                     result = await fn(*args, **kwargs)
                 except Exception as exc:
-                    emit("MCP_TOOL_ERROR", tool=name, duration_ms=round((time.perf_counter()-started)*1000),
+                    emit("MCP_TOOL_ERROR", tool=name, run_id=run_id, duration_ms=round((time.perf_counter()-started)*1000),
                          exception=type(exc).__name__, message=str(exc))
                     raise
-                emit("MCP_TOOL_OUTPUT", tool=name, output=result)
-                emit("MCP_TOOL_END", tool=name, duration_ms=round((time.perf_counter()-started)*1000), status="OK")
+                run_id = _output_run_id(result, run_id)
+                emit("MCP_TOOL_OUTPUT", tool=name, run_id=run_id, output=result)
+                emit("MCP_TOOL_END", tool=name, run_id=run_id, duration_ms=round((time.perf_counter()-started)*1000), status="OK")
                 return result
             return async_wrapper
         @functools.wraps(fn)
         def sync_wrapper(*args: Any, **kwargs: Any) -> Any:
-            started = time.perf_counter()
-            emit("MCP_TOOL_START", tool=name, input=_state_summary(args, kwargs))
+            started, run_id = time.perf_counter(), _input_run_id(kwargs)
+            emit("MCP_TOOL_START", tool=name, run_id=run_id, input=_state_summary(args, kwargs))
             try:
                 result = fn(*args, **kwargs)
             except Exception as exc:
-                emit("MCP_TOOL_ERROR", tool=name, duration_ms=round((time.perf_counter()-started)*1000),
+                emit("MCP_TOOL_ERROR", tool=name, run_id=run_id, duration_ms=round((time.perf_counter()-started)*1000),
                      exception=type(exc).__name__, message=str(exc))
                 raise
-            emit("MCP_TOOL_OUTPUT", tool=name, output=result)
-            emit("MCP_TOOL_END", tool=name, duration_ms=round((time.perf_counter()-started)*1000), status="OK")
+            run_id = _output_run_id(result, run_id)
+            emit("MCP_TOOL_OUTPUT", tool=name, run_id=run_id, output=result)
+            emit("MCP_TOOL_END", tool=name, run_id=run_id, duration_ms=round((time.perf_counter()-started)*1000), status="OK")
             return result
         return sync_wrapper
     return decorate

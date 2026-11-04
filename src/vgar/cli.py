@@ -354,6 +354,16 @@ async def cmd_solve(args: argparse.Namespace) -> int:
     return 0 if state["status"] == "COMPLETED" else 1
 
 
+def _task_audit(trace_path: Path) -> dict | None:
+    """Audit completeness of one solve --agent trace against VGAR_MCP_AUDIT_LOG; None when there is no log."""
+    from vgar.evaluation.agent_metrics import audit_completeness, load_trace
+    name = os.getenv("VGAR_MCP_AUDIT_LOG")
+    if not name or not Path(name).is_file():
+        return None
+    lines = [json.loads(line) for line in Path(name).read_text(encoding="utf-8").splitlines() if line.strip()]
+    return audit_completeness(load_trace(trace_path), lines)
+
+
 async def cmd_solve_agent(args: argparse.Namespace) -> int:
     """Agent mode: the agent chooses the repair tools; diffs still come from the V11 generator."""
     from vgar.agents.runtime import Runtime
@@ -369,9 +379,28 @@ async def cmd_solve_agent(args: argparse.Namespace) -> int:
         prepared = prepare_admitted_task(args.experiment, args.task_id, args.variant, args.data_root,
                                          Path(args.output_root) / "tasks")
         task_path, run_args, runtime.config_path = prepared.task_path, prepared.run_args, prepared.config_path
+        runtime.experiment_id = prepared.experiment_id
         if args.mode == "fake":  # smoke only: the given patch stands in for the generator
             runtime.generator = ScriptedPatchGenerator([Path(args.scripted_patch).read_text(encoding="utf-8")])
-    result = await run_agent_task(task_path=task_path, runtime=runtime, run_args=run_args)
+    from vgar.agents import trace_report
+    from vgar.agents.tool_agent import MAX_ATTEMPTS
+
+    def console(kind: str, payload: dict) -> None:  # spec 2026-11-03-m3-w12-trace §3.1
+        if kind == "header":
+            lines = trace_report.render_header(payload)
+        elif kind == "turn":
+            lines = [trace_report.render_turn(payload)]
+        else:
+            lines = [trace_report.render_step(kind, payload, MAX_ATTEMPTS)]
+        print("\n".join(lines), flush=True)
+
+    result = await run_agent_task(task_path=task_path, runtime=runtime, run_args=run_args, on_event=console)
+    try:
+        trace = json.loads(Path(result["trace_path"]).read_text(encoding="utf-8"))
+        print("\n".join(trace_report.render_result(trace, audit=_task_audit(Path(result["trace_path"])))),
+              flush=True)
+    except Exception as exc:  # the console never changes the exit code
+        print(f"[console] result block unavailable: {type(exc).__name__}", flush=True)
     print(f"[status] {result['status']} after {result['attempts']} attempt(s)", flush=True)
     print(f"[run] {result.get('run_record_path')}", flush=True)
     print(f"[trace] {result['trace_path']}", flush=True)

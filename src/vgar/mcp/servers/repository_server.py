@@ -17,7 +17,7 @@ from vgar.mcp.tooling import READ_FILE_MAX_BYTES, inside, leased_root, run_tool
 from vgar.observability.instrumentation import instrument_mcp_tool
 from vgar.repair.workspace import safe_relative_path
 
-mcp = FastMCP("vgar-repository")
+mcp = FastMCP("vgar-repository", log_level="WARNING")  # no per-request INFO lines (trace spec P8)
 _audit_logger = AuditLogger(Path(os.getenv("VGAR_MCP_AUDIT_LOG", "logs/mcp_audit.jsonl")))
 __all__ = ["READ_FILE_MAX_BYTES", "health", "mcp", "read_file"]
 

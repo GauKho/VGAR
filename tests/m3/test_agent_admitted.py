@@ -105,7 +105,7 @@ def test_cli_solve_agent_config_reaches_the_runtime(monkeypatch, capsys):
     from vgar.agents import tool_agent
     seen = {}
 
-    async def fake_run(task_path, runtime, run_args):
+    async def fake_run(task_path, runtime, run_args, on_event=None):  # on_event: console hook (trace spec)
         seen['config'] = runtime.config_path
         return {'status': 'COMPLETED', 'attempts': 1, 'trace_path': 't'}
     monkeypatch.setattr(tool_agent, 'run_agent_task', fake_run)
@@ -120,3 +120,17 @@ def test_linux_demo_config_differs_from_demo_only_in_host_paths():
     for config in (demo, linux):
         config['model'].pop('interpreter'), config['model'].pop('snapshot')
     assert linux == demo
+
+
+def test_prepared_task_carries_the_experiment_id(swebench_config, monkeypatch, tmp_path):
+    from pathlib import Path
+    from types import SimpleNamespace
+    from vgar.agents import admitted as module
+    from vgar.repair.admission import canonical_hash
+    monkeypatch.setattr(module, "admit_task", lambda task, **kw: SimpleNamespace(snapshot=lambda: {
+        "task_hash": canonical_hash(task.model_dump(mode="json"))}))
+    config, data = swebench_config
+    from vgar.evaluation.repair.manifest import load_experiment
+    expected = load_experiment(Path(config), Path(data)).experiment_id
+    prepared = module.prepare_admitted_task(config, "demo__demo-1", "A2", data, tmp_path / "tasks")
+    assert prepared.experiment_id == expected
