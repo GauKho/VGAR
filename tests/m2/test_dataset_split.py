@@ -57,4 +57,14 @@ def test_require_split_blocks_heldout_and_forged_labels():
         require_split({"split": "dev", "tasks": [{"instance_id": held_id, "split": "dev"}]})   # forged label
     with pytest.raises(ValueError):
         require_split({"split": "dev", "tasks": [{"instance_id": dev_id}]})          # missing task label
-    require_split({"split": "heldout", "tasks": [{"instance_id": held_id, "split": "heldout"}]}, allowed=("dev", "heldout"))
+    # M3-W12-2: a genuine held-out manifest still passes the label checks; opening it is gated by the
+    # protocol-freeze tag (tests/test_heldout_gate.py), so the gate is stubbed here.
+    import vgar.evaluation.retrieval.dataset as dataset
+    gated = []
+    original, dataset.assert_heldout_unlocked = dataset.assert_heldout_unlocked, lambda m, **kw: gated.append(m)
+    try:
+        require_split({"split": "heldout", "tasks": [{"instance_id": held_id, "split": "heldout"}]},
+                      allowed=("dev", "heldout"))
+    finally:
+        dataset.assert_heldout_unlocked = original
+    assert len(gated) == 1

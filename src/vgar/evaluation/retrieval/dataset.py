@@ -8,6 +8,8 @@ import time
 from collections import defaultdict
 from pathlib import Path
 
+from vgar.evaluation.heldout_gate import assert_heldout_unlocked
+
 from .chunks import decode_source, is_source, normalize_path
 from .evidence import sha256, write_json
 from .gold_labels import parse_patch
@@ -36,6 +38,9 @@ def require_split(manifest, allowed=("dev",)):
         actual = split_of(task["instance_id"])
         if actual not in allowed or task.get("split") != actual:
             raise ValueError(f"Task {task['instance_id']} is {actual!r} (manifest field: {task.get('split')!r}); allowed {list(allowed)}")
+    # M3-W12-2: held-out tasks open only after the signed protocol freeze (tag + unchanged freeze file).
+    if "heldout" in allowed and any(split_of(t["instance_id"]) == "heldout" for t in manifest.get("tasks", [])):
+        assert_heldout_unlocked(manifest)
 
 
 def validate_task(row):
@@ -117,7 +122,11 @@ def download(url, destination, max_bytes=100_000_000):
         temporary.unlink(missing_ok=True)
 
 
-def prepare_dataset(root, count=25, dataset_id="princeton-nlp/SWE-bench_Verified", revision=None, split="dev", min_source_files=2):
+def prepare_dataset(root, count=25, dataset_id="princeton-nlp/SWE-bench_Verified", revision=None, split="dev", min_source_files=2,
+                    freeze_sha256=None):
+    # M3-W12-2: a held-out manifest is bound to the signed protocol freeze; checked before any download.
+    if (split == "heldout") != (freeze_sha256 is not None):
+        raise ValueError("freeze_sha256 is required for a held-out manifest and not allowed for dev")
     import pyarrow.parquet as parquet
     root = Path(root)
     if dataset_id not in {"princeton-nlp/SWE-bench_Verified", "SWE-bench/SWE-bench_Verified"}:
@@ -158,6 +167,8 @@ def prepare_dataset(root, count=25, dataset_id="princeton-nlp/SWE-bench_Verified
                 "split_policy": {"name": SPLIT_POLICY, "dev_percent": DEV_PERCENT}, "min_source_files": min_source_files,
                 "provisional_m3_alignment": True, "query_policy": "problem_statement_only_no_hints_or_gold", "target_count": count,
                 "downloads": downloads, "selection_audit": audit, "tasks": tasks}
+    if freeze_sha256 is not None:
+        manifest["freeze_sha256"] = freeze_sha256
     destination = root / "data" / "manifests" / f"verified-{resolved[:12]}-{split}-{count}.json"
     # Locked manifest: rerunning with same pinned input cannot replace a different selection.
     if destination.exists() and json.loads(destination.read_text(encoding="utf-8")) != manifest:

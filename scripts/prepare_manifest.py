@@ -10,9 +10,11 @@ import argparse
 import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "src"))
 
-from vgar.evaluation.retrieval.dataset import prepare_dataset
+from vgar.evaluation.heldout_gate import freeze_sha256  # noqa: E402
+from vgar.evaluation.retrieval.dataset import prepare_dataset  # noqa: E402
 
 
 def main() -> int:
@@ -27,8 +29,14 @@ def main() -> int:
     args = parser.parse_args()
     if args.split == "heldout" and not args.allow_heldout:
         parser.error("--split heldout requires --allow-heldout (record the decision in docs/research_design.md first)")
+    freeze = None
+    if args.split == "heldout":  # M3-W12-2: bind the manifest to the signed protocol freeze
+        try:
+            freeze = freeze_sha256(ROOT)
+        except ValueError as error:
+            parser.error(str(error))
     path, manifest = prepare_dataset(args.root, count=args.count, revision=args.revision, split=args.split,
-                                     min_source_files=args.min_source_files)
+                                     min_source_files=args.min_source_files, freeze_sha256=freeze)
     audit = manifest["selection_audit"]
     print(f"manifest: {path}")
     print(f"split={manifest['split']} tasks={len(manifest['tasks'])} raw_by_split={audit['raw_by_split']} "
