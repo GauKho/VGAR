@@ -8,6 +8,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+from vgar.evaluation.failure_class import classify
 from vgar.evaluation.repair.fairness import check_arm_fairness
 from vgar.evaluation.repair.manifest import Experiment, load_experiment, load_graph, resolve
 from vgar.evaluation.repair.runner import read_attempts
@@ -103,11 +104,39 @@ def _row(exp: Experiment, task_id, variant, attempt, data_root, grades, gold):
     return row
 
 
+def _class(attempt: dict | None, row: dict) -> str:
+    """Outcome class (trace spec 2026-11-03 §4 E3); NOT_RUN keeps the class counts summing to N."""
+    if row['status'] == 'NOT_RUN':
+        return 'NOT_RUN'
+    if attempt and attempt.get('failure_class'):
+        return attempt['failure_class']
+    return classify(row['status'], (row['failure'] or {}).get('code'), (attempt or {}).get('detail'),
+                    applied=row['F3'] is True)
+
+
 def pair_rows(exp: Experiment, exp_dir: Path, data_root: Path, grades: dict, gold: dict) -> list[dict]:
     ledger = read_attempts(exp_dir)
-    return [_row(exp, task_id, variant, _latest(ledger.get((task_id, variant.variant_id), [])), data_root, grades,
-                 gold[task_id])
-            for task_id in exp.task_ids for variant in exp.variants]
+    rows = []
+    for task_id in exp.task_ids:
+        for variant in exp.variants:
+            attempt = _latest(ledger.get((task_id, variant.variant_id), []))
+            row = _row(exp, task_id, variant, attempt, data_root, grades, gold[task_id])
+            rows.append(row | {'class': _class(attempt, row)})
+    return rows
+
+
+def code_summary(exp_dirs: list[Path]) -> dict:
+    """VGAR code of the TERMINAL attempts (E6); more than one distinct state is MIXED_CODE (warning only)."""
+    states = set()
+    for exp_dir in exp_dirs:
+        for items in read_attempts(exp_dir).values():
+            for attempt in items:
+                if attempt.get('state') != 'TERMINAL':
+                    continue
+                code = attempt.get('code')
+                states.add((code['head'][:7], tuple(sorted((d['path'], d['sha256_12']) for d in code['dirty'])))
+                           if code else ('unknown', ()))
+    return {'heads': sorted({head for head, _ in states}), 'mixed': len(states) > 1}
 
 
 def _counts(rows):
@@ -133,8 +162,12 @@ def summarize(rows: list[dict]) -> dict:
                      'single_file': _counts([r for r in group if not r['multi_file']])}
         for status in sorted({r['mypy'] for r in group if r['mypy']}):
             subgroups['mypy_' + status] = _counts([r for r in group if r['mypy'] == status])
+        classes: dict[str, int] = {}
+        for r in group:
+            if r.get('class'):
+                classes[r['class']] = classes.get(r['class'], 0) + 1
         variants[variant_id] = {
-            'arm': group[0]['arm'], **_counts(group),
+            'arm': group[0]['arm'], **_counts(group), 'classes': dict(sorted(classes.items())),
             'F5_unavailable': sum(r['F5'] == 'unavailable' for r in group),
             'false_reject': sum(r['harness_status'] == 'RESOLVED' and r['status'] != 'PASS' for r in group),
             'false_accept': sum(r['status'] == 'PASS' and r['harness_status'] == 'UNRESOLVED' for r in group),
@@ -166,6 +199,13 @@ def render_markdown(summary: dict) -> str:
     for variant_id, v in summary['variants'].items():
         lines.append(f'| {variant_id} | ' + ' | '.join(f"{v['cost'][f]['mean']}, {v['cost'][f]['n']}"
                                                        for f in (*COST, 'wall_ms')) + ' |')
+    lines += ['', '| variant | class | count |', '|---|---|---|']
+    for variant_id, v in summary['variants'].items():
+        lines += [f'| {variant_id} | {klass} | {count} |' for klass, count in (v.get('classes') or {}).items()]
+    code = summary.get('code')
+    if code:
+        lines += ['', 'Code: ' + ', '.join(code['heads']) + (' — **MIXED_CODE**: attempts ran on different VGAR code'
+                                                            if code['mixed'] else '')]
     return '\n'.join(lines) + '\n'
 
 
@@ -180,6 +220,7 @@ def aggregate(configs, data_root: Path, output_root: Path, grade_files, gold: di
                    for row in pair_rows(exp, Path(output_root)/exp.experiment_id, data_root, grades, gold)),
                   key=lambda r: (r['task_id'], r['variant_id'], r['experiment_id']))
     summary = summarize(rows)
+    summary['code'] = code_summary([Path(output_root)/exp.experiment_id for exp in experiments])
     return summary, render_markdown(summary)
 
 

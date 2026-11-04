@@ -186,6 +186,8 @@ N = 25 task mỗi arm:
 **Quy tắc chạy:**
 - Chạy tuần tự task × variant. Resume theo ledger; mỗi experiment chỉ có một process (lock của OS).
 - Chỉ chạy lại khi lỗi **hạ tầng**, bằng `--rerun TASK:VARIANT --reason`. Attempt cũ được giữ (D22).
+  "Hạ tầng" là cột `class = INFRA` trong `status`/`aggregate` (`src/vgar/evaluation/failure_class.py`), không phân loại tay;
+  mỗi attempt ghi commit VGAR (`code`), `aggregate` cảnh báo `MIXED_CODE` khi các attempt chạy trên code khác nhau.
 - `RUN_TIMEOUT` và `GENERATION_TIMEOUT` là kết cục hợp lệ về ngân sách, **không chạy lại** (D20, D26).
 - Không tăng budget giữa chừng (D26).
 - Hash dữ liệu do chính người chạy sinh ra phải ghi nguồn gốc. Với held-out, hash phải do **người khác người chạy** cung cấp hoặc kiểm lại (D10).

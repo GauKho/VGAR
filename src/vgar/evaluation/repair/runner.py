@@ -18,6 +18,9 @@ from pathlib import Path
 from typing import Literal
 
 from vgar.evaluation.repair.manifest import Experiment, TaskPlan, plan_task
+from vgar.evaluation.failure_class import classify, refine_code
+from vgar.observability.code_state import code_label, code_state
+from vgar.repair.config import REPO_ROOT
 from vgar.repair.evidence import atomic_json
 
 INTERRUPTED_EXIT = 130
@@ -117,7 +120,9 @@ def _attempt(exp, data_root, exp_dir, launch, sampler_factory, plan_variant, num
                   detail=None, failure=None,
                   started_utc=_now(), ended_utc=None, wall_ms=None, gpu_peak_mib=None, gpu_peak_scope=None,
                   gpu_samples_failed=None, graph_version=None, ranking_config_hash=None,
-                  host=platform.node())
+                  host=platform.node(),
+                  # Trace spec 2026-11-03 §6.2: the VGAR code this attempt ran on (E6) and its outcome class (E3).
+                  code=code_state(REPO_ROOT), failure_class=None)
     path = _attempt_path(exp_dir, record)
     path.parent.mkdir(parents=True, exist_ok=True)
     atomic_json(path, record)
@@ -158,6 +163,8 @@ def _attempt(exp, data_root, exp_dir, launch, sampler_factory, plan_variant, num
         record.update({k: v for k, v in asdict(result).items() if k != 'interrupted'}, failure=runner_failure(result))
     interrupted = result is None or result.interrupted
     record['state'] = 'INTERRUPTED' if interrupted else 'TERMINAL'
+    if result is not None:
+        record['failure_class'] = _outcome(record)
     atomic_json(path, record)
     return interrupted
 
@@ -196,13 +203,31 @@ def run_experiment(exp: Experiment, data_root: Path, output_root: Path, launch: 
     return 0
 
 
+def _engine_record(run_dir: str | None) -> dict:
+    record = Path(run_dir or '') / 'run_record.json'
+    if not run_dir or not record.is_file():
+        return {}
+    try:
+        return json.loads(record.read_text(encoding='utf-8'))
+    except (OSError, ValueError):
+        return {}
+
+
+def _outcome(record: dict) -> str:
+    """Outcome class of a runner attempt; VERIFICATION_INCOMPLETE is refined from the engine run_record."""
+    engine = _engine_record(record.get('engine_run_dir'))
+    code, _ = refine_code(record['reason'], engine)
+    applied = ((engine.get('stages') or {}).get('apply') or {}).get('status') == 'PASS'
+    return classify(record['status'], code, record.get('detail'), applied=applied)
+
+
 def summary_table(exp_dir: Path, exp: Experiment) -> str:
     """Markdown status of every pair, latest attempt; a timed-out wall time is a lower bound, not a measurement."""
     ledger = read_attempts(exp_dir)
     limit = exp.policy.global_timeout / 60
     lines = [f'Experiment `{exp.experiment_id}`', '',
-             '| task | variant | state | status | reason | attempts | wall (min) | VRAM peak (MiB, device) |',
-             '|---|---|---|---|---|---|---|---|']
+             '| task | variant | state | status | reason | attempts | wall (min) | VRAM peak (MiB, device) | class | code |',
+             '|---|---|---|---|---|---|---|---|---|---|']
     for task_id in exp.task_ids:
         for variant in exp.variants:
             items = ledger.get((task_id, variant.variant_id), [])
@@ -212,5 +237,6 @@ def summary_table(exp_dir: Path, exp: Experiment) -> str:
             peak = last.get('gpu_peak_mib')
             lines.append(f"| {task_id} | {variant.variant_id} | {last.get('state', 'NOT_RUN')} | "
                          f"{last.get('status') or ''} | {last.get('reason') or ''} | {len(items)} | {minutes} | "
-                         f"{'' if peak is None else peak} |")
+                         f"{'' if peak is None else peak} | {last.get('failure_class') or ''} | "
+                         f"{code_label(last['code']) if last.get('code') else ''} |")
     return '\n'.join(lines)
