@@ -56,6 +56,10 @@ def _data_root(tmp_path, tasks):
 
 
 def _derive(tmp_path, data, task_ids, **kwargs):
+    profile = tmp_path / 'configs/m1/w9_bundle_profile_repair.json'
+    profile.parent.mkdir(parents=True, exist_ok=True)
+    if not profile.exists():
+        profile.write_bytes(b'{"budget_tokens": 1500}\n')
     return derive_config(TEMPLATE, template_dir=tmp_path / 'configs/m3', data_root=data, task_ids=task_ids,
                          bundle_dir='@data/w12/bundles/repair', **kwargs)
 
@@ -87,6 +91,17 @@ def test_relative_paths_become_absolute_from_the_template_dir(tmp_path):
     assert out['source']['task_inputs'] == str((base / 'w10_dev/tasks').resolve())
     assert out['source']['checkouts'] == '@data/repositories/{task_id}'
     assert out['source']['manifest']['sha256'] == TEMPLATE['source']['manifest']['sha256']
+
+
+def test_bundle_profile_hash_is_recomputed_from_the_file(tmp_path):
+    # W10 pinned the profile hash of a CRLF checkout; a LF clone of the same content must still load (03/11).
+    data = _data_root(tmp_path, ['t1'])
+    profile = tmp_path / 'configs/m1/w9_bundle_profile_repair.json'
+    profile.parent.mkdir(parents=True, exist_ok=True)
+    profile.write_bytes(b'{"budget_tokens": 1500}\r\n')
+    out = _derive(tmp_path, data, ['t1'], variants=[])
+    assert out['source']['bundle_profile']['sha256'] == _sha(profile)
+    assert out['source']['bundle_profile']['sha256'] != TEMPLATE['source']['bundle_profile']['sha256']
 
 
 def test_missing_bundle_file_fails(tmp_path):
@@ -124,6 +139,37 @@ def test_cli_removes_output_when_runner_rejects_it(swebench_config, tmp_path):
                               '--bundle-dir', '@data/w12/bundles/repair', '--variants', 'A0:bm25', '--out', str(out)],
                              cwd=ROOT, capture_output=True, text=True)
     assert process.returncode != 0 and not out.exists() and 'rejected' in process.stderr
+
+
+def _script():
+    import importlib.util
+    spec = importlib.util.spec_from_file_location('derive_script', ROOT / 'scripts/derive_experiment_config.py')
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def test_variants_resolve_to_the_w10_protocol_files():
+    # research_design.md: A0-A2 are configs/m2/variants/w10/*.json (D19 path_listing=context), not the W9 files.
+    variants = _script().parse_variants('A0:bm25,A2:graph')
+    assert [v['path'] for v in variants] == [str((ROOT / f'configs/m2/variants/w10/{n}.json').resolve())
+                                             for n in ('A0', 'A2')]
+    assert [v['arm'] for v in variants] == ['bm25', 'graph']
+
+
+def test_variant_falls_back_to_the_top_level_dir(tmp_path):
+    # A3 is specified at configs/m2/variants/A3.json (research_design.md).
+    (tmp_path / 'w10').mkdir()
+    (tmp_path / 'A3.json').write_text('{"variant_id": "A3", "path_listing": "context"}', encoding='utf-8')
+    variants = _script().parse_variants('A3:graph', dirs=(tmp_path / 'w10', tmp_path))
+    assert variants == [{'path': str((tmp_path / 'A3.json').resolve()), 'arm': 'graph'}]
+
+
+def test_variant_without_context_path_listing_is_refused(tmp_path):
+    # 03/11: the W9 A2 (path_listing 'all' by default) pushed 3 of 5 X2b prompts over the 6000-token cap.
+    (tmp_path / 'A2.json').write_text('{"variant_id": "A2"}', encoding='utf-8')
+    with pytest.raises(ValueError, match='path_listing'):
+        _script().parse_variants('A2:graph', dirs=(tmp_path,))
 
 
 def test_task_not_in_template_fails(tmp_path):

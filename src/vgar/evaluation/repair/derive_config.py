@@ -35,7 +35,9 @@ def derive_config(template: dict, *, template_dir: Path, data_root: Path, task_i
     out['task_ids'] = list(task_ids)
     out['manifest']['path'] = _absolute(source['manifest']['path'], base)
     if 'bundle_profile' in source:
-        out['bundle_profile']['path'] = _absolute(source['bundle_profile']['path'], base)
+        # Recomputed like every other pin: W10 hashed a CRLF checkout, a LF clone of the same file differs.
+        path = _absolute(source['bundle_profile']['path'], base)
+        out['bundle_profile'] = {'path': path, 'sha256': byte_digest(resolve(path, base, data_root).read_bytes())}
     out['task_inputs'] = _absolute(source['task_inputs'], base)
     out['profiles'], out['bundles'] = {}, {}
     for task in task_ids:

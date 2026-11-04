@@ -4,7 +4,8 @@
       --tasks astropy__astropy-13033,django__django-10914 --bundle-dir @data/w12/bundles/repair \
       --variants A0:bm25,A1:graph,A2:graph,A3:graph --out results/m1/w12/dry_run/<ts>/w12_dry_run.json
 
-Tên variant An ánh xạ tới configs/m2/variants/An.json. Config sinh ra được kiểm bằng load_experiment;
+Tên variant An ánh xạ tới configs/m2/variants/w10/An.json, không có thì configs/m2/variants/An.json (A3), theo
+docs/research_design.md; variant phải có path_listing=context (D19). Config sinh ra được kiểm bằng load_experiment;
 không qua thì file đầu ra bị xóa và script trả mã lỗi.
 """
 from __future__ import annotations
@@ -21,15 +22,19 @@ from vgar.evaluation.repair.derive_config import derive_config  # noqa: E402
 from vgar.evaluation.repair.manifest import load_experiment  # noqa: E402
 
 VARIANTS_DIR = ROOT / "configs/m2/variants"
+# research_design.md: A0-A2 are the W10 files (D19), A3 lives at the top level.
+VARIANT_DIRS = (VARIANTS_DIR / "w10", VARIANTS_DIR)
 
 
-def parse_variants(text: str, variants_dir: Path = VARIANTS_DIR) -> list[dict]:
+def parse_variants(text: str, dirs: tuple[Path, ...] = VARIANT_DIRS) -> list[dict]:
     variants = []
     for item in filter(None, text.split(",")):
         name, _, arm = item.partition(":")
-        path = variants_dir / f"{name}.json"
-        if not path.is_file():
-            raise FileNotFoundError(f"Variant {name}: {path} does not exist")
+        path = next((d / f"{name}.json" for d in dirs if (d / f"{name}.json").is_file()), None)
+        if path is None:
+            raise FileNotFoundError(f"Variant {name}: no {name}.json in {[str(d) for d in dirs]}")
+        if json.loads(path.read_text(encoding="utf-8")).get("path_listing") != "context":
+            raise ValueError(f"Variant {name}: {path} must set path_listing=context (D19)")
         variants.append({"path": str(path.resolve()), "arm": arm})
     return variants
 

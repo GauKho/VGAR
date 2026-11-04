@@ -7,7 +7,7 @@
 
 Chạy toàn chuỗi trên 2 dev task `astropy__astropy-13033`, `django__django-10914` với model thật:
 
-1. `export_bundles`: export lại bundle bằng ranking đã đóng băng → `~/w9/w12/bundles/repair/<run-id>/`
+1. `export_bundles`: export lại bundle bằng ranking đã đóng băng → `~/w10/w12/bundles/repair/<run-id>/`
 2. `derive_config`: sinh `w12_dry_run.json` với hash của bundle mới (template `configs/m3/w10_dev_stage1.json`)
 3. `preflight`, 4. `run`: `run_repair_experiment.py`
 5. `grade`: `grade_repair_candidates.py --execute` (Docker)
@@ -20,9 +20,11 @@ Cổng "harness ổn định" (H7) đạt khi **2 lần chạy liên tiếp, ở
 - `configs/m2/variants/A3.json` đã merge (M2-W12-1). Chưa có thì chạy với `--arms A0,A1,A2`; khi đó
   `gate = INCOMPLETE_A3_MISSING` và cổng **không** tính là đạt.
 - Mutant pool đã chạy xong (H9/H10), vì dry-run dùng chung máy.
-- Docker image của 2 task có sẵn; checkout ở `~/w9/repositories/<task>` sạch, đúng base commit.
+- Docker image của 2 task có sẵn; checkout ở `~/w10/repositories/<task>` sạch, đúng base commit.
 - Parquet SWE-bench đã pin (cùng file dùng cho aggregate W10).
-- Variant dùng là `configs/m2/variants/A*.json` (bản hiện hành), không phải `configs/m2/variants/w10/`.
+- Variant: A0–A2 là `configs/m2/variants/w10/A*.json`, A3 là `configs/m2/variants/A3.json` (`docs/research_design.md`);
+  mọi variant phải có `path_listing = context` (D19), `derive_experiment_config.py` từ chối variant thiếu trường này.
+  Bản W9 `configs/m2/variants/A0–A2.json` liệt kê mọi path và đẩy prompt vượt cap 6000 token (M3-X2b 03/11).
 
 ## Lệnh
 
@@ -30,7 +32,7 @@ Lần 1 (đầu cửa sổ GPU):
 
 ```bash
 wsl -d Ubuntu -- bash -lc "cd ~/vgar && .venv/bin/python scripts/dry_run_heldout_chain.py \
-  --data-root ~/w9 --parquet <parquet đã pin> --out results/m1/w12/dry_run/$(date -u +%Y%m%dT%H%M%SZ)"
+  --data-root ~/w10 --parquet <parquet đã pin> --out results/m1/w12/dry_run/$(date -u +%Y%m%dT%H%M%SZ)"
 ```
 
 Lần 2: cùng lệnh, ở một phiên máy khác (cuối cửa sổ GPU), thư mục `--out` mới.
