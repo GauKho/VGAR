@@ -1,3 +1,70 @@
+# Publication M2-W12/D15 — 05/11/2026
+
+- Theo lệnh người dùng: commit code/tests/config/docs và push nhánh mới
+  `m2/w12-a3-verifier-d15-20261105`; giữ main và raw results/cache/data local.
+- Gate trước commit: 654 tests,0 FAIL/ERROR,0 SKIP,
+  174.977s JUnit; Ruff scoped và whitespace PASS. Không phải full CI mới.
+- [Checkpoint publication](docs/checkpoints/2026-11-05-publish-m2-w12-d15.md)
+  ghi commit groups/lệnh push/cách xác minh; xem git log và remote ref để
+  biết publication đã hoàn tất khi khôi phục, tránh tạo lại commits.
+- Task code/fixture đã đạt; nghiệm thu A3/pool/D15 thật vẫn chờ records và review.
+  Các câu không commit/push ở checkpoint cũ là giới hạn của phiên triển khai cũ,
+  được lệnh xuất bản hiện tại thay thế; không thay phạm vi thực nghiệm.
+
+---
+
+# Điểm dừng D15 — 05/11/2026
+
+- **D15 công cụ/fixture đạt gate; dừng, chờ lệnh tiếp.** Chưa DONE thực nghiệm.
+- Gate cuối 120 PASS/0 FAIL/ERROR/SKIP, 77,444s JUnit: D15 54 +regression 66.
+  Ruff scoped và whitespace check exit 0; 6 review findings đã RED→GREEN.
+- Evidence: `results/m2/w1112/d15/20261105-tool-fixture/` (logs/JUnit/commands,
+  synthetic demo, WAITING_DATA readiness, hashes và preservation).
+- [Checkpoint D15](docs/checkpoints/2026-11-04-d15-timeout-analysis.md) và
+  [hướng dẫn](docs/m2_d15_timeout_analysis.md). Đọc điểm dừng mới nhất trước khi tiếp.
+- Chờ raw W10/A3 từ M3 và đề xuất timeout dựa trên dữ liệu thật. Không tự chạy
+  campaign/model/Docker/held-out; giữ 900/1800, chưa chọn 1500/2700; không commit/push.
+- Giữ nguyên A3/pool và mọi thay đổi cũ; chỉ script/test/tài liệu D15, append m2.
+
+---
+
+# Trạng thái W11–W12 sau merge — 04/11/2026
+
+- Đã cập nhật [đối chiếu chi tiết15 deliverable và việc bổ trợ](docs/status/w11_w12_post_merge_status_2026-11-04.md).
+- HEAD c88290a1/nhánh local giữ nguyên. Chỉ cập nhật tài liệu, code/tests/config không đổi.
+- Gate merge được trích lại:1419 PASS/20 SKIP/0 FAIL, không phải test mới hoặc full CI.
+- Bridge signature đã có trong HEAD. A3/pool M2 xong code/fixture local, chưa có thực nghiệm bàn giao.
+- U1/I1/dry-run và các bảng thật còn chờ; M3 có báo cáo agent riêng; freeze vẫn nháp.
+- [Checkpoint trạng thái](docs/checkpoints/2026-11-04-w11-w12-status-audit.md). Đọc trước khi tiếp tục; không làm lại phần code đã có.
+- Không triển khai D15/ĐX1–ĐX5, model/Docker/held-out, commit/push hoặc sửa bảng M3.
+
+---
+
+# Merge m3/w12-all — 04/11/2026
+
+- Fast-forward tới c88290a1 đã xong; giữ nhánh local và nguyên 23 file dirty/untracked.
+- Merge và integration gate đã kiểm chứng: 1419 PASS, 20 SKIP, 0 XFAIL, 0 FAIL/ERROR, 1737.190 giây (JUnit).
+  Gate bao phủ test incoming, M2/M3 và legacy MCP/agent; không phải full offline suite.
+- Evidence: `results/integration/merge-m3-w12-all-20261104-c88290a1/`. Không chạy model/Docker/held-out hoặc D15.
+- Đọc checkpoint mới: [merge m3/w12-all](docs/checkpoints/2026-11-04-merge-m3-w12-all.md).
+- Snapshot M2 trước merge phía dưới là lịch sử; chữ ký impact nay đã có cầu nối M1.
+
+---
+
+# Tiến độ hiện tại — M2-W12-2, khôi phục 04/11/2026
+
+- Task đang thực hiện: **M2-W12-2**, giữ nguyên phạm vi plan đã duyệt.
+- Điểm dừng: **M2-W12-2 DONE kỹ thuật local**, gate 1994 PASS, 18 SKIP, 1 XFAIL, 0 FAIL/ERROR, 2142.428 giây (JUnit).
+  Chờ inputs/campaign Docker/review M3 và CI pinned-tools; không tự chạy D15.
+  Raw evidence `results/m2/w1112/m2-w12-2-20261104-verifier-eval/`;
+  xem checkpoint trước khi làm tiếp, không làm lại các bước đã PASS.
+- Chi tiết file, log, dependency và việc tiếp theo:
+  [checkpoint M2-W12-2](docs/checkpoints/2026-11-04-m2-w12-2-checkpoint.md).
+- Giữ A3 và báo cáo chưa commit. Không commit/push, model/Docker campaign,
+  D15 hoặc task tiếp theo. Sau mỗi mốc kiểm chứng, cập nhật checkpoint này.
+
+---
+
 # Checkpoint — tích hợp và kiểm tra VGAR ngày 13/10/2026
 
 ## Snapshot xuất bản nhánh riêng — 16/10/2026
