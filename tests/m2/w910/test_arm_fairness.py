@@ -19,7 +19,7 @@ def config(tmp_path, name='config.json', variant_paths=None, repair_config=None)
         'schema': 'vgar-m3-experiment-v1',
         'source': {'type': 'fixture', 'tasks': [str(examples/'tasks/single_file_login.json')]},
         'repair_config': str(repair_config or ROOT/'configs/m2/demo.json'), 'generation': 'fake',
-        'variants': [{'path': str(p), 'arm': W10[v]} for v, p in paths.items()]})
+        'variants': [{'path': str(p), 'arm': (W10 | {'A3': 'graph'})[v]} for v, p in paths.items()]})
 
 
 def load(path):
@@ -72,3 +72,81 @@ def test_refused_run_writes_nothing(tmp_path, capsys):
     assert cli.main(['run', '--config', str(path), '--data-root', str(ROOT), '--output-root', str(out)]) == 2
     assert not out.exists() or not any(out.iterdir())
     assert 'Arm fairness violation' in capsys.readouterr().err
+
+
+def a3_paths():
+    return {'A2': VARIANTS / 'w10/A2.json', 'A3': VARIANTS / 'A3.json'}
+
+
+def test_A3_differs_from_A2_only_in_required_checks(tmp_path):
+    exp = load(config(tmp_path, variant_paths=a3_paths()))
+    check(exp)
+    assert [(v.variant_id, v.arm) for v in exp.variants] == [('A2', 'graph'), ('A3', 'graph')]
+    check(load(config(tmp_path, name='a2.json', variant_paths={'A2': a3_paths()['A2']})),
+          load(config(tmp_path, name='a3.json', variant_paths={'A3': a3_paths()['A3']})))
+
+
+@pytest.mark.parametrize('field,value', [('patch_mode', 'strict'), ('path_listing', 'all')])
+def test_a3_shared_policy_drift_is_rejected_before_any_attempt(tmp_path, capsys, field, value):
+    import importlib.util
+    spec = importlib.util.spec_from_file_location('a3_run_cli', ROOT / 'scripts/run_repair_experiment.py')
+    cli = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(cli)
+    changed = json.loads((VARIANTS / 'A3.json').read_bytes()) | {field: value}
+    paths = a3_paths() | {'A3': write_json(tmp_path / 'changed_a3.json', changed)}
+    path = config(tmp_path, variant_paths=paths)
+    output = tmp_path / 'out'
+    assert cli.main(['run', '--config', str(path), '--data-root', str(ROOT), '--output-root', str(output)]) == 2
+    assert not output.exists() or not any(output.iterdir())
+    assert field in capsys.readouterr().err
+
+
+@pytest.mark.parametrize('changed_variant', ['A2', 'A3'])
+def test_a3_comparison_cannot_change_graph_arm(tmp_path, changed_variant):
+    path = config(tmp_path, variant_paths=a3_paths())
+    raw = json.loads(path.read_bytes())
+    raw['variants'][0 if changed_variant == 'A2' else 1]['arm'] = 'bm25'
+    write_json(path, raw)
+    with pytest.raises(ValueError, match='(Arm fairness|A3).*graph'):
+        check(load(path))
+
+
+def test_a3_cross_experiment_cannot_compare_bm25_a2(tmp_path):
+    first = config(tmp_path, name='a2.json', variant_paths={'A2': a3_paths()['A2']})
+    raw = json.loads(first.read_bytes())
+    raw['variants'][0]['arm'] = 'bm25'
+    write_json(first, raw)
+    second = config(tmp_path, name='a3.json', variant_paths={'A3': a3_paths()['A3']})
+    with pytest.raises(ValueError, match='Arm fairness.*graph'):
+        check(load(first), load(second))
+
+
+@pytest.mark.parametrize('field,value', [('input_cap', 5000), ('output_cap', 1024),
+    ('generation_timeout', 899), ('global_timeout', 1799), ('prompt_version', 'm2-w78-v12')])
+def test_a3_cannot_change_common_prompt_budget_or_deadline(tmp_path, monkeypatch, field, value):
+    from dataclasses import replace
+    if field == 'prompt_version':
+        from vgar.evaluation.repair import fairness
+        original = fairness.template_path
+        other = tmp_path / 'other-template.txt'
+        other.write_text('Different registered fixture prompt', encoding='utf-8')
+        monkeypatch.setattr(fairness, 'template_path', lambda version: other if version == value else original(version))
+    first = load(config(tmp_path, variant_paths={'A2': a3_paths()['A2']}))
+    second = load(config(tmp_path, name='a3.json', variant_paths={'A3': a3_paths()['A3']}))
+    second = replace(second, policy=second.policy.model_copy(update={field: value}))
+    with pytest.raises(ValueError, match='Arm fairness'):
+        check(first, second)
+
+
+@pytest.mark.parametrize('field', ['model_id', 'revision', 'tokenizer_manifest'])
+def test_a3_cannot_change_model_or_tokenizer(tmp_path, field):
+    from dataclasses import replace
+    first = load(config(tmp_path, variant_paths={'A2': a3_paths()['A2']}))
+    second = load(config(tmp_path, name='a3.json', variant_paths={'A3': a3_paths()['A3']}))
+    value = 'different-pin'
+    if field == 'tokenizer_manifest':
+        value = tmp_path / 'different-tokenizer.json'
+        value.write_bytes(second.profile.tokenizer_manifest.read_bytes() + b'\n')
+    second = replace(second, profile=second.profile.model_copy(update={field: value}))
+    with pytest.raises(ValueError, match='Arm fairness'):
+        check(first, second)

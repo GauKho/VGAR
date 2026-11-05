@@ -1,4 +1,4 @@
-"""Opt-in W9 variant definitions; no changes to W78 execution or verdicts.
+"""Opt-in variant definitions, retaining W9/W10 serialization and hashes.
 
 An unresolved arm is explicit metadata, never an inferred retrieval choice.
 Policy hashes cover this definition, not the model/budget/environment profile.
@@ -12,16 +12,17 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, model_serializer, model_validator
 
-CheckName = Literal['tests', 'syntax', 'mypy', 'ruff']
+CheckName = Literal['tests', 'syntax', 'mypy', 'ruff', 'api', 'structural']
 _ALL_CHECKS = frozenset({'tests', 'syntax', 'mypy', 'ruff'})
-_REQUIRED = {'A0': frozenset({'tests'}), 'A1': frozenset({'tests'}), 'A2': _ALL_CHECKS}
+_REQUIRED = {'A0': frozenset({'tests'}), 'A1': frozenset({'tests'}), 'A2': _ALL_CHECKS,
+             'A3': _ALL_CHECKS | {'api', 'structural'}}
 
 
 class VariantPolicy(BaseModel):
     """Validated, immutable definition; arm=None means awaiting group agreement."""
 
     model_config = ConfigDict(extra='forbid', strict=True, frozen=True, revalidate_instances='always')
-    variant_id: Literal['A0', 'A1', 'A2']
+    variant_id: Literal['A0', 'A1', 'A2', 'A3']
     required_checks: tuple[CheckName, ...]
     recorded_checks: tuple[CheckName, ...] = ('tests', 'syntax', 'mypy', 'ruff')
     arm: Literal['bm25', 'graph'] | None = None
@@ -43,6 +44,8 @@ class VariantPolicy(BaseModel):
 
     @model_validator(mode='after')
     def validate_checks(self) -> VariantPolicy:
+        if self.variant_id == 'A3' and self.arm not in (None, 'graph'):
+            raise ValueError('A3 requires the graph arm')
         for field, expected in (('required_checks', _REQUIRED[self.variant_id]),
                                 ('recorded_checks', _ALL_CHECKS)):
             values = getattr(self, field)

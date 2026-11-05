@@ -40,7 +40,7 @@ def test_exact_required_checks(variant, expected):
     assert policy.arm is None  # Mapping has not been approved by M1/M3.
 
 
-@pytest.mark.parametrize('variant', ['A3', 'a0', '', 'unknown'])
+@pytest.mark.parametrize('variant', ['A4', 'a0', '', 'unknown'])
 def test_unknown_variant_rejected(tmp_path, variant):
     api = module()
     with pytest.raises(ValueError):
@@ -167,3 +167,49 @@ def test_unknown_path_listing_rejected(tmp_path):
 def test_unknown_patch_mode_rejected(tmp_path):
     with pytest.raises(Exception):
         module().load_variant(write_policy(tmp_path, patch_mode='fuzzy'))
+
+
+def test_a3_loads_w10_semantics_with_two_additional_required_checks():
+    api = module()
+    policy = api.load_variant(VARIANTS / 'A3.json')
+    assert policy.variant_id == 'A3'
+    assert api.required_checks(policy) == frozenset({'tests', 'syntax', 'mypy', 'ruff', 'api', 'structural'})
+    assert policy.recorded_checks == ('mypy', 'ruff', 'syntax', 'tests')
+    assert (policy.patch_mode, policy.path_listing) == ('normalized', 'context')
+    a2 = api.load_variant(VARIANTS / 'w10/A2.json').model_dump(mode='json')
+    assert policy.model_dump(mode='json') == a2 | {
+        'variant_id': 'A3', 'required_checks': ['api', 'mypy', 'ruff', 'structural', 'syntax', 'tests']}
+
+
+@pytest.mark.parametrize('missing', ['tests', 'syntax', 'mypy', 'ruff', 'api', 'structural'])
+def test_a3_cannot_omit_a_required_check(tmp_path, missing):
+    checks = ['tests', 'syntax', 'mypy', 'ruff', 'api', 'structural']
+    with pytest.raises(ValueError):
+        module().load_variant(write_policy(tmp_path, variant_id='A3', required_checks=[c for c in checks if c != missing]))
+
+
+@pytest.mark.parametrize('field,checks', [
+    ('required_checks', ['tests', 'syntax', 'mypy', 'ruff', 'api', 'structural', 'api']),
+    ('required_checks', ['tests', 'syntax', 'mypy', 'ruff', 'api', 'structural', 'shell']),
+    ('recorded_checks', ['tests', 'syntax', 'mypy', 'ruff', 'api', 'structural']),
+])
+def test_a3_rejects_ambiguous_check_sets(tmp_path, field, checks):
+    data = dict(variant_id='A3', required_checks=['tests', 'syntax', 'mypy', 'ruff', 'api', 'structural'])
+    data[field] = checks
+    with pytest.raises(ValueError):
+        module().load_variant(write_policy(tmp_path, **data))
+
+
+def test_a3_cannot_bind_bm25_even_outside_experiment_fairness(tmp_path):
+    with pytest.raises(ValueError, match='A3.*graph'):
+        module().load_variant(write_policy(tmp_path, variant_id='A3', arm='bm25',
+            required_checks=['tests', 'syntax', 'mypy', 'ruff', 'api', 'structural']))
+
+
+def test_a3_hash_canonicalizes_check_order_without_changing_legacy_defaults(tmp_path):
+    api = module()
+    data = dict(variant_id='A3', arm='graph', required_checks=['tests', 'syntax', 'mypy', 'ruff', 'api', 'structural'])
+    first = api.load_variant(write_policy(tmp_path, **data))
+    second = api.load_variant(write_policy(tmp_path, **(data | {'required_checks': list(reversed(data['required_checks']))})))
+    assert api.policy_hash(first) == api.policy_hash(second)
+    assert first.recorded_checks == ('mypy', 'ruff', 'syntax', 'tests')

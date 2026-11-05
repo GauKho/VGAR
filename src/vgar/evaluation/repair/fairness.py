@@ -38,6 +38,11 @@ def fairness_identity(exp: Experiment) -> dict:
 
 
 def check_arm_fairness(experiments: Sequence[Experiment]) -> None:
+    # A3 adds checks to the graph A2 arm; retrieval is not a second ablation.
+    variants = [variant for exp in experiments for variant in exp.variants]
+    if any(variant.variant_id == 'A3' for variant in variants):
+        if any(variant.arm != 'graph' for variant in variants if variant.variant_id in ('A2', 'A3')):
+            raise ValueError('Arm fairness violation: A2 and A3 must both use the graph arm')
     identities = [fairness_identity(exp) for exp in experiments]
     for exp, identity in zip(experiments[1:], identities[1:]):
         for field in identities[0]:
