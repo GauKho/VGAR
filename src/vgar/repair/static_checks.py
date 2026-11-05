@@ -36,11 +36,17 @@ def run_static_checks(lease, targets, policy, executor, *, variant=None):
     return result
 
 
+def collect_static_measurements(lease, targets, policy, executor):
+    """Structured baseline/post measurements without an arm or qualification decision."""
+    return _run_w9_static_checks(lease, targets, policy, executor, None)
+
+
 def _run_w9_static_checks(lease, targets, policy, executor, variant):
     """Opt-in native-fixture path. Environment bridging remains a later task."""
     from vgar.repair.policy import VariantPolicy, policy_hash
     from vgar.repair.static_diagnostics import Diagnostic, DiagnosticReport, parse_tool_report, scope_digest
-    VariantPolicy.model_validate(variant)
+    if variant is not None:
+        VariantPolicy.model_validate(variant)
     targets = tuple(sorted(safe_path(t) for t in targets))
     if not targets or len(targets) != len(set(targets)):
         raise ValueError('Static checks need unique approved source targets')
@@ -48,8 +54,9 @@ def _run_w9_static_checks(lease, targets, policy, executor, variant):
     hashes = {name: digest(path.read_bytes()) for name, path in configs.items()}
     interpreter = getattr(executor, 'interpreter_ref', sys.executable + '|' + sys.version)
     binding = dict(scope=list(targets), scope_hash=scope_digest(targets), interpreter_ref=interpreter)
-    result = dict(config_hashes=hashes, binding=binding, source_snapshot={},
-                  variant_policy_hash=policy_hash(variant))
+    result = dict(config_hashes=hashes, binding=binding, source_snapshot={})
+    if variant is not None:
+        result['variant_policy_hash'] = policy_hash(variant)
     diagnostics, syntax_error = [], None
     started = time.monotonic()
     for target in targets:
