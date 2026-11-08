@@ -9,6 +9,7 @@ from pathlib import Path
 from vgar.graph.builder import PythonGraphBuilder
 from vgar.graph.scip_resolver import ScipConfig
 from vgar.graph.lsp_resolver import LspConfig
+from vgar.graph.tsg_extractor import TsgConfig
 from vgar.observability.graph_trace import GraphTrace
 
 
@@ -38,6 +39,11 @@ def main() -> None:
     parser.add_argument("--lsp-python", type=Path, help="Python interpreter used for LSP import resolution")
     parser.add_argument("--lsp-import-root", action="append", help="Repository-relative import root")
     parser.add_argument("--debug-log", type=Path)
+    parser.add_argument("--tsg-executable", type=Path,
+                        help="tree-sitter-graph CLI; adds Layer 1 facts (HAS_METHOD, Field, Identifier, Route, Schema, ...) "
+                             "(default: VGAR_TSG_EXECUTABLE)")
+    parser.add_argument("--tsg-tree-sitter-dir", type=Path,
+                        help="dir with config.json listing tree-sitter-python v0.23.6 (default: VGAR_TSG_TREE_SITTER_DIR)")
     args = parser.parse_args()
 
     scip = None
@@ -62,12 +68,19 @@ def main() -> None:
                         max_requests=args.lsp_max_requests, python_executable=args.lsp_python,
                         import_roots=tuple(args.lsp_import_root or ("src", "lib")), strict=args.strict_resolver)
 
+    tsg = TsgConfig.from_env()
+    if args.tsg_executable or args.tsg_tree_sitter_dir:
+        if not (args.tsg_executable and args.tsg_tree_sitter_dir):
+            parser.error("--tsg-executable and --tsg-tree-sitter-dir go together")
+        tsg = TsgConfig(executable=args.tsg_executable, tree_sitter_dir=args.tsg_tree_sitter_dir)
+
     builder = PythonGraphBuilder(
         repo_key=args.repo_key,
         repository_revision=args.revision,
         scip=scip,
         lsp=lsp,
         trace=GraphTrace(args.debug_log),
+        tsg=tsg,
     )
     document = builder.build(args.repository)
     resolver = document["statistics"]["resolver"]
@@ -75,6 +88,10 @@ def main() -> None:
         print(f"WARNING: {resolver['requested']} -> static fallback: {resolver['reason']}", file=sys.stderr)
     if resolver.get("lsp", {}).get("status") in {"fallback", "partial"}:
         print(f"WARNING: LSP fallback: {resolver['lsp']['reason']}", file=sys.stderr)
+    tsg_report = document["statistics"].get("tsg")
+    if tsg_report and tsg_report["status"] != "ready":
+        print(f"WARNING: tree-sitter-graph {tsg_report['status']}: "
+              f"{tsg_report['reason'] or tsg_report['failed_files']}", file=sys.stderr)
 
     output_path = Path(args.output)
     output_path.parent.mkdir(parents=True, exist_ok=True)

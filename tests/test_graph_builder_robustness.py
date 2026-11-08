@@ -251,3 +251,31 @@ def test_duplicate_base_example_preserves_occurrences_without_duplicate_edges(tm
         {'base_expression': 'Animal', 'mro_position': 1},
         {'base_expression': 'Animal', 'mro_position': 2},
     ]
+
+
+def test_definitions_in_else_elif_except_finally_branches_are_extracted(tmp_path):
+    _write(tmp_path, "src/app.py",
+           "try:\n    import fast\nexcept ImportError:\n    import slow\n"
+           "    def speedup():\n        return helper()\n"
+           "else:\n    def speedup():\n        return 1\n"
+           "finally:\n    def cleanup():\n        pass\n"
+           "if flag:\n    class Panel:\n        pass\n"
+           "elif other:\n    class Panel:\n        def show(self):\n            pass\n"
+           "else:\n    class Panel:\n        pass\n"
+           "def outer(x):\n    if x:\n        def inner():\n            return 1\n"
+           "    else:\n        def inner():\n            return helper()\n    return inner\n"
+           "for i in range(1):\n    pass\nelse:\n    def after_loop():\n        pass\n"
+           "def helper():\n    return 0\n")
+    document = _build(tmp_path)
+
+    def names(kind: str) -> list[str]:
+        return sorted(n["name"] for n in document["nodes"] if n["type"] == kind)
+
+    assert names("Function") == ["after_loop", "cleanup", "helper", "inner", "inner", "outer", "speedup", "speedup"]
+    assert names("Class") == ["Panel", "Panel", "Panel"]
+    assert names("Method") == ["show"]
+    assert names("CallSite") == ["helper", "helper"]
+    assert sorted(n["name"] for n in document["nodes"] if n["type"] == "Import") == ["fast", "slow"]
+    ids = [n["id"] for n in document["nodes"]]
+    assert len(ids) == len(set(ids))
+    assert document["statistics"]["failed_file_count"] == 0

@@ -1,0 +1,255 @@
+;; tree-sitter-graph rules for Python (grammar tree-sitter-python v0.23.6, ABI 14).
+;; Used by vgar.graph.tsg_extractor as an optional fact source (plan task L1-1).
+;;
+;; Emits Class, Function, Method, CallSite, GlobalVariable, Field, Identifier nodes with 1-based `line`/`end_line`
+;; and 0-based byte `col`/`end_col`, plus edges labelled HAS_METHOD (Class -> def), HAS_CALLSITE
+;; (def -> CallSite) and CONTAINS (Class -> Field, def -> Identifier).
+;;
+;; `if` only accepts values derived from captures, not inherited variables, so ownership and kinds
+;; are carried as inherited *values*: a construct with no owner (call outside any def, `self.x`
+;; outside a method, a def outside a class for HAS_METHOD) is attached to the file's "Discard" node,
+;; and `@overload` stubs (skipped by PythonGraphBuilder) get overload = "yes". The extractor drops both.
+
+attribute pos = n => line = (plus (start-row n) 1), col = (start-column n), end_line = (plus (end-row n) 1), end_col = (end-column n)
+
+inherit .discard        ; per-file sink node
+inherit .enclosing_def  ; def whose body we are in, else .discard
+inherit .self_class     ; class owning `self` in a method body, else .discard
+inherit .def_kind       ; type for a def placed here: "Function" / "Method"
+inherit .def_class      ; class owning a def placed here, else .discard
+
+(module) @mod
+{
+  node @mod.discard
+  attr (@mod.discard) type = "Discard"
+  let @mod.enclosing_def = @mod.discard
+  let @mod.self_class = @mod.discard
+  let @mod.def_kind = "Function"
+  let @mod.def_class = @mod.discard
+}
+
+(class_definition name: (identifier) @name body: (block) @body) @class
+{
+  node @class.node
+  attr (@class.node) type = "Class", name = (source-text @name), pos = @class
+  ;; Calls in bases or the class body do not belong to an outer def.
+  let @class.enclosing_def = @class.discard
+  let @body.def_kind = "Method"
+  let @body.def_class = @class.node
+}
+
+(function_definition name: (identifier) @name body: (block) @body) @func
+{
+  node @func.node
+  attr (@func.node) type = @func.def_kind, name = (source-text @name), pos = @func
+  edge @func.def_class -> @func.node
+  attr (@func.def_class -> @func.node) type = "HAS_METHOD"
+  ;; Default-argument calls belong to neither this def nor an outer def.
+  let @func.enclosing_def = @func.discard
+  let @body.enclosing_def = @func.node
+  let @body.self_class = @func.def_class
+  let @body.def_kind = "Function"
+  let @body.def_class = @body.discard
+}
+
+;; @overload / @typing.overload stubs
+[
+  ((decorated_definition (decorator (identifier) @_d) definition: (_) @def) (#eq? @_d "overload"))
+  ((decorated_definition (decorator (attribute attribute: (identifier) @_d)) definition: (_) @def) (#eq? @_d "overload"))
+]
+{
+  attr (@def.node) overload = "yes"
+}
+
+(call function: (_) @callee) @call
+{
+  node @call.node
+  attr (@call.node) type = "CallSite", name = (source-text @callee), pos = @call
+  edge @call.enclosing_def -> @call.node
+  attr (@call.enclosing_def -> @call.node) type = "HAS_CALLSITE"
+}
+
+;; Module-level assignment: COUPONS = {...}
+(module (expression_statement (assignment left: (identifier) @name) @asg))
+{
+  node @asg.node
+  attr (@asg.node) type = "GlobalVariable", name = (source-text @name), pos = @asg
+}
+
+;; Annotated class-body field: `code: str` (dataclass style)
+(class_definition body: (block (expression_statement (assignment left: (identifier) @name type: (_)) @asg))) @class
+{
+  node @asg.node
+  attr (@asg.node) type = "Field", name = (source-text @name), pos = @asg
+  edge @class.node -> @asg.node
+  attr (@class.node -> @asg.node) type = "CONTAINS"
+}
+
+;; Def parameters (L1-2): one Identifier per parameter name, positioned on the name, with an edge
+;; labelled CONTAINS from the def. Lambdas use `lambda_parameters`, so their parameters never match.
+;; The merge drops a method's leading self/cls and numbers the positions.
+(function_definition parameters: (parameters (identifier) @name)) @func
+{
+  node @name.param
+  attr (@name.param) type = "Identifier", name = (source-text @name), pos = @name, kind = "normal"
+  edge @func.node -> @name.param
+  attr (@func.node -> @name.param) type = "CONTAINS"
+}
+
+(function_definition parameters: (parameters (typed_parameter (identifier) @name type: (_) @type))) @func
+{
+  node @name.param
+  attr (@name.param) type = "Identifier", name = (source-text @name), pos = @name, kind = "normal",
+                      annotation = (source-text @type)
+  edge @func.node -> @name.param
+  attr (@func.node -> @name.param) type = "CONTAINS"
+}
+
+(function_definition parameters: (parameters (typed_parameter (list_splat_pattern (identifier) @name) type: (_) @type))) @func
+{
+  node @name.param
+  attr (@name.param) type = "Identifier", name = (source-text @name), pos = @name, kind = "var_positional",
+                      annotation = (source-text @type)
+  edge @func.node -> @name.param
+  attr (@func.node -> @name.param) type = "CONTAINS"
+}
+
+(function_definition parameters: (parameters (typed_parameter (dictionary_splat_pattern (identifier) @name) type: (_) @type))) @func
+{
+  node @name.param
+  attr (@name.param) type = "Identifier", name = (source-text @name), pos = @name, kind = "var_keyword",
+                      annotation = (source-text @type)
+  edge @func.node -> @name.param
+  attr (@func.node -> @name.param) type = "CONTAINS"
+}
+
+(function_definition parameters: (parameters (default_parameter name: (identifier) @name))) @func
+{
+  node @name.param
+  attr (@name.param) type = "Identifier", name = (source-text @name), pos = @name, kind = "normal",
+                      has_default = "yes"
+  edge @func.node -> @name.param
+  attr (@func.node -> @name.param) type = "CONTAINS"
+}
+
+(function_definition parameters: (parameters (typed_default_parameter name: (identifier) @name type: (_) @type))) @func
+{
+  node @name.param
+  attr (@name.param) type = "Identifier", name = (source-text @name), pos = @name, kind = "normal",
+                      annotation = (source-text @type), has_default = "yes"
+  edge @func.node -> @name.param
+  attr (@func.node -> @name.param) type = "CONTAINS"
+}
+
+(function_definition parameters: (parameters (list_splat_pattern (identifier) @name))) @func
+{
+  node @name.param
+  attr (@name.param) type = "Identifier", name = (source-text @name), pos = @name, kind = "var_positional"
+  edge @func.node -> @name.param
+  attr (@func.node -> @name.param) type = "CONTAINS"
+}
+
+(function_definition parameters: (parameters (dictionary_splat_pattern (identifier) @name))) @func
+{
+  node @name.param
+  attr (@name.param) type = "Identifier", name = (source-text @name), pos = @name, kind = "var_keyword"
+  edge @func.node -> @name.param
+  attr (@func.node -> @name.param) type = "CONTAINS"
+}
+
+;; Environment reads (L1-3 ConfigEntry): <m>.getenv("K"), <m>.environ.get("K"),
+;; <m>.environ["K"], and bare getenv("K") / environ.get("K") / environ["K"]. `callee` is the source text of
+;; the called function (or of the subscripted value); the merge keeps a read only when the module's
+;; imports resolve it to os.getenv / os.environ.get / os.environ, so `import os as o` works and a local
+;; `environ` dict does not count. The key must be a plain string literal: the anchored pattern rejects
+;; f-strings (an `interpolation` child) and empty strings. Edge labelled REFERENCES from .enclosing_def,
+;; which is .discard at module level and in class bodies (the merge then uses the Module).
+((call function: (attribute object: (identifier) attribute: (identifier) @_fn) @fn
+       arguments: (argument_list . (string . (string_start) . (string_content) @key . (string_end) .))) @read
+ (#eq? @_fn "getenv"))
+{
+  node @read.config
+  attr (@read.config) type = "ConfigRead", key = (source-text @key), access = "getenv",
+                      callee = (source-text @fn), pos = @read
+  edge @read.enclosing_def -> @read.config
+  attr (@read.enclosing_def -> @read.config) type = "REFERENCES"
+}
+
+((call function: (identifier) @fn
+       arguments: (argument_list . (string . (string_start) . (string_content) @key . (string_end) .))) @read
+ (#eq? @fn "getenv"))
+{
+  node @read.config
+  attr (@read.config) type = "ConfigRead", key = (source-text @key), access = "getenv",
+                      callee = (source-text @fn), pos = @read
+  edge @read.enclosing_def -> @read.config
+  attr (@read.enclosing_def -> @read.config) type = "REFERENCES"
+}
+
+((call function: (attribute object: (attribute object: (identifier) attribute: (identifier) @_env)
+                            attribute: (identifier) @_fn) @fn
+       arguments: (argument_list . (string . (string_start) . (string_content) @key . (string_end) .))) @read
+ (#eq? @_env "environ") (#eq? @_fn "get"))
+{
+  node @read.config
+  attr (@read.config) type = "ConfigRead", key = (source-text @key), access = "environ_get",
+                      callee = (source-text @fn), pos = @read
+  edge @read.enclosing_def -> @read.config
+  attr (@read.enclosing_def -> @read.config) type = "REFERENCES"
+}
+
+((call function: (attribute object: (identifier) @_env attribute: (identifier) @_fn) @fn
+       arguments: (argument_list . (string . (string_start) . (string_content) @key . (string_end) .))) @read
+ (#eq? @_env "environ") (#eq? @_fn "get"))
+{
+  node @read.config
+  attr (@read.config) type = "ConfigRead", key = (source-text @key), access = "environ_get",
+                      callee = (source-text @fn), pos = @read
+  edge @read.enclosing_def -> @read.config
+  attr (@read.enclosing_def -> @read.config) type = "REFERENCES"
+}
+
+((subscript value: (attribute object: (identifier) attribute: (identifier) @_env) @value
+            subscript: (string . (string_start) . (string_content) @key . (string_end) .)) @read
+ (#eq? @_env "environ"))
+{
+  node @read.config
+  attr (@read.config) type = "ConfigRead", key = (source-text @key), access = "environ_subscript",
+                      callee = (source-text @value), pos = @read
+  edge @read.enclosing_def -> @read.config
+  attr (@read.enclosing_def -> @read.config) type = "REFERENCES"
+}
+
+((subscript value: (identifier) @value
+            subscript: (string . (string_start) . (string_content) @key . (string_end) .)) @read
+ (#eq? @value "environ"))
+{
+  node @read.config
+  attr (@read.config) type = "ConfigRead", key = (source-text @key), access = "environ_subscript",
+                      callee = (source-text @value), pos = @read
+  edge @read.enclosing_def -> @read.config
+  attr (@read.enclosing_def -> @read.config) type = "REFERENCES"
+}
+
+;; `<m>.environ["K"] = ...` is a write, not a read: same subscript shapes as above, marked for the merge.
+[
+  ((assignment left: (subscript value: (attribute object: (identifier) attribute: (identifier) @_env)
+                                subscript: (string . (string_start) . (string_content) . (string_end) .)) @write)
+   (#eq? @_env "environ"))
+  ((assignment left: (subscript value: (identifier) @_env
+                                subscript: (string . (string_start) . (string_content) . (string_end) .)) @write)
+   (#eq? @_env "environ"))
+]
+{
+  attr (@write.config) write = "yes"
+}
+
+;; Instance field: self.x = ... (owner is .discard outside a method body)
+((assignment left: (attribute object: (identifier) @_obj attribute: (identifier) @name)) @asg
+ (#eq? @_obj "self"))
+{
+  node @asg.node
+  attr (@asg.node) type = "Field", name = (source-text @name), pos = @asg
+  edge @asg.self_class -> @asg.node
+  attr (@asg.self_class -> @asg.node) type = "CONTAINS"
+}

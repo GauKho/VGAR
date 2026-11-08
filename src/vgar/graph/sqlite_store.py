@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import logging
 import sqlite3
 from collections.abc import Mapping
 from collections.abc import Iterator
@@ -17,7 +18,9 @@ from vgar.contracts.error import (
     InvalidQueryError,
     NodeNotFoundError,
 )
-from vgar.contracts.schema import EDGE_ENDPOINTS, validate_graph_document
+from vgar.contracts.schema import EDGE_ENDPOINTS, G_ARCH_EDGE_TYPES, validate_graph_document
+
+_LOGGER = logging.getLogger(__name__)
 
 
 SYMBOL_NODE_TYPES = ("Module", "Class", "Function", "Method", "Test")
@@ -155,11 +158,15 @@ class SQLiteGraphStore:
 
         with self._connect() as connection:
             existing = connection.execute(
-                "SELECT 1 FROM graph_metadata WHERE graph_version = ?",
+                "SELECT status FROM graph_metadata WHERE graph_version = ?",
                 (graph_version,),
             ).fetchone()
             if existing is not None:
-                raise ValueError(f"graph version already exists: {graph_version}")
+                if existing["status"] != "ready":
+                    raise ValueError(f"graph version exists but is not ready: {graph_version}")
+                # graph_version binds source, schema and builder rules, so the stored graph is the same graph.
+                _LOGGER.warning("Graph version already exists; keeping the stored graph: %s", graph_version)
+                return
 
             connection.execute(
                 """
@@ -520,7 +527,8 @@ class SQLiteGraphStore:
                 if not frontier or len(visited) >= limit:
                     break
                 placeholders = ", ".join("?" for _ in frontier)
-                params = (graph_version, *sorted(frontier), *sorted(frontier))
+                excluded = ("MAY_CALL", *sorted(G_ARCH_EDGE_TYPES))
+                params = (graph_version, *sorted(frontier), *sorted(frontier), *excluded)
                 rows = connection.execute(
                     f"""
                     SELECT id, type, source_id, target_id, confidence,
@@ -531,6 +539,7 @@ class SQLiteGraphStore:
                           source_id IN ({placeholders})
                           OR target_id IN ({placeholders})
                       )
+                      AND type NOT IN ({", ".join("?" for _ in excluded)})
                     ORDER BY id
                     """,
                     params,

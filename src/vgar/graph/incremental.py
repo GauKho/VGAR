@@ -61,7 +61,8 @@ def affected_node_count(previous: dict[str, Any] | None, current: dict[str, Any]
     if previous is None:
         return len(current["nodes"])
     before, after = ({node["id"] for node in doc["nodes"]} for doc in (previous, current))
-    edges_before, edges_after = ({(e["type"], e["source_id"], e["target_id"]) for e in doc["edges"]}
+    # MAY_CALL candidates are name guesses across the repo; counting them would inflate the U1 metric.
+    edges_before, edges_after = ({(e["type"], e["source_id"], e["target_id"]) for e in doc["edges"] if e["type"] != "MAY_CALL"}
                                  for doc in (previous, current))
     affected = before ^ after
     for _, source, target in edges_before ^ edges_after:

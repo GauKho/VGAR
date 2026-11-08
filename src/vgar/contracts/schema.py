@@ -16,7 +16,44 @@ NODE_TYPES = {
     "CallSite",
     "Test",
     "Issue",
+    # Proposed for the plan's day-1 schema contract, pending team review (plan L1-3, SC-1;
+    # proposal §4.3 lines 212-224). Only emitted when tree-sitter-graph is enabled.
+    "Field",
+    "GlobalVariable",
+    # Proposed, pending team review (plan L1-2; proposal line 185 IDENTIFIER[name, type],
+    # lines 530-531 "Identifier: username"). Def parameters only; tree-sitter-graph only.
+    "Identifier",
+    # Proposed, pending team review (plan L1-3; proposal line 221 ConfigEntry, line 806 config in F*).
+    # One node per environment key for the whole repo, so not source-backed (like Issue).
+    "ConfigEntry",
+    # Proposed, pending team review (plan L1-3; proposal line 222 Route, line 336 "Route: POST /login",
+    # line 1237 "route path/method changed?"). Static route decorators only.
+    "Route",
+    # Proposed, pending team review (plan L1-3; proposal line 223 Schema, line 1238 "schema field removed?").
+    # dataclass / pydantic / TypedDict classes confirmed through imports.
+    "Schema",
+    # Proposed, pending team review (plan GA-2; proposal lines 251-259). Module is shared with G_repo.
+    "Component",
+    "Port",
+    "Connector",
+    "Service",
+    "DeploymentUnit",
+    "ExternalSystem",
 }
+
+# Proposed, pending team review (plan GA-2, L1-3; proposal lines 236, 263-270).
+G_ARCH_EDGE_TYPES = frozenset({
+    "DEPENDS_ON", "EXPOSES_PORT", "CONSUMES_PORT", "COMMUNICATES_WITH", "CONTAINS_COMPONENT", "DEPLOYS_TO", "CONFIGURES",
+})
+
+# One schema S (proposal §8.4) validated under two profiles; decided by TV2 on 08/11 for the MCP contract.
+SCHEMA_VERSION = "vgar-schema-full-v2"
+PROFILE_FULL_VGAR_MCP = "full_vgar_mcp"
+PROFILE_LEGACY_W10 = "legacy_w10"
+LEGACY_W10_NODE_TYPES = {
+    "Repository", "File", "Module", "Class", "Function", "Method", "Import", "CallSite", "Test", "Issue",
+}
+LEGACY_W10_EDGE_TYPES = {"CONTAINS", "IMPORTS", "INHERITS", "CALLS", "REFERENCES", "TESTS", "MENTIONS", "REPRODUCES"}
 
 SOURCE_BACKED_NODE_TYPES = {
     "File",
@@ -26,6 +63,11 @@ SOURCE_BACKED_NODE_TYPES = {
     "Import",
     "CallSite",
     "Test",
+    "Field",
+    "GlobalVariable",
+    "Identifier",
+    "Route",
+    "Schema",
 }
 
 EDGE_ENDPOINTS: dict[str, set[tuple[str, str]]] = {
@@ -48,14 +90,34 @@ EDGE_ENDPOINTS: dict[str, set[tuple[str, str]]] = {
         ("Test", "CallSite"),
         ("Test", "Function"),
         ("Test", "Class"),
+        # Proposed, pending team review (see NODE_TYPES).
+        ("Class", "Field"),
+        ("Module", "GlobalVariable"),
+        # Proposed, pending team review (plan L1-2; proposal lines 185, 530-531).
+        ("Function", "Identifier"),
+        ("Method", "Identifier"),
+        ("Test", "Identifier"),
+        # Proposed, pending team review (plan L1-3; proposal lines 222, 336, 1237).
+        ("Module", "Route"),
+        # Proposed, pending team review (plan L1-3; proposal lines 223, 1238).
+        ("Module", "Schema"),
     },
+    # Proposed, pending team review (plan L1-2, SC-1; proposal §6.3 lines 536-540).
+    # Emitted by tree-sitter-graph alongside the builder's CONTAINS edges.
+    "HAS_METHOD": {("Class", "Method"), ("Class", "Test")},
+    "HAS_CALLSITE": {("Function", "CallSite"), ("Method", "CallSite"), ("Test", "CallSite")},
     "IMPORTS": {("Import", "Module")},
     "INHERITS": {("Class", "Class")},
+    # Proposed, pending team review (plan L1-3; proposal line 32 "Class C implements Interface I",
+    # line 233 IMPLEMENTS: Class -> Interface). The interface is an in-repo ABC/Protocol class.
+    "IMPLEMENTS": {("Class", "Class")},
     "CALLS": {
         ("CallSite", "Function"),
         ("CallSite", "Method"),
         ("CallSite", "Class"),
     },
+    # Proposed, pending team review (plan L2-2; proposal lines 551-567). A low-confidence candidate of an unresolved call.
+    "MAY_CALL": {("CallSite", "Function"), ("CallSite", "Method")},
     "REFERENCES": {
         (source, target)
         for source in {
@@ -74,6 +136,15 @@ EDGE_ENDPOINTS: dict[str, set[tuple[str, str]]] = {
             "Function",
             "Method",
         }
+    } | {
+        # Proposed, pending team review (plan L1-3; proposal lines 221, 806): code reading an env key.
+        (source, "ConfigEntry") for source in {"Module", "Function", "Method", "Test"}
+    } | {
+        # Proposed, pending team review (plan L1-3; proposal lines 222, 336, 1237): route -> handler.
+        ("Route", target) for target in {"Function", "Method", "Test"}
+    } | {
+        # Proposed, pending team review (plan L1-3; proposal lines 223, 1238): schema -> its class.
+        ("Schema", "Class"),
     },
     "TESTS": {
         ("Test", target)
@@ -97,6 +168,15 @@ EDGE_ENDPOINTS: dict[str, set[tuple[str, str]]] = {
         }
     },
     "REPRODUCES": {("Test", "Issue")},
+    # Proposed, pending team review (plan GA-2; proposal lines 263-270).
+    "DEPENDS_ON": {("Component", "Component")},
+    "EXPOSES_PORT": {("Component", "Port")},
+    "CONSUMES_PORT": {("Component", "Port")},
+    "COMMUNICATES_WITH": {("Service", "Service")},
+    "CONTAINS_COMPONENT": {("Module", "Component")},
+    "DEPLOYS_TO": {("Component", "DeploymentUnit")},
+    # Proposed, pending team review (plan L1-3; proposal line 236).
+    "CONFIGURES": {("ConfigEntry", "Component"), ("ConfigEntry", "Service")},
 }
 
 
@@ -108,13 +188,22 @@ class GraphValidationError(ValueError):
         super().__init__("Invalid graph document:\n- " + "\n- ".join(errors))
 
 
-def validate_graph_document(document: Mapping[str, Any], *, trusted_ids: frozenset[str] = frozenset()) -> None:
+def validate_graph_document(
+    document: Mapping[str, Any],
+    *,
+    trusted_ids: frozenset[str] = frozenset(),
+    profile: str = PROFILE_FULL_VGAR_MCP,
+) -> None:
     """Validate the portable JSON graph document used by M1 and M3.
 
     Items whose id is in ``trusted_ids`` (incremental replay of already-validated items) skip the per-item
     field checks; every structural check (ids, types, endpoints, graph_version, cycles, CallSite counts) still runs.
+    ``PROFILE_LEGACY_W10`` additionally rejects every node and edge type outside the W10 contract.
     """
 
+    if profile not in {PROFILE_FULL_VGAR_MCP, PROFILE_LEGACY_W10}:
+        raise ValueError(f"unknown schema profile: {profile!r}")
+    legacy = profile == PROFILE_LEGACY_W10
     errors: list[str] = []
 
     graph_version = document.get("graph_version")
@@ -152,6 +241,8 @@ def validate_graph_document(document: Mapping[str, Any], *, trusted_ids: frozens
 
         if node_type not in NODE_TYPES:
             errors.append(f"{prefix}.type is unsupported: {node_type!r}")
+        elif legacy and node_type not in LEGACY_W10_NODE_TYPES:
+            errors.append(f"{prefix}.type {node_type!r} is not allowed in profile {profile}")
         if node_type == "Repository":
             repository_count += 1
 
@@ -208,6 +299,8 @@ def validate_graph_document(document: Mapping[str, Any], *, trusted_ids: frozens
 
         if edge_type not in EDGE_ENDPOINTS:
             errors.append(f"{prefix}.type is unsupported: {edge_type!r}")
+        elif legacy and edge_type not in LEGACY_W10_EDGE_TYPES:
+            errors.append(f"{prefix}.type {edge_type!r} is not allowed in profile {profile}")
 
         source = nodes_by_id.get(source_id)
         target = nodes_by_id.get(target_id)
@@ -247,6 +340,14 @@ def validate_graph_document(document: Mapping[str, Any], *, trusted_ids: frozens
                     if not isinstance(provenance.get(field), str) or not provenance[field]:
                         errors.append(f"{prefix}.provenance.{field} is required")
 
+            if edge_type == "MAY_CALL":
+                # Proposed, pending team review (plan L2-2; proposal lines 551-567).
+                evidence = provenance.get("evidence") if isinstance(provenance, Mapping) else None
+                if not isinstance(evidence, list) or not evidence or not all(isinstance(item, str) and item for item in evidence):
+                    errors.append(f"{prefix}.provenance.evidence must be a non-empty list of strings for MAY_CALL")
+                if isinstance(confidence, (int, float)) and not isinstance(confidence, bool) and confidence > 0.50:
+                    errors.append(f"{prefix}.confidence must be at most 0.50 for MAY_CALL")
+
             if not isinstance(edge.get("properties"), Mapping):
                 errors.append(f"{prefix}.properties must be an object")
 
@@ -270,6 +371,35 @@ def validate_graph_document(document: Mapping[str, Any], *, trusted_ids: frozens
 
     if errors:
         raise GraphValidationError(errors)
+
+
+def project_legacy_w10(document: Mapping[str, Any]) -> dict[str, Any]:
+    """Project a full graph onto the W10 contract, under the graph_version the same source had before the full schema."""
+    version = document["statistics"]["legacy_graph_version"]
+    nodes = [{**node, "graph_version": version} for node in document["nodes"] if node["type"] in LEGACY_W10_NODE_TYPES]
+    kept = {node["id"] for node in nodes}
+    edges = [
+        {**edge, "graph_version": version}
+        for edge in document["edges"]
+        if edge["type"] in LEGACY_W10_EDGE_TYPES and edge["source_id"] in kept and edge["target_id"] in kept
+    ]
+    node_counts: dict[str, int] = defaultdict(int)
+    edge_counts: dict[str, int] = defaultdict(int)
+    for node in nodes:
+        node_counts[node["type"]] += 1
+    for edge in edges:
+        edge_counts[edge["type"]] += 1
+    statistics = {
+        key: value for key, value in document["statistics"].items() if key not in {"may_call", "tsg", "legacy_graph_version"}
+    }
+    statistics.update(
+        schema_profile=PROFILE_LEGACY_W10,
+        node_count=len(nodes),
+        edge_count=len(edges),
+        node_counts_by_type=dict(node_counts),
+        edge_counts_by_type=dict(edge_counts),
+    )
+    return {**document, "graph_version": version, "nodes": nodes, "edges": edges, "statistics": statistics}
 
 
 def _valid_range(value: Any) -> bool:

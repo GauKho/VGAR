@@ -6,6 +6,8 @@ import os
 import re
 import symtable
 import time
+from collections import Counter
+from collections.abc import Iterable
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
@@ -13,7 +15,9 @@ from typing import Any
 import tree_sitter_python
 from tree_sitter import Language, Node, Parser
 
-from vgar.contracts.schema import validate_graph_document
+from vgar.contracts.schema import EDGE_ENDPOINTS, PROFILE_FULL_VGAR_MCP, SCHEMA_VERSION, validate_graph_document
+from vgar.graph import arch_lift, layer1_rules, may_call, tsg_extractor
+from vgar.graph.tsg_extractor import TsgConfig, TsgError, TsgFileFacts
 from vgar.graph.scip_resolver import ScipConfig, ScipResolver, prepare_scip, current_fingerprint
 from vgar.graph.lsp_resolver import LspConfig, resolve_lsp_calls
 from vgar.graph.method_aliases import annotate_method_aliases, file_alias_candidates
@@ -39,6 +43,7 @@ _MISSING = object()
 # Bump whenever call/import resolution changes (B10 -> v4). Recorded in statistics.resolver.profile and bound
 # to the context sidecar at handoff; NOT part of graph_version (E5 option (iii), docs/m3_w11_decisions.md).
 RESOLVER_PROFILE = "tree-sitter+python-static-v4-external-import"
+BUILDER_VERSION = f"vgar-python-graph-builder-0.1.0+{may_call.RULE_VERSION}+{arch_lift.RULE_VERSION}"
 # Frozen resolver label inside graph_version. graph_version is printed in every repair prompt, so keeping it
 # stable lets W10 cells whose context is unchanged be reused (E5). Never bump this; bump RESOLVER_PROFILE.
 GRAPH_VERSION_RESOLVER_LABEL = "tree-sitter+python-static-v3-method-aliases"
@@ -91,6 +96,8 @@ class _ClassRecord:
 class PythonGraphBuilder:
     """Build documents that follow the frozen VGAR graph contract."""
 
+    _emit_may_call: bool = True
+
     def __init__(
         self,
         *,
@@ -100,6 +107,7 @@ class PythonGraphBuilder:
         scip: ScipConfig | None = None,
         lsp: LspConfig | None = None,
         trace: GraphTrace | None = None,
+        tsg: TsgConfig | None = None,
     ) -> None:
         if not repo_key.strip():
             raise ValueError("repo_key must not be empty")
@@ -111,6 +119,10 @@ class PythonGraphBuilder:
         self.source_roots = source_roots
         self.scip_config = scip
         self.lsp_config = lsp
+        self.tsg_config = tsg
+        self.tsg_report: dict[str, Any] | None = None
+        self.arch_report: dict[str, Any] = {}
+        self._deployment_files: list[arch_lift.DeploymentFile] = []
         self.lsp_results: dict[str, tuple[str, list[str]]] = {}
         self.trace = trace or GraphTrace()
         self.scip_resolver: ScipResolver | None = None
@@ -132,9 +144,13 @@ class PythonGraphBuilder:
         self.unmodified_parameters: dict[str, set[str]] = {}
         self._index_changes: list[tuple[dict, str, Any]] | None = None
         self.graph_version = ""
+        self.legacy_graph_version = ""
         self.skipped_overload_count: int = 0
         self.renamed_duplicate_count: int = 0
         self.skipped_failed_files: list[dict[str, str]] = []
+        self._may_call_by_kind: Counter[str] = Counter()
+        self._may_call_callsites = 0
+        self._may_call_skipped_over_cap = 0
 
     def build(self, repository_root: str | Path) -> dict[str, Any]:
         started_at = time.perf_counter()
@@ -154,6 +170,8 @@ class PythonGraphBuilder:
         scip_index = None
         if self.scip_config is not None:
             scip_index, self.resolver_report = prepare_scip(root, python_files, self.scip_config, self.trace)
+        tsg_facts = self._collect_tsg_facts(root, python_files) if self.tsg_config is not None else {}
+        self._deployment_files = arch_lift.find_deployment_files(root, IGNORED_DIRECTORY_NAMES)
         self.graph_version = self._calculate_graph_version(root, python_files)
 
         repository_id = f"vgar:{self.repo_key}:repository"
@@ -179,12 +197,16 @@ class PythonGraphBuilder:
 
         for file_path in python_files:
             self._extract_file(root, file_path, repository_id)
+        if tsg_facts:
+            self._merge_tsg_facts(root, tsg_facts)
 
         for qualified, target in annotate_method_aliases(root, self.nodes, candidates=self._alias_candidates):
             self.symbols_by_qualified_name[qualified] = target
         self._build_unique_symbol_index()
         self._link_imports()
         self._link_inheritance()
+        if self.tsg_report is not None and self.tsg_report["status"] in {"ready", "partial"}:
+            self._derive_layer1_facts()
         if scip_index is not None:
             try:
                 self.scip_resolver = ScipResolver(scip_index, root, self.nodes, trace=self.trace)
@@ -225,6 +247,7 @@ class PythonGraphBuilder:
             from vgar.graph.scip_profile import auxiliary_fingerprint
             if auxiliary_fingerprint(root) != scip_index["auxiliary_inputs"]:
                 raise ValueError("SCIP config/stubs changed during graph construction")
+        self._lift_architecture()
 
         document = {
             "graph_version": self.graph_version,
@@ -236,6 +259,9 @@ class PythonGraphBuilder:
         }
         self._validate(document)
         document["statistics"]["resolver"] = dict(self.resolver_report, profile=RESOLVER_PROFILE)
+        if self.tsg_report is not None:
+            document["statistics"]["tsg"] = self.tsg_report
+        document["statistics"]["arch"] = self.arch_report
         self.trace.emit("build_complete", graph_version=self.graph_version, node_count=len(self.nodes),
                         edge_count=len(self.edges), unresolved_call_count=document["statistics"]["unresolved_call_count"],
                         resolver=self.resolver_report)
@@ -277,6 +303,10 @@ class PythonGraphBuilder:
         if self.lsp_config is not None:
             digest.update(b"\0lsp-definition-v1:")
             digest.update(self.resolver_report.get("lsp", {}).get("semantic_sha256", "pending").encode())
+        if self.tsg_config is not None:
+            report = self.tsg_report or {}
+            digest.update(b"\0tsg-facts-v2:")
+            digest.update(f"{report.get('rules_sha256', 'unavailable')}:{len(report.get('failed_files', []))}".encode())
         digest.update(b"\0file-range:full-bytes-v1")
         digest.update(b"\0source-roots:")
         digest.update(repr(self.source_roots).encode("utf-8"))
@@ -285,6 +315,12 @@ class PythonGraphBuilder:
             digest.update(path.relative_to(root).as_posix().encode("utf-8"))
             digest.update(b"\0")
             digest.update(path.read_bytes())
+        # The W10 identity stops here, so legacy projections keep the graph_version frozen by E5.
+        self.legacy_graph_version = f"sha256:{digest.hexdigest()}"
+        digest.update(f"\0schema:{SCHEMA_VERSION}\0builder:{BUILDER_VERSION}\0resolver-profile:{RESOLVER_PROFILE}".encode())
+        for item in self._deployment_files:
+            digest.update(f"\0deployment:{item.path}\0".encode())
+            digest.update(item.data)
         return f"sha256:{digest.hexdigest()}"
 
     @staticmethod
@@ -539,6 +575,9 @@ class PythonGraphBuilder:
             # Conditional definitions still belong to the current Python scope.
             if definition.type not in {"import_statement", "import_from_statement", "expression_statement"}:
                 for nested in definition.named_children:
+                    # else/elif/except/finally wrap their block in a clause node.
+                    if nested.type in {"elif_clause", "else_clause", "except_clause", "finally_clause"}:
+                        nested = next((item for item in nested.named_children if item.type == "block"), nested)
                     if nested.type == "block":
                         self._walk_scope(nested, source, module, parent_id=parent_id,
                                          parent_type=parent_type, parent_qualified_name=parent_qualified_name,
@@ -1013,7 +1052,104 @@ class PythonGraphBuilder:
                 eligible.append(call)
         return sorted(eligible, key=lambda c: (c.path, c.line, c.column, c.node_id))
 
+    def _index_may_call_targets(self) -> None:
+        self._may_call_by_name: dict[str, list[str]] = {}
+        for node in self.nodes:
+            if node["type"] in {"Function", "Method", "Class"}:
+                self._may_call_by_name.setdefault(node["name"], []).append(node["id"])
+        self._may_call_constructors: dict[str, list[str]] = {}
+        self._may_call_owner_class: dict[str, str] = {}
+        for edge in self.edges:
+            if edge["type"] != "CONTAINS":
+                continue
+            owner, member = self.nodes_by_id[edge["source_id"]], self.nodes_by_id[edge["target_id"]]
+            if owner["type"] != "Class" or member["type"] != "Method":
+                continue
+            self._may_call_owner_class[member["id"]] = owner["id"]
+            if member["name"] in {"__init__", "__new__"}:
+                self._may_call_constructors.setdefault(owner["id"], []).append(member["id"])
+        self._may_call_module_by_path = {state.path: name for name, state in self.modules.items()}
+        # Every internal module and its dotted parents, so a namespace package without __init__.py counts as internal.
+        self._may_call_internal_modules = {
+            ".".join(parts[:end]) for parts in (name.split(".") for name in self.modules) for end in range(1, len(parts) + 1)
+        }
+
+    def _may_call_imported_modules(self, module: _ModuleState) -> set[str]:
+        imported = set(module.imported_modules.values())
+        for source, name in module.imported_symbols.values():
+            imported.update((source, f"{source}.{name}"))
+        return imported
+
+    def _is_external_import(self, module: _ModuleState, root: str) -> bool:
+        if root in module.imported_modules:
+            sources = {module.imported_modules[root]}
+        elif root in module.imported_symbols:
+            source, name = module.imported_symbols[root]
+            sources = {source, f"{source}.{name}"}
+        else:
+            return False
+        return sources.isdisjoint(self._may_call_internal_modules)
+
+    def _may_call_name_candidates(self, call: _CallRecord, module: _ModuleState, has_lexical_binding: bool) -> list[str]:
+        name = may_call.callee_name(call.callee_text)
+        root = may_call.receiver_root(call.callee_text)
+        if name is None or root is None or "." not in call.callee_text or self._is_external_import(module, root):
+            return []
+        if root in may_call.BUILTIN_RECEIVERS and not has_lexical_binding and root not in module.definitions:
+            return []
+        candidates = self._may_call_by_name.get(name, [])
+        if root == "super":
+            own_class = self._may_call_owner_class.get(call.caller_id)
+            return [target for target in candidates if self._may_call_owner_class.get(target) != own_class]
+        return candidates
+
+    def _add_may_call(self, call: _CallRecord, module: _ModuleState, match_kind: str, targets: Iterable[str]) -> None:
+        if not self._emit_may_call:
+            return
+        candidates: set[str] = set()
+        for target_id in targets:
+            target = self.nodes_by_id.get(target_id)
+            if target is None:
+                continue
+            if target["type"] == "Class":
+                candidates.update(self._may_call_constructors.get(target_id, ()))
+            elif target["type"] in {"Function", "Method"}:
+                candidates.add(target_id)
+        if not candidates:
+            return
+        if len(candidates) > may_call.MAX_CANDIDATES:
+            self._may_call_skipped_over_cap += 1
+            return
+        if match_kind == "name":
+            tool_precision, source = may_call.NAME_TOOL_PRECISION, {"source_tool": may_call.NAME_SOURCE_TOOL}
+        elif match_kind == "scip_ambiguous":
+            tool_precision, source = may_call.ANALYZER_TOOL_PRECISION, {
+                "source_tool": self.resolver_report["tool"], "source_tool_version": self.resolver_report["tool_version"]}
+        else:
+            info = self.resolver_report["lsp"]["server_info"]
+            tool_precision, source = may_call.ANALYZER_TOOL_PRECISION, {
+                "source_tool": info.get("name", "lsp"), "source_tool_version": info.get("version", "unknown")}
+        imported_modules = self._may_call_imported_modules(module)
+        for target_id in sorted(candidates):
+            candidate_module = self._may_call_module_by_path.get(self.nodes_by_id[target_id]["path"])
+            same_module = candidate_module == module.module_name
+            imported = not same_module and candidate_module in imported_modules
+            self._add_edge(
+                "MAY_CALL",
+                call.node_id,
+                target_id,
+                confidence=may_call.confidence(tool_precision, import_coherent=same_module or imported),
+                resolution="heuristic",
+                rule_id=f"python.call.may_call.{match_kind}.v1",
+                properties={"match_kind": match_kind, "candidate_count": len(candidates)},
+                **source,
+            )
+            self.edges[-1]["provenance"]["evidence"] = may_call.evidence(match_kind, same_module=same_module, imported=imported)
+        self._may_call_by_kind[match_kind] += len(candidates)
+        self._may_call_callsites += 1
+
     def _resolve_calls(self) -> None:
+        self._index_may_call_targets()
         test_targets: dict[tuple[str, str], float] = {}
         statuses: dict[str, int] = {}
         self.resolver_report["call_binding_statuses"] = statuses
@@ -1037,6 +1173,8 @@ class PythonGraphBuilder:
                 self.nodes_by_id[call.node_id]["properties"]["resolution_reason"] = scip_status
                 self.trace.emit("call_unresolved", node_id=call.node_id, path=call.path, reason=scip_status,
                                 candidate_count=len(scip_targets), resolver="scip")
+                if scip_status == "ambiguous":
+                    self._add_may_call(call, module, "scip_ambiguous", scip_targets)
                 continue
             lsp_status, lsp_targets = self.lsp_results.get(call.node_id, ("not_needed", []))
             if target_id is None and lsp_status == "resolved":
@@ -1046,6 +1184,8 @@ class PythonGraphBuilder:
                 call_node["properties"].update(resolution_reason=lsp_status, resolver="lsp", lsp_candidate_count=len(lsp_targets))
                 self.trace.emit("call_unresolved", node_id=call.node_id, path=call.path,
                                 reason=lsp_status, candidate_count=len(lsp_targets), resolver="lsp")
+                if lsp_status == "ambiguous":
+                    self._add_may_call(call, module, "lsp_ambiguous", lsp_targets)
                 continue
             has_lexical_binding = False
             if target_id is None:
@@ -1067,6 +1207,7 @@ class PythonGraphBuilder:
                     call_node["properties"].update(resolver="static", lsp_fallback_reason=lsp_status)
                 self.trace.emit("call_unresolved", node_id=call.node_id, path=call.path, reason="static_no_target",
                                 resolver="static", scip_status=scip_status, lsp_status=lsp_status)
+                self._add_may_call(call, module, "name", self._may_call_name_candidates(call, module, has_lexical_binding))
                 continue
 
             if target_id not in self.nodes_by_id:
@@ -1472,6 +1613,303 @@ class PythonGraphBuilder:
             "graph_version": self.graph_version,
         }
 
+    def _collect_tsg_facts(self, root: Path, python_files: list[Path]) -> dict[str, TsgFileFacts]:
+        """Run tree-sitter-graph per file; an unusable CLI leaves the plain graph (status "fallback")."""
+        assert self.tsg_config is not None
+        reason, version = tsg_extractor.check_available(self.tsg_config)
+        self.tsg_report = {"status": "fallback", "reason": reason, "version": version, "file_count": 0,
+                           "failed_files": [], "added": {}, "unmatched": {}}
+        if reason is not None:
+            self.trace.emit("tsg_fallback", reason=reason)
+            return {}
+        facts: dict[str, TsgFileFacts] = {}
+        for file_path in python_files:
+            relative_path = file_path.relative_to(root).as_posix()
+            try:
+                facts[relative_path] = tsg_extractor.run_file(self.tsg_config, root, relative_path)
+            except TsgError as error:
+                self.tsg_report["failed_files"].append({"path": relative_path, "reason": str(error)})
+        self.tsg_report.update(status="partial" if self.tsg_report["failed_files"] else "ready",
+                               file_count=len(facts), rules_sha256=self._hash_bytes(self.tsg_config.rules.read_bytes()))
+        return facts
+
+    def _merge_tsg_facts(self, root: Path, facts_by_path: dict[str, TsgFileFacts]) -> None:
+        """Add HAS_METHOD/HAS_CALLSITE edges and Field/GlobalVariable/Identifier nodes from tree-sitter-graph.
+
+        Class/def/CallSite facts are matched to this builder's nodes by (path, start line, start column,
+        name); facts owned by the rules' "Discard" node or by an @overload stub are dropped, and any other
+        fact that cannot be matched is counted in statistics.tsg.unmatched instead of being added.
+        """
+        assert self.tsg_report is not None
+        version = self.tsg_report["version"] or "unknown"
+        anchors = {(n["path"], n["range"]["start_line"], n["range"]["start_col"], n["name"]): n
+                   for n in self.nodes if n["type"] in {"Class", "Function", "Method", "Test", "CallSite"}}
+        module_by_path = {state.path: self.nodes_by_id[state.module_id] for state in self.modules.values()
+                          if state.module_id in self.nodes_by_id}
+        added: Counter[str] = Counter()
+        unmatched: Counter[str] = Counter()
+        config_reads: list[tuple[str, str, str, str, int]] = []  # (reader id, key, access, path, line)
+        tables = self._import_tables()
+
+        for path, facts in facts_by_path.items():
+            matched: dict[int, dict[str, Any]] = {}
+            unmatched_defs: set[int] = set()
+            skipped = {fact_id for fact_id, fact in facts.nodes.items()
+                       if fact.get("type") == "Discard" or fact.get("overload")}
+            # Calls owned by Discard (module/class level) or by an overload stub are not extracted either.
+            skipped |= {target for source, target, label in facts.edges if label == "HAS_CALLSITE" and source in skipped}
+            for fact_id, fact in facts.nodes.items():
+                if fact_id in skipped:
+                    continue
+                if fact.get("type") in {"Class", "Function", "Method", "CallSite"}:
+                    node = anchors.get((path, fact["line"], fact["col"], fact["name"]))
+                    if node is None:
+                        unmatched[fact["type"]] += 1
+                        skipped.add(fact_id)
+                        unmatched_defs.add(fact_id)
+                    else:
+                        matched[fact_id] = node
+
+            owned: dict[str, list[dict[str, Any]]] = {}
+            parameters: dict[int, list[dict[str, Any]]] = {}
+            for source_fact, target_fact, label in facts.edges:
+                if label == "CONTAINS" and facts.nodes[target_fact].get("type") == "Identifier":
+                    if source_fact in unmatched_defs:
+                        unmatched["Identifier"] += 1
+                    elif source_fact in matched:
+                        parameters.setdefault(source_fact, []).append(facts.nodes[target_fact])
+                    continue
+                if label == "REFERENCES" and facts.nodes[target_fact].get("type") == "ConfigRead":
+                    read = facts.nodes[target_fact]
+                    module = module_by_path.get(path)
+                    table = tables.get(module["id"], {}) if module is not None else {}
+                    if not layer1_rules.env_read(read["access"], read["callee"], table):
+                        continue  # e.g. a local `environ` dict, or `os` not imported at module level
+                    # A read at module level or in a class body hangs off Discard: the Module reads it.
+                    reader = module if facts.nodes[source_fact].get("type") == "Discard" else matched.get(source_fact)
+                    if source_fact in unmatched_defs or (reader is None and source_fact not in skipped):
+                        unmatched["ConfigEntry"] += 1
+                    elif reader is not None and not read.get("write"):
+                        config_reads.append((reader["id"], read["key"], read["access"], path, read["line"]))
+                    continue
+                if source_fact in skipped or target_fact in skipped:
+                    continue
+                source, target = matched.get(source_fact), matched.get(target_fact)
+                if label in {"HAS_METHOD", "HAS_CALLSITE"} and source and target:
+                    if (source["type"], target["type"]) not in EDGE_ENDPOINTS[label]:
+                        unmatched[label] += 1
+                        continue
+                    self._add_edge(label, source["id"], target["id"], confidence=1.0, resolution="exact",
+                                   rule_id=f"python.tsg.{label.lower()}.v1", properties={},
+                                   source_tool="tree-sitter-graph", source_tool_version=version)
+                    added[label] += 1
+                elif label == "CONTAINS" and source and facts.nodes[target_fact].get("type") == "Field":
+                    owned.setdefault(source["id"], []).append(facts.nodes[target_fact])
+                else:
+                    unmatched[label] += 1
+            module = module_by_path.get(path)
+            if module is not None:
+                owned[module["id"]] = [f for f in facts.nodes.values() if f.get("type") == "GlobalVariable"]
+
+            source = (root / path).read_bytes()
+            line_starts = [0, *(index + 1 for index, byte in enumerate(source) if byte == 0x0A)]
+            for owner_id, occurrences in owned.items():
+                by_name: dict[str, list[dict[str, Any]]] = {}
+                for fact in occurrences:
+                    by_name.setdefault(fact["name"], []).append(fact)
+                for name, group in by_name.items():
+                    kind = group[0]["type"]
+                    node_id = self._add_tsg_symbol(self.nodes_by_id[owner_id], kind, name, group, path, source,
+                                                   line_starts)
+                    self._add_edge("CONTAINS", owner_id, node_id, confidence=1.0, resolution="exact",
+                                   rule_id=f"python.tsg.{kind.lower()}.v1", properties={},
+                                   source_tool="tree-sitter-graph", source_tool_version=version)
+                    added[kind] += 1
+            for def_fact, group in parameters.items():
+                owner = matched[def_fact]
+                ordered = sorted(group, key=lambda fact: (fact["line"], fact["col"]))
+                for position, fact in enumerate(ordered):
+                    if (position == 0 and facts.nodes[def_fact]["type"] == "Method"
+                            and fact["name"] in {"self", "cls"}):
+                        continue
+                    node_id = self._add_tsg_symbol(
+                        owner, "Identifier", fact["name"], [fact], path, source, line_starts,
+                        qualified_name=f"{owner['qualified_name']}::<param:{fact['name']}>",
+                        properties={"annotation": fact.get("annotation"), "has_default": "has_default" in fact,
+                                    "position": position, "kind": fact["kind"]})
+                    self._add_edge("CONTAINS", owner["id"], node_id, confidence=1.0, resolution="exact",
+                                   rule_id="python.tsg.identifier.v1", properties={},
+                                   source_tool="tree-sitter-graph", source_tool_version=version)
+                    added["Identifier"] += 1
+        if config_reads:
+            added["ConfigEntry"] += self._add_config_entries(config_reads, version)
+        self.tsg_report.update(added=dict(sorted(added.items())), unmatched=dict(sorted(unmatched.items())))
+
+    def _add_config_entries(self, reads: list[tuple[str, str, str, str, int]], version: str) -> int:
+        """One repo-wide ConfigEntry per environment key; one REFERENCES edge per (reader, key)."""
+        by_key: dict[str, list[tuple[str, str, str, str, int]]] = {}
+        for read in reads:
+            by_key.setdefault(read[1], []).append(read)
+        for key in sorted(by_key):
+            node_id = f"vgar:{self.repo_key}:config:env:{key}"
+            sites = sorted({(path, line) for _, _, _, path, line in by_key[key]})
+            self._add_node({
+                "id": node_id, "type": "ConfigEntry", "repo_key": self.repo_key, "name": key,
+                "qualified_name": f"env:{key}", "path": None, "language": "python", "range": None,
+                "properties": {"source": "environment",
+                               "read_sites": [{"path": path, "line": line} for path, line in sites]},
+                "content_hash": self._hash_text(f"env:{key}"),
+                "graph_version": self.graph_version,
+            })
+            by_reader: dict[str, list[tuple[str, int]]] = {}
+            for reader_id, _, access, _, line in by_key[key]:
+                by_reader.setdefault(reader_id, []).append((access, line))
+            for reader_id in sorted(by_reader):
+                self._add_edge("REFERENCES", reader_id, node_id, confidence=1.0, resolution="exact",
+                               rule_id="python.tsg.config_env.v1",
+                               properties={"access": ",".join(sorted({a for a, _ in by_reader[reader_id]})),
+                                           "lines": sorted({line for _, line in by_reader[reader_id]})},
+                               source_tool="tree-sitter-graph", source_tool_version=version)
+        return len(by_key)
+
+    def _derive_layer1_facts(self) -> None:
+        """Route and Schema nodes and IMPLEMENTS edges from the builder's decorators, bases, imports and
+        INHERITS edges (spec §4.3-4.5); only runs when tree-sitter-graph ran."""
+        assert self.tsg_report is not None
+        module_by_path = {state.path: self.nodes_by_id[state.module_id] for state in self.modules.values()
+                          if state.module_id in self.nodes_by_id}
+        added: Counter[str] = Counter(self.tsg_report["added"])
+        for handler in [n for n in self.nodes if n["type"] in {"Function", "Method", "Test"}]:
+            decorators = handler["properties"].get("decorators", handler["properties"].get("markers", []))
+            for spec in layer1_rules.route_specs(decorators):
+                route_id = self._add_layer1_node(
+                    module_by_path[handler["path"]], "Route", spec.name,
+                    f"{handler['qualified_name']}::<route:{spec.name}>", handler["range"],
+                    self._hash_text(spec.decorator),
+                    {"methods": spec.methods, "route_path": spec.route_path, "decorator": spec.decorator,
+                     "receiver": spec.receiver})
+                self._add_edge("REFERENCES", route_id, handler["id"], confidence=0.8, resolution="heuristic",
+                               rule_id="python.layer1.route.v1", properties={})
+                added["Route"] += 1
+
+        tables = self._import_tables()
+        classes = [n for n in self.nodes if n["type"] == "Class"]
+        schema_of: dict[str, tuple[str, str]] = {}
+        for node in classes:
+            table = tables.get(module_by_path[node["path"]]["id"], {})
+            found = layer1_rules.schema_kind(node["properties"]["decorators"], node["properties"]["bases"], table)
+            if found:
+                schema_of[node["id"]] = found
+        # (d) subclasses of pydantic/TypedDict schemas in the repo, to a fixed point.
+        inherits = [(e["source_id"], e["target_id"]) for e in self.edges if e["type"] == "INHERITS"]
+        changed = True
+        while changed:
+            changed = False
+            for child, parent in inherits:
+                if child not in schema_of and parent in schema_of and schema_of[parent][0] != "dataclass":
+                    schema_of[child] = (schema_of[parent][0], "inherited")
+                    changed = True
+        for node in classes:
+            if node["id"] not in schema_of:
+                continue
+            kind, evidence = schema_of[node["id"]]
+            schema_id = self._add_layer1_node(
+                module_by_path[node["path"]], "Schema", node["name"], f"{node['qualified_name']}::<schema>",
+                node["range"], node["content_hash"], {"schema_kind": kind, "evidence": evidence})
+            inherited = evidence == "inherited"
+            self._add_edge("REFERENCES", schema_id, node["id"], confidence=0.9 if inherited else 1.0,
+                           resolution="analyzer" if inherited else "exact", rule_id="python.layer1.schema.v1",
+                           properties={})
+            added["Schema"] += 1
+
+        def interface(class_id: str) -> str | None:
+            node = self.nodes_by_id[class_id]
+            return layer1_rules.interface_kind(node["properties"]["bases"],
+                                               tables.get(module_by_path[node["path"]]["id"], {}))
+
+        for edge in [e for e in self.edges if e["type"] == "INHERITS"]:
+            # An interface extending an interface is an extension, not an implementation.
+            kind = interface(edge["target_id"])
+            if kind is not None and interface(edge["source_id"]) is None:
+                self._add_edge("IMPLEMENTS", edge["source_id"], edge["target_id"], confidence=edge["confidence"],
+                               resolution=edge["resolution"], rule_id="python.layer1.implements.v1",
+                               properties={"interface_kind": kind})
+                added["IMPLEMENTS"] += 1
+        self.tsg_report["added"] = dict(sorted(added.items()))
+
+    def _lift_architecture(self) -> None:
+        """Add the G_arch layer; runs after every CALLS edge exists (spec §4)."""
+        result = arch_lift.lift(self.repo_key, self.nodes, self.edges, is_test=self._is_test_path,
+                                exports=self._collect_exports(), deployment=self._deployment_files)
+        for node in result.nodes:
+            node.setdefault("content_hash", self._hash_text(node["id"]))
+            self._add_node({**node, "graph_version": self.graph_version})
+        for edge in result.edges:
+            self._add_edge(edge.type, edge.source_id, edge.target_id, confidence=edge.confidence,
+                           resolution=edge.resolution, rule_id=f"python.arch.{edge.rule}.v1", properties=edge.properties,
+                           source_tool=arch_lift.SOURCE_TOOL, evidence=edge.evidence)
+        self.arch_report = result.report
+
+    def _collect_exports(self) -> dict[str, frozenset[str]]:
+        """Path -> names in ``__all__``; parses only the files that mention it."""
+        assert self.repository_root is not None
+        exports: dict[str, frozenset[str]] = {}
+        for state in self.modules.values():
+            source = (self.repository_root / state.path).read_bytes()
+            if b"__all__" in source:
+                exports[state.path] = arch_lift.read_dunder_all(source)
+        return exports
+
+    def _import_tables(self) -> dict[str, dict[str, str]]:
+        """Module id -> local name -> dotted origin, from the module-level Import nodes."""
+        imports: dict[str, list[dict[str, Any]]] = {}
+        for edge in self.edges:
+            if edge["type"] == "CONTAINS" and self.nodes_by_id[edge["target_id"]]["type"] == "Import":
+                imports.setdefault(edge["source_id"], []).append(self.nodes_by_id[edge["target_id"]]["properties"])
+        return {module_id: layer1_rules.import_table(items) for module_id, items in imports.items()}
+
+    def _add_layer1_node(self, owner: dict[str, Any], kind: str, name: str, qualified_name: str,
+                         range_: dict[str, int], content_hash: str, properties: dict[str, Any]) -> str:
+        """Add a derived source-backed node under ``owner`` (CONTAINS edge included) and return its id."""
+        node_id = f"vgar:{self.repo_key}:python:{kind.lower()}:{owner['path']}:{qualified_name}"
+        if node_id in self.nodes_by_id:
+            node_id += f"@definition:{range_['start_line']}:{range_['start_col']}"
+        self._add_node({
+            "id": node_id, "type": kind, "repo_key": self.repo_key, "name": name,
+            "qualified_name": qualified_name, "path": owner["path"], "language": "python",
+            "range": dict(range_), "properties": properties, "content_hash": content_hash,
+            "graph_version": self.graph_version,
+        })
+        self._add_edge("CONTAINS", owner["id"], node_id, confidence=1.0, resolution="exact",
+                       rule_id=f"python.layer1.{kind.lower()}.v1", properties={})
+        return node_id
+
+    def _add_tsg_symbol(self, owner: dict[str, Any], kind: str, name: str, group: list[dict[str, Any]], path: str,
+                        source: bytes, line_starts: list[int], qualified_name: str | None = None,
+                        properties: dict[str, Any] | None = None) -> str:
+        """One Field/GlobalVariable node per (owner, name), ranged at its first assignment.
+
+        Identifier passes its own ``qualified_name`` and ``properties`` (one fact per node).
+        """
+        first = min(group, key=lambda fact: (fact["line"], fact["col"]))
+        start = line_starts[first["line"] - 1] + first["col"]
+        end = line_starts[first["end_line"] - 1] + first["end_col"]
+        qualified_name = qualified_name or f"{owner['qualified_name']}.{name}"
+        node_id = f"vgar:{self.repo_key}:python:{kind.lower()}:{path}:{qualified_name}"
+        if node_id in self.nodes_by_id:
+            node_id += f"@definition:{first['line']}:{first['col']}"
+        self._add_node({
+            "id": node_id, "type": kind, "repo_key": self.repo_key, "name": name,
+            "qualified_name": qualified_name, "path": path, "language": "python",
+            "range": {"start_line": first["line"], "start_col": first["col"], "end_line": first["end_line"],
+                      "end_col": first["end_col"], "start_byte": start, "end_byte": end},
+            "properties": properties if properties is not None else {
+                "assignment_lines": sorted({fact["line"] for fact in group}), "extractor": "tree-sitter-graph"},
+            "content_hash": self._hash_bytes(source[start:end]),
+            "graph_version": self.graph_version,
+        })
+        return node_id
+
     def _add_node(self, node: dict[str, Any]) -> None:
         node_id = node["id"]
         if node_id in self.nodes_by_id:
@@ -1489,6 +1927,9 @@ class PythonGraphBuilder:
         resolution: str,
         rule_id: str,
         properties: dict[str, Any],
+        source_tool: str = "vgar-python-graph-builder",
+        source_tool_version: str = "0.1.0",
+        evidence: Iterable[str] = (),
     ) -> None:
         identity = self._hash_text(
             f"{edge_type}\0{source_id}\0{target_id}\0{rule_id}"
@@ -1502,11 +1943,11 @@ class PythonGraphBuilder:
                 "confidence": confidence,
                 "resolution": resolution,
                 "provenance": {
-                    "source_tool": "vgar-python-graph-builder",
-                    "source_tool_version": "0.1.0",
+                    "source_tool": source_tool,
+                    "source_tool_version": source_tool_version,
                     "rule_id": rule_id,
                     "source_revision": self.repository_revision,
-                    "evidence": [],
+                    "evidence": list(evidence),
                 },
                 "properties": properties,
                 "graph_version": self.graph_version,
@@ -1636,5 +2077,14 @@ class PythonGraphBuilder:
             "renamed_duplicate_count": self.renamed_duplicate_count,
             "failed_file_count": len(self.skipped_failed_files),
             "failed_files": self.skipped_failed_files,
+            "schema_profile": PROFILE_FULL_VGAR_MCP,
+            "legacy_graph_version": self.legacy_graph_version,
+            "may_call": {
+                "rule_version": may_call.RULE_VERSION,
+                "edge_count": sum(self._may_call_by_kind.values()),
+                "callsite_count": self._may_call_callsites,
+                "skipped_over_cap": self._may_call_skipped_over_cap,
+                "by_match_kind": dict(sorted(self._may_call_by_kind.items())),
+            },
             "build_time_ms": round((time.perf_counter() - started_at) * 1000, 3),
         }

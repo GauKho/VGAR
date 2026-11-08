@@ -1,0 +1,100 @@
+;; Spike L1-1: tree-sitter-graph rules for Python (grammar tree-sitter-python v0.23.6).
+;; Emits Class, Function, Method, CallSite, GlobalVariable, Field
+;; and edges HAS_METHOD, HAS_CALLSITE, HAS_FIELD.
+;; Run: tree-sitter-graph python.tsg <file.py> --json --global FILE_PATH=<repo-relative path>
+;;
+;; `if` only accepts values derived from captures, not inherited variables, so ownership and
+;; kinds are carried as inherited *values*:
+;; - a construct with no owner (call outside any def, `self.x` outside a method) is attached
+;;   to the file's "Discard" node;
+;; - `@overload` stubs (skipped by the builder) get overload = "yes".
+;; compare.py drops all of those together with what they own.
+
+global FILE_PATH
+
+inherit .discard        ; per-file sink node
+inherit .enclosing_def  ; def whose body we are in, else .discard
+inherit .self_class     ; class owning `self` in a method body, else .discard
+inherit .def_kind       ; type for a def placed here: "Function" / "Method"
+inherit .def_class      ; class owning a def placed here, else .discard
+inherit .class_kind     ; type for a class placed here: "Class"
+
+(module) @mod
+{
+  node @mod.discard
+  attr (@mod.discard) type = "Discard", path = FILE_PATH
+  let @mod.enclosing_def = @mod.discard
+  let @mod.self_class = @mod.discard
+  let @mod.def_kind = "Function"
+  let @mod.def_class = @mod.discard
+  let @mod.class_kind = "Class"
+}
+
+(class_definition name: (identifier) @name body: (block) @body) @class
+{
+  node @class.node
+  attr (@class.node) type = @class.class_kind, name = (source-text @name), path = FILE_PATH, line = (plus (start-row @class) 1)
+  ;; Calls in bases or the class body do not belong to an outer def.
+  let @class.enclosing_def = @class.discard
+  let @body.def_kind = "Method"
+  let @body.def_class = @class.node
+  let @body.class_kind = "Class"
+}
+
+(function_definition name: (identifier) @name body: (block) @body) @func
+{
+  node @func.node
+  attr (@func.node) type = @func.def_kind, name = (source-text @name), path = FILE_PATH, line = (plus (start-row @func) 1)
+  edge @func.def_class -> @func.node
+  attr (@func.def_class -> @func.node) type = "HAS_METHOD"
+  ;; Default-argument calls belong to neither this def nor an outer def.
+  let @func.enclosing_def = @func.discard
+  let @body.enclosing_def = @func.node
+  let @body.self_class = @func.def_class
+  let @body.def_kind = "Function"
+  let @body.def_class = @body.discard
+  let @body.class_kind = "Class"
+}
+
+;; @overload / @typing.overload stubs
+[
+  ((decorated_definition (decorator (identifier) @_d) definition: (_) @def) (#eq? @_d "overload"))
+  ((decorated_definition (decorator (attribute attribute: (identifier) @_d)) definition: (_) @def) (#eq? @_d "overload"))
+]
+{
+  attr (@def.node) overload = "yes"
+}
+
+(call function: (_) @callee) @call
+{
+  node @call.node
+  attr (@call.node) type = "CallSite", name = (source-text @callee), path = FILE_PATH, line = (plus (start-row @call) 1)
+  edge @call.enclosing_def -> @call.node
+  attr (@call.enclosing_def -> @call.node) type = "HAS_CALLSITE"
+}
+
+;; Module-level assignment: COUPONS = {...}
+(module (expression_statement (assignment left: (identifier) @name) @asg))
+{
+  node @asg.node
+  attr (@asg.node) type = "GlobalVariable", name = (source-text @name), path = FILE_PATH, line = (plus (start-row @asg) 1)
+}
+
+;; Annotated class-body field: `code: str` (dataclass style)
+(class_definition body: (block (expression_statement (assignment left: (identifier) @name type: (_)) @asg))) @class
+{
+  node @asg.node
+  attr (@asg.node) type = "Field", name = (source-text @name), path = FILE_PATH, line = (plus (start-row @asg) 1)
+  edge @class.node -> @asg.node
+  attr (@class.node -> @asg.node) type = "HAS_FIELD"
+}
+
+;; Instance field: self.x = ... (owner is .discard outside a method body)
+((assignment left: (attribute object: (identifier) @_obj attribute: (identifier) @name)) @asg
+ (#eq? @_obj "self"))
+{
+  node @asg.node
+  attr (@asg.node) type = "Field", name = (source-text @name), path = FILE_PATH, line = (plus (start-row @asg) 1)
+  edge @asg.self_class -> @asg.node
+  attr (@asg.self_class -> @asg.node) type = "HAS_FIELD"
+}
