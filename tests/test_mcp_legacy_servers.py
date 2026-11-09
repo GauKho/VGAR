@@ -153,8 +153,9 @@ def test_run_pytest_runs_real_pytest_in_lease(lease, monkeypatch):
 def test_execution_server_tools():
     # S14 (part)
     tools = {tool.name: tool for tool in asyncio.run(execution_server.mcp.list_tools())}
-    assert set(tools) == {"health", "run_pytest"}
+    assert set(tools) == {"health", "run_pytest", "run_relevant_tests"}
     assert set(tools["run_pytest"].inputSchema["properties"]) == {"selector"}
+    assert set(tools["run_relevant_tests"].inputSchema["properties"]) == {"diff"}
 
 
 # ------------------------------------------------------------------- Task 4: tool surface + plumbing

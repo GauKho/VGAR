@@ -1,0 +1,743 @@
+{
+  "fixture_format": "mcp-contract-draft-oracle-v1",
+  "review_status": "ACCEPTED_FOR_IMPLEMENTATION",
+  "approval": {
+    "date": "2026-11-08",
+    "basis": "User confirmed the group has finalized the Final_Task plans and no additional TV2/TV3 H1 confirmation is required.",
+    "additional_member_review_required": false,
+    "individual_reviewer_signatures_created": false,
+    "implementation_or_experiment_acceptance_implied": false
+  },
+  "synthetic": true,
+  "runtime_graph_document": false,
+  "oracle_origin": "Hand-authored source, symbols, relations, patch answers; no VGAR builder/retrieval/verifier executed. Legacy fingerprints are observational compatibility receipts only.",
+  "contract_ref": "docs/mcp_server/contract.md",
+  "baseline_head": "3f77fcf6ba68d7cfc6356dfe9757f6f53eed691b",
+  "core_tools": [
+    {
+      "name": "build_or_update_graph",
+      "server": "graph",
+      "client_name": "graph_build_or_update_graph",
+      "state": "PROPOSED",
+      "signature": "repo_path: str",
+      "output": "BuildResult",
+      "provider": "TV2/L6-6",
+      "constraints": [
+        "repo_path is allowlisted, not authorization",
+        "write requires operator binding; limits pending"
+      ],
+      "oracle_refs": []
+    },
+    {
+      "name": "search_symbols",
+      "server": "graph",
+      "client_name": "graph_search_symbols",
+      "state": "CURRENT",
+      "signature": "query: str, limit: int=20",
+      "output": "ToolResponse[query,limit,symbols]",
+      "provider": "legacy GraphService; rich TV2 pending",
+      "constraints": [
+        "legacy default limit 20"
+      ],
+      "oracle_refs": [
+        "symbols"
+      ]
+    },
+    {
+      "name": "find_task_anchors",
+      "server": "graph",
+      "client_name": "graph_find_task_anchors",
+      "state": "CURRENT",
+      "signature": "issue_text: str, graph_version: str, task_id: str, failing_tests: list[str] | None=None",
+      "output": "ToolResponse[provider anchors]",
+      "provider": "legacy GraphService; rich TV2 pending",
+      "constraints": [
+        "preserve legacy required graph_version/task_id",
+        "short proposal call needs trusted adapter"
+      ],
+      "oracle_refs": [
+        "anchors"
+      ]
+    },
+    {
+      "name": "get_related_context",
+      "server": "graph",
+      "client_name": "graph_get_related_context",
+      "state": "CURRENT",
+      "signature": "anchor_ids: list[str], budget_tokens: int, graph_version: str, task_id: str, issue_text: str='', failing_tests: list[str] | None=None",
+      "output": "ToolResponse[provider context]",
+      "provider": "legacy GraphService; rich TV2 pending",
+      "constraints": [
+        "bind tokenizer/ranking",
+        "token budget enforced by provider"
+      ],
+      "oracle_refs": [
+        "anchors"
+      ]
+    },
+    {
+      "name": "get_callers",
+      "server": "graph",
+      "client_name": "graph_get_callers",
+      "state": "CURRENT",
+      "signature": "symbol_id: str, depth: int=1",
+      "output": "ToolResponse[symbol_id,depth,callers]",
+      "provider": "legacy GraphService; depth>1 pending",
+      "constraints": [
+        "legacy applies depth 1 only"
+      ],
+      "oracle_refs": [
+        "callers"
+      ]
+    },
+    {
+      "name": "get_callees",
+      "server": "graph",
+      "client_name": "graph_get_callees",
+      "state": "CURRENT",
+      "signature": "symbol_id: str, depth: int=1",
+      "output": "ToolResponse[symbol_id,depth,callees]",
+      "provider": "legacy GraphService; depth>1 pending",
+      "constraints": [
+        "legacy applies depth 1 only"
+      ],
+      "oracle_refs": [
+        "callees"
+      ]
+    },
+    {
+      "name": "explain_dependency_path",
+      "server": "graph",
+      "client_name": "graph_explain_dependency_path",
+      "state": "PROPOSED",
+      "signature": "source_id: str, target_id: str",
+      "output": "PathResult",
+      "provider": "TV2",
+      "constraints": [
+        "direction/edge policy/limits require provider implementation/configuration under the agreed plan"
+      ],
+      "oracle_refs": [
+        "dependency_path"
+      ]
+    },
+    {
+      "name": "analyze_patch_impact",
+      "server": "graph",
+      "client_name": "graph_analyze_patch_impact",
+      "state": "CURRENT",
+      "signature": "diff: str, graph_version: str, max_hops: int=2, max_nodes: int=200",
+      "output": "ToolResponse[ImpactReport]",
+      "provider": "legacy GraphService; architecture TV2 pending",
+      "constraints": [
+        "source immutable",
+        "retain evidence/availability/partial"
+      ],
+      "oracle_refs": [
+        "impact"
+      ]
+    },
+    {
+      "name": "verify_patch_graph_constraints",
+      "server": "graph",
+      "client_name": "graph_verify_patch_graph_constraints",
+      "state": "PROPOSED",
+      "signature": "diff: str",
+      "output": "CheckEvidence",
+      "provider": "TV3",
+      "constraints": [
+        "not repair finalizer",
+        "unknown not PASS"
+      ],
+      "oracle_refs": [
+        "patches"
+      ]
+    },
+    {
+      "name": "run_relevant_tests",
+      "server": "execution",
+      "client_name": "execution_run_relevant_tests",
+      "state": "PROPOSED",
+      "signature": "diff: str",
+      "output": "TestEvidence",
+      "provider": "TV3/test provider + wrapper",
+      "constraints": [
+        "private admitted workspace",
+        "diff/state match, no double apply",
+        "not repair_run_relevant_tests(run_dir)"
+      ],
+      "oracle_refs": [
+        "patches"
+      ]
+    },
+    {
+      "name": "rank_patch_candidates",
+      "server": "graph",
+      "client_name": "graph_rank_patch_candidates",
+      "state": "PROPOSED",
+      "signature": "candidates: RankRequest candidates",
+      "output": "RankResult",
+      "provider": "TV3",
+      "constraints": [
+        "stable tie-break",
+        "score cannot override required FAIL/ERROR",
+        "scoring/limits require implementation/configuration under the agreed plan"
+      ],
+      "oracle_refs": [
+        "patches"
+      ]
+    }
+  ],
+  "resources": [
+    {
+      "uri": "vgar://repo/summary",
+      "server": "graph",
+      "state": "CURRENT",
+      "output": "RepositorySummaryResult",
+      "provider": "store",
+      "error_channel": "MCP protocol; no automatic tool envelope",
+      "binding": "trusted repo/snapshot; task/run for task/evidence/audit"
+    },
+    {
+      "uri": "vgar://repo/schema",
+      "server": "graph",
+      "state": "PROPOSED",
+      "output": "reviewed schema/profile",
+      "provider": "TV2",
+      "error_channel": "MCP protocol; no automatic tool envelope",
+      "binding": "trusted repo/snapshot; task/run for task/evidence/audit"
+    },
+    {
+      "uri": "vgar://graph/node/{node_id}",
+      "server": "graph",
+      "state": "CURRENT",
+      "output": "GraphNodeRef",
+      "provider": "store/TV2; percent-decode once",
+      "error_channel": "MCP protocol; no automatic tool envelope",
+      "binding": "trusted repo/snapshot; task/run for task/evidence/audit"
+    },
+    {
+      "uri": "vgar://graph/subgraph/{node_id}?k=2",
+      "server": "graph",
+      "state": "PROPOSED",
+      "output": "bounded GraphSubgraphResult adapter",
+      "provider": "TV2/router",
+      "error_channel": "MCP protocol; no automatic tool envelope",
+      "binding": "trusted repo/snapshot; task/run for task/evidence/audit"
+    },
+    {
+      "uri": "vgar://component/{component_id}",
+      "server": "graph",
+      "state": "PROPOSED",
+      "output": "component/Lift/Port evidence",
+      "provider": "TV2",
+      "error_channel": "MCP protocol; no automatic tool envelope",
+      "binding": "trusted repo/snapshot; task/run for task/evidence/audit"
+    },
+    {
+      "uri": "vgar://task/{task_id}",
+      "server": "graph",
+      "state": "PROPOSED",
+      "output": "bound task/trace snapshot",
+      "provider": "TV2",
+      "error_channel": "MCP protocol; no automatic tool envelope",
+      "binding": "trusted repo/snapshot; task/run for task/evidence/audit"
+    },
+    {
+      "uri": "vgar://evidence/baseline",
+      "server": "graph",
+      "state": "PROPOSED",
+      "output": "bound baseline evidence ref/hash",
+      "provider": "TV3/repair",
+      "error_channel": "MCP protocol; no automatic tool envelope",
+      "binding": "trusted repo/snapshot; task/run for task/evidence/audit"
+    },
+    {
+      "uri": "vgar://audit/log",
+      "server": "graph",
+      "state": "PROPOSED",
+      "output": "bounded/redacted run audit",
+      "provider": "server audit reader",
+      "error_channel": "MCP protocol; no automatic tool envelope",
+      "binding": "trusted repo/snapshot; task/run for task/evidence/audit"
+    }
+  ],
+  "resource_aliases": [
+    {
+      "uri": "vgar://graph/subgraph/{node_id}",
+      "canonical": "vgar://graph/subgraph/{node_id}?k=2",
+      "state": "CURRENT",
+      "applied_depth": 2
+    }
+  ],
+  "prompts": [
+    {
+      "name": "repair_with_graph_context",
+      "state": "PROPOSED",
+      "inputs": [
+        "issue_text",
+        "failing_tests",
+        "context_budget"
+      ],
+      "steps": [
+        "anchors",
+        "context",
+        "read_selected_files",
+        "minimal_patch",
+        "impact",
+        "tests_and_verification",
+        "explain_evidence"
+      ]
+    }
+  ],
+  "legacy_surface": [
+    {
+      "server": "graph",
+      "name": "search_symbols",
+      "signature": "query: str, limit: int=20"
+    },
+    {
+      "server": "graph",
+      "name": "get_callers",
+      "signature": "symbol_id: str, depth: int=1"
+    },
+    {
+      "server": "graph",
+      "name": "get_callees",
+      "signature": "symbol_id: str, depth: int=1"
+    },
+    {
+      "server": "graph",
+      "name": "find_task_anchors",
+      "signature": "issue_text: str, graph_version: str, task_id: str, failing_tests: list[str] | None=None"
+    },
+    {
+      "server": "graph",
+      "name": "get_related_context",
+      "signature": "anchor_ids: list[str], budget_tokens: int, graph_version: str, task_id: str, issue_text: str='', failing_tests: list[str] | None=None"
+    },
+    {
+      "server": "graph",
+      "name": "get_related_tests",
+      "signature": "symbol_ids: list[str], graph_version: str, changed_paths: list[str] | None=None, failing_tests: list[str] | None=None, selected_tests: list[str] | None=None, max_hops: int=2, limit: int=50"
+    },
+    {
+      "server": "graph",
+      "name": "analyze_patch_impact",
+      "signature": "diff: str, graph_version: str, max_hops: int=2, max_nodes: int=200"
+    },
+    {
+      "server": "repository",
+      "name": "health",
+      "signature": ""
+    },
+    {
+      "server": "repository",
+      "name": "read_file",
+      "signature": "path: str"
+    },
+    {
+      "server": "execution",
+      "name": "health",
+      "signature": ""
+    },
+    {
+      "server": "execution",
+      "name": "run_pytest",
+      "signature": "selector: str"
+    },
+    {
+      "server": "repair",
+      "name": "get_task_context",
+      "signature": "task_path: str, mode: str, output_root: str, work_root: str, config_path: str | None=None, keep_workspace: bool=False, feedback: dict[str, Any] | None=None, supersedes_run_id: str | None=None, rerun_reason: str | None=None, experiment: dict[str, Any] | None=None, admission: dict[str, Any] | None=None"
+    },
+    {
+      "server": "repair",
+      "name": "apply_patch",
+      "signature": "run_dir: str, diff: str, generation: dict[str, Any] | None=None"
+    },
+    {
+      "server": "repair",
+      "name": "run_relevant_tests",
+      "signature": "run_dir: str"
+    },
+    {
+      "server": "repair",
+      "name": "verify_patch",
+      "signature": "run_dir: str"
+    }
+  ],
+  "legacy_resources": [
+    "vgar://repo/summary",
+    "vgar://graph/node/{node_id}",
+    "vgar://graph/subgraph/{node_id}"
+  ],
+  "legacy_prompt_count": 0,
+  "legacy_payloads": {
+    "tool_success.json": {
+      "path": "tests/fixtures/mcp/tool_success.json",
+      "sha256": "0ada86fbfcf49e4986145adafc941b01cb641ad40168ae5d296a81ddc2a0eb15",
+      "canonical_sha256": "6fe52fb25707c039e45f2c3bf13f0d363ea7e8bbcad7d169bef4976f4d97ecf3"
+    },
+    "tool_error.json": {
+      "path": "tests/fixtures/mcp/tool_error.json",
+      "sha256": "91d701afca7ac8b37ea63a00be3cded46ce48335f3b9674dda9e63900719234e",
+      "canonical_sha256": "4e595f9e8193226f6d6ecc76e458a689b5b826e769dccc16b4e534603b34d6a2"
+    }
+  },
+  "legacy_error_retryable": {
+    "INVALID_ARGUMENT": false,
+    "INTERNAL_ERROR": false,
+    "INVALID_QUERY": false,
+    "INVALID_LIMIT": false,
+    "NODE_NOT_FOUND": false,
+    "GRAPH_ERROR": false,
+    "GRAPH_NOT_READY": true,
+    "PATH_OUTSIDE_ROOT": false,
+    "ROOT_NOT_LEASED": false,
+    "SELECTOR_REJECTED": false,
+    "TIMEOUT": false,
+    "TOOL_ORDER_VIOLATION": false,
+    "RUN_NOT_FOUND": false,
+    "MCP_TRANSPORT_ERROR": false
+  },
+  "legacy_limits": {
+    "READ_FILE_MAX_BYTES": 65536,
+    "PYTEST_TIMEOUT_SECONDS": 120,
+    "PYTEST_OUTPUT_CAP": 12000
+  },
+  "small_repository": {
+    "id_namespace": "fixture-local, not approved production IDs",
+    "sources": {
+      "src/demo_auth/__init__.py": "",
+      "src/demo_auth/parser.py": "def normalize_user(value):\n    return value.strip().split(\"@\", 1)[0]\n",
+      "src/demo_auth/service.py": "from demo_auth.parser import normalize_user\n\ndef login(name):\n    return normalize_user(name)\n",
+      "src/demo_auth/cli.py": "from demo_auth.service import login\n\ndef main(name):\n    return login(name)\n",
+      "tests/test_service.py": "from demo_auth.service import login\n\ndef test_login_username_with_at():\n    assert login(\" alice@example.com \") == \"alice@example.com\"\n"
+    },
+    "symbols": [
+      {
+        "id": "fixture:parser.normalize_user",
+        "kind": "Function",
+        "path": "src/demo_auth/parser.py",
+        "qualified_name": "demo_auth.parser.normalize_user",
+        "start_line": 1,
+        "end_line": 2
+      },
+      {
+        "id": "fixture:service.login",
+        "kind": "Function",
+        "path": "src/demo_auth/service.py",
+        "qualified_name": "demo_auth.service.login",
+        "start_line": 3,
+        "end_line": 4
+      },
+      {
+        "id": "fixture:cli.main",
+        "kind": "Function",
+        "path": "src/demo_auth/cli.py",
+        "qualified_name": "demo_auth.cli.main",
+        "start_line": 3,
+        "end_line": 4
+      },
+      {
+        "id": "fixture:test_service.test_login_username_with_at",
+        "kind": "Test",
+        "path": "tests/test_service.py",
+        "qualified_name": "test_service.test_login_username_with_at",
+        "start_line": 3,
+        "end_line": 4
+      }
+    ],
+    "callsites": [
+      {
+        "id": "fixture:cs.service.4",
+        "owner": "fixture:service.login",
+        "target": "fixture:parser.normalize_user",
+        "path": "src/demo_auth/service.py",
+        "line": 4
+      },
+      {
+        "id": "fixture:cs.cli.4",
+        "owner": "fixture:cli.main",
+        "target": "fixture:service.login",
+        "path": "src/demo_auth/cli.py",
+        "line": 4
+      },
+      {
+        "id": "fixture:cs.test.4",
+        "owner": "fixture:test_service.test_login_username_with_at",
+        "target": "fixture:service.login",
+        "path": "tests/test_service.py",
+        "line": 4
+      }
+    ],
+    "raw_edges": [
+      {
+        "id": "fixture:e.service.contains",
+        "type": "CONTAINS",
+        "source": "fixture:service.login",
+        "target": "fixture:cs.service.4"
+      },
+      {
+        "id": "fixture:e.service.calls",
+        "type": "CALLS",
+        "source": "fixture:cs.service.4",
+        "target": "fixture:parser.normalize_user"
+      },
+      {
+        "id": "fixture:e.cli.contains",
+        "type": "CONTAINS",
+        "source": "fixture:cli.main",
+        "target": "fixture:cs.cli.4"
+      },
+      {
+        "id": "fixture:e.cli.calls",
+        "type": "CALLS",
+        "source": "fixture:cs.cli.4",
+        "target": "fixture:service.login"
+      },
+      {
+        "id": "fixture:e.test.contains",
+        "type": "CONTAINS",
+        "source": "fixture:test_service.test_login_username_with_at",
+        "target": "fixture:cs.test.4"
+      },
+      {
+        "id": "fixture:e.test.calls",
+        "type": "CALLS",
+        "source": "fixture:cs.test.4",
+        "target": "fixture:service.login"
+      },
+      {
+        "id": "fixture:e.test.tests",
+        "type": "TESTS",
+        "source": "fixture:test_service.test_login_username_with_at",
+        "target": "fixture:service.login"
+      }
+    ],
+    "evidence_scope": "Hand-authored exact facts only; no confidence/provenance invented as extraction output."
+  },
+  "oracles": {
+    "symbols": [
+      "fixture:parser.normalize_user",
+      "fixture:service.login",
+      "fixture:cli.main",
+      "fixture:test_service.test_login_username_with_at"
+    ],
+    "callers": {
+      "fixture:parser.normalize_user": [
+        "fixture:service.login"
+      ],
+      "fixture:service.login": [
+        "fixture:cli.main",
+        "fixture:test_service.test_login_username_with_at"
+      ],
+      "fixture:cli.main": [],
+      "fixture:test_service.test_login_username_with_at": []
+    },
+    "callees": {
+      "fixture:parser.normalize_user": [],
+      "fixture:service.login": [
+        "fixture:parser.normalize_user"
+      ],
+      "fixture:cli.main": [
+        "fixture:service.login"
+      ],
+      "fixture:test_service.test_login_username_with_at": [
+        "fixture:service.login"
+      ]
+    },
+    "production_callers": {
+      "fixture:parser.normalize_user": [
+        "fixture:service.login"
+      ],
+      "fixture:service.login": [
+        "fixture:cli.main"
+      ],
+      "fixture:cli.main": []
+    },
+    "call_policy": "Legacy SQLite callers include Function/Method/Test and callees include callable targets; ordered by qualified_name then id. Production impact traversal is a separate oracle. Fold CallSite ownership but retain raw edges.",
+    "dependency_path": {
+      "source_id": "fixture:cli.main",
+      "target_id": "fixture:parser.normalize_user",
+      "nodes": [
+        "fixture:cli.main",
+        "fixture:service.login",
+        "fixture:parser.normalize_user"
+      ],
+      "hops": 2,
+      "evidence_by_hop": [
+        [
+          "fixture:e.cli.contains",
+          "fixture:e.cli.calls"
+        ],
+        [
+          "fixture:e.service.contains",
+          "fixture:e.service.calls"
+        ]
+      ],
+      "semantics": "directed CALLS with unique CONTAINS owner, not a claim about all relation types"
+    },
+    "anchors": {
+      "issue_text": "login calls normalize_user; usernames containing @ must retain the whole stripped value.",
+      "failing_tests": [
+        "tests/test_service.py::test_login_username_with_at"
+      ],
+      "required_symbol_ids": [
+        "fixture:service.login",
+        "fixture:parser.normalize_user"
+      ],
+      "required_test_ids": [
+        "fixture:test_service.test_login_username_with_at"
+      ],
+      "assertion_scope": "named anchor membership only; ranking/top-k/budget results not specified"
+    },
+    "impact": {
+      "patch": "GOOD",
+      "changed": [
+        "fixture:parser.normalize_user"
+      ],
+      "max_hops": 2,
+      "max_nodes": 20,
+      "impacted_production": [
+        {
+          "id": "fixture:service.login",
+          "hop": 1,
+          "evidence": [
+            "fixture:e.service.contains",
+            "fixture:e.service.calls"
+          ]
+        },
+        {
+          "id": "fixture:cli.main",
+          "hop": 2,
+          "evidence": [
+            "fixture:e.service.contains",
+            "fixture:e.service.calls",
+            "fixture:e.cli.contains",
+            "fixture:e.cli.calls"
+          ]
+        }
+      ],
+      "affected_tests": [
+        {
+          "id": "fixture:test_service.test_login_username_with_at",
+          "hop": 2,
+          "evidence": [
+            "fixture:e.service.contains",
+            "fixture:e.service.calls",
+            "fixture:e.test.tests"
+          ]
+        }
+      ],
+      "assertion_scope": "reverse folded CALLS plus explicit TESTS on this fixture; no architecture or confidence ranking claim"
+    },
+    "patches": {
+      "GOOD": {
+        "label": "GOOD",
+        "path": "src/demo_auth/parser.py",
+        "diff": "--- a/src/demo_auth/parser.py\n+++ b/src/demo_auth/parser.py\n@@ -1,2 +1,2 @@\n def normalize_user(value):\n-    return value.strip().split(\"@\", 1)[0]\n+    return value.strip()\n",
+        "expected_source": "def normalize_user(value):\n    return value.strip()\n",
+        "expected_source_sha256": "96f6d57e6efb5cd3cf3e76d93b81723d6c088fe53bca6f4d2db9ecbef6d46c24",
+        "rationale": "Preserves the entire stripped username, including @ and case.",
+        "qualification": "synthetic hand label; static consistency only, not executed verifier ACCEPT"
+      },
+      "BAD": {
+        "label": "BAD",
+        "path": "src/demo_auth/parser.py",
+        "diff": "--- a/src/demo_auth/parser.py\n+++ b/src/demo_auth/parser.py\n@@ -1,2 +1,2 @@\n def normalize_user(value):\n-    return value.strip().split(\"@\", 1)[0]\n+    return value.strip().split(\"@\", 1)[-1]\n",
+        "expected_source": "def normalize_user(value):\n    return value.strip().split(\"@\", 1)[-1]\n",
+        "expected_source_sha256": "1a77a03882783c8ec80aad0288692da7c38429b37aac000c3eed9c7db8c00691",
+        "rationale": "Returns domain only for usernames containing @.",
+        "qualification": "synthetic hand label; not an observed verifier rejection"
+      }
+    },
+    "behavior_examples": [
+      {
+        "input": " alice@example.com ",
+        "baseline_expected": "alice",
+        "GOOD_expected": "alice@example.com",
+        "BAD_expected": "example.com"
+      },
+      {
+        "input": " Bob@Example.com ",
+        "baseline_expected": "Bob",
+        "GOOD_expected": "Bob@Example.com",
+        "BAD_expected": "Example.com"
+      }
+    ]
+  },
+  "draft_architecture": {
+    "review_status": "NO_ADDITIONAL_REVIEW_REQUIRED",
+    "runtime_graph_document": false,
+    "profile": "illustrative-only; production TV2 schema/Lift/Port implementation remains a separate deliverable under the agreed plan",
+    "components": [
+      {
+        "id": "draft:Auth",
+        "members": [
+          "fixture:parser.normalize_user",
+          "fixture:service.login"
+        ]
+      },
+      {
+        "id": "draft:CLI",
+        "members": [
+          "fixture:cli.main"
+        ]
+      }
+    ],
+    "ports": [
+      {
+        "id": "draft:Auth.login",
+        "symbol_id": "fixture:service.login",
+        "owner": "draft:Auth"
+      }
+    ],
+    "relations": [
+      {
+        "type": "EXPOSES_PORT",
+        "source": "draft:Auth",
+        "target": "draft:Auth.login"
+      },
+      {
+        "type": "CONSUMES_PORT",
+        "source": "draft:CLI",
+        "target": "draft:Auth.login"
+      },
+      {
+        "type": "DEPENDS_ON",
+        "source": "draft:CLI",
+        "target": "draft:Auth"
+      }
+    ],
+    "pending_decisions": [],
+    "implementation_items": [
+      "C01",
+      "C02",
+      "C03",
+      "C04",
+      "C05"
+    ]
+  },
+  "pending_decisions": [],
+  "implementation_items": [
+    "C01",
+    "C02",
+    "C03",
+    "C04",
+    "C05"
+  ],
+  "experiment_inputs_required": [
+    "E01",
+    "E02",
+    "E03",
+    "E04"
+  ],
+  "measurement_specifications_required": [
+    "M01",
+    "M02",
+    "M03",
+    "M04",
+    "M05"
+  ]
+}

@@ -9,15 +9,15 @@ import os
 from pathlib import Path
 from typing import Any
 
-from mcp.server.fastmcp import FastMCP
-
 from vgar.mcp.audit import AuditLogger
+from vgar.mcp.proposal.security import read_lease_bytes, resolve_read_path
 from vgar.mcp.schemas import PATH_OUTSIDE_ROOT, CodedToolError
-from vgar.mcp.tooling import READ_FILE_MAX_BYTES, inside, leased_root, run_tool
+from vgar.mcp.server_factory import create_server
+from vgar.mcp.tooling import READ_FILE_MAX_BYTES, leased_root, run_tool
 from vgar.observability.instrumentation import instrument_mcp_tool
 from vgar.repair.workspace import safe_relative_path
 
-mcp = FastMCP("vgar-repository", log_level="WARNING")  # no per-request INFO lines (trace spec P8)
+mcp = create_server("vgar-repository", log_level="WARNING")  # no per-request INFO lines (trace spec P8)
 _audit_logger = AuditLogger(Path(os.getenv("VGAR_MCP_AUDIT_LOG", "logs/mcp_audit.jsonl")))
 __all__ = ["READ_FILE_MAX_BYTES", "health", "mcp", "read_file"]
 
@@ -35,12 +35,16 @@ def _read(path: str) -> dict[str, Any]:
         relative = safe_relative_path(path)
     except ValueError:  # absolute, drive-qualified or ".." paths try to leave the lease
         raise CodedToolError(PATH_OUTSIDE_ROOT, "Path is outside the leased root") from None
-    target = inside(root, root / relative)
+    try:
+        target = resolve_read_path(root, relative.as_posix())
+    except ValueError:
+        raise CodedToolError(PATH_OUTSIDE_ROOT, "Protected or unsafe leased path") from None
     if not target.is_file():
         raise ValueError(f"Not a file: {path}")
-    size = target.stat().st_size
-    with target.open("rb") as stream:
-        head = stream.read(READ_FILE_MAX_BYTES)
+    try:
+        head,size = read_lease_bytes(root,relative.as_posix(),READ_FILE_MAX_BYTES)
+    except ValueError:
+        raise CodedToolError(PATH_OUTSIDE_ROOT,"Opened file is outside the lease or protected") from None
     try:
         content = head.decode("utf-8")
     except UnicodeDecodeError as error:

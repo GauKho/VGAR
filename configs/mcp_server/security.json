@@ -1,0 +1,15 @@
+{
+  "format": "vgar-mcp-security-v1",
+  "limits": {
+    "read_bytes": 65536,
+    "worker_seconds": 120,
+    "output_bytes": 12000,
+    "lock_seconds": 10,
+    "audit_bytes": 262144,
+    "audit_records": 200
+  },
+  "authority": "host/bootstrap only; never deserialize a tool argument into authority",
+  "legacy": "existing lease/admission retained; no implicit grant for new adapters",
+  "publication": "requires exact payload hash, live context and single-use host grant",
+  "pending_integration": ["L6-2 new adapters", "L6-6 graph jobs", "L6-7 storage ingest"]
+}

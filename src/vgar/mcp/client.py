@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import os
 import sys
-from typing import Any
 
 from langchain_mcp_adapters.client import MultiServerMCPClient
 
@@ -31,14 +30,21 @@ def _child_env(settings: Settings) -> dict[str, str]:
     env = {k: v for k, v in os.environ.items()
            if k.upper() in _CHILD_ENV_ALLOW or k.upper().startswith("VGAR_")}
     env.update(settings.to_env())
-    return env
+    return _safe_env(env)
+
+
+def _safe_env(values: dict[str,str]) -> dict[str,str]:
+    return {k:v for k,v in values.items()
+            if not any(word in k.upper() for word in ("SECRET","PASSWORD","API_KEY","AUTH_KEY","AUTHORITY","AUTHORIZATION","CREDENTIAL"))
+            and ("TOKEN" not in k.upper() or k.upper() in {"VGAR_TOKENIZER_MANIFEST","VGAR_TOKEN_BUDGET","VGAR_MAX_NEW_TOKENS","VGAR_AGENT_TOKEN_BUDGET","VGAR_MODEL_MAX_NEW_TOKENS"})}
 
 
 def create_mcp_client(settings: Settings | None = None, servers: tuple[str, ...] = SERVER_NAMES,
                       extra_env: dict[str, str] | None = None) -> MultiServerMCPClient:
     settings = settings or get_settings()
     env = _child_env(settings)
-    env.update(extra_env or {})
+    env.update(_safe_env(extra_env or {}))
+    env["PYTHON_DOTENV_DISABLED"] = "1"
     # Bind MCP subprocess logs to the workflow invocation that created the agent.
     run_id = current_run_id()
     if run_id:

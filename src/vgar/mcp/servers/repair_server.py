@@ -9,24 +9,27 @@ Every tool returns the shared C4 envelope (docs/mcp_tool_contract.md): the engin
 """
 from __future__ import annotations
 
-from collections.abc import Callable
-from dataclasses import asdict
 import hashlib
 import json
 import os
-from pathlib import Path
 import time
+from collections.abc import Callable
+from contextlib import ExitStack
+from contextvars import ContextVar
+from dataclasses import asdict
+from pathlib import Path
 from typing import Any
 
-from mcp.server.fastmcp import FastMCP
-
 from vgar.mcp.audit import AuditLogger
+from vgar.mcp.proposal.state import seal_new_session, session_guard
 from vgar.mcp.schemas import RUN_NOT_FOUND, TOOL_ORDER_VIOLATION, CodedToolError
+from vgar.mcp.server_factory import create_server
 from vgar.mcp.tooling import run_tool
 from vgar.observability.instrumentation import instrument_mcp_tool
 
-mcp = FastMCP("vgar-repair", log_level="WARNING")  # no per-request INFO lines (trace spec P8)
+mcp = create_server("vgar-repair", log_level="WARNING")  # no per-request INFO lines (trace spec P8)
 _audit_logger = AuditLogger(Path(os.getenv("VGAR_MCP_AUDIT_LOG", "logs/mcp_audit.jsonl")))
+_SESSION_STACK = ContextVar("mcp_repair_session_stack", default=None)
 
 # Phases a run must be in for each tool (verify_patch accepts any unfinished phase).
 REQUIRED_PHASE = {"apply_patch": ("prepared",), "run_relevant_tests": ("applied",),
@@ -48,7 +51,15 @@ def _respond(tool: str, inputs: dict[str, Any], body: Callable[[], dict[str, Any
     """C4 envelope + S8 audit: the engine's answer goes to data (its status renamed verdict); a tool that
     could not answer raises, and run_tool maps that to a coded error. The audit logs an input hash, never text."""
     def call() -> dict[str, Any]:
-        result = body()
+        with ExitStack() as stack:
+            token = _SESSION_STACK.set(stack)
+            try:
+                result = body()
+            finally:
+                _SESSION_STACK.reset(token)
+        if "run_dir" not in inputs and result.get("run_dir"):
+            from vgar.mcp.tooling import leased_root
+            seal_new_session(leased_root("VGAR_RUN_ROOT"),result["run_dir"])
         return {"verdict": result.pop("status"), **result}
 
     digest = hashlib.sha256(json.dumps(inputs, sort_keys=True, default=str).encode("utf-8")).hexdigest()
@@ -68,6 +79,11 @@ def _load(tool: str, run_dir: str):
     path = _run_root_path(run_dir)
     if not (path / "session.json").is_file() or not (path / "run_record.json").is_file():
         raise CodedToolError(RUN_NOT_FOUND, f"Not a repair run directory: {run_dir}")
+    from vgar.mcp.tooling import leased_root
+    stack = _SESSION_STACK.get()
+    if stack is None:
+        raise RuntimeError("Session load requires a guarded MCP invocation")
+    stack.enter_context(session_guard(leased_root("VGAR_RUN_ROOT"),path))
     session = RepairSession.load(path)
     if session.phase not in REQUIRED_PHASE[tool]:
         raise CodedToolError(TOOL_ORDER_VIOLATION, f"Tool order violation: {tool} needs phase "
@@ -115,10 +131,10 @@ def get_task_context(task_path: str, mode: str, output_root: str, work_root: str
     With feedback the run is a rerun: the feedback is appended to the V11 prompt and the run records
     which run it supersedes and why. A SWE-bench task needs the host's admission snapshot (S15); the
     engine re-validates it against the task, manifest, profile and source."""
-    args = dict(task_path=task_path, mode=mode, output_root=output_root, work_root=work_root,
-                config_path=config_path, keep_workspace=keep_workspace, feedback=feedback,
-                supersedes_run_id=supersedes_run_id, rerun_reason=rerun_reason, experiment=experiment,
-                admission=admission)
+    args = {"task_path": task_path, "mode": mode, "output_root": output_root, "work_root": work_root,
+            "config_path": config_path, "keep_workspace": keep_workspace, "feedback": feedback,
+            "supersedes_run_id": supersedes_run_id, "rerun_reason": rerun_reason, "experiment": experiment,
+            "admission": admission}
     return _respond("get_task_context", args, lambda: _get_task_context(**args))
 
 
@@ -126,9 +142,9 @@ def _get_task_context(task_path, mode, output_root, work_root, config_path, keep
                       supersedes_run_id, rerun_reason, experiment, admission) -> dict[str, Any]:
     from vgar.repair.config import CONFIG_DIR, load_config, load_task
     from vgar.repair.executor import utc_now
+    from vgar.repair.experiment import validate_experiment
     from vgar.repair.pipeline import build_tokenizer
     from vgar.repair.session import prepare, start_session
-    from vgar.repair.experiment import validate_experiment
     inputs = {"task_path": task_path, "mode": mode, "output_root": output_root, "work_root": work_root,
               "config_path": config_path, "keep_workspace": keep_workspace}
     rerun = {"feedback": feedback, "supersedes_run_id": supersedes_run_id, "rerun_reason": rerun_reason}
@@ -162,7 +178,7 @@ def _get_task_context(task_path, mode, output_root, work_root, config_path, keep
 @instrument_mcp_tool("apply_patch")
 def apply_patch(run_dir: str, diff: str, generation: dict[str, Any] | None = None) -> dict[str, Any]:
     """Record the client's generation, strictly parse the unified diff and git-apply it in the worktree."""
-    args = dict(run_dir=run_dir, diff=diff, generation=generation)
+    args = {"run_dir": run_dir, "diff": diff, "generation": generation}
     return _respond("apply_patch", args, lambda: _apply_patch(**args))
 
 
@@ -228,7 +244,7 @@ def _verify_patch(run_dir) -> dict[str, Any]:
 
 
 def main() -> None:
-    mcp.run()
+    mcp.run(transport="stdio")
 
 
 if __name__ == "__main__":

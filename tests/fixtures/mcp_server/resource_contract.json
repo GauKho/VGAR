@@ -1,0 +1,17 @@
+{
+  "canonical": [
+    "vgar://repo/summary",
+    "vgar://repo/schema",
+    "vgar://graph/node/{node_id}",
+    "vgar://graph/subgraph/{node_id}?k=2",
+    "vgar://component/{component_id}",
+    "vgar://task/{task_id}",
+    "vgar://evidence/baseline",
+    "vgar://audit/log"
+  ],
+  "legacy_aliases": ["vgar://graph/subgraph/{node_id}"],
+  "ordinary_max_bytes": 65536,
+  "audit_max_bytes": 262144,
+  "audit_max_records": 200,
+  "synthetic_oracle": true
+}

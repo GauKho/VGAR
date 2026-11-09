@@ -250,6 +250,7 @@ class SQLiteGraphStore:
                     ),
                 )
 
+            self._before_ready(connection, document)
             connection.execute(
                 """
                 UPDATE graph_metadata
@@ -258,6 +259,9 @@ class SQLiteGraphStore:
                 """,
                 (graph_version,),
             )
+
+    def _before_ready(self, connection: sqlite3.Connection, document: Mapping[str, Any]) -> None:
+        """Internal transactional extension point; legacy ingest has no extra metadata."""
 
     def load_document(self, graph_version: str) -> dict[str, Any]:
         """Restore one ready snapshot without losing byte offsets or provenance."""

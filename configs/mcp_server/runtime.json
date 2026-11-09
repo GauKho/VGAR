@@ -1,0 +1,48 @@
+{
+  "format": "vgar-mcp-server-runtime-v1",
+  "status": "ACCEPTED",
+  "python": "D:/Project/CAPSTONES/environments/vgar-mcp-server-sdk2/Scripts/python.exe",
+  "source_root": "D:/Project/CAPSTONES/VGAR/src",
+  "sdk": "mcp==2.2.0",
+  "platform": "Windows amd64 / CPython 3.11",
+  "requirements_lock": "requirements/mcp-server.lock",
+  "acceptance_receipt": "results/mcp_server/runtime/20261108T121938Z-sdk2/runtime-acceptance.json",
+  "transport": "stdio",
+  "entrypoints": {
+    "graph": "vgar.mcp.servers.graph_server",
+    "repository": "vgar.mcp.servers.repository_server",
+    "execution": "vgar.mcp.servers.execution_server",
+    "repair": "vgar.mcp.servers.repair_server"
+  },
+  "environment": {
+    "PYTHONUTF8": "1",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONOPTIMIZE": "0"
+  },
+  "operator_bindings": {
+    "graph": [
+      "VGAR_GRAPH_BACKEND=sqlite",
+      "VGAR_GRAPH_DATABASE=<explicit READY database outside tracked/frozen inputs>"
+    ],
+    "repository": [
+      "VGAR_LEASE_ROOT=<private allowed root>"
+    ],
+    "execution": [
+      "VGAR_LEASE_ROOT=<private allowed root>",
+      "VGAR_ALLOWED_SELECTORS=<JSON list>"
+    ],
+    "repair": [
+      "VGAR_RUN_ROOT=<private run/output root>"
+    ],
+    "all": [
+      "VGAR_MCP_AUDIT_LOG=<operator-controlled output file>"
+    ]
+  },
+  "binding_policy": "Operator supplies paths and permissions; this file does not authorize model-controlled roots.",
+  "pending": [
+    "production prompt L6-4",
+    "full concurrency/security L6-5",
+    "new providers/schema review",
+    "Inspector/Claude Code L6-8"
+  ]
+}
