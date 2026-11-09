@@ -159,7 +159,17 @@ def get_related_tests(symbol_ids: list[str], graph_version: str, changed_paths: 
 @mcp.tool()
 @instrument_mcp_tool("analyze_patch_impact")
 def analyze_patch_impact(diff: str, graph_version: str, max_hops: int = 2, max_nodes: int = 200) -> dict[str, Any]:
-    """Map a unified diff to changed baseline symbols, then walk callers/importers/subclasses/tests backwards."""
+    """Report what a unified diff changes and what depends on it.
+
+    Walks callers, importers, subclasses and tests backwards, adds the affected Port and
+    Component nodes, and reports Ports and public API removed by the patch in port_check.
+
+    Args:
+        diff: Unified diff against the snapshot's baseline source.
+        graph_version: Snapshot to analyze.
+        max_hops: Traversal depth, 1 to 5.
+        max_nodes: Maximum impacted nodes, 1 to 1000.
+    """
     patch_sha256 = "sha256:" + hashlib.sha256(diff.encode("utf-8")).hexdigest()
     return _tool("analyze_patch_impact", lambda: graph_service.analyze_patch_impact(
         diff, graph_version=graph_version, max_hops=max_hops, max_nodes=max_nodes),

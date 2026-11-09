@@ -101,37 +101,56 @@ def read_dunder_all(source: bytes) -> frozenset[str]:
     return names
 
 
-def _ports(repo_key: str, nodes: Sequence[dict[str, Any]], edges: Sequence[dict[str, Any]], by_file: Mapping[str, _Component],
-           exports: Mapping[str, frozenset[str]]) -> dict[str, dict[str, Any]]:
-    """infer_public_ports (proposal line 606): symbol id -> Port node (spec §5.4)."""
+def _routes(nodes: Sequence[dict[str, Any]], edges: Sequence[dict[str, Any]]) -> dict[str, list[str]]:
+    """Symbol id -> names of the Routes that point at it."""
     by_id = {node["id"]: node for node in nodes}
-    parents = {edge["target_id"]: edge["source_id"] for edge in edges if edge["type"] == "CONTAINS"}
     routes: dict[str, list[str]] = defaultdict(list)
     for edge in edges:
         if edge["type"] == "REFERENCES" and by_id[edge["source_id"]]["type"] == "Route":
             routes[edge["target_id"]].append(by_id[edge["source_id"]]["name"])
+    return routes
+
+
+def select_ports(nodes: Sequence[dict[str, Any]], edges: Sequence[dict[str, Any]],
+                 exports: Mapping[str, frozenset[str]]) -> list[tuple[dict[str, Any], str]]:
+    """infer_public_ports (proposal line 606) without Components: (symbol, how it is exported), in node order."""
+    by_id = {node["id"]: node for node in nodes}
+    parents = {edge["target_id"]: edge["source_id"] for edge in edges if edge["type"] == "CONTAINS"}
+    routes = _routes(nodes, edges)
 
     def hidden(node_id: str) -> bool:
         ancestor = parents.get(node_id)
-        while ancestor is not None:
+        while ancestor in by_id:  # a graph of a few files has no Repository node above its Files
             node = by_id[ancestor]
             if node["type"] in {"Function", "Method", "Test"} or (node["type"] == "Class" and node["name"].startswith("_")):
                 return True
             ancestor = parents.get(ancestor)
         return False
 
-    ports: dict[str, dict[str, Any]] = {}
-    taken: set[str] = set()
+    selected: list[tuple[dict[str, Any], str]] = []
     for node in nodes:
-        owner = by_file.get(node.get("path")) if node["type"] in {"Function", "Method"} else None
-        if owner is None or hidden(node["id"]):
+        if node["type"] not in {"Function", "Method"} or hidden(node["id"]):
             continue
         name = node["name"]
         export = ("public_name" if not name.startswith("_") else
                   "dunder_all" if name in exports.get(node["path"], frozenset()) else
                   "route" if routes[node["id"]] else None)
-        if export is None:
+        if export is not None:
+            selected.append((node, export))
+    return selected
+
+
+def _ports(repo_key: str, nodes: Sequence[dict[str, Any]], edges: Sequence[dict[str, Any]], by_file: Mapping[str, _Component],
+           exports: Mapping[str, frozenset[str]]) -> dict[str, dict[str, Any]]:
+    """Symbol id -> Port node (spec §5.4)."""
+    routes = _routes(nodes, edges)
+    ports: dict[str, dict[str, Any]] = {}
+    taken: set[str] = set()
+    for node, export in select_ports(nodes, edges, exports):
+        owner = by_file.get(node["path"])
+        if owner is None:
             continue
+        name = node["name"]
         port_id = f"vgar:{repo_key}:python:port:{node['path']}:{node['qualified_name']}"
         if port_id in taken:
             port_id += f"@definition:{node['range']['start_line']}:{node['range']['start_col']}"

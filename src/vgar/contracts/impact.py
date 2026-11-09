@@ -54,18 +54,22 @@ class ChangeSpan(_Contract):
         return self
 
 
+def _relative_path(value: str) -> str:
+    path = PurePosixPath(value)
+    if (any(c in value for c in ('\\', ':', '\0', '\r', '\n'))
+            or path.is_absolute() or '..' in path.parts or '.git' in path.parts
+            or path.as_posix() != value or value == '.' or value.startswith('-')):
+        raise ValueError('Expected normalized repository-relative POSIX source path')
+    return value
+
+
 class _Located(_Contract):
     path: Text
 
     @field_validator('path')
     @classmethod
     def relative_path(cls, value: str) -> str:
-        path = PurePosixPath(value)
-        if (any(c in value for c in ('\\', ':', '\0', '\r', '\n'))
-                or path.is_absolute() or '..' in path.parts or '.git' in path.parts
-                or path.as_posix() != value or value == '.' or value.startswith('-')):
-            raise ValueError('Expected normalized repository-relative POSIX source path')
-        return value
+        return _relative_path(value)
 
 
 class ChangedNode(_Located):
@@ -90,22 +94,33 @@ class UnmappedChange(_Located):
                     'UNSUPPORTED_SOURCE', 'MAPPING_LIMIT']
 
 
-ImpactRelation = Literal['CALLS', 'IMPORTS', 'INHERITS', 'TESTS']
+# LIFT is the proposal's Lift mapping (code -> Component), not a graph edge.
+ImpactRelation = Literal['CALLS', 'IMPORTS', 'INHERITS', 'TESTS', 'LIFT', 'EXPOSES_PORT', 'CONSUMES_PORT', 'DEPENDS_ON']
 
 
-class ImpactedNode(_Located):
-    """Baseline node reached by walking a relation backwards from a changed node."""
+class ImpactedNode(_Contract):
+    """Baseline node reached from a changed node. Lifting to Port or Component costs no hop."""
+    path: Text | None  # None only for a Component, which spans several files
     node_id: Text
     qualified_name: Text  # display only; node_id stays the identity
-    kind: Literal['Module', 'Class', 'Function', 'Method', 'Test']
-    hops: int = Field(ge=1)
+    kind: Literal['Module', 'Class', 'Function', 'Method', 'Test', 'Port', 'Component']
+    hops: int = Field(ge=0)
     relation: ImpactRelation
     via: Text  # node one hop closer to a changed node
 
+    @field_validator('path')
+    @classmethod
+    def relative_path(cls, value: str | None) -> str | None:
+        return None if value is None else _relative_path(value)
+
     @model_validator(mode='after')
-    def not_self(self) -> ImpactedNode:
+    def consistent(self) -> ImpactedNode:
         if self.via == self.node_id:
             raise ValueError('Impacted node cannot be reached through itself')
+        if self.path is None and self.kind != 'Component':
+            raise ValueError('Only a Component can have no source path')
+        if self.hops == 0 and self.kind not in ('Port', 'Component'):
+            raise ValueError('Only a Port or Component can be reached without a hop')
         return self
 
 
@@ -198,6 +213,42 @@ class MappingLimits(_Contract):
         return self
 
 
+class LostPort(_Located):
+    """Port of the baseline graph with no counterpart after the patch."""
+    port_id: Text
+    qualified_name: Text
+    export: Literal['public_name', 'dunder_all', 'route']
+    owner_component_id: Text
+    consumers: list[Text]  # Components with CONSUMES_PORT to this Port in the baseline graph
+    api_reason: Text | None  # check_api reason for the same symbol, when it reported one
+
+
+class RemovedApi(_Located):
+    """Public API check_api saw removed that is not a Port, such as a class or a constant."""
+    symbol: Text  # name inside the file
+
+
+class UncheckedPath(_Located):
+    reason: Literal['AFTER_PARSE_FAILED', 'AFTER_EXTRACT_FAILED', 'AFTER_TOO_LARGE', 'ROUTE_FACTS_UNAVAILABLE']
+
+
+class PortCheck(_Contract):
+    """Ports and public API lost by a patch. PARTIAL means unknown for the listed paths, not safe."""
+    status: Literal['NOT_COMPUTED', 'COMPLETE', 'PARTIAL'] = 'NOT_COMPUTED'
+    checked_paths: list[Text] = Field(default_factory=list)  # also lists a file in `unchecked` for its route Ports only
+    lost: list[LostPort] = Field(default_factory=list)
+    removed_api: list[RemovedApi] = Field(default_factory=list)
+    unchecked: list[UncheckedPath] = Field(default_factory=list)
+
+    @model_validator(mode='after')
+    def consistent(self) -> PortCheck:
+        if self.status == 'NOT_COMPUTED' and (self.checked_paths or self.lost or self.removed_api or self.unchecked):
+            raise ValueError('NOT_COMPUTED port check cannot carry results')
+        if (self.status == 'PARTIAL') != bool(self.unchecked) and self.status != 'NOT_COMPUTED':
+            raise ValueError('A port check is PARTIAL exactly when some path is unchecked')
+        return self
+
+
 class ImpactReport(_Contract):
     repo_key: Text
     repository_revision: Text
@@ -211,6 +262,7 @@ class ImpactReport(_Contract):
     impacted: ImpactedNodes = Field(default_factory=ImpactedNodes)
     risk: RiskReport = Field(default_factory=RiskReport)
     limits: MappingLimits = Field(default_factory=MappingLimits)
+    port_check: PortCheck = Field(default_factory=PortCheck)
 
     @model_validator(mode='after')
     def unique_entries(self) -> ImpactReport:
@@ -229,11 +281,18 @@ class ImpactReport(_Contract):
             node['spans'].sort(key=lambda span: tuple(span.values()))
         data['changed'].sort(key=lambda node: (node['path'], node['node_id']))
         data['unmapped'].sort(key=lambda item: json.dumps(item, sort_keys=True))
-        data['impacted']['items'].sort(key=lambda item: (item['hops'], item['path'], item['node_id']))
+        data['impacted']['items'].sort(key=lambda item: (item['hops'], item['path'] or '', item['node_id']))
         data['impacted']['traversed'].sort()
         data['impacted']['unsupported'].sort(key=lambda item: json.dumps(item, sort_keys=True))
         data['risk']['features'].sort(key=lambda item: item['name'])
         data['limits']['reasons'].sort()
         data['limits']['unsupported_operations'].sort()
+        check = data['port_check']
+        check['checked_paths'].sort()
+        for port in check['lost']:
+            port['consumers'].sort()
+        check['lost'].sort(key=lambda port: (port['path'], port['port_id']))
+        check['removed_api'].sort(key=lambda item: (item['path'], item['symbol']))
+        check['unchecked'].sort(key=lambda item: (item['path'], item['reason']))
         return json.dumps(data, sort_keys=True, ensure_ascii=False,
                           separators=(',', ':'), allow_nan=False)

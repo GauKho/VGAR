@@ -460,18 +460,35 @@ def by_name(document, qualified_name):
                 and n['type'] in ('Module', 'Class', 'Function', 'Method', 'Test'))
 
 
-def test_impact_walks_calls_imports_inherits_and_tests(impact_case):
-    root, document = impact_case
-    original = copy.deepcopy(document)
-    report = analyze(root, document, CORE_HELPER)
-    found = {item.node_id: (item.hops, item.relation, item.via) for item in report.impacted.items}
+def code_items(report):
+    return [item for item in report.impacted.items if item.kind not in ('Port', 'Component')]
+
+
+def core_helper_walk(document):
     helper, use, run = (by_name(document, q) for q in ('pkg.core.helper', 'pkg.api.use', 'pkg.core.Base.run'))
-    assert found == {
+    return {
         use: (1, 'CALLS', helper), run: (1, 'CALLS', helper), by_name(document, 'pkg.core._private'): (1, 'CALLS', helper),
         by_name(document, 'tests.test_core.test_helper'): (1, 'CALLS', helper),
         by_name(document, 'pkg.api'): (1, 'IMPORTS', helper), by_name(document, 'tests.test_core'): (1, 'IMPORTS', helper),
         by_name(document, 'pkg.api.outer'): (2, 'CALLS', use), by_name(document, 'pkg.core.Child'): (2, 'INHERITS', run)}
-    assert report.impacted.status == 'COMPLETE' and report.impacted.traversed == ['CALLS', 'IMPORTS', 'INHERITS', 'TESTS']
+
+
+def test_impact_without_architecture_keeps_items(impact_case):
+    from vgar.contracts.schema import G_ARCH_EDGE_TYPES
+    root, document = impact_case
+    plain = {**document, 'nodes': [n for n in document['nodes'] if n['type'] not in ('Component', 'Port', 'Service', 'DeploymentUnit')],
+             'edges': [e for e in document['edges'] if e['type'] not in G_ARCH_EDGE_TYPES]}
+    report = analyze(root, plain, CORE_HELPER)
+    assert {item.node_id: (item.hops, item.relation, item.via) for item in report.impacted.items} == core_helper_walk(document)
+
+
+def test_impact_walks_calls_imports_inherits_and_tests(impact_case):
+    root, document = impact_case
+    original = copy.deepcopy(document)
+    report = analyze(root, document, CORE_HELPER)
+    found = {item.node_id: (item.hops, item.relation, item.via) for item in code_items(report)}
+    assert found == core_helper_walk(document)
+    assert report.impacted.status == 'COMPLETE' and report.impacted.traversed[:4] == ['CALLS', 'IMPORTS', 'INHERITS', 'TESTS']
     unsupported = {(u.relation, u.reason): u.count for u in report.impacted.unsupported}
     assert unsupported == {('REFERENCES', 'NOT_TRAVERSED'): None, ('CALLS', 'UNRESOLVED_CALL_SITES'): 1}
     assert document == original
@@ -481,7 +498,8 @@ def test_impact_risk_features(impact_case):
     root, document = impact_case
     risk = {f.name: f for f in analyze(root, document, CORE_HELPER).risk.features}
     assert {n: f.value for n, f in risk.items() if f.available} == {
-        'public_symbol_changed': True, 'fan_in': 4, 'impacted_callers': 4, 'impacted_tests': 1}
+        'public_symbol_changed': True, 'fan_in': 4, 'impacted_callers': 4, 'impacted_tests': 1,
+        'public_ports_changed': 1, 'components_affected': 2, 'ports_lost': 0}
     # check_api is NOT_RUN for pkg/core.py (Child inherits its constructor), so this risk stays unavailable.
     assert risk['signature_changed'].available is False and risk['signature_changed'].reason == 'NOT_COMPUTED'
 
@@ -547,7 +565,7 @@ def test_python_only_keeps_python_sources():
 def test_impact_private_symbol_has_only_module_importers(impact_case):
     root, document = impact_case
     report = analyze(root, document, patch('@@ -15 +15 @@\n-    return helper(x)\n+    return helper(x) + 0\n', 'pkg/core.py'))
-    assert {i.node_id for i in report.impacted.items} == {by_name(document, 'pkg.api'), by_name(document, 'tests.test_core')}
+    assert {i.node_id for i in code_items(report)} == {by_name(document, 'pkg.api'), by_name(document, 'tests.test_core')}
     risk = {f.name: f.value for f in report.risk.features if f.available}
     assert risk['public_symbol_changed'] is False and risk['fan_in'] == 0
 
@@ -557,15 +575,18 @@ def test_impact_without_changed_nodes_is_computed_but_risk_unavailable(impact_ca
     report = analyze(root, document, patch('@@ -0,0 +1 @@\n+import os\n', 'pkg/core.py'))
     assert report.impacted.status == 'COMPLETE' and report.impacted.items == [] and report.unmapped
     assert report.risk.status == 'COMPLETE'
-    features = {f.name: (f.available, f.reason) for f in report.risk.features}
+    # ports_lost is measured from the patched bytes, so it is known even when no symbol changed.
+    features = {f.name: (f.available, f.reason) for f in report.risk.features if f.name != 'ports_lost'}
     assert features.pop('signature_changed') == (False, 'NOT_COMPUTED')  # check_api NOT_RUN: Child inherits __init__
+    for name in ('dependency_cycle_introduced', 'covering_tests_pass'):
+        assert features.pop(name) == (False, 'NOT_COMPUTED')
     assert set(features.values()) == {(False, 'NO_CHANGED_NODES')}
 
 
 def test_impact_limits_hops_nodes_and_confidence(impact_case):
     root, document = impact_case
     one_hop = analyze(root, document, CORE_HELPER, max_hops=1)
-    assert {i.hops for i in one_hop.impacted.items} == {1} and len(one_hop.impacted.items) == 6
+    assert {i.hops for i in code_items(one_hop)} == {1} and len(code_items(one_hop)) == 6
     capped = analyze(root, document, CORE_HELPER, max_nodes=3)
     assert capped.impacted.status == 'PARTIAL' and len(capped.impacted.items) == 3
     assert capped.canonical_json() == analyze(root, document, CORE_HELPER, max_nodes=3).canonical_json()

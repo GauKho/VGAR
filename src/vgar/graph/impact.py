@@ -108,6 +108,30 @@ def _smallest(candidates: list[dict]) -> list[dict]:
     return [n for n in candidates if n['range']['end_byte'] - n['range']['start_byte'] == size]
 
 
+def _inserted_text(hunk: dict, span: ChangeSpan) -> str | None:
+    """First non-blank line added by this block."""
+    line = hunk['new'] - bool(hunk['nc'])
+    for sign, content, _ in hunk['body']:
+        if sign in ' +':
+            line += 1
+            if sign == '+' and span.new_start <= line < span.new_start + span.new_count and content.strip():
+                return content
+    return None
+
+
+def _trailing_symbols(nodes: list[dict], data: bytes, point: int, indent: int) -> list[dict]:
+    """Innermost symbols that a block inserted at `point` extends: only blank or comment lines
+    separate them from it, and it is indented deeper than they are."""
+    found = []
+    for node in sorted((n for n in nodes if n['range']['end_byte'] <= point), key=lambda n: -n['range']['end_byte']):
+        gap = data[node['range']['end_byte']:point].splitlines()
+        if not all(not line.strip() or line.strip().startswith(b'#') for line in gap):
+            break  # any earlier symbol has this same code in its gap
+        if indent > node['range']['start_col']:
+            found.append(node)
+    return _smallest(found)
+
+
 def diff_to_nodes(raw_diff: str, document: dict, source_repo: Path, *,
                   patch_policy: PatchPolicy) -> ImpactReport:
     """Validate snapshot and hunks without writing source, then map changed blocks.
@@ -151,8 +175,11 @@ def _map_patch(raw_diff: str, document: dict, source_repo: Path, *,
                     basis = 'baseline_changed_lines'
                 else:
                     point = offsets[span.old_start]
-                    candidates = _smallest([n for n in nodes if
-                        n['range']['start_byte'] < point < n['range']['end_byte']])
+                    text = _inserted_text(hunk, span)
+                    candidates = (text is not None
+                                  and _trailing_symbols(nodes, sources[path], point, len(text) - len(text.lstrip(' \t')))
+                                  or _smallest([n for n in nodes if
+                                                n['range']['start_byte'] < point < n['range']['end_byte']]))
                     if len(candidates) == 1:
                         matches[candidates[0]['id']] = candidates[0]
                     else:
@@ -185,7 +212,11 @@ def _python_only(files: dict[str, bytes]) -> dict[str, bytes]:
 
 # Walk order; a node reached by several relations keeps the first one found.
 _RELATIONS = ('CALLS', 'IMPORTS', 'INHERITS', 'TESTS')
+_ARCH_RELATIONS = ('LIFT', 'EXPOSES_PORT', 'CONSUMES_PORT', 'DEPENDS_ON')
 _CALLERS = {'Function', 'Method', 'Test'}
+_LIFTED = {'Function', 'Method', 'Class', 'Module'}  # Tests belong to no Component
+_ARCH_KINDS = ('Port', 'Component')
+_CONSTRUCTORS = ('__init__', '__new__')  # building a base object never runs the subclass constructor
 
 
 def _public(qualified_name: str) -> bool:
@@ -195,7 +226,8 @@ def _public(qualified_name: str) -> bool:
 
 def compute_impact(report: ImpactReport, document: dict, *, max_hops: int = 2, max_nodes: int = 200,
                    min_confidence: float = 0.6) -> ImpactReport:
-    """Fill `impacted` and `risk` by walking CALLS/IMPORTS/INHERITS/TESTS backwards from the changed nodes.
+    """Fill `impacted` and `risk` by walking CALLS/IMPORTS/INHERITS/TESTS backwards from the changed nodes,
+    plus their Ports and Components when the graph has G_arch (spec IM-1 §4).
 
     Only edges present in the graph with confidence >= min_confidence are followed; nothing is inferred.
     Relations the walk cannot see (REFERENCES, call sites with no resolved target) are listed as unsupported.
@@ -210,14 +242,24 @@ def compute_impact(report: ImpactReport, document: dict, *, max_hops: int = 2, m
     if canonical_hash(document) != report.graph_hash:
         raise ValueError('Impact graph differs from the mapped graph snapshot')
     nodes = {n['id']: n for n in document['nodes']}
-    parent, incoming, resolved = {}, defaultdict(lambda: defaultdict(list)), set()
+    parent, incoming, resolved, bases = {}, defaultdict(lambda: defaultdict(list)), set(), defaultdict(list)
     for edge in document['edges']:
         if edge['type'] == 'CONTAINS':
             parent[edge['target_id']] = edge['source_id']
-        elif edge['type'] in _RELATIONS and edge['confidence'] >= min_confidence:
+        elif edge['type'] in (*_RELATIONS, 'CONSUMES_PORT', 'DEPENDS_ON') and edge['confidence'] >= min_confidence:
             incoming[edge['target_id']][edge['type']].append(edge['source_id'])
             if edge['type'] == 'CALLS':
                 resolved.add(edge['source_id'])
+            elif edge['type'] == 'INHERITS':
+                bases[edge['source_id']].append(edge['target_id'])
+    method_of = {(parent[n['id']], n['name']): n['id'] for n in document['nodes'] if n['type'] == 'Method' and n['id'] in parent}
+    port_of = {n['properties']['symbol_id']: n['id'] for n in document['nodes'] if n['type'] == 'Port'}
+    component_of = {path: n['id'] for n in document['nodes'] if n['type'] == 'Component' for path in n['properties']['files']}
+    has_arch = any(n['type'] == 'Component' for n in document['nodes'])
+    seeds = sorted(c.node_id for c in report.changed)
+    # DEPENDS_ON spans whole packages: one step from the changed code, or it reports most of the repo (spec §4.3).
+    seed_components = {component_of[nodes[s]['path']] for s in seeds if nodes[s]['path'] in component_of}
+    port_sources = set(seeds)  # the changed nodes and the base methods they override
 
     def module_of(node_id):
         while node_id is not None and nodes[node_id]['type'] != 'Module':
@@ -228,8 +270,41 @@ def compute_impact(report: ImpactReport, document: dict, *, max_hops: int = 2, m
         return sorted({parent[cs] for cs in incoming[node_id]['CALLS']
                        if cs in parent and nodes[parent[cs]]['type'] in _CALLERS})
 
+    def overridden(method_id):
+        """The nearest definition of this method on each branch of its ancestors (spec §4.4)."""
+        name = nodes[method_id]['name']
+        if name in _CONSTRUCTORS or method_id not in parent:
+            return []
+        found, visited, stack = set(), {parent[method_id]}, list(bases[parent[method_id]])
+        while stack:
+            owner = stack.pop()
+            if owner in visited:
+                continue
+            visited.add(owner)
+            base = method_of.get((owner, name))
+            if base is None:
+                stack.extend(bases[owner])
+            else:
+                found.add(base)
+        return sorted(found)
+
+    def lift(node_id):
+        """Architecture nodes of a node; reaching them costs no hop."""
+        node = nodes[node_id]
+        if node_id in port_sources and node_id in port_of:
+            yield 'EXPOSES_PORT', port_of[node_id]
+        if node['type'] in _LIFTED and node['path'] in component_of:
+            yield 'LIFT', component_of[node['path']]
+
     def neighbours(node_id):
         node = nodes[node_id]
+        if node['type'] == 'Port':
+            yield from (('CONSUMES_PORT', component) for component in sorted(set(incoming[node_id]['CONSUMES_PORT'])))
+            return
+        if node['type'] == 'Component':
+            if node_id in seed_components:
+                yield from (('DEPENDS_ON', component) for component in sorted(set(incoming[node_id]['DEPENDS_ON'])))
+            return
         yield from (('CALLS', caller) for caller in callers(node_id))
         module = module_of(node_id)
         if module is not None:
@@ -239,54 +314,86 @@ def compute_impact(report: ImpactReport, document: dict, *, max_hops: int = 2, m
         if owner is not None and nodes[owner]['type'] == 'Class':
             yield from (('INHERITS', sub) for sub in sorted(set(incoming[owner]['INHERITS'])))
         yield from (('TESTS', test) for test in sorted(set(incoming[node_id]['TESTS'])))
+        if has_arch and node_id in seeds and node['type'] == 'Method':
+            for base in overridden(node_id):
+                port_sources.add(base)
+                yield 'INHERITS', base
 
-    seeds = sorted(c.node_id for c in report.changed)
-    seen, items, frontier, truncated = set(seeds), [], seeds, False
-    for hops in range(1, max_hops + 1):
+    seen, items = set(seeds), []
+
+    def visit(sources, step, hops):
+        """Record what `step` reaches from `sources`. The flag says max_nodes cut the walk short."""
         reached = []
-        for source in frontier:
-            for relation, target in neighbours(source):
+        for source in sources:
+            for relation, target in step(source):
                 if target in seen:
                     continue
                 if len(items) == max_nodes:
-                    truncated = True
-                    break
+                    return reached, True
                 seen.add(target)
                 reached.append(target)
                 items.append({'node_id': target, 'qualified_name': nodes[target]['qualified_name'],
                               'path': nodes[target]['path'], 'kind': nodes[target]['type'],
                               'hops': hops, 'relation': relation, 'via': source})
-            if truncated:
-                break
+        return reached, False
+
+    level, truncated = seeds, False
+    for hops in range(max_hops + 1):
+        lifted, truncated = visit(level, lift, hops)
+        if truncated or hops == max_hops:
+            break
+        # Stable sort: architecture nodes first so max_nodes cannot cut them, symbols keep discovery order.
+        level, truncated = visit(sorted(level + lifted, key=lambda i: nodes[i]['type'] not in _ARCH_KINDS), neighbours, hops + 1)
         if truncated:
             break
-        frontier = reached
     unresolved = sum(n['type'] == 'CallSite' and n['id'] not in resolved for n in document['nodes'])
     impacted = {'status': 'PARTIAL' if truncated else 'COMPLETE', 'items': items, 'max_hops': max_hops,
-                'max_nodes': max_nodes, 'min_confidence': float(min_confidence), 'traversed': list(_RELATIONS),
+                'max_nodes': max_nodes, 'min_confidence': float(min_confidence),
+                'traversed': [*_RELATIONS, *(_ARCH_RELATIONS if has_arch else ())],
                 'unsupported': [{'relation': 'REFERENCES', 'reason': 'NOT_TRAVERSED'},
                                 {'relation': 'CALLS', 'reason': 'UNRESOLVED_CALL_SITES', 'count': unresolved}]}
+
+    def unavailable(names, reason):
+        return [{'name': name, 'available': False, 'reason': reason} for name in names]
+
     names = ('public_symbol_changed', 'fan_in', 'impacted_callers', 'impacted_tests')
+    arch_names = ('public_ports_changed', 'components_affected')
     if seeds:
         values = (any(_public(nodes[s]['qualified_name']) for s in seeds),
                   max(len(callers(s)) for s in seeds),
-                  sum(item['kind'] in ('Function', 'Method') for item in items),
+                  sum(item['kind'] in ('Function', 'Method') and item['relation'] == 'CALLS' for item in items),
                   sum(item['kind'] == 'Test' for item in items))
         features = [{'name': n, 'available': True, 'value': v} for n, v in zip(names, values)]
         # Default only: analyze_patch_impact overwrites it with the API check result (M2-W11-1, H3).
-        features.append({'name': 'signature_changed', 'available': False, 'reason': 'NOT_COMPUTED'})
+        features += unavailable(('signature_changed',), 'NOT_COMPUTED')
     else:
-        features = [{'name': n, 'available': False, 'reason': 'NO_CHANGED_NODES'}
-                    for n in names + ('signature_changed',)]
+        features = unavailable((*names, 'signature_changed'), 'NO_CHANGED_NODES')
+    if not has_arch:
+        features += unavailable(arch_names, 'NOT_COMPUTED')
+    elif seeds:
+        arch_values = (sum(s in port_of for s in seeds), sum(item['kind'] == 'Component' for item in items))
+        features += [{'name': n, 'available': True, 'value': v} for n, v in zip(arch_names, arch_values)]
+    else:
+        features += unavailable(arch_names, 'NO_CHANGED_NODES')
+    # Cycle detection needs a whole-repo G' and test results need a run; analyze_patch_impact fills ports_lost.
+    features += unavailable(('dependency_cycle_introduced', 'covering_tests_pass', 'ports_lost'), 'NOT_COMPUTED')
     return ImpactReport.model_validate({**report.model_dump(), 'impacted': impacted,
                                         'risk': {'status': 'COMPLETE', 'features': features}})
 
 
 def analyze_patch_impact(raw_diff: str, document: dict, source_repo: Path, *, patch_policy: PatchPolicy,
                          **limits) -> ImpactReport:
-    """diff_to_nodes, then compute_impact on the same graph snapshot; signature risk from the API check."""
+    """diff_to_nodes, then compute_impact on the same graph snapshot; signature risk and lost Ports from the patched bytes."""
+    from vgar.graph.port_check import check_lost_ports
     mapped, before, after = _map_patch(raw_diff, document, source_repo, patch_policy=patch_policy)
     report = compute_impact(mapped, document, **limits)
-    if _python_only(after):
-        report = with_api_risk(report, check_api(_python_only(before), _python_only(after)))
-    return report
+    if not _python_only(after):
+        return report
+    analysis = check_api(_python_only(before), _python_only(after))
+    data = with_api_risk(report, analysis).model_dump(mode='python')
+    check = check_lost_ports(document, _python_only(after), analysis)
+    data['port_check'] = check.model_dump(mode='python')
+    if check.status == 'COMPLETE':
+        data['risk']['features'] = [f for f in data['risk']['features'] if f['name'] != 'ports_lost'] + [
+            {'name': 'ports_lost', 'available': True, 'value': len(check.lost)}]
+    return ImpactReport.model_validate(data)

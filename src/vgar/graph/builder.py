@@ -9,7 +9,7 @@ import time
 from collections import Counter
 from collections.abc import Iterable
 from dataclasses import dataclass, field
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 from typing import Any
 
 import tree_sitter_python
@@ -347,8 +347,11 @@ class PythonGraphBuilder:
         file_path: Path,
         repository_id: str,
     ) -> None:
-        relative_path = file_path.relative_to(root).as_posix()
-        source = file_path.read_bytes()
+        self.extract_source(file_path.relative_to(root).as_posix(), file_path.read_bytes(), repository_id)
+
+    def extract_source(self, relative_path: str, source: bytes, repository_id: str) -> None:
+        """Add the facts of one file given its content; reads nothing from disk."""
+        file_name = PurePosixPath(relative_path).name
         tree = self.parser.parse(source)
         root_node = tree.root_node
         # Snapshot before this file so rollback removes only this file's nodes.
@@ -366,7 +369,7 @@ class PythonGraphBuilder:
                 "id": file_id,
                 "type": "File",
                 "repo_key": self.repo_key,
-                "name": file_path.name,
+                "name": file_name,
                 "qualified_name": relative_path,
                 "path": relative_path,
                 "language": "python",
@@ -414,7 +417,7 @@ class PythonGraphBuilder:
                 "range": file_range,
                 "properties": {
                     "module_name": module_name,
-                    "is_package": file_path.name == "__init__.py",
+                    "is_package": file_name == "__init__.py",
                     "is_external": False,
                     "resolution_status": "resolved",
                 },
@@ -436,7 +439,7 @@ class PythonGraphBuilder:
             module_name=module_name,
             module_id=module_id,
             path=relative_path,
-            is_package=file_path.name == "__init__.py",
+            is_package=file_name == "__init__.py",
         )
         previous_module = self.modules.get(module_name)
         self.modules[module_name] = module
@@ -1785,7 +1788,7 @@ class PythonGraphBuilder:
                 route_id = self._add_layer1_node(
                     module_by_path[handler["path"]], "Route", spec.name,
                     f"{handler['qualified_name']}::<route:{spec.name}>", handler["range"],
-                    self._hash_text(spec.decorator),
+                    handler["content_hash"],
                     {"methods": spec.methods, "route_path": spec.route_path, "decorator": spec.decorator,
                      "receiver": spec.receiver})
                 self._add_edge("REFERENCES", route_id, handler["id"], confidence=0.8, resolution="heuristic",
