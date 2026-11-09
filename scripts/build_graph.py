@@ -7,6 +7,9 @@ import sys
 from pathlib import Path
 
 from vgar.graph.builder import PythonGraphBuilder
+from vgar.graph.jarvis_runner import DEFAULT_IMAGE as JARVIS_IMAGE
+from vgar.graph.jarvis_runner import JarvisConfig
+from vgar.graph.joern_runner import DEFAULT_IMAGE, JoernConfig
 from vgar.graph.scip_resolver import ScipConfig
 from vgar.graph.lsp_resolver import LspConfig
 from vgar.graph.tsg_extractor import TsgConfig
@@ -39,6 +42,12 @@ def main() -> None:
     parser.add_argument("--lsp-python", type=Path, help="Python interpreter used for LSP import resolution")
     parser.add_argument("--lsp-import-root", action="append", help="Repository-relative import root")
     parser.add_argument("--debug-log", type=Path)
+    parser.add_argument("--joern", action="store_true", help="Add G_code (statements, CFG, dataflow) by running Joern in Docker")
+    parser.add_argument("--joern-image", default=DEFAULT_IMAGE, help="Joern image; defaults to the pinned digest")
+    parser.add_argument("--joern-timeout", type=float, default=900, help="Time limit in seconds for all Joern steps together")
+    parser.add_argument("--enable-jarvis", action="store_true", help="Confirm and add call edges with JARVIS, run in Docker")
+    parser.add_argument("--jarvis-image", default=JARVIS_IMAGE, help="JARVIS image; built locally from src/vgar/graph/jarvis")
+    parser.add_argument("--jarvis-timeout", type=float, default=120, help="Time limit in seconds for JARVIS")
     parser.add_argument("--tsg-executable", type=Path,
                         help="tree-sitter-graph CLI; adds Layer 1 facts (HAS_METHOD, Field, Identifier, Route, Schema, ...) "
                              "(default: VGAR_TSG_EXECUTABLE)")
@@ -81,6 +90,8 @@ def main() -> None:
         lsp=lsp,
         trace=GraphTrace(args.debug_log),
         tsg=tsg,
+        joern=JoernConfig(image=args.joern_image, timeout_seconds=args.joern_timeout) if args.joern else None,
+        jarvis=JarvisConfig(image=args.jarvis_image, timeout_seconds=args.jarvis_timeout) if args.enable_jarvis else None,
     )
     document = builder.build(args.repository)
     resolver = document["statistics"]["resolver"]
@@ -92,6 +103,12 @@ def main() -> None:
     if tsg_report and tsg_report["status"] != "ready":
         print(f"WARNING: tree-sitter-graph {tsg_report['status']}: "
               f"{tsg_report['reason'] or tsg_report['failed_files']}", file=sys.stderr)
+    code_graph_report = document["statistics"].get("code_graph")
+    if code_graph_report and code_graph_report["status"] != "ready":
+        print(f"WARNING: Joern {code_graph_report['status']}: {code_graph_report['reason']}", file=sys.stderr)
+    jarvis_report = document["statistics"].get("jarvis")
+    if jarvis_report and jarvis_report["status"] != "ready":
+        print(f"WARNING: JARVIS {jarvis_report['status']}: {jarvis_report['reason']}", file=sys.stderr)
 
     output_path = Path(args.output)
     output_path.parent.mkdir(parents=True, exist_ok=True)

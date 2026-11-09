@@ -1,0 +1,318 @@
+{
+ "<builtin>.classmethod": [],
+ "<builtin>.eval": [],
+ "<builtin>.getattr": [],
+ "<builtin>.len": [],
+ "<builtin>.print": [],
+ "<builtin>.str": [],
+ "<builtin>.super": [],
+ "<map>.get": [],
+ "<str>.join": [],
+ "<str>.lower": [],
+ "<str>.strip": [],
+ "append": [],
+ "cg_cases": [],
+ "cg_cases.g01_direct": [
+  "cg_cases.g01_direct.Counter",
+  "cg_cases.helpers"
+ ],
+ "cg_cases.g01_direct.Counter": [],
+ "cg_cases.g01_direct.Counter.__init__": [],
+ "cg_cases.g01_direct.Counter.bump": [
+  "cg_cases.g01_direct._local_step"
+ ],
+ "cg_cases.g01_direct.Counter.bump_twice": [
+  "cg_cases.g01_direct.Counter.bump"
+ ],
+ "cg_cases.g01_direct._local_step": [],
+ "cg_cases.g01_direct.main": [
+  "cg_cases.helpers.normalize",
+  "cg_cases.g01_direct.Counter.bump_twice",
+  "cg_cases.helpers.measure",
+  "cg_cases.g01_direct.Counter.__init__"
+ ],
+ "cg_cases.g02_polymorphism": [
+  "cg_cases.repos",
+  "cg_cases.g02_polymorphism.Service"
+ ],
+ "cg_cases.g02_polymorphism.Service": [],
+ "cg_cases.g02_polymorphism.Service.__init__": [],
+ "cg_cases.g02_polymorphism.Service.go": [],
+ "cg_cases.g02_polymorphism.main": [
+  "cg_cases.g02_polymorphism.Service.go",
+  "cg_cases.g02_polymorphism.Service.__init__",
+  "cg_cases.g02_polymorphism.run_multi",
+  "cg_cases.g02_polymorphism.run_typed",
+  "cg_cases.g02_polymorphism.run_single",
+  "cg_cases.g02_polymorphism.run_each"
+ ],
+ "cg_cases.g02_polymorphism.run_each": [
+  "append"
+ ],
+ "cg_cases.g02_polymorphism.run_multi": [
+  "cg_cases.repos.OrderRepo.check",
+  "cg_cases.repos.UserRepo.check"
+ ],
+ "cg_cases.g02_polymorphism.run_single": [
+  "cg_cases.repos.UserRepo.check"
+ ],
+ "cg_cases.g02_polymorphism.run_typed": [
+  "cg_cases.repos.CacheRepo.check"
+ ],
+ "cg_cases.g03_same_name": [
+  "cg_cases.repos",
+  "cg_cases.html_tools",
+  "cg_cases.text_tools"
+ ],
+ "cg_cases.g03_same_name.compare": [
+  "cg_cases.repos.OrderRepo.check",
+  "cg_cases.repos.UserRepo.check"
+ ],
+ "cg_cases.g03_same_name.main": [
+  "cg_cases.g03_same_name.render_both",
+  "cg_cases.g03_same_name.rebind",
+  "cg_cases.g03_same_name.compare"
+ ],
+ "cg_cases.g03_same_name.rebind": [
+  "cg_cases.repos.CacheRepo.check",
+  "cg_cases.repos.UserRepo.check"
+ ],
+ "cg_cases.g03_same_name.render_both": [
+  "cg_cases.text_tools.render",
+  "cg_cases.html_tools.render"
+ ],
+ "cg_cases.g04_higher_order": [],
+ "cg_cases.g04_higher_order.apply": [
+  "cg_cases.g04_higher_order.on_failure",
+  "cg_cases.g04_higher_order.on_success"
+ ],
+ "cg_cases.g04_higher_order.dispatch": [
+  "cg_cases.g04_higher_order.handle_delete",
+  "cg_cases.g04_higher_order.handle_create"
+ ],
+ "cg_cases.g04_higher_order.handle_create": [],
+ "cg_cases.g04_higher_order.handle_delete": [],
+ "cg_cases.g04_higher_order.main": [
+  "cg_cases.g04_higher_order.apply",
+  "cg_cases.g04_higher_order.main.<lambda1>",
+  "cg_cases.g04_higher_order.make_multiplier.multiply",
+  "cg_cases.g04_higher_order.on_success",
+  "cg_cases.g04_higher_order.dispatch",
+  "cg_cases.g04_higher_order.make_multiplier"
+ ],
+ "cg_cases.g04_higher_order.main.<lambda1>": [],
+ "cg_cases.g04_higher_order.make_multiplier": [],
+ "cg_cases.g04_higher_order.make_multiplier.multiply": [],
+ "cg_cases.g04_higher_order.on_failure": [],
+ "cg_cases.g04_higher_order.on_success": [],
+ "cg_cases.g05_inheritance": [
+  "cg_cases.g05_inheritance.LoggingMixin",
+  "cg_cases.g05_inheritance.Scorer",
+  "cg_cases.g05_inheritance.MixedStore",
+  "cg_cases.g05_inheritance.ChildStore",
+  "cg_cases.g05_inheritance.BaseStore"
+ ],
+ "cg_cases.g05_inheritance.BaseStore": [
+  "<builtin>.classmethod"
+ ],
+ "cg_cases.g05_inheritance.BaseStore.create": [],
+ "cg_cases.g05_inheritance.BaseStore.describe": [],
+ "cg_cases.g05_inheritance.BaseStore.fetch": [],
+ "cg_cases.g05_inheritance.ChildStore": [],
+ "cg_cases.g05_inheritance.ChildStore.fetch": [
+  "<builtin>.super"
+ ],
+ "cg_cases.g05_inheritance.LoggingMixin": [],
+ "cg_cases.g05_inheritance.LoggingMixin.fetch": [],
+ "cg_cases.g05_inheritance.MixedStore": [],
+ "cg_cases.g05_inheritance.Scorer": [],
+ "cg_cases.g05_inheritance.main": [
+  "cg_cases.g05_inheritance.LoggingMixin.fetch",
+  "cg_cases.g05_inheritance.BaseStore.fetch",
+  "cg_cases.g05_inheritance.BaseStore.describe",
+  "cg_cases.g05_inheritance.BaseStore.create"
+ ],
+ "cg_cases.g06_class_calls": [
+  "cg_cases.g06_class_calls.NoInit",
+  "cg_cases.g06_class_calls.GrandChild",
+  "cg_cases.g06_class_calls.WithInit",
+  "cg_cases.g06_class_calls.Child",
+  "cg_cases.g06_class_calls.Parent"
+ ],
+ "cg_cases.g06_class_calls.Child": [],
+ "cg_cases.g06_class_calls.GrandChild": [],
+ "cg_cases.g06_class_calls.GrandChild.__init__": [
+  "<builtin>.super"
+ ],
+ "cg_cases.g06_class_calls.NoInit": [],
+ "cg_cases.g06_class_calls.Parent": [],
+ "cg_cases.g06_class_calls.WithInit": [],
+ "cg_cases.g06_class_calls.WithInit.__init__": [],
+ "cg_cases.g06_class_calls.main": [
+  "cg_cases.g06_class_calls.GrandChild.__init__",
+  "cg_cases.g06_class_calls.WithInit.__init__"
+ ],
+ "cg_cases.g07_imports": [
+  "cg_cases.g07_imports.core"
+ ],
+ "cg_cases.g07_imports.core": [],
+ "cg_cases.g07_imports.core.make_token": [],
+ "cg_cases.g07_imports.cycle_a": [
+  "cg_cases.g07_imports.cycle_b"
+ ],
+ "cg_cases.g07_imports.cycle_a.ping_a": [
+  "cg_cases.g07_imports.cycle_b.ping_b"
+ ],
+ "cg_cases.g07_imports.cycle_b": [
+  "cg_cases.g07_imports.cycle_a"
+ ],
+ "cg_cases.g07_imports.cycle_b.ping_b": [
+  "cg_cases.g07_imports.cycle_a.ping_a"
+ ],
+ "cg_cases.g07_imports.lazy": [],
+ "cg_cases.g07_imports.lazy.lazy_value": [],
+ "cg_cases.g07_imports.runner": [
+  "cg_cases.g07_imports.cycle_a",
+  "cg_cases.helpers",
+  "cg_cases.g07_imports.star_source",
+  "cg_cases.g07_imports"
+ ],
+ "cg_cases.g07_imports.runner.main": [
+  "cg_cases.helpers.measure",
+  "cg_cases.g07_imports.cycle_a.ping_a",
+  "cg_cases.g07_imports.lazy.lazy_value",
+  "cg_cases.g07_imports.lazy",
+  "cg_cases.g07_imports.core.make_token",
+  "cg_cases.g07_imports.star_source.star_helper"
+ ],
+ "cg_cases.g07_imports.star_source": [],
+ "cg_cases.g07_imports.star_source.star_helper": [],
+ "cg_cases.g08_noise": [
+  "cg_cases.g08_noise.Codec"
+ ],
+ "cg_cases.g08_noise.Codec": [],
+ "cg_cases.g08_noise.Codec.dumps": [
+  "<builtin>.str"
+ ],
+ "cg_cases.g08_noise.Codec.get": [],
+ "cg_cases.g08_noise.Codec.join": [
+  "<str>.join"
+ ],
+ "cg_cases.g08_noise.main": [
+  "cg_cases.g08_noise.Codec.get",
+  "append",
+  "<map>.get"
+ ],
+ "cg_cases.g09_threshold": [
+  "cg_cases.g09_threshold.Beta4",
+  "cg_cases.g09_threshold.Alpha3",
+  "cg_cases.g09_threshold.Alpha1",
+  "cg_cases.g09_threshold.Beta1",
+  "cg_cases.g09_threshold.Beta2",
+  "cg_cases.g09_threshold.Alpha5",
+  "cg_cases.g09_threshold.Beta5",
+  "cg_cases.g09_threshold.Beta6",
+  "cg_cases.g09_threshold.Beta3",
+  "cg_cases.g09_threshold.Alpha4",
+  "cg_cases.g09_threshold.Alpha2"
+ ],
+ "cg_cases.g09_threshold.Alpha1": [],
+ "cg_cases.g09_threshold.Alpha2": [],
+ "cg_cases.g09_threshold.Alpha2.alpha": [],
+ "cg_cases.g09_threshold.Alpha3": [],
+ "cg_cases.g09_threshold.Alpha3.alpha": [],
+ "cg_cases.g09_threshold.Alpha4": [],
+ "cg_cases.g09_threshold.Alpha5": [],
+ "cg_cases.g09_threshold.Beta1": [],
+ "cg_cases.g09_threshold.Beta2": [],
+ "cg_cases.g09_threshold.Beta3": [],
+ "cg_cases.g09_threshold.Beta4": [],
+ "cg_cases.g09_threshold.Beta4.beta": [],
+ "cg_cases.g09_threshold.Beta5": [],
+ "cg_cases.g09_threshold.Beta6": [],
+ "cg_cases.g09_threshold.Beta6.beta": [],
+ "cg_cases.g09_threshold.call_alpha": [
+  "cg_cases.g09_threshold.Alpha3.alpha"
+ ],
+ "cg_cases.g09_threshold.call_beta": [
+  "cg_cases.g09_threshold.Beta4.beta"
+ ],
+ "cg_cases.g09_threshold.main": [
+  "cg_cases.g09_threshold.call_beta",
+  "cg_cases.g09_threshold.call_alpha",
+  "cg_cases.g09_threshold.Alpha2.alpha",
+  "cg_cases.g09_threshold.Beta6.beta"
+ ],
+ "cg_cases.g10_dynamic": [
+  "cg_cases.g10_dynamic.Plugin"
+ ],
+ "cg_cases.g10_dynamic.Plugin": [],
+ "cg_cases.g10_dynamic.main": [
+  "<builtin>.eval",
+  "<builtin>.getattr"
+ ],
+ "cg_cases.g11_conflict": [
+  "cg_cases.g11_conflict.Dispatcher",
+  "cg_cases.g11_conflict.Mailer",
+  "cg_cases.g11_conflict.Sender"
+ ],
+ "cg_cases.g11_conflict.Dispatcher": [],
+ "cg_cases.g11_conflict.Dispatcher.__init__": [],
+ "cg_cases.g11_conflict.Dispatcher.run": [
+  "cg_cases.g11_conflict.Mailer.send",
+  "cg_cases.g11_conflict.Sender.send"
+ ],
+ "cg_cases.g11_conflict.Mailer": [],
+ "cg_cases.g11_conflict.Mailer.send": [],
+ "cg_cases.g11_conflict.Sender": [],
+ "cg_cases.g11_conflict.Sender.send": [],
+ "cg_cases.g11_conflict.deliver": [
+  "cg_cases.g11_conflict.Mailer.send",
+  "cg_cases.g11_conflict.Sender.send"
+ ],
+ "cg_cases.g11_conflict.main": [
+  "cg_cases.g11_conflict.deliver",
+  "cg_cases.g11_conflict.notify",
+  "cg_cases.g11_conflict.Dispatcher.run",
+  "cg_cases.g11_conflict.Dispatcher.__init__"
+ ],
+ "cg_cases.g11_conflict.notify": [],
+ "cg_cases.helpers": [],
+ "cg_cases.helpers.measure": [
+  "<builtin>.len"
+ ],
+ "cg_cases.helpers.normalize": [
+  "<str>.strip",
+  "<str>.lower"
+ ],
+ "cg_cases.html_tools": [],
+ "cg_cases.html_tools.render": [],
+ "cg_cases.repos": [
+  "cg_cases.repos.CacheRepo",
+  "cg_cases.repos.OrderRepo",
+  "cg_cases.repos.UserRepo"
+ ],
+ "cg_cases.repos.CacheRepo": [],
+ "cg_cases.repos.CacheRepo.check": [],
+ "cg_cases.repos.OrderRepo": [],
+ "cg_cases.repos.OrderRepo.check": [],
+ "cg_cases.repos.UserRepo": [],
+ "cg_cases.repos.UserRepo.check": [],
+ "cg_cases.text_tools": [],
+ "cg_cases.text_tools.render": [],
+ "run_all": [
+  "cg_cases.g02_polymorphism",
+  "cg_cases.g10_dynamic",
+  "cg_cases.g05_inheritance",
+  "cg_cases.g03_same_name",
+  "cg_cases.g07_imports.runner",
+  "<builtin>.len",
+  "cg_cases.g04_higher_order",
+  "cg_cases.g08_noise",
+  "cg_cases.g01_direct",
+  "cg_cases.g09_threshold",
+  "<builtin>.print",
+  "cg_cases.g06_class_calls",
+  "cg_cases.g11_conflict"
+ ]
+}

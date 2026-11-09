@@ -1,0 +1,882 @@
+METHOD	flow_cases.py	flow_cases.py:<module>	1	<module>
+METHOD	flow_cases.py	flow_cases.py:<module>.login	1	login
+METHOD	flow_cases.py	flow_cases.py:<module>.guarded	9	guarded
+METHOD	flow_cases.py	flow_cases.py:<module>.managed	20	managed
+METHOD	flow_cases.py	flow_cases.py:<module>.checked	26	checked
+METHOD	flow_cases.py	flow_cases.py:<module>.looped	33	looped
+METHOD	flow_cases.py	flow_cases.py:<module>.matched	42	matched
+METHOD	flow_cases.py	flow_cases.py:<module>.unpacked	51	unpacked
+METHOD	flow_cases.py	flow_cases.py:<module>.Box.<body>	56	<body>
+METHOD	flow_cases.py	flow_cases.py:<module>.Box.size<redefined>0	58	size
+METHOD	flow_cases.py	flow_cases.py:<module>.Box.size	62	size
+METHOD	flow_cases.py	flow_cases.py:<module>.Box.<metaClassCallHandler>	56	<metaClassCallHandler>
+METHOD	flow_cases.py	flow_cases.py:<module>.Box.<fakeNew>	56	<fakeNew>
+METHOD	flow_cases.py	flow_cases.py:<module>.Box.size<metaClassAdapter>	62	size<metaClassAdapter>
+METHOD	flow_cases.py	flow_cases.py:<module>.one_line_guard	66	one_line_guard
+METHOD	<empty>	<operator>.assignment	-1	<operator>.assignment
+METHOD	<empty>	<operator>.fieldAccess	-1	<operator>.fieldAccess
+METHOD	<empty>	<operator>.is	-1	<operator>.is
+METHOD	<empty>	<operator>.raise	-1	<operator>.raise
+METHOD	<empty>	<operator>.lessThan	-1	<operator>.lessThan
+METHOD	<empty>	<operator>.addition	-1	<operator>.addition
+METHOD	<empty>	<operator>.indexAccess	-1	<operator>.indexAccess
+METHOD	<empty>	<operator>.alloc	-1	<operator>.alloc
+METHOD	<empty>	__builtin.open	-1	open
+METHOD	<empty>	__builtin.open.<returnValue>.	-1	__builtin.open.<returnValue>.
+METHOD	<empty>	pair.<returnValue>.__next__	-1	__next__
+METHOD	<empty>	__builtin.property<meta>	-1	property<meta>
+CFG	flow_cases.py	flow_cases.py:<module>.guarded	25769803780	BLOCK	12	log(error) raise	68719476754	IDENTIFIER	16	close
+CFG	flow_cases.py	flow_cases.py:<module>.managed	25769803787	BLOCK	21	manager_tmp0 = open(path) enter_tmp0 = manager_tmp0.__enter_	68719476774	IDENTIFIER	23	content
+CFG	flow_cases.py	flow_cases.py:<module>.looped	25769803793	BLOCK	35	tmp0 = items.__iter__() while ... : ...	68719476794	IDENTIFIER	39	total
+CFG	flow_cases.py	flow_cases.py:<module>.matched	25769803795	BLOCK	44	result = one()	68719476801	IDENTIFIER	48	result
+CFG	flow_cases.py	flow_cases.py:<module>.matched	25769803796	BLOCK	46	result = other()	68719476801	IDENTIFIER	48	result
+CFG	flow_cases.py	flow_cases.py:<module>.unpacked	25769803799	BLOCK	52	tmp0 = pair() x = tmp0[0] y = tmp0[1]	68719476810	IDENTIFIER	53	use
+CFG	flow_cases.py	flow_cases.py:<module>	25769803806	BLOCK	56	Box = class Box<meta>(...) def <body>(...)()	68719476827	IDENTIFIER	66	one_line_guard
+CFG	flow_cases.py	flow_cases.py:<module>	30064771072	CALL	1	open = __builtins__.open	68719476737	IDENTIFIER	1	property
+DDG	flow_cases.py	flow_cases.py:<module>	30064771072	CALL	1	open = __builtins__.open	124554051584	METHOD_RETURN	1	RET	open = __builtins__.open
+CFG	flow_cases.py	flow_cases.py:<module>	30064771073	CALL	1	property = __builtins__.property	68719476738	IDENTIFIER	1	login
+DDG	flow_cases.py	flow_cases.py:<module>	30064771073	CALL	1	property = __builtins__.property	124554051584	METHOD_RETURN	1	RET	property = __builtins__.property
+CFG	flow_cases.py	flow_cases.py:<module>.login	30064771074	CALL	2	db.find	68719476741	IDENTIFIER	2	db
+CFG	flow_cases.py	flow_cases.py:<module>.login	30064771075	CALL	2	db.find(username)	30064771076	CALL	2	user = db.find(username)
+DDG	flow_cases.py	flow_cases.py:<module>.login	30064771075	CALL	2	db.find(username)	68719476742	IDENTIFIER	2	user	db.find(username)
+DDG	flow_cases.py	flow_cases.py:<module>.login	30064771075	CALL	2	db.find(username)	30064771076	CALL	2	user = db.find(username)	db.find(username)
+DDG	flow_cases.py	flow_cases.py:<module>.login	30064771075	CALL	2	db.find(username)	124554051585	METHOD_RETURN	1	RET	db.find(username)
+CFG	flow_cases.py	flow_cases.py:<module>.login	30064771076	CALL	2	user = db.find(username)	68719476743	IDENTIFIER	3	user
+DDG	flow_cases.py	flow_cases.py:<module>.login	30064771076	CALL	2	user = db.find(username)	124554051585	METHOD_RETURN	1	RET	user = db.find(username)
+CFG	flow_cases.py	flow_cases.py:<module>.login	30064771077	CALL	3	user is None	90194313217	LITERAL	4	None
+CFG	flow_cases.py	flow_cases.py:<module>.login	30064771077	CALL	3	user is None	68719476746	IDENTIFIER	5	session
+CDG	flow_cases.py	flow_cases.py:<module>.login	30064771077	CALL	3	user is None	68719476744	IDENTIFIER	5	user
+CDG	flow_cases.py	flow_cases.py:<module>.login	30064771077	CALL	3	user is None	68719476747	IDENTIFIER	6	session
+CDG	flow_cases.py	flow_cases.py:<module>.login	30064771077	CALL	3	user is None	90194313217	LITERAL	4	None
+CDG	flow_cases.py	flow_cases.py:<module>.login	30064771077	CALL	3	user is None	68719476745	IDENTIFIER	5	create
+CDG	flow_cases.py	flow_cases.py:<module>.login	30064771077	CALL	3	user is None	68719476746	IDENTIFIER	5	session
+CDG	flow_cases.py	flow_cases.py:<module>.login	30064771077	CALL	3	user is None	141733920768	RETURN	4	return None
+CDG	flow_cases.py	flow_cases.py:<module>.login	30064771077	CALL	3	user is None	30064771078	CALL	5	create(user)
+CDG	flow_cases.py	flow_cases.py:<module>.login	30064771077	CALL	3	user is None	141733920769	RETURN	6	return session
+CDG	flow_cases.py	flow_cases.py:<module>.login	30064771077	CALL	3	user is None	30064771079	CALL	5	session = create(user)
+DDG	flow_cases.py	flow_cases.py:<module>.login	30064771077	CALL	3	user is None	124554051585	METHOD_RETURN	1	RET	user is None
+CFG	flow_cases.py	flow_cases.py:<module>.login	30064771078	CALL	5	create(user)	30064771079	CALL	5	session = create(user)
+DDG	flow_cases.py	flow_cases.py:<module>.login	30064771078	CALL	5	create(user)	68719476746	IDENTIFIER	5	session	create(user)
+DDG	flow_cases.py	flow_cases.py:<module>.login	30064771078	CALL	5	create(user)	30064771079	CALL	5	session = create(user)	create(user)
+CFG	flow_cases.py	flow_cases.py:<module>.login	30064771079	CALL	5	session = create(user)	68719476747	IDENTIFIER	6	session
+CFG	flow_cases.py	flow_cases.py:<module>	30064771080	CALL	1	login = def login(...)	68719476748	IDENTIFIER	9	guarded
+DDG	flow_cases.py	flow_cases.py:<module>	30064771080	CALL	1	login = def login(...)	124554051584	METHOD_RETURN	1	RET	login = def login(...)
+CFG	flow_cases.py	flow_cases.py:<module>.guarded	30064771081	CALL	11	read(path)	30064771082	CALL	11	data = read(path)
+DDG	flow_cases.py	flow_cases.py:<module>.guarded	30064771081	CALL	11	read(path)	68719476751	IDENTIFIER	11	data	read(path)
+DDG	flow_cases.py	flow_cases.py:<module>.guarded	30064771081	CALL	11	read(path)	30064771082	CALL	11	data = read(path)	read(path)
+DDG	flow_cases.py	flow_cases.py:<module>.guarded	30064771081	CALL	11	read(path)	124554051586	METHOD_RETURN	9	RET	read(path)
+CFG	flow_cases.py	flow_cases.py:<module>.guarded	30064771082	CALL	11	data = read(path)	68719476753	IDENTIFIER	13	log
+CFG	flow_cases.py	flow_cases.py:<module>.guarded	30064771082	CALL	11	data = read(path)	68719476754	IDENTIFIER	16	close
+CDG	flow_cases.py	flow_cases.py:<module>.guarded	30064771082	CALL	11	data = read(path)	30064771084	CALL	14	raise
+CDG	flow_cases.py	flow_cases.py:<module>.guarded	30064771082	CALL	11	data = read(path)	68719476752	IDENTIFIER	13	error
+CDG	flow_cases.py	flow_cases.py:<module>.guarded	30064771082	CALL	11	data = read(path)	25769803780	BLOCK	12	log(error) raise
+CDG	flow_cases.py	flow_cases.py:<module>.guarded	30064771082	CALL	11	data = read(path)	30064771083	CALL	13	log(error)
+CDG	flow_cases.py	flow_cases.py:<module>.guarded	30064771082	CALL	11	data = read(path)	68719476753	IDENTIFIER	13	log
+DDG	flow_cases.py	flow_cases.py:<module>.guarded	30064771082	CALL	11	data = read(path)	124554051586	METHOD_RETURN	9	RET	data = read(path)
+CFG	flow_cases.py	flow_cases.py:<module>.guarded	30064771083	CALL	13	log(error)	30064771084	CALL	14	raise
+DDG	flow_cases.py	flow_cases.py:<module>.guarded	30064771083	CALL	13	log(error)	124554051586	METHOD_RETURN	9	RET	log(error)
+CFG	flow_cases.py	flow_cases.py:<module>.guarded	30064771084	CALL	14	raise	25769803780	BLOCK	12	log(error) raise
+DDG	flow_cases.py	flow_cases.py:<module>.guarded	30064771084	CALL	14	raise	124554051586	METHOD_RETURN	9	RET	raise
+CFG	flow_cases.py	flow_cases.py:<module>.guarded	30064771085	CALL	16	close()	68719476755	IDENTIFIER	17	data
+DDG	flow_cases.py	flow_cases.py:<module>.guarded	30064771085	CALL	16	close()	124554051586	METHOD_RETURN	9	RET	close()
+CFG	flow_cases.py	flow_cases.py:<module>	30064771086	CALL	9	guarded = def guarded(...)	68719476756	IDENTIFIER	20	managed
+DDG	flow_cases.py	flow_cases.py:<module>	30064771086	CALL	9	guarded = def guarded(...)	124554051584	METHOD_RETURN	1	RET	guarded = def guarded(...)
+CFG	flow_cases.py	flow_cases.py:<module>.managed	30064771087	CALL	22	handle.read	68719476758	IDENTIFIER	22	handle
+CFG	flow_cases.py	flow_cases.py:<module>.managed	30064771088	CALL	22	handle.read()	30064771089	CALL	22	content = handle.read()
+DDG	flow_cases.py	flow_cases.py:<module>.managed	30064771088	CALL	22	handle.read()	68719476759	IDENTIFIER	22	content	handle.read()
+DDG	flow_cases.py	flow_cases.py:<module>.managed	30064771088	CALL	22	handle.read()	30064771089	CALL	22	content = handle.read()	handle.read()
+DDG	flow_cases.py	flow_cases.py:<module>.managed	30064771088	CALL	22	handle.read()	124554051587	METHOD_RETURN	20	RET	handle.read()
+CFG	flow_cases.py	flow_cases.py:<module>.managed	30064771089	CALL	22	content = handle.read()	68719476772	IDENTIFIER	21	__exit__
+CFG	flow_cases.py	flow_cases.py:<module>.managed	30064771089	CALL	22	content = handle.read()	68719476772	IDENTIFIER	21	__exit__
+DDG	flow_cases.py	flow_cases.py:<module>.managed	30064771089	CALL	22	content = handle.read()	124554051587	METHOD_RETURN	20	RET	content = handle.read()
+CFG	flow_cases.py	flow_cases.py:<module>.managed	30064771090	CALL	21	open(path)	30064771091	CALL	21	manager_tmp0 = open(path)
+DDG	flow_cases.py	flow_cases.py:<module>.managed	30064771090	CALL	21	open(path)	68719476762	IDENTIFIER	21	manager_tmp0	open(path)
+DDG	flow_cases.py	flow_cases.py:<module>.managed	30064771090	CALL	21	open(path)	30064771091	CALL	21	manager_tmp0 = open(path)	open(path)
+DDG	flow_cases.py	flow_cases.py:<module>.managed	30064771090	CALL	21	open(path)	124554051587	METHOD_RETURN	20	RET	open(path)
+CFG	flow_cases.py	flow_cases.py:<module>.managed	30064771091	CALL	21	manager_tmp0 = open(path)	68719476764	IDENTIFIER	21	enter_tmp0
+DDG	flow_cases.py	flow_cases.py:<module>.managed	30064771091	CALL	21	manager_tmp0 = open(path)	124554051587	METHOD_RETURN	20	RET	manager_tmp0 = open(path)
+CFG	flow_cases.py	flow_cases.py:<module>.managed	30064771092	CALL	21	manager_tmp0.__enter__	30064771093	CALL	21	enter_tmp0 = manager_tmp0.__enter__
+DDG	flow_cases.py	flow_cases.py:<module>.managed	30064771092	CALL	21	manager_tmp0.__enter__	68719476764	IDENTIFIER	21	enter_tmp0	manager_tmp0.__enter__
+DDG	flow_cases.py	flow_cases.py:<module>.managed	30064771092	CALL	21	manager_tmp0.__enter__	30064771093	CALL	21	enter_tmp0 = manager_tmp0.__enter__	manager_tmp0.__enter__
+DDG	flow_cases.py	flow_cases.py:<module>.managed	30064771092	CALL	21	manager_tmp0.__enter__	68719476765	IDENTIFIER	21	manager_tmp0	manager_tmp0.__enter__
+DDG	flow_cases.py	flow_cases.py:<module>.managed	30064771092	CALL	21	manager_tmp0.__enter__	68719476768	IDENTIFIER	21	manager_tmp0	manager_tmp0.__enter__
+CFG	flow_cases.py	flow_cases.py:<module>.managed	30064771093	CALL	21	enter_tmp0 = manager_tmp0.__enter__	68719476766	IDENTIFIER	21	exit_tmp0
+DDG	flow_cases.py	flow_cases.py:<module>.managed	30064771093	CALL	21	enter_tmp0 = manager_tmp0.__enter__	124554051587	METHOD_RETURN	20	RET	enter_tmp0 = manager_tmp0.__enter__
+CFG	flow_cases.py	flow_cases.py:<module>.managed	30064771094	CALL	21	manager_tmp0.__exit__	30064771095	CALL	21	exit_tmp0 = manager_tmp0.__exit__
+DDG	flow_cases.py	flow_cases.py:<module>.managed	30064771094	CALL	21	manager_tmp0.__exit__	68719476766	IDENTIFIER	21	exit_tmp0	manager_tmp0.__exit__
+DDG	flow_cases.py	flow_cases.py:<module>.managed	30064771094	CALL	21	manager_tmp0.__exit__	30064771095	CALL	21	exit_tmp0 = manager_tmp0.__exit__	manager_tmp0.__exit__
+DDG	flow_cases.py	flow_cases.py:<module>.managed	30064771094	CALL	21	manager_tmp0.__exit__	68719476768	IDENTIFIER	21	manager_tmp0	manager_tmp0.__exit__
+CFG	flow_cases.py	flow_cases.py:<module>.managed	30064771095	CALL	21	exit_tmp0 = manager_tmp0.__exit__	68719476769	IDENTIFIER	21	value_tmp0
+DDG	flow_cases.py	flow_cases.py:<module>.managed	30064771095	CALL	21	exit_tmp0 = manager_tmp0.__exit__	124554051587	METHOD_RETURN	20	RET	exit_tmp0 = manager_tmp0.__exit__
+CFG	flow_cases.py	flow_cases.py:<module>.managed	30064771096	CALL	21	enter_tmp0()	30064771097	CALL	21	value_tmp0 = enter_tmp0()
+DDG	flow_cases.py	flow_cases.py:<module>.managed	30064771096	CALL	21	enter_tmp0()	68719476769	IDENTIFIER	21	value_tmp0	enter_tmp0()
+DDG	flow_cases.py	flow_cases.py:<module>.managed	30064771096	CALL	21	enter_tmp0()	30064771097	CALL	21	value_tmp0 = enter_tmp0()	enter_tmp0()
+DDG	flow_cases.py	flow_cases.py:<module>.managed	30064771096	CALL	21	enter_tmp0()	124554051587	METHOD_RETURN	20	RET	enter_tmp0()
+CFG	flow_cases.py	flow_cases.py:<module>.managed	30064771097	CALL	21	value_tmp0 = enter_tmp0()	68719476771	IDENTIFIER	21	handle
+DDG	flow_cases.py	flow_cases.py:<module>.managed	30064771097	CALL	21	value_tmp0 = enter_tmp0()	124554051587	METHOD_RETURN	20	RET	value_tmp0 = enter_tmp0()
+CFG	flow_cases.py	flow_cases.py:<module>.managed	30064771098	CALL	21	handle = value_tmp0	68719476759	IDENTIFIER	22	content
+DDG	flow_cases.py	flow_cases.py:<module>.managed	30064771098	CALL	21	handle = value_tmp0	124554051587	METHOD_RETURN	20	RET	handle = value_tmp0
+CFG	flow_cases.py	flow_cases.py:<module>.managed	30064771099	CALL	21	__exit__()	68719476772	IDENTIFIER	21	__exit__
+CFG	flow_cases.py	flow_cases.py:<module>.managed	30064771099	CALL	21	__exit__()	25769803787	BLOCK	21	manager_tmp0 = open(path) enter_tmp0 = manager_tmp0.__enter_
+CDG	flow_cases.py	flow_cases.py:<module>.managed	30064771099	CALL	21	__exit__()	68719476773	IDENTIFIER	21	manager_tmp0
+CDG	flow_cases.py	flow_cases.py:<module>.managed	30064771099	CALL	21	__exit__()	68719476772	IDENTIFIER	21	__exit__
+CDG	flow_cases.py	flow_cases.py:<module>.managed	30064771099	CALL	21	__exit__()	30064771099	CALL	21	__exit__()
+DDG	flow_cases.py	flow_cases.py:<module>.managed	30064771099	CALL	21	__exit__()	124554051587	METHOD_RETURN	20	RET	__exit__()
+CFG	flow_cases.py	flow_cases.py:<module>	30064771100	CALL	20	managed = def managed(...)	68719476775	IDENTIFIER	26	checked
+DDG	flow_cases.py	flow_cases.py:<module>	30064771100	CALL	20	managed = def managed(...)	124554051584	METHOD_RETURN	1	RET	managed = def managed(...)
+CFG	flow_cases.py	flow_cases.py:<module>.checked	30064771101	CALL	27	value < 0	68719476778	IDENTIFIER	28	ValueError
+CFG	flow_cases.py	flow_cases.py:<module>.checked	30064771101	CALL	27	value < 0	68719476780	IDENTIFIER	29	result
+CDG	flow_cases.py	flow_cases.py:<module>.checked	30064771101	CALL	27	value < 0	30064771102	CALL	28	ValueError(value)
+CDG	flow_cases.py	flow_cases.py:<module>.checked	30064771101	CALL	27	value < 0	30064771103	CALL	28	raise ValueError(value)
+CDG	flow_cases.py	flow_cases.py:<module>.checked	30064771101	CALL	27	value < 0	68719476777	IDENTIFIER	28	value
+CDG	flow_cases.py	flow_cases.py:<module>.checked	30064771101	CALL	27	value < 0	68719476778	IDENTIFIER	28	ValueError
+DDG	flow_cases.py	flow_cases.py:<module>.checked	30064771101	CALL	27	value < 0	124554051588	METHOD_RETURN	26	RET	value < 0
+CFG	flow_cases.py	flow_cases.py:<module>.checked	30064771102	CALL	28	ValueError(value)	30064771103	CALL	28	raise ValueError(value)
+DDG	flow_cases.py	flow_cases.py:<module>.checked	30064771102	CALL	28	ValueError(value)	30064771103	CALL	28	raise ValueError(value)	ValueError(value)
+DDG	flow_cases.py	flow_cases.py:<module>.checked	30064771102	CALL	28	ValueError(value)	124554051588	METHOD_RETURN	26	RET	ValueError(value)
+CFG	flow_cases.py	flow_cases.py:<module>.checked	30064771103	CALL	28	raise ValueError(value)	68719476780	IDENTIFIER	29	result
+DDG	flow_cases.py	flow_cases.py:<module>.checked	30064771103	CALL	28	raise ValueError(value)	124554051588	METHOD_RETURN	26	RET	raise ValueError(value)
+CFG	flow_cases.py	flow_cases.py:<module>.checked	30064771104	CALL	29	value + 1	30064771105	CALL	29	result = value + 1
+DDG	flow_cases.py	flow_cases.py:<module>.checked	30064771104	CALL	29	value + 1	68719476780	IDENTIFIER	29	result	value + 1
+DDG	flow_cases.py	flow_cases.py:<module>.checked	30064771104	CALL	29	value + 1	30064771105	CALL	29	result = value + 1	value + 1
+DDG	flow_cases.py	flow_cases.py:<module>.checked	30064771104	CALL	29	value + 1	124554051588	METHOD_RETURN	26	RET	value + 1
+CFG	flow_cases.py	flow_cases.py:<module>.checked	30064771105	CALL	29	result = value + 1	68719476781	IDENTIFIER	30	result
+DDG	flow_cases.py	flow_cases.py:<module>.checked	30064771105	CALL	29	result = value + 1	124554051588	METHOD_RETURN	26	RET	result = value + 1
+CFG	flow_cases.py	flow_cases.py:<module>	30064771106	CALL	26	checked = def checked(...)	68719476782	IDENTIFIER	33	looped
+DDG	flow_cases.py	flow_cases.py:<module>	30064771106	CALL	26	checked = def checked(...)	124554051584	METHOD_RETURN	1	RET	checked = def checked(...)
+CFG	flow_cases.py	flow_cases.py:<module>.looped	30064771107	CALL	34	total = 0	68719476790	IDENTIFIER	35	tmp0
+DDG	flow_cases.py	flow_cases.py:<module>.looped	30064771107	CALL	34	total = 0	124554051589	METHOD_RETURN	33	RET	total = 0
+CFG	flow_cases.py	flow_cases.py:<module>.looped	30064771108	CALL	36	item is None	47244640263	CONTROL_STRUCTURE	37	break
+CFG	flow_cases.py	flow_cases.py:<module>.looped	30064771108	CALL	36	item is None	68719476787	IDENTIFIER	38	total
+CDG	flow_cases.py	flow_cases.py:<module>.looped	30064771108	CALL	36	item is None	180388626432	UNKNOWN	35	iteratorNonEmptyOrException
+CDG	flow_cases.py	flow_cases.py:<module>.looped	30064771108	CALL	36	item is None	47244640263	CONTROL_STRUCTURE	37	break
+CDG	flow_cases.py	flow_cases.py:<module>.looped	30064771108	CALL	36	item is None	30064771110	CALL	38	total = total + item
+CDG	flow_cases.py	flow_cases.py:<module>.looped	30064771108	CALL	36	item is None	30064771109	CALL	38	total + item
+CDG	flow_cases.py	flow_cases.py:<module>.looped	30064771108	CALL	36	item is None	68719476787	IDENTIFIER	38	total
+CDG	flow_cases.py	flow_cases.py:<module>.looped	30064771108	CALL	36	item is None	68719476785	IDENTIFIER	38	total
+CDG	flow_cases.py	flow_cases.py:<module>.looped	30064771108	CALL	36	item is None	68719476786	IDENTIFIER	38	item
+DDG	flow_cases.py	flow_cases.py:<module>.looped	30064771108	CALL	36	item is None	124554051589	METHOD_RETURN	33	RET	item is None
+CFG	flow_cases.py	flow_cases.py:<module>.looped	30064771109	CALL	38	total + item	30064771110	CALL	38	total = total + item
+DDG	flow_cases.py	flow_cases.py:<module>.looped	30064771109	CALL	38	total + item	68719476787	IDENTIFIER	38	total	total + item
+DDG	flow_cases.py	flow_cases.py:<module>.looped	30064771109	CALL	38	total + item	30064771110	CALL	38	total = total + item	total + item
+DDG	flow_cases.py	flow_cases.py:<module>.looped	30064771109	CALL	38	total + item	124554051589	METHOD_RETURN	33	RET	total + item
+CFG	flow_cases.py	flow_cases.py:<module>.looped	30064771110	CALL	38	total = total + item	180388626432	UNKNOWN	35	iteratorNonEmptyOrException
+DDG	flow_cases.py	flow_cases.py:<module>.looped	30064771110	CALL	38	total = total + item	124554051589	METHOD_RETURN	33	RET	total = total + item
+CFG	flow_cases.py	flow_cases.py:<module>.looped	30064771111	CALL	35	items.__iter__	68719476789	IDENTIFIER	35	items
+CFG	flow_cases.py	flow_cases.py:<module>.looped	30064771112	CALL	35	items.__iter__()	30064771113	CALL	35	tmp0 = items.__iter__()
+DDG	flow_cases.py	flow_cases.py:<module>.looped	30064771112	CALL	35	items.__iter__()	68719476790	IDENTIFIER	35	tmp0	items.__iter__()
+DDG	flow_cases.py	flow_cases.py:<module>.looped	30064771112	CALL	35	items.__iter__()	30064771113	CALL	35	tmp0 = items.__iter__()	items.__iter__()
+DDG	flow_cases.py	flow_cases.py:<module>.looped	30064771112	CALL	35	items.__iter__()	124554051589	METHOD_RETURN	33	RET	items.__iter__()
+CFG	flow_cases.py	flow_cases.py:<module>.looped	30064771113	CALL	35	tmp0 = items.__iter__()	180388626432	UNKNOWN	35	iteratorNonEmptyOrException
+DDG	flow_cases.py	flow_cases.py:<module>.looped	30064771113	CALL	35	tmp0 = items.__iter__()	124554051589	METHOD_RETURN	33	RET	tmp0 = items.__iter__()
+CFG	flow_cases.py	flow_cases.py:<module>.looped	30064771114	CALL	35	tmp0.__next__	68719476792	IDENTIFIER	35	tmp0
+CFG	flow_cases.py	flow_cases.py:<module>.looped	30064771115	CALL	35	tmp0.__next__()	30064771116	CALL	35	item = tmp0.__next__()
+DDG	flow_cases.py	flow_cases.py:<module>.looped	30064771115	CALL	35	tmp0.__next__()	68719476793	IDENTIFIER	35	item	tmp0.__next__()
+DDG	flow_cases.py	flow_cases.py:<module>.looped	30064771115	CALL	35	tmp0.__next__()	30064771116	CALL	35	item = tmp0.__next__()	tmp0.__next__()
+DDG	flow_cases.py	flow_cases.py:<module>.looped	30064771115	CALL	35	tmp0.__next__()	124554051589	METHOD_RETURN	33	RET	tmp0.__next__()
+CFG	flow_cases.py	flow_cases.py:<module>.looped	30064771116	CALL	35	item = tmp0.__next__()	68719476784	IDENTIFIER	36	item
+DDG	flow_cases.py	flow_cases.py:<module>.looped	30064771116	CALL	35	item = tmp0.__next__()	124554051589	METHOD_RETURN	33	RET	item = tmp0.__next__()
+CFG	flow_cases.py	flow_cases.py:<module>	30064771117	CALL	33	looped = def looped(...)	68719476795	IDENTIFIER	42	matched
+DDG	flow_cases.py	flow_cases.py:<module>	30064771117	CALL	33	looped = def looped(...)	124554051584	METHOD_RETURN	1	RET	looped = def looped(...)
+CFG	flow_cases.py	flow_cases.py:<module>.matched	30064771118	CALL	45	one()	30064771119	CALL	45	result = one()
+DDG	flow_cases.py	flow_cases.py:<module>.matched	30064771118	CALL	45	one()	68719476798	IDENTIFIER	45	result	one()
+DDG	flow_cases.py	flow_cases.py:<module>.matched	30064771118	CALL	45	one()	30064771119	CALL	45	result = one()	one()
+DDG	flow_cases.py	flow_cases.py:<module>.matched	30064771118	CALL	45	one()	124554051590	METHOD_RETURN	42	RET	one()
+CFG	flow_cases.py	flow_cases.py:<module>.matched	30064771119	CALL	45	result = one()	25769803795	BLOCK	44	result = one()
+DDG	flow_cases.py	flow_cases.py:<module>.matched	30064771119	CALL	45	result = one()	124554051590	METHOD_RETURN	42	RET	result = one()
+CFG	flow_cases.py	flow_cases.py:<module>.matched	30064771120	CALL	47	other()	30064771121	CALL	47	result = other()
+DDG	flow_cases.py	flow_cases.py:<module>.matched	30064771120	CALL	47	other()	68719476800	IDENTIFIER	47	result	other()
+DDG	flow_cases.py	flow_cases.py:<module>.matched	30064771120	CALL	47	other()	30064771121	CALL	47	result = other()	other()
+DDG	flow_cases.py	flow_cases.py:<module>.matched	30064771120	CALL	47	other()	124554051590	METHOD_RETURN	42	RET	other()
+CFG	flow_cases.py	flow_cases.py:<module>.matched	30064771121	CALL	47	result = other()	25769803796	BLOCK	46	result = other()
+DDG	flow_cases.py	flow_cases.py:<module>.matched	30064771121	CALL	47	result = other()	124554051590	METHOD_RETURN	42	RET	result = other()
+CFG	flow_cases.py	flow_cases.py:<module>	30064771122	CALL	42	matched = def matched(...)	68719476802	IDENTIFIER	51	unpacked
+DDG	flow_cases.py	flow_cases.py:<module>	30064771122	CALL	42	matched = def matched(...)	124554051584	METHOD_RETURN	1	RET	matched = def matched(...)
+CFG	flow_cases.py	flow_cases.py:<module>.unpacked	30064771123	CALL	52	pair()	30064771124	CALL	52	tmp0 = pair()
+DDG	flow_cases.py	flow_cases.py:<module>.unpacked	30064771123	CALL	52	pair()	68719476804	IDENTIFIER	52	tmp0	pair()
+DDG	flow_cases.py	flow_cases.py:<module>.unpacked	30064771123	CALL	52	pair()	30064771124	CALL	52	tmp0 = pair()	pair()
+DDG	flow_cases.py	flow_cases.py:<module>.unpacked	30064771123	CALL	52	pair()	124554051591	METHOD_RETURN	51	RET	pair()
+CFG	flow_cases.py	flow_cases.py:<module>.unpacked	30064771124	CALL	52	tmp0 = pair()	68719476805	IDENTIFIER	52	x
+DDG	flow_cases.py	flow_cases.py:<module>.unpacked	30064771124	CALL	52	tmp0 = pair()	124554051591	METHOD_RETURN	51	RET	tmp0 = pair()
+CFG	flow_cases.py	flow_cases.py:<module>.unpacked	30064771125	CALL	52	tmp0[0]	30064771126	CALL	52	x = tmp0[0]
+DDG	flow_cases.py	flow_cases.py:<module>.unpacked	30064771125	CALL	52	tmp0[0]	68719476805	IDENTIFIER	52	x	tmp0[0]
+DDG	flow_cases.py	flow_cases.py:<module>.unpacked	30064771125	CALL	52	tmp0[0]	30064771126	CALL	52	x = tmp0[0]	tmp0[0]
+DDG	flow_cases.py	flow_cases.py:<module>.unpacked	30064771125	CALL	52	tmp0[0]	68719476808	IDENTIFIER	52	tmp0	tmp0[0]
+DDG	flow_cases.py	flow_cases.py:<module>.unpacked	30064771125	CALL	52	tmp0[0]	124554051591	METHOD_RETURN	51	RET	tmp0[0]
+CFG	flow_cases.py	flow_cases.py:<module>.unpacked	30064771126	CALL	52	x = tmp0[0]	68719476807	IDENTIFIER	52	y
+DDG	flow_cases.py	flow_cases.py:<module>.unpacked	30064771126	CALL	52	x = tmp0[0]	124554051591	METHOD_RETURN	51	RET	x = tmp0[0]
+CFG	flow_cases.py	flow_cases.py:<module>.unpacked	30064771127	CALL	52	tmp0[1]	30064771128	CALL	52	y = tmp0[1]
+DDG	flow_cases.py	flow_cases.py:<module>.unpacked	30064771127	CALL	52	tmp0[1]	68719476807	IDENTIFIER	52	y	tmp0[1]
+DDG	flow_cases.py	flow_cases.py:<module>.unpacked	30064771127	CALL	52	tmp0[1]	30064771128	CALL	52	y = tmp0[1]	tmp0[1]
+DDG	flow_cases.py	flow_cases.py:<module>.unpacked	30064771127	CALL	52	tmp0[1]	124554051591	METHOD_RETURN	51	RET	tmp0[1]
+CFG	flow_cases.py	flow_cases.py:<module>.unpacked	30064771128	CALL	52	y = tmp0[1]	25769803799	BLOCK	52	tmp0 = pair() x = tmp0[0] y = tmp0[1]
+DDG	flow_cases.py	flow_cases.py:<module>.unpacked	30064771128	CALL	52	y = tmp0[1]	124554051591	METHOD_RETURN	51	RET	y = tmp0[1]
+CFG	flow_cases.py	flow_cases.py:<module>.unpacked	30064771129	CALL	53	use(x)	124554051591	METHOD_RETURN	51	RET
+DDG	flow_cases.py	flow_cases.py:<module>.unpacked	30064771129	CALL	53	use(x)	124554051591	METHOD_RETURN	51	RET	use(x)
+CFG	flow_cases.py	flow_cases.py:<module>	30064771130	CALL	51	unpacked = def unpacked(...)	68719476825	IDENTIFIER	56	Box
+DDG	flow_cases.py	flow_cases.py:<module>	30064771130	CALL	51	unpacked = def unpacked(...)	124554051584	METHOD_RETURN	1	RET	unpacked = def unpacked(...)
+CFG	flow_cases.py	flow_cases.py:<module>.Box.size<redefined>0	30064771131	CALL	59	self._size	141733920775	RETURN	59	return self._size
+DDG	flow_cases.py	flow_cases.py:<module>.Box.size<redefined>0	30064771131	CALL	59	self._size	141733920775	RETURN	59	return self._size	self._size
+CFG	flow_cases.py	flow_cases.py:<module>.Box.<body>	30064771132	CALL	57	property(def size(...))	30064771133	CALL	58	size = property(def size(...))
+DDG	flow_cases.py	flow_cases.py:<module>.Box.<body>	30064771132	CALL	57	property(def size(...))	68719476811	IDENTIFIER	58	size	property(def size(...))
+DDG	flow_cases.py	flow_cases.py:<module>.Box.<body>	30064771132	CALL	57	property(def size(...))	30064771133	CALL	58	size = property(def size(...))	property(def size(...))
+DDG	flow_cases.py	flow_cases.py:<module>.Box.<body>	30064771132	CALL	57	property(def size(...))	124554051592	METHOD_RETURN	56	RET	property(def size(...))
+CFG	flow_cases.py	flow_cases.py:<module>.Box.<body>	30064771133	CALL	58	size = property(def size(...))	68719476814	IDENTIFIER	62	size
+DDG	flow_cases.py	flow_cases.py:<module>.Box.<body>	30064771133	CALL	58	size = property(def size(...))	124554051592	METHOD_RETURN	56	RET	size = property(def size(...))
+CFG	flow_cases.py	flow_cases.py:<module>.Box.size	30064771134	CALL	63	self._size	68719476815	IDENTIFIER	63	value
+DDG	flow_cases.py	flow_cases.py:<module>.Box.size	30064771134	CALL	63	self._size	115964117000	METHOD_PARAMETER_OUT	62	self	self._size
+DDG	flow_cases.py	flow_cases.py:<module>.Box.size	30064771134	CALL	63	self._size	30064771135	CALL	63	self._size = value	self._size
+DDG	flow_cases.py	flow_cases.py:<module>.Box.size	30064771134	CALL	63	self._size	124554051594	METHOD_RETURN	62	RET	self._size
+CFG	flow_cases.py	flow_cases.py:<module>.Box.size	30064771135	CALL	63	self._size = value	124554051594	METHOD_RETURN	62	RET
+DDG	flow_cases.py	flow_cases.py:<module>.Box.size	30064771135	CALL	63	self._size = value	124554051594	METHOD_RETURN	62	RET	self._size = value
+CFG	flow_cases.py	flow_cases.py:<module>.Box.<body>	30064771136	CALL	61	size.setter	120259084297	METHOD_REF	62	def size(...)
+CFG	flow_cases.py	flow_cases.py:<module>.Box.<body>	30064771137	CALL	61	size.setter(def size(...))	30064771138	CALL	62	size = size.setter(def size(...))
+DDG	flow_cases.py	flow_cases.py:<module>.Box.<body>	30064771137	CALL	61	size.setter(def size(...))	68719476814	IDENTIFIER	62	size	size.setter(def size(...))
+DDG	flow_cases.py	flow_cases.py:<module>.Box.<body>	30064771137	CALL	61	size.setter(def size(...))	30064771138	CALL	62	size = size.setter(def size(...))	size.setter(def size(...))
+DDG	flow_cases.py	flow_cases.py:<module>.Box.<body>	30064771137	CALL	61	size.setter(def size(...))	124554051592	METHOD_RETURN	56	RET	size.setter(def size(...))
+CFG	flow_cases.py	flow_cases.py:<module>.Box.<body>	30064771138	CALL	62	size = size.setter(def size(...))	124554051592	METHOD_RETURN	56	RET
+DDG	flow_cases.py	flow_cases.py:<module>.Box.<body>	30064771138	CALL	62	size = size.setter(def size(...))	124554051592	METHOD_RETURN	56	RET	size = size.setter(def size(...))
+CFG	flow_cases.py	flow_cases.py:<module>.Box.<metaClassCallHandler>	30064771139	CALL	56	class Box<meta>(...).<fakeNew>	176093659139	TYPE_REF	56	class Box<meta>(...)
+CFG	flow_cases.py	flow_cases.py:<module>.Box.<metaClassCallHandler>	30064771140	CALL	56	class Box<meta>(...).<fakeNew>()	30064771141	CALL	56	__newInstance = class Box<meta>(...).<fakeNew>()
+DDG	flow_cases.py	flow_cases.py:<module>.Box.<metaClassCallHandler>	30064771140	CALL	56	class Box<meta>(...).<fakeNew>()	68719476818	IDENTIFIER	56	__newInstance	class Box<meta>(...).<fakeNew>()
+DDG	flow_cases.py	flow_cases.py:<module>.Box.<metaClassCallHandler>	30064771140	CALL	56	class Box<meta>(...).<fakeNew>()	30064771141	CALL	56	__newInstance = class Box<meta>(...).<fakeNew>()	class Box<meta>(...).<fakeNew>()
+DDG	flow_cases.py	flow_cases.py:<module>.Box.<metaClassCallHandler>	30064771140	CALL	56	class Box<meta>(...).<fakeNew>()	124554051595	METHOD_RETURN	56	RET	class Box<meta>(...).<fakeNew>()
+CFG	flow_cases.py	flow_cases.py:<module>.Box.<metaClassCallHandler>	30064771141	CALL	56	__newInstance = class Box<meta>(...).<fakeNew>()	68719476820	IDENTIFIER	56	__newInstance
+DDG	flow_cases.py	flow_cases.py:<module>.Box.<metaClassCallHandler>	30064771141	CALL	56	__newInstance = class Box<meta>(...).<fakeNew>()	124554051595	METHOD_RETURN	56	RET	__newInstance = class Box<meta>(...).<fakeNew>()
+CFG	flow_cases.py	flow_cases.py:<module>.Box.<metaClassCallHandler>	30064771142	CALL	56	__newInstance.__init__	68719476821	IDENTIFIER	56	__newInstance
+CFG	flow_cases.py	flow_cases.py:<module>.Box.<metaClassCallHandler>	30064771143	CALL	56	__newInstance.__init__()	68719476822	IDENTIFIER	56	__newInstance
+DDG	flow_cases.py	flow_cases.py:<module>.Box.<metaClassCallHandler>	30064771143	CALL	56	__newInstance.__init__()	124554051595	METHOD_RETURN	56	RET	__newInstance.__init__()
+CFG	flow_cases.py	flow_cases.py:<module>.Box.<fakeNew>	30064771144	CALL	56		141733920777	RETURN	56	return 
+DDG	flow_cases.py	flow_cases.py:<module>.Box.<fakeNew>	30064771144	CALL	56		141733920777	RETURN	56	return 	
+DDG	flow_cases.py	flow_cases.py:<module>.Box.<fakeNew>	30064771144	CALL	56		124554051596	METHOD_RETURN	56	RET	
+CFG	flow_cases.py	flow_cases.py:<module>.Box.size<metaClassAdapter>	30064771145	CALL	62	size(self, value)	141733920778	RETURN	62	return size(self, value)
+DDG	flow_cases.py	flow_cases.py:<module>.Box.size<metaClassAdapter>	30064771145	CALL	62	size(self, value)	141733920778	RETURN	62	return size(self, value)	size(self, value)
+DDG	flow_cases.py	flow_cases.py:<module>.Box.size<metaClassAdapter>	30064771145	CALL	62	size(self, value)	124554051597	METHOD_RETURN	62	RET	size(self, value)
+CFG	flow_cases.py	flow_cases.py:<module>	30064771146	CALL	56	Box = class Box<meta>(...)	120259084295	METHOD_REF	56	def <body>(...)
+DDG	flow_cases.py	flow_cases.py:<module>	30064771146	CALL	56	Box = class Box<meta>(...)	124554051584	METHOD_RETURN	1	RET	Box = class Box<meta>(...)
+CFG	flow_cases.py	flow_cases.py:<module>	30064771147	CALL	56	def <body>(...)()	25769803806	BLOCK	56	Box = class Box<meta>(...) def <body>(...)()
+DDG	flow_cases.py	flow_cases.py:<module>	30064771147	CALL	56	def <body>(...)()	124554051584	METHOD_RETURN	1	RET	def <body>(...)()
+CFG	flow_cases.py	flow_cases.py:<module>.one_line_guard	30064771148	CALL	67	ValueError(a)	30064771149	CALL	67	raise ValueError(a)
+DDG	flow_cases.py	flow_cases.py:<module>.one_line_guard	30064771148	CALL	67	ValueError(a)	30064771149	CALL	67	raise ValueError(a)	ValueError(a)
+DDG	flow_cases.py	flow_cases.py:<module>.one_line_guard	30064771148	CALL	67	ValueError(a)	124554051598	METHOD_RETURN	66	RET	ValueError(a)
+CFG	flow_cases.py	flow_cases.py:<module>.one_line_guard	30064771149	CALL	67	raise ValueError(a)	90194313224	LITERAL	68	1
+DDG	flow_cases.py	flow_cases.py:<module>.one_line_guard	30064771149	CALL	67	raise ValueError(a)	124554051598	METHOD_RETURN	66	RET	raise ValueError(a)
+CFG	flow_cases.py	flow_cases.py:<module>	30064771150	CALL	66	one_line_guard = def one_line_guard(...)	124554051584	METHOD_RETURN	1	RET
+DDG	flow_cases.py	flow_cases.py:<module>	30064771150	CALL	66	one_line_guard = def one_line_guard(...)	124554051584	METHOD_RETURN	1	RET	one_line_guard = def one_line_guard(...)
+CFG	flow_cases.py	flow_cases.py:<module>.looped	47244640263	CONTROL_STRUCTURE	37	break	25769803793	BLOCK	35	tmp0 = items.__iter__() while ... : ...
+CFG	flow_cases.py	flow_cases.py:<module>.login	55834574848	FIELD_IDENTIFIER	2	find	30064771074	CALL	2	db.find
+CFG	flow_cases.py	flow_cases.py:<module>.managed	55834574849	FIELD_IDENTIFIER	22	read	30064771087	CALL	22	handle.read
+CFG	flow_cases.py	flow_cases.py:<module>.managed	55834574850	FIELD_IDENTIFIER	21	__enter__	30064771092	CALL	21	manager_tmp0.__enter__
+CFG	flow_cases.py	flow_cases.py:<module>.managed	55834574851	FIELD_IDENTIFIER	21	__exit__	30064771094	CALL	21	manager_tmp0.__exit__
+CFG	flow_cases.py	flow_cases.py:<module>.looped	55834574852	FIELD_IDENTIFIER	35	__iter__	30064771111	CALL	35	items.__iter__
+CFG	flow_cases.py	flow_cases.py:<module>.looped	55834574853	FIELD_IDENTIFIER	35	__next__	30064771114	CALL	35	tmp0.__next__
+CFG	flow_cases.py	flow_cases.py:<module>.Box.size<redefined>0	55834574854	FIELD_IDENTIFIER	59	_size	30064771131	CALL	59	self._size
+CFG	flow_cases.py	flow_cases.py:<module>.Box.size	55834574855	FIELD_IDENTIFIER	63	_size	30064771134	CALL	63	self._size
+CFG	flow_cases.py	flow_cases.py:<module>.Box.<body>	55834574856	FIELD_IDENTIFIER	61	setter	30064771136	CALL	61	size.setter
+CFG	flow_cases.py	flow_cases.py:<module>.Box.<metaClassCallHandler>	55834574857	FIELD_IDENTIFIER	56	<fakeNew>	30064771139	CALL	56	class Box<meta>(...).<fakeNew>
+CFG	flow_cases.py	flow_cases.py:<module>.Box.<metaClassCallHandler>	55834574858	FIELD_IDENTIFIER	56	__init__	30064771142	CALL	56	__newInstance.__init__
+CFG	flow_cases.py	flow_cases.py:<module>	68719476736	IDENTIFIER	1	open	176093659136	TYPE_REF	1	__builtins__.open
+DDG	flow_cases.py	flow_cases.py:<module>	68719476736	IDENTIFIER	1	open	30064771072	CALL	1	open = __builtins__.open	open
+DDG	flow_cases.py	flow_cases.py:<module>	68719476736	IDENTIFIER	1	open	68719476761	IDENTIFIER	21	open	open
+DDG	flow_cases.py	flow_cases.py:<module>	68719476736	IDENTIFIER	1	open	124554051584	METHOD_RETURN	1	RET	open
+CFG	flow_cases.py	flow_cases.py:<module>	68719476737	IDENTIFIER	1	property	176093659137	TYPE_REF	1	__builtins__.property
+DDG	flow_cases.py	flow_cases.py:<module>	68719476737	IDENTIFIER	1	property	30064771073	CALL	1	property = __builtins__.property	property
+DDG	flow_cases.py	flow_cases.py:<module>	68719476737	IDENTIFIER	1	property	68719476813	IDENTIFIER	57	property	property
+DDG	flow_cases.py	flow_cases.py:<module>	68719476737	IDENTIFIER	1	property	124554051584	METHOD_RETURN	1	RET	property
+CFG	flow_cases.py	flow_cases.py:<module>	68719476738	IDENTIFIER	1	login	120259084288	METHOD_REF	1	def login(...)
+DDG	flow_cases.py	flow_cases.py:<module>	68719476738	IDENTIFIER	1	login	30064771080	CALL	1	login = def login(...)	login
+DDG	flow_cases.py	flow_cases.py:<module>	68719476738	IDENTIFIER	1	login	124554051584	METHOD_RETURN	1	RET	login
+CFG	flow_cases.py	flow_cases.py:<module>.login	68719476739	IDENTIFIER	2	username	30064771075	CALL	2	db.find(username)
+DDG	flow_cases.py	flow_cases.py:<module>.login	68719476739	IDENTIFIER	2	username	115964116992	METHOD_PARAMETER_OUT	1	username	username
+DDG	flow_cases.py	flow_cases.py:<module>.login	68719476739	IDENTIFIER	2	username	68719476741	IDENTIFIER	2	db	username
+DDG	flow_cases.py	flow_cases.py:<module>.login	68719476739	IDENTIFIER	2	username	30064771075	CALL	2	db.find(username)	username
+DDG	flow_cases.py	flow_cases.py:<module>.login	68719476739	IDENTIFIER	2	username	124554051585	METHOD_RETURN	1	RET	username
+CFG	flow_cases.py	flow_cases.py:<module>.login	68719476740	IDENTIFIER	2	db	55834574848	FIELD_IDENTIFIER	2	find
+CFG	flow_cases.py	flow_cases.py:<module>.login	68719476741	IDENTIFIER	2	db	68719476739	IDENTIFIER	2	username
+DDG	flow_cases.py	flow_cases.py:<module>.login	68719476741	IDENTIFIER	2	db	68719476739	IDENTIFIER	2	username	db
+DDG	flow_cases.py	flow_cases.py:<module>.login	68719476741	IDENTIFIER	2	db	30064771075	CALL	2	db.find(username)	db
+DDG	flow_cases.py	flow_cases.py:<module>.login	68719476741	IDENTIFIER	2	db	124554051585	METHOD_RETURN	1	RET	db
+CFG	flow_cases.py	flow_cases.py:<module>.login	68719476742	IDENTIFIER	2	user	68719476740	IDENTIFIER	2	db
+DDG	flow_cases.py	flow_cases.py:<module>.login	68719476742	IDENTIFIER	2	user	68719476743	IDENTIFIER	3	user	user
+DDG	flow_cases.py	flow_cases.py:<module>.login	68719476742	IDENTIFIER	2	user	30064771076	CALL	2	user = db.find(username)	user
+CFG	flow_cases.py	flow_cases.py:<module>.login	68719476743	IDENTIFIER	3	user	90194313216	LITERAL	3	None
+DDG	flow_cases.py	flow_cases.py:<module>.login	68719476743	IDENTIFIER	3	user	30064771077	CALL	3	user is None	user
+DDG	flow_cases.py	flow_cases.py:<module>.login	68719476743	IDENTIFIER	3	user	68719476744	IDENTIFIER	5	user	user
+DDG	flow_cases.py	flow_cases.py:<module>.login	68719476743	IDENTIFIER	3	user	124554051585	METHOD_RETURN	1	RET	user
+CFG	flow_cases.py	flow_cases.py:<module>.login	68719476744	IDENTIFIER	5	user	30064771078	CALL	5	create(user)
+DDG	flow_cases.py	flow_cases.py:<module>.login	68719476744	IDENTIFIER	5	user	30064771078	CALL	5	create(user)	user
+CFG	flow_cases.py	flow_cases.py:<module>.login	68719476745	IDENTIFIER	5	create	68719476744	IDENTIFIER	5	user
+CFG	flow_cases.py	flow_cases.py:<module>.login	68719476746	IDENTIFIER	5	session	68719476745	IDENTIFIER	5	create
+DDG	flow_cases.py	flow_cases.py:<module>.login	68719476746	IDENTIFIER	5	session	30064771079	CALL	5	session = create(user)	session
+DDG	flow_cases.py	flow_cases.py:<module>.login	68719476746	IDENTIFIER	5	session	68719476747	IDENTIFIER	6	session	session
+CFG	flow_cases.py	flow_cases.py:<module>.login	68719476747	IDENTIFIER	6	session	141733920769	RETURN	6	return session
+DDG	flow_cases.py	flow_cases.py:<module>.login	68719476747	IDENTIFIER	6	session	141733920769	RETURN	6	return session	session
+CFG	flow_cases.py	flow_cases.py:<module>	68719476748	IDENTIFIER	9	guarded	120259084289	METHOD_REF	9	def guarded(...)
+DDG	flow_cases.py	flow_cases.py:<module>	68719476748	IDENTIFIER	9	guarded	30064771086	CALL	9	guarded = def guarded(...)	guarded
+DDG	flow_cases.py	flow_cases.py:<module>	68719476748	IDENTIFIER	9	guarded	124554051584	METHOD_RETURN	1	RET	guarded
+CFG	flow_cases.py	flow_cases.py:<module>.guarded	68719476749	IDENTIFIER	11	path	30064771081	CALL	11	read(path)
+DDG	flow_cases.py	flow_cases.py:<module>.guarded	68719476749	IDENTIFIER	11	path	30064771081	CALL	11	read(path)	path
+DDG	flow_cases.py	flow_cases.py:<module>.guarded	68719476749	IDENTIFIER	11	path	115964116993	METHOD_PARAMETER_OUT	9	path	path
+DDG	flow_cases.py	flow_cases.py:<module>.guarded	68719476749	IDENTIFIER	11	path	124554051586	METHOD_RETURN	9	RET	path
+CFG	flow_cases.py	flow_cases.py:<module>.guarded	68719476750	IDENTIFIER	11	read	68719476749	IDENTIFIER	11	path
+CFG	flow_cases.py	flow_cases.py:<module>.guarded	68719476751	IDENTIFIER	11	data	68719476750	IDENTIFIER	11	read
+DDG	flow_cases.py	flow_cases.py:<module>.guarded	68719476751	IDENTIFIER	11	data	30064771082	CALL	11	data = read(path)	data
+DDG	flow_cases.py	flow_cases.py:<module>.guarded	68719476751	IDENTIFIER	11	data	68719476755	IDENTIFIER	17	data	data
+DDG	flow_cases.py	flow_cases.py:<module>.guarded	68719476751	IDENTIFIER	11	data	124554051586	METHOD_RETURN	9	RET	data
+CFG	flow_cases.py	flow_cases.py:<module>.guarded	68719476752	IDENTIFIER	13	error	30064771083	CALL	13	log(error)
+DDG	flow_cases.py	flow_cases.py:<module>.guarded	68719476752	IDENTIFIER	13	error	30064771083	CALL	13	log(error)	error
+DDG	flow_cases.py	flow_cases.py:<module>.guarded	68719476752	IDENTIFIER	13	error	124554051586	METHOD_RETURN	9	RET	error
+CFG	flow_cases.py	flow_cases.py:<module>.guarded	68719476753	IDENTIFIER	13	log	68719476752	IDENTIFIER	13	error
+CFG	flow_cases.py	flow_cases.py:<module>.guarded	68719476754	IDENTIFIER	16	close	30064771085	CALL	16	close()
+CFG	flow_cases.py	flow_cases.py:<module>.guarded	68719476755	IDENTIFIER	17	data	141733920770	RETURN	17	return data
+DDG	flow_cases.py	flow_cases.py:<module>.guarded	68719476755	IDENTIFIER	17	data	141733920770	RETURN	17	return data	data
+CFG	flow_cases.py	flow_cases.py:<module>	68719476756	IDENTIFIER	20	managed	120259084290	METHOD_REF	20	def managed(...)
+DDG	flow_cases.py	flow_cases.py:<module>	68719476756	IDENTIFIER	20	managed	30064771100	CALL	20	managed = def managed(...)	managed
+DDG	flow_cases.py	flow_cases.py:<module>	68719476756	IDENTIFIER	20	managed	124554051584	METHOD_RETURN	1	RET	managed
+CFG	flow_cases.py	flow_cases.py:<module>.managed	68719476757	IDENTIFIER	22	handle	55834574849	FIELD_IDENTIFIER	22	read
+CFG	flow_cases.py	flow_cases.py:<module>.managed	68719476758	IDENTIFIER	22	handle	30064771088	CALL	22	handle.read()
+DDG	flow_cases.py	flow_cases.py:<module>.managed	68719476758	IDENTIFIER	22	handle	30064771088	CALL	22	handle.read()	handle
+DDG	flow_cases.py	flow_cases.py:<module>.managed	68719476758	IDENTIFIER	22	handle	124554051587	METHOD_RETURN	20	RET	handle
+CFG	flow_cases.py	flow_cases.py:<module>.managed	68719476759	IDENTIFIER	22	content	68719476757	IDENTIFIER	22	handle
+DDG	flow_cases.py	flow_cases.py:<module>.managed	68719476759	IDENTIFIER	22	content	68719476774	IDENTIFIER	23	content	content
+DDG	flow_cases.py	flow_cases.py:<module>.managed	68719476759	IDENTIFIER	22	content	30064771089	CALL	22	content = handle.read()	content
+DDG	flow_cases.py	flow_cases.py:<module>.managed	68719476759	IDENTIFIER	22	content	124554051587	METHOD_RETURN	20	RET	content
+CFG	flow_cases.py	flow_cases.py:<module>.managed	68719476760	IDENTIFIER	21	path	30064771090	CALL	21	open(path)
+DDG	flow_cases.py	flow_cases.py:<module>.managed	68719476760	IDENTIFIER	21	path	30064771090	CALL	21	open(path)	path
+DDG	flow_cases.py	flow_cases.py:<module>.managed	68719476760	IDENTIFIER	21	path	115964116994	METHOD_PARAMETER_OUT	20	path	path
+DDG	flow_cases.py	flow_cases.py:<module>.managed	68719476760	IDENTIFIER	21	path	124554051587	METHOD_RETURN	20	RET	path
+CFG	flow_cases.py	flow_cases.py:<module>.managed	68719476761	IDENTIFIER	21	open	68719476760	IDENTIFIER	21	path
+CFG	flow_cases.py	flow_cases.py:<module>.managed	68719476762	IDENTIFIER	21	manager_tmp0	68719476761	IDENTIFIER	21	open
+DDG	flow_cases.py	flow_cases.py:<module>.managed	68719476762	IDENTIFIER	21	manager_tmp0	68719476763	IDENTIFIER	21	manager_tmp0	manager_tmp0
+DDG	flow_cases.py	flow_cases.py:<module>.managed	68719476762	IDENTIFIER	21	manager_tmp0	30064771094	CALL	21	manager_tmp0.__exit__	manager_tmp0
+DDG	flow_cases.py	flow_cases.py:<module>.managed	68719476762	IDENTIFIER	21	manager_tmp0	30064771091	CALL	21	manager_tmp0 = open(path)	manager_tmp0
+DDG	flow_cases.py	flow_cases.py:<module>.managed	68719476762	IDENTIFIER	21	manager_tmp0	30064771092	CALL	21	manager_tmp0.__enter__	manager_tmp0
+DDG	flow_cases.py	flow_cases.py:<module>.managed	68719476762	IDENTIFIER	21	manager_tmp0	68719476765	IDENTIFIER	21	manager_tmp0	manager_tmp0
+DDG	flow_cases.py	flow_cases.py:<module>.managed	68719476762	IDENTIFIER	21	manager_tmp0	68719476768	IDENTIFIER	21	manager_tmp0	manager_tmp0
+CFG	flow_cases.py	flow_cases.py:<module>.managed	68719476763	IDENTIFIER	21	manager_tmp0	55834574850	FIELD_IDENTIFIER	21	__enter__
+CFG	flow_cases.py	flow_cases.py:<module>.managed	68719476764	IDENTIFIER	21	enter_tmp0	68719476763	IDENTIFIER	21	manager_tmp0
+DDG	flow_cases.py	flow_cases.py:<module>.managed	68719476764	IDENTIFIER	21	enter_tmp0	30064771093	CALL	21	enter_tmp0 = manager_tmp0.__enter__	enter_tmp0
+DDG	flow_cases.py	flow_cases.py:<module>.managed	68719476764	IDENTIFIER	21	enter_tmp0	124554051587	METHOD_RETURN	20	RET	enter_tmp0
+CFG	flow_cases.py	flow_cases.py:<module>.managed	68719476765	IDENTIFIER	21	manager_tmp0	55834574851	FIELD_IDENTIFIER	21	__exit__
+CFG	flow_cases.py	flow_cases.py:<module>.managed	68719476766	IDENTIFIER	21	exit_tmp0	68719476765	IDENTIFIER	21	manager_tmp0
+DDG	flow_cases.py	flow_cases.py:<module>.managed	68719476766	IDENTIFIER	21	exit_tmp0	30064771095	CALL	21	exit_tmp0 = manager_tmp0.__exit__	exit_tmp0
+DDG	flow_cases.py	flow_cases.py:<module>.managed	68719476766	IDENTIFIER	21	exit_tmp0	124554051587	METHOD_RETURN	20	RET	exit_tmp0
+CFG	flow_cases.py	flow_cases.py:<module>.managed	68719476767	IDENTIFIER	21	enter_tmp0	68719476768	IDENTIFIER	21	manager_tmp0
+CFG	flow_cases.py	flow_cases.py:<module>.managed	68719476768	IDENTIFIER	21	manager_tmp0	30064771096	CALL	21	enter_tmp0()
+DDG	flow_cases.py	flow_cases.py:<module>.managed	68719476768	IDENTIFIER	21	manager_tmp0	68719476773	IDENTIFIER	21	manager_tmp0	manager_tmp0
+DDG	flow_cases.py	flow_cases.py:<module>.managed	68719476768	IDENTIFIER	21	manager_tmp0	30064771096	CALL	21	enter_tmp0()	manager_tmp0
+CFG	flow_cases.py	flow_cases.py:<module>.managed	68719476769	IDENTIFIER	21	value_tmp0	68719476767	IDENTIFIER	21	enter_tmp0
+DDG	flow_cases.py	flow_cases.py:<module>.managed	68719476769	IDENTIFIER	21	value_tmp0	68719476770	IDENTIFIER	21	value_tmp0	value_tmp0
+DDG	flow_cases.py	flow_cases.py:<module>.managed	68719476769	IDENTIFIER	21	value_tmp0	30064771097	CALL	21	value_tmp0 = enter_tmp0()	value_tmp0
+CFG	flow_cases.py	flow_cases.py:<module>.managed	68719476770	IDENTIFIER	21	value_tmp0	30064771098	CALL	21	handle = value_tmp0
+DDG	flow_cases.py	flow_cases.py:<module>.managed	68719476770	IDENTIFIER	21	value_tmp0	68719476771	IDENTIFIER	21	handle	value_tmp0
+DDG	flow_cases.py	flow_cases.py:<module>.managed	68719476770	IDENTIFIER	21	value_tmp0	30064771098	CALL	21	handle = value_tmp0	value_tmp0
+DDG	flow_cases.py	flow_cases.py:<module>.managed	68719476770	IDENTIFIER	21	value_tmp0	124554051587	METHOD_RETURN	20	RET	value_tmp0
+CFG	flow_cases.py	flow_cases.py:<module>.managed	68719476771	IDENTIFIER	21	handle	68719476770	IDENTIFIER	21	value_tmp0
+DDG	flow_cases.py	flow_cases.py:<module>.managed	68719476771	IDENTIFIER	21	handle	68719476758	IDENTIFIER	22	handle	handle
+DDG	flow_cases.py	flow_cases.py:<module>.managed	68719476771	IDENTIFIER	21	handle	30064771098	CALL	21	handle = value_tmp0	handle
+DDG	flow_cases.py	flow_cases.py:<module>.managed	68719476771	IDENTIFIER	21	handle	68719476757	IDENTIFIER	22	handle	handle
+CFG	flow_cases.py	flow_cases.py:<module>.managed	68719476772	IDENTIFIER	21	__exit__	68719476773	IDENTIFIER	21	manager_tmp0
+CFG	flow_cases.py	flow_cases.py:<module>.managed	68719476772	IDENTIFIER	21	__exit__	68719476773	IDENTIFIER	21	manager_tmp0
+CFG	flow_cases.py	flow_cases.py:<module>.managed	68719476773	IDENTIFIER	21	manager_tmp0	30064771099	CALL	21	__exit__()
+CFG	flow_cases.py	flow_cases.py:<module>.managed	68719476773	IDENTIFIER	21	manager_tmp0	30064771099	CALL	21	__exit__()
+DDG	flow_cases.py	flow_cases.py:<module>.managed	68719476773	IDENTIFIER	21	manager_tmp0	30064771099	CALL	21	__exit__()	manager_tmp0
+DDG	flow_cases.py	flow_cases.py:<module>.managed	68719476773	IDENTIFIER	21	manager_tmp0	124554051587	METHOD_RETURN	20	RET	manager_tmp0
+CFG	flow_cases.py	flow_cases.py:<module>.managed	68719476774	IDENTIFIER	23	content	141733920771	RETURN	23	return content
+DDG	flow_cases.py	flow_cases.py:<module>.managed	68719476774	IDENTIFIER	23	content	141733920771	RETURN	23	return content	content
+CFG	flow_cases.py	flow_cases.py:<module>	68719476775	IDENTIFIER	26	checked	120259084291	METHOD_REF	26	def checked(...)
+DDG	flow_cases.py	flow_cases.py:<module>	68719476775	IDENTIFIER	26	checked	30064771106	CALL	26	checked = def checked(...)	checked
+DDG	flow_cases.py	flow_cases.py:<module>	68719476775	IDENTIFIER	26	checked	124554051584	METHOD_RETURN	1	RET	checked
+CFG	flow_cases.py	flow_cases.py:<module>.checked	68719476776	IDENTIFIER	27	value	90194313218	LITERAL	27	0
+DDG	flow_cases.py	flow_cases.py:<module>.checked	68719476776	IDENTIFIER	27	value	30064771101	CALL	27	value < 0	value
+DDG	flow_cases.py	flow_cases.py:<module>.checked	68719476776	IDENTIFIER	27	value	68719476779	IDENTIFIER	29	value	value
+DDG	flow_cases.py	flow_cases.py:<module>.checked	68719476776	IDENTIFIER	27	value	68719476777	IDENTIFIER	28	value	value
+CFG	flow_cases.py	flow_cases.py:<module>.checked	68719476777	IDENTIFIER	28	value	30064771102	CALL	28	ValueError(value)
+DDG	flow_cases.py	flow_cases.py:<module>.checked	68719476777	IDENTIFIER	28	value	68719476779	IDENTIFIER	29	value	value
+DDG	flow_cases.py	flow_cases.py:<module>.checked	68719476777	IDENTIFIER	28	value	30064771102	CALL	28	ValueError(value)	value
+CFG	flow_cases.py	flow_cases.py:<module>.checked	68719476778	IDENTIFIER	28	ValueError	68719476777	IDENTIFIER	28	value
+CFG	flow_cases.py	flow_cases.py:<module>.checked	68719476779	IDENTIFIER	29	value	90194313219	LITERAL	29	1
+DDG	flow_cases.py	flow_cases.py:<module>.checked	68719476779	IDENTIFIER	29	value	30064771104	CALL	29	value + 1	value
+DDG	flow_cases.py	flow_cases.py:<module>.checked	68719476779	IDENTIFIER	29	value	115964116995	METHOD_PARAMETER_OUT	26	value	value
+DDG	flow_cases.py	flow_cases.py:<module>.checked	68719476779	IDENTIFIER	29	value	124554051588	METHOD_RETURN	26	RET	value
+CFG	flow_cases.py	flow_cases.py:<module>.checked	68719476780	IDENTIFIER	29	result	68719476779	IDENTIFIER	29	value
+DDG	flow_cases.py	flow_cases.py:<module>.checked	68719476780	IDENTIFIER	29	result	30064771105	CALL	29	result = value + 1	result
+DDG	flow_cases.py	flow_cases.py:<module>.checked	68719476780	IDENTIFIER	29	result	68719476781	IDENTIFIER	30	result	result
+DDG	flow_cases.py	flow_cases.py:<module>.checked	68719476780	IDENTIFIER	29	result	124554051588	METHOD_RETURN	26	RET	result
+CFG	flow_cases.py	flow_cases.py:<module>.checked	68719476781	IDENTIFIER	30	result	141733920772	RETURN	30	return result
+DDG	flow_cases.py	flow_cases.py:<module>.checked	68719476781	IDENTIFIER	30	result	141733920772	RETURN	30	return result	result
+CFG	flow_cases.py	flow_cases.py:<module>	68719476782	IDENTIFIER	33	looped	120259084292	METHOD_REF	33	def looped(...)
+DDG	flow_cases.py	flow_cases.py:<module>	68719476782	IDENTIFIER	33	looped	30064771117	CALL	33	looped = def looped(...)	looped
+DDG	flow_cases.py	flow_cases.py:<module>	68719476782	IDENTIFIER	33	looped	124554051584	METHOD_RETURN	1	RET	looped
+CFG	flow_cases.py	flow_cases.py:<module>.looped	68719476783	IDENTIFIER	34	total	90194313220	LITERAL	34	0
+DDG	flow_cases.py	flow_cases.py:<module>.looped	68719476783	IDENTIFIER	34	total	68719476785	IDENTIFIER	38	total	total
+DDG	flow_cases.py	flow_cases.py:<module>.looped	68719476783	IDENTIFIER	34	total	30064771107	CALL	34	total = 0	total
+DDG	flow_cases.py	flow_cases.py:<module>.looped	68719476783	IDENTIFIER	34	total	68719476794	IDENTIFIER	39	total	total
+DDG	flow_cases.py	flow_cases.py:<module>.looped	68719476783	IDENTIFIER	34	total	124554051589	METHOD_RETURN	33	RET	total
+CFG	flow_cases.py	flow_cases.py:<module>.looped	68719476784	IDENTIFIER	36	item	90194313221	LITERAL	36	None
+DDG	flow_cases.py	flow_cases.py:<module>.looped	68719476784	IDENTIFIER	36	item	30064771108	CALL	36	item is None	item
+DDG	flow_cases.py	flow_cases.py:<module>.looped	68719476784	IDENTIFIER	36	item	68719476786	IDENTIFIER	38	item	item
+DDG	flow_cases.py	flow_cases.py:<module>.looped	68719476784	IDENTIFIER	36	item	124554051589	METHOD_RETURN	33	RET	item
+CFG	flow_cases.py	flow_cases.py:<module>.looped	68719476785	IDENTIFIER	38	total	68719476786	IDENTIFIER	38	item
+DDG	flow_cases.py	flow_cases.py:<module>.looped	68719476785	IDENTIFIER	38	total	30064771109	CALL	38	total + item	total
+CFG	flow_cases.py	flow_cases.py:<module>.looped	68719476786	IDENTIFIER	38	item	30064771109	CALL	38	total + item
+DDG	flow_cases.py	flow_cases.py:<module>.looped	68719476786	IDENTIFIER	38	item	30064771109	CALL	38	total + item	item
+DDG	flow_cases.py	flow_cases.py:<module>.looped	68719476786	IDENTIFIER	38	item	124554051589	METHOD_RETURN	33	RET	item
+CFG	flow_cases.py	flow_cases.py:<module>.looped	68719476787	IDENTIFIER	38	total	68719476785	IDENTIFIER	38	total
+DDG	flow_cases.py	flow_cases.py:<module>.looped	68719476787	IDENTIFIER	38	total	68719476785	IDENTIFIER	38	total	total
+DDG	flow_cases.py	flow_cases.py:<module>.looped	68719476787	IDENTIFIER	38	total	68719476794	IDENTIFIER	39	total	total
+DDG	flow_cases.py	flow_cases.py:<module>.looped	68719476787	IDENTIFIER	38	total	30064771110	CALL	38	total = total + item	total
+DDG	flow_cases.py	flow_cases.py:<module>.looped	68719476787	IDENTIFIER	38	total	124554051589	METHOD_RETURN	33	RET	total
+CFG	flow_cases.py	flow_cases.py:<module>.looped	68719476788	IDENTIFIER	35	items	55834574852	FIELD_IDENTIFIER	35	__iter__
+CFG	flow_cases.py	flow_cases.py:<module>.looped	68719476789	IDENTIFIER	35	items	30064771112	CALL	35	items.__iter__()
+DDG	flow_cases.py	flow_cases.py:<module>.looped	68719476789	IDENTIFIER	35	items	30064771112	CALL	35	items.__iter__()	items
+DDG	flow_cases.py	flow_cases.py:<module>.looped	68719476789	IDENTIFIER	35	items	115964116996	METHOD_PARAMETER_OUT	33	items	items
+DDG	flow_cases.py	flow_cases.py:<module>.looped	68719476789	IDENTIFIER	35	items	124554051589	METHOD_RETURN	33	RET	items
+CFG	flow_cases.py	flow_cases.py:<module>.looped	68719476790	IDENTIFIER	35	tmp0	68719476788	IDENTIFIER	35	items
+DDG	flow_cases.py	flow_cases.py:<module>.looped	68719476790	IDENTIFIER	35	tmp0	68719476792	IDENTIFIER	35	tmp0	tmp0
+DDG	flow_cases.py	flow_cases.py:<module>.looped	68719476790	IDENTIFIER	35	tmp0	30064771113	CALL	35	tmp0 = items.__iter__()	tmp0
+DDG	flow_cases.py	flow_cases.py:<module>.looped	68719476790	IDENTIFIER	35	tmp0	68719476791	IDENTIFIER	35	tmp0	tmp0
+DDG	flow_cases.py	flow_cases.py:<module>.looped	68719476790	IDENTIFIER	35	tmp0	124554051589	METHOD_RETURN	33	RET	tmp0
+CFG	flow_cases.py	flow_cases.py:<module>.looped	68719476791	IDENTIFIER	35	tmp0	55834574853	FIELD_IDENTIFIER	35	__next__
+CFG	flow_cases.py	flow_cases.py:<module>.looped	68719476792	IDENTIFIER	35	tmp0	30064771115	CALL	35	tmp0.__next__()
+DDG	flow_cases.py	flow_cases.py:<module>.looped	68719476792	IDENTIFIER	35	tmp0	30064771115	CALL	35	tmp0.__next__()	tmp0
+DDG	flow_cases.py	flow_cases.py:<module>.looped	68719476792	IDENTIFIER	35	tmp0	68719476791	IDENTIFIER	35	tmp0	tmp0
+DDG	flow_cases.py	flow_cases.py:<module>.looped	68719476792	IDENTIFIER	35	tmp0	124554051589	METHOD_RETURN	33	RET	tmp0
+CFG	flow_cases.py	flow_cases.py:<module>.looped	68719476793	IDENTIFIER	35	item	68719476791	IDENTIFIER	35	tmp0
+DDG	flow_cases.py	flow_cases.py:<module>.looped	68719476793	IDENTIFIER	35	item	68719476784	IDENTIFIER	36	item	item
+DDG	flow_cases.py	flow_cases.py:<module>.looped	68719476793	IDENTIFIER	35	item	30064771116	CALL	35	item = tmp0.__next__()	item
+CFG	flow_cases.py	flow_cases.py:<module>.looped	68719476794	IDENTIFIER	39	total	141733920773	RETURN	39	return total
+DDG	flow_cases.py	flow_cases.py:<module>.looped	68719476794	IDENTIFIER	39	total	141733920773	RETURN	39	return total	total
+CFG	flow_cases.py	flow_cases.py:<module>	68719476795	IDENTIFIER	42	matched	120259084293	METHOD_REF	42	def matched(...)
+DDG	flow_cases.py	flow_cases.py:<module>	68719476795	IDENTIFIER	42	matched	30064771122	CALL	42	matched = def matched(...)	matched
+DDG	flow_cases.py	flow_cases.py:<module>	68719476795	IDENTIFIER	42	matched	124554051584	METHOD_RETURN	1	RET	matched
+CFG	flow_cases.py	flow_cases.py:<module>.matched	68719476796	IDENTIFIER	43	value	81604378624	JUMP_TARGET	-1	case 1
+CFG	flow_cases.py	flow_cases.py:<module>.matched	68719476796	IDENTIFIER	43	value	81604378625	JUMP_TARGET	-1	default
+CDG	flow_cases.py	flow_cases.py:<module>.matched	68719476796	IDENTIFIER	43	value	30064771118	CALL	45	one()
+CDG	flow_cases.py	flow_cases.py:<module>.matched	68719476796	IDENTIFIER	43	value	30064771119	CALL	45	result = one()
+CDG	flow_cases.py	flow_cases.py:<module>.matched	68719476796	IDENTIFIER	43	value	30064771120	CALL	47	other()
+CDG	flow_cases.py	flow_cases.py:<module>.matched	68719476796	IDENTIFIER	43	value	30064771121	CALL	47	result = other()
+CDG	flow_cases.py	flow_cases.py:<module>.matched	68719476796	IDENTIFIER	43	value	68719476799	IDENTIFIER	47	other
+CDG	flow_cases.py	flow_cases.py:<module>.matched	68719476796	IDENTIFIER	43	value	68719476800	IDENTIFIER	47	result
+CDG	flow_cases.py	flow_cases.py:<module>.matched	68719476796	IDENTIFIER	43	value	81604378624	JUMP_TARGET	-1	case 1
+CDG	flow_cases.py	flow_cases.py:<module>.matched	68719476796	IDENTIFIER	43	value	68719476797	IDENTIFIER	45	one
+CDG	flow_cases.py	flow_cases.py:<module>.matched	68719476796	IDENTIFIER	43	value	25769803795	BLOCK	44	result = one()
+CDG	flow_cases.py	flow_cases.py:<module>.matched	68719476796	IDENTIFIER	43	value	81604378625	JUMP_TARGET	-1	default
+CDG	flow_cases.py	flow_cases.py:<module>.matched	68719476796	IDENTIFIER	43	value	68719476798	IDENTIFIER	45	result
+CDG	flow_cases.py	flow_cases.py:<module>.matched	68719476796	IDENTIFIER	43	value	25769803796	BLOCK	46	result = other()
+CFG	flow_cases.py	flow_cases.py:<module>.matched	68719476797	IDENTIFIER	45	one	30064771118	CALL	45	one()
+CFG	flow_cases.py	flow_cases.py:<module>.matched	68719476798	IDENTIFIER	45	result	68719476797	IDENTIFIER	45	one
+DDG	flow_cases.py	flow_cases.py:<module>.matched	68719476798	IDENTIFIER	45	result	68719476801	IDENTIFIER	48	result	result
+DDG	flow_cases.py	flow_cases.py:<module>.matched	68719476798	IDENTIFIER	45	result	30064771119	CALL	45	result = one()	result
+DDG	flow_cases.py	flow_cases.py:<module>.matched	68719476798	IDENTIFIER	45	result	124554051590	METHOD_RETURN	42	RET	result
+CFG	flow_cases.py	flow_cases.py:<module>.matched	68719476799	IDENTIFIER	47	other	30064771120	CALL	47	other()
+CFG	flow_cases.py	flow_cases.py:<module>.matched	68719476800	IDENTIFIER	47	result	68719476799	IDENTIFIER	47	other
+DDG	flow_cases.py	flow_cases.py:<module>.matched	68719476800	IDENTIFIER	47	result	68719476801	IDENTIFIER	48	result	result
+DDG	flow_cases.py	flow_cases.py:<module>.matched	68719476800	IDENTIFIER	47	result	30064771121	CALL	47	result = other()	result
+DDG	flow_cases.py	flow_cases.py:<module>.matched	68719476800	IDENTIFIER	47	result	124554051590	METHOD_RETURN	42	RET	result
+CFG	flow_cases.py	flow_cases.py:<module>.matched	68719476801	IDENTIFIER	48	result	141733920774	RETURN	48	return result
+DDG	flow_cases.py	flow_cases.py:<module>.matched	68719476801	IDENTIFIER	48	result	141733920774	RETURN	48	return result	result
+CFG	flow_cases.py	flow_cases.py:<module>	68719476802	IDENTIFIER	51	unpacked	120259084294	METHOD_REF	51	def unpacked(...)
+DDG	flow_cases.py	flow_cases.py:<module>	68719476802	IDENTIFIER	51	unpacked	30064771130	CALL	51	unpacked = def unpacked(...)	unpacked
+DDG	flow_cases.py	flow_cases.py:<module>	68719476802	IDENTIFIER	51	unpacked	124554051584	METHOD_RETURN	1	RET	unpacked
+CFG	flow_cases.py	flow_cases.py:<module>.unpacked	68719476803	IDENTIFIER	52	pair	30064771123	CALL	52	pair()
+CFG	flow_cases.py	flow_cases.py:<module>.unpacked	68719476804	IDENTIFIER	52	tmp0	68719476803	IDENTIFIER	52	pair
+DDG	flow_cases.py	flow_cases.py:<module>.unpacked	68719476804	IDENTIFIER	52	tmp0	30064771125	CALL	52	tmp0[0]	tmp0
+DDG	flow_cases.py	flow_cases.py:<module>.unpacked	68719476804	IDENTIFIER	52	tmp0	30064771127	CALL	52	tmp0[1]	tmp0
+DDG	flow_cases.py	flow_cases.py:<module>.unpacked	68719476804	IDENTIFIER	52	tmp0	30064771124	CALL	52	tmp0 = pair()	tmp0
+DDG	flow_cases.py	flow_cases.py:<module>.unpacked	68719476804	IDENTIFIER	52	tmp0	68719476806	IDENTIFIER	52	tmp0	tmp0
+DDG	flow_cases.py	flow_cases.py:<module>.unpacked	68719476804	IDENTIFIER	52	tmp0	68719476808	IDENTIFIER	52	tmp0	tmp0
+DDG	flow_cases.py	flow_cases.py:<module>.unpacked	68719476804	IDENTIFIER	52	tmp0	124554051591	METHOD_RETURN	51	RET	tmp0
+CFG	flow_cases.py	flow_cases.py:<module>.unpacked	68719476805	IDENTIFIER	52	x	68719476806	IDENTIFIER	52	tmp0
+DDG	flow_cases.py	flow_cases.py:<module>.unpacked	68719476805	IDENTIFIER	52	x	30064771126	CALL	52	x = tmp0[0]	x
+DDG	flow_cases.py	flow_cases.py:<module>.unpacked	68719476805	IDENTIFIER	52	x	68719476809	IDENTIFIER	53	x	x
+CFG	flow_cases.py	flow_cases.py:<module>.unpacked	68719476806	IDENTIFIER	52	tmp0	90194313222	LITERAL	52	0
+CFG	flow_cases.py	flow_cases.py:<module>.unpacked	68719476807	IDENTIFIER	52	y	68719476808	IDENTIFIER	52	tmp0
+DDG	flow_cases.py	flow_cases.py:<module>.unpacked	68719476807	IDENTIFIER	52	y	30064771128	CALL	52	y = tmp0[1]	y
+DDG	flow_cases.py	flow_cases.py:<module>.unpacked	68719476807	IDENTIFIER	52	y	124554051591	METHOD_RETURN	51	RET	y
+CFG	flow_cases.py	flow_cases.py:<module>.unpacked	68719476808	IDENTIFIER	52	tmp0	90194313223	LITERAL	52	1
+CFG	flow_cases.py	flow_cases.py:<module>.unpacked	68719476809	IDENTIFIER	53	x	30064771129	CALL	53	use(x)
+DDG	flow_cases.py	flow_cases.py:<module>.unpacked	68719476809	IDENTIFIER	53	x	30064771129	CALL	53	use(x)	x
+DDG	flow_cases.py	flow_cases.py:<module>.unpacked	68719476809	IDENTIFIER	53	x	124554051591	METHOD_RETURN	51	RET	x
+CFG	flow_cases.py	flow_cases.py:<module>.unpacked	68719476810	IDENTIFIER	53	use	68719476809	IDENTIFIER	53	x
+CFG	flow_cases.py	flow_cases.py:<module>.Box.<body>	68719476811	IDENTIFIER	58	size	68719476813	IDENTIFIER	57	property
+DDG	flow_cases.py	flow_cases.py:<module>.Box.<body>	68719476811	IDENTIFIER	58	size	30064771133	CALL	58	size = property(def size(...))	size
+DDG	flow_cases.py	flow_cases.py:<module>.Box.<body>	68719476811	IDENTIFIER	58	size	68719476817	IDENTIFIER	61	size	size
+CFG	flow_cases.py	flow_cases.py:<module>.Box.size<redefined>0	68719476812	IDENTIFIER	59	self	55834574854	FIELD_IDENTIFIER	59	_size
+CFG	flow_cases.py	flow_cases.py:<module>.Box.<body>	68719476813	IDENTIFIER	57	property	120259084296	METHOD_REF	58	def size(...)
+CFG	flow_cases.py	flow_cases.py:<module>.Box.<body>	68719476814	IDENTIFIER	62	size	68719476817	IDENTIFIER	61	size
+DDG	flow_cases.py	flow_cases.py:<module>.Box.<body>	68719476814	IDENTIFIER	62	size	30064771138	CALL	62	size = size.setter(def size(...))	size
+DDG	flow_cases.py	flow_cases.py:<module>.Box.<body>	68719476814	IDENTIFIER	62	size	124554051592	METHOD_RETURN	56	RET	size
+CFG	flow_cases.py	flow_cases.py:<module>.Box.size	68719476815	IDENTIFIER	63	value	30064771135	CALL	63	self._size = value
+DDG	flow_cases.py	flow_cases.py:<module>.Box.size	68719476815	IDENTIFIER	63	value	115964117001	METHOD_PARAMETER_OUT	62	value	value
+DDG	flow_cases.py	flow_cases.py:<module>.Box.size	68719476815	IDENTIFIER	63	value	30064771134	CALL	63	self._size	value
+DDG	flow_cases.py	flow_cases.py:<module>.Box.size	68719476815	IDENTIFIER	63	value	30064771135	CALL	63	self._size = value	value
+DDG	flow_cases.py	flow_cases.py:<module>.Box.size	68719476815	IDENTIFIER	63	value	124554051594	METHOD_RETURN	62	RET	value
+CFG	flow_cases.py	flow_cases.py:<module>.Box.size	68719476816	IDENTIFIER	63	self	55834574855	FIELD_IDENTIFIER	63	_size
+CFG	flow_cases.py	flow_cases.py:<module>.Box.<body>	68719476817	IDENTIFIER	61	size	55834574856	FIELD_IDENTIFIER	61	setter
+CFG	flow_cases.py	flow_cases.py:<module>.Box.<metaClassCallHandler>	68719476818	IDENTIFIER	56	__newInstance	176093659138	TYPE_REF	56	class Box<meta>(...)
+DDG	flow_cases.py	flow_cases.py:<module>.Box.<metaClassCallHandler>	68719476818	IDENTIFIER	56	__newInstance	30064771141	CALL	56	__newInstance = class Box<meta>(...).<fakeNew>()	__newInstance
+DDG	flow_cases.py	flow_cases.py:<module>.Box.<metaClassCallHandler>	68719476818	IDENTIFIER	56	__newInstance	68719476820	IDENTIFIER	56	__newInstance	__newInstance
+DDG	flow_cases.py	flow_cases.py:<module>.Box.<metaClassCallHandler>	68719476818	IDENTIFIER	56	__newInstance	68719476821	IDENTIFIER	56	__newInstance	__newInstance
+CFG	flow_cases.py	flow_cases.py:<module>.Box.<metaClassCallHandler>	68719476820	IDENTIFIER	56	__newInstance	55834574858	FIELD_IDENTIFIER	56	__init__
+CFG	flow_cases.py	flow_cases.py:<module>.Box.<metaClassCallHandler>	68719476821	IDENTIFIER	56	__newInstance	30064771143	CALL	56	__newInstance.__init__()
+DDG	flow_cases.py	flow_cases.py:<module>.Box.<metaClassCallHandler>	68719476821	IDENTIFIER	56	__newInstance	30064771143	CALL	56	__newInstance.__init__()	__newInstance
+DDG	flow_cases.py	flow_cases.py:<module>.Box.<metaClassCallHandler>	68719476821	IDENTIFIER	56	__newInstance	68719476822	IDENTIFIER	56	__newInstance	__newInstance
+DDG	flow_cases.py	flow_cases.py:<module>.Box.<metaClassCallHandler>	68719476821	IDENTIFIER	56	__newInstance	124554051595	METHOD_RETURN	56	RET	__newInstance
+CFG	flow_cases.py	flow_cases.py:<module>.Box.<metaClassCallHandler>	68719476822	IDENTIFIER	56	__newInstance	141733920776	RETURN	56	return __newInstance
+DDG	flow_cases.py	flow_cases.py:<module>.Box.<metaClassCallHandler>	68719476822	IDENTIFIER	56	__newInstance	141733920776	RETURN	56	return __newInstance	__newInstance
+CFG	flow_cases.py	flow_cases.py:<module>.Box.size<metaClassAdapter>	68719476823	IDENTIFIER	62	self	68719476824	IDENTIFIER	62	value
+DDG	flow_cases.py	flow_cases.py:<module>.Box.size<metaClassAdapter>	68719476823	IDENTIFIER	62	self	30064771145	CALL	62	size(self, value)	self
+DDG	flow_cases.py	flow_cases.py:<module>.Box.size<metaClassAdapter>	68719476823	IDENTIFIER	62	self	115964117004	METHOD_PARAMETER_OUT	62	self	self
+DDG	flow_cases.py	flow_cases.py:<module>.Box.size<metaClassAdapter>	68719476823	IDENTIFIER	62	self	124554051597	METHOD_RETURN	62	RET	self
+CFG	flow_cases.py	flow_cases.py:<module>.Box.size<metaClassAdapter>	68719476824	IDENTIFIER	62	value	30064771145	CALL	62	size(self, value)
+DDG	flow_cases.py	flow_cases.py:<module>.Box.size<metaClassAdapter>	68719476824	IDENTIFIER	62	value	30064771145	CALL	62	size(self, value)	value
+DDG	flow_cases.py	flow_cases.py:<module>.Box.size<metaClassAdapter>	68719476824	IDENTIFIER	62	value	115964117005	METHOD_PARAMETER_OUT	62	value	value
+DDG	flow_cases.py	flow_cases.py:<module>.Box.size<metaClassAdapter>	68719476824	IDENTIFIER	62	value	124554051597	METHOD_RETURN	62	RET	value
+CFG	flow_cases.py	flow_cases.py:<module>	68719476825	IDENTIFIER	56	Box	176093659140	TYPE_REF	56	class Box<meta>(...)
+DDG	flow_cases.py	flow_cases.py:<module>	68719476825	IDENTIFIER	56	Box	30064771146	CALL	56	Box = class Box<meta>(...)	Box
+DDG	flow_cases.py	flow_cases.py:<module>	68719476825	IDENTIFIER	56	Box	68719476826	IDENTIFIER	56	Box	Box
+CFG	flow_cases.py	flow_cases.py:<module>	68719476826	IDENTIFIER	56	Box	30064771147	CALL	56	def <body>(...)()
+DDG	flow_cases.py	flow_cases.py:<module>	68719476826	IDENTIFIER	56	Box	30064771147	CALL	56	def <body>(...)()	Box
+DDG	flow_cases.py	flow_cases.py:<module>	68719476826	IDENTIFIER	56	Box	124554051584	METHOD_RETURN	1	RET	Box
+CFG	flow_cases.py	flow_cases.py:<module>	68719476827	IDENTIFIER	66	one_line_guard	120259084298	METHOD_REF	66	def one_line_guard(...)
+DDG	flow_cases.py	flow_cases.py:<module>	68719476827	IDENTIFIER	66	one_line_guard	30064771150	CALL	66	one_line_guard = def one_line_guard(...)	one_line_guard
+DDG	flow_cases.py	flow_cases.py:<module>	68719476827	IDENTIFIER	66	one_line_guard	124554051584	METHOD_RETURN	1	RET	one_line_guard
+CFG	flow_cases.py	flow_cases.py:<module>.one_line_guard	68719476828	IDENTIFIER	67	a	68719476830	IDENTIFIER	67	ValueError
+CFG	flow_cases.py	flow_cases.py:<module>.one_line_guard	68719476828	IDENTIFIER	67	a	90194313224	LITERAL	68	1
+CDG	flow_cases.py	flow_cases.py:<module>.one_line_guard	68719476828	IDENTIFIER	67	a	30064771148	CALL	67	ValueError(a)
+CDG	flow_cases.py	flow_cases.py:<module>.one_line_guard	68719476828	IDENTIFIER	67	a	30064771149	CALL	67	raise ValueError(a)
+CDG	flow_cases.py	flow_cases.py:<module>.one_line_guard	68719476828	IDENTIFIER	67	a	68719476829	IDENTIFIER	67	a
+CDG	flow_cases.py	flow_cases.py:<module>.one_line_guard	68719476828	IDENTIFIER	67	a	68719476830	IDENTIFIER	67	ValueError
+CFG	flow_cases.py	flow_cases.py:<module>.one_line_guard	68719476829	IDENTIFIER	67	a	30064771148	CALL	67	ValueError(a)
+DDG	flow_cases.py	flow_cases.py:<module>.one_line_guard	68719476829	IDENTIFIER	67	a	30064771148	CALL	67	ValueError(a)	a
+DDG	flow_cases.py	flow_cases.py:<module>.one_line_guard	68719476829	IDENTIFIER	67	a	115964117006	METHOD_PARAMETER_OUT	66	a	a
+DDG	flow_cases.py	flow_cases.py:<module>.one_line_guard	68719476829	IDENTIFIER	67	a	124554051598	METHOD_RETURN	66	RET	a
+CFG	flow_cases.py	flow_cases.py:<module>.one_line_guard	68719476830	IDENTIFIER	67	ValueError	68719476829	IDENTIFIER	67	a
+CFG	flow_cases.py	flow_cases.py:<module>.matched	81604378624	JUMP_TARGET	-1	case 1	68719476798	IDENTIFIER	45	result
+CFG	flow_cases.py	flow_cases.py:<module>.matched	81604378625	JUMP_TARGET	-1	default	68719476800	IDENTIFIER	47	result
+CFG	flow_cases.py	flow_cases.py:<module>.login	90194313216	LITERAL	3	None	30064771077	CALL	3	user is None
+DDG	flow_cases.py	flow_cases.py:<module>.login	90194313216	LITERAL	3	None	68719476743	IDENTIFIER	3	user	None
+DDG	flow_cases.py	flow_cases.py:<module>.login	90194313216	LITERAL	3	None	30064771077	CALL	3	user is None	None
+CFG	flow_cases.py	flow_cases.py:<module>.login	90194313217	LITERAL	4	None	141733920768	RETURN	4	return None
+DDG	flow_cases.py	flow_cases.py:<module>.login	90194313217	LITERAL	4	None	141733920768	RETURN	4	return None	None
+CFG	flow_cases.py	flow_cases.py:<module>.checked	90194313218	LITERAL	27	0	30064771101	CALL	27	value < 0
+DDG	flow_cases.py	flow_cases.py:<module>.checked	90194313218	LITERAL	27	0	68719476776	IDENTIFIER	27	value	0
+DDG	flow_cases.py	flow_cases.py:<module>.checked	90194313218	LITERAL	27	0	30064771101	CALL	27	value < 0	0
+CFG	flow_cases.py	flow_cases.py:<module>.checked	90194313219	LITERAL	29	1	30064771104	CALL	29	value + 1
+DDG	flow_cases.py	flow_cases.py:<module>.checked	90194313219	LITERAL	29	1	30064771104	CALL	29	value + 1	1
+CFG	flow_cases.py	flow_cases.py:<module>.looped	90194313220	LITERAL	34	0	30064771107	CALL	34	total = 0
+DDG	flow_cases.py	flow_cases.py:<module>.looped	90194313220	LITERAL	34	0	68719476783	IDENTIFIER	34	total	0
+DDG	flow_cases.py	flow_cases.py:<module>.looped	90194313220	LITERAL	34	0	30064771107	CALL	34	total = 0	0
+CFG	flow_cases.py	flow_cases.py:<module>.looped	90194313221	LITERAL	36	None	30064771108	CALL	36	item is None
+DDG	flow_cases.py	flow_cases.py:<module>.looped	90194313221	LITERAL	36	None	68719476784	IDENTIFIER	36	item	None
+DDG	flow_cases.py	flow_cases.py:<module>.looped	90194313221	LITERAL	36	None	30064771108	CALL	36	item is None	None
+CFG	flow_cases.py	flow_cases.py:<module>.unpacked	90194313222	LITERAL	52	0	30064771125	CALL	52	tmp0[0]
+CFG	flow_cases.py	flow_cases.py:<module>.unpacked	90194313223	LITERAL	52	1	30064771127	CALL	52	tmp0[1]
+CFG	flow_cases.py	flow_cases.py:<module>.one_line_guard	90194313224	LITERAL	68	1	141733920779	RETURN	68	return 1
+DDG	flow_cases.py	flow_cases.py:<module>.one_line_guard	90194313224	LITERAL	68	1	141733920779	RETURN	68	return 1	1
+CFG	flow_cases.py	flow_cases.py:<module>	107374182400	METHOD	1	<empty>	68719476736	IDENTIFIER	1	open
+DDG	flow_cases.py	flow_cases.py:<module>	107374182400	METHOD	1	<empty>	176093659137	TYPE_REF	1	__builtins__.property	
+DDG	flow_cases.py	flow_cases.py:<module>	107374182400	METHOD	1	<empty>	176093659136	TYPE_REF	1	__builtins__.open	
+DDG	flow_cases.py	flow_cases.py:<module>	107374182400	METHOD	1	<empty>	120259084288	METHOD_REF	1	def login(...)	
+DDG	flow_cases.py	flow_cases.py:<module>	107374182400	METHOD	1	<empty>	120259084291	METHOD_REF	26	def checked(...)	
+DDG	flow_cases.py	flow_cases.py:<module>	107374182400	METHOD	1	<empty>	120259084289	METHOD_REF	9	def guarded(...)	
+DDG	flow_cases.py	flow_cases.py:<module>	107374182400	METHOD	1	<empty>	120259084298	METHOD_REF	66	def one_line_guard(...)	
+DDG	flow_cases.py	flow_cases.py:<module>	107374182400	METHOD	1	<empty>	120259084293	METHOD_REF	42	def matched(...)	
+DDG	flow_cases.py	flow_cases.py:<module>	107374182400	METHOD	1	<empty>	120259084292	METHOD_REF	33	def looped(...)	
+DDG	flow_cases.py	flow_cases.py:<module>	107374182400	METHOD	1	<empty>	176093659140	TYPE_REF	56	class Box<meta>(...)	
+DDG	flow_cases.py	flow_cases.py:<module>	107374182400	METHOD	1	<empty>	120259084295	METHOD_REF	56	def <body>(...)	
+DDG	flow_cases.py	flow_cases.py:<module>	107374182400	METHOD	1	<empty>	120259084290	METHOD_REF	20	def managed(...)	
+DDG	flow_cases.py	flow_cases.py:<module>	107374182400	METHOD	1	<empty>	25769803806	BLOCK	56	Box = class Box<meta>(...) def <body>(...)()	
+DDG	flow_cases.py	flow_cases.py:<module>	107374182400	METHOD	1	<empty>	120259084294	METHOD_REF	51	def unpacked(...)	
+DDG	flow_cases.py	flow_cases.py:<module>	107374182400	METHOD	1	<empty>	68719476826	IDENTIFIER	56	Box	
+CFG	flow_cases.py	flow_cases.py:<module>.login	107374182401	METHOD	1	<empty>	68719476742	IDENTIFIER	2	user
+DDG	flow_cases.py	flow_cases.py:<module>.login	107374182401	METHOD	1	<empty>	111669149696	METHOD_PARAMETER_IN	1	username	
+DDG	flow_cases.py	flow_cases.py:<module>.login	107374182401	METHOD	1	<empty>	68719476747	IDENTIFIER	6	session	
+DDG	flow_cases.py	flow_cases.py:<module>.login	107374182401	METHOD	1	<empty>	68719476744	IDENTIFIER	5	user	
+DDG	flow_cases.py	flow_cases.py:<module>.login	107374182401	METHOD	1	<empty>	68719476740	IDENTIFIER	2	db	
+DDG	flow_cases.py	flow_cases.py:<module>.login	107374182401	METHOD	1	<empty>	68719476745	IDENTIFIER	5	create	
+DDG	flow_cases.py	flow_cases.py:<module>.login	107374182401	METHOD	1	<empty>	90194313216	LITERAL	3	None	
+DDG	flow_cases.py	flow_cases.py:<module>.login	107374182401	METHOD	1	<empty>	68719476743	IDENTIFIER	3	user	
+DDG	flow_cases.py	flow_cases.py:<module>.login	107374182401	METHOD	1	<empty>	68719476741	IDENTIFIER	2	db	
+DDG	flow_cases.py	flow_cases.py:<module>.login	107374182401	METHOD	1	<empty>	68719476739	IDENTIFIER	2	username	
+DDG	flow_cases.py	flow_cases.py:<module>.login	107374182401	METHOD	1	<empty>	90194313217	LITERAL	4	None	
+DDG	flow_cases.py	flow_cases.py:<module>.login	107374182401	METHOD	1	<empty>	141733920768	RETURN	4	return None	
+CFG	flow_cases.py	flow_cases.py:<module>.guarded	107374182402	METHOD	9	<empty>	68719476751	IDENTIFIER	11	data
+DDG	flow_cases.py	flow_cases.py:<module>.guarded	107374182402	METHOD	9	<empty>	25769803780	BLOCK	12	log(error) raise	
+DDG	flow_cases.py	flow_cases.py:<module>.guarded	107374182402	METHOD	9	<empty>	68719476753	IDENTIFIER	13	log	
+DDG	flow_cases.py	flow_cases.py:<module>.guarded	107374182402	METHOD	9	<empty>	68719476752	IDENTIFIER	13	error	
+DDG	flow_cases.py	flow_cases.py:<module>.guarded	107374182402	METHOD	9	<empty>	68719476749	IDENTIFIER	11	path	
+DDG	flow_cases.py	flow_cases.py:<module>.guarded	107374182402	METHOD	9	<empty>	68719476755	IDENTIFIER	17	data	
+DDG	flow_cases.py	flow_cases.py:<module>.guarded	107374182402	METHOD	9	<empty>	111669149697	METHOD_PARAMETER_IN	9	path	
+DDG	flow_cases.py	flow_cases.py:<module>.guarded	107374182402	METHOD	9	<empty>	68719476754	IDENTIFIER	16	close	
+DDG	flow_cases.py	flow_cases.py:<module>.guarded	107374182402	METHOD	9	<empty>	30064771084	CALL	14	raise	
+DDG	flow_cases.py	flow_cases.py:<module>.guarded	107374182402	METHOD	9	<empty>	30064771085	CALL	16	close()	
+DDG	flow_cases.py	flow_cases.py:<module>.guarded	107374182402	METHOD	9	<empty>	68719476750	IDENTIFIER	11	read	
+CFG	flow_cases.py	flow_cases.py:<module>.managed	107374182403	METHOD	20	<empty>	68719476762	IDENTIFIER	21	manager_tmp0
+DDG	flow_cases.py	flow_cases.py:<module>.managed	107374182403	METHOD	20	<empty>	68719476760	IDENTIFIER	21	path	
+DDG	flow_cases.py	flow_cases.py:<module>.managed	107374182403	METHOD	20	<empty>	68719476757	IDENTIFIER	22	handle	
+DDG	flow_cases.py	flow_cases.py:<module>.managed	107374182403	METHOD	20	<empty>	68719476765	IDENTIFIER	21	manager_tmp0	
+DDG	flow_cases.py	flow_cases.py:<module>.managed	107374182403	METHOD	20	<empty>	68719476770	IDENTIFIER	21	value_tmp0	
+DDG	flow_cases.py	flow_cases.py:<module>.managed	107374182403	METHOD	20	<empty>	68719476758	IDENTIFIER	22	handle	
+DDG	flow_cases.py	flow_cases.py:<module>.managed	107374182403	METHOD	20	<empty>	68719476763	IDENTIFIER	21	manager_tmp0	
+DDG	flow_cases.py	flow_cases.py:<module>.managed	107374182403	METHOD	20	<empty>	68719476773	IDENTIFIER	21	manager_tmp0	
+DDG	flow_cases.py	flow_cases.py:<module>.managed	107374182403	METHOD	20	<empty>	68719476772	IDENTIFIER	21	__exit__	
+DDG	flow_cases.py	flow_cases.py:<module>.managed	107374182403	METHOD	20	<empty>	111669149698	METHOD_PARAMETER_IN	20	path	
+DDG	flow_cases.py	flow_cases.py:<module>.managed	107374182403	METHOD	20	<empty>	68719476768	IDENTIFIER	21	manager_tmp0	
+DDG	flow_cases.py	flow_cases.py:<module>.managed	107374182403	METHOD	20	<empty>	68719476767	IDENTIFIER	21	enter_tmp0	
+DDG	flow_cases.py	flow_cases.py:<module>.managed	107374182403	METHOD	20	<empty>	25769803787	BLOCK	21	manager_tmp0 = open(path) enter_tmp0 = manager_tmp0.__enter_	
+DDG	flow_cases.py	flow_cases.py:<module>.managed	107374182403	METHOD	20	<empty>	68719476761	IDENTIFIER	21	open	
+DDG	flow_cases.py	flow_cases.py:<module>.managed	107374182403	METHOD	20	<empty>	68719476774	IDENTIFIER	23	content	
+CFG	flow_cases.py	flow_cases.py:<module>.checked	107374182404	METHOD	26	<empty>	68719476776	IDENTIFIER	27	value
+DDG	flow_cases.py	flow_cases.py:<module>.checked	107374182404	METHOD	26	<empty>	111669149699	METHOD_PARAMETER_IN	26	value	
+DDG	flow_cases.py	flow_cases.py:<module>.checked	107374182404	METHOD	26	<empty>	68719476781	IDENTIFIER	30	result	
+DDG	flow_cases.py	flow_cases.py:<module>.checked	107374182404	METHOD	26	<empty>	68719476777	IDENTIFIER	28	value	
+DDG	flow_cases.py	flow_cases.py:<module>.checked	107374182404	METHOD	26	<empty>	68719476778	IDENTIFIER	28	ValueError	
+DDG	flow_cases.py	flow_cases.py:<module>.checked	107374182404	METHOD	26	<empty>	68719476779	IDENTIFIER	29	value	
+DDG	flow_cases.py	flow_cases.py:<module>.checked	107374182404	METHOD	26	<empty>	90194313218	LITERAL	27	0	
+DDG	flow_cases.py	flow_cases.py:<module>.checked	107374182404	METHOD	26	<empty>	68719476776	IDENTIFIER	27	value	
+DDG	flow_cases.py	flow_cases.py:<module>.checked	107374182404	METHOD	26	<empty>	90194313219	LITERAL	29	1	
+CFG	flow_cases.py	flow_cases.py:<module>.looped	107374182405	METHOD	33	<empty>	68719476783	IDENTIFIER	34	total
+DDG	flow_cases.py	flow_cases.py:<module>.looped	107374182405	METHOD	33	<empty>	68719476789	IDENTIFIER	35	items	
+DDG	flow_cases.py	flow_cases.py:<module>.looped	107374182405	METHOD	33	<empty>	90194313220	LITERAL	34	0	
+DDG	flow_cases.py	flow_cases.py:<module>.looped	107374182405	METHOD	33	<empty>	68719476784	IDENTIFIER	36	item	
+DDG	flow_cases.py	flow_cases.py:<module>.looped	107374182405	METHOD	33	<empty>	68719476792	IDENTIFIER	35	tmp0	
+DDG	flow_cases.py	flow_cases.py:<module>.looped	107374182405	METHOD	33	<empty>	90194313221	LITERAL	36	None	
+DDG	flow_cases.py	flow_cases.py:<module>.looped	107374182405	METHOD	33	<empty>	111669149700	METHOD_PARAMETER_IN	33	items	
+DDG	flow_cases.py	flow_cases.py:<module>.looped	107374182405	METHOD	33	<empty>	68719476785	IDENTIFIER	38	total	
+DDG	flow_cases.py	flow_cases.py:<module>.looped	107374182405	METHOD	33	<empty>	68719476788	IDENTIFIER	35	items	
+DDG	flow_cases.py	flow_cases.py:<module>.looped	107374182405	METHOD	33	<empty>	25769803793	BLOCK	35	tmp0 = items.__iter__() while ... : ...	
+DDG	flow_cases.py	flow_cases.py:<module>.looped	107374182405	METHOD	33	<empty>	68719476791	IDENTIFIER	35	tmp0	
+DDG	flow_cases.py	flow_cases.py:<module>.looped	107374182405	METHOD	33	<empty>	68719476786	IDENTIFIER	38	item	
+DDG	flow_cases.py	flow_cases.py:<module>.looped	107374182405	METHOD	33	<empty>	68719476794	IDENTIFIER	39	total	
+CFG	flow_cases.py	flow_cases.py:<module>.matched	107374182406	METHOD	42	<empty>	68719476796	IDENTIFIER	43	value
+DDG	flow_cases.py	flow_cases.py:<module>.matched	107374182406	METHOD	42	<empty>	30064771118	CALL	45	one()	
+DDG	flow_cases.py	flow_cases.py:<module>.matched	107374182406	METHOD	42	<empty>	68719476799	IDENTIFIER	47	other	
+DDG	flow_cases.py	flow_cases.py:<module>.matched	107374182406	METHOD	42	<empty>	111669149701	METHOD_PARAMETER_IN	42	value	
+DDG	flow_cases.py	flow_cases.py:<module>.matched	107374182406	METHOD	42	<empty>	68719476796	IDENTIFIER	43	value	
+DDG	flow_cases.py	flow_cases.py:<module>.matched	107374182406	METHOD	42	<empty>	25769803795	BLOCK	44	result = one()	
+DDG	flow_cases.py	flow_cases.py:<module>.matched	107374182406	METHOD	42	<empty>	30064771120	CALL	47	other()	
+DDG	flow_cases.py	flow_cases.py:<module>.matched	107374182406	METHOD	42	<empty>	68719476797	IDENTIFIER	45	one	
+DDG	flow_cases.py	flow_cases.py:<module>.matched	107374182406	METHOD	42	<empty>	68719476801	IDENTIFIER	48	result	
+DDG	flow_cases.py	flow_cases.py:<module>.matched	107374182406	METHOD	42	<empty>	25769803796	BLOCK	46	result = other()	
+CFG	flow_cases.py	flow_cases.py:<module>.unpacked	107374182407	METHOD	51	<empty>	68719476804	IDENTIFIER	52	tmp0
+DDG	flow_cases.py	flow_cases.py:<module>.unpacked	107374182407	METHOD	51	<empty>	68719476808	IDENTIFIER	52	tmp0	
+DDG	flow_cases.py	flow_cases.py:<module>.unpacked	107374182407	METHOD	51	<empty>	30064771123	CALL	52	pair()	
+DDG	flow_cases.py	flow_cases.py:<module>.unpacked	107374182407	METHOD	51	<empty>	68719476806	IDENTIFIER	52	tmp0	
+DDG	flow_cases.py	flow_cases.py:<module>.unpacked	107374182407	METHOD	51	<empty>	25769803799	BLOCK	52	tmp0 = pair() x = tmp0[0] y = tmp0[1]	
+DDG	flow_cases.py	flow_cases.py:<module>.unpacked	107374182407	METHOD	51	<empty>	68719476810	IDENTIFIER	53	use	
+DDG	flow_cases.py	flow_cases.py:<module>.unpacked	107374182407	METHOD	51	<empty>	68719476809	IDENTIFIER	53	x	
+DDG	flow_cases.py	flow_cases.py:<module>.unpacked	107374182407	METHOD	51	<empty>	68719476803	IDENTIFIER	52	pair	
+CFG	flow_cases.py	flow_cases.py:<module>.Box.<body>	107374182408	METHOD	56	<empty>	68719476811	IDENTIFIER	58	size
+DDG	flow_cases.py	flow_cases.py:<module>.Box.<body>	107374182408	METHOD	56	<empty>	68719476817	IDENTIFIER	61	size	
+DDG	flow_cases.py	flow_cases.py:<module>.Box.<body>	107374182408	METHOD	56	<empty>	120259084296	METHOD_REF	58	def size(...)	
+DDG	flow_cases.py	flow_cases.py:<module>.Box.<body>	107374182408	METHOD	56	<empty>	120259084297	METHOD_REF	62	def size(...)	
+DDG	flow_cases.py	flow_cases.py:<module>.Box.<body>	107374182408	METHOD	56	<empty>	111669149702	METHOD_PARAMETER_IN	56	cls	
+DDG	flow_cases.py	flow_cases.py:<module>.Box.<body>	107374182408	METHOD	56	<empty>	68719476813	IDENTIFIER	57	property	
+CFG	flow_cases.py	flow_cases.py:<module>.Box.size<redefined>0	107374182409	METHOD	58	<empty>	68719476812	IDENTIFIER	59	self
+DDG	flow_cases.py	flow_cases.py:<module>.Box.size<redefined>0	107374182409	METHOD	58	<empty>	68719476812	IDENTIFIER	59	self	
+DDG	flow_cases.py	flow_cases.py:<module>.Box.size<redefined>0	107374182409	METHOD	58	<empty>	111669149703	METHOD_PARAMETER_IN	58	self	
+CFG	flow_cases.py	flow_cases.py:<module>.Box.size	107374182410	METHOD	62	<empty>	68719476816	IDENTIFIER	63	self
+DDG	flow_cases.py	flow_cases.py:<module>.Box.size	107374182410	METHOD	62	<empty>	111669149705	METHOD_PARAMETER_IN	62	value	
+DDG	flow_cases.py	flow_cases.py:<module>.Box.size	107374182410	METHOD	62	<empty>	68719476816	IDENTIFIER	63	self	
+DDG	flow_cases.py	flow_cases.py:<module>.Box.size	107374182410	METHOD	62	<empty>	111669149704	METHOD_PARAMETER_IN	62	self	
+DDG	flow_cases.py	flow_cases.py:<module>.Box.size	107374182410	METHOD	62	<empty>	68719476815	IDENTIFIER	63	value	
+CFG	flow_cases.py	flow_cases.py:<module>.Box.<metaClassCallHandler>	107374182411	METHOD	56	<empty>	68719476818	IDENTIFIER	56	__newInstance
+DDG	flow_cases.py	flow_cases.py:<module>.Box.<metaClassCallHandler>	107374182411	METHOD	56	<empty>	68719476820	IDENTIFIER	56	__newInstance	
+DDG	flow_cases.py	flow_cases.py:<module>.Box.<metaClassCallHandler>	107374182411	METHOD	56	<empty>	176093659139	TYPE_REF	56	class Box<meta>(...)	
+DDG	flow_cases.py	flow_cases.py:<module>.Box.<metaClassCallHandler>	107374182411	METHOD	56	<empty>	176093659138	TYPE_REF	56	class Box<meta>(...)	
+DDG	flow_cases.py	flow_cases.py:<module>.Box.<metaClassCallHandler>	107374182411	METHOD	56	<empty>	68719476822	IDENTIFIER	56	__newInstance	
+DDG	flow_cases.py	flow_cases.py:<module>.Box.<metaClassCallHandler>	107374182411	METHOD	56	<empty>	68719476821	IDENTIFIER	56	__newInstance	
+CFG	flow_cases.py	flow_cases.py:<module>.Box.<fakeNew>	107374182412	METHOD	56	<empty>	30064771144	CALL	56	
+DDG	flow_cases.py	flow_cases.py:<module>.Box.<fakeNew>	107374182412	METHOD	56	<empty>	111669149706	METHOD_PARAMETER_IN	56	cls	
+DDG	flow_cases.py	flow_cases.py:<module>.Box.<fakeNew>	107374182412	METHOD	56	<empty>	30064771144	CALL	56		
+CFG	flow_cases.py	flow_cases.py:<module>.Box.size<metaClassAdapter>	107374182413	METHOD	62	<empty>	68719476823	IDENTIFIER	62	self
+DDG	flow_cases.py	flow_cases.py:<module>.Box.size<metaClassAdapter>	107374182413	METHOD	62	<empty>	111669149707	METHOD_PARAMETER_IN	62	cls	
+DDG	flow_cases.py	flow_cases.py:<module>.Box.size<metaClassAdapter>	107374182413	METHOD	62	<empty>	68719476823	IDENTIFIER	62	self	
+DDG	flow_cases.py	flow_cases.py:<module>.Box.size<metaClassAdapter>	107374182413	METHOD	62	<empty>	68719476824	IDENTIFIER	62	value	
+DDG	flow_cases.py	flow_cases.py:<module>.Box.size<metaClassAdapter>	107374182413	METHOD	62	<empty>	111669149708	METHOD_PARAMETER_IN	62	self	
+DDG	flow_cases.py	flow_cases.py:<module>.Box.size<metaClassAdapter>	107374182413	METHOD	62	<empty>	111669149709	METHOD_PARAMETER_IN	62	value	
+CFG	flow_cases.py	flow_cases.py:<module>.one_line_guard	107374182414	METHOD	66	<empty>	68719476828	IDENTIFIER	67	a
+DDG	flow_cases.py	flow_cases.py:<module>.one_line_guard	107374182414	METHOD	66	<empty>	68719476830	IDENTIFIER	67	ValueError	
+DDG	flow_cases.py	flow_cases.py:<module>.one_line_guard	107374182414	METHOD	66	<empty>	111669149710	METHOD_PARAMETER_IN	66	a	
+DDG	flow_cases.py	flow_cases.py:<module>.one_line_guard	107374182414	METHOD	66	<empty>	90194313224	LITERAL	68	1	
+DDG	flow_cases.py	flow_cases.py:<module>.one_line_guard	107374182414	METHOD	66	<empty>	68719476829	IDENTIFIER	67	a	
+DDG	flow_cases.py	flow_cases.py:<module>.one_line_guard	107374182414	METHOD	66	<empty>	68719476828	IDENTIFIER	67	a	
+DDG	flow_cases.py	flow_cases.py:<module>.one_line_guard	107374182414	METHOD	66	<empty>	141733920779	RETURN	68	return 1	
+CFG	<empty>	<operator>.assignment	107374182415	METHOD	-1	<empty>	124554051599	METHOD_RETURN	-1	RET
+DDG	<empty>	<operator>.assignment	107374182415	METHOD	-1	<empty>	111669149712	METHOD_PARAMETER_IN	-1	p2	
+DDG	<empty>	<operator>.assignment	107374182415	METHOD	-1	<empty>	111669149711	METHOD_PARAMETER_IN	-1	p1	
+CFG	<empty>	<operator>.fieldAccess	107374182416	METHOD	-1	<empty>	124554051600	METHOD_RETURN	-1	RET
+DDG	<empty>	<operator>.fieldAccess	107374182416	METHOD	-1	<empty>	111669149714	METHOD_PARAMETER_IN	-1	p2	
+DDG	<empty>	<operator>.fieldAccess	107374182416	METHOD	-1	<empty>	111669149713	METHOD_PARAMETER_IN	-1	p1	
+CFG	<empty>	<operator>.is	107374182417	METHOD	-1	<empty>	124554051601	METHOD_RETURN	-1	RET
+DDG	<empty>	<operator>.is	107374182417	METHOD	-1	<empty>	111669149716	METHOD_PARAMETER_IN	-1	p2	
+DDG	<empty>	<operator>.is	107374182417	METHOD	-1	<empty>	111669149715	METHOD_PARAMETER_IN	-1	p1	
+CFG	<empty>	<operator>.raise	107374182418	METHOD	-1	<empty>	124554051602	METHOD_RETURN	-1	RET
+DDG	<empty>	<operator>.raise	107374182418	METHOD	-1	<empty>	111669149717	METHOD_PARAMETER_IN	-1	p0	
+DDG	<empty>	<operator>.raise	107374182418	METHOD	-1	<empty>	111669149718	METHOD_PARAMETER_IN	-1	p1	
+CFG	<empty>	<operator>.lessThan	107374182419	METHOD	-1	<empty>	124554051603	METHOD_RETURN	-1	RET
+DDG	<empty>	<operator>.lessThan	107374182419	METHOD	-1	<empty>	111669149720	METHOD_PARAMETER_IN	-1	p2	
+DDG	<empty>	<operator>.lessThan	107374182419	METHOD	-1	<empty>	111669149719	METHOD_PARAMETER_IN	-1	p1	
+CFG	<empty>	<operator>.addition	107374182420	METHOD	-1	<empty>	124554051604	METHOD_RETURN	-1	RET
+DDG	<empty>	<operator>.addition	107374182420	METHOD	-1	<empty>	111669149721	METHOD_PARAMETER_IN	-1	p1	
+DDG	<empty>	<operator>.addition	107374182420	METHOD	-1	<empty>	111669149722	METHOD_PARAMETER_IN	-1	p2	
+CFG	<empty>	<operator>.indexAccess	107374182421	METHOD	-1	<empty>	124554051605	METHOD_RETURN	-1	RET
+DDG	<empty>	<operator>.indexAccess	107374182421	METHOD	-1	<empty>	111669149723	METHOD_PARAMETER_IN	-1	p1	
+DDG	<empty>	<operator>.indexAccess	107374182421	METHOD	-1	<empty>	111669149724	METHOD_PARAMETER_IN	-1	p2	
+CFG	<empty>	<operator>.alloc	107374182422	METHOD	-1	<empty>	124554051606	METHOD_RETURN	-1	RET
+DDG	<empty>	<operator>.alloc	107374182422	METHOD	-1	<empty>	111669149725	METHOD_PARAMETER_IN	-1	p0	
+DDG	flow_cases.py	flow_cases.py:<module>.login	111669149696	METHOD_PARAMETER_IN	1	username	115964116992	METHOD_PARAMETER_OUT	1	username	username
+DDG	flow_cases.py	flow_cases.py:<module>.login	111669149696	METHOD_PARAMETER_IN	1	username	68719476739	IDENTIFIER	2	username	username
+DDG	flow_cases.py	flow_cases.py:<module>.guarded	111669149697	METHOD_PARAMETER_IN	9	path	68719476749	IDENTIFIER	11	path	path
+DDG	flow_cases.py	flow_cases.py:<module>.guarded	111669149697	METHOD_PARAMETER_IN	9	path	115964116993	METHOD_PARAMETER_OUT	9	path	path
+DDG	flow_cases.py	flow_cases.py:<module>.managed	111669149698	METHOD_PARAMETER_IN	20	path	68719476760	IDENTIFIER	21	path	path
+DDG	flow_cases.py	flow_cases.py:<module>.managed	111669149698	METHOD_PARAMETER_IN	20	path	115964116994	METHOD_PARAMETER_OUT	20	path	path
+DDG	flow_cases.py	flow_cases.py:<module>.checked	111669149699	METHOD_PARAMETER_IN	26	value	68719476776	IDENTIFIER	27	value	value
+DDG	flow_cases.py	flow_cases.py:<module>.checked	111669149699	METHOD_PARAMETER_IN	26	value	115964116995	METHOD_PARAMETER_OUT	26	value	value
+DDG	flow_cases.py	flow_cases.py:<module>.looped	111669149700	METHOD_PARAMETER_IN	33	items	68719476789	IDENTIFIER	35	items	items
+DDG	flow_cases.py	flow_cases.py:<module>.looped	111669149700	METHOD_PARAMETER_IN	33	items	68719476788	IDENTIFIER	35	items	items
+DDG	flow_cases.py	flow_cases.py:<module>.looped	111669149700	METHOD_PARAMETER_IN	33	items	115964116996	METHOD_PARAMETER_OUT	33	items	items
+DDG	flow_cases.py	flow_cases.py:<module>.matched	111669149701	METHOD_PARAMETER_IN	42	value	115964116997	METHOD_PARAMETER_OUT	42	value	value
+DDG	flow_cases.py	flow_cases.py:<module>.matched	111669149701	METHOD_PARAMETER_IN	42	value	115964116997	METHOD_PARAMETER_OUT	42	value	value
+DDG	flow_cases.py	flow_cases.py:<module>.matched	111669149701	METHOD_PARAMETER_IN	42	value	124554051590	METHOD_RETURN	42	RET	value
+DDG	flow_cases.py	flow_cases.py:<module>.Box.<body>	111669149702	METHOD_PARAMETER_IN	56	cls	115964116998	METHOD_PARAMETER_OUT	56	cls	cls
+DDG	flow_cases.py	flow_cases.py:<module>.Box.<body>	111669149702	METHOD_PARAMETER_IN	56	cls	115964116998	METHOD_PARAMETER_OUT	56	cls	cls
+DDG	flow_cases.py	flow_cases.py:<module>.Box.<body>	111669149702	METHOD_PARAMETER_IN	56	cls	124554051592	METHOD_RETURN	56	RET	cls
+DDG	flow_cases.py	flow_cases.py:<module>.Box.size<redefined>0	111669149703	METHOD_PARAMETER_IN	58	self	115964116999	METHOD_PARAMETER_OUT	58	self	self
+DDG	flow_cases.py	flow_cases.py:<module>.Box.size<redefined>0	111669149703	METHOD_PARAMETER_IN	58	self	115964116999	METHOD_PARAMETER_OUT	58	self	self
+DDG	flow_cases.py	flow_cases.py:<module>.Box.size<redefined>0	111669149703	METHOD_PARAMETER_IN	58	self	68719476812	IDENTIFIER	59	self	self
+DDG	flow_cases.py	flow_cases.py:<module>.Box.size<redefined>0	111669149703	METHOD_PARAMETER_IN	58	self	30064771131	CALL	59	self._size	self
+DDG	flow_cases.py	flow_cases.py:<module>.Box.size<redefined>0	111669149703	METHOD_PARAMETER_IN	58	self	124554051593	METHOD_RETURN	58	RET	self
+DDG	flow_cases.py	flow_cases.py:<module>.Box.size	111669149704	METHOD_PARAMETER_IN	62	self	68719476816	IDENTIFIER	63	self	self
+DDG	flow_cases.py	flow_cases.py:<module>.Box.size	111669149704	METHOD_PARAMETER_IN	62	self	115964117000	METHOD_PARAMETER_OUT	62	self	self
+DDG	flow_cases.py	flow_cases.py:<module>.Box.size	111669149704	METHOD_PARAMETER_IN	62	self	115964117000	METHOD_PARAMETER_OUT	62	self	self
+DDG	flow_cases.py	flow_cases.py:<module>.Box.size	111669149704	METHOD_PARAMETER_IN	62	self	124554051594	METHOD_RETURN	62	RET	self
+DDG	flow_cases.py	flow_cases.py:<module>.Box.size	111669149705	METHOD_PARAMETER_IN	62	value	115964117001	METHOD_PARAMETER_OUT	62	value	value
+DDG	flow_cases.py	flow_cases.py:<module>.Box.size	111669149705	METHOD_PARAMETER_IN	62	value	68719476815	IDENTIFIER	63	value	value
+DDG	flow_cases.py	flow_cases.py:<module>.Box.<fakeNew>	111669149706	METHOD_PARAMETER_IN	56	cls	115964117002	METHOD_PARAMETER_OUT	56	cls	cls
+DDG	flow_cases.py	flow_cases.py:<module>.Box.<fakeNew>	111669149706	METHOD_PARAMETER_IN	56	cls	115964117002	METHOD_PARAMETER_OUT	56	cls	cls
+DDG	flow_cases.py	flow_cases.py:<module>.Box.<fakeNew>	111669149706	METHOD_PARAMETER_IN	56	cls	124554051596	METHOD_RETURN	56	RET	cls
+DDG	flow_cases.py	flow_cases.py:<module>.Box.size<metaClassAdapter>	111669149707	METHOD_PARAMETER_IN	62	cls	115964117003	METHOD_PARAMETER_OUT	62	cls	cls
+DDG	flow_cases.py	flow_cases.py:<module>.Box.size<metaClassAdapter>	111669149707	METHOD_PARAMETER_IN	62	cls	115964117003	METHOD_PARAMETER_OUT	62	cls	cls
+DDG	flow_cases.py	flow_cases.py:<module>.Box.size<metaClassAdapter>	111669149707	METHOD_PARAMETER_IN	62	cls	124554051597	METHOD_RETURN	62	RET	cls
+DDG	flow_cases.py	flow_cases.py:<module>.Box.size<metaClassAdapter>	111669149708	METHOD_PARAMETER_IN	62	self	68719476823	IDENTIFIER	62	self	self
+DDG	flow_cases.py	flow_cases.py:<module>.Box.size<metaClassAdapter>	111669149708	METHOD_PARAMETER_IN	62	self	115964117004	METHOD_PARAMETER_OUT	62	self	self
+DDG	flow_cases.py	flow_cases.py:<module>.Box.size<metaClassAdapter>	111669149709	METHOD_PARAMETER_IN	62	value	68719476824	IDENTIFIER	62	value	value
+DDG	flow_cases.py	flow_cases.py:<module>.Box.size<metaClassAdapter>	111669149709	METHOD_PARAMETER_IN	62	value	115964117005	METHOD_PARAMETER_OUT	62	value	value
+DDG	flow_cases.py	flow_cases.py:<module>.one_line_guard	111669149710	METHOD_PARAMETER_IN	66	a	68719476829	IDENTIFIER	67	a	a
+DDG	flow_cases.py	flow_cases.py:<module>.one_line_guard	111669149710	METHOD_PARAMETER_IN	66	a	115964117006	METHOD_PARAMETER_OUT	66	a	a
+DDG	flow_cases.py	flow_cases.py:<module>.one_line_guard	111669149710	METHOD_PARAMETER_IN	66	a	115964117006	METHOD_PARAMETER_OUT	66	a	a
+DDG	flow_cases.py	flow_cases.py:<module>.one_line_guard	111669149710	METHOD_PARAMETER_IN	66	a	124554051598	METHOD_RETURN	66	RET	a
+DDG	<empty>	<operator>.assignment	111669149711	METHOD_PARAMETER_IN	-1	p1	115964117007	METHOD_PARAMETER_OUT	-1	p1	p1
+DDG	<empty>	<operator>.assignment	111669149711	METHOD_PARAMETER_IN	-1	p1	124554051599	METHOD_RETURN	-1	RET	p1
+DDG	<empty>	<operator>.assignment	111669149712	METHOD_PARAMETER_IN	-1	p2	115964117008	METHOD_PARAMETER_OUT	-1	p2	p2
+DDG	<empty>	<operator>.assignment	111669149712	METHOD_PARAMETER_IN	-1	p2	124554051599	METHOD_RETURN	-1	RET	p2
+DDG	<empty>	<operator>.fieldAccess	111669149713	METHOD_PARAMETER_IN	-1	p1	115964117009	METHOD_PARAMETER_OUT	-1	p1	p1
+DDG	<empty>	<operator>.fieldAccess	111669149713	METHOD_PARAMETER_IN	-1	p1	124554051600	METHOD_RETURN	-1	RET	p1
+DDG	<empty>	<operator>.fieldAccess	111669149714	METHOD_PARAMETER_IN	-1	p2	115964117010	METHOD_PARAMETER_OUT	-1	p2	p2
+DDG	<empty>	<operator>.fieldAccess	111669149714	METHOD_PARAMETER_IN	-1	p2	124554051600	METHOD_RETURN	-1	RET	p2
+DDG	<empty>	<operator>.is	111669149715	METHOD_PARAMETER_IN	-1	p1	115964117011	METHOD_PARAMETER_OUT	-1	p1	p1
+DDG	<empty>	<operator>.is	111669149715	METHOD_PARAMETER_IN	-1	p1	124554051601	METHOD_RETURN	-1	RET	p1
+DDG	<empty>	<operator>.is	111669149716	METHOD_PARAMETER_IN	-1	p2	115964117012	METHOD_PARAMETER_OUT	-1	p2	p2
+DDG	<empty>	<operator>.is	111669149716	METHOD_PARAMETER_IN	-1	p2	124554051601	METHOD_RETURN	-1	RET	p2
+DDG	<empty>	<operator>.raise	111669149717	METHOD_PARAMETER_IN	-1	p0	115964117013	METHOD_PARAMETER_OUT	-1	p0	p0
+DDG	<empty>	<operator>.raise	111669149717	METHOD_PARAMETER_IN	-1	p0	124554051602	METHOD_RETURN	-1	RET	p0
+DDG	<empty>	<operator>.raise	111669149718	METHOD_PARAMETER_IN	-1	p1	115964117014	METHOD_PARAMETER_OUT	-1	p1	p1
+DDG	<empty>	<operator>.raise	111669149718	METHOD_PARAMETER_IN	-1	p1	124554051602	METHOD_RETURN	-1	RET	p1
+DDG	<empty>	<operator>.lessThan	111669149719	METHOD_PARAMETER_IN	-1	p1	115964117015	METHOD_PARAMETER_OUT	-1	p1	p1
+DDG	<empty>	<operator>.lessThan	111669149719	METHOD_PARAMETER_IN	-1	p1	124554051603	METHOD_RETURN	-1	RET	p1
+DDG	<empty>	<operator>.lessThan	111669149720	METHOD_PARAMETER_IN	-1	p2	115964117016	METHOD_PARAMETER_OUT	-1	p2	p2
+DDG	<empty>	<operator>.lessThan	111669149720	METHOD_PARAMETER_IN	-1	p2	124554051603	METHOD_RETURN	-1	RET	p2
+DDG	<empty>	<operator>.addition	111669149721	METHOD_PARAMETER_IN	-1	p1	115964117017	METHOD_PARAMETER_OUT	-1	p1	p1
+DDG	<empty>	<operator>.addition	111669149721	METHOD_PARAMETER_IN	-1	p1	124554051604	METHOD_RETURN	-1	RET	p1
+DDG	<empty>	<operator>.addition	111669149722	METHOD_PARAMETER_IN	-1	p2	115964117018	METHOD_PARAMETER_OUT	-1	p2	p2
+DDG	<empty>	<operator>.addition	111669149722	METHOD_PARAMETER_IN	-1	p2	124554051604	METHOD_RETURN	-1	RET	p2
+DDG	<empty>	<operator>.indexAccess	111669149723	METHOD_PARAMETER_IN	-1	p1	115964117019	METHOD_PARAMETER_OUT	-1	p1	p1
+DDG	<empty>	<operator>.indexAccess	111669149723	METHOD_PARAMETER_IN	-1	p1	124554051605	METHOD_RETURN	-1	RET	p1
+DDG	<empty>	<operator>.indexAccess	111669149724	METHOD_PARAMETER_IN	-1	p2	115964117020	METHOD_PARAMETER_OUT	-1	p2	p2
+DDG	<empty>	<operator>.indexAccess	111669149724	METHOD_PARAMETER_IN	-1	p2	124554051605	METHOD_RETURN	-1	RET	p2
+DDG	<empty>	<operator>.alloc	111669149725	METHOD_PARAMETER_IN	-1	p0	115964117021	METHOD_PARAMETER_OUT	-1	p0	p0
+DDG	<empty>	<operator>.alloc	111669149725	METHOD_PARAMETER_IN	-1	p0	124554051606	METHOD_RETURN	-1	RET	p0
+CFG	flow_cases.py	flow_cases.py:<module>	120259084288	METHOD_REF	1	def login(...)	30064771080	CALL	1	login = def login(...)
+DDG	flow_cases.py	flow_cases.py:<module>	120259084288	METHOD_REF	1	def login(...)	68719476738	IDENTIFIER	1	login	def login(...)
+DDG	flow_cases.py	flow_cases.py:<module>	120259084288	METHOD_REF	1	def login(...)	30064771080	CALL	1	login = def login(...)	def login(...)
+CFG	flow_cases.py	flow_cases.py:<module>	120259084289	METHOD_REF	9	def guarded(...)	30064771086	CALL	9	guarded = def guarded(...)
+DDG	flow_cases.py	flow_cases.py:<module>	120259084289	METHOD_REF	9	def guarded(...)	68719476748	IDENTIFIER	9	guarded	def guarded(...)
+DDG	flow_cases.py	flow_cases.py:<module>	120259084289	METHOD_REF	9	def guarded(...)	30064771086	CALL	9	guarded = def guarded(...)	def guarded(...)
+CFG	flow_cases.py	flow_cases.py:<module>	120259084290	METHOD_REF	20	def managed(...)	30064771100	CALL	20	managed = def managed(...)
+DDG	flow_cases.py	flow_cases.py:<module>	120259084290	METHOD_REF	20	def managed(...)	68719476756	IDENTIFIER	20	managed	def managed(...)
+DDG	flow_cases.py	flow_cases.py:<module>	120259084290	METHOD_REF	20	def managed(...)	30064771100	CALL	20	managed = def managed(...)	def managed(...)
+CFG	flow_cases.py	flow_cases.py:<module>	120259084291	METHOD_REF	26	def checked(...)	30064771106	CALL	26	checked = def checked(...)
+DDG	flow_cases.py	flow_cases.py:<module>	120259084291	METHOD_REF	26	def checked(...)	68719476775	IDENTIFIER	26	checked	def checked(...)
+DDG	flow_cases.py	flow_cases.py:<module>	120259084291	METHOD_REF	26	def checked(...)	30064771106	CALL	26	checked = def checked(...)	def checked(...)
+CFG	flow_cases.py	flow_cases.py:<module>	120259084292	METHOD_REF	33	def looped(...)	30064771117	CALL	33	looped = def looped(...)
+DDG	flow_cases.py	flow_cases.py:<module>	120259084292	METHOD_REF	33	def looped(...)	68719476782	IDENTIFIER	33	looped	def looped(...)
+DDG	flow_cases.py	flow_cases.py:<module>	120259084292	METHOD_REF	33	def looped(...)	30064771117	CALL	33	looped = def looped(...)	def looped(...)
+CFG	flow_cases.py	flow_cases.py:<module>	120259084293	METHOD_REF	42	def matched(...)	30064771122	CALL	42	matched = def matched(...)
+DDG	flow_cases.py	flow_cases.py:<module>	120259084293	METHOD_REF	42	def matched(...)	68719476795	IDENTIFIER	42	matched	def matched(...)
+DDG	flow_cases.py	flow_cases.py:<module>	120259084293	METHOD_REF	42	def matched(...)	30064771122	CALL	42	matched = def matched(...)	def matched(...)
+CFG	flow_cases.py	flow_cases.py:<module>	120259084294	METHOD_REF	51	def unpacked(...)	30064771130	CALL	51	unpacked = def unpacked(...)
+DDG	flow_cases.py	flow_cases.py:<module>	120259084294	METHOD_REF	51	def unpacked(...)	68719476802	IDENTIFIER	51	unpacked	def unpacked(...)
+DDG	flow_cases.py	flow_cases.py:<module>	120259084294	METHOD_REF	51	def unpacked(...)	30064771130	CALL	51	unpacked = def unpacked(...)	def unpacked(...)
+CFG	flow_cases.py	flow_cases.py:<module>	120259084295	METHOD_REF	56	def <body>(...)	68719476826	IDENTIFIER	56	Box
+CFG	flow_cases.py	flow_cases.py:<module>.Box.<body>	120259084296	METHOD_REF	58	def size(...)	30064771132	CALL	57	property(def size(...))
+DDG	flow_cases.py	flow_cases.py:<module>.Box.<body>	120259084296	METHOD_REF	58	def size(...)	30064771132	CALL	57	property(def size(...))	def size(...)
+CFG	flow_cases.py	flow_cases.py:<module>.Box.<body>	120259084297	METHOD_REF	62	def size(...)	30064771137	CALL	61	size.setter(def size(...))
+DDG	flow_cases.py	flow_cases.py:<module>.Box.<body>	120259084297	METHOD_REF	62	def size(...)	30064771137	CALL	61	size.setter(def size(...))	def size(...)
+CFG	flow_cases.py	flow_cases.py:<module>	120259084298	METHOD_REF	66	def one_line_guard(...)	30064771150	CALL	66	one_line_guard = def one_line_guard(...)
+DDG	flow_cases.py	flow_cases.py:<module>	120259084298	METHOD_REF	66	def one_line_guard(...)	68719476827	IDENTIFIER	66	one_line_guard	def one_line_guard(...)
+DDG	flow_cases.py	flow_cases.py:<module>	120259084298	METHOD_REF	66	def one_line_guard(...)	30064771150	CALL	66	one_line_guard = def one_line_guard(...)	def one_line_guard(...)
+CFG	flow_cases.py	flow_cases.py:<module>.login	141733920768	RETURN	4	return None	124554051585	METHOD_RETURN	1	RET
+DDG	flow_cases.py	flow_cases.py:<module>.login	141733920768	RETURN	4	return None	124554051585	METHOD_RETURN	1	RET	<RET>
+CFG	flow_cases.py	flow_cases.py:<module>.login	141733920769	RETURN	6	return session	124554051585	METHOD_RETURN	1	RET
+DDG	flow_cases.py	flow_cases.py:<module>.login	141733920769	RETURN	6	return session	124554051585	METHOD_RETURN	1	RET	<RET>
+CFG	flow_cases.py	flow_cases.py:<module>.guarded	141733920770	RETURN	17	return data	124554051586	METHOD_RETURN	9	RET
+DDG	flow_cases.py	flow_cases.py:<module>.guarded	141733920770	RETURN	17	return data	124554051586	METHOD_RETURN	9	RET	<RET>
+CFG	flow_cases.py	flow_cases.py:<module>.managed	141733920771	RETURN	23	return content	124554051587	METHOD_RETURN	20	RET
+DDG	flow_cases.py	flow_cases.py:<module>.managed	141733920771	RETURN	23	return content	124554051587	METHOD_RETURN	20	RET	<RET>
+CFG	flow_cases.py	flow_cases.py:<module>.checked	141733920772	RETURN	30	return result	124554051588	METHOD_RETURN	26	RET
+DDG	flow_cases.py	flow_cases.py:<module>.checked	141733920772	RETURN	30	return result	124554051588	METHOD_RETURN	26	RET	<RET>
+CFG	flow_cases.py	flow_cases.py:<module>.looped	141733920773	RETURN	39	return total	124554051589	METHOD_RETURN	33	RET
+DDG	flow_cases.py	flow_cases.py:<module>.looped	141733920773	RETURN	39	return total	124554051589	METHOD_RETURN	33	RET	<RET>
+CFG	flow_cases.py	flow_cases.py:<module>.matched	141733920774	RETURN	48	return result	124554051590	METHOD_RETURN	42	RET
+DDG	flow_cases.py	flow_cases.py:<module>.matched	141733920774	RETURN	48	return result	124554051590	METHOD_RETURN	42	RET	<RET>
+CFG	flow_cases.py	flow_cases.py:<module>.Box.size<redefined>0	141733920775	RETURN	59	return self._size	124554051593	METHOD_RETURN	58	RET
+DDG	flow_cases.py	flow_cases.py:<module>.Box.size<redefined>0	141733920775	RETURN	59	return self._size	124554051593	METHOD_RETURN	58	RET	<RET>
+CFG	flow_cases.py	flow_cases.py:<module>.Box.<metaClassCallHandler>	141733920776	RETURN	56	return __newInstance	124554051595	METHOD_RETURN	56	RET
+DDG	flow_cases.py	flow_cases.py:<module>.Box.<metaClassCallHandler>	141733920776	RETURN	56	return __newInstance	124554051595	METHOD_RETURN	56	RET	<RET>
+CFG	flow_cases.py	flow_cases.py:<module>.Box.<fakeNew>	141733920777	RETURN	56	return 	124554051596	METHOD_RETURN	56	RET
+DDG	flow_cases.py	flow_cases.py:<module>.Box.<fakeNew>	141733920777	RETURN	56	return 	124554051596	METHOD_RETURN	56	RET	<RET>
+CFG	flow_cases.py	flow_cases.py:<module>.Box.size<metaClassAdapter>	141733920778	RETURN	62	return size(self, value)	124554051597	METHOD_RETURN	62	RET
+DDG	flow_cases.py	flow_cases.py:<module>.Box.size<metaClassAdapter>	141733920778	RETURN	62	return size(self, value)	124554051597	METHOD_RETURN	62	RET	<RET>
+CFG	flow_cases.py	flow_cases.py:<module>.one_line_guard	141733920779	RETURN	68	return 1	124554051598	METHOD_RETURN	66	RET
+DDG	flow_cases.py	flow_cases.py:<module>.one_line_guard	141733920779	RETURN	68	return 1	124554051598	METHOD_RETURN	66	RET	<RET>
+CFG	flow_cases.py	flow_cases.py:<module>	176093659136	TYPE_REF	1	__builtins__.open	30064771072	CALL	1	open = __builtins__.open
+DDG	flow_cases.py	flow_cases.py:<module>	176093659136	TYPE_REF	1	__builtins__.open	68719476736	IDENTIFIER	1	open	__builtins__.open
+DDG	flow_cases.py	flow_cases.py:<module>	176093659136	TYPE_REF	1	__builtins__.open	30064771072	CALL	1	open = __builtins__.open	__builtins__.open
+CFG	flow_cases.py	flow_cases.py:<module>	176093659137	TYPE_REF	1	__builtins__.property	30064771073	CALL	1	property = __builtins__.property
+DDG	flow_cases.py	flow_cases.py:<module>	176093659137	TYPE_REF	1	__builtins__.property	68719476737	IDENTIFIER	1	property	__builtins__.property
+DDG	flow_cases.py	flow_cases.py:<module>	176093659137	TYPE_REF	1	__builtins__.property	30064771073	CALL	1	property = __builtins__.property	__builtins__.property
+CFG	flow_cases.py	flow_cases.py:<module>.Box.<metaClassCallHandler>	176093659138	TYPE_REF	56	class Box<meta>(...)	55834574857	FIELD_IDENTIFIER	56	<fakeNew>
+CFG	flow_cases.py	flow_cases.py:<module>.Box.<metaClassCallHandler>	176093659139	TYPE_REF	56	class Box<meta>(...)	30064771140	CALL	56	class Box<meta>(...).<fakeNew>()
+DDG	flow_cases.py	flow_cases.py:<module>.Box.<metaClassCallHandler>	176093659139	TYPE_REF	56	class Box<meta>(...)	30064771140	CALL	56	class Box<meta>(...).<fakeNew>()	class Box<meta>(...)
+CFG	flow_cases.py	flow_cases.py:<module>	176093659140	TYPE_REF	56	class Box<meta>(...)	30064771146	CALL	56	Box = class Box<meta>(...)
+DDG	flow_cases.py	flow_cases.py:<module>	176093659140	TYPE_REF	56	class Box<meta>(...)	68719476825	IDENTIFIER	56	Box	class Box<meta>(...)
+DDG	flow_cases.py	flow_cases.py:<module>	176093659140	TYPE_REF	56	class Box<meta>(...)	30064771146	CALL	56	Box = class Box<meta>(...)	class Box<meta>(...)
+CFG	flow_cases.py	flow_cases.py:<module>.looped	180388626432	UNKNOWN	35	iteratorNonEmptyOrException	68719476793	IDENTIFIER	35	item
+CFG	flow_cases.py	flow_cases.py:<module>.looped	180388626432	UNKNOWN	35	iteratorNonEmptyOrException	25769803793	BLOCK	35	tmp0 = items.__iter__() while ... : ...
+CDG	flow_cases.py	flow_cases.py:<module>.looped	180388626432	UNKNOWN	35	iteratorNonEmptyOrException	55834574853	FIELD_IDENTIFIER	35	__next__
+CDG	flow_cases.py	flow_cases.py:<module>.looped	180388626432	UNKNOWN	35	iteratorNonEmptyOrException	68719476784	IDENTIFIER	36	item
+CDG	flow_cases.py	flow_cases.py:<module>.looped	180388626432	UNKNOWN	35	iteratorNonEmptyOrException	30064771108	CALL	36	item is None
+CDG	flow_cases.py	flow_cases.py:<module>.looped	180388626432	UNKNOWN	35	iteratorNonEmptyOrException	30064771114	CALL	35	tmp0.__next__
+CDG	flow_cases.py	flow_cases.py:<module>.looped	180388626432	UNKNOWN	35	iteratorNonEmptyOrException	30064771115	CALL	35	tmp0.__next__()
+CDG	flow_cases.py	flow_cases.py:<module>.looped	180388626432	UNKNOWN	35	iteratorNonEmptyOrException	68719476791	IDENTIFIER	35	tmp0
+CDG	flow_cases.py	flow_cases.py:<module>.looped	180388626432	UNKNOWN	35	iteratorNonEmptyOrException	68719476792	IDENTIFIER	35	tmp0
+CDG	flow_cases.py	flow_cases.py:<module>.looped	180388626432	UNKNOWN	35	iteratorNonEmptyOrException	30064771116	CALL	35	item = tmp0.__next__()
+CDG	flow_cases.py	flow_cases.py:<module>.looped	180388626432	UNKNOWN	35	iteratorNonEmptyOrException	68719476793	IDENTIFIER	35	item
+CDG	flow_cases.py	flow_cases.py:<module>.looped	180388626432	UNKNOWN	35	iteratorNonEmptyOrException	90194313221	LITERAL	36	None
+RAISE	flow_cases.py	flow_cases.py:<module>.guarded	30064771084	true
+RAISE	flow_cases.py	flow_cases.py:<module>.checked	30064771103	false
+RAISE	flow_cases.py	flow_cases.py:<module>.one_line_guard	30064771149	false
+END

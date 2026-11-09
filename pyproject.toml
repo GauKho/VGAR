@@ -40,13 +40,14 @@ vgar = "vgar.cli:main"
 [project.optional-dependencies]
 dev = ["pytest>=8,<9", "mypy==2.4.0", "ruff==0.17.0"]
 plot = ["matplotlib>=3.9,<4"]
+code-graph = ["networkx>=3.4,<4"]
 
 
 [tool.setuptools.packages.find]
 where = ["src"]
 
 [tool.setuptools.package-data]
-"vgar.graph" = ["tsg/*.tsg"]
+"vgar.graph" = ["tsg/*.tsg", "joern/*.sc"]
 
 
 [tool.pytest.ini_options]

@@ -6,7 +6,7 @@ import os
 import re
 import symtable
 import time
-from collections import Counter
+from collections import Counter, defaultdict
 from collections.abc import Iterable
 from dataclasses import dataclass, field
 from pathlib import Path, PurePosixPath
@@ -15,8 +15,12 @@ from typing import Any
 import tree_sitter_python
 from tree_sitter import Language, Node, Parser
 
-from vgar.contracts.schema import EDGE_ENDPOINTS, PROFILE_FULL_VGAR_MCP, SCHEMA_VERSION, validate_graph_document
-from vgar.graph import arch_lift, layer1_rules, may_call, tsg_extractor
+from vgar.contracts.schema import EDGE_ENDPOINTS, G_CODE_EDGE_TYPES, PROFILE_FULL_VGAR_MCP, SCHEMA_VERSION, validate_graph_document
+from vgar.graph import arch_lift, code_graph, jarvis_merge, jarvis_runner, joern_runner, layer1_rules, may_call, tsg_extractor
+from vgar.graph.code_graph import JoernMethod
+from vgar.graph.jarvis_merge import Site, Target
+from vgar.graph.jarvis_runner import JarvisConfig, JarvisResult
+from vgar.graph.joern_runner import JoernConfig, JoernResult
 from vgar.graph.tsg_extractor import TsgConfig, TsgError, TsgFileFacts
 from vgar.graph.scip_resolver import ScipConfig, ScipResolver, prepare_scip, current_fingerprint
 from vgar.graph.lsp_resolver import LspConfig, resolve_lsp_calls
@@ -108,6 +112,8 @@ class PythonGraphBuilder:
         lsp: LspConfig | None = None,
         trace: GraphTrace | None = None,
         tsg: TsgConfig | None = None,
+        joern: JoernConfig | None = None,
+        jarvis: JarvisConfig | None = None,
     ) -> None:
         if not repo_key.strip():
             raise ValueError("repo_key must not be empty")
@@ -121,6 +127,10 @@ class PythonGraphBuilder:
         self.lsp_config = lsp
         self.tsg_config = tsg
         self.tsg_report: dict[str, Any] | None = None
+        self.joern_config = joern
+        self.code_graph_report: dict[str, Any] | None = None
+        self.jarvis_config = jarvis
+        self.jarvis_report: dict[str, Any] | None = None
         self.arch_report: dict[str, Any] = {}
         self._deployment_files: list[arch_lift.DeploymentFile] = []
         self.lsp_results: dict[str, tuple[str, list[str]]] = {}
@@ -171,6 +181,8 @@ class PythonGraphBuilder:
         if self.scip_config is not None:
             scip_index, self.resolver_report = prepare_scip(root, python_files, self.scip_config, self.trace)
         tsg_facts = self._collect_tsg_facts(root, python_files) if self.tsg_config is not None else {}
+        joern_result = self._run_joern(root, python_files) if self.joern_config is not None else None
+        jarvis_result = self._run_jarvis(root, python_files) if self.jarvis_config is not None else None
         self._deployment_files = arch_lift.find_deployment_files(root, IGNORED_DIRECTORY_NAMES)
         self.graph_version = self._calculate_graph_version(root, python_files)
 
@@ -234,9 +246,13 @@ class PythonGraphBuilder:
         self._resolve_calls()
         if self.scip_resolver is not None:
             self._link_chain_references()
+        if jarvis_result is not None and jarvis_result.status == "ready":
+            self._apply_jarvis(root, jarvis_result)
         call_edges = [edge for edge in self.edges if edge["type"] == "CALLS"]
         self.resolver_report.update(scip_call_count=sum(edge["properties"]["binding_kind"] == "scip" for edge in call_edges),
-                                    static_call_count=sum(edge["properties"]["binding_kind"] not in {"scip", "lsp"} for edge in call_edges))
+                                    static_call_count=sum(edge["properties"]["binding_kind"] not in {"scip", "lsp", "jarvis"} for edge in call_edges))
+        if self.jarvis_config is not None:
+            self.resolver_report["jarvis_call_count"] = sum(edge["properties"]["binding_kind"] == "jarvis" for edge in call_edges)
         if self.lsp_config is not None:
             self.resolver_report["lsp_call_count"] = sum(edge["properties"]["binding_kind"] == "lsp" for edge in call_edges)
             if current_fingerprint(root) != lsp_sources or auxiliary_fingerprint(root) != lsp_inputs:
@@ -247,6 +263,8 @@ class PythonGraphBuilder:
             from vgar.graph.scip_profile import auxiliary_fingerprint
             if auxiliary_fingerprint(root) != scip_index["auxiliary_inputs"]:
                 raise ValueError("SCIP config/stubs changed during graph construction")
+        if joern_result is not None and joern_result.status == "ready":
+            self._add_code_graph(root, joern_result)
         self._lift_architecture()
 
         document = {
@@ -261,6 +279,10 @@ class PythonGraphBuilder:
         document["statistics"]["resolver"] = dict(self.resolver_report, profile=RESOLVER_PROFILE)
         if self.tsg_report is not None:
             document["statistics"]["tsg"] = self.tsg_report
+        if self.code_graph_report is not None:
+            document["statistics"]["code_graph"] = self.code_graph_report
+        if self.jarvis_report is not None:
+            document["statistics"]["jarvis"] = self.jarvis_report
         document["statistics"]["arch"] = self.arch_report
         self.trace.emit("build_complete", graph_version=self.graph_version, node_count=len(self.nodes),
                         edge_count=len(self.edges), unresolved_call_count=document["statistics"]["unresolved_call_count"],
@@ -307,6 +329,12 @@ class PythonGraphBuilder:
             report = self.tsg_report or {}
             digest.update(b"\0tsg-facts-v2:")
             digest.update(f"{report.get('rules_sha256', 'unavailable')}:{len(report.get('failed_files', []))}".encode())
+        if self.joern_config is not None:
+            status = (self.code_graph_report or {}).get("status", "unavailable")
+            digest.update(f"\0joern-code-graph-v1:{self.joern_config.image}:{status}".encode())
+        if self.jarvis_config is not None:
+            status = (self.jarvis_report or {}).get("status", "unavailable")
+            digest.update(f"\0jarvis-call-graph-v1:{self.jarvis_config.image}:{jarvis_runner.JARVIS_COMMIT}:{status}".encode())
         digest.update(b"\0file-range:full-bytes-v1")
         digest.update(b"\0source-roots:")
         digest.update(repr(self.source_roots).encode("utf-8"))
@@ -1128,6 +1156,9 @@ class PythonGraphBuilder:
         elif match_kind == "scip_ambiguous":
             tool_precision, source = may_call.ANALYZER_TOOL_PRECISION, {
                 "source_tool": self.resolver_report["tool"], "source_tool_version": self.resolver_report["tool_version"]}
+        elif match_kind.startswith("jarvis"):
+            tool_precision, source = may_call.ANALYZER_TOOL_PRECISION, {
+                "source_tool": "jarvis", "source_tool_version": jarvis_runner.JARVIS_COMMIT}
         else:
             info = self.resolver_report["lsp"]["server_info"]
             tool_precision, source = may_call.ANALYZER_TOOL_PRECISION, {
@@ -1839,6 +1870,223 @@ class PythonGraphBuilder:
                                properties={"interface_kind": kind})
                 added["IMPLEMENTS"] += 1
         self.tsg_report["added"] = dict(sorted(added.items()))
+
+    def _run_joern(self, root: Path, python_files: list[Path]) -> JoernResult:
+        """Run Joern on the non-test files; a run that cannot finish leaves the graph without G_code."""
+        assert self.joern_config is not None
+        files = [path for path in python_files if not self._is_test_path(path.relative_to(root).as_posix())]
+        result = joern_runner.run_joern(root, files, self.joern_config)
+        self.code_graph_report = {"status": result.status, "reason": result.reason, "image": self.joern_config.image, "statements": 0,
+                                  "identifiers": 0, "edges": {}, "raises_fixed": 0, "cannot_reach_exit": 0, "methods_matched": 0,
+                                  "methods_unmatched": 0}
+        if result.status != "ready":
+            self.trace.emit("code_graph_fallback", status=result.status, reason=result.reason)
+        return result
+
+    def _run_jarvis(self, root: Path, python_files: list[Path]) -> JarvisResult:
+        """Run JARVIS on the non-test files; a run that cannot finish leaves the calls to SCIP or the static resolver."""
+        assert self.jarvis_config is not None
+        files = [path for path in python_files if not self._is_test_path(path.relative_to(root).as_posix())]
+        result = jarvis_runner.run_jarvis(root, files, self.source_roots, self.jarvis_config)
+        self.jarvis_report = {"status": result.status, "reason": result.reason, "image": self.jarvis_config.image,
+                              "skipped_files": list(result.skipped_files), "edges_total": 0, "external": 0, "ambiguous_names": 0,
+                              "no_call_site": 0, "confirmed": 0, "upgraded": 0, "new_calls": 0, "new_may_call": 0, "conflicts": 0,
+                              "overflow_unresolved_calls": 0}
+        if result.status != "ready":
+            self.trace.emit("jarvis_fallback", status=result.status, reason=result.reason)
+        return result
+
+    def _jarvis_target(self, node: dict[str, Any]) -> Target:
+        if node["type"] == "Class" or "*" in node["properties"]["signature"]:
+            return Target(node["id"], node["name"], None)
+        parameters = node["properties"]["parameters"]
+        bound = node["type"] == "Method" and parameters[:1] in (["self"], ["cls"])
+        return Target(node["id"], node["name"], len(parameters) - bound)
+
+    def _jarvis_canonical(self, target_id: str) -> str:
+        """A constructor counts as its class, the way JARVIS's two names for it are merged."""
+        target = self.nodes_by_id[target_id]
+        return self._may_call_owner_class.get(target_id, target_id) if target["name"] in {"__init__", "__new__"} else target_id
+
+    def _apply_jarvis(self, root: Path, result: JarvisResult) -> None:
+        """Merge JARVIS's function-level call graph into the call sites, by the rules of jarvis_merge."""
+        assert self.jarvis_report is not None
+        report = self.jarvis_report
+        report["edges_total"] = sum(map(len, result.graph.values()))
+        names: dict[str, list[Target]] = defaultdict(list)
+        for node in self.nodes:
+            if node["type"] in {"Function", "Method", "Class"} and not self._is_test_path(node["path"]):
+                module = jarvis_runner.module_name_of(jarvis_runner.staged_path(node["path"], root, self.source_roots))
+                names[module + node["qualified_name"][len(self._module_name(node["path"])):]].append(self._jarvis_target(node))
+        calls: dict[str, list[dict[str, Any]]] = defaultdict(list)
+        candidates: dict[str, list[dict[str, Any]]] = defaultdict(list)
+        for edge in self.edges:
+            if edge["type"] == "CALLS":
+                calls[edge["source_id"]].append(edge)
+            elif edge["type"] == "MAY_CALL":
+                candidates[edge["source_id"]].append(edge)
+        records = defaultdict(list)
+        for call in self.calls:
+            if call.caller_type != "Test" and call.node_id in self.nodes_by_id:
+                records[call.caller_id].append(call)
+        removed: set[str] = set()
+        for caller_name in sorted(result.graph):
+            owners = names.get(caller_name, ())
+            if len(owners) != 1 or self.nodes_by_id[owners[0].id]["type"] == "Class":
+                continue
+            targets, external_names, counts = jarvis_merge.resolve_callees(result.graph[caller_name], names)
+            sites = [Site(call.node_id, call.callee_text, self.nodes_by_id[call.node_id]["properties"]["argument_count"],
+                          frozenset(self._jarvis_canonical(edge["target_id"]) for edge in calls[call.node_id]),
+                          frozenset(self._jarvis_canonical(edge["target_id"]) for edge in candidates[call.node_id]),
+                          self.nodes_by_id[call.node_id]["properties"].get("resolution_reason") == "external_or_non_callable",
+                          "." not in call.callee_text and self._resolve_lexical_binding(call)[0])
+                     for call in records[owners[0].id]]
+            outcome = jarvis_merge.merge_caller(sites, targets, external_names)
+            counts.update(outcome.counts)
+            for key, value in counts.items():
+                report[key] += value
+            for site_id, target_id in outcome.confirmed:
+                for edge in calls[site_id]:
+                    if self._jarvis_canonical(edge["target_id"]) == target_id:
+                        edge["confidence"] = jarvis_merge.accumulate(edge["confidence"])
+                        edge["provenance"]["evidence"] = [*edge["provenance"]["evidence"], "jarvis"]
+                        report["confirmed"] += 1
+            for site_id, target_id in outcome.supported:
+                for edge in candidates[site_id]:
+                    if self._jarvis_canonical(edge["target_id"]) == target_id:
+                        edge["provenance"]["evidence"] = [*edge["provenance"]["evidence"], "jarvis"]
+            for site_id, target_id in outcome.upgraded:
+                removed.update(edge["id"] for edge in candidates[site_id])
+                self._add_jarvis_call(site_id, target_id)
+                report["upgraded"] += 1
+            for site_id, target_id in outcome.new_calls:
+                self._add_jarvis_call(site_id, target_id)
+                report["new_calls"] += 1
+            self._add_jarvis_may_calls(outcome.may_call, {call.node_id: call for call in records[owners[0].id]})
+        self.edges = [edge for edge in self.edges if edge["id"] not in removed]
+        may_call_edges = [edge for edge in self.edges if edge["type"] == "MAY_CALL"]
+        per_site = Counter(edge["source_id"] for edge in may_call_edges)
+        for edge in may_call_edges:
+            edge["properties"]["candidate_count"] = per_site[edge["source_id"]]
+        self._may_call_by_kind = Counter(edge["properties"]["match_kind"] for edge in may_call_edges)
+        self._may_call_callsites = len(per_site)
+
+    def _add_jarvis_call(self, site_id: str, target_id: str) -> None:
+        self._add_edge("CALLS", site_id, target_id, confidence=jarvis_merge.CALL_CONFIDENCE, resolution="analyzer",
+                       rule_id="python.call.jarvis.resolve.v1", evidence=("jarvis",), source_tool="jarvis",
+                       source_tool_version=jarvis_runner.JARVIS_COMMIT,
+                       properties={"binding_kind": "jarvis", "argument_match": None, "candidate_rank": 1,
+                                   "confidence_reason": "JARVIS reported one target for this call site"})
+        properties = self.nodes_by_id[site_id]["properties"]
+        properties.update(resolution_status="resolved", candidate_count=1, resolver="jarvis")
+        if self.nodes_by_id[target_id]["type"] == "Class":
+            properties["dispatch_kind"] = "constructor"
+
+    def _add_jarvis_may_calls(self, wanted: tuple[tuple[str, str, str], ...], records: dict[str, _CallRecord]) -> None:
+        assert self.jarvis_report is not None
+        grouped: dict[tuple[str, str], list[str]] = defaultdict(list)
+        for site_id, target_id, match_kind in wanted:
+            grouped[site_id, match_kind].append(target_id)
+        for (site_id, match_kind), targets in grouped.items():
+            call, start = records[site_id], len(self.edges)
+            self._add_may_call(call, self.modules[call.module_name], match_kind, targets)
+            added = self.edges[start:]
+            self.jarvis_report["new_may_call"] += len(added)
+            if not added:  # a class with no constructor of its own has nothing MAY_CALL can point at
+                self.jarvis_report["no_call_site"] += len(targets)
+            if match_kind == "jarvis_conflict":
+                for edge in added:
+                    edge["confidence"] = jarvis_merge.CONFLICT_CONFIDENCE
+                    edge["provenance"]["evidence"] = [*edge["provenance"]["evidence"], "conflict_with_call"]
+
+    def _add_code_graph(self, root: Path, result: JoernResult) -> None:
+        """Add G_code: statements and names from tree-sitter, flow from Joern. A function Joern did not see gets none of it."""
+        assert self.code_graph_report is not None
+        owners = {(node["path"], node["range"]["start_line"], node["name"]): node for node in self.nodes
+                  if node["type"] in {"Function", "Method"} and not self._is_test_path(node["path"])}
+        methods: dict[tuple[str, int, str], JoernMethod | None] = {}
+        for method in result.methods:
+            key = (method.path, method.line, method.name)
+            methods[key] = None if key in methods else method  # two methods on one key cannot be told apart
+        callsites: dict[str, list[str]] = defaultdict(list)
+        for edge in self.edges:
+            if edge["type"] == "CONTAINS" and self.nodes_by_id[edge["target_id"]]["type"] == "CallSite":
+                callsites[edge["source_id"]].append(edge["target_id"])
+        matched = 0
+        for path in sorted({key[0] for key in owners}):
+            source = (root / path).read_bytes()
+            stack = [self.parser.parse(source).root_node]
+            while stack:
+                node = stack.pop()
+                stack.extend(reversed(node.named_children))
+                name = node.child_by_field_name("name") if node.type == "function_definition" else None
+                if name is None:
+                    continue
+                key = (path, node.start_point.row + 1, source[name.start_byte:name.end_byte].decode("utf-8", "replace"))
+                method = methods.get(key)
+                if key in owners and method is not None:
+                    matched += 1
+                    self._add_function_code_graph(owners[key], node, source, method, callsites[owners[key]["id"]])
+        self.code_graph_report.update(
+            statements=sum(node["type"] == "Statement" for node in self.nodes),
+            identifiers=sum(node["type"] == "Identifier" and node["properties"].get("extractor") == "code-graph" for node in self.nodes),
+            edges=dict(sorted(Counter(edge["type"] for edge in self.edges if edge["type"] in G_CODE_EDGE_TYPES).items())),
+            methods_matched=matched, methods_unmatched=len(owners) - matched)
+
+    def _add_function_code_graph(self, owner: dict[str, Any], function: Node, source: bytes, method: JoernMethod, callsites: list[str]) -> None:
+        assert self.code_graph_report is not None and self.joern_config is not None
+        statements = code_graph.function_statements(function, source)
+        identifiers = code_graph.function_identifiers(function, source, statements)
+        flow = code_graph.project_method(method, statements)
+        self.code_graph_report["raises_fixed"] += flow.raises_fixed
+        self.code_graph_report["cannot_reach_exit"] += flow.cannot_reach_exit
+        owner_id, owner_name, path = owner["id"], owner["qualified_name"], owner["path"]
+        statement_ids = [f"{owner_id}::{fact.kind}#{fact.n}" for fact in statements]
+        children: dict[str, list[str]] = defaultdict(list)
+        for fact, statement_id in zip(statements, statement_ids):
+            properties = {"kind": fact.kind, "owner_id": owner_id}
+            if fact.condition is not None:
+                properties["condition"] = fact.condition
+            if fact.value is not None:
+                properties["value"] = fact.value
+            self._add_node(self._source_node(node_id=statement_id, node_type="Statement", name=fact.kind,
+                                             qualified_name=f"{owner_name}::{fact.kind}#{fact.n}", path=path, node=fact.node,
+                                             source=source, properties=properties))
+            children[owner_id if fact.parent is None else statement_ids[fact.parent]].append(statement_id)
+        for fact in identifiers:
+            identifier_id = f"{owner_id}::identifier:{fact.name}#{fact.n}"
+            properties = {"extractor": "code-graph"}
+            if fact.type is not None:
+                properties["type"] = fact.type
+            self._add_node(self._source_node(node_id=identifier_id, node_type="Identifier", name=fact.name,
+                                             qualified_name=f"{owner_name}::identifier:{fact.name}#{fact.n}", path=path, node=fact.node,
+                                             source=source, properties=properties))
+            self._add_edge("CONTAINS", owner_id, identifier_id, confidence=1.0, resolution="exact", rule_id="python.code.contains.v1",
+                           properties={"extractor": "code-graph"})
+            children[statement_ids[fact.statement]].append(identifier_id)
+        for callsite_id in callsites:
+            span = self.nodes_by_id[callsite_id]["range"]
+            statement = code_graph.statement_covering(statements, span["start_byte"], span["end_byte"])
+            if statement is not None:
+                children[statement_ids[statement]].append(callsite_id)
+        def position(child_id: str) -> tuple[int, int, str]:
+            span = self.nodes_by_id[child_id]["range"]
+            return span["start_byte"], -span["end_byte"], child_id  # the outer of two nodes starting together comes first
+
+        for parent_id, child_ids in children.items():
+            for ordinal, child_id in enumerate(sorted(child_ids, key=position)):
+                self._add_edge("AST_CHILD", parent_id, child_id, confidence=1.0, resolution="exact", rule_id="python.code.ast_child.v1",
+                               properties={"ordinal": ordinal})
+        joern = {"resolution": "heuristic", "source_tool": "joern-pysrc2cpg", "source_tool_version": self.joern_config.image}
+        for source_index, target_index in sorted(flow.cfg):
+            self._add_edge("CFG_NEXT", statement_ids[source_index], statement_ids[target_index], confidence=0.9,
+                           rule_id="python.code.cfg_next.v1", properties={}, **joern)
+        for dependent, controlling in sorted(flow.control):
+            self._add_edge("CONTROL_DEPENDS_ON", statement_ids[dependent], statement_ids[controlling], confidence=0.9,
+                           rule_id="python.code.control_depends_on.v1", properties={}, **joern)
+        for (use, definition), names in sorted(flow.data.items(), key=lambda item: (item[0][0], -1 if item[0][1] is None else item[0][1])):
+            self._add_edge("DATA_DEPENDS_ON", statement_ids[use], owner_id if definition is None else statement_ids[definition], confidence=0.8,
+                           rule_id="python.code.data_depends_on.v1", properties={"variables": list(names)}, **joern)
 
     def _lift_architecture(self) -> None:
         """Add the G_arch layer; runs after every CALLS edge exists (spec §4)."""

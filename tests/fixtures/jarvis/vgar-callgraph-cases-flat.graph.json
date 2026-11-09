@@ -1,0 +1,29 @@
+{
+ "<builtin>.print": [],
+ "<str>.lower": [],
+ "<str>.upper": [],
+ "flat_cases": [],
+ "flat_cases.core": [],
+ "flat_cases.core.build": [],
+ "flat_cases.g07_flat": [
+  "flat_cases.core",
+  "nsp.tools.helper"
+ ],
+ "flat_cases.g07_flat.main": [
+  "nsp.tools.helper.shout",
+  "nsp.tools.helper.whisper",
+  "flat_cases.core.build"
+ ],
+ "nsp.tools.helper": [],
+ "nsp.tools.helper.shout": [
+  "<str>.upper"
+ ],
+ "nsp.tools.helper.whisper": [
+  "<str>.lower"
+ ],
+ "run_all": [
+  "flat_cases.g07_flat",
+  "<builtin>.print",
+  "flat_cases.g07_flat.main"
+ ]
+}

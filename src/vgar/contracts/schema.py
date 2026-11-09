@@ -49,6 +49,9 @@ NODE_TYPES = {
     "StackTraceFrame",
     "Constraint",
     "Actor",
+    # Proposed, pending team review (plan L3-1; proposal lines 193-197). Only emitted when Joern is enabled.
+    # Not source-backed, like Port: it hangs off its function through AST_CHILD, not the CONTAINS chain.
+    "Statement",
 }
 
 # Proposed, pending team review (plan GA-2, L1-3; proposal lines 236, 263-270).
@@ -56,8 +59,11 @@ G_ARCH_EDGE_TYPES = frozenset({
     "DEPENDS_ON", "EXPOSES_PORT", "CONSUMES_PORT", "COMMUNICATES_WITH", "CONTAINS_COMPONENT", "DEPLOYS_TO", "CONFIGURES",
 })
 
+# Proposed, pending team review (plan L3-1; proposal lines 193-197).
+G_CODE_EDGE_TYPES = frozenset({"AST_CHILD", "CFG_NEXT", "DATA_DEPENDS_ON", "CONTROL_DEPENDS_ON"})
+
 # One schema S (proposal §8.4) validated under two profiles; decided by TV2 on 08/11 for the MCP contract.
-SCHEMA_VERSION = "vgar-schema-full-v3"
+SCHEMA_VERSION = "vgar-schema-full-v4"
 PROFILE_FULL_VGAR_MCP = "full_vgar_mcp"
 PROFILE_LEGACY_W10 = "legacy_w10"
 LEGACY_W10_NODE_TYPES = {
@@ -199,6 +205,18 @@ EDGE_ENDPOINTS: dict[str, set[tuple[str, str]]] = {
     # Proposed, pending team review (plan GT-1; proposal lines 318, 321).
     "TRACES_TO": {("Issue", "Component"), ("Requirement", "Component")},
     "CONFLICTS_WITH": {("Requirement", "Requirement")},
+    # Proposed, pending team review (plan L3-1; proposal lines 193-197).
+    "AST_CHILD": {
+        ("Function", "Statement"),
+        ("Method", "Statement"),
+        ("Statement", "Statement"),
+        ("Statement", "CallSite"),
+        ("Statement", "Identifier"),
+    },
+    "CFG_NEXT": {("Statement", "Statement")},
+    # The target is the function itself when the data is one of its parameters.
+    "DATA_DEPENDS_ON": {("Statement", "Statement"), ("Statement", "Function"), ("Statement", "Method")},
+    "CONTROL_DEPENDS_ON": {("Statement", "Statement")},
 }
 
 

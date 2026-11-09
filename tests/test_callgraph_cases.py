@@ -1,6 +1,7 @@
 """Layer 2 known-answer test: call edges against the hand-labelled repos in tests/fixtures/vgar-callgraph-cases."""
 from __future__ import annotations
 
+import json
 import re
 import subprocess
 import sys
@@ -9,7 +10,9 @@ from pathlib import Path
 
 import pytest
 
+from vgar.graph import jarvis_runner
 from vgar.graph.builder import PythonGraphBuilder
+from vgar.graph.jarvis_runner import JarvisConfig, JarvisResult
 
 CASES = Path(__file__).parent / "fixtures" / "vgar-callgraph-cases"
 REPOS = (("vgar-callgraph-cases", "src"), ("vgar-callgraph-cases-flat", "."))
@@ -29,14 +32,14 @@ def _expectations(repo: Path, source_root: Path) -> dict[tuple[str, int], list[s
     return found
 
 
-def _score() -> tuple[Counter, Counter, list[tuple[str, int]]]:
+def _score(jarvis: bool = False) -> tuple[Counter, Counter, list[tuple[str, int]]]:
     """(counts for CALLS only, counts for CALLS + MAY_CALL, annotated lines with no CallSite)."""
     certain: Counter = Counter()
     combined: Counter = Counter()
     missing = []
     for name, source in REPOS:
         repo = CASES / name
-        document = PythonGraphBuilder(repo_key=f"cases/{name}", repository_revision="fixture").build(repo)
+        document = PythonGraphBuilder(repo_key=f"cases/{name}", repository_revision="fixture", jarvis=JarvisConfig() if jarvis else None).build(repo)
         nodes = {node["id"]: node for node in document["nodes"]}
         targets: dict[str, dict[str, list[str]]] = defaultdict(lambda: defaultdict(list))
         bases: dict[str, list[str]] = defaultdict(list)
@@ -102,6 +105,30 @@ def test_may_call_does_not_regress(scores) -> None:
     combined = scores[1]
     assert combined["tp"] >= 44 and combined["fp"] <= 32
     assert combined["claims_external"] <= 2 and combined["claims_unknown"] <= 1
+
+
+def _precision(counts: Counter) -> float:
+    return counts["tp"] / (counts["tp"] + counts["fp"])
+
+
+def _recall(counts: Counter) -> float:
+    return counts["tp"] / (counts["tp"] + counts["fn"])
+
+
+def _recorded_jarvis(root: Path, files: list[Path], source_roots: tuple[str, ...], config: JarvisConfig) -> JarvisResult:
+    path = Path(__file__).parent / "fixtures" / "jarvis" / f"{root.name}.graph.json"
+    return JarvisResult("ready", graph=json.loads(path.read_text(encoding="utf-8")))
+
+
+def test_jarvis_meets_the_precision_goal(monkeypatch: pytest.MonkeyPatch) -> None:
+    before_certain, before_combined, _ = _score()
+    monkeypatch.setattr(jarvis_runner, "run_jarvis", _recorded_jarvis)
+    after_certain, after_combined, missing = _score(jarvis=True)
+    assert _precision(after_certain) >= _precision(before_certain)
+    assert _recall(after_combined) > _recall(before_combined)
+    assert after_certain["claims_external"] <= before_certain["claims_external"]
+    assert after_certain["claims_unknown"] <= before_certain["claims_unknown"]
+    assert missing == []
 
 
 @pytest.mark.skipif(sys.version_info < (3, 11), reason="verify_expect.py reads code.co_qualname")

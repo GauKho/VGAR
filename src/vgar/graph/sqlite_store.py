@@ -18,7 +18,7 @@ from vgar.contracts.error import (
     InvalidQueryError,
     NodeNotFoundError,
 )
-from vgar.contracts.schema import EDGE_ENDPOINTS, G_ARCH_EDGE_TYPES, validate_graph_document
+from vgar.contracts.schema import EDGE_ENDPOINTS, G_ARCH_EDGE_TYPES, G_CODE_EDGE_TYPES, validate_graph_document
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -527,7 +527,7 @@ class SQLiteGraphStore:
                 if not frontier or len(visited) >= limit:
                     break
                 placeholders = ", ".join("?" for _ in frontier)
-                excluded = ("MAY_CALL", *sorted(G_ARCH_EDGE_TYPES))
+                excluded = ("MAY_CALL", *sorted(G_ARCH_EDGE_TYPES), *sorted(G_CODE_EDGE_TYPES))
                 params = (graph_version, *sorted(frontier), *sorted(frontier), *excluded)
                 rows = connection.execute(
                     f"""
@@ -540,6 +540,7 @@ class SQLiteGraphStore:
                           OR target_id IN ({placeholders})
                       )
                       AND type NOT IN ({", ".join("?" for _ in excluded)})
+                      AND json_extract(properties_json, '$.extractor') IS NOT 'code-graph'
                     ORDER BY id
                     """,
                     params,
