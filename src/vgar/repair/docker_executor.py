@@ -2,9 +2,12 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
+import logging
 from pathlib import Path
 import shutil
+import stat
 import sys
 import tarfile
 import time
@@ -25,6 +28,8 @@ from vgar.repair.static_tools import (
     mypy_unavailable_reason,
 )
 from vgar.repair.workspace import LINK_PREFIX, inventory
+
+LOGGER = logging.getLogger(__name__)
 
 
 def transport_snapshot(expected):
@@ -290,6 +295,8 @@ class DockerExecutor:
             raise ValueError("Docker image differs from pinned immutable profile")
 
     def _execute(self, directory, operation, reports, expected):
+        if any(name not in ('nodeids.json', 'junit.xml') for name in reports):
+            raise ValueError('Unapproved report names')
         absent = self._checked(
             ["ps", "-aq", "--filter", "name=^/" + self.name + "$"],
             directory,
@@ -347,17 +354,22 @@ class DockerExecutor:
             base_commit=self.task.revision,
             base_identity=self.profile["source_before"],
             runtime=dict(self.profile["runtime"]),
+            report_names=sorted(reports),
         )
         atomic_json(control / "config.json", config)
         # docker cp keeps the host uid and mode; container root has no CAP_DAC_OVERRIDE.
         for path in control.iterdir():
             path.chmod(0o644)
         control.chmod(0o777)
+        self._snapshot_archive_metadata(directory)
+        self._snapshot_transport['copy_status'] = 'ERROR'
         self._checked(
             ["cp", str(control), self.name + ":/vgar"],
             directory,
             self.operation_deadline,
         )
+        self._snapshot_transport['copy_status'] = 'PASS'
+        self._cleanup_snapshot_transport(directory)
         if (operation.get("argv") or [""])[0].startswith(CONTAINER_ROOT + "/"):
             self._checked(
                 ["cp", str(load_bundle()), self.name + ":" + CONTAINER_ROOT],
@@ -413,16 +425,117 @@ class DockerExecutor:
             ):
                 result.update(status="ERROR", complete=False)
             if result["complete"]:
+                metadata = data.get('report_artifacts', {})
+                if reports and (not isinstance(metadata, dict) or set(metadata) != set(reports)):
+                    raise ValueError('Missing/mismatched report metadata')
                 for name, path in reports.items():
+                    item = metadata[name]
+                    if not isinstance(item, dict):
+                        raise ValueError('Invalid report metadata')
+                    if item == {'state': 'MISSING'}:
+                        continue
+                    checksum, size = item.get('sha256'), item.get('size_bytes')
+                    if (set(item) != {'state', 'sha256', 'size_bytes'} or item.get('state') != 'AVAILABLE'
+                            or type(size) is not int or size < 0 or not isinstance(checksum, str)
+                            or not checksum.startswith('sha256:') or len(checksum) != 71
+                            or any(c not in '0123456789abcdef' for c in checksum[7:])):
+                        raise ValueError('Invalid available report metadata')
                     self._checked(
                         ["cp", self.name + ":/vgar/" + name, str(directory / name)],
                         directory,
                         self.operation_deadline,
                     )
+                    copied = directory / name
+                    if copied.is_symlink() or not stat.S_ISREG(copied.lstat().st_mode):
+                        raise ValueError('Copied report is not a regular file')
+                    raw = copied.read_bytes()
+                    if len(raw) != size or digest(raw) != checksum:
+                        raise ValueError('Copied report hash/size mismatch')
                     path.parent.mkdir(parents=True, exist_ok=True)
                     with path.open("xb") as output:
-                        output.write((directory / name).read_bytes())
+                        output.write(raw)
         return result
+
+    def _snapshot_operation_directory(self, directory):
+        directory = Path(directory).absolute()
+        if directory != Path(self.evidence_root).absolute() / self.operation_id:
+            raise ValueError('Snapshot cleanup is outside the current operation scope')
+        for path in (*reversed(directory.parents), directory):
+            info = path.lstat()
+            if stat.S_ISLNK(info.st_mode) or getattr(info, 'st_file_attributes', 0) & 0x400:
+                raise ValueError('Snapshot operation path contains a link/reparse point')
+        if directory.resolve() != self._snapshot_operation_root:
+            raise ValueError('Snapshot operation directory changed')
+        return directory
+
+    def _snapshot_archive_path(self, directory):
+        directory = self._snapshot_operation_directory(directory)
+        control = directory / 'control'
+        archive = control / 'snapshot.tar'
+        for path in (control, archive):
+            try:
+                info = path.lstat()
+            except FileNotFoundError:
+                continue
+            if stat.S_ISLNK(info.st_mode) or getattr(info, 'st_file_attributes', 0) & 0x400:
+                raise ValueError('Snapshot archive path contains a link/reparse point')
+            if path == control and not stat.S_ISDIR(info.st_mode):
+                raise ValueError('Snapshot control path is not a directory')
+            if path == archive and not stat.S_ISREG(info.st_mode):
+                raise ValueError('Snapshot archive is not a regular file')
+        return archive
+
+    def _snapshot_archive_metadata(self, directory):
+        archive = self._snapshot_archive_path(directory)
+        try:
+            self._snapshot_transport['archive_bytes'] = archive.stat().st_size
+            checksum = hashlib.sha256()
+            with archive.open('rb') as stream:
+                for block in iter(lambda: stream.read(1024 * 1024), b''):
+                    checksum.update(block)
+            self._snapshot_transport['archive_sha256'] = 'sha256:' + checksum.hexdigest()
+        except FileNotFoundError:
+            pass  # An absent archive needs no metadata; cleanup records ABSENT.
+        except OSError as error:
+            self._snapshot_transport['metadata_error'] = str(error)
+            LOGGER.warning('Snapshot transport metadata unavailable: %s', error)
+
+    def _cleanup_snapshot_transport(self, directory):
+        """Remove only this operation's host transport; never change its verdict."""
+        receipt = self._snapshot_transport
+        if self._snapshot_cleanup_attempted:
+            return receipt
+        self._snapshot_cleanup_attempted = True
+        interrupted = None
+        try:
+            archive = self._snapshot_archive_path(directory)
+            if receipt['archive_bytes'] is None:
+                try:
+                    self._snapshot_archive_metadata(directory)
+                except BaseException as error:
+                    # Complete owned-file/container cleanup before propagating an interrupt.
+                    interrupted = error
+                    receipt['metadata_error'] = type(error).__name__ + ': ' + str(error)
+                    LOGGER.warning('Snapshot transport metadata interrupted: %s', receipt['metadata_error'])
+            receipt['retained_bytes'] = receipt['archive_bytes']
+            try:
+                archive.unlink()
+            except FileNotFoundError:
+                receipt.update(cleanup_status='ABSENT', retained_bytes=0)
+            else:
+                receipt.update(cleanup_status='REMOVED', retained_bytes=0)
+        except (OSError, ValueError) as error:
+            receipt.update(cleanup_status='ERROR', reason=str(error))
+            LOGGER.warning('Snapshot transport cleanup failed: %s', error)
+        try:
+            self._snapshot_operation_directory(directory)
+            atomic_json(Path(directory) / 'snapshot_transport.json', receipt)
+        except (OSError, ValueError) as error:
+            receipt['receipt_error'] = str(error)
+            LOGGER.warning('Snapshot transport receipt unavailable: %s', error)
+        if interrupted is not None:
+            raise interrupted
+        return receipt
 
     def _cleanup(self, directory):
         if not self.reserved:
@@ -472,6 +585,13 @@ class DockerExecutor:
         self.reserved = False
         directory = self.evidence_root / self.operation_id
         directory.mkdir(parents=True, exist_ok=False)
+        self._snapshot_operation_root = directory.resolve()
+        self._snapshot_cleanup_attempted = False
+        self._snapshot_transport = dict(
+            operation_id=self.operation_id, archive_path='control/snapshot.tar',
+            archive_bytes=None, archive_sha256=None, copy_status='NOT_STARTED',
+            cleanup_status=None, retained_bytes=None, reason=None,
+        )
         result = None
         try:
             self._identity(directory)
@@ -480,11 +600,21 @@ class DockerExecutor:
             if self.verify_snapshot() != expected:
                 raise ValueError("Host snapshot changed during execution")
         finally:
-            cleanup = self._cleanup(directory)
-            atomic_json(directory / "cleanup.json", cleanup)
-            if cleanup["status"] != "PASS":
-                raise RuntimeError("Docker cleanup failed: " + str(cleanup))
+            primary_error = sys.exception()
+            try:
+                try:
+                    self._cleanup_snapshot_transport(directory)
+                except BaseException as error:
+                    if primary_error is None:
+                        raise
+                    LOGGER.warning('Snapshot cleanup interrupted; preserving primary error: %s', type(error).__name__)
+            finally:
+                cleanup = self._cleanup(directory)
+                atomic_json(directory / "cleanup.json", cleanup)
+                if cleanup["status"] != "PASS":
+                    raise RuntimeError("Docker cleanup failed: " + str(cleanup))
         result["docker_cleanup"] = cleanup
         result["docker_evidence"] = str(directory)
+        result['snapshot_transport'] = dict(self._snapshot_transport)
         atomic_json(directory / "command.json", result)
         return result

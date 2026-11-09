@@ -195,3 +195,62 @@ def test_integer_mypy_column_is_normalized_once(tmp_path, column, expected):
     assert parsed.execution_status == 'COMPLETE'
     assert len(parsed.diagnostics) == 1
     assert parsed.diagnostics[0].column == expected
+
+
+def test_unchanged_declaration_recovers_shifted_repeated_diagnostic(tmp_path):
+    old = 'def first(value):\n    return value\n\ndef second(value):\n    return value\n'
+    new = '# header\n' + old
+    before, after = {'pkg/debt.py': old}, {'pkg/debt.py': new}
+    legacy = api()._build_unique_line_map(before, after)
+    mapping = api().build_line_map(before, after)
+    assert 2 not in legacy['pkg/debt.py']
+    assert mapping['pkg/debt.py'][2] == 3
+    original = api().compare_diagnostics(report(tmp_path, [row()]), report(tmp_path, [row(line=3)]), legacy)
+    fixed = api().compare_diagnostics(report(tmp_path, [row()]), report(tmp_path, [row(line=3)]), mapping)
+    assert original.status == 'FAIL' and fixed.status == 'PASS'
+    assert len(fixed.persisting) == 1 and fixed.identity_version == 'm2-static-delta-v1'
+
+
+@pytest.mark.parametrize('old', [
+    '@decorate\nasync def first(value):\n    return value\n\nasync def second(value):\n    return value\n',
+    'class First:\n    def run(self):\n        return 1\n\nclass Second:\n    def run(self):\n        return 1\n',
+    'def first():\n    def inner():\n        return 1\n    return inner\n\ndef second():\n    def inner():\n        return 1\n    return inner\n',
+])
+def test_declaration_mapping_covers_decorators_async_classes_and_nested_scopes(old):
+    mapping = api().build_line_map({'a.py': old}, {'a.py': '# λ\r\n' + old})['a.py']
+    for n, line in enumerate(old.splitlines(), 1):
+        if line.strip():
+            assert mapping[n] == n + 1
+
+
+@pytest.mark.parametrize('old,new,line', [
+    ('def first(v):\n    return v\n\ndef second(v):\n    return v\n',
+     '# header\ndef renamed(v):\n    return v\n\ndef second(v):\n    return v\n', 2),
+    ('def f(v):\n    return v\n\ndef f(v):\n    return v\n',
+     '# header\ndef f(v):\n    return v\n\ndef f(v):\n    return v\n', 2),
+    ('class A:\n    def f(v):\n        return v\n\nclass A:\n    pass\n\nclass B:\n    def g(v):\n        return v\n',
+     '# header\nclass A:\n    def f(v):\n        return v\n\nclass A:\n    pass\n\nclass B:\n    def g(v):\n        return v\n', 3),
+    ('def f(v):\n    return v\n\ndef g(v):\n    return v\n',
+     '# header\ndef f(v):\n    if v:\n        return v\n    return v\n\ndef g(v):\n    return v\n', 2),
+])
+def test_ambiguous_or_changed_declarations_do_not_gain_repeated_line_mapping(old, new, line):
+    legacy = api()._build_unique_line_map({'a.py': old}, {'a.py': new})['a.py']
+    mapping = api().build_line_map({'a.py': old}, {'a.py': new})['a.py']
+    assert mapping.get(line) == legacy.get(line)
+
+
+def test_new_diagnostic_in_duplicate_body_is_not_hidden(tmp_path):
+    old = 'def first(v):\n    return v\n\ndef second(v):\n    return v\n'
+    mapping = api().build_line_map({'pkg/debt.py': old}, {'pkg/debt.py': '# h\n' + old})
+    delta = api().compare_diagnostics(report(tmp_path, [row()]), report(tmp_path, [row(line=6)]), mapping)
+    assert delta.status == 'FAIL' and len(delta.introduced) == 1
+
+
+def test_declaration_merge_conflicts_remain_unmapped():
+    assert api()._merge_line_candidates([(1, 2), (1, 3), (2, 2), (3, 4)]) == {3: 4}
+
+
+def test_unparseable_and_large_changed_sources_keep_legacy_mapping():
+    for old in ('return bad\nreturn bad\n', 'def f():\n    pass\n' + 'pass\n' * 10001):
+        before, after = {'a.py': old}, {'a.py': '# header\n' + old}
+        assert api().build_line_map(before, after) == api()._build_unique_line_map(before, after)

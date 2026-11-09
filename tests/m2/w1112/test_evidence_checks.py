@@ -84,6 +84,21 @@ def test_optional_fail_error_not_run_do_not_change_old_verdict(checks):
         assert checks.assess_compatibility(records, set(), 'PASS', []) == ('PASS', [])
 
 
+def test_collector_scopes_api_to_changed_symbols_and_publishes_exclusions(checks, case):
+    task, lease, artifacts = case
+    old = b'from external import exposed\ndef public(value):\n    return value\n'
+    (lease.path / 'a.py').write_bytes(old)
+    baseline = checks.capture_checks_baseline(task, lease, artifacts)
+    (lease.path / 'a.py').write_bytes(old.replace(b'return value', b'return value + 1'))
+    result = checks.run_compatibility_checks(task, lease, SimpleNamespace(changed_files=['a.py']),
+                                            baseline, artifacts)
+    assert result['api']['status'] == 'PASS'
+    sidecar = json.loads((artifacts / result['api']['details_ref']).read_bytes())
+    assert sidecar['details']['analysis_scope']['selected'] == {'a.py': ['public']}
+    excluded = sidecar['details']['analysis_scope']['excluded_diagnostics']
+    assert {item['symbol'] for item in excluded} == {'exposed'}
+
+
 def test_shared_capture_and_completion_publish_real_supplemental_results(case):
     task, lease, artifacts = case
     policy = RepairPolicy()

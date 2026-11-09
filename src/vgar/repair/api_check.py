@@ -7,6 +7,10 @@ Only AST declarations are analyzed; dynamic exports, imported re-exports and
 ambiguous public bindings are explicitly unavailable. No runtime/MRO/type
 inference is attempted. ``callers_in_repo`` is diagnostic only.
 
+``changed_only=True`` checks the affected static public bindings and local
+dependencies instead of letting unrelated unsupported bindings gate a patch.
+It records excluded diagnostics; COMPLETE then covers only that patch scope.
+
 The risk adapter is opt-in. It does not change the graph producer or any W9
 default payload, and cannot attest that arbitrary snapshots belong to a report.
 M1/M2 integration must bind snapshots to the same baseline and applied patch.
@@ -18,6 +22,7 @@ from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
 import hashlib
 from pathlib import PurePosixPath
+import symtable
 from typing import Any
 
 from vgar.contracts.impact import ImpactReport
@@ -284,31 +289,197 @@ def _caller_evidence(value):
     return {'available': True, 'by_symbol': dict(sorted(detached.items()))}
 
 
+def _binding_loads(nodes):
+    """Separate definition-time namespace loads from function-body globals."""
+    definition, globals_ = set(), set()
+    for node in nodes:
+        expression = node.value if isinstance(node, ast.keyword) else node
+        table = symtable.symtable(ast.unparse(expression), '<api-scope>', 'exec')
+        definition.update(s.get_name() for s in table.get_symbols() if s.is_referenced())
+
+        def walk(child):
+            globals_.update(s.get_name() for s in child.get_symbols()
+                            if s.is_referenced() and s.is_global())
+            for nested in child.get_children():
+                walk(nested)
+
+        for child in table.get_children():
+            walk(child)
+    return definition, globals_
+
+
+def _conditional_units(body):
+    """Bind each declaration to its own statement and enclosing guards, never siblings."""
+    records, loads, globals_by_name = {}, {}, {}
+
+    def visit(node, context=(), guards=frozenset()):
+        bindings, _ = _bindings([node]) if isinstance(node, ast.stmt) else ({}, set())
+        names = set(bindings)
+        if isinstance(node, ast.Name) and isinstance(node.ctx, (ast.Store, ast.Del)):
+            names.add(node.id)
+        if names:
+            definition, globals_ = _binding_loads([node]) if isinstance(node, ast.stmt) else (set(), set())
+            for name in names:
+                records.setdefault(name, []).append((context, ast.dump(node, include_attributes=False)))
+                loads.setdefault(name, set()).update(definition | guards)
+                globals_by_name.setdefault(name, set()).update(globals_)
+            return
+        # Remove statement blocks from the header. Keep conditions/iterables,
+        # handler types and branch identity, including nested if/try/with scopes.
+        fields = dict(ast.iter_fields(node))
+        blocks = {'body', 'orelse', 'finalbody', 'handlers', 'cases'}
+        header = type(node)(**{key: [] if key in blocks else value for key, value in fields.items()})
+        guard_names = {n.id for n in ast.walk(header)
+                       if isinstance(n, ast.Name) and isinstance(n.ctx, ast.Load)}
+        marker = ast.dump(header, include_attributes=False)
+        for field, value in fields.items():
+            children = value if isinstance(value, list) else [value]
+            for child in children:
+                if isinstance(child, ast.AST):
+                    visit(child, context + ((marker, field),), guards | guard_names)
+
+    for node in body:
+        visit(node)
+    return records, loads, globals_by_name
+
+
+def _scope_units(tree):
+    """Namespace bindings without locations; class headers/ctors are separate from methods."""
+    units, dependencies = {}, {}
+
+    def add_scope(body, prefix=''):
+        bindings, conditional = _bindings(body)
+        controls = [n for n in body if not isinstance(n, (*_FUNCTIONS, ast.ClassDef,
+                    ast.Assign, ast.AnnAssign, ast.AugAssign, ast.Import, ast.ImportFrom))]
+        records, control_loads, control_globals = _conditional_units(controls)
+        for name in sorted(set(bindings) | conditional):
+            nodes = list(bindings.get(name, []))
+            key = prefix + name
+            extra = []
+            extra_dependencies = set()
+            load_nodes = nodes
+            if len(nodes) == 1 and isinstance(nodes[0], ast.ClassDef) and not prefix:
+                cls = nodes[0]
+                members, ambiguous = _bindings(cls.body)
+                # Include constructor definitions and conditional constructor ownership.
+                load_nodes = [*cls.bases, *cls.keywords, *cls.decorator_list]
+                nodes = [*load_nodes,
+                         *(n for ctor in ('__init__', '__new__') for n in members.get(ctor, []))]
+                ctor_records, ctor_loads, ctor_globals = _conditional_units(cls.body)
+                for ctor in ('__init__', '__new__'):
+                    extra_dependencies |= {key + '.' + n if n in (set(members) | ambiguous) else n
+                                           for n in ctor_loads.get(ctor, set())}
+                    extra_dependencies |= ctor_globals.get(ctor, set())
+                if {'__init__', '__new__'} & ambiguous:
+                    extra = [record for ctor in ('__init__', '__new__')
+                             for record in ctor_records.get(ctor, [])]
+                add_scope(cls.body, key + '.')
+            units[key] = (tuple(ast.dump(n, include_attributes=False) for n in nodes),
+                          tuple(records.get(name, [])), tuple(extra))
+            definition, globals_ = _binding_loads(load_nodes)
+            definition |= control_loads.get(name, set())
+            dependencies[key] = {prefix + n if prefix and n in (set(bindings) | conditional)
+                                 else n for n in definition} | globals_ | control_globals.get(name, set()) | extra_dependencies
+
+    add_scope(tree.body)
+    bindings, conditional = _bindings(tree.body)
+    names, _ = _exports(tree, bindings, conditional)
+    public = {name for name in units if name.split('.')[0] in names
+              and ('.' not in name or not name.split('.', 1)[1].startswith('_'))}
+    return units, dependencies, public
+
+
+def _changed_scope(trees):
+    """Select affected bindings, including transitive local dependencies and export membership."""
+    selected, changed_paths = {}, set()
+    for path in sorted(set(trees['baseline']) | set(trees['candidate'])):
+        sides = [trees[side].get(path) for side in ('baseline', 'candidate')]
+        projections = [_scope_units(tree) if tree else ({}, {}, set()) for tree in sides]
+        old, new = projections
+        affected = {name for name in set(old[0]) | set(new[0]) if old[0].get(name) != new[0].get(name)}
+        affected |= old[2] ^ new[2]
+        dependencies = {name: old[1].get(name, set()) | new[1].get(name, set())
+                        for name in set(old[1]) | set(new[1])}
+        while True:
+            expanded = affected | {name for name, deps in dependencies.items()
+                                   if any(dependency == item or item.startswith(dependency + '.')
+                                          for dependency in deps for item in affected)}
+            if expanded == affected:
+                break
+            affected = expanded
+        selected[path] = sorted(affected & (old[2] | new[2]))
+        dumps = [ast.dump(tree, include_attributes=False) if tree else None for tree in sides]
+        if dumps[0] != dumps[1]:
+            changed_paths.add(path)
+    return selected, changed_paths
+
+
+def _filter_scope(surfaces, trees, diagnostics):
+    selected, changed_paths = _changed_scope(trees)
+    included, excluded = [], []
+    for diagnostic in diagnostics:
+        path, name = diagnostic['path'], diagnostic.get('symbol', '')
+        affected = set(selected.get(path, []))
+        reason = diagnostic['reason']
+        # Unknown export membership and parse failure cannot establish a safe scope.
+        relevant = (reason == 'API_PARSE_ERROR' or name in affected
+                    or name == '__all__' or (name == '*' and path in changed_paths)
+                    or (reason == 'API_UNSUPPORTED_DECLARATION'
+                        and any(item.startswith(name + '.') for item in affected)))
+        (included if relevant else excluded).append(diagnostic)
+    for side, paths in surfaces.items():
+        for path, symbols in paths.items():
+            affected = set(selected.get(path, []))
+            _, _, public = _scope_units(trees[side][path])
+            paths[path] = {name: symbol for name, symbol in symbols.items() if name in affected}
+            # Some class attributes/nested declarations are outside the original
+            # surface implementation. Selected does not mean supported.
+            for name in sorted(affected):
+                if (name not in symbols and name in public
+                        and not any(d['path'] == path and d['side'] == side
+                                    and (d.get('symbol') == name or name.startswith(d.get('symbol', '') + '.'))
+                                    for d in included)):
+                    included.append(dict(path=path, side=side, symbol=name,
+                                         reason='API_UNSUPPORTED_DECLARATION'))
+    return included, dict(mode='changed-public-symbols', algorithm='ast-binding-dependencies-v1',
+                          selected=selected, excluded_diagnostics=excluded)
+
+
 def check_api(before: Mapping[str, bytes], after: Mapping[str, bytes], *,
-              callers_in_repo: Mapping[str, Sequence[str]] | None = None) -> CheckAnalysis:
+              callers_in_repo: Mapping[str, Sequence[str]] | None = None,
+              changed_only: bool = False) -> CheckAnalysis:
     """Compare selected public declarations; unknown/error outranks a partial FAIL.
 
     Reasons are stable codes, with per-symbol evidence and raw source SHA256s in
     ``details``. Signature change is available only for a completely analyzed
     scope. This is a static compatibility check, not a claim about runtime API
     behavior, callers' coverage, or an entire repository outside the supplied maps.
+    ``changed_only`` is opt-in for source-bound verification; legacy callers keep
+    the full selected-file surface check. Dynamic export membership remains unknown.
     """
+    if type(changed_only) is not bool:
+        raise ValueError('changed_only must be a bool')
     snapshots = {'baseline': _snapshot(before), 'candidate': _snapshot(after)}
     diagnostics: list[dict[str, Any]] = []
     changes = []
-    surfaces = {}
+    surfaces, trees = {}, {}
     for side, sources in snapshots.items():
         surfaces[side] = {}
+        trees[side] = {}
         for path, raw in sources.items():
             try:
                 tree = ast.parse(raw, filename=path)
                 # ast.parse accepts duplicate arguments and break/return in
                 # invalid scopes. Compile for validation only: never execute.
                 compile(tree, path, 'exec', dont_inherit=True)
+                trees[side][path] = tree
                 surfaces[side][path] = _surface(tree, path, side, diagnostics)
             except (SyntaxError, ValueError, RecursionError) as error:
                 diagnostics.append({'path': path, 'side': side, 'reason': 'API_PARSE_ERROR',
                                     'line': getattr(error, 'lineno', None), 'message': str(error)})
+    scope = None
+    if changed_only:
+        diagnostics, scope = _filter_scope(surfaces, trees, diagnostics)
     signature_changed = False
     for path in sorted(set(snapshots['baseline']) | set(snapshots['candidate'])):
         old, new = surfaces['baseline'].get(path, {}), surfaces['candidate'].get(path, {})
@@ -350,6 +521,9 @@ def check_api(before: Mapping[str, bytes], after: Mapping[str, bytes], *,
         'source_hashes': {side: {p: 'sha256:' + hashlib.sha256(raw).hexdigest() for p, raw in sources.items()}
                           for side, sources in snapshots.items()},
         'changes': changes, 'diagnostics': diagnostics, 'callers_in_repo': _caller_evidence(callers_in_repo)}
+    if scope is not None:
+        details['scope'] = 'static-python-changed-public-api'
+        details['analysis_scope'] = scope
     return CheckAnalysis(status, tuple(sorted(reasons)), details)
 
 

@@ -98,7 +98,8 @@ def _project_bundle(run, task, lease, applied, verification):
     checks.update(project_compatibility(verification, run.directory))
     allowed_codes = {'TEST_FAILED', 'TYPECHECK_FAILED', 'LINT_FAILED', 'VERIFICATION_INCOMPLETE',
                      'API_BREAK', 'STRUCTURAL_VIOLATION'}
-    public_reasons = [FailureReason(code=r if r in allowed_codes else 'VERIFICATION_INCOMPLETE', message=r)
+    public_reasons = [FailureReason(code='TEST_FAILED' if r == 'TEST_COLLECTION_FAILED' else
+                                   r if r in allowed_codes else 'VERIFICATION_INCOMPLETE', message=r)
                       for r in verification.get('reasons', [])]
     if verification.get('reason') and not public_reasons:
         public_reasons.append(FailureReason(code='VERIFICATION_INCOMPLETE', message=verification['reason']))

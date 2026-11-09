@@ -1,5 +1,6 @@
 """Frozen pool controller keeps every slot and produces deterministic V1/V2."""
 import importlib.util
+import copy
 import json
 from pathlib import Path
 from types import SimpleNamespace
@@ -214,6 +215,83 @@ def test_campaign_rejects_source_output_overlap_before_creating_files(pool):
     assert not (task.source_repo / 'new-campaign').exists()
 
 
+@pytest.mark.parametrize('output_kind', ['empty', 'populated', 'file', 'pool', 'inside_pool'])
+def test_campaign_output_rejection_reports_cause_without_side_effects(pool, tmp_path, monkeypatch, output_kind):
+    root, index, task = pool
+    output = tmp_path / 'existing'
+    expected = 'Campaign output already exists; choose a new output directory'
+    if output_kind == 'empty':
+        output.mkdir()
+    elif output_kind == 'populated':
+        output.mkdir()
+        (output / 'sentinel.bin').write_bytes(b'prior campaign\x00')
+    elif output_kind == 'file':
+        output.write_bytes(b'prior output\x00')
+    elif output_kind == 'pool':
+        output = root
+    else:
+        output = root / 'new-campaign'
+        expected = 'Fresh campaign output must not overlap frozen pool'
+
+    def snapshot():
+        return {p.relative_to(tmp_path).as_posix(): None if p.is_dir() else p.read_bytes()
+                for p in tmp_path.rglob('*')}
+
+    before = snapshot()
+
+    def forbidden(*args, **kwargs):
+        pytest.fail('Rejected output must not reach task preparation or verification')
+
+    monkeypatch.setattr(api, 'verify_once', forbidden)
+    with pytest.raises(ValueError) as error:
+        api.evaluate_pool(root, output, forbidden, RepairPolicy(), variants(),
+                          expected_pool_hash=index['pool_hash'])
+    assert str(error.value) == expected
+    assert snapshot() == before
+
+
+@pytest.mark.parametrize('existing_output', [False, True])
+def test_campaign_pool_hash_validation_precedes_output_validation(pool, tmp_path, monkeypatch, existing_output):
+    root, index, task = pool
+    output = tmp_path / 'run'
+    if existing_output:
+        output.mkdir()
+        (output / 'sentinel').write_bytes(b'keep')
+    before = {p.relative_to(tmp_path).as_posix(): None if p.is_dir() else p.read_bytes()
+              for p in tmp_path.rglob('*')}
+
+    def forbidden(*args, **kwargs):
+        pytest.fail('Invalid pool must not reach task preparation or verification')
+
+    monkeypatch.setattr(api, 'verify_once', forbidden)
+    with pytest.raises(ValueError, match='Pool hash mismatch'):
+        api.evaluate_pool(root, output, forbidden, RepairPolicy(), variants(),
+                          expected_pool_hash='sha256:' + '0' * 64)
+    after = {p.relative_to(tmp_path).as_posix(): None if p.is_dir() else p.read_bytes()
+             for p in tmp_path.rglob('*')}
+    assert after == before
+
+
+def test_campaign_does_not_overwrite_output_created_after_preflight(pool, tmp_path, monkeypatch):
+    root, index, task = pool
+    output = tmp_path / 'run'
+
+    def prepare(task_id):
+        if not output.exists():
+            output.mkdir()
+            (output / 'sentinel').write_bytes(b'concurrent campaign')
+        return task, None
+
+    def forbidden(*args, **kwargs):
+        pytest.fail('Concurrent output must not reach verification')
+
+    monkeypatch.setattr(api, 'verify_once', forbidden)
+    with pytest.raises(FileExistsError):
+        api.evaluate_pool(root, output, prepare, RepairPolicy(), variants(),
+                          expected_pool_hash=index['pool_hash'])
+    assert {p.name: p.read_bytes() for p in output.iterdir()} == {'sentinel': b'concurrent campaign'}
+
+
 def test_evaluated_row_requires_vector_and_error_row_cannot_accept(pool, tmp_path, monkeypatch):
     root, index, task = pool
     def once(task, patch, policy, out, **kwargs):
@@ -251,6 +329,98 @@ def test_pool_input_errors_leave_rates_na_and_explicit_planned_counts(tmp_path):
         assert row['FAR'] is row['FRR'] is None
         assert row['planned_good'] == 2 and row['planned_bad'] == 10
         assert row['good_pool_errors'] == 1 and row['bad_pool_errors'] == 5
+        assert row['bad_total'] == row['bad_observed'] == 3
+        assert row['good_total'] == row['good_observed'] == 1
+        assert row['bad_not_applicable'] == 2 and row['good_not_applicable'] == 0
+        assert row['observed_FAR'] == 0 and row['observed_FRR'] == 1
+        assert row['bad_observed_coverage'] == 0.3 and row['good_observed_coverage'] == 0.5
+    assert summary['variants']['A0'] == summary['variants']['A1']
+    for operator, arms in summary['operators'].items():
+        for row in arms.values():
+            assert row['planned_bad'] == 2
+            assert row['observed_FAR'] == (0 if operator in (
+                'public_function_delete', 'signature_change', 'test_skip') else None)
+    tables = api.render_tables(summary)
+    assert 'Observed FAR' in tables['V1.md'] and 'Observed FRR' in tables['V1.md']
+    assert 'Observed non-ACCEPT rate' in tables['V2.md']
+    assert 'PARTIAL' in tables['V1.md'] and 'PARTIAL' in tables['V2.md']
+
+
+def legacy_summary():
+    row = dict(planned_bad=20, planned_good=4, bad_total=4, good_total=3,
+        TP=2, FP=1, FN=1, TN=1, FAR=None, FRR=None,
+        bad_not_run=1, good_not_run=1, bad_errors=1, good_errors=1,
+        bad_check_failures=1, good_check_failures=0,
+        bad_not_applicable=1, good_not_applicable=0, bad_pool_errors=15, good_pool_errors=1)
+    operator = dict(row, planned_bad=4, planned_good=0, bad_total=3, good_total=0,
+        FP=0, TN=0, good_not_run=0, good_errors=0, bad_not_run=0,
+        bad_not_applicable=0, bad_pool_errors=1, good_pool_errors=0)
+    return dict(schema='vgar-verifier-tables-v1', pool_hash='fixture-pool', campaign_hash='fixture-run',
+        expected_slots=24, generated_patches=7, task_count=4, complete=False, source_roots=[],
+        variants={'A0': row, 'A1': copy.deepcopy(row)},
+        operators={'signature_change': {'A0': operator}})
+
+
+def test_render_legacy_summary_derives_observed_metrics_without_mutating_input():
+    summary = legacy_summary()
+    original = copy.deepcopy(summary)
+    tables = api.render_tables(summary)
+    assert tables == api.render_tables(summary)
+    rendered = json.loads(tables['verification_pool_counts.json'])
+    row = rendered['variants']['A0']
+    assert row['bad_observed'] == 3 and row['good_observed'] == 2
+    assert row['observed_FAR'] == pytest.approx(1 / 3) and row['observed_FRR'] == 0.5
+    assert row['bad_observed_coverage'] == 0.15 and row['good_observed_coverage'] == 0.5
+    assert row['FAR'] is row['FRR'] is None and rendered['complete'] is False
+    assert rendered['operators']['signature_change']['A0']['observed_FAR'] == pytest.approx(1 / 3)
+    assert 'ERROR is not a proven detection' in tables['V2.md']
+    assert summary == original
+
+
+@pytest.mark.parametrize('missing', ['bad_not_run', 'bad_total', 'FN', 'planned_bad'])
+def test_render_legacy_summary_keeps_missing_counters_unknown(missing):
+    summary = legacy_summary()
+    del summary['variants']['A0'][missing]
+    original = copy.deepcopy(summary)
+    tables = api.render_tables(summary)
+    row = json.loads(tables['verification_pool_counts.json'])['variants']['A0']
+    if missing == 'planned_bad':
+        assert row['bad_observed_coverage'] is None
+    else:
+        assert row['observed_FAR'] is None
+    assert 'N/A' in tables['V1.md']
+    assert summary == original
+
+
+def test_partial_campaign_keeps_observed_counts_and_nominal_denominators(pool, tmp_path, monkeypatch):
+    root, index, task = pool
+    calls = []
+
+    def once(task, patch, policy, out, **kwargs):
+        calls.append(patch)
+        if len(calls) == 2:
+            raise KeyboardInterrupt()
+        out.mkdir(parents=True)
+        vector = error_vector(task)
+        vector['binding']['pool'] = kwargs['pool_binding']
+        vector = api.seal_vector(vector)
+        api.atomic_json(out / 'vector.json', vector)
+        return vector
+
+    monkeypatch.setattr(api, 'verify_once', once)
+    with pytest.raises(KeyboardInterrupt):
+        api.evaluate_pool(root, tmp_path / 'run', lambda task_id: (task, None), RepairPolicy(), variants(),
+                          expected_pool_hash=index['pool_hash'])
+    summary = api.report_campaign(root, tmp_path / 'run', expected_pool_hash=index['pool_hash'])
+    assert summary['complete'] is False
+    for row in summary['variants'].values():
+        assert row['good_observed'] == 1 and row['good_errors'] == 1
+        assert row['observed_FRR'] == 1 and row['good_observed_coverage'] == 1
+        assert row['bad_observed'] == 0 and row['bad_not_run'] == 3
+        assert row['observed_FAR'] is row['FAR'] is None
+        assert row['bad_observed_coverage'] == 0
+        assert row['planned_bad'] == 5 and row['planned_good'] == 1
+    assert 'PARTIAL' in api.render_tables(summary)['V1.md']
 
 
 def test_table_output_cannot_modify_known_original_source(pool, tmp_path):

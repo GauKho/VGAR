@@ -14,5 +14,10 @@ def test_missing_required_column_message_names_the_column():
     with pytest.raises(ValueError) as error:
         ts.remove_column('flux')
     message = str(error.value)
-    assert "found 'time'" not in message
-    assert 'flux' in message
+    expected, separator, found = message.partition(' but found ')
+    assert separator
+    # The actual remaining column really is time. The issue is that the
+    # expected required-column list must also name the missing flux column.
+    assert "'time'" in expected
+    assert "'flux'" in expected
+    assert "'time'" in found

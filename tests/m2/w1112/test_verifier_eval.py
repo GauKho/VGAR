@@ -100,11 +100,63 @@ def test_integrity_failure_cannot_be_optional(api, name):
     assert api.derive_verdict(vector, policy(name))['status'] == 'ERROR'
 
 
+@pytest.mark.parametrize('name', ['A0', 'A1', 'A2', 'A3'])
+@pytest.mark.parametrize('fault', [None, 'baseline', 'integrity', 'required_api', 'required_static',
+                                 'missing_report', 'missing_run_report'])
+def test_collection_failure_verdict_requires_evidence_and_qualified_baseline(api, name, fault):
+    from test_collection_failure import collection_evidence
+    vector = raw_vector(api)
+    vector['post']['collection'] = collection_evidence()
+    vector['post']['tests'] = collection_evidence()
+    if fault == 'baseline':
+        vector['baseline']['collection'] = collection_evidence()
+    elif fault == 'integrity':
+        vector['integrity'] = {'status': 'ERROR', 'reasons': ['CHECK_INTEGRITY_ERROR']}
+    elif fault == 'required_api':
+        vector['post']['compatibility']['api']['status'] = 'NOT_RUN'
+    elif fault == 'required_static':
+        vector['post']['static']['mypy']['status'] = 'ERROR'
+        vector['post']['static']['mypy']['report']['execution_status'] = 'ERROR'
+    elif fault in ('missing_report', 'missing_run_report'):
+        vector['post']['tests'].pop('junit_xml')
+        if fault == 'missing_report':
+            vector['post']['collection'].pop('junit_xml')
+    vector = api.seal_vector(vector)
+    original = copy.deepcopy(vector)
+    result = api.derive_verdict(vector, policy(name))
+    want = 'ERROR' if fault in ('baseline', 'integrity', 'missing_report', 'missing_run_report') or (
+        fault == 'required_api' and name == 'A3') or (
+        fault == 'required_static' and name in ('A2', 'A3')) else 'FAIL'
+    assert result['status'] == want
+    if want == 'FAIL':
+        assert 'TEST_COLLECTION_FAILED' in result['reasons']
+        assert 'CHECK_INTEGRITY_ERROR' not in result['reasons']
+    if fault == 'baseline':
+        assert 'BASELINE_NOT_QUALIFIED' in result['reasons']
+    assert vector == original
+
+
 def test_tampered_vector_rejected(api):
     vector = raw_vector(api)
     vector['post']['tests']['status'] = 'FAIL'
     with pytest.raises(ValueError, match='hash'):
         api.derive_verdict(vector, policy('A0'))
+
+
+@pytest.mark.parametrize('name', ['A0', 'A1', 'A2', 'A3'])
+@pytest.mark.parametrize('missing', ['required', 'regression'])
+def test_collection_failure_cannot_override_incomplete_test_run(api, name, missing):
+    from test_collection_failure import collection_evidence
+    vector = raw_vector(api)
+    vector['post']['collection'] = collection_evidence()
+    if missing == 'required':
+        vector['post']['tests'] = {'status': 'PASS', 'outcomes': {'test_other': 'PASS'}}
+    else:
+        vector['baseline']['tests']['outcomes']['test_ok'] = 'PASS'
+    vector = api.seal_vector(vector)
+    result = api.derive_verdict(vector, policy(name))
+    assert result['status'] == 'ERROR'
+    assert 'VERIFICATION_INCOMPLETE' in result['reasons']
 
 
 def test_structured_static_measurements_have_no_arm_binding(tmp_path):
@@ -164,6 +216,19 @@ def test_collector_keeps_independent_checks_after_test_error(api, collector_case
     assert (out / 'checks/api.json').is_file()
 
 
+def test_collector_keeps_independent_checks_after_collection_failure(api, collector_case, monkeypatch):
+    from test_collection_failure import collection_evidence
+    task, lease, calls, out = collector_case
+    monkeypatch.setattr(api, 'collect_tests', lambda *a: collection_evidence())
+    monkeypatch.setattr(api, 'run_tests', lambda *a: (calls.append('tests') or collection_evidence()))
+    patch = '--- a/a.py\n+++ b/a.py\n@@ -1,2 +1,2 @@\n def public(value):\n-    return value\n+    return value + 1\n'
+    vector = api.collect_patch_vector(task, lease, None, RepairPolicy(), patch, out)
+    assert vector['integrity']['status'] == 'PASS'
+    assert calls == ['tests', 'static', 'tests', 'static']
+    assert vector['post']['compatibility']['api']['status'] == 'PASS'
+    assert vector['post']['compatibility']['structural']['status'] == 'PASS'
+
+
 def test_v1_metrics_bad_is_positive_and_errors_are_separate(api):
     rows = [dict(label='GOOD', operator='gold', recommendation='ACCEPT', status='PASS'),
         dict(label='GOOD', operator='gold', recommendation='REJECT', status='ERROR'),
@@ -183,6 +248,40 @@ def test_not_run_is_unknown_not_a_successful_rejection(api):
     assert result['FAR'] is None
     assert result['bad_not_run'] == 1
     assert result['TP'] == result['FN'] == 0
+
+
+@pytest.mark.parametrize('pending', [False, True])
+def test_observed_metrics_use_terminal_denominators_and_keep_errors_separate(api, pending):
+    rows = [dict(label='BAD', status='PASS', recommendation='ACCEPT'),
+            dict(label='BAD', status='FAIL', recommendation='REVISE'),
+            dict(label='BAD', status='ERROR', recommendation='REJECT'),
+            dict(label='GOOD', status='PASS', recommendation='ACCEPT'),
+            dict(label='GOOD', status='ERROR', recommendation='REJECT')]
+    if pending:
+        rows += [dict(label='BAD', status='NOT_RUN', recommendation=None),
+                 dict(label='GOOD', status='NOT_RUN', recommendation=None)]
+    original = copy.deepcopy(rows)
+    result = api.confusion_metrics(rows)
+    assert result['bad_observed'] == 3 and result['good_observed'] == 2
+    assert result['observed_FAR'] == pytest.approx(1 / 3)
+    assert result['observed_FRR'] == 0.5
+    assert (result['TP'], result['FP'], result['FN'], result['TN']) == (2, 1, 1, 1)
+    assert result['bad_errors'] == result['good_errors'] == result['bad_check_failures'] == 1
+    assert result['good_check_failures'] == 0
+    if pending:
+        assert result['FAR'] is result['FRR'] is None
+    else:
+        assert result['FAR'] == result['observed_FAR']
+        assert result['FRR'] == result['observed_FRR']
+    assert rows == original
+
+
+@pytest.mark.parametrize('rows', [[], [dict(label='BAD', status='NOT_RUN', recommendation=None)],
+                                 [dict(label='GOOD', status=None, recommendation=None)]])
+def test_observed_metrics_without_measurements_are_unknown(api, rows):
+    result = api.confusion_metrics(rows)
+    assert result['bad_observed'] == result['good_observed'] == 0
+    assert result['observed_FAR'] is result['observed_FRR'] is None
 
 
 @pytest.mark.parametrize('name', ['A0', 'A1', 'A2', 'A3'])

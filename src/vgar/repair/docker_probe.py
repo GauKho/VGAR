@@ -5,6 +5,7 @@ import hashlib
 import json
 import os
 import platform
+import stat
 import subprocess
 import sys
 import tarfile
@@ -13,6 +14,33 @@ import traceback
 
 def sha(raw):
     return "sha256:" + hashlib.sha256(raw).hexdigest()
+
+
+def report_inventory(root, names):
+    """Describe only explicitly requested tool reports after source attestation."""
+    if (not isinstance(names, list) or any(n not in ('nodeids.json', 'junit.xml') for n in names)
+            or len(set(names)) != len(names)):
+        raise ValueError('Unapproved report names')
+    result = {}
+    for name in names:
+        path = os.path.join(root, name)
+        try:
+            info = os.lstat(path)
+        except FileNotFoundError:
+            result[name] = dict(state='MISSING')
+            continue
+        if not stat.S_ISREG(info.st_mode):
+            raise ValueError('Report must be a regular file: ' + name)
+        checksum, size = hashlib.sha256(), 0
+        with open(path, 'rb') as stream:
+            while True:
+                block = stream.read(1024 * 1024)
+                if not block:
+                    break
+                checksum.update(block)
+                size += len(block)
+        result[name] = dict(state='AVAILABLE', size_bytes=size, sha256='sha256:' + checksum.hexdigest())
+    return result
 
 
 def safe_name(name):
@@ -183,6 +211,8 @@ def run(config):
         else:
             raise ValueError("Unsupported target operation")
         result["snapshot_after"] = attest_snapshot(root, config["expected"])
+        if config.get('report_names'):
+            result['report_artifacts'] = report_inventory('/vgar', config['report_names'])
         result["complete"] = True
     except BaseException:
         result.update(complete=False, traceback=traceback.format_exc())
