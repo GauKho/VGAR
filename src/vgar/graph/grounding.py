@@ -297,7 +297,8 @@ class TaskAnchorFinder:
                     path = match.group("path").replace("\\", "/")
                     paths = self._match_paths(path)
                     selector = match.groupdict().get("selector") or ""
-                    line = int(match.group("line")) if match.group("line") else None
+                    # A number this long is not a real line, and int() rejects very long ones.
+                    line = int(match.group("line")) if match.group("line") and len(match.group("line")) < 20 else None
                     matches = []
                     for matched_path in paths:
                         candidates = self._nodes_by_path[matched_path]

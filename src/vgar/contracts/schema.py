@@ -39,6 +39,16 @@ NODE_TYPES = {
     "Service",
     "DeploymentUnit",
     "ExternalSystem",
+    # Proposed, pending team review (plan GT-1; proposal lines 301-312). Issue is the existing node type.
+    "BugReport",
+    "Requirement",
+    "UserStory",
+    "AcceptanceCriterion",
+    "FailingTest",
+    "ErrorMessage",
+    "StackTraceFrame",
+    "Constraint",
+    "Actor",
 }
 
 # Proposed, pending team review (plan GA-2, L1-3; proposal lines 236, 263-270).
@@ -47,7 +57,7 @@ G_ARCH_EDGE_TYPES = frozenset({
 })
 
 # One schema S (proposal §8.4) validated under two profiles; decided by TV2 on 08/11 for the MCP contract.
-SCHEMA_VERSION = "vgar-schema-full-v2"
+SCHEMA_VERSION = "vgar-schema-full-v3"
 PROFILE_FULL_VGAR_MCP = "full_vgar_mcp"
 PROFILE_LEGACY_W10 = "legacy_w10"
 LEGACY_W10_NODE_TYPES = {
@@ -154,6 +164,8 @@ EDGE_ENDPOINTS: dict[str, set[tuple[str, str]]] = {
             "Class",
             "Function",
             "Method",
+            # Proposed, pending team review (plan GT-1; proposal line 319).
+            "Requirement",
         }
     },
     "MENTIONS": {
@@ -165,11 +177,18 @@ EDGE_ENDPOINTS: dict[str, set[tuple[str, str]]] = {
             "Function",
             "Method",
             "Test",
+            # Proposed, pending team review (plan GT-1; proposal lines 336, 649, spec §6).
+            "StackTraceFrame",
+            "ErrorMessage",
+            "AcceptanceCriterion",
+            "BugReport",
+            "Route",
         }
     },
-    "REPRODUCES": {("Test", "Issue")},
-    # Proposed, pending team review (plan GA-2; proposal lines 263-270).
-    "DEPENDS_ON": {("Component", "Component")},
+    # FailingTest -> BugReport is proposed, pending team review (plan GT-1; proposal line 322).
+    "REPRODUCES": {("Test", "Issue"), ("FailingTest", "BugReport")},
+    # Proposed, pending team review (plan GA-2, GT-1; proposal lines 264, 320).
+    "DEPENDS_ON": {("Component", "Component"), ("Requirement", "Requirement")},
     "EXPOSES_PORT": {("Component", "Port")},
     "CONSUMES_PORT": {("Component", "Port")},
     "COMMUNICATES_WITH": {("Service", "Service")},
@@ -177,6 +196,9 @@ EDGE_ENDPOINTS: dict[str, set[tuple[str, str]]] = {
     "DEPLOYS_TO": {("Component", "DeploymentUnit")},
     # Proposed, pending team review (plan L1-3; proposal line 236).
     "CONFIGURES": {("ConfigEntry", "Component"), ("ConfigEntry", "Service")},
+    # Proposed, pending team review (plan GT-1; proposal lines 318, 321).
+    "TRACES_TO": {("Issue", "Component"), ("Requirement", "Component")},
+    "CONFLICTS_WITH": {("Requirement", "Requirement")},
 }
 
 

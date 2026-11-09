@@ -168,7 +168,7 @@ class GraphContextRetriever:
             })
             anchor_scores = {anchor.node_id: anchor.score for anchor in overlay.grounding.anchors}
             failing_tests = sorted({edge["source_id"] for edge in overlay.edges
-                                    if edge["type"] == "REPRODUCES"})
+                                    if edge["type"] == "REPRODUCES" and edge["target_id"] == overlay.nodes[0]["id"]})
             if not issue_text:
                 issue_text = overlay.nodes[0]["properties"].get("issue_text", "")
         available = list(_WEIGHTS)

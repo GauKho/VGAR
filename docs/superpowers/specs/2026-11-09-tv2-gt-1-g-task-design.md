@@ -1,6 +1,6 @@
 # TV2 · GT-1: trích `G_task` từ issue và test đang fail
 
-> **Trạng thái:** bản nháp, chờ duyệt. Soạn ngày 09/11/2026.
+> **Trạng thái:** đã duyệt 09/11/2026.
 >
 > **Nguồn:** chỉ dùng plan `docs/status/plan_2_weeks_mcp_server_2026-11-07.md` (**[plan]**), proposal
 > `D:\kltn\proposal_vgar_mcp_final_corrected.md` (**[P]**, dẫn số dòng) và các nguồn của plan trong `Downloads\context`:
@@ -90,7 +90,7 @@ Các giá trị này đều là **(đề xuất)**.
 Mỗi lần khớp `File "<path>", line <N>` (có thể có `, in <tên>`), dấu nháy đơn hoặc kép, là một node, kể cả frame trùng nhau. Regex:
 
 ```text
-File ["'](?P<path>[^"'\r\n]+)["'], line (?P<line>\d+)(?:,\s+in\s+(?P<function>\S+))?
+File ["'](?P<path>[^"'\r\n]+)["'], line (?P<line>\d{1,18})(?!\d)(?:,\s+in\s+(?P<function>\S+))?
 ```
 
 `name`: `<path>:<line>`. `properties`: `file`, `line` (số nguyên), `function` (hoặc `None`), `order`. `kind` là `stack_frame`.
@@ -107,7 +107,7 @@ Mỗi dòng khớp regex dưới, gộp theo toàn văn dòng (đã `strip`). `k
 
 ### 5.3 AcceptanceCriterion ([P] 629)
 
-Chỉ lấy gạch đầu dòng nằm ngay dưới một dòng tiêu đề khớp `acceptance criteria`, `acceptance test(s)` hoặc `definition of done` (không phân biệt hoa thường, được có `#`, `*`, `_`, `>`, `-` ở đầu) **(đề xuất)**. Gạch đầu dòng ở nơi khác không tính, vì phần lớn không phải tiêu chí.
+Chỉ lấy gạch đầu dòng nằm ngay dưới một dòng tiêu đề khớp `acceptance criteria`, `acceptance test(s)` hoặc `definition of done` (không phân biệt hoa thường, được có `#`, `*`, `_`, `>`, `-` ở đầu; phần sau cụm đó chỉ được là ký tự trang trí `*`, `_`, `:`, `#`, `-`) **(đề xuất)**. Gạch đầu dòng ở nơi khác không tính, vì phần lớn không phải tiêu chí.
 
 Bỏ các khối ` ``` ` trước khi xét. Dãy gạch đầu dòng (`-`, `*`, `+`, `1.`, `1)`, có thể kèm `[ ]`, `[x]`) được phép cách nhau bằng dòng trống và dừng ở dòng đầu tiên không phải gạch đầu dòng. Gộp theo văn bản. `name`: 80 ký tự đầu. `properties`: `text`, `checked` (`True`, `False` hoặc `None`). `kind` là `acceptance`.
 
@@ -115,13 +115,13 @@ Bỏ các khối ` ``` ` trước khi xét. Dãy gạch đầu dòng (`-`, `*`, 
 
 **BugReport** (`kind` là `bug_report`, tối đa một node, `name` là `task_id`) được sinh khi có ít nhất một trong các dấu hiệu sau **(đề xuất)**: có StackTraceFrame, có ErrorMessage, `failing_tests` không rỗng, hoặc label `bug`. `properties.signals` liệt kê dấu hiệu đã khớp, gồm `stack_frame`, `error_message`, `failing_test`, `label`, sắp xếp tăng dần.
 
-**FailingTest** (`kind` là `failing_test`): mỗi selector trong `failing_tests` sau khi bỏ trùng và sắp xếp là một node, `name` là selector. `properties`: `selector`, `test_node_ids` (id các node Test trong anchor có bằng chứng `source == "failing_test"` mà `matched_text` bằng selector hoặc nằm trong selector, tăng dần, có thể rỗng).
+**FailingTest** (`kind` là `failing_test`): mỗi selector trong `failing_tests` sau khi bỏ trùng và sắp xếp là một node, `name` là selector. `properties`: `selector`, `test_node_ids` (id các node Test trong anchor có bằng chứng `source == "failing_test"` mà `matched_text` bằng selector hoặc nằm trong selector theo ranh giới từ, tăng dần, có thể rỗng).
 
 `REPRODUCES`: `FailingTest → BugReport` đúng theo [P] 322. Cạnh `Test → Issue` đang có ([P] 652) giữ nguyên. `properties` giữ `input_reported_failure: true`, `execution_verified: false`.
 
 ### 5.5 Route ([P] 336, 625)
 
-Dùng `_ROUTE` của `grounding.py`. `Issue --MENTIONS--> Route` khi trong issue có đường dẫn trùng `properties.route_path` của node Route và, nếu có method, method đó nằm trong `properties.methods`. Route chỉ có khi graph được build với tree-sitter-graph.
+Dùng `_ROUTE` của `grounding.py`. `Issue --MENTIONS--> Route` khi trong issue có đường dẫn trùng `properties.route_path` của node Route và, nếu có method, method đó nằm trong `properties.methods`. Dấu `/` đứng một mình phải có method mới tính, để `a / b` trong văn bản không thành route. Route chỉ có khi graph được build với tree-sitter-graph.
 
 ### 5.6 `TRACES_TO` ([P] 318, 338, 873)
 

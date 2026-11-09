@@ -35,8 +35,8 @@ class TaskOverlayTests(unittest.TestCase):
         self.assertIsNone(issue["path"])
         self.assertIsNone(issue["range"])
         self.assertEqual(overlay.graph_version, self.document["graph_version"])
-        mentions = [edge for edge in overlay.edges if edge["type"] == "MENTIONS"]
-        reproduces = [edge for edge in overlay.edges if edge["type"] == "REPRODUCES"]
+        mentions = [edge for edge in overlay.edges if edge["type"] == "MENTIONS" and ":task:" not in edge["target_id"]]
+        reproduces = [edge for edge in overlay.edges if edge["type"] == "REPRODUCES" and edge["target_id"] == issue["id"]]
         self.assertEqual(len(mentions), 2)
         self.assertEqual(len(reproduces), 1)
         self.assertTrue(all(edge["source_id"] == issue["id"] for edge in mentions))
@@ -57,23 +57,24 @@ class TaskOverlayTests(unittest.TestCase):
         for reports in (["tests/test_auth.py"], ["src/auth/service.py:2"], ["missing.py::test_login"]):
             with self.subTest(reports=reports):
                 overlay = TaskOverlayBuilder(self.document).build("task", "", reports)
-                self.assertFalse(any(edge["type"] == "REPRODUCES" for edge in overlay.edges))
+                self.assertFalse(any(edge["type"] == "REPRODUCES" and edge["target_id"] == overlay.nodes[0]["id"] for edge in overlay.edges))
 
     def test_ambiguous_failure_retains_candidates_without_reproduces(self) -> None:
         graph = self._ambiguous_graph()
         overlay = TaskOverlayBuilder(graph).build("task", "", ["test_same"])
         self.assertEqual(len(overlay.grounding.ambiguous_matches), 1)
-        self.assertEqual(len(overlay.edges), 2)
-        self.assertTrue(all(edge["type"] == "MENTIONS" for edge in overlay.edges))
-        self.assertTrue(all(edge["properties"]["has_ambiguous_evidence"] for edge in overlay.edges))
-        self.assertTrue(all(edge["confidence"] == 0.5 for edge in overlay.edges))
+        anchors = [edge for edge in overlay.edges if ":task:" not in edge["source_id"] + edge["target_id"]]
+        self.assertEqual(len(anchors), 2)
+        self.assertTrue(all(edge["type"] == "MENTIONS" for edge in anchors))
+        self.assertTrue(all(edge["properties"]["has_ambiguous_evidence"] for edge in anchors))
+        self.assertTrue(all(edge["confidence"] == 0.5 for edge in anchors))
 
     def test_independent_selector_confirms_only_one_ambiguous_test(self) -> None:
         graph = self._ambiguous_graph()
         overlay = TaskOverlayBuilder(graph).build(
             "task", "", ["test_same", "tests/test_one.py::test_same"],
         )
-        reproduces = [edge for edge in overlay.edges if edge["type"] == "REPRODUCES"]
+        reproduces = [edge for edge in overlay.edges if edge["type"] == "REPRODUCES" and edge["target_id"] == overlay.nodes[0]["id"]]
         self.assertEqual(len(reproduces), 1)
         node = next(node for node in graph["nodes"] if node["id"] == reproduces[0]["source_id"])
         self.assertEqual(node["path"], "tests/test_one.py")
@@ -85,7 +86,7 @@ class TaskOverlayTests(unittest.TestCase):
             "task", "tests/test_one.py::test_same", ["test_same"],
         )
         self.assertEqual(overlay.grounding.anchors[0].score, 1.0)
-        self.assertFalse(any(edge["type"] == "REPRODUCES" for edge in overlay.edges))
+        self.assertFalse(any(edge["type"] == "REPRODUCES" and edge["target_id"] == overlay.nodes[0]["id"] for edge in overlay.edges))
 
     def test_base_snapshot_and_other_task_are_not_mutated(self) -> None:
         graph = copy.deepcopy(self.document)
@@ -148,9 +149,9 @@ class TaskOverlayTests(unittest.TestCase):
             overlay = json.loads(result.stdout)
             self.assertEqual(overlay["task_id"], "cli-task")
             self.assertEqual(overlay["graph_version"], self.document["graph_version"])
-            self.assertEqual(len(overlay["nodes"]), 1)
+            self.assertEqual(len([node for node in overlay["nodes"] if node["type"] == "Issue"]), 1)
             self.assertEqual(graph.read_bytes(), before)
-            self.assertEqual(len([edge for edge in overlay["edges"] if edge["type"] == "REPRODUCES"]), 1)
+            self.assertEqual(len([edge for edge in overlay["edges"] if edge["type"] == "REPRODUCES" and edge["target_id"] == overlay["nodes"][0]["id"]]), 1)
 
     @staticmethod
     def _ambiguous_graph() -> dict:
