@@ -2,8 +2,9 @@
 
 - **Ngày lập:** 05/11/2026.
 - **Repository:** `D:\Project\CAPSTONES\VGAR`.
-- **HEAD đối chiếu hiện tại:** `c88290a147bc42b70261b39e50b7f11d5e5137ea`.
-- **Nhánh local:** `m2/w11-checkers-evidence-c7-20261102`.
+- **Snapshot báo cáo gốc:** `c88290a147bc42b70261b39e50b7f11d5e5137ea`.
+- **Nhánh lúc lập báo cáo gốc:** `m2/w11-checkers-evidence-c7-20261102`.
+- **Mốc Codex Diff bổ sung:** `3f77fcf6`, nhánh `m2/w12-a3-verifier-d15-20261105`.
 **Ngôn ngữ:** tiếng Việt; giữ nguyên tên API, mã trạng thái và tham số trong code.
 
 > Đây là báo cáo kết quả đã có, đối chiếu code, tài liệu M2, JSON kết thúc task,
@@ -27,8 +28,9 @@
 11. [Bảo toàn thay đổi cũ và tương thích](#11-bảo-toàn-thay-đổi-cũ-và-tương-thích)
 12. [Bàn giao và điều kiện đóng thực nghiệm](#12-bàn-giao-và-điều-kiện-đóng-thực-nghiệm)
 13. [Nguồn và giới hạn báo cáo](#13-nguồn-và-giới-hạn-báo-cáo)
-14. Phụ lục A: toàn bộ argv kiểm thử/demo đã khôi phục từ evidence, kết quả và giải thích từng lệnh.
-15. Phụ lục B: inventory đầy đủ file artifact trong ba bộ kết quả, gồm đường dẫn root và manifest.
+14. [Codex Diff — thay đổi theo task](#14-codex-diff--file-mới-phần-bổ-sung-và-phần-sửa-của-từng-task)
+15. Phụ lục A: toàn bộ argv kiểm thử/demo đã khôi phục từ evidence, kết quả và giải thích từng lệnh.
+16. Phụ lục B: inventory đầy đủ file artifact trong ba bộ kết quả, gồm đường dẫn root và manifest.
 
 ## 1. Trạng thái và ý nghĩa DONE
 
@@ -918,6 +920,448 @@ theo spec và code repo hiện có, chưa có chứng cứ task sử dụng pape
 thể nào. Không quy tài liệu tham khảo chung thành phương pháp đã đo/thực hiện.
 Phụ lục dưới đây giữ toàn bộ lệnh/inventory có evidence, kể cả RED và run không
 hoàn tất được nêu riêng, để người đọc có thể tự kiểm tra kết luận.
+
+## 14. Codex Diff — file mới, phần bổ sung và phần sửa của từng task
+
+**Cập nhật ngày05/11/2026, đối chiếu HEAD publication `3f77fcf6ba68d7cfc6356dfe9757f6f53eed691b`, nhánh `m2/w12-a3-verifier-d15-20261105`.**
+
+Mục này trình bày đối chiếu theo dạng file list + thêm/xóa + unified diff để thành viên review như trong Codex Diff. Phiên làm việc không có API xuất trực tiếp màn hình Codex Diff; dữ liệu dưới đây lấy từ **Git patch của đúng từng commit đã push**, không phải ảnh chụp hoặc transcript UI được giả lập. Mỗi task so với **parent riêng của commit đó**, tránh tính lại thay đổi task trước cho task sau.
+
+### 14.1. Cách đọc và phạm vi thống kê
+
+- **A — Added / tạo mới:** file chưa có ở parent. Mọi dòng của file là dòng mới, kể cả comments/docstrings/blank lines.
+- **M — Modified / sửa file cũ:** file đã tồn tại. Một file M có thể chỉ thêm code (+n/−0), hoặc vừa sửa/thay thế vừa thêm (+n/−m). Không gọi M là tạo file mới.
+- **+n/−m:** số dòng Git thêm/xóa, không phải số hàm, số tính năng hoặc số test case. Thay một dòng thường được Git tính một xóa và một thêm.
+- Bảng ghi riêng code production, config, tests, tài liệu/checkpoint. Dòng tài liệu/blank line cũng nằm trong numstat.
+- Cả ba feature commits không có file D (deleted) hoặc R (renamed); số − trong file M là xóa/thay dòng, không phải xóa cả file.
+- Bảng này thống kê **commits feature**. PROGRESS/status/báo cáo dùng chung và định dạng spec được commit riêng ở mục14.6; raw results local ở phụ lụcB không thuộc Git feature diff.
+
+| Task | Commit và parent | File mới A | File cũ M | Tổng file | Dòng thêm | Dòng xóa |
+|---|---|---:|---:|---:|---:|---:|
+| M2-W12-1 | [f95cf684](https://github.com/GauKho/VGAR/commit/f95cf684bd4bfc63ea144c722e30fe815c0e7b4d) ← `c88290a1` | 4 | 4 | 8 | +607 | −6 |
+| M2-W12-2 | [ebc06527](https://github.com/GauKho/VGAR/commit/ebc06527fc5e1ac66d06fbc44d86634d75360ed0) ← `f95cf684` | 10 | 1 | 11 | +2773 | −3 |
+| D15 | [c2cb8f62](https://github.com/GauKho/VGAR/commit/c2cb8f620d9d194da7dae363efe51fc3621d8d68) ← `ebc06527` | 4 | 0 | 4 | +1476 | −0 |
+| **Tổng ba task** | Không cộng spec-format/docs publication | **18** | **5** | **23** | **+4856** | **−9** |
+
+Root local chung: `D:\Project\CAPSTONES\VGAR\`. Mọi path trong bảng là suffix từ root này; cột file là link local, cột snapshot GitHub ghim đúng commit nên vẫn xem được khi branch tiếp tục thay đổi.
+
+### 14.2. M2-W12-1 — danh sách file và ý nghĩa thay đổi
+
+| File local | A/M và loại thay đổi | Nhóm | +/− | Nội dung cụ thể | Snapshot GitHub |
+|---|---|---|---:|---|---|
+| [configs/m2/variants/A3.json](../configs/m2/variants/A3.json) | A — tạo mới toàn file | Config | +10/−0 | Policy mới từ A2 W10: thêm api/structural vào required_checks; giữ normalized/context và bốn recorded checks legacy; arm chờ bind. | [Xem file](https://github.com/GauKho/VGAR/blob/f95cf684bd4bfc63ea144c722e30fe815c0e7b4d/configs/m2/variants/A3.json) |
+| [docs/m2_w12_1_a3.md](m2_w12_1_a3.md) | A — tạo mới toàn file | Tài liệu/checkpoint | +266/−0 | Tài liệu mới: policy/fairness, ma trận verdict, gate/fixture và handoff M3; không phải code chạy model. | [Xem file](https://github.com/GauKho/VGAR/blob/f95cf684bd4bfc63ea144c722e30fe815c0e7b4d/docs/m2_w12_1_a3.md) |
+| [src/vgar/evaluation/repair/fairness.py](../src/vgar/evaluation/repair/fairness.py) | M — chỉ bổ sung khối | Code production/CLI | +5/−0 | Bổ sung khối đầu check_arm_fairness(): khi phép so có A3, A2/A3 phải cùng graph; phần so common identity có sẵn được giữ. | [Xem file](https://github.com/GauKho/VGAR/blob/f95cf684bd4bfc63ea144c722e30fe815c0e7b4d/src/vgar/evaluation/repair/fairness.py) |
+| [src/vgar/repair/policy.py](../src/vgar/repair/policy.py) | M — thêm và sửa/thay dòng cũ | Code production/CLI | +7/−4 | Thêm api/structural vào CheckName, A3 vào variant/required map, validator graph-arm; cập nhật docstring. Serializer/hash legacy giữ đường thực thi cũ. | [Xem file](https://github.com/GauKho/VGAR/blob/f95cf684bd4bfc63ea144c722e30fe815c0e7b4d/src/vgar/repair/policy.py) |
+| [tests/m2/w1112/test_a3_verification.py](../tests/m2/w1112/test_a3_verification.py) | A — tạo mới toàn file | Test/fixture helper | +125/−0 | Tests mới: checker thật, required statuses, config structural hỏng, không dùng baseline bind A2 cho A3. | [Xem file](https://github.com/GauKho/VGAR/blob/f95cf684bd4bfc63ea144c722e30fe815c0e7b4d/tests/m2/w1112/test_a3_verification.py) |
+| [tests/m2/w78/test_a3_integration.py](../tests/m2/w78/test_a3_integration.py) | A — tạo mới toàn file | Test/fixture helper | +68/−0 | Integration mới: CountingGenerator và ba cặp A2/A3 native fixture, xác nhận một generation/attempt và source protection. | [Xem file](https://github.com/GauKho/VGAR/blob/f95cf684bd4bfc63ea144c722e30fe815c0e7b4d/tests/m2/w78/test_a3_integration.py) |
+| [tests/m2/w910/test_arm_fairness.py](../tests/m2/w910/test_arm_fairness.py) | M — thêm và sửa/thay dòng cũ | Test/fixture helper | +79/−1 | Sửa helper config để nhận A3 graph; thêm tests A2/A3 common policy/model/tokenizer/budget/deadline drift và CLI refusal. | [Xem file](https://github.com/GauKho/VGAR/blob/f95cf684bd4bfc63ea144c722e30fe815c0e7b4d/tests/m2/w910/test_arm_fairness.py) |
+| [tests/m2/w910/test_policy.py](../tests/m2/w910/test_policy.py) | M — thêm và sửa/thay dòng cũ | Test/fixture helper | +47/−1 | Đổi unknown-variant case A3 thành A4; thêm positive/negative A3 policy cases, required/recorded checks, arm gate và canonical hash ordering. | [Xem file](https://github.com/GauKho/VGAR/blob/f95cf684bd4bfc63ea144c722e30fe815c0e7b4d/tests/m2/w910/test_policy.py) |
+
+**Điểm cần review:** `fairness.py` là file cũ chỉ thêm5 dòng; `policy.py` vừa đổi4 dòng cũ vừa thêm7 dòng theo Git. Hai file test cũ cũng có sửa dòng chứ không chỉ nối tests mới. Unknown variant chuyển A3→A4 để A3 trở thành variant hợp lệ. `_ALL_CHECKS`, default recorded_checks, serializer và công thức policy_hash cũ không bị đổi trong patch này. Xem diff nguyên văn ở mục14.5.
+
+### 14.3. M2-W12-2 — danh sách file và ý nghĩa thay đổi
+
+| File local | A/M và loại thay đổi | Nhóm | +/− | Nội dung cụ thể | Snapshot GitHub |
+|---|---|---|---:|---|---|
+| [docs/checkpoints/2026-11-04-m2-w12-2-checkpoint.md](checkpoints/2026-11-04-m2-w12-2-checkpoint.md) | A — tạo mới toàn file | Tài liệu/checkpoint | +99/−0 | Checkpoint mới/các mốc resume của task pool; kết quả cuối và dependency được giữ cùng lịch sử. | [Xem file](https://github.com/GauKho/VGAR/blob/ebc06527fc5e1ac66d06fbc44d86634d75360ed0/docs/checkpoints/2026-11-04-m2-w12-2-checkpoint.md) |
+| [docs/m2_w12_2_verifier_eval.md](m2_w12_2_verifier_eval.md) | A — tạo mới toàn file | Tài liệu/checkpoint | +309/−0 | Tài liệu mới: builder/neutral vector/derive/consumer, metric mẫu số, tests/demo, template Docker M3 và phần còn chờ. | [Xem file](https://github.com/GauKho/VGAR/blob/ebc06527fc5e1ac66d06fbc44d86634d75360ed0/docs/m2_w12_2_verifier_eval.md) |
+| [scripts/build_mutant_pool.py](../scripts/build_mutant_pool.py) | A — tạo mới toàn file | Code production/CLI | +33/−0 | CLI mới: pinned Parquet/data-root/output/seed, tạo pool/readiness ledger; không gọi verifier/model. | [Xem file](https://github.com/GauKho/VGAR/blob/ebc06527fc5e1ac66d06fbc44d86634d75360ed0/scripts/build_mutant_pool.py) |
+| [scripts/evaluate_mutant_pool.py](../scripts/evaluate_mutant_pool.py) | A — tạo mới toàn file | Code production/CLI | +108/−0 | CLI mới run/report; runtime configs11+14, admitted Docker, giữ proof khi bỏ đúng OVER_CAP generation exclusion, guard output/source/pool. | [Xem file](https://github.com/GauKho/VGAR/blob/ebc06527fc5e1ac66d06fbc44d86634d75360ed0/scripts/evaluate_mutant_pool.py) |
+| [src/vgar/evaluation/repair/mutant_pool.py](../src/vgar/evaluation/repair/mutant_pool.py) | A — tạo mới toàn file | Code production/CLI | +596/−0 | Module mới: PoolTask, build_pool/load_pool, pins/population, AST5 operator, deterministic net patches, source inventory và consumer validation. | [Xem file](https://github.com/GauKho/VGAR/blob/ebc06527fc5e1ac66d06fbc44d86634d75360ed0/src/vgar/evaluation/repair/mutant_pool.py) |
+| [src/vgar/evaluation/repair/verifier_eval.py](../src/vgar/evaluation/repair/verifier_eval.py) | A — tạo mới toàn file | Code production/CLI | +619/−0 | Module mới: collect_patch_vector/verify_once, neutral baseline/post, derive_verdict, controller/report consumer, confusion_metrics và render_tables. | [Xem file](https://github.com/GauKho/VGAR/blob/ebc06527fc5e1ac66d06fbc44d86634d75360ed0/src/vgar/evaluation/repair/verifier_eval.py) |
+| [src/vgar/repair/static_checks.py](../src/vgar/repair/static_checks.py) | M — thêm và sửa/thay dòng cũ | Code production/CLI | +10/−3 | Thêm collect_static_measurements(); cho _run_w9_static_checks nhận variant=None; chỉ validate/gắn variant_policy_hash khi variant có giá trị. Entry legacy vẫn gọi với variant. | [Xem file](https://github.com/GauKho/VGAR/blob/ebc06527fc5e1ac66d06fbc44d86634d75360ed0/src/vgar/repair/static_checks.py) |
+| [tests/m2/w1112/test_mutant_pool.py](../tests/m2/w1112/test_mutant_pool.py) | A — tạo mới toàn file | Test/fixture helper | +386/−0 | Tests mới V13/V14: nhãn độc lập, seed/pins/150slot, net patch, unicode/CRLF, source immutability, overlap/alias và tampering. | [Xem file](https://github.com/GauKho/VGAR/blob/ebc06527fc5e1ac66d06fbc44d86634d75360ed0/tests/m2/w1112/test_mutant_pool.py) |
+| [tests/m2/w1112/test_verifier_campaign.py](../tests/m2/w1112/test_verifier_campaign.py) | A — tạo mới toàn file | Test/fixture helper | +268/−0 | Tests mới: verify mỗi patch một lần, ledger/pending/interruption, stored-vector/slot/state proof, runtime planner và table output guard. | [Xem file](https://github.com/GauKho/VGAR/blob/ebc06527fc5e1ac66d06fbc44d86634d75360ed0/tests/m2/w1112/test_verifier_campaign.py) |
+| [tests/m2/w1112/test_verifier_eval.py](../tests/m2/w1112/test_verifier_eval.py) | A — tạo mới toàn file | Test/fixture helper | +254/−0 | Tests mới V15/V16: neutral/per-arm qualification, compatibility/integrity/skip, metrics BAD-positive và32 tổ hợp đối chiếu direct assessment. | [Xem file](https://github.com/GauKho/VGAR/blob/ebc06527fc5e1ac66d06fbc44d86634d75360ed0/tests/m2/w1112/test_verifier_eval.py) |
+| [tests/m2/w78/test_verifier_eval_integration.py](../tests/m2/w78/test_verifier_eval_integration.py) | A — tạo mới toàn file | Test/fixture helper | +91/−0 | Native integration mới: fixed patch PASS/skip, interruption persistence, frozen-pool end-to-end và source/candidate sidecar substitution. | [Xem file](https://github.com/GauKho/VGAR/blob/ebc06527fc5e1ac66d06fbc44d86634d75360ed0/tests/m2/w78/test_verifier_eval_integration.py) |
+
+**Điểm cần review:** file production cũ duy nhất sửa trong commit pool là `static_checks.py` (+10/−3). Entry `collect_static_measurements()` mới dùng nhánh variant=None; lời gọi legacy vẫn có variant và vẫn gắn variant_policy_hash. Builder/evaluator/controller là module/file mới. Không có diff sửa engine/session/runner/aggregate ở feature commit này.
+
+### 14.4. D15 — danh sách file và ý nghĩa thay đổi
+
+| File local | A/M và loại thay đổi | Nhóm | +/− | Nội dung cụ thể | Snapshot GitHub |
+|---|---|---|---:|---|---|
+| [docs/checkpoints/2026-11-04-d15-timeout-analysis.md](checkpoints/2026-11-04-d15-timeout-analysis.md) | A — tạo mới toàn file | Tài liệu/checkpoint | +61/−0 | Checkpoint mới từ04/11, điểm dừng tool/fixture cập nhật05/11 và lịch sử review fixes; không đóng thực nghiệm. | [Xem file](https://github.com/GauKho/VGAR/blob/c2cb8f620d9d194da7dae363efe51fc3621d8d68/docs/checkpoints/2026-11-04-d15-timeout-analysis.md) |
+| [docs/m2_d15_timeout_analysis.md](m2_d15_timeout_analysis.md) | A — tạo mới toàn file | Tài liệu/checkpoint | +219/−0 | Hướng dẫn mới: schema export, attempt selection, metrics/censoring/availability, CLI/readiness và dependency raw data. | [Xem file](https://github.com/GauKho/VGAR/blob/c2cb8f620d9d194da7dae363efe51fc3621d8d68/docs/m2_d15_timeout_analysis.md) |
+| [scripts/analyze_repair_timeouts.py](../scripts/analyze_repair_timeouts.py) | A — tạo mới toàn file | Code production/CLI | +693/−0 | CLI stdlib mới: safe export loading/rebinding, parent/supersession, metrics/ref/unknown, completed/censored stats, grouping/readiness và output sealing. | [Xem file](https://github.com/GauKho/VGAR/blob/c2cb8f620d9d194da7dae363efe51fc3621d8d68/scripts/analyze_repair_timeouts.py) |
+| [tests/m2/w1112/test_timeout_analysis.py](../tests/m2/w1112/test_timeout_analysis.py) | A — tạo mới toàn file | Test/fixture helper | +503/−0 | Tests mới54case D15: JSON synthetic, path/junction/immutability, bindings/attempts, metrics/correlations, determinism và8 case review RED→GREEN. | [Xem file](https://github.com/GauKho/VGAR/blob/c2cb8f620d9d194da7dae363efe51fc3621d8d68/tests/m2/w1112/test_timeout_analysis.py) |
+
+**Điểm cần review:** D15 thêm4 file mới, không sửa file production cũ. `safe_path`, `linked_record`, `select`, `measurements`, `group_stats`, `run_analysis` nằm trong analyzer mới; chúng không thay code của repair runner. Tests54case là kết quả parameterization/gate, không phải số hàm test đếm trong file. Trạng thái vẫn là tool/fixture đạt gate, chưa có raw-data proposal.
+
+### 14.5. Diff nguyên văn — năm file cũ và policy A3 mới
+
+Các block `diff` dưới lấy trực tiếp bằng `git show --format= --no-ext-diff --no-color --unified=3 <commit> -- <file>`. Giữ nguyên hunk header `@@ -old,+new @@`, context và dòng+/−. Trong block, `---` là file trước, `+++` là file sau; `--- /dev/null` biểu thị file mới. Dòng space/context không tính vào +/−.
+
+Một số dòng context trắng trong patch chứa đúng một dấu cách đầu dòng. Giữ ký tự này để patch nguyên văn khớp Git; `git diff --check` mặc định có thể báo trailing whitespace cho chính các dòng trong fenced diff của Markdown. Kiểm định mục này đối chiếu từng block với Git và chỉ chấp nhận whitespace context đó bên trong block `diff`.
+
+Các file mới dài (builder/evaluator/analyzer/tests/docs) không được chép lặp toàn bộ source vào báo cáo; bảng14.2–14.4 có snapshot immutable và mục14.7 có lệnh xem **toàn bộ patch**, gồm cả file mới.
+
+#### M2-W12-1 / `configs/m2/variants/A3.json`
+
+<details>
+<summary>Mở diff nguyên văn</summary>
+
+```diff
+diff --git a/configs/m2/variants/A3.json b/configs/m2/variants/A3.json
+new file mode 100644
+index 00000000..f95b6a38
+--- /dev/null
++++ b/configs/m2/variants/A3.json
+@@ -0,0 +1,10 @@
++{
++  "variant_id": "A3",
++  "arm": null,
++  "required_checks": ["tests", "syntax", "mypy", "ruff", "api", "structural"],
++  "recorded_checks": ["tests", "syntax", "mypy", "ruff"],
++  "static_mode": "baseline_delta",
++  "diagnostic_identity_version": "m2-static-delta-v1",
++  "patch_mode": "normalized",
++  "path_listing": "context"
++}
+```
+
+</details>
+
+#### M2-W12-1 / `src/vgar/evaluation/repair/fairness.py`
+
+<details>
+<summary>Mở diff nguyên văn</summary>
+
+```diff
+diff --git a/src/vgar/evaluation/repair/fairness.py b/src/vgar/evaluation/repair/fairness.py
+index 35bf7036..909d130e 100644
+--- a/src/vgar/evaluation/repair/fairness.py
++++ b/src/vgar/evaluation/repair/fairness.py
+@@ -38,6 +38,11 @@ def fairness_identity(exp: Experiment) -> dict:
+ 
+ 
+ def check_arm_fairness(experiments: Sequence[Experiment]) -> None:
++    # A3 adds checks to the graph A2 arm; retrieval is not a second ablation.
++    variants = [variant for exp in experiments for variant in exp.variants]
++    if any(variant.variant_id == 'A3' for variant in variants):
++        if any(variant.arm != 'graph' for variant in variants if variant.variant_id in ('A2', 'A3')):
++            raise ValueError('Arm fairness violation: A2 and A3 must both use the graph arm')
+     identities = [fairness_identity(exp) for exp in experiments]
+     for exp, identity in zip(experiments[1:], identities[1:]):
+         for field in identities[0]:
+```
+
+</details>
+
+#### M2-W12-1 / `src/vgar/repair/policy.py`
+
+<details>
+<summary>Mở diff nguyên văn</summary>
+
+```diff
+diff --git a/src/vgar/repair/policy.py b/src/vgar/repair/policy.py
+index b171db48..552cea75 100644
+--- a/src/vgar/repair/policy.py
++++ b/src/vgar/repair/policy.py
+@@ -1,4 +1,4 @@
+-"""Opt-in W9 variant definitions; no changes to W78 execution or verdicts.
++"""Opt-in variant definitions, retaining W9/W10 serialization and hashes.
+ 
+ An unresolved arm is explicit metadata, never an inferred retrieval choice.
+ Policy hashes cover this definition, not the model/budget/environment profile.
+@@ -12,16 +12,17 @@ from typing import Literal
+ 
+ from pydantic import BaseModel, ConfigDict, model_serializer, model_validator
+ 
+-CheckName = Literal['tests', 'syntax', 'mypy', 'ruff']
++CheckName = Literal['tests', 'syntax', 'mypy', 'ruff', 'api', 'structural']
+ _ALL_CHECKS = frozenset({'tests', 'syntax', 'mypy', 'ruff'})
+-_REQUIRED = {'A0': frozenset({'tests'}), 'A1': frozenset({'tests'}), 'A2': _ALL_CHECKS}
++_REQUIRED = {'A0': frozenset({'tests'}), 'A1': frozenset({'tests'}), 'A2': _ALL_CHECKS,
++             'A3': _ALL_CHECKS | {'api', 'structural'}}
+ 
+ 
+ class VariantPolicy(BaseModel):
+     """Validated, immutable definition; arm=None means awaiting group agreement."""
+ 
+     model_config = ConfigDict(extra='forbid', strict=True, frozen=True, revalidate_instances='always')
+-    variant_id: Literal['A0', 'A1', 'A2']
++    variant_id: Literal['A0', 'A1', 'A2', 'A3']
+     required_checks: tuple[CheckName, ...]
+     recorded_checks: tuple[CheckName, ...] = ('tests', 'syntax', 'mypy', 'ruff')
+     arm: Literal['bm25', 'graph'] | None = None
+@@ -43,6 +44,8 @@ class VariantPolicy(BaseModel):
+ 
+     @model_validator(mode='after')
+     def validate_checks(self) -> VariantPolicy:
++        if self.variant_id == 'A3' and self.arm not in (None, 'graph'):
++            raise ValueError('A3 requires the graph arm')
+         for field, expected in (('required_checks', _REQUIRED[self.variant_id]),
+                                 ('recorded_checks', _ALL_CHECKS)):
+             values = getattr(self, field)
+```
+
+</details>
+
+#### M2-W12-1 / `tests/m2/w910/test_arm_fairness.py`
+
+<details>
+<summary>Mở diff nguyên văn</summary>
+
+```diff
+diff --git a/tests/m2/w910/test_arm_fairness.py b/tests/m2/w910/test_arm_fairness.py
+index 00256a06..db9de568 100644
+--- a/tests/m2/w910/test_arm_fairness.py
++++ b/tests/m2/w910/test_arm_fairness.py
+@@ -19,7 +19,7 @@ def config(tmp_path, name='config.json', variant_paths=None, repair_config=None)
+         'schema': 'vgar-m3-experiment-v1',
+         'source': {'type': 'fixture', 'tasks': [str(examples/'tasks/single_file_login.json')]},
+         'repair_config': str(repair_config or ROOT/'configs/m2/demo.json'), 'generation': 'fake',
+-        'variants': [{'path': str(p), 'arm': W10[v]} for v, p in paths.items()]})
++        'variants': [{'path': str(p), 'arm': (W10 | {'A3': 'graph'})[v]} for v, p in paths.items()]})
+ 
+ 
+ def load(path):
+@@ -72,3 +72,81 @@ def test_refused_run_writes_nothing(tmp_path, capsys):
+     assert cli.main(['run', '--config', str(path), '--data-root', str(ROOT), '--output-root', str(out)]) == 2
+     assert not out.exists() or not any(out.iterdir())
+     assert 'Arm fairness violation' in capsys.readouterr().err
++
++
++def a3_paths():
++    return {'A2': VARIANTS / 'w10/A2.json', 'A3': VARIANTS / 'A3.json'}
++
++
++def test_A3_differs_from_A2_only_in_required_checks(tmp_path):
++    exp = load(config(tmp_path, variant_paths=a3_paths()))
++    check(exp)
++    assert [(v.variant_id, v.arm) for v in exp.variants] == [('A2', 'graph'), ('A3', 'graph')]
++    check(load(config(tmp_path, name='a2.json', variant_paths={'A2': a3_paths()['A2']})),
++          load(config(tmp_path, name='a3.json', variant_paths={'A3': a3_paths()['A3']})))
++
++
++@pytest.mark.parametrize('field,value', [('patch_mode', 'strict'), ('path_listing', 'all')])
++def test_a3_shared_policy_drift_is_rejected_before_any_attempt(tmp_path, capsys, field, value):
++    import importlib.util
++    spec = importlib.util.spec_from_file_location('a3_run_cli', ROOT / 'scripts/run_repair_experiment.py')
++    cli = importlib.util.module_from_spec(spec)
++    spec.loader.exec_module(cli)
++    changed = json.loads((VARIANTS / 'A3.json').read_bytes()) | {field: value}
++    paths = a3_paths() | {'A3': write_json(tmp_path / 'changed_a3.json', changed)}
++    path = config(tmp_path, variant_paths=paths)
++    output = tmp_path / 'out'
++    assert cli.main(['run', '--config', str(path), '--data-root', str(ROOT), '--output-root', str(output)]) == 2
++    assert not output.exists() or not any(output.iterdir())
++    assert field in capsys.readouterr().err
++
++
++@pytest.mark.parametrize('changed_variant', ['A2', 'A3'])
++def test_a3_comparison_cannot_change_graph_arm(tmp_path, changed_variant):
++    path = config(tmp_path, variant_paths=a3_paths())
++    raw = json.loads(path.read_bytes())
++    raw['variants'][0 if changed_variant == 'A2' else 1]['arm'] = 'bm25'
++    write_json(path, raw)
++    with pytest.raises(ValueError, match='(Arm fairness|A3).*graph'):
++        check(load(path))
++
++
++def test_a3_cross_experiment_cannot_compare_bm25_a2(tmp_path):
++    first = config(tmp_path, name='a2.json', variant_paths={'A2': a3_paths()['A2']})
++    raw = json.loads(first.read_bytes())
++    raw['variants'][0]['arm'] = 'bm25'
++    write_json(first, raw)
++    second = config(tmp_path, name='a3.json', variant_paths={'A3': a3_paths()['A3']})
++    with pytest.raises(ValueError, match='Arm fairness.*graph'):
++        check(load(first), load(second))
++
++
++@pytest.mark.parametrize('field,value', [('input_cap', 5000), ('output_cap', 1024),
++    ('generation_timeout', 899), ('global_timeout', 1799), ('prompt_version', 'm2-w78-v12')])
++def test_a3_cannot_change_common_prompt_budget_or_deadline(tmp_path, monkeypatch, field, value):
++    from dataclasses import replace
++    if field == 'prompt_version':
++        from vgar.evaluation.repair import fairness
++        original = fairness.template_path
++        other = tmp_path / 'other-template.txt'
++        other.write_text('Different registered fixture prompt', encoding='utf-8')
++        monkeypatch.setattr(fairness, 'template_path', lambda version: other if version == value else original(version))
++    first = load(config(tmp_path, variant_paths={'A2': a3_paths()['A2']}))
++    second = load(config(tmp_path, name='a3.json', variant_paths={'A3': a3_paths()['A3']}))
++    second = replace(second, policy=second.policy.model_copy(update={field: value}))
++    with pytest.raises(ValueError, match='Arm fairness'):
++        check(first, second)
++
++
++@pytest.mark.parametrize('field', ['model_id', 'revision', 'tokenizer_manifest'])
++def test_a3_cannot_change_model_or_tokenizer(tmp_path, field):
++    from dataclasses import replace
++    first = load(config(tmp_path, variant_paths={'A2': a3_paths()['A2']}))
++    second = load(config(tmp_path, name='a3.json', variant_paths={'A3': a3_paths()['A3']}))
++    value = 'different-pin'
++    if field == 'tokenizer_manifest':
++        value = tmp_path / 'different-tokenizer.json'
++        value.write_bytes(second.profile.tokenizer_manifest.read_bytes() + b'\n')
++    second = replace(second, profile=second.profile.model_copy(update={field: value}))
++    with pytest.raises(ValueError, match='Arm fairness'):
++        check(first, second)
+```
+
+</details>
+
+#### M2-W12-1 / `tests/m2/w910/test_policy.py`
+
+<details>
+<summary>Mở diff nguyên văn</summary>
+
+```diff
+diff --git a/tests/m2/w910/test_policy.py b/tests/m2/w910/test_policy.py
+index 4eebabaf..6e9ef8a1 100644
+--- a/tests/m2/w910/test_policy.py
++++ b/tests/m2/w910/test_policy.py
+@@ -40,7 +40,7 @@ def test_exact_required_checks(variant, expected):
+     assert policy.arm is None  # Mapping has not been approved by M1/M3.
+ 
+ 
+-@pytest.mark.parametrize('variant', ['A3', 'a0', '', 'unknown'])
++@pytest.mark.parametrize('variant', ['A4', 'a0', '', 'unknown'])
+ def test_unknown_variant_rejected(tmp_path, variant):
+     api = module()
+     with pytest.raises(ValueError):
+@@ -167,3 +167,49 @@ def test_unknown_path_listing_rejected(tmp_path):
+ def test_unknown_patch_mode_rejected(tmp_path):
+     with pytest.raises(Exception):
+         module().load_variant(write_policy(tmp_path, patch_mode='fuzzy'))
++
++
++def test_a3_loads_w10_semantics_with_two_additional_required_checks():
++    api = module()
++    policy = api.load_variant(VARIANTS / 'A3.json')
++    assert policy.variant_id == 'A3'
++    assert api.required_checks(policy) == frozenset({'tests', 'syntax', 'mypy', 'ruff', 'api', 'structural'})
++    assert policy.recorded_checks == ('mypy', 'ruff', 'syntax', 'tests')
++    assert (policy.patch_mode, policy.path_listing) == ('normalized', 'context')
++    a2 = api.load_variant(VARIANTS / 'w10/A2.json').model_dump(mode='json')
++    assert policy.model_dump(mode='json') == a2 | {
++        'variant_id': 'A3', 'required_checks': ['api', 'mypy', 'ruff', 'structural', 'syntax', 'tests']}
++
++
++@pytest.mark.parametrize('missing', ['tests', 'syntax', 'mypy', 'ruff', 'api', 'structural'])
++def test_a3_cannot_omit_a_required_check(tmp_path, missing):
++    checks = ['tests', 'syntax', 'mypy', 'ruff', 'api', 'structural']
++    with pytest.raises(ValueError):
++        module().load_variant(write_policy(tmp_path, variant_id='A3', required_checks=[c for c in checks if c != missing]))
++
++
++@pytest.mark.parametrize('field,checks', [
++    ('required_checks', ['tests', 'syntax', 'mypy', 'ruff', 'api', 'structural', 'api']),
++    ('required_checks', ['tests', 'syntax', 'mypy', 'ruff', 'api', 'structural', 'shell']),
++    ('recorded_checks', ['tests', 'syntax', 'mypy', 'ruff', 'api', 'structural']),
++])
++def test_a3_rejects_ambiguous_check_sets(tmp_path, field, checks):
++    data = dict(variant_id='A3', required_checks=['tests', 'syntax', 'mypy', 'ruff', 'api', 'structural'])
++    data[field] = checks
++    with pytest.raises(ValueError):
++        module().load_variant(write_policy(tmp_path, **data))
++
++
++def test_a3_cannot_bind_bm25_even_outside_experiment_fairness(tmp_path):
++    with pytest.raises(ValueError, match='A3.*graph'):
++        module().load_variant(write_policy(tmp_path, variant_id='A3', arm='bm25',
++            required_checks=['tests', 'syntax', 'mypy', 'ruff', 'api', 'structural']))
++
++
++def test_a3_hash_canonicalizes_check_order_without_changing_legacy_defaults(tmp_path):
++    api = module()
++    data = dict(variant_id='A3', arm='graph', required_checks=['tests', 'syntax', 'mypy', 'ruff', 'api', 'structural'])
++    first = api.load_variant(write_policy(tmp_path, **data))
++    second = api.load_variant(write_policy(tmp_path, **(data | {'required_checks': list(reversed(data['required_checks']))})))
++    assert api.policy_hash(first) == api.policy_hash(second)
++    assert first.recorded_checks == ('mypy', 'ruff', 'syntax', 'tests')
+```
+
+</details>
+
+#### M2-W12-2 / `src/vgar/repair/static_checks.py`
+
+<details>
+<summary>Mở diff nguyên văn</summary>
+
+```diff
+diff --git a/src/vgar/repair/static_checks.py b/src/vgar/repair/static_checks.py
+index 334df8a4..225f4639 100644
+--- a/src/vgar/repair/static_checks.py
++++ b/src/vgar/repair/static_checks.py
+@@ -36,11 +36,17 @@ def run_static_checks(lease, targets, policy, executor, *, variant=None):
+     return result
+ 
+ 
++def collect_static_measurements(lease, targets, policy, executor):
++    """Structured baseline/post measurements without an arm or qualification decision."""
++    return _run_w9_static_checks(lease, targets, policy, executor, None)
++
++
+ def _run_w9_static_checks(lease, targets, policy, executor, variant):
+     """Opt-in native-fixture path. Environment bridging remains a later task."""
+     from vgar.repair.policy import VariantPolicy, policy_hash
+     from vgar.repair.static_diagnostics import Diagnostic, DiagnosticReport, parse_tool_report, scope_digest
+-    VariantPolicy.model_validate(variant)
++    if variant is not None:
++        VariantPolicy.model_validate(variant)
+     targets = tuple(sorted(safe_path(t) for t in targets))
+     if not targets or len(targets) != len(set(targets)):
+         raise ValueError('Static checks need unique approved source targets')
+@@ -48,8 +54,9 @@ def _run_w9_static_checks(lease, targets, policy, executor, variant):
+     hashes = {name: digest(path.read_bytes()) for name, path in configs.items()}
+     interpreter = getattr(executor, 'interpreter_ref', sys.executable + '|' + sys.version)
+     binding = dict(scope=list(targets), scope_hash=scope_digest(targets), interpreter_ref=interpreter)
+-    result = dict(config_hashes=hashes, binding=binding, source_snapshot={},
+-                  variant_policy_hash=policy_hash(variant))
++    result = dict(config_hashes=hashes, binding=binding, source_snapshot={})
++    if variant is not None:
++        result['variant_policy_hash'] = policy_hash(variant)
+     diagnostics, syntax_error = [], None
+     started = time.monotonic()
+     for target in targets:
+```
+
+</details>
+
+### 14.6. Thay đổi tài liệu dùng chung và file không nằm trong ba feature commits
+
+| Commit | Nội dung/path | Cách hiểu khi review |
+|---|---|---|
+| [e1baa24d](https://github.com/GauKho/VGAR/commit/e1baa24d25838466883db8bd52ec5ffc8121730a) | `docs/superpowers/specs/2026-10-31-w11-w12-parallel-split-design.md` | Thay đổi định dạng Markdown có sẵn, commit tách biệt. Không cộng +160/−154 dòng này thành implementation của A3/pool/D15. |
+| [3f77fcf6](https://github.com/GauKho/VGAR/commit/3f77fcf6ba68d7cfc6356dfe9757f6f53eed691b) | `PROGRESS.md`, `docs/status/m2.md`; hai báo cáo tổng hợp W11/C7 và W12/D15; post-merge status audit; checkpoint merge/status/publication | Commit docs dùng chung:8 file,+4697/−0. Đây là nơi các bổ sung trạng thái/báo cáo được xuất bản, không phải sửa lại logic của ba task. |
+
+Hai file cũ trong docs commit là PROGRESS và m2 status; sáu file còn lại là mới so với parent của commit docs. `BAO_CAO_TONG_HOP_M2_W12_D15.md` là file mới ở mốc publication nhưng phần Codex Diff hiện đang **bổ sung vào file đã tồn tại**: lần chỉnh báo cáo này là M của Markdown, không phải task implementation mới.
+
+Phạm vi publication đầy đủ trước lần bổ sung report này:32 file =23 file của ba feature commits +1 spec-format +8 docs dùng chung. Các path raw `results/` local được liệt kê ở phụ lụcB và không có trong feature commits do gitignore. Các test/report cũ được tái sử dụng mà không nằm trong Git patch không được gọi là file đã sửa bởi task.
+
+### 14.7. Cách thành viên tự đối chiếu trong Codex/Git
+
+Để đối chiếu lịch sử đã commit, dùng commit và parent ở bảng14.1. Nếu Diff đang hiển thị thay đổi chưa commit, sau khi publication trước đã push thì code của ba task không còn nằm trong working-tree diff; lần sửa hiện tại sẽ hiển thị file báo cáo. Dùng Git history/commit diff để xem lại đúng task, không coi diff trống là chưa có implementation.
+
+Các lệnh dưới chỉ đọc; chạy tại repo VGAR. Không checkout/reset/revert hoặc apply patch:
+
+```powershell
+Set-Location 'D:\Project\CAPSTONES\VGAR'
+# File mới/sửa theo task; A = Added, M = Modified.
+git diff-tree --no-commit-id --name-status -r f95cf684
+git diff-tree --no-commit-id --name-status -r ebc06527
+git diff-tree --no-commit-id --name-status -r c2cb8f62
+# Thêm/xóa từng file, cùng số liệu bảng14.1–14.4.
+git show --format= --numstat f95cf684
+git show --format= --numstat ebc06527
+git show --format= --numstat c2cb8f62
+# Toàn bộ patch từng task, bao gồm source/tests/docs mới.
+git show --format= --no-ext-diff --no-color --unified=3 f95cf684
+git show --format= --no-ext-diff --no-color --unified=3 ebc06527
+git show --format= --no-ext-diff --no-color --unified=3 c2cb8f62
+# Ví dụ kiểm riêng phần sửa code file cũ của pool.
+git diff ebc06527^ ebc06527 -- src/vgar/repair/static_checks.py
+# Chỉ thay đổi hiện chưa commit của bản báo cáo.
+git diff -- docs/BAO_CAO_TONG_HOP_M2_W12_D15.md
+```
+
+`diff-tree --name-status` phân loại file; `show --numstat` đếm dòng Git; `show --unified=3` hiển thị patch/context; `git diff <parent> <commit> -- <path>` giới hạn đúng file. Những lệnh này không chạy tests/model/Docker và không làm thay đổi task status. Phần Codex Diff bổ sung không tự tạo commit hoặc push mới.
+
+---
 
 ## Phụ lục A — lịch sử lệnh đã khôi phục từ evidence
 
