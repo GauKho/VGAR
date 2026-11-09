@@ -1,3 +1,311 @@
+# A3 chặng4 — LAUNCH_READY_TECHNICAL, dừng trước batch — 07/11/2026
+
+- Code/input root Linux mới chứa T1+T3 đúng937 byte hashes; clone HEAD3f77fcf6 +dirty,
+  không hardlink/commit. Old code926 files và inputs chặng2/3 giữ nguyên.
+-25 source/image/profile/graph pins,50 bundles, model/tokenizer hashes khớp.4 configs
+  fairness/task-level inputs PASS; A2 chỉ comparison-only, không paired control với A2 cũ.
+- Linux gate cuối **625 PASS/0 skip/error/fail**, JUnit68,317s. Real-tokenizer
+  preflight25 rows=**20 FITS+5 prior nonlaunch**, raw ERROR reasons giữ nguyên,
+  không lỗi/OVER_CAP mới. Token min3321/median4296/max5905, minheadroom95 pytest7205.
+- Ruff pinned config và source rules trước PASS22 files; Ruff0.17 default còn167
+  findings rộng hơn được giữ advisory, không tự sửa code và không claim toàn CI xanh.
+- Review độc lập xác minh73+13 artifacts,625 XMLcases,934 source files ngoài3 owned
+  metadata khớp frozen937, fairness/allowlist/T3 binding, không blocker.
+- Artifact `results/m2/w1112/a3-25/20261107T072044Z-freeze/`; [checkpoint](docs/checkpoints/2026-11-07-a3-25-stage4-freeze.md).
+  `README.md`, `launch_handoff.json` và seal ghi paths/commands/limits.
+- QAvenv riêng; controller package freeze không đổi.6 idle RAM reclaims18…23 theo
+  quyền user, giữ17 cũ; không disk cleanup/settings/data/images hoặc commit/push.
+- **Dừng sau chặng4.**0 actual model/repair attempts/harness; M2-W12-1 chưa DONE
+  thực nghiệm. Chặng5 cần lệnh riêng và fresh hash/resource gate; giữ runtime cap,
+ 4 included mypy-unsupported profiles và các limitation đã công khai.
+
+---
+
+
+# A3 chặng4 đang thực hiện — 07/11/2026
+
+- Người dùng giao bước tiếp theo sau T3: riêng freeze/Linux regression/fairness/
+  real-tokenizer preflight theo §8 plan. Không batch/model/grading hoặc commit/push.
+- Code root mới `/home/vgar/vgar-a3-stage4-20261107T072044Z-freeze`, run root mới
+  `/home/vgar/w10-a3-local/stage4/20261107T072044Z-freeze`. T1+T3 sẽ được copy/hash;
+  giữ Linux code/input roots và artifacts chặng2/3 bất biến.
+- Artifact `results/m2/w1112/a3-25/20261107T072044Z-freeze/`; snapshot HEAD/status/
+  hashes/diffs đã lưu. [Checkpoint](docs/checkpoints/2026-11-07-a3-25-stage4-freeze.md)
+  ghi gates, quyền RAM reclaim idle và điểm khôi phục.
+- Giữ25 slots11+14;5 prior nonlaunch có evidence cũ, lỗi/OVER_CAP mới phải BLOCKED.
+  Chặng4 chưa PASS và M2-W12-1 chưa DONE thực nghiệm tại mốc này.
+
+---
+
+
+# T3 — Astropy-13033: sửa oracle, đối chiếu Docker PASS — 07/11/2026
+
+- Root cause tái hiện local: repro cũ cấm `found 'time'` dù actual time đúng;
+  gold sửa danh sách expected nhưng vẫn bị assertion này từ chối. Repro sửa yêu
+  cầu expected nêu time+flux và found nêu time; không bỏ test/check hoặc đổi image.
+- Docker cùng pinned base/image, Python3.9.20/pytest7.4.0: repro cũ base FAIL/gold
+  FAIL; repro sửa base FAIL/gold PASS.8 operations/16 reports đúng hash/attestation,
+  source finalize và container/lease cleanup PASS. Không full A3 ACCEPT/model/harness.
+- Oracle fixture RED4 fail/2 pass → GREEN6 pass. Regression68 PASS/1 SKIP
+  (POSIX-only trên Windows, có sẵn); Ruff/whitespace PASS. Review độc lập xác minh
+ 265 raw files/14.283.000 bytes và delta snapshot đúng phạm vi, không blocker.
+- Giữ artifact lịch sử và T1/T2/T4/T5/T6/T7.4 reclaim RAM idle trong T3 theo quyền
+  user, tổng agent17; không xóa disk cache/data/images/settings. Không commit/push.
+- Evidence `results/m2/w1112/t3/20261107T065504Z/`;
+  [báo cáo T3](docs/m2_t3_astropy13033_gold.md),
+  [checkpoint](docs/checkpoints/2026-11-07-t3-astropy13033-gold.md).
+- **DONE T3 local, dừng.** Chưa audit raw M3 lịch sử, official F2P/P2P/static/API/
+  structural trên gold hoặc A3 experiment. Chặng4 cần giao riêng để đưa T1+T3 vào
+  root mới, bind overlay/config/freeze/fairness và fresh preflight. Không overwrite
+  Linux copy/inputs cũ; Windows CRLF/raw hash khác LF runtime overlay có giải thích.
+
+---
+
+
+# T3 — Astropy-13033 đang chạy đối chiếu Docker, 07/11/2026
+
+- Người dùng giao riêng T3. Pinned gold và repro cũ được lưu evaluation-only tại
+  `results/m2/w1112/t3/20261107T065504Z/`; không model/A3 campaign/chặng4/commit/push.
+- Phát hiện assertion cũ cấm `found 'time'` dù actual time là hợp lệ. Sửa oracle
+  kiểm hai cột bắt buộc ở vế expected; RED4 fail/2 pass → GREEN6 pass trên fixture.
+  Chưa dùng fixture làm bằng chứng Astropy thật.
+- Docker Desktop đã khởi động; C/D đủ gate. Reclaim page cache RAM tại idle theo
+  quyền user; không xóa files/images hoặc đổi settings/timeouts.
+- Attempt1 dừng trước workspace/target do RAM thấp, giữ logs/helper cũ. Attempt2
+  output mới `/home/vgar/w10-a3-local/t3/20261107T065504Z/attempt-2/`, worker
+  session60970, đang chạy original-overlay. Không relaunch/overwrite hoặc rerun
+  mode đã PASS; kiểm process/log/result trước tiếp tục.
+- [Checkpoint T3](docs/checkpoints/2026-11-07-t3-astropy13033-gold.md) ghi phạm vi,
+  pins, gate và cách khôi phục. T1/T2/T4/T5/T6/T7 và frozen inputs cũ giữ nguyên.
+
+---
+
+
+# T1 — API scope theo symbol: DONE kỹ thuật local, 07/11/2026
+
+- Collector dùng `check_api(..., changed_only=True)`: chỉ public binding chịu ảnh
+  hưởng và dependency cục bộ bắc cầu quyết định API check. Giữ default checker
+  cũ; required checks/policy/hash/schema/timeout không đổi.
+- Unknown ngoài scope được giữ trong `analysis_scope.excluded_diagnostics`,
+  không chặn patch không liên quan. Unknown bị tác động, dynamic exports,
+  ambiguity và syntax/integrity lỗi không được đổi thành PASS.
+- Gate scoped190 PASS; acceptance797 PASS trên code cuối. Ruff scoped
+  `--no-cache` và whitespace PASS. Review độc lập tìm5 ca biên, đã RED→GREEN
+  và reviewer xác nhận các repro đã đóng; không tuyên bố coverage toàn runtime.
+- Bảo toàn T2/T4/T5/T6/T7, index/HEAD, reports và lịch sử. Không Docker/model,
+  không sửa sealed Linux copy hoặc artifact lịch sử, không commit/push.
+- Evidence `results/m2/w1112/t1/20261107T063335Z/`; [hướng dẫn T1](docs/m2_t1_api_scope.md)
+  và [checkpoint](docs/checkpoints/2026-11-07-t1-api-impact-scope.md).
+- **Dừng sau T1 local.** Chưa chạy lại133 vector thật; M2-W12-1 chưa DONE thực nghiệm.
+  T3 cần kết luận/giới hạn được nhóm chấp nhận; chặng4 copy/hash T1, freeze,
+  regression Linux và fresh preflight phải được giao riêng trước batch.
+
+---
+
+
+# A3 chặng3 — PASS hai baseline-only smoke, dừng trước chặng4
+
+- Django-10914/native và Flask-5014/pytest đều baseline qualify PASS, mỗi task có đúng1 repro FAIL kỳ vọng. **Không model/repair patch/campaign hoặc official F2P/P2P;0 selected passing regression cases.** M2-W12-1 chưa DONE thực nghiệm.
+-12 Docker operations,4 report operations với8 JSON/JUnit artifacts AVAILABLE đúng size/hash/exit/completion;12 snapshot transport receipts REMOVED, retained_bytes0. Container/lease cleanup và full source tree/blob finalize PASS;926 Linux code-copy files giữ nguyên.
+- Django: syntax COMPLETE/raw PASS; mypy UNAVAILABLE do Python3.6.13 không hỗ trợ; Ruff COMPLETE/raw FAIL với3 baseline diagnostics. Flask: syntax COMPLETE/raw PASS; mypy COMPLETE/raw FAIL với14 baseline diagnostics; Ruff COMPLETE/raw PASS. Đo được baseline debt không đồng nghĩa tất cả static checks PASS.
+- Launcher wall Django97,172s/Flask31,984s; không đổi command120/global1800.0 reclaim mới trong chặng3 (13 lượt trước giữ nguyên). Attempt Django đầu lỗi JSON→strict tuple ở helper trước workspace/Docker được giữ riêng; helper sửa JSON loading theo API hiện có, attempt2 mới PASS; không sửa production/policy/hash formula.
+- Evidence mới `results/m2/w1112/a3-25/20261106T155817Z-smoke/`, raw319 files/143.817.042 bytes đã copy/đối chiếu hashes. [Checkpoint chặng3](docs/checkpoints/2026-11-06-a3-25-stage3-smoke.md) ghi paths, số liệu, giới hạn và điểm khôi phục. Snapshot cuối RAM≈4,46GiB/C≈11,36GiB/D≈32,49GiB,0 worker/container; sizing baseline-only không chứng minh full campaign đủ tài nguyên.
+- Chưa T1/T3/T10, chặng4 freeze/regression/preflight hoặc full A3. Không commit/push, không đổi Windows code/config/tests hay ghi A3 campaign ledger. **Dừng sau chặng3**, chờ task tiếp theo và các dependencies của plan.
+
+---
+
+# A3 chặng3 — smoke baseline-only đang thực hiện, 06/11/2026
+
+- Người dùng đã giao chặng3; tài nguyên22:56 đạt gate (RAM≈6,76GiB/C≈11,51GiB/D≈32,74GiB). Seal chặng2 đủ2.179 entries vẫn khớp; tái sử dụng assets/config đã PASS.
+- Chỉ Django-10914 rồi Flask-5014 theo plan; giữ admission/source protection/timeouts và cleanup. Helper one-off trong TEMP/tools, chưa sửa production API hoặc code. Không model/gold/patch/campaign hoặc chặng4/T1/T3/T10.
+- Worker Django đang chạy, session40562; Flask chưa chạy. [Checkpoint chặng3](docs/checkpoints/2026-11-06-a3-25-stage3-smoke.md) ghi run/TEMP/WSL paths và cách kiểm process trước resume. Không relaunch hoặc overwrite task đã chạy.
+
+---
+
+# A3 chặng2 hoàn tất assets/config — 06/11/2026, dừng trước smoke3
+
+- **ASSETS_PREPARED:** sources/images25; static tools đúng lock;25 profiles sentinel COLLECTED/cleanup PASS;25 cặp graph/BM25 =50/50 bundles consumer PASS/source finalize PASS;4 config A3/A2 comparison được load_experiment chấp nhận, fairness PASS.
+- Runtime Linux đã cài/kiểm: Torch2.5.1+cu121, Transformers4.57.6, Tokenizers0.22.1, Accelerate1.15.0; pip check/import/CUDA availability PASS. Không nạp model weights hoặc generate. Audit giữ nguyên926 code-copy files,25 images/profiles và hashes404 data files≈4,28GiB.
+- A3 planning:25 rows =20 có task inputs +3 prior exclusions +2 thiếu repro. **Không gọi20 là RUNNABLE trước launch preflight.** Profile/graph/bundle hashes đều khác W10 lịch sử; A2 mới chỉ comparison-only trên cùng inputs, không phải rerun A2 hoặc paired comparison với kết quả cũ.
+- Tổng13 reclaim:10 theo quota cũ +3 theo quyền mới tự reclaim khi thiếu RAM, tất cả COMPLETE tại idle; counters10 cũ giữ nguyên. Không xóa data/images/model, thay settings, commit/push hoặc sửa production/config/tests Windows.
+- Snapshot22:37: RAM2.889.715.712 bytes≈2,69GiB; C≈11,57GiB; D19.920.302.080 bytes≈18,55GiB; không preparation job/container còn chạy. Gate trước smoke vẫn RAM4/C10/D30: D cần thêm≈11,45GiB để tới30, chưa gồm dự báo campaign sau smoke. **Chưa smoke3, T1/T3/T10, model/A3 campaign; M2-W12-1 chưa DONE thực nghiệm.**
+- Evidence mới: `results/m2/w1112/a3-25/20261106T115908Z-prepare/resume-06/`; [checkpoint](docs/checkpoints/2026-11-06-a3-25-stage2-preparation.md) chứa đường dẫn WSL/configs và cách khôi phục. Giữ lịch sử/artifacts các lượt trước; không export/install lại phần đã PASS. Dừng sau chặng2, chờ giao chặng tiếp theo.
+
+---
+
+# A3 chặng2 resume06 — static tools/profile đã sẵn, bundles đang export
+
+- Tái sử dụng sources/images25 và code copy926 files. Static tools đúng lock đã build PASS; qualification preflight/execute và consumer validation đạt **25/25 profiles COLLECTED, cleanup PASS**. Đây là sentinel, chưa chạy issue tests hoặc model.
+- Export đã có2/25 cặp graph/BM25 consumer PASS (Astropy-13033, Django-10914), source tree/blob trước–sau khớp. Giữ đủ25 rows/50 arm slots; không export lại cặp đã PASS.
+- RAM thấp sau Django; đã dùng lượt reclaim cuối được duyệt, **10/10 COMPLETE**, không còn quota. Controller `TEMP/vg-a3-prepare-82527b76/resume-06/export_part3.py`, tool session59161, đang tiếp tục từ Matplotlib-13989; kiểm process và `bundle_part3_ledger.json` trước relaunch, không controller thứ2.
+- Model runtime và validated A3/A2 configs chưa hoàn thành. Gate smoke D30 giữ nguyên, chưa được giao chặng3. Chặng2 vẫn PARTIAL, không kết luận A3 DONE; không T1/T3/T10/commit/push. [Checkpoint](docs/checkpoints/2026-11-06-a3-25-stage2-preparation.md) ghi chi tiết và đường dẫn artifacts.
+
+---
+
+# A3 images W10 hoàn tất25/25 —06/11/2026; chặng2 tổng thể còn PARTIAL
+
+- Đã tải đủ25/25 pinned Docker images đúng11+14 task IDs; consumer inspect trực tiếp xác nhận RepoDigests và linux/amd64, không chỉ dựa producer.5 imagesW9 cũ giữ nguyên,0 container đang chạy/không owned image job còn lại.
+- Dùng9/10 reclaim RAM (5 gốc+4 bổ sung), không xóa files/images/model/settings; D20GiB chỉ5 downloads cuối theo phương án đã trình bày/xác nhận, gate smoke/campaign không đổi. Source25/code copy926/controller đã có giữ nguyên.
+- Image download subgoal DONE; **không claim chặng2/A3 DONE**: model/static runtime, local qualification/profiles, graph/BM25 bundles và validated experiment configs còn thiếu.0 model/targettest/containerexecution/qualification/bundle/configvalidate.
+- Evidence `results/m2/w1112/a3-25/20261106T115908Z-prepare/resume-05/`, image_acceptance.json + raw verified inspect; [checkpoint](docs/checkpoints/2026-11-06-a3-25-stage2-preparation.md). Không download/fetch/copy lại phần đã xong; chưa smoke3/T1/T3/T10 hoặc commit/push.
+
+---
+
+# A3 images resume05 — tải5 images cuối, D20 chỉ download, IN_PROGRESS
+
+- Đã đạt20/25, controller đầu dừng vì D28,73GiB<30, quota7/10. Sau khi trình bày D20GiB chỉ cho5 images cuối, user yêu cầu tiếp tục đến25/25; áp dụng xác nhận ngữ cảnh này, giữ RAM4/C10/quota10 và gate smoke/campaign cũ.
+- Authorization `TEMP/vg-a3-prepare-82527b76/resume-05/disk_gate_authorization.json`; helper `proposed_finish_last_five.py`, tool session43351, logs `last-five/`. Snapshot20/25, quota8/10, đang tải Sphinx-11510; không claim kết quả cuối.
+- Controller đầu47109 đã thoát. Khi khôi phục **kiểm process helper cuối và child docker pull trước relaunch**, không chạy lại worker khác. Giữ15→20 images/source/code/venv đã xong và mọi dirty work; không xóa data/images/settings.
+- [Checkpoint](docs/checkpoints/2026-11-06-a3-25-stage2-preparation.md) ghi đủ scope/quota/logs. Chưa qualification/model/test/bundles/smoke3 hoặc commit/push.
+
+---
+
+# A3 images resume05 — thêm5 reclaim đã được duyệt, tổng10, IN_PROGRESS
+
+- Người dùng xác nhận thêm tối đa5 reclaim page cache RAM, tổng tối đa10 trong chặng2. Authorization/counter bổ sung tại TEMP resume04; counter5 gốc resume02 giữ nguyên. Không hỏi lại quyền đã duyệt này.
+- Lượt6 COMPLETE, RAM lên≈6,91GiB; snapshot17/25 images ready. Script `resume-05/finish_pinned_images.py`, tool session47109. Đọc image_preparation.json/counters để lấy số mới nhất; **kiểm process trước relaunch, không controller thứ2**.
+- Giữ gates RAM4GiB/C10GiB/D30GiB, old images/data/model/settings và mọi dirty work; không nguồn/code/venv-create lại. Chưa model/test/qualification/bundles/smoke3 hoặc commit/push.
+- [Checkpoint](docs/checkpoints/2026-11-06-a3-25-stage2-preparation.md) có quota/logs; artifact resume05 sẽ seal riêng khi dừng. Chưa claim25 images/chặng2 DONE.
+
+---
+
+# A3 images resume04 dừng — 15/25 ready, chờ quyết định quota bổ sung
+
+- Đã thêm astropy-13453/django-10973/matplotlib-20488; audit Docker xác nhận15/25 đúngdigest,10 thiếu,5 imagesW9 cũ còn nguyên/0 container. Source25/controller/code copy giữ nguyên.
+- Sau Matplotlib RAM≈1,33GiB, D≈36,42GiB; chờ tự hồi300,359s vẫn chỉ≈1,57GiB<4GiB. Controller thoát `WAITING_RESOURCE_AFTER_NATURAL_WAIT`, không còn job background, quota vẫn5/5/0 reclaim thêm.
+- Đã hỏi user cho phép thêm tối đa5 reclaim RAM (tổng10); **chưa xác nhận/chưa chạy helper đề xuất**. Không hạ gate hoặc tự nới quota; không coi yêu cầu tải25 là quyền reclaim thêm.
+- Evidence `results/m2/w1112/a3-25/20261106T115908Z-prepare/resume-04/`; [checkpoint](docs/checkpoints/2026-11-06-a3-25-stage2-preparation.md). Chặng2 vẫn PARTIAL, không model/test/qualification/bundles/smoke3 hoặc commit/push.
+
+---
+
+# A3 images resume04 — IN_PROGRESS, không reclaim thêm
+
+- Người dùng yêu cầu tiếp tục tải đủ25/25. Host tự hồi RAM6,07GiB/D41,70GiB, không còn preparation job cũ; tiếp tục từ pinned images đã có, không tải lại nguồn/code/venv.
+- Script `vg-a3-prepare-82527b76/resume-04/complete_images.py`, tool session94562. Snapshot14/25 ready; xem image_preparation.json để lấy số mới nhất. **Kiểm process trước relaunch, không launch trùng.**
+- Quota reclaim vẫn5/5, script không gọi reclaim; giữ RAM4GiB/C10GiB/D30GiB. Chờ hệ thống tự hồi RAM có giới hạn nếu cần, không đổi settings/gate hoặc xóa images.
+- Artifact resume04 mới sẽ seal khi dừng; giữ nguyên các lượt trước và dirty changes. [Checkpoint chặng2](docs/checkpoints/2026-11-06-a3-25-stage2-preparation.md). Chưa claim25images/chặng2 DONE, chưa qualification/model/test/smoke3.
+
+---
+
+# A3 chặng2 resume03 dừng — 12/25 images, quota reclaim5/5 đã hết
+
+- Controller đã thoát đúnggate trước astropy-13453: RAM4.166.696.960bytes≈3,88GiB<4GiB, D≈32,93GiB. Không reclaim lượt6, không background image preparation còn chạy; chặng2 **PARTIAL/WAITING_RESOURCE_RECLAIM_QUOTA_EXHAUSTED**, không sang smoke3.
+- Docker inventory xác nhận12/25 pinned images ready,13 còn thiếu;5 imagesW9 cũ giữ nguyên,0 container. Đã dùng đúng5/5 reclaim chỉ page cache RAM theo user approval, không xóa files/images/model/settings.
+- Giữ25 Git sources/926-file Linux copy/controller nhẹ đã xong. Hai runtime/repair path copies riêng đã tạo, policy/model pins không đổi; model stack/static tools/profile/bundle/validated experiment config vẫn chưa hoàn thành. Không chạy các helper chuẩn bị đó khi gate chưa đạt.
+- Evidence `results/m2/w1112/a3-25/20261106T115908Z-prepare/resume-03/`; [checkpoint](docs/checkpoints/2026-11-06-a3-25-stage2-preparation.md). Không fetch/copy/venv-create lại; kiểm process và RAM/disk khi resume. Quota5 đã hết, không tự xin ngầm hoặc dùng thêm.
+- Không model/test/campaign/T1/T3/T10 hoặc commit/push; giữ mọi thay đổi chưa commit và artifacts lượt1/2.
+
+---
+
+# A3 chặng2 resume03 — đang chạy với quota reclaim5 đã được duyệt
+
+- Người dùng xác nhận tối đa5 lượt reclaim page cache RAM trong chặng2; không xóa dữ liệu/images/model, đổi settings hoặc shutdown WSL. Counter chính: TEMP `vg-a3-prepare-82527b76/resume-02/page_cache_reclaims.json`.
+- Đang chạy images controller `resume-03/prepare_images_bounded.py`, tool session13896. Snapshot gần nhất6/25 images và3/5 reclaim; đọc image_preparation.json/quota để lấy số mới nhất. **Kiểm process trước relaunch, không tạo controller thứ2.**
+- Giữ25 sources/926-file Linux copy/controller đã chuẩn bị; chỉ relocate runtime/repair paths ở inputs riêng, chưa validate experiment configs. Static/model-stack helpers mới chuẩn bị, chưa thực thi; chưa qualification/export/model/test.
+- Giữ ngưỡng RAM4GiB/C10GiB/D30GiB và mọi dirty work; không sang smoke3. [Checkpoint chặng2](docs/checkpoints/2026-11-06-a3-25-stage2-preparation.md) có vị trí/log/cách resume; artifact resume03 sẽ được seal riêng khi dừng.
+
+---
+
+# A3 chặng2 resume02 — 2 images + controller ready, chờ RAM/cache decision
+
+- Người dùng báo tiếp tục; RAM đầu lượt7,02GiB đạt gate. Giữ25 source và926-file code copy đã xong, không fetch/copy lại.
+- Pull thành công2/25 images (astropy-13033, django-10914) đúng digests. Trước image3 gate RAM còn1.059.123.200bytes≈0,99GiB, D≈55,18GiB; tự dừng, không bắt đầu image3.
+- Venv controller riêng đã cài requirements M1 đã pin + PyYAML/Jinja2, pip check và imports PASS; model stack/static tools/profile/bundle/config validate còn thiếu. Không model/test/campaign.
+- Probe cho thấy vmmemWSL≈7,80GiB, Linux Cached≈6,33GiB/MemAvailable≈6,73GiB; giữ gate host4GiB. Đã hỏi user cho phép reclaim page cache RAM tối đa5 lượt khi jobs idle, giữ files/images/settings; **chưa được xác nhận/chưa thực hiện**.
+- Resume evidence riêng `results/m2/w1112/a3-25/20261106T115908Z-prepare/resume-02/`; [checkpoint cập nhật](docs/checkpoints/2026-11-06-a3-25-stage2-preparation.md). Không ghi đè lượt1; giữ code/config/tests và mọi dirty work. Không sang smoke3 hoặc commit/push.
+
+---
+
+# A3 ×25 — chặng 2 PARTIAL/WAITING_RESOURCE, 06/11/2026
+
+- Đã bật WSL/Docker một lần, daemon Linux 28.5.1 hoạt động; 5 images W9 cũ giữ nguyên, 0/25 pinned W10 images có sẵn. Không reset/settings/prune hoặc chạy container.
+- Source 25/25 đã fetch đúng base commit vào `/home/vgar/w10-a3-local/repositories`, 50.518 blobs kiểm khớp/0 mismatch/clean; working copy Linux `/home/vgar/vgar-a3-local-20261106` có 926 files giữ dirty bytes, không hardlink. **Không làm lại fetch/copy.**
+- Registry 25 platform manifests khớp digest, 79 layers duy nhất/15.197.303.046 bytes nén; chưa biết unpack. OCI index lượt đầu layers=[] không là size0, dùng platform_sizes.json làm kết quả.
+- Gate trước image đầu lúc 19:08:29: RAM host 4.241.809.408 bytes≈3,95GiB<4GiB. Script dừng trước pull: 0 image download, 0 qualification/bundle/config validate; đã hỏi user đóng bớt ứng dụng/báo tiếp tục. Không giảm ngưỡng/dọn cache/đổi WSL RAM.
+- Venv Linux controller còn thiếu dependencies; SDK harness cũ là candidate. Model/tokenizer/Parquet D: đã có, không tải lại/model call.
+- TEMP `C:/Users/pc/AppData/Local/Temp/vg-a3-prepare-82527b76`; output `results/m2/w1112/a3-25/20261106T115908Z-prepare/`; [checkpoint chặng2](docs/checkpoints/2026-11-06-a3-25-stage2-preparation.md).
+- Chặng2 chưa xong, không sang smoke3/batch/T1/T3/T10. Giữ code/config/tests chưa commit, không commit/push.
+
+---
+
+# A3 × 25 dev — chặng 1 readiness xong, 06/11/2026
+
+- Chỉ thực hiện chặng1 của plan; inventory xong, **WAITING_ENVIRONMENT_AND_PREPARATION**, chưa LAUNCH_READY. Dừng chờ giao chặng2.
+- 25 IDs đúng11+14/prefix25 manifest50;23 repro đầy đủ,2 thiếu theo EXCLUDED.md. Checkout/profile/bundle W10 tại roots đã kiểm0 ready; images UNKNOWN vì Docker/WSL Stopped.
+- Cache ngoài repo có Qwen3 đủ3 shards/8.044.982.000 bytes, tokenizer4/4 đúnghash và Parquet đúngpin; không mặc định cần tải lại model/dataset. Có3 archive candidates đúngbase/root nhưng chưa là admitted Git checkout;9 Git cache probes không có commits cần thiết.
+- Host lúc18:49:54: RAM trống8,98GiB/C13,17GiB/D61,71GiB; chỉ đạt ngưỡng đầu, Linux/GPU-workload/image unpack còn unknown. Không bật Docker/WSL hoặc chạy model/test/download ở chặng này.
+- Gate18/18 inventory assertions,75 input/assets và32 pre-existing files bảo toàn trước cập nhật docs. Không phải pytest hoặc campaignPASS.
+- Evidence `results/m2/w1112/a3-25/20261106T114534Z-readiness/`; [checkpoint](docs/checkpoints/2026-11-06-a3-25-stage1-readiness.md). Giữ code/config/test và T2/T4/T5/T6/T7, report Linux/DB/Git index; không commit/push.
+
+---
+
+# Plan A3 × 25 dev task — 06/11/2026, chưa launch
+
+- Đã lập [plan vận hành A3 trên cùng population W10 11+14](docs/superpowers/plans/2026-11-06-a3-25-dev-local-campaign.md).
+- Người dùng chốt readiness và smoke Docker không model trước; full batch sau T1. Bảy chặng có điểm dừng, mỗi chặng cần lệnh riêng; chưa được giao thực hiện chặng 1.
+- Snapshot chỉ đọc: RTX4050 6141MiB, RAM host trống khoảng4,86GiB; C13,7GiB/D61,7GiB. WSL VGAR-Harness-W9 và docker-desktop đều Stopped. Không khởi động WSL/Docker, nạp model hoặc chạy campaign.
+- Manifest có50 task; prefix25 đúng bằng stage1+stage2. Plan dùng --limit25, giữ exclusions và preflight row audit, dirty-code freeze, local SDK/model path relocation, resume và consumer checks.
+- Giữ timeout900/1800 và code T2/T4/T5/T6/T7. T1/T3/raw10 gold còn dependency được ghi rõ; không suy A3 từ A1 hoặc tự chạy A2/mutant pool.
+- Builder check độc lập chỉ đọc không còn câu hỏi quan trọng; chưa phải review/approval của nhóm. Phiên này chỉ tạo plan và bổ sung tiến độ; không sửa production/config/test, commit/push.
+
+---
+
+# T2 code/fixture đạt gate —06/11/2026
+
+- Sửa mapping cho declaration bất biến; thêm audit GOOD old/new delta có source/binding/hash proof. 10 gold thật vẫn chờ raw M3.
+- Gate **276 PASS/0 FAIL/ERROR/SKIP**, 82.314s JUnit; Ruff exit0 (warning cũ), whitespace PASS.
+- Review không blocker;1 Minor portability Windows prefix được ghi hoãn, audit bảo thủ PARTIAL.
+- Evidence `results/m2/w1112/t2/20261106-mypy-delta-audit/`; [checkpoint T2](docs/checkpoints/2026-11-06-t2-mypy-delta-audit.md).
+- Giữ T4/T5/T6/T7 và dirty changes khác, không commit/push. **Dừng sau T2 local, chờ xác nhận T3.**
+
+---
+
+# T4 code/fixture đạt gate —06/11/2026
+
+- Giữ FAR/FRR hiện hành, thêm observed rates/counts/coverage; pool ERROR và pending vẫn hiển thị, không làm complete=true.
+- RED12 → GREEN **127 PASS/0 FAIL/ERROR/SKIP**, 57.139s JUnit; Ruff/whitespace scoped PASS; review không finding.
+- Bảng demo synthetic có PARTIAL và ERROR riêng; không phải campaign thật mới.
+- Evidence `results/m2/w1112/t4/20261106-observed-metrics/`; [checkpoint T4](docs/checkpoints/2026-11-06-t4-observed-metrics.md).
+- Giữ T5/T6/T7 và dirty changes khác; không commit/push. **Dừng sau T4, chờ xác nhận T2.**
+
+---
+
+# T5 code/fixture đạt gate — 06/11/2026
+
+- Collection failure có bằng chứng → TEST_COLLECTION_FAILED; missing/malformed report, integrity và required incomplete giữ ERROR.
+- Gate cuối **264 PASS/2 SKIP/0 FAIL/ERROR**, 192.931s JUnit; Ruff/whitespace scoped PASS.
+- Review1 Important đã RED12→GREEN12; giữ ERROR precedence. Demo synthetic A0–A3 FAIL, không Docker/campaign thật.
+- Evidence `results/m2/w1112/t5/20261106-collection-evidence/`; [checkpoint T5](docs/checkpoints/2026-11-06-t5-collection-evidence.md).
+- Giữ T6/T7 và mọi dirty change khác; không commit/push. **Dừng sau T5, chờ xác nhận T4.**
+
+---
+
+# T7 ho?n t?t code/fixture ? 06/11/2026
+
+- T?ch l?i output ?? t?n t?i kh?i overlap frozen pool; gi? pool hash validation tr??c.
+- RED4 FAIL/4 PASS ? GREEN **75 PASS,0 FAIL/ERROR/SKIP**; Ruff/whitespace scoped PASS.
+- Review scoped kh?ng finding; T6 v? thay ??i ch?a commit ???c b?o to?n.
+- Evidence: `results/m2/w1112/t7/20261106-output-exists/`.
+- [Checkpoint T7](docs/checkpoints/2026-11-06-t7-output-exists.md).
+- **D?ng sau T7, ch? x?c nh?n T5**; kh?ng commit/push, Docker/model/campaign.
+
+---
+
+# T6 code/fixture đạt gate — 06/11/2026
+
+- Chỉ lifecycle snapshot transport; dừng sau T6, chờ xác nhận T7.
+- Gate cuối: **144 PASS,1 SKIP,0 FAIL/ERROR**,56,956s JUnit; Ruff/whitespace scoped PASS.
+- Hai Important từ review đã có RED2→GREEN2 và regression cuối; không có finding hoãn.
+- Fixture14 operation:0 archive host còn lại,143.360 logical archive bytes xóa;
+  không phải phép đo55GB campaign hoặc Docker thật.
+- Evidence: `results/m2/w1112/t6/20261106-snapshot-transport/`.
+- [Checkpoint T6](docs/checkpoints/2026-11-06-t6-snapshot-transport.md).
+- Snapshot/ledger: `C:/Users/pc/AppData/Local/Temp/vgt6-20261106-zcf_esz7/`.
+- Giữ nguyên báo cáo Codex Diff chưa commit; không commit/push hoặc dọn dữ liệu cũ.
+- **Dừng sau T6 local.** Smoke Docker thật chờ M3; chưa bắt đầu T7.
+
+---
+
 # Publication M2-W12/D15 — 05/11/2026
 
 - Theo lệnh người dùng: commit code/tests/config/docs và push nhánh mới
@@ -1089,3 +1397,199 @@ Không làm lại clone/audit toàn bộ hoặc nối changes từ các repo cũ
 - Audit chỉ đọc saved evidence, không chạy lại tests/Docker/model/gold hoặc sửa
   source/config/profiles/Task Status/HEAD/index. Không commit/push, không Week10.
   Receipt tổng hợp: results/status/week9/20261024-consolidation/audit.json.
+
+
+---
+
+# H1 — Contract MCP server: chuẩn bị local PASS, chờ review — 08/11/2026
+
+- Thực hiện riêng TV1-H1 theo `Final_Task/2026-11-08-mcp-server-implementation-plan.md`.
+  Phương án A, SQLite production, adapter tương thích; không runtime/production migration,
+  Docker/model/campaign hoặc commit/push. Các plan cũ không được tự khởi động lại.
+- Tạo `docs/mcp_server/contract.md`, `docs/mcp_server/status.md`,
+  `tests/fixtures/mcp_server/expected_contract.json` và
+  [checkpoint H1](docs/checkpoints/2026-11-08-mcp-contract-baseline.md).
+- Contract dự thảo đủ 11 core tools, 8 canonical resources, 1 prompt 7 bước; actual code
+  inventory vẫn 15 tools/3 resources/0 prompts. Component/Port chỉ là draft riêng,
+  không nới schema legacy. External-host capability chưa kiểm.
+- Oracle synthetic viết tay: 5 source files, 4 symbols, 3 callsites, 7 evidence edges,
+  2 patch GOOD/BAD và 2 behavior examples. Technical review bắt lỗi thiếu Test caller
+  trong oracle legacy; đã tái hiện RED, sửa và GREEN. Không thay code production.
+- Gate local **15/15 PASS**, kiểm JSON, signatures/envelope/error/limits legacy, source/AST,
+  witness/impact/patch consistency, links/naming, preservation và whitespace H1.
+  Không coi static consistency là runtime/test target hoặc sửa lỗi thực nghiệm PASS.
+- Snapshot 480 protected files + 7 tài liệu nguồn; giữ các file cũ bất biến, riêng file
+  PROGRESS này chỉ nối thêm. HEAD/branch/index và staged state được bảo vệ.
+- Artifact `results/mcp_server/contract/20261108T100021Z-baseline/` có baseline/diffs,
+  commands, validation log/JUnit, review, preservation, summary/checksums.
+- Global diff-check còn 15 dòng whitespace có sẵn trong báo cáo M2 cũ; hash báo cáo giữ
+  nguyên. H1 whitespace PASS, không claim toàn repo/CI xanh.
+- **DRAFT / REVIEW_PENDING:** chờ TV2/TV3 C01–C05 và nhóm E01–E04/M01–M05;
+  technical agent review không phải chữ ký nhóm. **Dừng sau H1, không chuyển L6-1.**
+
+
+---
+
+# L6-1 MCP runtime đang triển khai — 08/11/2026
+
+- Artifact `results/mcp_server/runtime/20261108T121938Z-sdk2/`; [checkpoint](docs/checkpoints/2026-11-08-mcp-sdk-runtime.md).
+- Baseline HEAD3f77fcf6,20 dirty+27 untracked;117 protected files, giữ H1 sealed.
+- RED11 failed/3passed → GREEN14passed cho factory SDK1/2, lazy legacy export,
+  registry framework-free và legacy surface. Không thay production signatures/payload.
+- Venv SDK2 mới đang cài MCP2.2.0 và dependency closure riêng; chưa accepted lock,
+  chưa wire/runtime PASS. CUDA env giữ nguyên. Không model/Docker/commit/push.
+- Chỉ L6-1; không chuyển L6-5, không suy H1 đã được nhóm review.
+
+
+---
+
+# L6-1 — MCP SDK2 runtime ACCEPTED, dừng sau task — 08/11/2026
+
+- Artifact `results/mcp_server/runtime/20261108T121938Z-sdk2/`; [checkpoint](docs/checkpoints/2026-11-08-mcp-sdk-runtime.md), [runbook](docs/mcp_server/runtime.md).
+- Runtime SDK2 riêng MCP2.2.0,56 locked distributions có wheel hashes; pip check và
+  require-hashes dry-run PASS. Không LangChain/LangGraph/Torch/Transformers; venv CUDA
+  package inventory không đổi. Root VGAR metadata vẫn legacy, không cài vào SDK2.
+- Factory SDK1/2, lazy client export, registry name-only,4 entrypoints STDIO; giữ nguyên
+ 15 tools/3 resources/0 prompts và legacy fixture payload. Không provider/prompt mới.
+- Final wire16/16 PASS: SDK2 modern4+legacy4, SDK1→SDK2legacy4, SDK1→SDK1legacy4.
+  Repair trusted fixture đến ACCEPT qua reference patch;0 generator/model/Docker/campaign.
+- SDK2 unit19 PASS; legacy regression99 PASS+1skip cũ (Windows symlinks unavailable);
+  targeted repair/legacy final28 PASS. Các nhóm test overlap, không cộng unique.
+- Technical review tìm thấy gate assert bị -O bỏ qua; đã có RED reproducer và GREEN,
+  thay bằng explicit checks, side effects ngoài assertion, pin child PYTHONOPTIMIZE=0.
+- Ruff scoped và whitespace L6-1 PASS; global report còn15 whitespace cũ trong báo cáo
+  M2 được bảo vệ. H1 sealed artifacts/DB/report/dirty cũ giữ nguyên;6 source MCP files
+  thay đổi có chủ đích, PROGRESS/status chỉ append. HEAD/index/staged không đổi.
+- **DONE kỹ thuật riêng L6-1**; H1 vẫn DRAFT/REVIEW_PENDING, prompt PENDING_L6-4,
+  concurrency L6-5/provider/integration L6-8 chưa nghiệm thu. Không commit/push.
+- **Dừng, không chuyển L6-5 hoặc task tiếp theo.**
+
+
+---
+
+# H1 — Cập nhật xác nhận plan: ACCEPTED_FOR_IMPLEMENTATION — 08/11/2026
+
+- Người dùng xác nhận nhóm đã chốt các plan trong `Final_Task`, không cần thêm vòng
+  xác nhận TV2/TV3 cho H1, và yêu cầu sửa trạng thái file. **H1 DONE phần chuẩn bị
+  contract / ACCEPTED_FOR_IMPLEMENTATION**; yêu cầu REVIEW_PENDING ở các mục lịch sử
+  phía trên đã được thay thế bởi xác nhận này. Không tạo chữ ký riêng của TV2/TV3.
+- Đồng bộ contract/status/fixture/checkpoint H1 và câu tham chiếu H1 trong runbook/
+  checkpoint L6-1. PROGRESS chỉ append, không sửa lịch sử hoặc source production.
+- Fixture vẫn synthetic; source/oracle, patch GOOD/BAD, legacy signatures/payload
+  không đổi. Provider/schema chưa triển khai và input/config thí nghiệm chưa có vẫn
+  phải ghi đúng; xác nhận plan không được dùng làm bằng chứng runtime/experiment PASS.
+- Artifact cập nhật `results/mcp_server/contract/20261108T130221Z-plan-confirmation/`
+  lưu bản trước sửa, commands, validation/preservation và hashes mới. Artifact H1/L6-1
+  đã seal giữ nguyên; không ghi đè kết quả cũ để đổi trạng thái lịch sử.
+- Chỉ cập nhật trạng thái; không triển khai task tiếp theo, không commit/push.
+
+
+---
+
+# L6-5 security/concurrency đang thực hiện — 08/11/2026
+
+- Artifact `results/mcp_server/security/20261108T131906Z-guards/`; [checkpoint](docs/checkpoints/2026-11-08-mcp-security-concurrency.md).
+- Snapshot589 protected files trước thay đổi, giữ sealed artifacts H1/L6-1/plan-confirmation.
+- RED3fail/20error; audit race thật118/120 records. Initial GREEN23PASS sau foundation,
+  còn mở rộng concurrency/jobs/SDK tests và kiểm chứng; chưa DONE.
+- New host authority/grants tách legacy lease/admission; không tool/resource/provider mới,
+  không model/Docker/campaign hoặc commit/push; không cần vòng review TV2/TV3.
+
+
+---
+
+# L6-5 — Security/concurrency nền DONE kỹ thuật — 08/11/2026
+
+- [Security runbook](docs/mcp_server/security.md), [checkpoint](docs/checkpoints/2026-11-08-mcp-security-concurrency.md);
+  artifact `results/mcp_server/security/20261108T131906Z-guards/`.
+- Host-only BoundContext/HMAC grants, exact input hashes, single-use replay protection,
+  roots disjoint, opened-handle/path guards, bounded audit/redaction và OS process locks.
+- Repair load→save/finalize giữ một session lock; managed commit chống torn state.
+  Jobs cancellable/process-tree cleanup; publication staging/request lock chốt ordering
+  với cancel. Không API/tool/provider mới, không thay legacy schema/policy900/1800.
+- Initial RED3fail/20error tái hiện audit118/120 records. Final SDK2 **78 PASS/0skip**;
+  legacy **100PASS+1skip cũ** (Windows symlink unavailable); wire **16/16 PASS**.
+  Các gate overlap; không cộng thành số test unique. Native Windows junction PASS.
+- Review kỹ thuật sửa root-overlap, hash encoding, shared cancel visibility và final
+  publication race; RED/GREEN receipts giữ lại. Guard còn kiểm source drift, -O và
+  cleanup khi marker persistence lỗi. Không dùng fixture giả làm provider production.
+- Ruff scoped/owned whitespace PASS; global15 whitespace M2 cũ giữ nguyên. Filelock
+  promoted direct đúng4.2.9 đã installed/locked, không đổi venv/package inventories.
+- Sealed H1/L6-1/plan-confirmation, DB/report/old dirty được hash bảo toàn. Chỉ append
+  PROGRESS/status/contract, source MCP thay đổi có chủ đích được liệt kê trong summary.
+- H1 ACCEPTED_FOR_IMPLEMENTATION theo quyền người dùng. New adapter/graph/storage
+  integration còn L6-2/L6-6/L6-7; native containment không là hostile-code OS sandbox.
+- **Dừng sau L6-5.** Không model/Docker/campaign, commit/push hoặc tự chuyển task.
+
+
+## L6-2 — DONE kỹ thuật adapter / WAITING_PROVIDER — 08/11/2026
+
+- 20 tools đăng ký, đủ 11 core names; giữ legacy required arguments/payload depth 1, 3 resources và 0 prompts.
+- SDK2 final **139 PASS, 0 skip/fail/error**; legacy **100 PASS, 1 skip cũ** (Windows symlink unavailable), thêm scoped pin regression; các gate có overlap, không cộng thành unique tests.
+- Legacy/runtime wire **16/16 PASS** (SDK2 modern/legacy và SDK1 cross/native). 4 synthetic core STDIO cases nằm trong SDK2 gate; simulated execution không phải task/model experiment.
+- Đã kiểm context/grant/replay, source/provider/output binding, exact UTF-8 diff hash, persisted evidence, required-check ranking, multihop capability, async serialization/deadline/cancellation, full lease cleanup và pinned/no-latest bound legacy query.
+- Independent review đã đóng cleanup false-PASS, source drift khi chờ lock, legacy host-factory bypass và event-loop blocking. Giữ RED/failed logs, không thêm skip/xfail để che lỗi.
+- Production provider mới vẫn WAITING_PROVIDER (build/path/traversal/verification/ranking/tests); build orchestration thuộc L6-6. Không tự làm thuật toán TV2/TV3 hoặc tuyên bố 11 tool production READY.
+- Runbook `docs/mcp_server/tools.md`; checkpoint `docs/checkpoints/2026-11-08-mcp-core-tools.md`; artifact `results/mcp_server/tools/20261108T141511Z-adapters/` chứa commands/logs/JUnit/wire/readiness/preservation/hashes.
+- Bảo toàn thay đổi M2 và artifact H1/L6-1/L6-5; không cài package, đổi venv/DB, chạy Docker/model/campaign hoặc commit/push. **Dừng sau L6-2.**
+
+
+## L6-3 — DONE kỹ thuật resource serving / WAITING_PROVIDER — 09/11/2026
+
+- Graph server đăng ký8 canonical resources +1 alias legacy (4static/5templates); tools20 và prompts0 giữ nguyên. Ba legacy URI/raw JSON/MIME text/plain tiếp tục tương thích.
+- SDK2 final **211 PASS,0skip/fail/error**, gồm72 resource cases mới và139 gates hiện có. Legacy **100 PASS +1skip cũ**; groups overlap, không cộng unique tests. Compatibility wire16/16 PASS; resource-positive synthetic wire3 sessions nằm trong SDK2 gate.
+- Raw URI router decode ID đúng một lần, strict query k=2/cursor, bounded public JSON, pinned source/snapshot/task/run/config binding, evidence refs/hash, unavailable/error rõ. Audit resource cứng256KiB/200records, cursor chỉ tiến qua record đã trả; default caller read_audit cũ giữ nguyên.
+- Đã đóng review findings về metadata/protocol secret redaction và high-host audit-record cap. SQLite temp-copy proof/source immutability, optimized-Python denial, legacy payload hashes, Ruff scoped/pip check và final preservation PASS. Không thêm skip/xfail, không đổi package/venv/DB tracked.
+- Schema/component/task/baseline production **WAITING_PROVIDER**. Canonical subgraph/audit cần trusted host binding; synthetic fixture không chứng minh provider/experiment production hoàn thành.
+- Runbook `docs/mcp_server/resources.md`; checkpoint `docs/checkpoints/2026-11-09-mcp-resource-serving.md`; artifacts UTC `results/mcp_server/resources/20261108T173125Z-serving/` có commands/log/JUnit/wire/review/readiness/preservation/hashes. Ngày local09/11, không đổi timestamp UTC.
+- Bảo toàn dirty changes M2/L6-1/L6-2/L6-5 và sealed history. **Dừng sau L6-3**; không L6-4/L6-6/L6-7, Docker/model/campaign/commit/push.
+
+
+## L6-4 — DONE kỹ thuật MCP prompt — 09/11/2026
+
+- Graph server có1 prompt repair_with_graph_context,3 required string arguments; hai user messages, đúng7 bước proposal §10.4. Các server khác0 prompt; tools20/resources8 canonical+1alias không đổi.
+- Pure deterministic renderer không source/env/gold/tokenizer/provider/tool/model/grant access; frozen lower-only65.536-byte caps, strict JSON/tests/positive ASCII budget, secret redaction và audit counts/templatehash. Không default budget mới hoặc sửa V11/policies.
+- SDK2 final **266 PASS,0skip/fail/error**, gồm55 prompt/controller cases mới và211 gates hiện có; legacy **102 PASS +1skip cũ**. Groups overlap, không cộng unique tests. Wire compatibility16/16 PASS;4 graph lanes đều get_prompt/oracle PASS, không chỉ listing.
+- Ba dedicated prompt wire sessions và hai raw-protocol cases thuộc SDK2 gate. Unknown/missing/extra/invalid dispatched requests được audit prompt_render và trả lỗi an toàn. SDK malformed params trước dispatch không phải render attempt: SDK1 warning generic +protocol_reject; SDK2 safe generic rejection, không fake prompt event/correlation. Review đã kiểm lại fixes và leading-zero normalization.
+- Ruff scoped/pip check/preservation PASS; packages, V11, policies, DB, old dirty files và seals H1/L6-1/L6-2/L6-3/L6-5 giữ nguyên. PROGRESS/contract/status chỉ append; process cleanup inventory không có worker/server sót.
+- Runbook docs/mcp_server/prompts.md; checkpoint docs/checkpoints/2026-11-09-mcp-repair-prompt.md; artifact UTC results/mcp_server/prompts/20261108T181049Z-template/ có commands/log/JUnit/template/hash/wire/review/preservation.
+- Prompt PASS không chứng minh agent đã làm workflow, không đóng provider dependencies của L6-2/L6-3. Inspector/Claude Code thực thuộc L6-8. **Dừng sau L6-4**, không L6-7/L6-6/L6-8, Docker/model/campaign/commit/push.
+
+
+## L6-7 — DONE kỹ thuật SQLite/legacy profile; WAITING_SCHEMA_PROVIDER — 09/11/2026
+
+- Storage mới mỗi snapshot một DB/manifest, identity gồm graph version/source/schema/resolver/profile/canonical document. Không rewrite graph_version/node IDs hoặc migrate DB tracked/frozen; opt-in snapshot factory không đổi legacy defaults/launchers.
+- Writer kiểm trusted context, exact single-use storage_ingest grant, repo/snapshot locks, source/deadline/cancellation; rows/full-document/identity/READY cùng SQL transaction. Close/round-trip/projection/hash trước atomic directory publication dưới request commit guard. Crash/orphan không là public READY, không tự adopt/xóa dữ liệu cũ.
+- Reader explicit manifest/version và trusted profile fingerprints từ host, mode=ro/query_only/read transaction riêng mỗi operation/thread, không initialize/ALTER/latest/demo fallback/immutable=1. Canonical document giữ extensions; query vẫn SQL. Guard kiểm file identity và SQLite sidecars, schema/profile/DB/binding/projection consistency.
+- Final SDK2 **328 PASS,0skip/fail/error**,69,48 giây: 52 storage cases (50 unit/process/worker-thread +2 real STDIO snapshot lanes),10 SQLite legacy cases và266 MCP gates đã có. Legacy **102 PASS +1skip cũ**,83,11 giây; groups overlap, không cộng unique total. Không thêm skip/xfail.
+- Review 2 findings đã có7 RED regression và GREEN: không cho manifest tự đăng ký trusted profile; đối chiếu mọi SQL fact/scalar ranges/JSON với canonical document. Reviewer kiểm lại không còn finding quan trọng trong phạm vi. Source/deadline/cancel trong transaction, process crash trước/sau staging manifest, cross-process replay và coordinated forgery có evidence synthetic, không giả làm schema/provider production.
+- Ruff phần mới/factory PASS; hook SQLite không có lint mới (3 findings cũ được so với HEAD); whitespace phần thay đổi/pip check/preservation PASS. DB/V11/policy/báo cáo Linux/M2 dirty files/seals H1/L6-1/2/3/4/5, index/HEAD/staged và hai package inventories giữ nguyên. Không có process test/server còn sót sau gate.
+- Runbook/survey `docs/mcp_server/storage_backends.md`; checkpoint `docs/checkpoints/2026-11-09-mcp-snapshot-storage.md`; artifact UTC `results/mcp_server/storage/20261108T185307Z-snapshots/` có commands/log/JUnit, examples, crash/concurrency/review/preservation/checksums. SQLite3.42.0 chạy thật; Kùzu0.11.3 và Neo4jDriver6.4 chỉ khảo sát chính thức, **OPTIONAL_NOT_SELECTED**, không cài backend/đổi runtime.
+- **L6-7 chưa DONE hoàn toàn:** schema Component/Port/layers và provider/SQL projection thật chưa bàn giao, round-trip mới còn WAITING_SCHEMA_PROVIDER. Không dùng synthetic validator/H1 để đóng dependency. Chưa nối build_or_update_graph hay incremental orchestration (L6-6), chưa integration external host (L6-8).
+- Không model/Docker/campaign/commit/push; chỉ task L6-7. **Dừng sau L6-7.**
+
+
+## L6-6 — DONE kỹ thuật build/update legacy; graph mới WAITING_PROVIDER — 09/11/2026
+
+- Trusted controller nối build_or_update_graph với IncrementalGraphBuilder thật và SQLite snapshots L6-7. Một worker subprocess giữ cache extraction RAM theo phiên/repo, cold/warm/reuse rõ; relink vẫn toàn repo, không claim O(Δ+Fanout) hoặc benchmark production.
+- Controller thread sở hữu validate/authorization/repo lock/copy/worker/storage/receipt; adapter không giữ OS lock ở thread khác. Build grant single-use trước staging/spawn; worker không authority/grants/DB và không import/execute target. Request-scoped registry/binding, opt-in bootstrap, default/legacy API/payload/inventory20tools/8canonical+alias/1prompt giữ nguyên.
+- Source private copy/hash và worker job/instance/document/summary/ACK được kiểm trước publication. Repository metadata normalize về host repo sau proof, không để URI staging đã xóa. Effective profile bind operator profile/config/code; cache pin full identity/manifest/DB/original publication receipt, không latest/graph_version-only. Reuse snapshot cũ khác worker lineage reset worker; receipt ghi baseline thật hoặc cold-empty.
+- Derived storage context dùng exact identity grant, cùng parent request scope; parent cancellation/operation deadline được kiểm cả trước/sau source scan và trong commit/publication guard. Timeout/cancel/error kill process tree và bỏ extraction cache; thiếu ACK không publish; native crash/orphan không tự adopt. Error khi source root biến mất vẫn cleanup worker, không che integrity thành PASS.
+- Final SDK2 **399 PASS,0skip/fail/error**:45 cases L6-6 mới +354 regression MCP/storage/incremental/SQLite đã có. Legacy **102 PASS +1skip cũ**; các nhóm overlap, không cộng unique totals. Ba real STDIO lanes SDK2modern/legacy và SDK1server thực hiện cold→reuse→warm→read snapshot, nằm trong45 cases mới. Native process/cancellation/crash, optimized Python, config/source/schema/resolver/profile/code invalidation và semantic full-build equivalence có evidence.
+- Review read-only đã đóng metadata staging, worker baseline và deadline sau source-scan; có RED→GREEN regressions. Intermediate gate từng phát hiện default expired-context exception bị đổi và lỗi fixture đăng ký lại authority; đã giữ ValueError legacy và sửa helper test, không nới grants/checks hoặc thêm skip/xfail.
+- Ruff scoped/pip check/whitespace/preservation PASS. HEAD/branch/index/staged, package inventories, source plans, DB/V11/policies/M2/Linux reports và sealed artifacts trước giữ nguyên; PROGRESS/contract/status chỉ append. Process inventory sau gates không có server/worker còn sót.
+- Runbook docs/mcp_server/graph_jobs.md; checkpoint docs/checkpoints/2026-11-09-mcp-graph-jobs.md; artifact results/mcp_server/graph_jobs/20261109T050523Z-incremental/ chứa actual commands/log/JUnit, worker/cache/equivalence/wire/crash/review, snapshot examples và checksums. Fixture source là synthetic, provider/builder/storage thật; không dùng làm bằng chứng dataset/model repair hoặc schema mới.
+- **G_arch/G_task/Trace/Component/Port vẫn WAITING_SCHEMA_PROVIDER/WAITING_PROVIDER**. Chưa đóng toàn11 core tools production hoặc L6-8/external-host integration. Không model/Docker/campaign/install/commit/push. **Dừng sau L6-6.**
+
+
+## L6-8 — DONE kỹ thuật preflight offline; PARTIAL/BLOCKED_DEPENDENCIES — 09/11/2026
+
+- Chỉ preflight được yêu cầu: thêm CLI `scripts/mcp_server/smoke_mcp.py --preflight`, fixed helper `_preflight_worker.py`, consumer tests, ba config templates + metadata và runbook. Không sửa domain/runner/adapter production, cài/download, model/agent, login, Docker, global host settings hoặc commit/push.
+- Lượt thật `campaign-02` **exit 2 / PARTIAL**, `preflight_completed=true`, `local_checks=PASS`; đây là hoàn thành công cụ và kiểm tra cục bộ, không phải DONE toàn L6-8. Inventory20 tools gồm11 core,8 canonical resources+1alias,1prompt. Bốn server × hai mode = **8/8 wire PASS**; protocol thực modern2026-07-28 và legacy2025-11-25.
+- Real legacy builder/controller/SQLite trên source fixture: hai mode đều **COLD_BUILD → SNAPSHOT_REUSE → WARM_UPDATE → read PASS**, sáu build/reuse calls. Consumer kiểm job/evidence hash, trusted storage profile/identity, manifest/DB/source và resource binding; DB không đổi sau read. Fixture không phải provider schema mới hoặc repair campaign production.
+- Final SDK2 **50 PASS**, gồm31 preflight cases; legacy compatibility **40 PASS +1skip cũ**. Các nhóm có overlap, không cộng thành unique total. Scoped Ruff/pip check PASS. Giữ15 trailing-whitespace findings cũ trong báo cáo M2 ngoài phạm vi; phần task mới kiểm riêng. Không thêm skip/xfail.
+- Review đã đóng3 findings có RED→GREEN: await lazy SDK fixture initialization trước source fingerprint; consumer yêu cầu successful named calls/denials/resource data/legacy protocol, không chỉ listing/producer PASS; bảo vệ cả8 roots artifact cũ bị Git ignore. Lượt `campaign-01` ERROR và intermediate RED/GREEN logs giữ nguyên để audit, không tính thành nghiệm thu.
+- CLI preservation **2.903 file PASS**; baseline task2.894 file được bảo vệ, chỉ ba tài liệu PROGRESS/contract/status được append. HEAD/index/staged/source plans/package inventories/DB/V11/policies/báo cáo Linux/M2 và mọi seal trước không đổi. Process receipt không còn server/worker của preflight.
+- Ma trận **20 dòng** có owner/task/handoff/phần TV1 tích hợp/gate: TV1 còn trusted bootstrap/binding, rich-schema storage projection và external integration; TV2 còn SC-1, rich builder/query/path/architecture/task/trace/retrieval/impact; TV3 còn contract evidence/graph verification/ranking/admitted diff-tests/baseline. Legacy code đã có được ghi riêng, không coi là toàn bộ implementation chưa tồn tại.
+- Node v22.22.2/npm10.9.7, Claude CLI2.1.193 đã đọc version/help; auth **NOT_CHECKED_OFFLINE**, session **NOT_RUN**. Inspector không tìm thấy tại các vị trí đã kiểm, không kết luận toàn máy. Templates **TEMPLATE_NOT_EXECUTED**; Inspector/Claude/full chain production đều **NOT_RUN**. SDK smoke không thay nghiệm thu external host.
+- Artifact `results/mcp_server/preflight/20261109T055933Z-offline/`; báo cáo chính `campaign-02/report.md`, ma trận `campaign-02/dependencies.md`, checkpoint `docs/checkpoints/2026-11-09-mcp-preflight.md`, runbook `docs/mcp_server/runbook.md`. **Dừng sau preflight**, không tự triển khai dependency hoặc thực nghiệm tiếp theo.
