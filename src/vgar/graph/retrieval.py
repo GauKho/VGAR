@@ -21,6 +21,7 @@ from vgar.graph.builder import discover_python_files
 from vgar.graph.grounding import issue_symbol_text, issue_topic_text
 from vgar.graph.source_evidence import SourceEvidence, diagnostic_lines
 from vgar.graph.task_overlay import TaskOverlay
+from vgar.graph.trace_links import rank_component_traces
 from vgar.observability.graph_trace import GraphTrace
 
 
@@ -44,6 +45,13 @@ class RetrievalConfig:
     use_diagnostic_evidence: bool = True
     use_component_seeds: bool = True
     use_topic_evidence: bool = False
+    # RT-1 flags. Their off values are listed in RT1_FLAG_DEFAULTS and are left
+    # out of ranking_config_hash, so the frozen default hash stays the same.
+    use_component_dependents: bool = False
+    dependent_symbols_per_component: int = 3
+    may_call_factor: float = 0.0
+    use_trace_component: bool = False
+    public_api_from_ports: bool = False
 
     def __post_init__(self) -> None:
         for name, value, minimum in (("max_hops", self.max_hops, 0),
@@ -65,11 +73,36 @@ class RetrievalConfig:
             not _number(value) or value < 0 for value in self.weights.values()
         ) or sum(self.weights.values()) <= 0:
             raise InvalidQueryError("weights must contain all six features with finite nonnegative values")
+        if any(not isinstance(flag, bool) for flag in (
+            self.use_component_dependents, self.use_trace_component, self.public_api_from_ports,
+        )):
+            raise InvalidQueryError("RT-1 flags must be booleans")
+        if (isinstance(self.dependent_symbols_per_component, bool)
+                or not isinstance(self.dependent_symbols_per_component, int)
+                or self.dependent_symbols_per_component < 1):
+            raise InvalidLimitError("dependent_symbols_per_component must be an integer >= 1")
+        if not _number(self.may_call_factor) or not 0 <= self.may_call_factor <= 1:
+            raise InvalidQueryError("may_call_factor must be within [0, 1]")
+
+
+RT1_FLAG_DEFAULTS: dict[str, object] = {
+    "use_component_dependents": False, "dependent_symbols_per_component": 3, "may_call_factor": 0.0,
+    "use_trace_component": False, "public_api_from_ports": False,
+}
 
 
 def ranking_config_hash(config: RetrievalConfig) -> str:
-    """Identity of a ranking config (C5): canonical JSON of every field, key order ignored."""
-    encoded = json.dumps(asdict(config), sort_keys=True, separators=(",", ":"))
+    """Identity of a ranking config (C5): canonical JSON of every field, key order ignored.
+
+    RT-1 fields that still hold their off value are left out, so configs from
+    before RT-1 keep their hash.
+
+    Args:
+        config: The retrieval config to identify.
+    """
+    values = {key: value for key, value in asdict(config).items()
+              if not (key in RT1_FLAG_DEFAULTS and value == RT1_FLAG_DEFAULTS[key])}
+    encoded = json.dumps(values, sort_keys=True, separators=(",", ":"))
     return "sha256:" + hashlib.sha256(encoded.encode("utf-8")).hexdigest()
 
 @dataclass
@@ -213,8 +246,13 @@ class GraphContextRetriever:
                                   + self._source_evidence.similarity(node_id, topic_words)) / 2
                                 if topic_words else -self._source_evidence.similarity(node_id, task_words), node_id),
         )[:component_limit] if component_nodes else []
-        starts = sorted(set(anchors) | set(diagnostic_matches) | set(component_seeds))
+        trace_component, trace_seeds = (self._trace_seeds(overlay, task_words, include)
+                                        if self.config.use_trace_component and overlay is not None else (None, []))
+        starts = sorted(set(anchors) | set(diagnostic_matches) | set(component_seeds) | set(trace_seeds))
         scores = dict(anchor_scores)
+        for node_id in trace_seeds:
+            scores[node_id] = max(scores.get(node_id, 1.0 if node_id in anchors else 0), 0.45)
+            self.trace.emit("retrieval_trace_seed", node_id=node_id, component=trace_component, confidence=0.45)
         for node_id in component_seeds:
             scores[node_id] = max(scores.get(node_id, 1.0 if node_id in anchors else 0), 0.45)
             self.trace.emit('retrieval_component_seed', node_id=node_id,
@@ -225,9 +263,16 @@ class GraphContextRetriever:
                             matched_fragments=diagnostic_matches[node_id], confidence=score)
         seed_rationales = {node_id: ('SOURCE_COMPONENT',) for node_id in component_seeds if node_id not in anchors}
         seed_rationales.update({node_id: ('SOURCE_DIAGNOSTIC',) for node_id in diagnostic_matches if node_id not in anchors})
+        seed_rationales.update({node_id: ('TRACE_COMPONENT',) for node_id in trace_seeds if node_id not in anchors})
         states, limited = self._walk(starts, scores, include, task_words=task_words,
                                      diagnostic_scores=diagnostic_scores,
                                      seed_rationales=seed_rationales, topic_words=topic_words)
+        dependent_ids: list[str] = []
+        if self.config.use_component_dependents and self._component_of_path:
+            unavailable.remove("architecture_dependencies")
+            dependents = self._component_dependents(anchors, states, include)
+            states.update(dependents)
+            dependent_ids = sorted(dependents)
         test_states, test_limited = self._walk(
             failing_tests, {}, relations={"CALLS", "CALLERS", "TESTS", "TESTED_BY"},
         )
@@ -239,7 +284,8 @@ class GraphContextRetriever:
             if include is not None and (not include(node) or node["qualified_name"].startswith("tests.")):
                 filtered_by_include += 1
                 continue
-            public = node["properties"].get("visibility") == "public"
+            public = (node_id in self._port_symbols if self.config.public_api_from_ports and self._port_symbols
+                      else node["properties"].get("visibility") == "public")
             fanin = len(self.callers[node_id])
             direct_similarity = self._task_similarity(node, task_words, diagnostic_scores, topic_words)
             raw_test_proximity = 1 / (1 + test_states[node_id][0]) if node_id in test_states else 0.0
@@ -352,6 +398,9 @@ class GraphContextRetriever:
                             "diagnostic_seed_ids": sorted(diagnostic_matches),
                             "component_seed_ids": component_seeds,
                             "component_seed_limit": component_limit,
+                            "component_dependent_ids": dependent_ids,
+                            "trace_component_id": trace_component,
+                            "trace_seed_ids": trace_seeds,
                             "source_evidence_nodes": len(self._source_evidence.terms) if self._source_evidence else 0,
                             "source_evidence_unavailable_paths": self._source_evidence.unavailable_paths if self._source_evidence else [],
                             "semantic_similarity_decay": 0.7,
@@ -408,10 +457,11 @@ class GraphContextRetriever:
     def _index_relations(self) -> None:
         parents = {edge["target_id"]: edge for edge in self.document["edges"] if edge["type"] == "CONTAINS"}
 
-        def connect(source: str, target: str, confidence: float, forward: str, reverse: str) -> None:
+        def connect(source: str, target: str, confidence: float, forward: str, reverse: str,
+                    bypass_threshold: bool = False) -> None:
             if not self._eligible(self.nodes[source]) or not self._eligible(self.nodes[target]):
                 return
-            if confidence < self.config.min_edge_confidence:
+            if confidence < self.config.min_edge_confidence and not bypass_threshold:
                 return
             self.adjacency[source].append((target, confidence, forward))
             self.adjacency[target].append((source, confidence, reverse))
@@ -428,6 +478,14 @@ class GraphContextRetriever:
                         "CALLERS" if edge["type"] == "CALLS" else "IMPORTED_BY")
                 if edge["type"] == "CALLS" and confidence >= self.config.min_edge_confidence:
                     self.callers[target].add(source)
+            elif edge["type"] == "MAY_CALL" and self.config.may_call_factor > 0:
+                # RT-1 §4.2: a name-matched guess is walked like CALLS with a
+                # decayed confidence; it never counts as fan-in.
+                parent = parents.get(source)
+                if parent is not None:
+                    connect(parent["source_id"], target,
+                            min(confidence, parent["confidence"]) * self.config.may_call_factor,
+                            "CALLS", "CALLERS", bypass_threshold=True)
             elif edge["type"] == "REFERENCES" and self.nodes[source]["type"] == "CallSite":
                 parent = parents.get(source)
                 if parent is not None:
@@ -459,6 +517,7 @@ class GraphContextRetriever:
                 if self.nodes[current]["type"] == "File":
                     connect(current, node["id"], confidence, "SOURCE_CONTAINS", "SOURCE_FILE")
                     break
+        self._index_components(parents)
         for node_id in self.adjacency:
             # Prefer semantic neighbors before broad container/sibling expansion.
             self.adjacency[node_id] = sorted(set(self.adjacency[node_id]), key=lambda item: (
@@ -466,6 +525,96 @@ class GraphContextRetriever:
                 2 if item[2] in {"CONTAINS", "CONTAINED_BY"} else 1,
                 -item[1], item[0], item[2],
             ))
+
+    def _index_components(self, parents: dict[str, dict[str, Any]]) -> None:
+        """G_arch indexes for RT-1: component files, dependents and cross-component calls.
+
+        Args:
+            parents: CONTAINS edge of each contained node, keyed by the node id.
+        """
+        self._component_of_path: dict[str, list[str]] = defaultdict(list)
+        self._dependents: dict[str, set[str]] = defaultdict(set)
+        self._component_calls: dict[tuple[str, str], dict[str, list[float]]] = defaultdict(lambda: defaultdict(list))
+        self._port_symbols = {node["properties"].get("symbol_id") for node in self.nodes.values()
+                              if node["type"] == "Port" and node["properties"].get("symbol_id")}
+        components = sorted(node_id for node_id, node in self.nodes.items() if node["type"] == "Component")
+        for component in components:
+            for path in self.nodes[component]["properties"].get("files", []):
+                self._component_of_path[path].append(component)
+        for edge in self.document["edges"]:
+            if edge["type"] == "DEPENDS_ON" and self.nodes[edge["source_id"]]["type"] == "Component"                     and self.nodes[edge["target_id"]]["type"] == "Component":
+                self._dependents[edge["target_id"]].add(edge["source_id"])
+            elif edge["type"] == "CALLS" and self._component_of_path:
+                parent = parents.get(edge["source_id"])
+                if parent is None:
+                    continue
+                caller, target = self.nodes[parent["source_id"]], self.nodes[edge["target_id"]]
+                for source_component in self._component_of_path.get(caller.get("path") or "", []):
+                    for target_component in self._component_of_path.get(target.get("path") or "", []):
+                        if source_component != target_component:
+                            self._component_calls[(source_component, target_component)][caller["id"]].append(
+                                min(edge["confidence"], parent["confidence"]))
+
+    def _component_dependents(self, anchors: list[str], states: dict[str, Any],
+                              include: Callable[[dict[str, Any]], bool] | None) -> dict[str, tuple[int, float, tuple[str, ...]]]:
+        """Callers in components that depend on an anchor's component (spec RT-1 §4.1).
+
+        Args:
+            anchors: Anchor node ids of this query.
+            states: Candidates already reached by the walk; they are not added again.
+            include: Optional evaluation filter applied to every added symbol.
+        """
+        added: dict[str, tuple[int, float, tuple[str, ...]]] = {}
+        # The limit holds per (dependent, component) pair, however many anchors
+        # share the component; total additions are at most pairs x limit and
+        # sit outside the walk's candidate quota.
+        anchor_components = sorted({component for anchor in anchors
+                                    for component in self._component_of_path.get(self.nodes[anchor].get("path") or "", [])})
+        for component in anchor_components:
+            for dependent in sorted(self._dependents.get(component, ())):
+                calls = self._component_calls.get((dependent, component), {})
+                ranked = sorted(calls, key=lambda node_id: (-len(calls[node_id]), node_id))
+                kept = 0
+                for node_id in ranked:
+                    if kept >= self.config.dependent_symbols_per_component:
+                        break
+                    node = self.nodes[node_id]
+                    if node_id in states or node_id in added or not self._eligible(node) or (
+                            include is not None and (not include(node) or node["qualified_name"].startswith("tests."))):
+                        continue
+                    added[node_id] = (2, max(calls[node_id]),
+                                      ("COMPONENT_DEPENDENT", f"DEPENDS_ON:{dependent}->{component}"))
+                    kept += 1
+                    self.trace.emit("retrieval_component_dependent", node_id=node_id,
+                                    dependent_component=dependent, component=component)
+        return added
+
+    def _trace_seeds(self, overlay: TaskOverlay, task_words: frozenset[str],
+                     include: Callable[[dict[str, Any]], bool] | None) -> tuple[str | None, list[str]]:
+        """Port symbols of the top TRACES_TO component, as weak seeds (spec RT-1 §4.3).
+
+        Args:
+            overlay: Task overlay holding the issue's TRACES_TO edges.
+            task_words: Words of the issue, used to prefer matching Port symbols.
+            include: Optional evaluation filter applied to every seed.
+        """
+        issue_id = overlay.nodes[0]["id"]
+        ranked = rank_component_traces(edge for edge in overlay.edges
+                                       if edge["type"] == "TRACES_TO" and edge["source_id"] == issue_id)
+        if not ranked or ranked[0]["confidence"] < 0.7:
+            return None, []
+        component = ranked[0]["target_id"]
+        symbols = set()
+        for node in self.nodes.values():
+            if node["type"] != "Port" or node["properties"].get("owner_component_id") != component:
+                continue
+            symbol = self.nodes.get(node["properties"].get("symbol_id") or "")
+            if symbol is None or not self._eligible(symbol) or (
+                    include is not None and (not include(symbol) or symbol["qualified_name"].startswith("tests."))):
+                continue
+            symbols.add(symbol["id"])
+        ordered = sorted(symbols, key=lambda node_id: (-len(_words(self.nodes[node_id]["name"]) & task_words), node_id))
+        return component, ordered[:self.config.dependent_symbols_per_component]
 
     def _anchor_seed_limit(self) -> int:
         # Reserve half the candidate quota for expansion when traversal is enabled.
@@ -644,3 +793,8 @@ def _hash(data: bytes) -> str:
 def _words(text: str) -> set[str]:
     expanded = re.sub(r"([a-z])([A-Z])", r"\1 \2", text)
     return {match.lower() for match in _WORDS.findall(expanded)}
+
+
+# RT-1 profile chosen on 25 dev tasks (spec RT-1 §5; configs/rt1/rt1_config.json):
+# only MAY_CALL decay raised recall without lowering MRR. The default stays frozen.
+RT1_CONFIG = RetrievalConfig(may_call_factor=0.5)

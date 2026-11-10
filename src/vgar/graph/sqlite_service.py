@@ -6,7 +6,7 @@ from pathlib import Path
 from typing import Callable, Any
 
 from vgar.contracts.error import GraphNotReadyError
-from vgar.graph.retrieval import GraphContextRetriever
+from vgar.graph.retrieval import GraphContextRetriever, RetrievalConfig
 from vgar.graph.task_overlay import TaskOverlayBuilder
 from vgar.graph.test_selection import select_related_tests
 from vgar.contracts.prompt_context import CONTEXT_FORMAT
@@ -56,13 +56,25 @@ class SQLiteGraphService:
                 "trace_nodes": overlay.nodes, "trace_edges": overlay.edges}
 
     def get_related_context(self, anchor_ids: list[str], budget_tokens: int, *, graph_version: str,
-                            task_id: str, issue_text: str = "", failing_tests: list[str] | None = None) -> dict[str, Any]:
+                            task_id: str, issue_text: str = "", failing_tests: list[str] | None = None,
+                            config: RetrievalConfig | None = None) -> dict[str, Any]:
+        """Pack source-verified context around anchors for one task.
+
+        Args:
+            anchor_ids: Graph node ids to start from.
+            budget_tokens: Token budget for the packed context.
+            graph_version: Stored graph snapshot to read.
+            task_id: Task identifier used for the task overlay.
+            issue_text: Issue text used for grounding and ranking.
+            failing_tests: Optional failing test selectors.
+            config: Optional ranking config; None keeps the default ``RetrievalConfig()``.
+        """
         if self.repository_root is None or self.count_tokens is None or not self.counter_label:
             raise GraphNotReadyError("W5 retrieval requires repository root and a verified tokenizer")
         document = self.store.load_document(graph_version)
         overlay = TaskOverlayBuilder(document).build(task_id, issue_text, failing_tests)
         retriever = GraphContextRetriever(document, self.repository_root, count_tokens=self.count_tokens,
-                                          counter_label=self.counter_label)
+                                          counter_label=self.counter_label, config=config)
         try:
             result = retriever.retrieve(anchor_ids, budget_tokens, issue_text=issue_text, overlay=overlay)
         except Exception as error:
