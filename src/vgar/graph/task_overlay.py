@@ -5,15 +5,13 @@ import copy
 import hashlib
 import json
 import re
-from collections import defaultdict
 from dataclasses import asdict, dataclass
 from typing import Any
 
 from vgar.contracts.schema import validate_graph_document
 from vgar.graph.grounding import _ROUTE, AnchorResult, TaskAnchorFinder
 from vgar.graph.task_graph import TaskFacts, extract_task_facts
-
-_MAX_TRACE_EVIDENCE = 5
+from vgar.graph.trace_links import build_trace_links
 
 
 @dataclass
@@ -49,7 +47,7 @@ class TaskOverlayBuilder:
         overlay_id = _digest({
             "graph_version": grounding.graph_version, "task_id": task_id,
             "issue_text": issue_text, "failing_tests": reports, "labels": facts.labels,
-            "profile": "task-overlay-v10-g-task",
+            "profile": "task-overlay-v11-trace-links",
         })
         issue_id = f"vgar:{self._document['repo_key']}:issue:{task_hash}"
         if issue_id in self._nodes:
@@ -92,7 +90,10 @@ class TaskOverlayBuilder:
                     [asdict(item) for item in reproduction_evidence], overlay_id,
                     {"input_reported_failure": True, "execution_verified": False},
                 ))
-        task_nodes = self._add_task_facts(facts, grounding, issue, task_hash, overlay_id, edges, ambiguous)
+        task_nodes = self._add_task_facts(facts, grounding, issue, task_hash, overlay_id, edges)
+        for link in build_trace_links(issue_id, task_nodes, grounding, self._document["nodes"]):
+            edges.append(self._edge(link.edge_type, link.source_id, link.target_id, link.confidence, link.evidence,
+                                    overlay_id, link.properties, link.rule_id))
         edges.sort(key=lambda edge: (edge["type"], edge["source_id"], edge["target_id"]))
         # Validate existing endpoints/provenance without changing the shared contract.
         validate_graph_document({
@@ -103,7 +104,7 @@ class TaskOverlayBuilder:
 
     def _add_task_facts(
         self, facts: TaskFacts, grounding: AnchorResult, issue: dict[str, Any], task_hash: str, overlay_id: str,
-        edges: list[dict[str, Any]], ambiguous: set[tuple[str, str]],
+        edges: list[dict[str, Any]],
     ) -> list[dict[str, Any]]:
         """G_task nodes for the extracted facts (spec §5); appends their edges to ``edges``."""
         nodes: list[dict[str, Any]] = []
@@ -146,7 +147,6 @@ class TaskOverlayBuilder:
                                     {"input_reported_failure": True, "execution_verified": False}))
         for route_id, confidence in sorted(self._mentioned_routes(issue["properties"]["issue_text"]).items()):
             mention(route_id, confidence)
-        self._add_traces(grounding, issue["id"], overlay_id, edges, ambiguous)
         return nodes
 
     def _mentioned_routes(self, issue_text: str) -> dict[str, float]:
@@ -162,25 +162,10 @@ class TaskOverlayBuilder:
                     found[route["id"]] = max(found.get(route["id"], 0.0), 0.8 if method else 0.6)
         return found
 
-    def _add_traces(
-        self, grounding: AnchorResult, issue_id: str, overlay_id: str, edges: list[dict[str, Any]],
-        ambiguous: set[tuple[str, str]],
-    ) -> None:
-        """Issue -> Component for every Component holding an anchor that is not purely ambiguous (spec §5.6)."""
-        owners = {path: node["id"] for node in self._document["nodes"] if node["type"] == "Component"
-                  for path in node["properties"]["files"]}
-        anchors: dict[str, list[Any]] = defaultdict(list)
-        for anchor in grounding.anchors:
-            if anchor.path in owners and not all((item.matched_text, anchor.node_id) in ambiguous for item in anchor.evidence):
-                anchors[owners[anchor.path]].append(anchor)
-        for component_id, members in anchors.items():
-            evidence = [{"kind": "anchor", "node_id": node_id} for node_id in sorted(member.node_id for member in members)[:_MAX_TRACE_EVIDENCE]]
-            edges.append(self._edge("TRACES_TO", issue_id, component_id, max(member.score for member in members), evidence,
-                                    overlay_id, {"anchor_count": len(members)}))
-
     def _edge(
         self, edge_type: str, source: str, target: str, confidence: float,
         evidence: list[dict[str, str]], overlay_id: str, properties: dict[str, Any],
+        rule_id: str | None = None,
     ) -> dict[str, Any]:
         return {
             "id": _digest({"overlay_id": overlay_id, "type": edge_type,
@@ -191,7 +176,7 @@ class TaskOverlayBuilder:
             "properties": {"overlay_id": overlay_id, **properties},
             "provenance": {
                 "source_tool": "vgar-m1-task-overlay", "source_tool_version": "0.1.0",
-                "rule_id": f"task.{edge_type.lower()}.v1",
+                "rule_id": rule_id or f"task.{edge_type.lower()}.v1",
                 "source_revision": self._document["repository_revision"], "evidence": evidence,
             },
         }

@@ -63,7 +63,7 @@ G_ARCH_EDGE_TYPES = frozenset({
 G_CODE_EDGE_TYPES = frozenset({"AST_CHILD", "CFG_NEXT", "DATA_DEPENDS_ON", "CONTROL_DEPENDS_ON"})
 
 # One schema S (proposal §8.4) validated under two profiles; decided by TV2 on 08/11 for the MCP contract.
-SCHEMA_VERSION = "vgar-schema-full-v4"
+SCHEMA_VERSION = "vgar-schema-full-v5"
 PROFILE_FULL_VGAR_MCP = "full_vgar_mcp"
 PROFILE_LEGACY_W10 = "legacy_w10"
 LEGACY_W10_NODE_TYPES = {
@@ -205,6 +205,16 @@ EDGE_ENDPOINTS: dict[str, set[tuple[str, str]]] = {
     # Proposed, pending team review (plan GT-1; proposal lines 318, 321).
     "TRACES_TO": {("Issue", "Component"), ("Requirement", "Component")},
     "CONFLICTS_WITH": {("Requirement", "Requirement")},
+    # Proposed, pending team review (plan TR-1; proposal line 548 uses this name for a reference resolved to its definition).
+    "RESOLVES_TO": {
+        ("StackTraceFrame", "File"),
+        ("StackTraceFrame", "Class"),
+        ("StackTraceFrame", "Function"),
+        ("StackTraceFrame", "Method"),
+        ("StackTraceFrame", "Test"),
+        ("FailingTest", "Test"),
+        ("ErrorMessage", "Class"),
+    },
     # Proposed, pending team review (plan L3-1; proposal lines 193-197).
     "AST_CHILD": {
         ("Function", "Statement"),

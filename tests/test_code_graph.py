@@ -44,7 +44,7 @@ def test_schema_declares_g_code() -> None:
                                            ("Statement", "CallSite"), ("Statement", "Identifier")}
     assert EDGE_ENDPOINTS["CFG_NEXT"] == EDGE_ENDPOINTS["CONTROL_DEPENDS_ON"] == {("Statement", "Statement")}
     assert EDGE_ENDPOINTS["DATA_DEPENDS_ON"] == {("Statement", "Statement"), ("Statement", "Function"), ("Statement", "Method")}
-    assert SCHEMA_VERSION == "vgar-schema-full-v4"
+    assert SCHEMA_VERSION == "vgar-schema-full-v5"
 
 
 def test_validate_rejects_wrong_g_code_endpoint(tmp_path: Path) -> None:

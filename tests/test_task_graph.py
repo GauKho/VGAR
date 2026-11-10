@@ -39,7 +39,7 @@ def test_schema_declares_g_task() -> None:
     assert ("Requirement", "Requirement") in EDGE_ENDPOINTS["DEPENDS_ON"]
     assert EDGE_ENDPOINTS["CONFLICTS_WITH"] == {("Requirement", "Requirement")}
     assert ("Test", "Requirement") in EDGE_ENDPOINTS["TESTS"]
-    assert SCHEMA_VERSION == "vgar-schema-full-v4"
+    assert SCHEMA_VERSION == "vgar-schema-full-v5"
 
 
 TRACE = ('Traceback (most recent call last):\n  File "a/b.py", line 8, in login\n    x()\n'

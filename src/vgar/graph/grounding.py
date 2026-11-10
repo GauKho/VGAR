@@ -3,6 +3,7 @@ from __future__ import annotations
 import ast
 import re
 from collections import defaultdict
+from collections.abc import Collection
 from dataclasses import dataclass, field
 from typing import Any
 from urllib.parse import unquote, urlsplit
@@ -295,7 +296,11 @@ class TaskAnchorFinder:
                         continue
                     consumed.append(match.span())
                     path = match.group("path").replace("\\", "/")
-                    paths = self._match_paths(path)
+                    if pattern is _TRACEBACK and is_absolute_path(path):
+                        resolved = resolve_absolute_frame(path, self.files)
+                        paths = [resolved] if resolved else []
+                    else:
+                        paths = self._match_paths(path)
                     selector = match.groupdict().get("selector") or ""
                     # A number this long is not a real line, and int() rejects very long ones.
                     line = int(match.group("line")) if match.group("line") and len(match.group("line")) < 20 else None
@@ -414,6 +419,35 @@ class TaskAnchorFinder:
         if normalized in self.files:
             return [normalized]
         return sorted(candidate for candidate in self.files if candidate.endswith("/" + normalized))
+
+
+def is_absolute_path(path: str) -> bool:
+    """Whether a forward-slash path is absolute on POSIX or Windows.
+
+    Args:
+        path: The path, with backslashes already turned into slashes.
+    """
+    return path.startswith("/") or re.match(r"^[A-Za-z]:", path) is not None
+
+
+def resolve_absolute_frame(path: str, files: Collection[str]) -> str | None:
+    """The repository file an absolute traceback path points at, or None when that is not certain.
+
+    Args:
+        path: The absolute path, with backslashes already turned into slashes.
+        files: Repository-relative paths of the source files.
+    """
+    if ".." in path.split("/"):
+        return None
+    starts = [path.rfind(marker) + len(marker) for marker in ("/site-packages/", "/dist-packages/") if marker in path]
+    if starts:
+        rest = path[max(starts):]
+        matches = [candidate for candidate in (rest, f"src/{rest}", f"lib/{rest}") if candidate in files]
+        return matches[0] if len(matches) == 1 else None
+    if re.search(r"/python\d+(?:\.\d+)?/", path, re.IGNORECASE):
+        return None
+    # A file at the repository root has no directory to tell it from a same-named script elsewhere.
+    return max((item for item in files if "/" in item and path.endswith(f"/{item}")), key=len, default=None)
 
 
 def _contains_line(source_range: dict[str, int], line: int) -> bool:
