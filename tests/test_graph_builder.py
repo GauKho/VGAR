@@ -5,7 +5,7 @@ from unittest import mock
 import tempfile
 from pathlib import Path
 
-from vgar.graph.builder import GRAPH_VERSION_RESOLVER_LABEL, RESOLVER_PROFILE, PythonGraphBuilder
+from vgar.graph.builder import RESOLVER_PROFILE, PythonGraphBuilder
 from vgar.contracts.schema import validate_graph_document
 
 
@@ -184,17 +184,12 @@ class PythonGraphBuilderTests(unittest.TestCase):
 
         self.assertIn("pkg.impl.helper", self._call_targets(document))
 
-    def test_b10_keeps_graph_version_and_records_resolver_profile(self) -> None:
-        # G7 under E5 option (iii): the W10 graph_version (printed in every W10 prompt) must not change with the
-        # resolver; the resolver change is carried by statistics.resolver.profile and checked at handoff.
-        # Since the 08/11 schema profiles, that frozen identity is statistics.legacy_graph_version; the full
-        # graph_version does depend on the resolver profile.
+    def test_resolver_profile_is_recorded_and_changes_graph_version(self) -> None:
         # Checkout-independent (no pinned hash: CRLF/LF checkouts hash different source bytes).
-        self.assertEqual(GRAPH_VERSION_RESOLVER_LABEL, "tree-sitter+python-static-v3-method-aliases")
         with mock.patch("vgar.graph.builder.RESOLVER_PROFILE", "another-resolver-profile"):
             other = PythonGraphBuilder(repo_key="demo/vgar-fixture",
                                        repository_revision="fixture-revision").build(SAMPLE_REPOSITORY)
-        self.assertEqual(other["statistics"]["legacy_graph_version"], self.document["statistics"]["legacy_graph_version"])
+        self.assertNotIn("legacy_graph_version", other["statistics"])
         self.assertNotEqual(other["graph_version"], self.document["graph_version"])
         self.assertEqual(other["statistics"]["resolver"]["profile"], "another-resolver-profile")
         self.assertEqual(self.document["statistics"]["resolver"]["profile"], RESOLVER_PROFILE)

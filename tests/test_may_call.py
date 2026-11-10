@@ -9,11 +9,11 @@ from pathlib import Path
 
 import pytest
 
+from vgar.contracts import schema as schema_module
 from vgar.contracts.schema import (
+    G_ARCH_EDGE_TYPES,
     PROFILE_FULL_VGAR_MCP,
-    PROFILE_LEGACY_W10,
     GraphValidationError,
-    project_legacy_w10,
     validate_graph_document,
 )
 from vgar.graph.builder import PythonGraphBuilder
@@ -370,48 +370,37 @@ def test_super_call_excludes_own_class(tmp_path: Path) -> None:
     assert [name for name, _, _ in _may_calls(_build(_write(tmp_path, {"src/a.py": source})))] == ["a.B.get"]
 
 
-def test_legacy_profile_rejects_new_types(tmp_path: Path) -> None:
-    document = _build(_write(tmp_path, {"src/repos.py": REPOS, "src/app.py": SERVICE}))
-    validate_graph_document(document)
-    with pytest.raises(GraphValidationError, match="not allowed in profile legacy_w10"):
-        validate_graph_document(document, profile=PROFILE_LEGACY_W10)
-
-
-def test_unknown_profile_rejected(tmp_path: Path) -> None:
+def test_document_has_one_version_and_one_profile(tmp_path: Path) -> None:
     document = _build(_write(tmp_path, {"src/a.py": "def f():\n    return 1\n"}))
-    with pytest.raises(ValueError, match="unknown schema profile"):
-        validate_graph_document(document, profile="other")
+    assert document["statistics"]["schema_profile"] == PROFILE_FULL_VGAR_MCP
+    assert "legacy_graph_version" not in document["statistics"]
+    assert not hasattr(schema_module, "PROFILE_LEGACY_W10") and not hasattr(schema_module, "project_legacy_w10")
 
 
-def test_legacy_projection_matches_graph_without_new_facts(tmp_path: Path) -> None:
+def test_new_facts_only_add_to_the_base_graph(tmp_path: Path) -> None:
     root = _write(tmp_path, {"src/repos.py": REPOS, "src/app.py": SERVICE})
     full = _build(root)
     builder = PythonGraphBuilder(repo_key="t/repo", repository_revision="rev")
     builder._emit_may_call = False
-    builder._lift_architecture = lambda: None  # G_arch is a new fact too; this test compares against the graph without them.
-    without = builder.build(root)
-    legacy = project_legacy_w10(full)
-    validate_graph_document(legacy, profile=PROFILE_LEGACY_W10)
-    assert legacy["graph_version"] == full["statistics"]["legacy_graph_version"] != full["graph_version"]
-    assert {n["graph_version"] for n in [*legacy["nodes"], *legacy["edges"]]} == {legacy["graph_version"]}
+    builder._lift_architecture = lambda: None  # G_arch is a new fact too; compare against the graph without both.
+    base = builder.build(root)
 
     def strip(items: list[dict]) -> list[dict]:
         return [{k: v for k, v in item.items() if k != "graph_version"} for item in items]
 
-    assert strip(legacy["nodes"]) == strip(without["nodes"]) and strip(legacy["edges"]) == strip(without["edges"])
-    statistics = legacy["statistics"]
-    assert statistics["schema_profile"] == PROFILE_LEGACY_W10 and "may_call" not in statistics
-    assert statistics["edge_count"] == len(legacy["edges"]) and "MAY_CALL" not in statistics["edge_counts_by_type"]
-    assert full["statistics"]["schema_profile"] == PROFILE_FULL_VGAR_MCP and len(full["edges"]) > len(legacy["edges"])
+    full_nodes, full_edges, base_edges = strip(full["nodes"]), strip(full["edges"]), strip(base["edges"])
+    assert all(node in full_nodes for node in strip(base["nodes"])) and all(edge in full_edges for edge in base_edges)
+    added = {edge["type"] for edge in full_edges if edge not in base_edges}
+    assert "MAY_CALL" in added and added <= {"MAY_CALL"} | G_ARCH_EDGE_TYPES
 
 
-def test_full_graph_version_depends_on_resolver_profile_but_legacy_does_not(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+@pytest.mark.parametrize("rule", ["RESOLVER_PROFILE", "SCHEMA_VERSION", "BUILDER_VERSION"])
+def test_graph_version_changes_with_the_rules(tmp_path: Path, monkeypatch: pytest.MonkeyPatch, rule: str) -> None:
     root = _write(tmp_path, {"src/a.py": "def f():\n    return 1\n"})
     before = _build(root)
-    monkeypatch.setattr("vgar.graph.builder.RESOLVER_PROFILE", "another-profile")
-    after = _build(root)
-    assert before["graph_version"] != after["graph_version"]
-    assert before["statistics"]["legacy_graph_version"] == after["statistics"]["legacy_graph_version"]
+    assert _build(root)["graph_version"] == before["graph_version"]
+    monkeypatch.setattr(f"vgar.graph.builder.{rule}", "another-value")
+    assert _build(root)["graph_version"] != before["graph_version"]
 
 
 def test_graph_version_still_tracks_source_content(tmp_path: Path) -> None:

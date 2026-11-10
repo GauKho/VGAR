@@ -173,6 +173,13 @@ Các đường đọc khác đã lọc theo loại cạnh nên không cần sử
   vẫn hợp lệ. Registry nhiều profile chưa cần tới.
 - `SQLiteGraphStore.ingest` với `graph_version` đã có: nếu `ready` thì ghi log và giữ graph đã lưu; nếu chưa `ready` thì báo lỗi.
 
+**Gỡ ngày 10/11 (TV2 chốt; thay cho gạch đầu thứ nhất và thứ ba ở trên).** Đã gỡ profile `legacy_w10`, hai bộ loại node và cạnh của nó,
+hàm `project_legacy_w10`, `statistics.legacy_graph_version`, nhãn resolver đóng băng trong hash, và tham số `profile` của `validate_graph_document`.
+Lý do: proposal không định nghĩa version của graph; plan 2 tuần chỉ yêu cầu mỗi số kèm lệnh tái tạo (dòng 170), nên không dùng lại kết quả cũ;
+và không code chạy thật nào dùng các phần này, chỉ có test. Còn lại một `graph_version`: hash nội dung file cùng `SCHEMA_VERSION`,
+`BUILDER_VERSION` và `RESOLVER_PROFILE`. `statistics.schema_profile` vẫn là `full_vgar_mcp`. Tính chất "`MAY_CALL` và `G_arch` chỉ thêm
+node và cạnh, không sửa graph gốc" vẫn được test giữ (`test_new_facts_only_add_to_the_base_graph`).
+
 **Incremental không cần sửa.** Linking chạy lại toàn repo (`incremental.py:3-6`), nên nếu chỉ sinh `MAY_CALL` trong `_resolve_calls`
 thì một file thay đổi sẽ tự cập nhật ứng viên ở file khác. Câu trả lời 10 của TV2 mô tả cơ chế hủy cache theo tên; repo hiện không
 cần cơ chế này.

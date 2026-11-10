@@ -44,13 +44,10 @@ IGNORED_DIRECTORY_NAMES = {
     "node_modules",
 }
 _MISSING = object()
-# Bump whenever call/import resolution changes (B10 -> v4). Recorded in statistics.resolver.profile and bound
-# to the context sidecar at handoff; NOT part of graph_version (E5 option (iii), docs/m3_w11_decisions.md).
+# Bump whenever call/import resolution changes. Recorded in statistics.resolver.profile, bound to the context
+# sidecar at handoff, and part of graph_version.
 RESOLVER_PROFILE = "tree-sitter+python-static-v4-external-import"
 BUILDER_VERSION = f"vgar-python-graph-builder-0.1.0+{may_call.RULE_VERSION}+{arch_lift.RULE_VERSION}"
-# Frozen resolver label inside graph_version. graph_version is printed in every repair prompt, so keeping it
-# stable lets W10 cells whose context is unchanged be reused (E5). Never bump this; bump RESOLVER_PROFILE.
-GRAPH_VERSION_RESOLVER_LABEL = "tree-sitter+python-static-v3-method-aliases"
 
 
 def discover_python_files(root: Path) -> list[Path]:
@@ -154,7 +151,6 @@ class PythonGraphBuilder:
         self.unmodified_parameters: dict[str, set[str]] = {}
         self._index_changes: list[tuple[dict, str, Any]] | None = None
         self.graph_version = ""
-        self.legacy_graph_version = ""
         self.skipped_overload_count: int = 0
         self.renamed_duplicate_count: int = 0
         self.skipped_failed_files: list[dict[str, str]] = []
@@ -317,8 +313,6 @@ class PythonGraphBuilder:
         digest.update(self.repo_key.encode("utf-8"))
         digest.update(b"\0")
         digest.update(self.repository_revision.encode("utf-8"))
-        digest.update(b"\0resolver:")
-        digest.update(GRAPH_VERSION_RESOLVER_LABEL.encode("utf-8"))
         if self.scip_config is not None:
             digest.update(b"\0scip-enrichment-v5-subset-root:")
             digest.update(self.resolver_report.get("semantic_sha256", self.resolver_report.get("error_type", "unavailable")).encode())
@@ -343,8 +337,6 @@ class PythonGraphBuilder:
             digest.update(path.relative_to(root).as_posix().encode("utf-8"))
             digest.update(b"\0")
             digest.update(path.read_bytes())
-        # The W10 identity stops here, so legacy projections keep the graph_version frozen by E5.
-        self.legacy_graph_version = f"sha256:{digest.hexdigest()}"
         digest.update(f"\0schema:{SCHEMA_VERSION}\0builder:{BUILDER_VERSION}\0resolver-profile:{RESOLVER_PROFILE}".encode())
         for item in self._deployment_files:
             digest.update(f"\0deployment:{item.path}\0".encode())
@@ -2329,7 +2321,6 @@ class PythonGraphBuilder:
             "failed_file_count": len(self.skipped_failed_files),
             "failed_files": self.skipped_failed_files,
             "schema_profile": PROFILE_FULL_VGAR_MCP,
-            "legacy_graph_version": self.legacy_graph_version,
             "may_call": {
                 "rule_version": may_call.RULE_VERSION,
                 "edge_count": sum(self._may_call_by_kind.values()),
