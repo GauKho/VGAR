@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import hashlib
+import json
 from collections import defaultdict
 from collections.abc import Mapping
 from typing import Any
@@ -80,6 +82,98 @@ SOURCE_BACKED_NODE_TYPES = {
     "Route",
     "Schema",
 }
+
+# delta (proposal line 865, plan SC-1): keys the builder or overlay always writes and other code reads, with their JSON type.
+# A type in "a|null" may be null. Types without such keys need only the common node fields.
+NODE_PROPERTIES: dict[str, dict[str, str]] = {
+    "Repository": {},
+    "File": {"is_test_file": "boolean", "parse_status": "string"},
+    # is_package is read but not required: graphs saved by earlier builders (tests/fixtures, artifacts/) lack it.
+    "Module": {"is_external": "boolean", "module_name": "string", "resolution_status": "string"},
+    "Class": {"bases": "array"},
+    "Function": {"decorators": "array", "visibility": "string"},
+    "Method": {"decorators": "array", "visibility": "string", "method_kind": "string", "owner_class_id": "string"},
+    "Import": {"imported_module": "string", "imported_name": "string|null", "level": "integer", "resolution_status": "string"},
+    "CallSite": {"candidate_count": "integer", "resolution_status": "string"},
+    "Test": {},
+    "Issue": {"issue_text": "string"},
+    "Field": {},
+    "GlobalVariable": {},
+    "Identifier": {},
+    "ConfigEntry": {},
+    "Route": {"route_path": "string", "methods": "array"},
+    "Schema": {},
+    "Component": {"files": "array"},
+    "Port": {"export": "string", "owner_component_id": "string", "symbol_id": "string"},
+    "Connector": {},
+    "Service": {},
+    "DeploymentUnit": {},
+    "ExternalSystem": {},
+    "BugReport": {},
+    "Requirement": {},
+    "UserStory": {},
+    "AcceptanceCriterion": {},
+    "FailingTest": {"selector": "string", "test_node_ids": "array"},
+    "ErrorMessage": {"exception_type": "string"},
+    "StackTraceFrame": {"file": "string", "line": "integer", "function": "string|null"},
+    "Constraint": {},
+    "Actor": {},
+    "Statement": {},
+}
+
+# Required edge properties by (edge type, source type, target type); "positive_integer" is an integer >= 1.
+EDGE_PROPERTIES: dict[tuple[str, str, str], dict[str, str]] = {
+    ("DEPENDS_ON", "Component", "Component"): {"weight": "positive_integer"},
+    ("TRACES_TO", "Issue", "Component"): {"anchor_count": "positive_integer"},
+}
+
+# Gamma (proposal lines 866, 878): every invariant is a type, property, endpoint or cycle check over one pass.
+# Architecture rules compared with a baseline (no new DEPENDS_ON cycle, no lost port) belong to EV-2 (proposal lines 285-293).
+INVARIANTS: tuple[tuple[str, str], ...] = (
+    ("single_repository", "Exactly one Repository node."),
+    ("unique_node_ids", "No two nodes share an id."),
+    ("unique_edge_ids", "No two edges share an id."),
+    ("same_graph_version", "Every node and edge carries the document graph_version."),
+    ("endpoints_exist", "Both ends of every edge are nodes of the document."),
+    ("no_self_loop", "No edge goes from a node to itself."),
+    ("contains_acyclic", "CONTAINS edges form no cycle."),
+    ("callsite_candidate_count", "A CallSite's candidate_count equals its outgoing CALLS edges."),
+    ("may_call_bounded", "A MAY_CALL edge has string evidence and confidence at most 0.50."),
+    ("port_owner", "A Port's owner_component_id is a Component."),
+    ("port_symbol", "A Port's symbol_id is a node of the document."),
+    ("method_owner", "A Method's owner_class_id is a Class."),
+    ("failing_test_targets", "Every id in a FailingTest's test_node_ids is a Test."),
+    ("ast_single_parent", "A node has at most one incoming AST_CHILD edge."),
+)
+
+_JSON_TYPES: dict[str, type | tuple[type, ...]] = {
+    "string": str, "integer": int, "number": (int, float), "boolean": bool, "array": list, "object": dict,
+}
+
+
+def _matches(value: Any, rule: str) -> bool:
+    """Whether a property value fits a rule such as ``string`` or ``string|null``; booleans are never numbers."""
+    for part in rule.split("|"):
+        if part == "null":
+            if value is None:
+                return True
+        elif part == "positive_integer":
+            if isinstance(value, int) and not isinstance(value, bool) and value >= 1:
+                return True
+        elif isinstance(value, _JSON_TYPES[part]) and not (part in {"integer", "number"} and isinstance(value, bool)):
+            return True
+    return False
+
+
+def _property_errors(prefix: str, owner: str, properties: Mapping[str, Any], rules: Mapping[str, str]) -> list[str]:
+    errors = []
+    for key, rule in rules.items():
+        if key not in properties:
+            errors.append(f"{prefix}.properties.{key} is required for {owner}")
+        elif not _matches(properties[key], rule):
+            errors.append(f"{prefix}.properties.{key} must be {rule} for {owner}")
+    return errors
+
 
 EDGE_ENDPOINTS: dict[str, set[tuple[str, str]]] = {
     "CONTAINS": {
@@ -225,6 +319,62 @@ EDGE_ENDPOINTS: dict[str, set[tuple[str, str]]] = {
 }
 
 
+# Layer of each type, after the graphs of proposal §4 (4.1 G_code, 4.2 G_repo, 4.4 G_arch, 4.5 G_task); metadata only.
+LAYERS: dict[str, str] = {
+    **{name: "G_repo" for name in (
+        "Repository", "File", "Module", "Class", "Function", "Method", "Import", "CallSite", "Test",
+        "Field", "GlobalVariable", "ConfigEntry", "Route", "Schema",
+        "CONTAINS", "HAS_METHOD", "HAS_CALLSITE", "IMPORTS", "INHERITS", "IMPLEMENTS", "CALLS", "MAY_CALL",
+        "REFERENCES", "TESTS", "CONFIGURES")},
+    **{name: "G_code" for name in ("Statement", "Identifier", *sorted(G_CODE_EDGE_TYPES))},
+    **{name: "G_arch" for name in (
+        "Component", "Port", "Connector", "Service", "DeploymentUnit", "ExternalSystem",
+        "DEPENDS_ON", "EXPOSES_PORT", "CONSUMES_PORT", "COMMUNICATES_WITH", "CONTAINS_COMPONENT", "DEPLOYS_TO")},
+    **{name: "G_task" for name in (
+        "Issue", "BugReport", "Requirement", "UserStory", "AcceptanceCriterion", "FailingTest", "ErrorMessage",
+        "StackTraceFrame", "Constraint", "Actor", "MENTIONS", "REPRODUCES", "TRACES_TO", "RESOLVES_TO", "CONFLICTS_WITH")},
+}
+# DEPENDS_ON joins Components (proposal line 264) and Requirements (line 320).
+_EXTRA_LAYERS = {"DEPENDS_ON": ["G_arch", "G_task"]}
+_PRODUCERS = {
+    **{name: "overlay" for name in ("Issue", "BugReport", "AcceptanceCriterion", "FailingTest", "ErrorMessage", "StackTraceFrame")},
+    **{name: "builder (tree-sitter-graph)" for name in ("Field", "GlobalVariable", "ConfigEntry", "Route", "Schema")},
+    "Identifier": "builder (tree-sitter-graph or joern)",
+    "Statement": "builder (joern)",
+    **{name: None for name in ("Requirement", "UserStory", "Constraint", "Actor", "Connector", "ExternalSystem")},
+}
+_COMMON_FIELDS = {
+    "node": ["id", "type", "repo_key", "name", "qualified_name", "graph_version", "properties"],
+    "edge": ["id", "type", "source_id", "target_id", "confidence", "graph_version", "properties", "provenance"],
+}
+
+
+def schema_description() -> dict[str, Any]:
+    """The schema S as plain data, for the ``vgar://repo/schema`` resource; lists are sorted so the output is stable."""
+    node_types = {
+        name: {"layer": LAYERS[name], "producer": _PRODUCERS.get(name, "builder"),
+               "properties": dict(sorted(NODE_PROPERTIES[name].items())), "source_backed": name in SOURCE_BACKED_NODE_TYPES}
+        for name in sorted(NODE_TYPES)
+    }
+    edge_types = {}
+    for name in sorted(EDGE_ENDPOINTS):
+        entry: dict[str, Any] = {
+            "layer": LAYERS[name], "endpoints": [list(pair) for pair in sorted(EDGE_ENDPOINTS[name])],
+            "properties": [{"source": source, "target": target, "properties": dict(sorted(rules.items()))}
+                           for (edge_type, source, target), rules in sorted(EDGE_PROPERTIES.items()) if edge_type == name],
+        }
+        if name in _EXTRA_LAYERS:
+            entry["layers"] = _EXTRA_LAYERS[name]
+        edge_types[name] = entry
+    return {"schema_version": SCHEMA_VERSION, "node_types": node_types, "edge_types": edge_types,
+            "common": _COMMON_FIELDS, "invariants": [{"name": name, "description": text} for name, text in INVARIANTS]}
+
+
+def _description_hash(description: Mapping[str, Any]) -> str:
+    encoded = json.dumps(description, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    return "sha256:" + hashlib.sha256(encoded).hexdigest()
+
+
 class GraphValidationError(ValueError):
     """Raised when a graph document violates the frozen graph contract."""
 
@@ -296,6 +446,8 @@ def validate_graph_document(
 
         if not isinstance(node.get("properties"), Mapping):
             errors.append(f"{prefix}.properties must be an object")
+        elif node_type in NODE_PROPERTIES:
+            errors.extend(_property_errors(prefix, node_type, node["properties"], NODE_PROPERTIES[node_type]))
 
         if node_type in SOURCE_BACKED_NODE_TYPES:
             if not isinstance(node.get("path"), str) or not node["path"]:
@@ -316,6 +468,7 @@ def validate_graph_document(
     edge_ids: set[str] = set()
     contains_adjacency: dict[str, list[str]] = defaultdict(list)
     call_counts: dict[str, int] = defaultdict(int)
+    ast_parents: dict[str, int] = defaultdict(int)
 
     for index, edge in enumerate(edges):
         prefix = f"edges[{index}]"
@@ -386,13 +539,19 @@ def validate_graph_document(
 
             if not isinstance(edge.get("properties"), Mapping):
                 errors.append(f"{prefix}.properties must be an object")
+            elif source is not None and target is not None:
+                rules = EDGE_PROPERTIES.get((str(edge_type), str(source.get("type")), str(target.get("type"))), {})
+                errors.extend(_property_errors(prefix, str(edge_type), edge["properties"], rules))
 
         if edge_type == "CONTAINS" and source_id and target_id:
             contains_adjacency[source_id].append(target_id)
         if edge_type == "CALLS" and source_id:
             call_counts[source_id] += 1
+        if edge_type == "AST_CHILD" and isinstance(target_id, str):
+            ast_parents[target_id] += 1
 
     errors.extend(_containment_cycle_errors(contains_adjacency))
+    errors.extend(_reference_errors(nodes_by_id, ast_parents))
 
     for node_id, node in nodes_by_id.items():
         if node.get("type") != "CallSite":
@@ -437,24 +596,69 @@ def _valid_range(value: Any) -> bool:
 def _containment_cycle_errors(
     adjacency: Mapping[str, list[str]],
 ) -> list[str]:
+    """CONTAINS cycles with their path; an explicit stack keeps deep nesting within one linear pass."""
     errors: list[str] = []
-    visiting: set[str] = set()
-    visited: set[str] = set()
-
-    def visit(node_id: str) -> None:
-        if node_id in visiting:
-            errors.append(f"CONTAINS cycle detected at {node_id!r}")
-            return
-        if node_id in visited:
-            return
-
-        visiting.add(node_id)
-        for child_id in adjacency.get(node_id, []):
-            visit(child_id)
-        visiting.remove(node_id)
-        visited.add(node_id)
-
-    for node_id in adjacency:
-        visit(node_id)
-
+    on_path: set[str] = set()
+    done: set[str] = set()
+    for root in adjacency:
+        if root in done:
+            continue
+        path, children = [root], [iter(adjacency.get(root, []))]
+        on_path.add(root)
+        while children:
+            child = next(children[-1], None)
+            if child is None:
+                finished = path.pop()
+                on_path.discard(finished)
+                done.add(finished)
+                children.pop()
+            elif child in on_path:
+                cycle = path[path.index(child):] + [child]
+                errors.append("CONTAINS cycle: " + " -> ".join(cycle))
+            elif child not in done:
+                path.append(child)
+                on_path.add(child)
+                children.append(iter(adjacency.get(child, [])))
     return errors
+
+
+def _reference_errors(
+    nodes_by_id: Mapping[str, Mapping[str, Any]], ast_parents: Mapping[str, int],
+) -> list[str]:
+    """The id references of the new layers (Gamma: port_owner, port_symbol, method_owner, failing_test_targets,
+    ast_single_parent). A missing or mistyped property is reported by delta, so it is skipped here."""
+    errors: list[str] = []
+
+    def type_of(node_id: Any) -> Any:
+        target = nodes_by_id.get(node_id) if isinstance(node_id, str) else None
+        return target.get("type") if target is not None else None
+
+    for node_id, node in nodes_by_id.items():
+        node_type, properties = node.get("type"), node.get("properties")
+        if not isinstance(properties, Mapping):
+            continue
+        if node_type == "Port":
+            owner = properties.get("owner_component_id")
+            # Only the node reference: a view may drop the EXPOSES_PORT edge and still be a valid document.
+            if isinstance(owner, str) and type_of(owner) != "Component":
+                errors.append(f"port_owner: Port {node_id!r} names {owner!r}, which is not a Component")
+            symbol = properties.get("symbol_id")
+            if isinstance(symbol, str) and symbol not in nodes_by_id:
+                errors.append(f"port_symbol: Port {node_id!r} names missing symbol {symbol!r}")
+        elif node_type == "Method":
+            owner = properties.get("owner_class_id")
+            if isinstance(owner, str) and type_of(owner) != "Class":
+                errors.append(f"method_owner: Method {node_id!r} names {owner!r}, which is not a Class")
+        elif node_type == "FailingTest":
+            targets = properties.get("test_node_ids")
+            for target in targets if isinstance(targets, list) else []:
+                if type_of(target) != "Test":
+                    errors.append(f"failing_test_targets: FailingTest {node_id!r} names {target!r}, which is not a Test")
+    for target, count in ast_parents.items():
+        if count > 1:
+            errors.append(f"ast_single_parent: {target!r} has {count} incoming AST_CHILD edges")
+    return errors
+
+
+# Fingerprint of S: changes with any type, rule or invariant, not with comments or formatting.
+SCHEMA_HASH = _description_hash(schema_description())
