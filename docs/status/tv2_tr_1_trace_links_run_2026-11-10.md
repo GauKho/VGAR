@@ -127,3 +127,17 @@ Trong 208 issue của bộ dev, phần trích `G_task` tìm được 39 exceptio
 - 31 task vẫn là pilot. Khoảng tin cậy của mức ≥ 0,7 còn chồng với baseline nhiều file nhất.
 - Nhóm có traceback mới có 2 task, nên chưa kết luận riêng được cho nhóm này.
 - Số liệu này dùng để kiểm chứng TR-1. G1 cần chạy lại trên bộ dev rộng hơn và có mẫu gán nhãn tay ([plan] dòng 166).
+
+## Cập nhật 11/11: thứ tự phân định khi bằng điểm
+
+`rank_component_traces` trước đây phân định các cạnh `TRACES_TO` cùng `confidence` và cùng `anchor_count` theo id, nên package ngoài (ví dụ `fees`) đứng trước package lồng bên trong (`fees/discounts`). Giờ khi bằng điểm, component lồng sâu hơn đứng trước, sau đó mới tới id (test `test_rank_component_traces_prefers_the_nested_package_on_a_tie`). Đây là độ sâu của package, không phải độ sâu của frame trong traceback, nên không trái với việc §9 đã bỏ đề xuất "ưu tiên frame sâu nhất".
+
+Đo lại trên cùng 31 task (`~/tr1-run/tiebreak_*.json`, `scripts/measure_trace_links.py` như trên):
+
+| Chỉ số | Trước | Sau |
+|---|---|---|
+| Top-1 (≥ 0,7) | 19/27, P 0,70, R 0,50 | 20/27, P 0,74, R 0,53 |
+| MRR | 0,67 | 0,69 |
+
+Thay đổi: `astropy__astropy-13453` component đúng từ hạng 2 lên hạng 1; `django__django-10914` từ hạng 3 xuống hạng 4 (vốn không đúng ở top-1). Các task khác giữ nguyên thứ hạng.
+

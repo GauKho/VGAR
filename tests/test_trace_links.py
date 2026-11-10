@@ -346,3 +346,12 @@ def test_resolves_to_rejects_wrong_endpoints() -> None:
     merged = {**document, "nodes": document["nodes"] + overlay.nodes, "edges": document["edges"] + [{**edge, "source_id": overlay.nodes[0]["id"]}]}
     with pytest.raises(ValueError, match="RESOLVES_TO"):
         validate_graph_document(merged)
+
+
+def test_rank_component_traces_prefers_the_nested_package_on_a_tie() -> None:
+    def edge(target: str) -> dict[str, Any]:
+        return {"target_id": target, "confidence": 0.95, "properties": {"anchor_count": 1}}
+
+    edges = [edge("vgar:t:python:component:fees"), edge("vgar:t:python:component:fees/discounts")]
+    assert [item["target_id"] for item in rank_component_traces(edges)] == [
+        "vgar:t:python:component:fees/discounts", "vgar:t:python:component:fees"]

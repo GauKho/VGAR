@@ -2203,7 +2203,10 @@ class PythonGraphBuilder:
             parts.pop(0)
         if parts and parts[-1] == "__init__":
             parts.pop()
-        return ".".join(parts) or Path(relative_path).parent.name
+        # A root-level __init__.py has no parts left; Python names that package
+        # after the folder that holds it, which here is the repository root.
+        root = getattr(self, "repository_root", None)
+        return ".".join(parts) or Path(relative_path).parent.name or (root.name if root is not None else "")
 
     @staticmethod
     def _text(node: Node, source: bytes) -> str:

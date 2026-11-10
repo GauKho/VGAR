@@ -19,7 +19,8 @@ Spec: `docs/superpowers/specs/2026-11-10-tv2-sc-1-schema-design.md`. Plan: `docs
 - `tests/test_schema_contract.py`: document tối thiểu dựng từ `S` có đủ 32 loại node, 26 loại cạnh và qua validate. Từ đó sinh 103 mutant (thiếu hoặc sai kiểu từng khóa, sai đầu cuối từng loại cạnh, vi phạm từng bất biến); cả 103 đều bị từ chối.
 - Chuỗi `CONTAINS` lồng 5.000 tầng qua validate. Vòng ở tầng 3.000 được báo kèm đường đi `n:a -> n:b -> n:c -> n:a`.
 - Windows: các test của SC-1 cùng test của builder, overlay, trace, `G_code`, `G_arch`, impact, port, SQLite: 688 passed (Task 2) và 130 passed (Task 3, Task 4).
-- WSL Ubuntu (Python 3.11.17), với code cuối cùng: 602 passed, 4 skipped, 1 xfailed. `tests/test_port_check.py` không chạy trên WSL vì venv thiếu `langchain_mcp_adapters` mà `vgar.mcp` import; file này pass trên Windows.
+- WSL Ubuntu (Python 3.11.17), với code cuối cùng: 603 passed, 4 skipped, 1 xfailed.
+- Sau review: `schema_description()` trả về bản mới mỗi lần gọi (test `test_description_is_a_fresh_copy_each_call` fail trước khi sửa, pass sau khi sửa); ví dụ `properties` của cạnh trong spec §4.5 sửa thành danh sách cho khớp code. `SCHEMA_HASH` không đổi. `tests/test_port_check.py` không chạy trên WSL vì venv thiếu `langchain_mcp_adapters` mà `vgar.mcp` import; file này pass trên Windows.
 
 ## Graph thật qua validate
 
@@ -75,7 +76,7 @@ Không lộ lỗi nào giữa các tầng. Hiện không code nào trong `src` �
 
 ## Ghi nhận
 
-- Build một thư mục có `__init__.py` ngay ở gốc (ví dụ `src/vgar`) sinh ra Module có `name` rỗng, và validator từ chối. Lỗi của builder Layer 1, chưa sửa.
+- Build một thư mục có `__init__.py` ngay ở gốc (ví dụ `src/vgar`) sinh ra Module có `name` rỗng, và validator từ chối. Đã sửa 11/11: Module của `__init__.py` ở gốc lấy tên thư mục gốc, như Python đặt tên package (test `test_root_package_init_gets_the_root_folder_name`); build `src/vgar` giờ hợp lệ, 17.977 node, Module gốc tên `vgar`.
 - Repo mẫu chung của nhóm (plan dòng 97, 470) chưa chốt định dạng đáp án. `vgar-demo-shop` hiện có trong `tests/fixtures` nhưng chưa được commit; khi nhóm chốt, thêm ca "repo mẫu qua validate".
 - Lượt suite đầu tiên làm lộ một luật quá chặt: `tests/test_w9_bm25_handoff.py::test_edges_cannot_influence_bm25_ranking` xóa hết cạnh để chứng minh BM25 không phụ thuộc cạnh, và `port_owner` khi đó đòi cạnh `EXPOSES_PORT`. Luật đã được nới: chỉ yêu cầu `owner_component_id` là một Component có thật. Thêm test `test_document_without_edges_keeps_valid_ports`, fail trước khi sửa và pass sau khi sửa.
 - Toàn bộ test suite trên Windows với code cuối cùng (`-m "not hf and not docker"`, 32 phút 14 giây): 2929 passed, 20 skipped, 2 xfailed, 3 failed đúng là 3 test đã biết (`tests/m2/w910/test_runner_contract.py::test_different_arm_contexts_can_share_template_without_same_prompt`, `tests/test_official_harness.py::test_campaign_reads_pinned_upstream_run_evaluation_directory`, `tests/test_w9_bundle.py::test_checked_in_fixture_validates_and_matches_recipe`).

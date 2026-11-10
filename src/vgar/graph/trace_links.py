@@ -74,10 +74,20 @@ def build_trace_links(
 def rank_component_traces(edges: Iterable[dict[str, Any]]) -> list[dict[str, Any]]:
     """The TRACES_TO edges of one issue, best first.
 
+    Ties on confidence and anchor count go to the more nested component
+    (``fees/discounts`` before ``fees``): an outer package that merely calls
+    into the failing one is the less specific trace. The id breaks what is left.
+
     Args:
         edges: TRACES_TO edges carrying ``properties.anchor_count``.
     """
-    return sorted(edges, key=lambda edge: (-edge["confidence"], -edge["properties"]["anchor_count"], edge["target_id"]))
+    return sorted(edges, key=lambda edge: (-edge["confidence"], -edge["properties"]["anchor_count"],
+                                           -_component_depth(edge["target_id"]), edge["target_id"]))
+
+
+def _component_depth(component_id: str) -> int:
+    """Number of path segments in a component id's key (``...:component:a/b`` -> 2)."""
+    return len(component_id.rsplit(":component:", 1)[-1].split("/"))
 
 
 def _component_links(issue_id: str, grounding: AnchorResult, nodes: list[dict[str, Any]]) -> list[TraceLink]:

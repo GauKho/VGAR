@@ -279,3 +279,17 @@ def test_definitions_in_else_elif_except_finally_branches_are_extracted(tmp_path
     ids = [n["id"] for n in document["nodes"]]
     assert len(ids) == len(set(ids))
     assert document["statistics"]["failed_file_count"] == 0
+
+
+def test_root_package_init_gets_the_root_folder_name(tmp_path):
+    from vgar.graph.builder import PythonGraphBuilder
+    root = tmp_path / "pkg"
+    (root / "sub").mkdir(parents=True)
+    (root / "__init__.py").write_text("def top():\n    return 1\n", encoding="utf-8")
+    (root / "sub" / "__init__.py").write_text("", encoding="utf-8")
+    (root / "sub" / "mod.py").write_text("def f():\n    return 2\n", encoding="utf-8")
+    document = PythonGraphBuilder(repo_key="t/root", repository_revision="r").build(root)
+    module = next(n for n in document["nodes"] if n["type"] == "Module" and n["path"] == "__init__.py")
+    assert module["name"] == "pkg" and module["qualified_name"] == "pkg"
+    top = next(n for n in document["nodes"] if n["type"] == "Function" and n["name"] == "top")
+    assert top["qualified_name"] == "pkg.top"
