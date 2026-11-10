@@ -92,6 +92,11 @@ def test_interval_hand_numbers(monkeypatch: pytest.MonkeyPatch, low: int, middle
     assert scripted.sizes == [2] * 40
 
 
+def test_no_edge_against_gold_gives_zero_recall() -> None:
+    # Nothing linked while the gold patch touches a component: recall is 0, only precision is undefined.
+    assert summarise([replace(T1, traces=())])["all"]["component"]["all"] == {"kept": 0, "correct": 0, "gold": 1, "precision": None, "recall": 0.0}
+
+
 def test_mrr_counts_tasks_without_a_correct_edge_as_zero() -> None:
     assert summarise([T1, replace(T2, traces=())])["all"]["mrr"] == pytest.approx(0.5)
 

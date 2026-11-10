@@ -126,7 +126,7 @@ Mốc 0,7 theo thang điểm sẵn có của grounding: đó là mức thấp nh
 | Dạng đường dẫn | Cách khớp | Ví dụ thật từ `psf__requests-1724` |
 |---|---|---|
 | Có `site-packages/` hoặc `dist-packages/` | Lấy phần sau lần xuất hiện cuối; phải trùng đúng một trong `<phần đó>`, `src/<phần đó>`, `lib/<phần đó>` | `/Library/Python/2.7/site-packages/requests/api.py` → `requests/api.py` |
-| Nằm dưới thư mục `pythonX.Y` | Thư viện chuẩn, không khớp | `.../lib/python2.7/httplib.py` |
+| Nằm dưới thư mục `pythonX.Y`, `pypyX.Y`, hoặc thư mục `lib` của Anaconda, Miniconda (kể cả trong `envs/<tên>`) | Thư viện chuẩn, không khớp. Thư mục chỉ tên `python` không có số thì không tính, để không bỏ checkout của người dùng | `.../lib/python2.7/httplib.py` |
 | Tuyệt đối khác (`/...`, `C:/...`) | Path repo dài nhất mà đường dẫn kết thúc bằng `/<path repo>`; path repo phải có ít nhất một thư mục | `/Users/hwkns/test_requests.py` không nối vào `test_requests.py` ở gốc repo |
 | Tương đối, có thư mục | Khớp đúng, hoặc đúng một path repo kết thúc bằng `/<đường dẫn>` | |
 | Tương đối, chỉ có tên file | Chỉ khớp file cùng tên ở gốc repo | |
@@ -213,7 +213,8 @@ def summarise(scores: Sequence[TraceScore], seed: int = 0, rounds: int = 2000) -
 
 - Manifest theo định dạng của `scripts/prepare_manifest.py`. Đáp án là `changed_source_files` của từng task.
 - Gọi `validate_task` và `require_split` như `evaluate_manifest`: mặc định chỉ nhận bộ dev; held-out cần `--allow-heldout` và phải qua kiểm tra freeze sẵn có **(research)**, [plan] dòng 70, 391.
-- Checkout nằm ở `<thư mục>/<instance_id>`; HEAD khác `base_commit` thì bỏ task đó và ghi lại.
+- Checkout nằm ở `<thư mục>/<instance_id>`. Task bị bỏ và ghi lại lý do: `missing_checkout` khi không có thư mục, `git_failed` khi git không đọc được thư mục (kèm dòng lỗi), `head_mismatch` khi HEAD khác `base_commit`, `build_failed` khi build graph hoặc tính điểm lỗi (kèm lỗi); các task còn lại vẫn được đo.
+- Không đo được task nào thì script thoát với mã 1, ví dụ khi gõ sai `--repositories`.
 - Không truyền failing test vào overlay, vì agent không có thông tin này khi nhận task.
 
 ## 7. Tiêu chí nghiệm thu
@@ -243,6 +244,7 @@ Không đặt ngưỡng đạt cho precision, recall vì nguồn không quy đ�
 ## 8. Giới hạn đã biết và bàn giao
 
 - Đáp án là file trong patch gold: một component được đọc để hiểu lỗi nhưng không bị sửa, hoặc một cách sửa khác cũng qua test, vẫn tính là sai. Nhãn tay thuộc G1 ([plan] dòng 166), cỡ mẫu và người gán do nhóm quyết.
+- Số ở §1 lạc quan hơn thực tế vì thiếu repo lớn. Đo thêm 15 task của django, matplotlib, scikit-learn, sphinx, sympy sau khi làm xong: trên cả 31 task, mức ≥ 0,7 còn precision 0,45, recall 0,58; top-1 precision 0,70, recall 0,50 (`docs/status/tv2_tr_1_trace_links_run_2026-11-10.md`).
 - 16 task chỉ đủ cho pilot. Với tỷ lệ quanh 0,5, khoảng tin cậy rộng khoảng ±22 điểm phần trăm ở 16 mẫu, ±14 ở 50 mẫu, và cần khoảng 385 mẫu mới còn ±5. Các khoảng của precision, recall và baseline ở §1 đang chồng lên nhau.
 - Precision ở mức ≥ 0,7 (0,54) chỉ nhỉnh hơn baseline nhiều file nhất (0,50), và baseline này đổi theo cách tách hòa (9/16 nếu `astropy__astropy-13398` tách hòa ngược lại); recall cao hơn rõ. Top-1 vượt baseline ở cả hai, nhưng hai task hòa và cỡ mẫu nhỏ làm kết quả này chưa chắc.
 - Nhóm có traceback chỉ có 1 task trên bộ này, nên số của nhóm đó chỉ để báo cáo.

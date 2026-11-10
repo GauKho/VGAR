@@ -28,7 +28,8 @@ from vgar.graph.grounding import (
 from vgar.graph.task_overlay import TaskOverlay, TaskOverlayBuilder, _digest
 from vgar.graph.trace_links import TraceLink, build_trace_links, rank_component_traces
 
-FILES = {"requests/api.py", "src/flask/app.py", "lib/mpl/x.py", "requests/packages/urllib3/c.py", "test_requests.py", "a/b/m.py", "b/m.py"}
+FILES = {"requests/api.py", "src/flask/app.py", "lib/mpl/x.py", "requests/packages/urllib3/c.py", "test_requests.py", "a/b/m.py", "b/m.py",
+         "logging/__init__.py"}
 
 
 @pytest.mark.parametrize(("path", "expected"), [
@@ -43,6 +44,12 @@ FILES = {"requests/api.py", "src/flask/app.py", "lib/mpl/x.py", "requests/packag
     ("/home/me/proj/a/b/m.py", "a/b/m.py"),
     ("C:/work/a/b/m.py", "a/b/m.py"),
     ("/home/me/../a/b/m.py", None),
+    ("C:/Users/x/anaconda3/lib/logging/__init__.py", None),
+    ("/home/u/miniconda3/envs/py38/lib/logging/__init__.py", None),
+    ("/opt/pypy3.9/lib/pypy3.9/logging/__init__.py", None),
+    ("C:/Users/x/anaconda3/lib/site-packages/requests/api.py", "requests/api.py"),
+    ("/home/me/proj/logging/__init__.py", "logging/__init__.py"),
+    ("/home/me/python/proj/a/b/m.py", "a/b/m.py"),
 ])
 def test_resolve_absolute_frame(path: str, expected: str | None) -> None:
     assert resolve_absolute_frame(path, FILES) == expected
@@ -102,6 +109,19 @@ def test_issue_without_absolute_traceback_keeps_anchors(tmp_path: Path, monkeypa
 
     monkeypatch.setattr(grounding_module, "resolve_absolute_frame", unexpected)
     assert _path_line_anchors(_repo_document(tmp_path), 'File "pkg/m.py", line 1, in f\n') == [("pkg/m.py", 0.95)]
+
+
+def test_relative_traceback_mentions_follow_the_anchors(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    def unexpected(path: str, files: Any) -> None:
+        raise AssertionError(path)
+
+    monkeypatch.setattr(grounding_module, "resolve_absolute_frame", unexpected)
+    document = _repo_document(tmp_path)
+    function = next(node["id"] for node in document["nodes"] if node["type"] == "Function" and node["name"] == "f")
+    overlay = TaskOverlayBuilder(document).build("t1", 'File "pkg/m.py", line 1, in f\n')
+    repository = {node["id"] for node in document["nodes"]}
+    mentions = {(edge["target_id"], edge["confidence"]) for edge in overlay.edges if edge["type"] == "MENTIONS" and edge["target_id"] in repository}
+    assert mentions == {(anchor.node_id, anchor.score) for anchor in overlay.grounding.anchors} == {(function, 0.95)}
 
 
 def _range(start: int, end: int) -> dict[str, int]:
@@ -311,8 +331,10 @@ def test_overlay_edges_are_stable() -> None:
 
 
 def test_frame_edge_rejected_as_traces_to() -> None:
-    document, overlay = _multi_package()
+    document, overlay = _multi_package('File "app/service.py", line 1, in <module>\n')
     edge = next(item for item in overlay.edges if item["type"] == "RESOLVES_TO")
+    file = next(node["id"] for node in document["nodes"] if node["type"] == "File" and node["path"] == "app/service.py")
+    assert (edge["target_id"], edge["confidence"]) == (file, 0.7)
     merged = {**document, "nodes": document["nodes"] + overlay.nodes, "edges": document["edges"] + [{**edge, "type": "TRACES_TO"}]}
     with pytest.raises(ValueError, match="TRACES_TO"):
         validate_graph_document(merged)

@@ -101,6 +101,38 @@ def test_missing_checkout_is_skipped_and_the_run_continues(tmp_path: Path) -> No
     assert [row["task_id"] for row in result["tasks"]] == [present]
 
 
+def test_directory_without_git_is_reported_as_git_failed(tmp_path: Path) -> None:
+    instance_id = _task_id()
+    (tmp_path / instance_id).mkdir()
+    result = measure_trace_links.measure(_manifest(_task(instance_id, "0" * 40)), tmp_path)
+    assert [(row["instance_id"], row["reason"]) for row in result["skipped"]] == [(instance_id, "git_failed")]
+    assert result["skipped"][0]["error"]
+
+
+def test_build_failure_is_skipped_and_the_run_continues(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    broken, working = _task_id(), _task_id(skip=1)
+    commits = {name: _checkout(tmp_path, name) for name in (broken, working)}
+    original = measure_trace_links.PythonGraphBuilder.build
+
+    def build(self: Any, root: Path) -> Any:
+        if Path(root).name == broken:
+            raise RuntimeError("boom")
+        return original(self, root)
+
+    monkeypatch.setattr(measure_trace_links.PythonGraphBuilder, "build", build)
+    result = measure_trace_links.measure(_manifest(*(_task(name, commit) for name, commit in commits.items())), tmp_path)
+    assert result["skipped"] == [{"instance_id": broken, "reason": "build_failed", "error": "RuntimeError: boom"}]
+    assert [row["task_id"] for row in result["tasks"]] == [working]
+
+
+def test_main_returns_one_when_no_task_is_scored(tmp_path: Path) -> None:
+    manifest = tmp_path / "manifest.json"
+    manifest.write_text(json.dumps(_manifest(_task(_task_id(), "0" * 40))), encoding="utf-8")
+    output = tmp_path / "trace.json"
+    code = measure_trace_links.main(["--manifest", str(manifest), "--repositories", str(tmp_path / "missing"), "--output", str(output)])
+    assert code == 1 and json.loads(output.read_text(encoding="utf-8"))["skipped"][0]["reason"] == "missing_checkout"
+
+
 def test_failing_tests_are_never_passed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     calls: list[tuple[tuple[Any, ...], dict[str, Any]]] = []
     original = measure_trace_links.TaskOverlayBuilder.build

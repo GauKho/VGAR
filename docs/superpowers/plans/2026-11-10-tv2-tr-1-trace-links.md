@@ -26,7 +26,7 @@
 
 1. Graph không có Component: `score_task` không lỗi, baseline ngẫu nhiên bỏ qua task đó (Task 3).
 2. `bases` có `metaclass=ABCMeta`, `Generic[T]`, `pkg.Base`: không lỗi, chỉ xét tên lớp (Task 2).
-3. Nhóm không có task hoặc không có cạnh: precision, recall là `None`, không chia cho 0 (Task 3).
+3. Nhóm không có task hoặc không có cạnh: không chia cho 0; precision là `None` khi không có cạnh, recall là `None` khi không có đáp án, còn có đáp án mà không có cạnh thì recall là 0 (Task 3).
 4. Đường dẫn có cả hai `site-packages`: lấy phần sau lần cuối (Task 1).
 5. Checkout thiếu thư mục: bỏ task, ghi lại, không dừng cả lượt chạy (Task 4).
 

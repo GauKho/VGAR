@@ -444,7 +444,8 @@ def resolve_absolute_frame(path: str, files: Collection[str]) -> str | None:
         rest = path[max(starts):]
         matches = [candidate for candidate in (rest, f"src/{rest}", f"lib/{rest}") if candidate in files]
         return matches[0] if len(matches) == 1 else None
-    if re.search(r"/python\d+(?:\.\d+)?/", path, re.IGNORECASE):
+    # Interpreter libraries: CPython or PyPy version directories, and the lib folder of an Anaconda or Miniconda install or env.
+    if re.search(r"/(?:python|pypy)\d+(?:\.\d+)?/|/(?:ana|mini)conda\d*/(?:envs/[^/]+/)?lib/", path, re.IGNORECASE):
         return None
     # A file at the repository root has no directory to tell it from a same-named script elsewhere.
     return max((item for item in files if "/" in item and path.endswith(f"/{item}")), key=len, default=None)

@@ -46,22 +46,29 @@ def measure(manifest: dict[str, Any], repositories: Path, allow_heldout: bool = 
     skipped: list[dict[str, str]] = []
     for task in tasks:
         checkout = repositories / task["instance_id"]
-        reason = _skip_reason(checkout, task["base_commit"])
-        if reason:
-            skipped.append({"instance_id": task["instance_id"], "reason": reason})
+        problem = _checkout_problem(checkout, task["base_commit"])
+        if problem:
+            skipped.append({"instance_id": task["instance_id"], **problem})
             continue
-        document = PythonGraphBuilder(repo_key=f"trace/{task['instance_id']}", repository_revision=task["base_commit"]).build(checkout)
-        # No failing tests: the agent does not have them when it receives a task.
-        overlay = TaskOverlayBuilder(document).build(task["instance_id"], task["problem_statement"])
-        scores.append(score_task(document, overlay, task["changed_source_files"]))
+        try:
+            document = PythonGraphBuilder(repo_key=f"trace/{task['instance_id']}", repository_revision=task["base_commit"]).build(checkout)
+            # No failing tests: the agent does not have them when it receives a task.
+            overlay = TaskOverlayBuilder(document).build(task["instance_id"], task["problem_statement"])
+            scores.append(score_task(document, overlay, task["changed_source_files"]))
+        except Exception as error:  # noqa: BLE001 -- one broken repository must not lose the other tasks of a long run
+            skipped.append({"instance_id": task["instance_id"], "reason": "build_failed", "error": f"{type(error).__name__}: {error}"})
     return {"tasks": [asdict(score) for score in scores], "skipped": skipped, "summary": summarise(scores)}
 
 
-def _skip_reason(checkout: Path, base_commit: str) -> str | None:
+def _checkout_problem(checkout: Path, base_commit: str) -> dict[str, str] | None:
+    """Why the checkout cannot be measured, or None when it is at the base commit."""
     if not checkout.is_dir():
-        return "missing_checkout"
+        return {"reason": "missing_checkout"}
     head = subprocess.run(["git", "-C", str(checkout), "rev-parse", "HEAD"], capture_output=True, text=True, check=False)
-    return None if head.stdout.strip() == base_commit else "head_mismatch"
+    if head.returncode != 0:  # not a repository, or one git refuses to read
+        lines = head.stderr.strip().splitlines()
+        return {"reason": "git_failed", "error": lines[0] if lines else f"git exited with {head.returncode}"}
+    return None if head.stdout.strip() == base_commit else {"reason": "head_mismatch"}
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -75,7 +82,7 @@ def main(argv: list[str] | None = None) -> int:
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf-8", newline="\n")
     print(f"tasks={len(result['tasks'])} skipped={len(result['skipped'])} output={args.output}")
-    return 0
+    return 0 if result["tasks"] else 1  # nothing scored is a failed run, for example a mistyped --repositories
 
 
 if __name__ == "__main__":
