@@ -53,6 +53,36 @@ def complete(case, baseline, policy):
         baseline, None, RepairPolicy(), variant=policy, artifact_root=artifacts)
 
 
+@pytest.mark.parametrize(('candidate', 'want', 'api_status', 'reason'), [
+    (b'def public(value):\n    return value + 1\n', 'PASS', 'PASS', None),
+    (b'def public(value, required):\n    return value\n', 'FAIL', 'FAIL', 'API_BREAK'),
+    (b'@framework\ndef public(value):\n    return value\n', 'ERROR', 'NOT_RUN',
+     'VERIFICATION_INCOMPLETE'),
+])
+def test_a3_patch_scope_ignores_only_unaffected_unknowns(case, candidate, want, api_status, reason):
+    task, lease, artifacts = case
+    unrelated = b'class Other(ExternalBase): pass\nfrom external import exposed\n'
+    (lease.path / 'a.py').write_bytes(unrelated + b'def public(value):\n    return value\n')
+    policy = variant()
+    baseline = verify.capture_baseline(task, lease, None, RepairPolicy(), variant=policy,
+                                       artifact_root=artifacts)
+    assert baseline['status'] == 'PASS'
+    (lease.path / 'a.py').write_bytes(unrelated + candidate)
+    result = complete(case, baseline, policy)
+    assert result['status'] == want
+    assert result['compatibility']['api']['status'] == api_status
+    assert result['variant_policy_hash'] == policy_hash(policy)
+    if reason:
+        assert reason in result['reasons']
+    else:
+        assert result['reasons'] == []
+    dto = result['compatibility']['api']
+    details = json.loads((artifacts / dto['details_ref']).read_bytes())['details']
+    assert details['analysis_scope']['selected'] == {'a.py': ['public']}
+    assert {item['symbol'] for item in details['analysis_scope']['excluded_diagnostics']} == {
+        'Other', 'exposed'}
+
+
 @pytest.mark.parametrize('source,want,api,structure,reason', [
     (b'def public(value):\n    return value + 1\n', 'PASS', 'PASS', 'PASS', None),
     (b'def public(value, required):\n    return value\n', 'FAIL', 'FAIL', 'PASS', 'API_BREAK'),
@@ -123,3 +153,52 @@ def test_a3_cannot_reuse_a2_policy_bound_baseline(case):
     result = complete(case, before, variant())
     assert result['status'] == 'ERROR'
     assert result['reasons'] == ['VARIANT_POLICY_CHANGED']
+
+
+@pytest.mark.parametrize('name', ['A0', 'A1', 'A2', 'A3'])
+def test_direct_verification_keeps_checks_after_collection_failure(case, monkeypatch, name):
+    from test_collection_failure import collection_evidence
+    task, lease, artifacts = case
+    policy = variant(name)
+    before = verify.capture_baseline(task, lease, None, RepairPolicy(), variant=policy, artifact_root=artifacts)
+    assert before['status'] == 'PASS'
+    monkeypatch.setattr(verify, 'collect_tests', lambda *a: collection_evidence())
+    monkeypatch.setattr(verify, 'run_tests', lambda *a: collection_evidence())
+    applied = SimpleNamespace(status='PASS', changed_files=['a.py'])
+    selection = {'selected': ('tests',), 'related_selectors': ()}
+    result = verify.verify_patch(task, lease, applied, before, selection, None, RepairPolicy(),
+                                variant=policy, artifact_root=artifacts)
+    assert result['status'] == 'FAIL'
+    assert 'TEST_COLLECTION_FAILED' in result['reasons']
+    assert all(name in result['static'] for name in ('syntax', 'mypy', 'ruff'))
+    assert set(result['compatibility']) == {'api', 'structural'}
+
+
+def test_baseline_collection_failure_is_not_qualified(case, monkeypatch):
+    from test_collection_failure import collection_evidence
+    task, lease, artifacts = case
+    monkeypatch.setattr(verify, 'collect_tests', lambda *a: collection_evidence())
+    before = verify.capture_baseline(task, lease, None, RepairPolicy(), variant=variant(), artifact_root=artifacts)
+    assert (before['status'], before['reason']) == ('ERROR', 'BASELINE_NOT_QUALIFIED')
+
+
+@pytest.mark.parametrize('name', ['A0', 'A3'])
+@pytest.mark.parametrize('missing', ['required', 'regression'])
+def test_collection_failure_cannot_override_incomplete_test_run(case, monkeypatch, name, missing):
+    from test_collection_failure import collection_evidence
+    task, lease, artifacts = case
+    policy = variant(name)
+    before = verify.capture_baseline(task, lease, None, RepairPolicy(), variant=policy, artifact_root=artifacts)
+    outcomes = {'test_fix': 'PASS'}
+    if missing == 'required':
+        outcomes = {'test_other': 'PASS'}
+    else:
+        before['tests']['outcomes']['test_ok'] = 'PASS'
+    monkeypatch.setattr(verify, 'collect_tests', lambda *a: collection_evidence())
+    monkeypatch.setattr(verify, 'run_tests', lambda *a: {'status': 'PASS', 'outcomes': outcomes})
+    result = verify.verify_patch(task, lease, SimpleNamespace(status='PASS', changed_files=['a.py']),
+        before, {'selected': ('tests',), 'related_selectors': ()}, None, RepairPolicy(),
+        variant=policy, artifact_root=artifacts)
+    assert result['status'] == 'ERROR'
+    assert 'VERIFICATION_INCOMPLETE' in result['reasons']
+    assert 'static' in result and 'compatibility' in result

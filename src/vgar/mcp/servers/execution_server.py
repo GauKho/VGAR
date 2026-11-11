@@ -10,15 +10,24 @@ import os
 from pathlib import Path
 from typing import Any
 
-from mcp.server.fastmcp import FastMCP
-
 from vgar.mcp import pytest_runner
 from vgar.mcp.audit import AuditLogger
+from vgar.mcp.proposal.contracts import DiffRequest
+from vgar.mcp.proposal.ports import ProviderRegistry
+from vgar.mcp.proposal.tools import CoreTools
 from vgar.mcp.schemas import SELECTOR_REJECTED, CodedToolError
-from vgar.mcp.tooling import PYTEST_OUTPUT_CAP, PYTEST_TIMEOUT_SECONDS, inside, leased_root, run_tool
+from vgar.mcp.server_factory import create_server
+from vgar.mcp.tooling import (
+    PYTEST_OUTPUT_CAP,
+    PYTEST_TIMEOUT_SECONDS,
+    inside,
+    leased_root,
+    run_tool,
+)
 from vgar.observability.instrumentation import instrument_mcp_tool
 
-mcp = FastMCP("vgar-execution", log_level="WARNING")  # no per-request INFO lines (trace spec P8)
+mcp = create_server("vgar-execution", log_level="WARNING")  # no per-request INFO lines (trace spec P8)
+core_tools = CoreTools(ProviderRegistry())
 _audit_logger = AuditLogger(Path(os.getenv("VGAR_MCP_AUDIT_LOG", "logs/mcp_audit.jsonl")))
 __all__ = ["PYTEST_OUTPUT_CAP", "PYTEST_TIMEOUT_SECONDS", "health", "mcp", "run_pytest"]
 
@@ -61,7 +70,17 @@ def run_pytest(selector: str) -> dict[str, Any]:
                     untrusted=True)
 
 
+@mcp.tool()
+@instrument_mcp_tool("run_relevant_tests")
+async def run_relevant_tests(diff: str) -> dict[str, Any]:
+    """Test a bound diff in an admitted private candidate workspace; never finalize repair."""
+    return await core_tools.respond_async("run_relevant_tests", lambda: DiffRequest.from_diff(diff),
+                                          server="execution", audit=_audit_logger, invoke=core_tools.tests)
+
+
 def main() -> None:
+    if core_tools.registry.test_only:
+        raise ValueError("Synthetic registry is forbidden in production entrypoint")
     mcp.run(transport="stdio")
 
 

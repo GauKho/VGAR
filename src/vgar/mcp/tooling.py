@@ -6,10 +6,14 @@ import time
 import uuid
 from collections.abc import Callable, Iterator
 from contextlib import contextmanager
+from contextvars import ContextVar
 from pathlib import Path
 from typing import Any
 
 from vgar.mcp.audit import AuditLogger
+from vgar.mcp.proposal.context import current_context
+from vgar.mcp.proposal.locking import no_links
+from vgar.mcp.proposal.security import scrub_secrets
 from vgar.mcp.schemas import (
     INTERNAL_ERROR,
     PATH_OUTSIDE_ROOT,
@@ -24,12 +28,16 @@ from vgar.mcp.schemas import (
 READ_FILE_MAX_BYTES = 64 * 1024
 PYTEST_TIMEOUT_SECONDS = 120
 PYTEST_OUTPUT_CAP = 12_000
+_ASYNC_STARTED = ContextVar("mcp_async_started", default=None)
 
 
 def leased_root(env_name: str) -> Path:
     """The root the host leased to this server through ``env_name``; never chosen by the model."""
     value = os.environ.get(env_name)
-    root = Path(value).resolve() if value else None
+    try:
+        root = no_links(Path(value)).resolve() if value else None
+    except ValueError:
+        raise CodedToolError(PATH_OUTSIDE_ROOT, "Lease root is a linked/reparse path") from None
     if root is None or not root.is_dir():
         raise CodedToolError(ROOT_NOT_LEASED, f"No leased root: {env_name} is not set to a directory")
     return root
@@ -37,7 +45,11 @@ def leased_root(env_name: str) -> Path:
 
 def inside(root: Path, candidate: Path) -> Path:
     """``candidate`` resolved (symlinks, ``..``) and guaranteed to stay under ``root``."""
-    target = Path(candidate).resolve()
+    try:
+        no_links(root)
+        target = no_links(Path(candidate)).resolve()
+    except ValueError:
+        raise CodedToolError(PATH_OUTSIDE_ROOT, "Path is linked or leaves the lease") from None
     if target != root and root not in target.parents:
         raise CodedToolError(PATH_OUTSIDE_ROOT, "Path is outside the leased root")
     return target
@@ -72,23 +84,27 @@ def run_tool(
     `audit_fields` are the call arguments to log; `summarize(data)` adds result
     counts on success. Errors are logged too, with their error_code.
     """
-    request_id = uuid.uuid4().hex
-    started = time.perf_counter()
+    context = current_context()
+    request_id = context.request_id if context else uuid.uuid4().hex
+    started = _ASYNC_STARTED.get() or time.perf_counter()
     data: dict[str, Any] | None = None
     error = None
+    interrupted = None
+    extra: dict[str, Any] = {}
     try:
         data = call()
+        extra = summarize(data) if summarize else {}
     except Exception as exc:  # noqa: BLE001 - boundary: nothing may escape raw
         error = error_from_exception(exc)
         extra = _error_audit_fields(exc, error.code)
-    else:
-        extra = summarize(data) if summarize else {}
+    except BaseException as exc:  # noqa: BLE001 - cancellation is audited then re-raised unchanged
+        interrupted = exc
+        error = error_from_exception(RuntimeError("Request interrupted"))
+        extra = {"error_code": INTERNAL_ERROR, "interrupted": True}
 
     duration_ms = _elapsed_ms(started)
     status = "ERROR" if error else "PASS"
-    audit.write(
-        "tool_call",
-        {
+    fields = {
             "server": server,
             "backend": backend,
             "tool": tool,
@@ -97,8 +113,16 @@ def run_tool(
             "duration_ms": duration_ms,
             **(audit_fields or {}),
             **extra,
-        },
-    )
+        }
+    try:
+        audit.write("tool_call", fields)
+    except (OSError,ValueError,TypeError):
+        # An operation may already have happened, but missing evidence can never be PASS.
+        error = error_from_exception(RuntimeError("Audit persistence failed"))
+        data = None
+        status = "ERROR"
+    if interrupted is not None:
+        raise interrupted
     response = ToolResponse(
         status=status,
         data=data,
@@ -111,7 +135,26 @@ def run_tool(
             **({"untrusted": True} if untrusted else {}),
         ),
     )
+    if context:
+        value=response.model_dump(mode="json")
+        value["metadata"].update(run_id=context.run_id,task_id=context.task_id,snapshot_hash=context.snapshot_hash)
+        return scrub_secrets(value,context.secrets)
     return response.model_dump(mode="json")
+
+
+async def run_tool_async(*, call, **kwargs):
+    """Same terminal envelope/audit for async handlers, including SDK cancellation."""
+    token=_ASYNC_STARTED.set(time.perf_counter())
+    try:
+        try:
+            data=await call()
+        except BaseException as error:  # noqa: BLE001 - async boundary; cancellation re-raised by run_tool
+            def failed(exc=error):
+                raise exc
+            return run_tool(call=failed,**kwargs)
+        return run_tool(call=lambda:data,**kwargs)
+    finally:
+        _ASYNC_STARTED.reset(token)
 
 
 @contextmanager
@@ -133,7 +176,7 @@ def audit_resource(
     result_fields: dict[str, Any] = {}
     try:
         yield result_fields
-    except Exception as exc:
+    except BaseException as exc:
         audit.write(
             "resource_read",
             {

@@ -14,7 +14,7 @@ from vgar.repair.patch import PatchPolicy, apply_patch, parse_unified_diff
 from vgar.repair.policy import VariantPolicy, policy_hash, required_checks
 from vgar.repair.static_checks import collect_static_measurements
 from vgar.repair.static_diagnostics import DiagnosticReport
-from vgar.repair.test_runner import collect_tests, run_tests
+from vgar.repair.test_runner import collect_tests, is_collection_failure, run_tests
 from vgar.repair.verification import _assess_w9_static, assess_transition, expand_required
 from vgar.repair.verification_checks import (
     CheckIntegrityError, assert_checks_baseline, assess_compatibility,
@@ -84,7 +84,10 @@ def derive_verdict(vector, variant):
         try:
             status, reasons = assess_transition(before, post['tests'])
             if post['collection']['status'] != 'PASS':
-                status, reasons = 'ERROR', reasons + ['VERIFICATION_INCOMPLETE']
+                if is_collection_failure(post['collection']) and status != 'ERROR':
+                    status, reasons = 'FAIL', reasons + ['TEST_COLLECTION_FAILED']
+                else:
+                    status, reasons = 'ERROR', reasons + ['VERIFICATION_INCOMPLETE']
             static = copy.deepcopy(post['static'])
             status, reasons, _ = _assess_w9_static(before, static, variant, status, reasons)
             status, reasons = assess_compatibility(post.get('compatibility', {}), required_checks(variant), status, reasons)
@@ -290,6 +293,10 @@ def confusion_metrics(rows):
             result[prefix + '_check_failures'] += 1
     result['FAR'] = (result['FN'] / result['bad_total'] if result['bad_total'] and not result['bad_not_run'] else None)
     result['FRR'] = (result['FP'] / result['good_total'] if result['good_total'] and not result['good_not_run'] else None)
+    for prefix, numerator, metric in (('bad', 'FN', 'FAR'), ('good', 'FP', 'FRR')):
+        observed = result[prefix + '_total'] - result[prefix + '_not_run']
+        result[prefix + '_observed'] = observed
+        result['observed_' + metric] = result[numerator] / observed if observed else None
     return result
 
 
@@ -325,7 +332,9 @@ def evaluate_pool(pool_root, output_root, task_provider, policy, variants, *, ex
     from vgar.evaluation.repair.mutant_pool import load_pool
     pool_root, root = Path(pool_root).resolve(), Path(output_root).resolve()
     pool = load_pool(pool_root, expected_pool_hash=expected_pool_hash)
-    if root.exists() or root.is_relative_to(pool_root) or pool_root.is_relative_to(root):
+    if root.exists():
+        raise ValueError('Campaign output already exists; choose a new output directory')
+    if root.is_relative_to(pool_root) or pool_root.is_relative_to(root):
         raise ValueError('Fresh campaign output must not overlap frozen pool')
     variants = _validated_policies(variants)
     prepared, input_errors = {}, {}
@@ -579,6 +588,12 @@ def report_campaign(pool_root, campaign_root, *, expected_pool_hash):
             result['planned_' + prefix] = len(slots)
             result[prefix + '_not_applicable'] = sum(s['status'] == 'NOT_APPLICABLE' for s in slots)
             result[prefix + '_pool_errors'] = sum(s['status'] == 'ERROR' for s in slots)
+            generated = sum(s['status'] == 'CREATED' for s in slots)
+            if (len(slots) != generated + result[prefix + '_not_applicable'] + result[prefix + '_pool_errors']
+                    or generated != result[prefix + '_total']
+                    or generated != result[prefix + '_observed'] + result[prefix + '_not_run']):
+                raise ValueError('Metric population accounting mismatch')
+            result[prefix + '_observed_coverage'] = result[prefix + '_observed'] / len(slots) if slots else None
             if result[prefix + '_pool_errors']:
                 result['FAR' if label == 'BAD' else 'FRR'] = None
         return result
@@ -596,24 +611,73 @@ def report_campaign(pool_root, campaign_root, *, expected_pool_hash):
     return summary
 
 
+def _observed_display_row(row):
+    """Enrich legacy counters without inventing missing measurements or changing the input."""
+    row = dict(row)
+
+    def count(key):
+        value = row.get(key)
+        return value if type(value) is int and value >= 0 else None
+
+    for prefix, numerator, metric in (('bad', 'FN', 'FAR'), ('good', 'FP', 'FRR')):
+        total, pending = count(prefix + '_total'), count(prefix + '_not_run')
+        row.setdefault(prefix + '_observed', total - pending if total is not None
+                       and pending is not None and pending <= total else None)
+        observed, planned, num = count(prefix + '_observed'), count('planned_' + prefix), count(numerator)
+        row.setdefault('observed_' + metric, num / observed if observed and num is not None
+                       and num <= observed else None)
+        row.setdefault(prefix + '_observed_coverage', observed / planned if planned
+                       and observed is not None and observed <= planned else None)
+    return row
+
+
 def render_tables(summary):
+    summary = copy.deepcopy(summary)
+    summary['variants'] = {name: _observed_display_row(row) for name, row in summary['variants'].items()}
+    summary['operators'] = {operator: {name: _observed_display_row(row) for name, row in arms.items()}
+                            for operator, arms in summary['operators'].items()}
+
     def cell(value):
         return 'N/A' if value is None else f'{value:.6f}' if isinstance(value, float) else str(value)
+
+    def scope(row, prefixes):
+        counts = [(row.get(p + '_observed'), row.get('planned_' + p)) for p in prefixes]
+        if any(type(v) is not int or v < 0 for pair in counts for v in pair):
+            return 'UNKNOWN'
+        return 'PARTIAL' if any(observed < planned for observed, planned in counts) else 'FULL'
+
+    note = ('Observed rates describe terminal generated patches only; PARTIAL results do not represent the full '
+            'planned population. Coverage = observed / planned (including NOT_APPLICABLE and pool ERROR slots). '
+            'ERROR is non-ACCEPT, not a proven detection. N/A means an unknown or zero denominator.')
+    columns = [('Planned BAD', 'planned_bad'), ('Planned GOOD', 'planned_good'),
+        ('Generated BAD', 'bad_total'), ('Generated GOOD', 'good_total'),
+        ('Observed BAD', 'bad_observed'), ('Observed GOOD', 'good_observed'),
+        ('TP', 'TP'), ('FP', 'FP'), ('FN', 'FN'), ('TN', 'TN'), ('FAR', 'FAR'), ('FRR', 'FRR'),
+        ('Observed FAR', 'observed_FAR'), ('Observed FRR', 'observed_FRR'),
+        ('BAD coverage', 'bad_observed_coverage'), ('GOOD coverage', 'good_observed_coverage'),
+        ('BAD NOT_APPLICABLE', 'bad_not_applicable'), ('GOOD NOT_APPLICABLE', 'good_not_applicable'),
+        ('BAD ERROR', 'bad_errors'), ('GOOD ERROR', 'good_errors'),
+        ('BAD FAIL rejection', 'bad_check_failures'), ('GOOD FAIL rejection', 'good_check_failures'),
+        ('BAD pending', 'bad_not_run'), ('GOOD pending', 'good_not_run'),
+        ('BAD pool ERROR', 'bad_pool_errors'), ('GOOD pool ERROR', 'good_pool_errors')]
     lines = ['# V1 — Fixed patch verification (BAD = positive)', '',
         f"Expected slots: {summary['expected_slots']}; generated patches: {summary['generated_patches']}; execution complete: {summary['complete']}.", '',
-        '| Arm | Planned BAD | Planned GOOD | Generated BAD | Generated GOOD | TP | FP | FN | TN | FAR | FRR | BAD ERROR | GOOD ERROR | BAD pending | GOOD pending | BAD pool ERROR | GOOD pool ERROR |',
-        '|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|']
+        note, '', '| Arm | ' + ' | '.join(label for label, _ in columns) + ' | Observation scope |',
+        '|---|' + '---:|' * len(columns) + '---|']
     for name, row in sorted(summary['variants'].items()):
-        keys = ('planned_bad', 'planned_good', 'bad_total', 'good_total', 'TP', 'FP', 'FN', 'TN', 'FAR', 'FRR', 'bad_errors', 'good_errors', 'bad_not_run', 'good_not_run', 'bad_pool_errors', 'good_pool_errors')
-        lines.append('| ' + name + ' | ' + ' | '.join(cell(row[k]) for k in keys) + ' |')
+        lines.append('| ' + name + ' | ' + ' | '.join(cell(row.get(key)) for _, key in columns)
+                     + ' | ' + scope(row, ('bad', 'good')) + ' |')
     v2 = ['# V2 — Mutant non-ACCEPT by operator; ERROR is not a proven detection', '',
-        '| Operator | Arm | Planned | Generated | NOT_APPLICABLE | Pool ERROR | FAIL rejection | ERROR/incomplete | Pending | Non-ACCEPT rate |',
-        '|---|---|---:|---:|---:|---:|---:|---:|---:|---:|']
+        note, '',
+        '| Operator | Arm | Planned | Generated | Observed BAD | BAD coverage | NOT_APPLICABLE | Pool ERROR | FAIL rejection | ERROR/incomplete | Pending | Non-ACCEPT rate | Observed non-ACCEPT rate | Observation scope |',
+        '|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|']
     for operator, arms in sorted(summary['operators'].items()):
         for name, row in sorted(arms.items()):
             rate = None if row['FAR'] is None else 1 - row['FAR']
-            v2.append('| ' + ' | '.join([operator, name, cell(row['planned_bad']), cell(row['bad_total']),
-                cell(row['bad_not_applicable']), cell(row['bad_pool_errors']), cell(row['bad_check_failures']),
-                cell(row['bad_errors']), cell(row['bad_not_run']), cell(rate)]) + ' |')
+            observed_rate = None if row['observed_FAR'] is None else 1 - row['observed_FAR']
+            keys = ('planned_bad', 'bad_total', 'bad_observed', 'bad_observed_coverage',
+                    'bad_not_applicable', 'bad_pool_errors', 'bad_check_failures', 'bad_errors', 'bad_not_run')
+            v2.append('| ' + ' | '.join([operator, name, *(cell(row.get(k)) for k in keys),
+                cell(rate), cell(observed_rate), scope(row, ('bad',))]) + ' |')
     return {'V1.md': '\n'.join(lines) + '\n', 'V2.md': '\n'.join(v2) + '\n',
         'verification_pool_counts.json': json.dumps(summary, ensure_ascii=False, sort_keys=True, indent=2) + '\n'}

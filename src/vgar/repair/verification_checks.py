@@ -182,7 +182,7 @@ def run_compatibility_checks(task, lease, applied, baseline, artifact_root=None,
         raise CheckIntegrityError('Protected source changed: ' + ', '.join(sorted(unexpected)))
     before_sources = {p: base64.b64decode(raw, validate=True) for p, raw in old['sources'].items()}
     api = check_api({p: raw for p, raw in before_sources.items() if p in changed},
-                    {p: raw for p, raw in sources.items() if p in changed})
+                    {p: raw for p, raw in sources.items() if p in changed}, changed_only=True)
     _guard(guard)
     hashes = dict(baseline={p: digest(raw) for p, raw in before_sources.items()},
                   candidate={p: digest(raw) for p, raw in sources.items()})

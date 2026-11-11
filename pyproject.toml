@@ -39,6 +39,7 @@ vgar = "vgar.cli:main"
 
 [project.optional-dependencies]
 dev = ["pytest>=8,<9", "mypy==2.4.0", "ruff==0.17.0"]
+history = ["dulwich==1.2.18"]
 plot = ["matplotlib>=3.9,<4"]
 code-graph = ["networkx>=3.4,<4"]
 

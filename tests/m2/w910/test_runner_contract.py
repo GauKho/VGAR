@@ -12,6 +12,22 @@ def read(path):
     return json.loads(Path(path).read_text(encoding='utf-8'))
 
 
+def test_public_bundle_preserves_collection_failure_as_test_failure(w9_case, tmp_path):
+    from vgar.models.generator import FakeGenerator
+    from vgar.repair.contracts import RepairPolicy
+    from vgar.repair.pipeline import run_repair
+    task, count, tokenizer = w9_case
+    patch = '--- a/auth.py\n+++ b/auth.py\n@@ -1,2 +1,2 @@\n-def login(value):\n+def removed_login(value):\n     return bool(value)\n'
+    run = run_repair(task, RepairPolicy(), FakeGenerator(patch), None, tmp_path / 'runs',
+                     m1_counter=count, tokenizer=tokenizer, temp_root=tmp_path / 'temp')
+    assert run.record['status'] == 'FAIL'
+    bundle = read(run.directory / 'evidence_bundle.json')
+    assert bundle['recommendation'] == 'REVISE'
+    reasons = bundle['verification']['reasons']
+    assert any(r['code'] == 'TEST_FAILED' and r['message'] == 'TEST_COLLECTION_FAILED' for r in reasons)
+    assert not any(r['code'] == 'VERIFICATION_INCOMPLETE' for r in reasons)
+
+
 def test_w9_reload_between_all_steps_retains_profile_and_canonical_binding(w9_case, experiment_input, tmp_path):
     from vgar.models.generator import FakeGenerator
     from vgar.repair import session as steps

@@ -1,6 +1,6 @@
 """Trusted-fixture baseline/post checks, with no exit-zero shortcut."""
 from vgar.repair.static_checks import run_static_checks
-from vgar.repair.test_runner import collect_tests, run_tests
+from vgar.repair.test_runner import collect_tests, is_collection_failure, run_tests
 from vgar.repair.workspace import inventory
 from vgar.repair.diagnostics import exception_details
 
@@ -23,6 +23,8 @@ def capture_baseline(task, lease, executor, policy, *, variant=None, artifact_ro
     result = dict(status='ERROR', collection=collection, reason='VERIFICATION_INCOMPLETE',
                   compatibility_snapshot=snapshot)
     if collection['status'] != 'PASS':
+        if is_collection_failure(collection):
+            result['reason'] = 'BASELINE_NOT_QUALIFIED'
         return result
     try:
         required = expand_required(task.failing_selectors, collection['node_ids'])
@@ -54,6 +56,8 @@ def capture_baseline(task, lease, executor, policy, *, variant=None, artifact_ro
 
 
 def assess_transition(baseline, post):
+    if is_collection_failure(post):
+        return 'FAIL', ['TEST_COLLECTION_FAILED']
     required = baseline['required_ids']
     outcomes = post['outcomes']
     missing = [n for n in required if outcomes.get(n) not in ('PASS', 'FAIL')]
@@ -79,7 +83,7 @@ def run_patch_tests(task, lease, apply_result, baseline, selection, executor, po
     related = (collect_tests(lease, selection['related_selectors'], executor, policy.command_timeout)
                if selection['related_selectors'] else {'status': 'NOT_RUN', 'reason': 'no_graph_candidates'})
     collection = collect_tests(lease, selection['selected'], executor, policy.command_timeout)
-    if collection['status'] != 'PASS':
+    if collection['status'] != 'PASS' and not is_collection_failure(collection):
         return dict(status='ERROR', reason='VERIFICATION_INCOMPLETE', related_collection=related, collection=collection)
     tests = run_tests(lease, selection['selected'], executor, policy.command_timeout)
     return dict(status='TESTED', tests=tests, collection=collection, related_collection=related,
@@ -114,6 +118,11 @@ def complete_verification(partial, task, lease, apply_result, baseline, executor
         return dict(partial, status='ERROR', reason='CHECK_INTEGRITY_ERROR',
                     reasons=['VERIFICATION_INCOMPLETE'], static=static, exception=exception_details(error))
     status, reasons = assess_transition(baseline, tests)
+    if collection['status'] != 'PASS':
+        if is_collection_failure(collection) and status != 'ERROR':
+            status, reasons = 'FAIL', list(dict.fromkeys(reasons + ['TEST_COLLECTION_FAILED']))
+        else:
+            status, reasons = 'ERROR', list(dict.fromkeys(reasons + ['VERIFICATION_INCOMPLETE']))
     policy_checks = None
     if variant is None:
         for name, code in (('syntax', 'VERIFICATION_INCOMPLETE'), ('mypy', 'TYPECHECK_FAILED'), ('ruff', 'LINT_FAILED')):

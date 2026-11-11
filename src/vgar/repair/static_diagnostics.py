@@ -1,4 +1,5 @@
 """Structured static evidence and conservative, baseline-relative multiset matching."""
+import ast
 import json
 import re
 from collections import Counter, defaultdict
@@ -141,7 +142,7 @@ def parse_tool_report(tool: str, command: dict, tool_version: str) -> Diagnostic
                                 diagnostics=tuple(diagnostics), **values)
 
 
-def build_line_map(before: dict[str, str], after: dict[str, str]) -> dict:
+def _build_unique_line_map(before: dict[str, str], after: dict[str, str]) -> dict:
     """Map equal, uniquely anchored source lines; repeated lines remain ambiguous.
 
     This intentionally favors false rejects over declaring an unproven error old.
@@ -164,6 +165,62 @@ def build_line_map(before: dict[str, str], after: dict[str, str]) -> dict:
                 a, b = block.a + offset, block.b + offset
                 if old_counts[old[a]] == new_counts[new[b]] == 1:
                     result[path][a + 1] = b + 1
+    return result
+
+
+def _declaration_spans(text):
+    spans = defaultdict(list)
+
+    def visit(node, parent):
+        if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
+            parent = (*parent, (type(node).__name__, node.name))
+            start = min([node.lineno, *(d.lineno for d in node.decorator_list)])
+            spans[parent].append((start, node.end_lineno))
+        for child in ast.iter_child_nodes(node):
+            visit(child, parent)
+
+    visit(ast.parse(text), ())
+    return spans
+
+
+def _unchanged_declarations(old_text, new_text):
+    old, new = old_text.splitlines(), new_text.splitlines()
+    try:
+        before, after = _declaration_spans(old_text), _declaration_spans(new_text)
+    except (SyntaxError, ValueError, RecursionError):
+        return []
+    result = []
+    for key in sorted(before.keys() & after.keys()):
+        if any(len(before.get(key[:n], ())) != 1 or len(after.get(key[:n], ())) != 1
+               for n in range(1, len(key) + 1)):
+            continue
+        a, b = before[key][0], after[key][0]
+        if old[a[0] - 1:a[1]] == new[b[0] - 1:b[1]]:
+            result.append(dict(scope=[list(part) for part in key], before=a, after=b))
+    return result
+
+
+def _merge_line_candidates(pairs):
+    forward, reverse = defaultdict(set), defaultdict(set)
+    for old, new in pairs:
+        forward[old].add(new)
+        reverse[new].add(old)
+    return {old: next(iter(targets)) for old, targets in forward.items()
+            if len(targets) == 1 and len(reverse[next(iter(targets))]) == 1}
+
+
+def build_line_map(before: dict[str, str], after: dict[str, str]) -> dict:
+    """Extend unique-line anchors only with exact, uniquely owned declaration spans."""
+    result = _build_unique_line_map(before, after)
+    for path in result:
+        old, new = before[path].splitlines(), after[path].splitlines()
+        if old == new or len(old) > 10000 or len(new) > 10000:
+            continue
+        pairs = list(result[path].items())
+        for match in _unchanged_declarations(before[path], after[path]):
+            start, end = match['before']
+            pairs.extend((line, match['after'][0] + line - start) for line in range(start, end + 1))
+        result[path] = _merge_line_candidates(pairs)
     return result
 
 

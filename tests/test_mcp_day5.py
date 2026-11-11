@@ -1,5 +1,5 @@
 """M3-W11 day 5: every call audited including errors (S8), repository text marked untrusted (S12), graph server
-has no write tool (S13), every guarded tool returns the C4 envelope with a known code (S10)."""
+has no unguarded write tool (S13/L6-2), every guarded tool returns the C4 envelope with a known code (S10)."""
 from __future__ import annotations
 
 import json
@@ -41,14 +41,19 @@ def test_graph_tools_mark_repository_text_untrusted(monkeypatch, tmp_path):
     assert graph_server.search_symbols("login", limit=5)["metadata"]["untrusted"] is True
 
 
-def test_graph_server_has_no_write_tool():
-    # S13
+def test_graph_server_has_no_write_tool(monkeypatch, tmp_path):
+    # S13 updated by L6-2: a graph build is exposed but cannot authorize itself.
     import asyncio
+
     from vgar.mcp.servers import graph_server
+    monkeypatch.setattr(graph_server, "_audit_logger", AuditLogger(tmp_path / "audit.jsonl"))
     names = {tool.name for tool in asyncio.run(graph_server.mcp.list_tools())}
     assert names == {"search_symbols", "get_callers", "get_callees", "find_task_anchors", "get_related_context",
-                     "get_related_tests", "analyze_patch_impact"}
+                     "get_related_tests", "analyze_patch_impact", "build_or_update_graph", "explain_dependency_path",
+                     "verify_patch_graph_constraints", "rank_patch_candidates"}
     assert not any(word in name for name in names for word in ("write", "apply", "patch_file", "delete", "save"))
+    response = asyncio.run(graph_server.build_or_update_graph(str(tmp_path)))
+    assert response["status"] == "ERROR" and response["error"]["code"] == "INVALID_ARGUMENT"
 
 
 def test_tool_errors_carry_known_code_and_retryable(tmp_path, monkeypatch):
@@ -157,6 +162,7 @@ def test_client_unwraps_repair_envelope_for_agent_hosts():
 
 def test_client_transport_failure_is_mcp_transport_error():
     import asyncio
+
     from vgar.agents.nodes.mcp_repair import _call
 
     class Down:

@@ -13,6 +13,370 @@ from test_admission import admit
 admitted_case = admission_cases.admitted_case
 
 
+@pytest.fixture
+def snapshot_transport_case(admitted_case, tmp_path, monkeypatch):
+    """Exercise the real archive/attestation path; only Docker CLI is simulated."""
+    import hashlib
+    import json
+    from pathlib import Path
+    import shutil
+
+    executor = make_executor(admitted_case, tmp_path)
+    state = dict(failure=None, allow_retained=False, copies=[], cleanups=[], after_copy=None,
+                 artifact_root=tmp_path, report_payloads={'nodeids.json': b'{"sentinel": "kept"}'},
+                 report_copies=[], report_failure=None, target_transform=None)
+    monkeypatch.setattr(executor, '_identity', lambda directory: None)
+
+    def checked(args, directory, deadline):
+        if args[0] == 'cp' and Path(args[1]).name == 'control':
+            archive = Path(args[1]) / 'snapshot.tar'
+            assert archive.is_file()
+            if state['failure'] == 'copy':
+                raise RuntimeError('transport copy failed')
+            target = tmp_path / 'fake-container' / executor.operation_id / 'snapshot.tar'
+            target.parent.mkdir(parents=True)
+            shutil.copyfile(archive, target)
+            state['copies'].append(dict(path=target, size=target.stat().st_size,
+                                        digest='sha256:' + hashlib.sha256(target.read_bytes()).hexdigest()))
+            if state['after_copy']:
+                state['after_copy'](archive)
+        elif args[0] == 'cp' and args[1].endswith(':/vgar/result.json'):
+            if state['failure'] == 'report':
+                raise RuntimeError('target report missing')
+            config = json.loads((directory / 'control/config.json').read_bytes())
+            data = dict(complete=True, exit_code=0, snapshot_before=config['expected'],
+                        snapshot_after=config['expected'], runtime=config['runtime'],
+                        base=config['base_identity'], protocol='vgar-docker-repair-v1', argv=config.get('argv'))
+            data['report_artifacts'] = {
+                name: dict(state='AVAILABLE', size_bytes=len(state['report_payloads'][name]),
+                           sha256='sha256:' + hashlib.sha256(state['report_payloads'][name]).hexdigest())
+                if name in state['report_payloads'] else dict(state='MISSING')
+                for name in config.get('report_names', [])}
+            if state['target_transform']:
+                state['target_transform'](data)
+            Path(args[2]).write_text(json.dumps(data), encoding='utf-8')
+        elif args[0] == 'cp' and any(args[1].endswith(':/vgar/' + n) for n in ('nodeids.json', 'junit.xml')):
+            name = args[1].rsplit('/', 1)[1]
+            state['report_copies'].append(name)
+            if name not in state['report_payloads'] or state['report_failure'] == 'copy':
+                raise RuntimeError('report docker cp failed')
+            raw = state['report_payloads'][name]
+            Path(args[2]).write_bytes(raw + b'tampered' if state['report_failure'] == 'hash' else raw)
+        return {'stdout': ''}
+
+    def cli(args, directory, deadline):
+        assert args[0] == 'exec'
+        if not state['allow_retained']:
+            assert not (directory / 'control/snapshot.tar').exists(), 'host transport archive retained after copy'
+        with tarfile.open(state['copies'][-1]['path']) as container_archive:
+            assert 'xarray/core.py' in container_archive.getnames()
+        if state['failure'] == 'probe':
+            raise RuntimeError('target probe failed')
+        if state['failure'] == 'interrupt':
+            raise KeyboardInterrupt()
+        return dict(status='PASS', complete=True, exit_code=0, stdout='', stderr='')
+
+    monkeypatch.setattr(executor, '_checked', checked)
+    monkeypatch.setattr(executor, '_cli', cli)
+    monkeypatch.setattr(executor, '_cleanup',
+                        lambda directory: state['cleanups'].append(directory) or {'status': 'PASS'})
+    try:
+        yield executor, state
+    finally:
+        executor.lease.__exit__()
+
+
+def test_snapshot_transport_is_removed_before_probe_with_hash_receipt(snapshot_transport_case):
+    import json
+    e, state = snapshot_transport_case
+    report = e.lease.private / 'reports/saved/nodeids.json'
+    result = e.execute_operation({'kind': 'syntax', 'targets': ['xarray/core.py']}, 60,
+                                 reports={'nodeids.json': report})
+    directory = e.evidence_root / e.operation_id
+    receipt = json.loads((directory / 'snapshot_transport.json').read_bytes())
+    assert result['status'] == 'PASS' and result['complete'] is True
+    assert result['snapshot_transport'] == receipt
+    assert receipt['operation_id'] == e.operation_id
+    assert receipt['archive_path'] == 'control/snapshot.tar'
+    assert receipt['archive_bytes'] == state['copies'][0]['size']
+    assert receipt['archive_sha256'] == state['copies'][0]['digest']
+    assert receipt['copy_status'] == 'PASS' and receipt['cleanup_status'] == 'REMOVED'
+    assert receipt['retained_bytes'] == 0
+    assert (directory / 'control/config.json').is_file()
+    assert (directory / 'control/docker_probe.py').is_file()
+    assert json.loads(report.read_bytes()) == {'sentinel': 'kept'}
+    assert json.loads((directory / 'command.json').read_bytes())['snapshot_transport'] == receipt
+    assert len(state['cleanups']) == 1
+
+
+@pytest.mark.parametrize('phase', ['copy', 'probe', 'report', 'interrupt', 'build'])
+def test_snapshot_transport_failure_cleans_archive_and_preserves_primary_error(
+    snapshot_transport_case, monkeypatch, phase,
+):
+    import json
+    e, state = snapshot_transport_case
+    state['failure'] = phase
+    if phase == 'build':
+        def broken_add(*a, **kw):
+            raise RuntimeError('archive build failed')
+        monkeypatch.setattr(tarfile.TarFile, 'add', broken_add)
+    error = KeyboardInterrupt if phase == 'interrupt' else RuntimeError
+    message = {'copy': 'transport copy failed', 'probe': 'target probe failed',
+               'report': 'target report missing', 'build': 'archive build failed'}.get(phase)
+    with pytest.raises(error, match=message):
+        e.execute_operation({'kind': 'syntax', 'targets': ['xarray/core.py']}, 60)
+    directory = e.evidence_root / e.operation_id
+    assert not (directory / 'control/snapshot.tar').exists()
+    receipt = json.loads((directory / 'snapshot_transport.json').read_bytes())
+    assert receipt['copy_status'] == ('ERROR' if phase == 'copy' else 'NOT_STARTED' if phase == 'build' else 'PASS')
+    assert receipt['cleanup_status'] == 'REMOVED' and receipt['retained_bytes'] == 0
+    assert len(state['cleanups']) == 1
+
+
+def test_snapshot_unlink_error_warns_without_changing_result(snapshot_transport_case, monkeypatch, caplog):
+    from pathlib import Path
+    e, state = snapshot_transport_case
+    state['allow_retained'] = True
+    original = Path.unlink
+    attempts = []
+
+    def denied(path, *args, **kwargs):
+        if path.name == 'snapshot.tar' and path.parent.name == 'control':
+            attempts.append(path)
+            raise PermissionError('archive locked')
+        return original(path, *args, **kwargs)
+
+    monkeypatch.setattr(Path, 'unlink', denied)
+    result = e.execute_operation({'kind': 'syntax', 'targets': ['xarray/core.py']}, 60)
+    receipt = result['snapshot_transport']
+    assert result['status'] == 'PASS' and result['complete'] is True
+    assert receipt['cleanup_status'] == 'ERROR'
+    assert receipt['retained_bytes'] == state['copies'][0]['size']
+    assert 'archive locked' in receipt['reason']
+    assert 'archive locked' in caplog.text
+    assert len(attempts) == 1 and len(state['cleanups']) == 1
+
+
+@pytest.mark.parametrize('primary_failure', [None, 'probe'])
+def test_snapshot_receipt_write_error_is_warning_not_primary_failure(
+    snapshot_transport_case, monkeypatch, caplog, primary_failure,
+):
+    from vgar.repair import docker_executor
+    e, state = snapshot_transport_case
+    state['failure'] = primary_failure
+    original = docker_executor.atomic_json
+
+    def denied(path, value):
+        if path.name == 'snapshot_transport.json':
+            raise OSError('receipt storage unavailable')
+        return original(path, value)
+
+    monkeypatch.setattr(docker_executor, 'atomic_json', denied)
+    if primary_failure:
+        with pytest.raises(RuntimeError, match='target probe failed'):
+            e.execute_operation({'kind': 'syntax', 'targets': ['xarray/core.py']}, 60)
+    else:
+        result = e.execute_operation({'kind': 'syntax', 'targets': ['xarray/core.py']}, 60)
+        assert result['status'] == 'PASS'
+        assert result['snapshot_transport']['cleanup_status'] == 'REMOVED'
+        assert 'receipt storage unavailable' in result['snapshot_transport']['receipt_error']
+    assert 'receipt storage unavailable' in caplog.text
+    assert not (e.evidence_root / e.operation_id / 'control/snapshot.tar').exists()
+
+
+def test_repeated_snapshot_operations_do_not_accumulate_host_archives(snapshot_transport_case):
+    import json
+    e, state = snapshot_transport_case
+    roots, receipts = [], []
+    for _ in range(14):
+        result = e.execute_operation({'kind': 'syntax', 'targets': ['xarray/core.py']}, 60)
+        roots.append(result['docker_evidence'])
+        receipts.append(result['snapshot_transport'])
+    assert len(set(roots)) == 14 and len(state['copies']) == 14
+    assert not list(e.evidence_root.glob('*/control/snapshot.tar'))
+    assert len(list(e.evidence_root.glob('*/snapshot_transport.json'))) == 14
+    summary = dict(fixture_only=True, real_docker=False, operations=14,
+                   host_transport_archives_remaining=0,
+                   host_transport_bytes_removed=sum(r['archive_bytes'] for r in receipts),
+                   simulated_container_copies=14, receipts=receipts)
+    (state['artifact_root'] / 'transport-fixture-summary.json').write_text(json.dumps(summary), encoding='utf-8')
+
+
+def test_snapshot_cleanup_absence_and_repeated_call_are_safe(snapshot_transport_case):
+    e, state = snapshot_transport_case
+    result = e.execute_operation({'kind': 'syntax', 'targets': ['xarray/core.py']}, 60)
+    again = e._cleanup_snapshot_transport(e.evidence_root / e.operation_id)
+    assert again == result['snapshot_transport']
+
+
+def test_snapshot_cleanup_rejects_directory_replacement(snapshot_transport_case):
+    e, state = snapshot_transport_case
+    state['allow_retained'] = True
+
+    def replace(archive):
+        archive.unlink()
+        archive.mkdir()
+        (archive / 'keep.txt').write_text('keep', encoding='utf-8')
+    state['after_copy'] = replace
+    result = e.execute_operation({'kind': 'syntax', 'targets': ['xarray/core.py']}, 60)
+    assert result['status'] == 'PASS'
+    assert result['snapshot_transport']['cleanup_status'] == 'ERROR'
+    assert (e.evidence_root / e.operation_id / 'control/snapshot.tar/keep.txt').read_text() == 'keep'
+
+
+def test_snapshot_archive_path_rejects_other_operation(snapshot_transport_case, tmp_path):
+    e, _ = snapshot_transport_case
+    e.execute_operation({'kind': 'syntax', 'targets': ['xarray/core.py']}, 60)
+    outside = tmp_path / 'not-this-operation'
+    outside.mkdir()
+    with pytest.raises(ValueError, match='(?i)operation|scope|outside'):
+        e._snapshot_archive_path(outside)
+
+
+def test_snapshot_absent_when_operation_fails_before_archive_creation(snapshot_transport_case, monkeypatch):
+    import json
+    e, state = snapshot_transport_case
+    monkeypatch.setattr(e, '_execute', lambda *a: (_ for _ in ()).throw(RuntimeError('before archive')))
+    with pytest.raises(RuntimeError, match='before archive'):
+        e.execute_operation({'kind': 'syntax', 'targets': ['xarray/core.py']}, 60)
+    receipt = json.loads((e.evidence_root / e.operation_id / 'snapshot_transport.json').read_bytes())
+    assert receipt['cleanup_status'] == 'ABSENT' and receipt['retained_bytes'] == 0
+    assert receipt['copy_status'] == 'NOT_STARTED'
+    assert receipt['archive_bytes'] is None and receipt['archive_sha256'] is None
+    assert len(state['cleanups']) == 1
+
+
+def test_snapshot_unlink_error_never_masks_probe_error(snapshot_transport_case, monkeypatch, caplog):
+    import json
+    from pathlib import Path
+    e, state = snapshot_transport_case
+    state.update(failure='probe', allow_retained=True)
+    original = Path.unlink
+
+    def denied(path, *args, **kwargs):
+        if path.name == 'snapshot.tar' and path.parent.name == 'control':
+            raise PermissionError('archive remains locked')
+        return original(path, *args, **kwargs)
+
+    monkeypatch.setattr(Path, 'unlink', denied)
+    with pytest.raises(RuntimeError, match='target probe failed'):
+        e.execute_operation({'kind': 'syntax', 'targets': ['xarray/core.py']}, 60)
+    receipt = json.loads((e.evidence_root / e.operation_id / 'snapshot_transport.json').read_bytes())
+    assert receipt['cleanup_status'] == 'ERROR' and 'archive remains locked' in caplog.text
+
+
+def test_snapshot_control_link_is_rejected_without_touching_external_files(
+    snapshot_transport_case, tmp_path,
+):
+    import json
+    import os
+    import subprocess
+
+    e, state = snapshot_transport_case
+    state.update(failure='probe', allow_retained=True)
+    external = tmp_path / 'external-control'
+    external.mkdir()
+    sentinel = external / 'snapshot.tar'
+    sentinel.write_bytes(b'never delete external evidence')
+    swapped = []
+
+    def swap(archive):
+        control = archive.parent
+        original = control.with_name('original-control')
+        assert control.resolve().is_relative_to(e.lease.private.resolve())
+        assert original.parent.resolve() == control.parent.resolve()
+        control.rename(original)
+        if os.name == 'nt':
+            proc = subprocess.run(['cmd', '/c', 'mklink', '/J', str(control), str(external)],
+                                  capture_output=True, check=False)
+            assert proc.returncode == 0, proc.stderr
+        else:
+            control.symlink_to(external, target_is_directory=True)
+        swapped.append((control, original))
+
+    state['after_copy'] = swap
+    try:
+        with pytest.raises(RuntimeError, match='target probe failed'):
+            e.execute_operation({'kind': 'syntax', 'targets': ['xarray/core.py']}, 60)
+        receipt = json.loads((e.evidence_root / e.operation_id / 'snapshot_transport.json').read_bytes())
+        assert receipt['cleanup_status'] == 'ERROR'
+        assert 'reparse' in receipt['reason'] or 'link' in receipt['reason']
+        assert sentinel.read_bytes() == b'never delete external evidence'
+    finally:
+        for control, original in swapped:
+            assert control.parent.resolve() == original.parent.resolve()
+            if os.name == 'nt':
+                control.rmdir()  # Remove only the fixture junction entry, never its target.
+            else:
+                control.unlink()
+            original.rename(control)
+
+
+def test_snapshot_metadata_stat_error_is_optional_and_archive_still_removed(
+    snapshot_transport_case, monkeypatch, caplog,
+):
+    from pathlib import Path
+    e, _ = snapshot_transport_case
+    original_stat, original_metadata = Path.stat, e._snapshot_archive_metadata
+    active = [False]
+
+    def metadata(directory):
+        active[0] = True
+        try:
+            return original_metadata(directory)
+        finally:
+            active[0] = False
+
+    def denied(path, *args, **kwargs):
+        if (active[0] and path.name == 'snapshot.tar'
+                and kwargs.get('follow_symlinks', True)):
+            raise PermissionError('metadata stat denied')
+        return original_stat(path, *args, **kwargs)
+
+    monkeypatch.setattr(e, '_snapshot_archive_metadata', metadata)
+    monkeypatch.setattr(Path, 'stat', denied)
+    result = e.execute_operation({'kind': 'syntax', 'targets': ['xarray/core.py']}, 60)
+    assert result['status'] == 'PASS' and result['complete'] is True
+    assert result['snapshot_transport']['cleanup_status'] == 'REMOVED'
+    assert result['snapshot_transport']['retained_bytes'] == 0
+    assert 'metadata stat denied' in caplog.text
+
+
+def test_fallback_hash_interrupt_preserves_build_error_and_container_cleanup(
+    snapshot_transport_case, monkeypatch,
+):
+    import json
+    from pathlib import Path
+    e, state = snapshot_transport_case
+    original_open = Path.open
+
+    def build_failed(directory, *args):
+        control = directory / 'control'
+        control.mkdir()
+        (control / 'snapshot.tar').write_bytes(b'partial archive')
+        raise RuntimeError('archive build failed')
+
+    def interrupted(path, mode='r', *args, **kwargs):
+        if path.name == 'snapshot.tar' and mode == 'rb':
+            raise KeyboardInterrupt('interrupted metadata read')
+        return original_open(path, mode, *args, **kwargs)
+
+    monkeypatch.setattr(e, '_execute', build_failed)
+    monkeypatch.setattr(Path, 'open', interrupted)
+    observed = None
+    try:
+        e.execute_operation({'kind': 'syntax', 'targets': ['xarray/core.py']}, 60)
+    except BaseException as error:
+        observed = error
+    assert type(observed) is RuntimeError and str(observed) == 'archive build failed'
+    assert len(state['cleanups']) == 1
+    directory = e.evidence_root / e.operation_id
+    assert not (directory / 'control/snapshot.tar').exists()
+    receipt = json.loads((directory / 'snapshot_transport.json').read_bytes())
+    assert receipt['copy_status'] == 'NOT_STARTED' and receipt['cleanup_status'] == 'REMOVED'
+    assert 'KeyboardInterrupt' in receipt['metadata_error']
+
+
 def make_executor(case, tmp_path):
     from vgar.repair.admission import prepare_admitted_workspace
     from vgar.repair.docker_executor import DockerExecutor
@@ -77,6 +441,48 @@ def test_unapproved_commands_rejected_before_transport(admitted_case, tmp_path, 
             e.map_command(args)
     finally:
         e.lease.__exit__()
+
+
+@pytest.mark.parametrize('available', [(), ('nodeids.json',), ('nodeids.json', 'junit.xml')])
+def test_report_transport_copies_only_attested_available_files(snapshot_transport_case, available):
+    e, state = snapshot_transport_case
+    payloads = {'nodeids.json': b'{"complete":true}', 'junit.xml': b'<testsuite/>'}
+    state['report_payloads'] = {name: payloads[name] for name in available}
+    paths = {name: e.lease.private / 'reports/saved' / name for name in payloads}
+    result = e.execute_operation({'kind': 'command', 'argv': ['pytest']}, 60, reports=paths)
+    assert result['complete'] is True
+    assert set(state['report_copies']) == set(available)
+    for name, path in paths.items():
+        if name in available:
+            assert path.read_bytes() == payloads[name]
+        else:
+            assert not path.exists()
+            assert result['target_result']['report_artifacts'][name] == {'state': 'MISSING'}
+    assert state['cleanups']
+
+
+@pytest.mark.parametrize('fault', ['copy', 'hash', 'metadata', 'runtime'])
+def test_report_transport_failure_is_not_patch_failure(snapshot_transport_case, fault):
+    e, state = snapshot_transport_case
+    state['report_failure'] = fault
+    if fault in ('metadata', 'runtime'):
+        def corrupt(data):
+            if fault == 'metadata':
+                data['report_artifacts']['nodeids.json']['size_bytes'] = True
+            else:
+                data['runtime'] = {'python': 'wrong'}
+        state['target_transform'] = corrupt
+    report = e.lease.private / 'reports/saved/nodeids.json'
+    if fault == 'runtime':
+        result = e.execute_operation({'kind': 'syntax', 'targets': ['xarray/core.py']}, 60,
+                                     reports={'nodeids.json': report})
+        assert result['complete'] is False
+    else:
+        with pytest.raises((RuntimeError, ValueError)):
+            e.execute_operation({'kind': 'syntax', 'targets': ['xarray/core.py']}, 60,
+                                reports={'nodeids.json': report})
+    assert not report.exists()
+    assert state['cleanups']
 
 
 def test_private_test_drift_is_rejected_before_transport(admitted_case, tmp_path):
@@ -157,6 +563,31 @@ def test_timeout_always_calls_cleanup_and_never_publishes_pass(
         assert calls[-1] == ["cleanup"]
     finally:
         e.lease.__exit__()
+
+
+def test_cancelled_docker_operation_still_checks_cleanup(snapshot_transport_case, monkeypatch):
+    from threading import Event
+
+    executor, _ = snapshot_transport_case
+    cancel = Event()
+    executor.cancel_event = cancel
+    cleanups = []
+
+    def execute(*args):
+        cancel.set()
+        raise TimeoutError("cancelled during command")
+
+    def cleanup(directory):
+        assert executor.cancel_event is None and cancel.is_set()
+        cleanups.append(directory)
+        return {"status": "PASS"}
+
+    monkeypatch.setattr(executor, "_execute", execute)
+    monkeypatch.setattr(executor, "_cleanup", cleanup)
+    with pytest.raises(TimeoutError, match="cancelled"):
+        executor.execute_operation({"kind": "syntax", "targets": ["xarray/core.py"]}, 60)
+    assert executor.cancel_event is cancel
+    assert len(cleanups) == 1 and (cleanups[0] / "cleanup.json").is_file()
 
 
 @pytest.mark.skipif(sys.platform == "win32", reason="POSIX modes only")

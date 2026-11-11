@@ -79,7 +79,7 @@ def clean_environment(extra=None):
 
 
 def run_bounded(argv: tuple[str, ...], cwd: Path, timeout_seconds: float,
-                *, output_cap=8 * 1024 * 1024, environment=None) -> dict:
+                *, output_cap=8 * 1024 * 1024, environment=None, cancel_event=None) -> dict:
     if not argv or any(not isinstance(a, str) or '\0' in a for a in argv) or timeout_seconds <= 0:
         raise ValueError('Fixed argv and positive timeout required')
     cwd = Path(cwd).resolve(strict=True)
@@ -90,6 +90,11 @@ def run_bounded(argv: tuple[str, ...], cwd: Path, timeout_seconds: float,
     start = time.monotonic()
     process, job = None, None
     try:
+        if cancel_event is not None:
+            record['cancelled'] = cancel_event.is_set()
+            if record['cancelled']:
+                record.update(status='ERROR', complete=False)
+                return record
         with tempfile.TemporaryDirectory(prefix='m2-output-') as folder:
             outpath, errpath = Path(folder) / 'stdout.bin', Path(folder) / 'stderr.bin'
             with outpath.open('wb') as out, errpath.open('wb') as err:
@@ -100,6 +105,8 @@ def run_bounded(argv: tuple[str, ...], cwd: Path, timeout_seconds: float,
                 if os.name == 'nt':
                     job = _WindowsJob(process)
                 while process.poll() is None:
+                    if cancel_event is not None and cancel_event.is_set():
+                        break
                     if time.monotonic() - start >= timeout_seconds:
                         record['timed_out'] = True
                         break
@@ -123,7 +130,9 @@ def run_bounded(argv: tuple[str, ...], cwd: Path, timeout_seconds: float,
                     data = stream.read(output_cap)
                 record[label] = data.decode('utf-8', errors='replace')
                 record['output_truncated'] |= path.stat().st_size > output_cap
-            record['complete'] = not (record['timed_out'] or record['output_truncated'])
+            if cancel_event is not None:
+                record['cancelled'] = cancel_event.is_set()
+            record['complete'] = not (record['timed_out'] or record['output_truncated'] or record.get('cancelled'))
             record['status'] = ('ERROR' if not record['complete'] else 'PASS' if process.returncode == 0 else 'FAIL')
     except (OSError, subprocess.SubprocessError) as error:
         record.update(status='ERROR', complete=False, stderr=str(error), error_type=type(error).__name__,
@@ -139,8 +148,9 @@ def run_bounded(argv: tuple[str, ...], cwd: Path, timeout_seconds: float,
 
 
 class NativeExecutor:
-    def __init__(self, lease=None, output_cap=8 * 1024 * 1024):
+    def __init__(self, lease=None, output_cap=8 * 1024 * 1024, *, cancel_event=None):
         self.lease, self.output_cap = lease, output_cap
+        self.cancel_event = cancel_event
 
     def run(self, argv: tuple[str, ...], cwd: Path, timeout_seconds: float) -> dict:
         if self.lease is None or not self.lease.active or Path(cwd).resolve() != self.lease.path:
@@ -153,5 +163,6 @@ class NativeExecutor:
                 raise ValueError('Git command not allowed')
         else:
             raise ValueError('Interpreter/command not allowed')
-        return run_bounded(argv, cwd, timeout_seconds, output_cap=self.output_cap)
+        options = {'cancel_event': self.cancel_event} if self.cancel_event is not None else {}
+        return run_bounded(argv, cwd, timeout_seconds, output_cap=self.output_cap, **options)
 
