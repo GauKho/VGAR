@@ -40,6 +40,22 @@ python ablation_matrix/run_r1_ablation.py ~/rt1 ~/rt1/data/manifests/w10-dev-50-
 | arch_no_task_trace | 0,260 | 0,650 | 0,207 | 0,448 | 0,184 | 0,918 | 0,327 | 0,560 | 0,920 |
 | task_trace_rt1 | **0,377** | 0,723 | 0,363 | **0,537** | 0,270 | 0,818 | 0,348 | **0,607** | 0,893 |
 
+Recall@10 và chi phí context (token của context đã đóng gói, trung bình mỗi task; ngân sách 12.000, bộ đếm bytes/4):
+
+| Cấu hình | R@10 file | R@10 hàm | Context token |
+|---|---|---|---|
+| bm25 | 0,788 | 0,495 | 11.996 |
+| grep | 0,675 | 0,365 | 11.996 |
+| **neighbor** | **0,828** | **0,536** | 11.996 |
+| no_task_trace (A1) | 0,805 | 0,314 | 11.964 |
+| task_trace (A2) | 0,753 | 0,434 | 11.873 |
+| a3 (A3) | 0,783 | 0,403 | 11.974 |
+| ast_no_task_trace | 0,805 | 0,334 | 11.524 |
+| arch_no_task_trace | 0,805 | 0,314 | 11.966 |
+| task_trace_rt1 | 0,753 | 0,434 | 11.898 |
+
+Mọi cấu hình đều dùng gần hết ngân sách (11.524 đến 11.996 token), nên chi phí context gần như không phân biệt các cấu hình. Ở cùng mức chi phí, khác biệt nằm ở việc context chứa đúng code hay không, tức các cột Recall@B. Ở R@10, A2 thu hẹp khoảng cách hàm với BM25 (0,434 so với 0,495) nhưng vẫn kém neighbor.
+
 ## Các cặp (ứng viên − nền; CI95 bootstrap 2.000 lần; in đậm khi CI không chứa 0)
 
 | Cặp | R@5 file | R@5 hàm | MRR hàm | Recall@B file | Recall@B hàm | R@5 comp. |
