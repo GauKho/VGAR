@@ -565,6 +565,31 @@ def test_timeout_always_calls_cleanup_and_never_publishes_pass(
         e.lease.__exit__()
 
 
+def test_cancelled_docker_operation_still_checks_cleanup(snapshot_transport_case, monkeypatch):
+    from threading import Event
+
+    executor, _ = snapshot_transport_case
+    cancel = Event()
+    executor.cancel_event = cancel
+    cleanups = []
+
+    def execute(*args):
+        cancel.set()
+        raise TimeoutError("cancelled during command")
+
+    def cleanup(directory):
+        assert executor.cancel_event is None and cancel.is_set()
+        cleanups.append(directory)
+        return {"status": "PASS"}
+
+    monkeypatch.setattr(executor, "_execute", execute)
+    monkeypatch.setattr(executor, "_cleanup", cleanup)
+    with pytest.raises(TimeoutError, match="cancelled"):
+        executor.execute_operation({"kind": "syntax", "targets": ["xarray/core.py"]}, 60)
+    assert executor.cancel_event is cancel
+    assert len(cleanups) == 1 and (cleanups[0] / "cleanup.json").is_file()
+
+
 @pytest.mark.skipif(sys.platform == "win32", reason="POSIX modes only")
 def test_control_dir_is_usable_by_capless_container_root(
     admitted_case, tmp_path, monkeypatch

@@ -39,7 +39,7 @@ def transport_snapshot(expected):
 
 class DockerExecutor:
     def __init__(
-        self, lease, task, admission, deadline, output_cap, evidence_root=None
+        self, lease, task, admission, deadline, output_cap, evidence_root=None, *, cancel_event=None
     ):
         self.lease, self.task = lease, task
         self.admission = validate_admission(task, admission).snapshot()
@@ -47,6 +47,7 @@ class DockerExecutor:
             json.loads(Path(self.admission["profile_path"]).read_text(encoding="utf-8"))
         )
         self.deadline, self.output_cap = deadline, output_cap
+        self.cancel_event = cancel_event
         self.evidence_root = (
             Path(evidence_root) if evidence_root else lease.private / "docker"
         )
@@ -228,7 +229,7 @@ class DockerExecutor:
         if Path(cwd).resolve() != self.lease.path or not self.lease.active:
             raise ValueError("Docker executor requires its active private lease")
         if argv[0] == "git":
-            return DeadlineExecutor(self.lease, self.deadline, self.output_cap).run(
+            return DeadlineExecutor(self.lease, self.deadline, self.output_cap, cancel_event=self.cancel_event).run(
                 argv, cwd, timeout_seconds
             )
         mapped, reports = self.map_command(argv)
@@ -244,12 +245,14 @@ class DockerExecutor:
         )
 
     def _cli(self, args, directory, deadline):
+        options = {"cancel_event": self.cancel_event} if self.cancel_event is not None else {}
         result = run_bounded(
             ("docker", *map(str, args)),
             self.lease.path,
             remaining_timeout(deadline, 60),
             output_cap=self.output_cap,
             environment=docker_environment(self.admission["docker_host"]),
+            **options,
         )
         path = directory / ("cli-%03d.json" % len(list(directory.glob("cli-*.json"))))
         atomic_json(path, result)
@@ -609,7 +612,11 @@ class DockerExecutor:
                         raise
                     LOGGER.warning('Snapshot cleanup interrupted; preserving primary error: %s', type(error).__name__)
             finally:
-                cleanup = self._cleanup(directory)
+                cancel_event, self.cancel_event = self.cancel_event, None
+                try:
+                    cleanup = self._cleanup(directory)
+                finally:
+                    self.cancel_event = cancel_event
                 atomic_json(directory / "cleanup.json", cleanup)
                 if cleanup["status"] != "PASS":
                     raise RuntimeError("Docker cleanup failed: " + str(cleanup))

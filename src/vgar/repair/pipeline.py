@@ -24,8 +24,8 @@ def require_trusted_fixture(task):
 
 
 class DeadlineExecutor(NativeExecutor):
-    def __init__(self, lease, deadline, output_cap):
-        super().__init__(lease, output_cap)
+    def __init__(self, lease, deadline, output_cap, *, cancel_event=None):
+        super().__init__(lease, output_cap, cancel_event=cancel_event)
         self.deadline = deadline
 
     def run(self, argv, cwd, timeout_seconds):
