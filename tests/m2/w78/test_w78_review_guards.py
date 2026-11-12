@@ -1,43 +1,14 @@
 import time
-from types import SimpleNamespace
 
 import pytest
 from vgar.repair import contracts as m_contracts
-from vgar.repair import evidence as m_evidence
 from vgar.repair import executor as m_executor
-from vgar.models.huggingface import generator_hf as m_generator_hf
 from vgar.repair import patch as m_patch
-from vgar.repair import pipeline as m_pipeline
 from vgar.repair import verification as m_verification
 from vgar.repair import workspace as m_workspace
-from test_w78_pipeline import FIX
 
-
-def test_public_bundle_uses_assessed_tests_not_raw_exit_zero(m1_case, tmp_path):
-    task, _ = m1_case
-    run = m_evidence.begin_run(tmp_path / 'runs', 'repair', task_id=task.task_id, mode='fake')
-    run.record['stages']['baseline'] = {'required_ids': ['required'], 'tests': {'outcomes': {'required': 'FAIL', 'regression': 'PASS'}}}
-    command = dict(command='pytest', argv=['pytest'], timed_out=False, exit_code=0, duration_ms=1,
-        stdout='', stderr='', complete=True, output_truncated=False, stdout_bytes=0, stderr_bytes=0, timeout_seconds=1)
-    verification = {'status': 'ERROR', 'reasons': ['VERIFICATION_INCOMPLETE'],
-        'tests': {'status': 'PASS', 'command': command, 'outcomes': {'required': 'SKIP', 'regression': 'PASS'}, 'durations_ms': {}}}
-    lease = SimpleNamespace(before=m_workspace.inventory(task.source_repo), worktree_id='test-worktree')
-    bundle = m_pipeline._project_bundle(run, task, lease, None, verification)
-    assert bundle.verification.tests.status == 'ERROR'
-    assert bundle.verification.reasons[0].code == 'VERIFICATION_INCOMPLETE'
-    assert bundle.metadata['raw_pytest_status'] == 'PASS'
-
-
-def test_public_bundle_maps_unavailable_static_tool_to_not_run(m1_case, tmp_path):
-    # W10 stage 1, django-10914 (Python 3.6 testbed): mypy UNAVAILABLE must not break finalization.
-    task, _ = m1_case
-    run = m_evidence.begin_run(tmp_path / 'runs', 'repair', task_id=task.task_id, mode='fake')
-    run.record['stages']['baseline'] = {'required_ids': ['required'], 'tests': {'outcomes': {'required': 'FAIL'}}}
-    verification = {'status': 'FAIL', 'reasons': ['TEST_FAILED'],
-                    'static': {'mypy': {'status': 'UNAVAILABLE'}, 'ruff': {'status': 'PASS'}}}
-    lease = SimpleNamespace(before=m_workspace.inventory(task.source_repo), worktree_id='test-worktree')
-    bundle = m_pipeline._project_bundle(run, task, lease, None, verification)
-    assert bundle.verification.typecheck.status == 'NOT_RUN' and bundle.verification.lint.status == 'PASS'
+# The reference fix the removed test_w78_pipeline.py exported.
+FIX = '--- a/auth.py\n+++ b/auth.py\n@@ -1,2 +1,2 @@\n def login(value):\n-    return bool(value)\n+    return bool(value.strip())\n'
 
 
 def test_applied_diff_export_failure_is_error(m1_case, tmp_path):
@@ -59,15 +30,6 @@ def test_expired_workspace_budget_stops_before_git(m1_case, tmp_path):
     task, _ = m1_case
     with pytest.raises(TimeoutError, match='deadline'):
         m_workspace.create_workspace(task.source_repo, tmp_path / 'temp', deadline=time.monotonic()-1)
-
-
-
-def test_tokenizer_obeys_global_deadline_before_launch():
-    generator = SimpleNamespace(profile=SimpleNamespace(model_id='test', revision='test'))
-    tokenizer = m_generator_hf.HFChatTokenizer(generator, m_contracts.RepairPolicy())
-    tokenizer.deadline = time.monotonic()-1
-    with pytest.raises(TimeoutError, match='deadline'):
-        tokenizer.apply_chat_template([], tokenize=False, add_generation_prompt=True)
 
 
 @pytest.mark.parametrize('tool', ['mypy', 'ruff'])

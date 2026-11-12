@@ -21,14 +21,14 @@ def main():
     if "--require-no-langchain" in sys.argv and bad:
         raise RuntimeError(f"Forbidden runtime distributions: {bad}")
     classes = {}
-    for name in ("graph", "repository", "execution", "repair"):
+    for name in ("graph", "repository", "execution"):
         module = import_module(f"vgar.mcp.servers.{name}_server")
         classes[name] = type(module.mcp).__module__ + "." + type(module.mcp).__name__
         sdk_class = import_module("mcp.server").MCPServer if int(metadata.version("mcp").split(".")[0]) == 2 else import_module("mcp.server.fastmcp").FastMCP
         require(isinstance(module.mcp, sdk_class), "Incorrect SDK server inheritance")
     from vgar.mcp import registry
     from vgar.mcp.proposal.tools import CORE_TOOLS
-    require(len(registry.PUBLIC_TOOLS) == 20 and CORE_TOOLS <= registry.PUBLIC_TOOLS, "Core registry incomplete")
+    require(len(registry.PUBLIC_TOOLS) == 16 and CORE_TOOLS <= registry.PUBLIC_TOOLS, "Core registry incomplete")
     require("vgar.mcp.client" not in sys.modules, "Legacy client eagerly imported")
     bad_imports = sorted(n for n in sys.modules if n.split(".")[0].startswith(FORBIDDEN))
     require(not bad_imports, f"Forbidden runtime imports: {bad_imports}")

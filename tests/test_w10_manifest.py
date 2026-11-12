@@ -1,6 +1,5 @@
 """W10 locked dev manifest and the pinned SWE-bench (repo, version) -> test command table."""
 import copy
-import importlib.util
 import json
 from pathlib import Path
 
@@ -92,29 +91,6 @@ def test_committed_table_covers_dev_repos():
     assert table['swebench_version'] == '4.1.0'
     assert lookup(table, 'django/django', '1.11')['runner'] == 'django_runtests'
     assert lookup(table, 'sympy/sympy', '1.9')['runner'] == 'sympy_bin_test'
-
-
-def _script():
-    spec = importlib.util.spec_from_file_location('w9_inputs', ROOT/'scripts/prepare_w9_pilot_inputs.py')
-    module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
-    return module
-
-
-def test_w10_population_excludes_pilot_and_audits_versions(tmp_path):
-    from vgar.evaluation.retrieval.pilot_manifest import PILOT_IDS
-    script = _script()
-    ids = _dev_ids(4)
-    rows = _rows(ids) + [dict(_rows([PILOT_IDS[0]])[0])]
-    rows[0]['patch'] = rows[1]['patch'] = 'diff --git a/django/a.py b/django/a.py\n--- a/django/a.py\n+++ b/django/a.py\n@@ -1 +1 @@\n-a\n+b\n'
-    for row in rows[2:]:
-        row['patch'] = rows[0]['patch']
-    manifest = script.build_w10_manifest(rows, parquet_hash='sha256:'+'a'*64, count=3, table=_table_with('3.0'))
-    assert [t['instance_id'] for t in manifest['tasks']] and all(t['instance_id'] not in PILOT_IDS for t in manifest['tasks'])
-    assert len(manifest['tasks']) == 3
-    with pytest.raises(ValueError, match='django/django'):
-        script.build_w10_manifest([dict(r, version='0.1') for r in rows],
-                                  parquet_hash='sha256:'+'a'*64, count=3, table=_table_with('3.0'))
 
 
 def _table_with(version):

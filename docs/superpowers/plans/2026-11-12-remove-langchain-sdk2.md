@@ -26,8 +26,8 @@
 1. `vgar index` mất khi xóa `src/vgar/agents/` (hàm `index_repo` đang nằm ở `agents/runtime.py`) → người dùng không dựng được graph. Test: Task 1 `test_index_repo_lives_in_graph_package`, `test_cli_index_builds_a_database`.
 2. Import lười bên trong hàm còn trỏ tới module đã xóa (import-all không bắt được) → lỗi chỉ hiện khi gọi đúng nhánh. Test: Task 2/3/4 `test_no_reference_to_removed_modules` quét chuỗi trong `src/` và `scripts/`.
 3. Template Claude Code / Inspector hoặc `runtime.json` còn `vgar-repair` → host báo server không khởi động. Test: Task 4 `test_templates_list_exactly_three_servers`.
-4. Server dưới SDK2 thương lượng `2026-07-28` hoặc schema tool (ví dụ `Candidate`) khác SDK1 → agent gọi hỏng. Kiểm: Task 7 bước stdio ở cả `2026-07-28` và `legacy`.
-5. Hủy lời gọi giữa chừng dưới SDK2 vẫn làm host đóng kết nối. Kiểm: Task 8 bước hủy; ghi kết quả, không sửa SDK.
+4. Server dưới SDK2 thương lượng `2026-07-28` hoặc schema tool (ví dụ `Candidate`) khác SDK1 → agent gọi hỏng. Kiểm: Task 8 bước stdio ở cả `2026-07-28` và `legacy`.
+5. Hủy lời gọi giữa chừng dưới SDK2 vẫn làm host đóng kết nối. Kiểm: Task 9 bước hủy; ghi kết quả, không sửa SDK.
 
 ---
 
@@ -212,7 +212,16 @@ Mở rộng `test_new_modules_never_print` trong `test_tv2_no_stdout.py`: thêm 
 - [ ] **Step 4:** Chạy lại → PASS; `pytest -q tests/mcp_server tests/test_mcp_tool_contract.py` không lỗi mới.
 - [ ] **Step 5:** `docs/mcp_server/debugging.md`: bật log (`VGAR_MCP_LOG_LEVEL=DEBUG|INFO|WARNING` trong `env` của cấu hình host); nơi xem log — Claude Code: `%LOCALAPPDATA%\claude-cli-nodejs\Cache\<project>\mcp-logs-<server>\*.jsonl`, Claude Desktop: `%APPDATA%\Claude\logs\mcp*.log` (theo hướng dẫn), OpenCode: `opencode mcp list`; audit log `VGAR_MCP_AUDIT_LOG` (mọi lời gọi tool, dùng cho chỉ số MCP usability); MCP Inspector với Python (`npx @modelcontextprotocol/inspector --cli <python> -m vgar.mcp.servers.graph_server --protocol-era modern --method tools/list` — kiểm lệnh thật ở Task 7 trước khi ghi); lỗi thường gặp theo hướng dẫn: đường dẫn tuyệt đối, server stdio chỉ nhận một phần biến môi trường nên phải khai trong `env`, sai bản giao thức (`-32022`), và lỗi "Connection closed" khi hủy lời gọi (kết quả Task 8).
 
-### Task 7: Thử SDK2 trên venv tạm (ngoài repo)
+### Task 7: Bỏ engine sinh patch M2 (spec §4.1b)
+
+**Files:** Create `src/vgar/repair/deadline.py`, `src/vgar/evaluation/repair/prompt_fingerprint.py`, `src/vgar/evaluation/repair/prompts/repair_v11.txt` (git mv); Modify `src/vgar/mcp/proposal/diff_tests_provider.py`, `src/vgar/repair/docker_executor.py`, `src/vgar/evaluation/repair/{verifier_eval,fairness,manifest}.py`, `src/vgar/cli.py`; Delete theo spec §4.1b; Test `tests/test_tv2_removed_stack.py`.
+
+**Interfaces:** Produces `vgar.repair.deadline.{StopRun, require_trusted_fixture, DeadlineExecutor}` (thân giữ nguyên từ `pipeline.py`); `vgar.evaluation.repair.prompt_fingerprint.template_path(version: str) -> Path` (giữ nguyên hành vi `repair.prompt.template_path`).
+
+- [ ] **Step 1: Test lỗi** — thêm vào `REMOVED`: `"vgar.repair.pipeline"`, `"vgar.repair.session"`, `"vgar.repair.prompt"`, `"vgar.repair.failure"`, `"vgar.models"`, `"evaluation.repair.launch"`, `"evaluation.repair.runner"`, `"evaluation.repair.gpu"`, `"evaluation.repair.preflight"`, `"evaluation.repair.aggregate"`, `"evaluation.repair.derive_config"`, `"evaluation.dry_run"`, `"evaluation.agent_metrics"`, `"harness.candidates"`; thêm `test_verification_tools_survive`: import `vgar.evaluation.repair.{mutant_pool,verifier_eval,fairness,manifest}` và `vgar.repair.deadline` được; `template_path("m2-w78-v11")` trỏ tới `src/vgar/evaluation/repair/prompts/repair_v11.txt` có cùng SHA-256 với bản ở HEAD.
+- [ ] **Step 2:** chạy → FAIL. **Step 3:** chuyển/xóa theo spec; mỗi test xóa/cắt ghi ledger. **Step 4:** test mới PASS; `pytest -q tests/m2 tests/m3 tests/mcp_server` không lỗi mới ngoài test đã ghi ledger.
+
+### Task 8: Thử SDK2 trên venv tạm (ngoài repo)
 
 **Files:** không sửa ngoài code cần cho SDK2 (mỗi chỗ sửa là một ruling + test).
 
@@ -221,14 +230,14 @@ Mở rộng `test_new_modules_never_print` trong `test_tv2_no_stdout.py`: thêm 
 - [ ] **Step 3:** Mỗi lỗi mới: `superpowers:systematic-debugging`; sửa code dùng API chỉ có ở SDK1 bằng nhánh SDK2 theo mẫu `server_factory.py`; test SDK1-only (ví dụ dùng `mcp.client.stdio`/`ClientSession` khi SDK2 đổi API) sửa sang `from mcp import Client`. Ghi ruling.
 - [ ] **Step 4:** Stdio thật bằng venv tạm (đặt `VGAR_MCP_LOG_LEVEL=INFO`, kiểm stderr có dòng khởi động và dòng `tool=` cho từng lời gọi, stdout chỉ JSON-RPC; chạy thử lệnh Inspector của `debugging.md` nếu có `npx`): `vgar index` repo demo vào DB tạm; client SDK2 nối `graph_server` ở `2026-07-28` và `legacy`: liệt kê 11 tool, `search_symbols`, `get_callers(depth=2)`, `verify_patch_graph_constraints`, `rank_patch_candidates` (có `diff_hash`) → `PASS`, `backend = "sqlite"`; `execution_server.run_relevant_tests` → kết quả có `selectors`. `scripts/mcp_server/check_runtime.py --require-no-langchain` với venv tạm → PASS cho 3 server.
 
-### Task 8: Nâng `.venv` thật
+### Task 9: Nâng `.venv` thật
 
-- [ ] **Step 1:** Chỉ khi Task 7 đạt. `.venv/Scripts/python.exe -m pip uninstall -y langchain langchain-core langgraph langchain-huggingface langchain-mcp-adapters`; `pip install -e ".[dev,history]"` → `mcp 2.2.0`. Gói ML để nguyên (spec §5.2).
-- [ ] **Step 2:** Suite đầy đủ bằng `.venv` → cùng kết quả Task 7 Step 2.
+- [ ] **Step 1:** Chỉ khi Task 8 đạt. `.venv/Scripts/python.exe -m pip uninstall -y langchain langchain-core langgraph langchain-huggingface langchain-mcp-adapters`; `pip install -e ".[dev,history]"` → `mcp 2.2.0`. Gói ML để nguyên (spec §5.2).
+- [ ] **Step 2:** Suite đầy đủ bằng `.venv` → cùng kết quả Task 8 Step 2.
 - [ ] **Step 3:** Hủy lời gọi: client SDK2 gửi `notifications/cancelled` giữa `rank_patch_candidates`; ghi server có còn gửi phản hồi cho request đã hủy không (nguyên nhân "Connection closed" ở Claude Code) và server còn sống không. Chỉ ghi kết quả.
 - [ ] **Step 4:** Lệnh cho người dùng (không tự chạy): đổi `protocol` sang `"2026-07-28"` trong cấu hình OpenCode; `/mcp` kết nối lại trong Claude Code.
 
-### Task 9: Tài liệu và báo cáo
+### Task 10: Tài liệu và báo cáo
 
 **Files:** `README.md`, `.env.example` (bỏ phần agent/model LangChain nếu có), `docs/mcp_server/runtime.md` (bỏ đoạn "root metadata giữ MCP<2 và LangChain", chỉ còn 3 server), `docs/mcp_server/runbook.md` (bỏ repair server); Create `docs/status/tv2_remove_langchain_sdk2_run_2026-11-12.md`
 

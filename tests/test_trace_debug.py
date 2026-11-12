@@ -1,9 +1,7 @@
 """Spec 2026-11-03-m3-w12-trace §3.3/§5: [VGAR_TRACE] lines only in debug mode, with the run id; library noise filtered."""
 import json
-import logging
 
 from vgar.observability.instrumentation import emit, instrument_mcp_tool
-from vgar.observability.quiet import DropMessages
 
 RUN = "20261103T125416597686Z-ef3e99a9eb7c"
 
@@ -48,23 +46,6 @@ def test_mcp_output_run_id_from_result(monkeypatch, capsys):
     tool(task_path="t.json")
     rows = {r["event"]: r["run_id"] for r in _rows(capsys.readouterr().err)}
     assert rows["MCP_TOOL_OUTPUT"] == "R1" and rows["MCP_TOOL_END"] == "R1"
-
-
-def test_drop_messages_filter():
-    drop = DropMessages(("`torch_dtype` is deprecated",))
-    assert drop.filter(logging.makeLogRecord({"msg": "`torch_dtype` is deprecated! Use `dtype` instead!"})) is False
-    assert drop.filter(logging.makeLogRecord({"msg": "other warning"})) is True
-
-
-def test_phase_logger_is_silent_by_default(monkeypatch, capsys):
-    # [VGAR] PHASE_* lines of the core agent are debug output like [VGAR_TRACE] (trace spec §3.3, §6.1).
-    from vgar.observability import phase_logger
-    monkeypatch.delenv("VGAR_TRACE", raising=False)
-    phase_logger.emit("PHASE_START", run_id="r", phase="p")
-    assert "[VGAR]" not in capsys.readouterr().out
-    monkeypatch.setenv("VGAR_TRACE", "debug")
-    phase_logger.emit("PHASE_START", run_id="r", phase="p")
-    assert "[VGAR]" in capsys.readouterr().out
 
 
 def test_mcp_wrapper_never_breaks_a_tool_whose_data_is_not_a_dict(monkeypatch):

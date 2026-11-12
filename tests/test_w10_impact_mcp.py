@@ -74,6 +74,27 @@ def test_tool_needs_a_repository_root_and_a_snapshot_backend(snapshot, monkeypat
 
 
 def test_tool_is_listed_over_stdio():
-    from vgar.mcp.client import create_mcp_client
-    tools = asyncio.run(create_mcp_client(servers=('graph',)).get_tools())
-    assert 'graph_analyze_patch_impact' in {t.name for t in tools}
+    import os
+    import sys
+
+    from mcp.client.stdio import StdioServerParameters
+
+    from graph_fixture import real_graph_env
+
+    params = StdioServerParameters(command=sys.executable, args=["-B", "-m", "vgar.mcp.servers.graph_server"],
+                                   env={**os.environ, "PYTHONUTF8": "1", **real_graph_env()})
+
+    async def names():
+        try:
+            from mcp import Client  # SDK2
+        except ImportError:  # SDK1
+            from mcp import ClientSession
+            from mcp.client.stdio import stdio_client
+            async with stdio_client(params) as (read, write):
+                async with ClientSession(read, write) as session:
+                    await session.initialize()
+                    return {t.name for t in (await session.list_tools()).tools}
+        async with Client(params) as client:
+            return {t.name for t in (await client.list_tools()).tools}
+
+    assert "analyze_patch_impact" in asyncio.run(names())

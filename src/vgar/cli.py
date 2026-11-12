@@ -1,206 +1,30 @@
-"""VGAR command line: one entry point for settings, MCP tools and the agent.
+"""VGAR command line: settings and graph indexing.
 
-    vgar doctor                      # resolved settings, no model loaded
-    vgar tools                       # spawn MCP servers, list tools
-    vgar index REPO --db graph.db    # build graph snapshot
-    vgar run "Fix ..." --repo REPO --selector tests/test_x.py::test_y
-    vgar repair --task TASK.json --mode fake|real   # one-pass M2 repair, prints run record
-    vgar solve --task TASK.json [--mode fake|real]  # LangGraph flow calling the MCP repair server
-    vgar solve --task TASK.json --agent [--generator worker|agent]  # the agent chooses the repair tools
-    vgar chat --repo REPO            # interactive session on a disposable copy
+    vgar doctor                      # resolved settings
+    vgar index REPO --db graph.db    # build the graph snapshot the MCP graph server reads
 
-Agent commands never touch REPO: they index it, copy it to a temp workspace
-and let the agent edit only the copy. repair/solve apply the model's diff in
-a private worktree of the task's trusted fixture snapshot.
+The MCP servers (graph, execution, repository) run as their own processes;
+attach them to a coding agent (Claude Code, OpenCode) through its MCP config.
 """
 from __future__ import annotations
 
 import argparse
 import asyncio
 import json
-import os
-import shutil
 import sys
-import tempfile
-from contextlib import contextmanager
-from dataclasses import replace
 from pathlib import Path
 
-from vgar.observability.phase_logger import emit, new_run_id, phase, summarize
-
-from langchain_core.messages import AIMessage, BaseMessage, HumanMessage, ToolMessage
-from langchain_core.callbacks import BaseCallbackHandler
-
-from vgar.agents.runtime import index_repo
-from vgar.config.settings import Settings, get_settings
-
-
-# ----------------------------------------------------------------- shared helpers
-@contextmanager
-def sandbox_workspace(repo: Path, root: Path):
-    """Disposable private worktree copy of `repo` under `root` (M2 workspace)."""
-    from vgar.repair.workspace import create_workspace
-
-    with create_workspace(repo, root) as lease:
-        yield lease
-
-
-@contextmanager
-def sandbox(
-    repo: Path,
-    settings: Settings,
-    keep: bool = False,
-    *,
-    run_id: str | None = None,
-):
-    """Index `repo`, copy it to a disposable workspace, yield (settings, lease)."""
-    from vgar.repair.workspace import fingerprint_source
-
-    run_id = run_id or new_run_id()
-    work = Path(tempfile.mkdtemp(prefix="vgar-cli-"))
-    try:
-        with phase(
-            "index_repository",
-            run_id,
-            {"repo": str(repo), "graph_db": str(work / "graph.db")},
-        ) as log_output:
-            nodes = index_repo(repo, work / "graph.db")
-            print(f"[index] {nodes} nodes -> {work / 'graph.db'}", flush=True)
-            log_output({"node_count": nodes, "graph_db": str(work / "graph.db")})
-
-        sandboxed = replace(settings, graph=replace(settings.graph, backend="sqlite", database=work / "graph.db"))
-        with phase(
-            "create_workspace",
-            run_id,
-            {"source_repo": str(repo), "workspace_root": str(work / "ws")},
-        ) as log_output:
-            with sandbox_workspace(repo, work / "ws") as lease:
-                print(f"[workspace] {lease.path}", flush=True)
-                log_output({
-                    "workspace": str(lease.path),
-                    "source_hash_before": fingerprint_source(lease.path),
-                })
-                yield sandboxed, lease
-    finally:
-        if keep:
-            print(f"[kept] {work}")
-        else:
-            shutil.rmtree(work, ignore_errors=True)
-
-
-async def build_agent(settings: Settings, *, run_id: str | None = None, **options):
-    """`options` (servers, extra_env, exclude_tools, model) go to create_core_agent unchanged."""
-    from vgar.agents.core import create_core_agent
-    run_id = run_id or new_run_id()
-    with phase("build_agent", run_id, {"settings_type": type(settings).__name__}) as log_output:
-        agent = await create_core_agent(settings, run_id=run_id, **options)
-        log_output({"agent_type": type(agent).__name__})
-        return agent
-
-
-class AgentDebugCallback(BaseCallbackHandler):
-    """Duck-typed LangChain callback handler; logs LLM/tool lifecycle live."""
-    def __init__(self, run_id: str):
-        self.run_id = run_id
-
-    def on_llm_start(self, serialized, prompts, **kwargs):
-        emit(
-            "LLM_START",
-            run_id=self.run_id,
-            phase="model_call",
-            model=(serialized or {}).get("name") or (serialized or {}).get("id"),
-            prompt_count=len(prompts or []),
-            prompt_chars=[len(p) for p in (prompts or [])],
-        )
-
-    def on_chat_model_start(self, serialized, messages, **kwargs):
-        emit(
-            "LLM_START",
-            run_id=self.run_id,
-            phase="model_call",
-            model=(serialized or {}).get("name") or (serialized or {}).get("id"),
-            message_batches=len(messages or []),
-            message_counts=[len(batch) for batch in (messages or [])],
-        )
-
-    def on_llm_end(self, response, **kwargs):
-        emit("LLM_END", run_id=self.run_id, phase="model_call", status="OK")
-
-    def on_llm_error(self, error, **kwargs):
-        emit(
-            "LLM_ERROR", run_id=self.run_id, phase="model_call",
-            error_type=type(error).__name__, error_message=str(error),
-        )
-
-    def on_tool_start(self, serialized, input_str, **kwargs):
-        emit(
-            "TOOL_START",
-            run_id=self.run_id,
-            phase=(serialized or {}).get("name", "tool"),
-            input_contract={"input": input_str[:500]},
-        )
-
-    def on_tool_end(self, output, **kwargs):
-        emit(
-            "TOOL_END",
-            run_id=self.run_id,
-            phase="tool",
-            output_contract={"output": str(output)[:500]},
-        )
-
-    def on_tool_error(self, error, **kwargs):
-        emit(
-            "TOOL_ERROR", run_id=self.run_id, phase="tool",
-            error_type=type(error).__name__, error_message=str(error),
-        )
-
-
-def task_prompt(query: str, workspace: Path, selector: str | None) -> str:
-    lines = [query, "", f"Repository working copy (repository_* and execution_* tools are already rooted here): {workspace}"]
-    if selector:
-        lines.append(f"Test selector: {selector}")
-    lines.append("Never claim success without execution_run_pytest evidence.")
-    return "\n".join(lines)
-
-
-def print_trace(messages: list[BaseMessage], start: int = 0) -> int:
-    calls = 0
-    for m in messages[start:]:
-        if isinstance(m, AIMessage):
-            for tc in m.tool_calls or []:
-                calls += 1
-                print(f"  -> {tc['name']}({json.dumps(tc['args'], ensure_ascii=False)[:140]})")
-        elif isinstance(m, ToolMessage):
-            print(f"  <- {m.name} [{m.status}] {str(m.content)[:110]!r}")
-    return calls
-
-
-def final_text(messages: list[BaseMessage]) -> str:
-    return next((str(m.content) for m in reversed(messages) if isinstance(m, AIMessage) and not m.tool_calls), "")
+from vgar.config.settings import get_settings
+from vgar.graph.indexing import index_repo
 
 
 # --------------------------------------------------------------------- commands
 async def cmd_doctor(args: argparse.Namespace) -> int:
     s = get_settings()
     print(json.dumps({
-        "model": vars(s.model), "agent": vars(s.agent),
         "graph": {k: str(v) for k, v in vars(s.graph).items()}, "audit_log": str(s.audit_log),
     }, indent=2, ensure_ascii=False))
-    print(f"HF_TOKEN set: {bool(os.environ.get('HF_TOKEN'))}")
     return 0
-
-
-async def cmd_tools(args: argparse.Namespace) -> int:
-    from vgar.mcp import create_mcp_client
-
-    from vgar.mcp.registry import validate_public_tools
-
-    tools = await create_mcp_client(get_settings()).get_tools()
-    validate_public_tools(tools)
-    for t in sorted(tools, key=lambda t: t.name):
-        print(f"  {t.name}")
-    print(f"{len(tools)} tools")
-    return 0 if tools else 1
 
 
 async def cmd_index(args: argparse.Namespace) -> int:
@@ -208,301 +32,23 @@ async def cmd_index(args: argparse.Namespace) -> int:
     return 0
 
 
-async def cmd_run(args: argparse.Namespace) -> int:
-    from vgar.repair.executor import NativeExecutor
-    from vgar.repair.test_runner import run_tests
-    from vgar.repair.workspace import fingerprint_source
-
-    run_id = new_run_id()
-    repo = Path(args.repo).resolve()
-    settings = get_settings()
-    with phase("fingerprint_source_before", run_id, {"repo": str(repo)}) as log_output:
-        before = fingerprint_source(repo)
-        log_output({"fingerprint_available": before is not None})
-
-    with sandbox(repo, settings, args.keep, run_id=run_id) as (s, lease):
-        workspace_before = fingerprint_source(lease.path)
-        lease_env = {"VGAR_LEASE_ROOT": str(lease.path),
-                     "VGAR_ALLOWED_SELECTORS": json.dumps([args.selector] if args.selector else [])}
-        agent = await build_agent(s, run_id=run_id, servers=("graph", "repository", "execution"), extra_env=lease_env)
-        callback = AgentDebugCallback(run_id)
-        prompt = task_prompt(args.query, lease.path, args.selector)
-        with phase(
-            "agent_ainvoke",
-            run_id,
-            {
-                "query": args.query,
-                "repo": str(lease.path),
-                "selector": args.selector,
-                "prompt_chars": len(prompt),
-                "recursion_limit": s.agent.recursion_limit,
-            },
-        ) as log_output:
-            result = await agent.ainvoke(
-                {"messages": [HumanMessage(content=prompt)]},
-                config={
-                    "recursion_limit": s.agent.recursion_limit,
-                    "callbacks": [callback],
-                    "metadata": {"vgar_run_id": run_id},
-                },
-            )
-            messages = result["messages"]
-            log_output({
-                "message_count": len(messages),
-                "message_types": [type(m).__name__ for m in messages],
-                "final_answer_chars": len(final_text(messages)),
-            })
-
-        print("\n--- tool trace ---", flush=True)
-        calls = print_trace(messages)
-        print(f"\nagent says: {final_text(messages)[:500]}", flush=True)
-
-        ok = False  # D9: without an independent check the run is never reported as verified
-        if calls > s.agent.max_tool_calls:
-            print(f"[WARN] {calls} tool calls > budget {s.agent.max_tool_calls}", flush=True)
-        if args.selector:  # never trust the agent's own claim
-            with phase(
-                "independent_verification",
-                run_id,
-                {"workspace": str(lease.path), "selectors": [args.selector], "timeout_seconds": 120},
-            ) as log_output:
-                verdict = run_tests(lease, (args.selector,), NativeExecutor(lease), 120)
-                ok = verdict["status"] == "PASS"
-                log_output({
-                    "status": verdict["status"],
-                    "outcomes": verdict["outcomes"],
-                    "exit_code": verdict["command"]["exit_code"],
-                })
-                print(f"[verify] independent pytest: {verdict['status']}", flush=True)
-        else:
-            print("[verify] UNVERIFIED: no selector", flush=True)
-
-        with phase("workspace_change_check", run_id, {"workspace": str(lease.path)}) as log_output:
-            changed = fingerprint_source(lease.path) != workspace_before
-            log_output({"workspace_modified": changed})
-            print(f"[verify] workspace modified: {changed}", flush=True)
-
-    with phase("source_repo_integrity_check", run_id, {"repo": str(repo)}) as log_output:
-        untouched = fingerprint_source(repo) == before
-        log_output({"source_repo_untouched": untouched})
-        print(f"[verify] source repo untouched: {untouched}", flush=True)
-    emit(
-        "RUN_END",
-        run_id=run_id,
-        phase="run",
-        status="OK" if ok and untouched else ("UNVERIFIED" if not args.selector else "FAILED"),
-        verified=ok,
-        source_repo_untouched=untouched,
-    )
-    if not args.selector:
-        return 2
-    return 0 if ok and untouched else 1
-
-
-async def cmd_repair(args: argparse.Namespace) -> int:
-    """One-pass M2 repair on a trusted fixture task; prints the run record path."""
-    from vgar.repair.config import load_config, load_task
-    from vgar.repair.diagnostics import exception_details
-    from vgar.repair.evidence import begin_run
-    from vgar.repair.pipeline import build_generation, run_repair
-
-    try:
-        if bool(args.supersedes_run_id) != bool(args.rerun_reason):
-            raise ValueError("Manual rerun requires both prior run ID and reason")
-        task = load_task(args.task)
-        policy, profile = load_config(args.config)
-        generator, tokenizer, counter = build_generation(args.mode, task, policy, profile, args.output_root)
-        result = run_repair(task, policy, generator, None, args.output_root,
-                            m1_counter=counter, tokenizer=tokenizer,
-                            profile=profile if args.mode == "real" else None,
-                            keep_workspace=args.keep_workspace, supersedes_run_id=args.supersedes_run_id,
-                            rerun_reason=args.rerun_reason)
-    except Exception as error:
-        result = begin_run(args.output_root, "repair-config-error", mode=args.mode,
-                           requested_task=str(args.task), requested_config=str(args.config))
-        result.finish("ERROR", reason=str(error), error_type=type(error).__name__, **exception_details(error))
-    print(result.path, flush=True)
-    return {"PASS": 0, "FAIL": 1, "ERROR": 2}[result.record["status"]]
-
-
-async def cmd_solve(args: argparse.Namespace) -> int:
-    """LangGraph workflow: initialize -> one M2 pipeline run -> finalize/failed."""
-    from vgar.agents.runtime import Runtime
-    from vgar.agents.workflow import run_task
-
-    if args.agent:
-        return await cmd_solve_agent(args)
-    run_id = new_run_id()
-    with phase(
-        "solve_workflow",
-        run_id,
-        {"task": str(Path(args.task).resolve()), "mode": args.mode, "keep_workspace": args.keep},
-    ) as log_output:
-        state = await run_task(task_path=args.task, runtime=Runtime(mode=args.mode, keep_workspace=args.keep,
-                                                                    output_root=args.output_root))
-        log_output({
-            "status": state.get("status"),
-            "attempts": state.get("attempts", 0),
-            "repair_status": state.get("repair_status"),
-            "run_record_path": state.get("run_record_path"),
-            "failure_reason": state.get("failure_reason"),
-        })
-    print(f"[status] {state['status']} after {state.get('attempts', 0)} attempt(s)", flush=True)
-    print(f"[run] {state.get('run_record_path')}", flush=True)
-    if state.get("failure_reason"):
-        print(f"[reason] {state['failure_reason']}")
-    return 0 if state["status"] == "COMPLETED" else 1
-
-
-def _task_audit(trace_path: Path) -> dict | None:
-    """Audit completeness of one solve --agent trace against VGAR_MCP_AUDIT_LOG; None when there is no log."""
-    from vgar.evaluation.agent_metrics import audit_completeness, load_trace
-    name = os.getenv("VGAR_MCP_AUDIT_LOG")
-    if not name or not Path(name).is_file():
-        return None
-    lines = [json.loads(line) for line in Path(name).read_text(encoding="utf-8").splitlines() if line.strip()]
-    return audit_completeness(load_trace(trace_path), lines)
-
-
-async def cmd_solve_agent(args: argparse.Namespace) -> int:
-    """Agent mode: the agent chooses the repair tools; diffs still come from the V11 generator."""
-    from vgar.agents.runtime import Runtime
-    from vgar.agents.tool_agent import run_agent_task
-
-    runtime = Runtime(mode=args.mode, keep_workspace=args.keep, output_root=args.output_root,
-                      generator_choice=args.generator or "worker",
-                      **({"config_path": args.config} if args.config else {}))
-    task_path, run_args = args.task, None
-    if args.experiment:  # S15/D20: an admitted SWE-bench task, planned and admitted like the runner does
-        from vgar.agents.admitted import prepare_admitted_task
-        from vgar.agents.fakes import ScriptedPatchGenerator
-        prepared = prepare_admitted_task(args.experiment, args.task_id, args.variant, args.data_root,
-                                         Path(args.output_root) / "tasks")
-        task_path, run_args, runtime.config_path = prepared.task_path, prepared.run_args, prepared.config_path
-        runtime.experiment_id = prepared.experiment_id
-        if args.mode == "fake":  # smoke only: the given patch stands in for the generator
-            runtime.generator = ScriptedPatchGenerator([Path(args.scripted_patch).read_text(encoding="utf-8")])
-    from vgar.agents import trace_report
-    from vgar.agents.tool_agent import MAX_ATTEMPTS
-
-    def console(kind: str, payload: dict) -> None:  # spec 2026-11-03-m3-w12-trace §3.1
-        if kind == "header":
-            lines = trace_report.render_header(payload)
-        elif kind == "turn":
-            lines = [trace_report.render_turn(payload)]
-        else:
-            lines = [trace_report.render_step(kind, payload, MAX_ATTEMPTS)]
-        print("\n".join(lines), flush=True)
-
-    result = await run_agent_task(task_path=task_path, runtime=runtime, run_args=run_args, on_event=console)
-    try:
-        trace = json.loads(Path(result["trace_path"]).read_text(encoding="utf-8"))
-        print("\n".join(trace_report.render_result(trace, audit=_task_audit(Path(result["trace_path"])))),
-              flush=True)
-    except Exception as exc:  # the console never changes the exit code
-        print(f"[console] result block unavailable: {type(exc).__name__}", flush=True)
-    print(f"[status] {result['status']} after {result['attempts']} attempt(s)", flush=True)
-    print(f"[run] {result.get('run_record_path')}", flush=True)
-    print(f"[trace] {result['trace_path']}", flush=True)
-    if result.get("failure_reason"):
-        print(f"[reason] {result['failure_reason']}")
-    return 0 if result["status"] == "COMPLETED" else 1
-
-
-async def cmd_chat(args: argparse.Namespace) -> int:
-    """Chat on a declared task: the agent edits only through repair_*; the engine verdict is the outcome."""
-    from vgar.agents.chat import run_chat
-    from vgar.agents.runtime import Runtime
-
-    def lines():
-        print("Type a request (empty line or Ctrl-D to finish).")
-        while True:
-            try:
-                text = input("\nyou> ").strip()
-            except EOFError:
-                return
-            if not text:
-                return
-            yield text
-
-    runtime = Runtime(mode=args.mode, keep_workspace=args.keep, output_root=args.output_root,
-                      **({"config_path": args.config} if args.config else {}))
-    result = await run_chat(args.task, runtime, lines())
-    return 0 if result["verdict"] == "PASS" else 1
-
-
-# -------------------------------------------------------------------------- main
 def parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(prog="vgar", description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = p.add_subparsers(dest="command", required=True)
     sub.add_parser("doctor", help="print resolved settings").set_defaults(fn=cmd_doctor)
-    sub.add_parser("tools", help="list MCP tools").set_defaults(fn=cmd_tools)
 
     ix = sub.add_parser("index", help="build graph snapshot")
     ix.add_argument("repo")
     ix.add_argument("--db", default="artifacts/graph.db")
     ix.set_defaults(fn=cmd_index)
 
-    from vgar.repair.config import CONFIG_DIR, REPO_ROOT
-
-    rp = sub.add_parser("repair", help="one-pass M2 repair of a trusted fixture task (no MCP, no retry)")
-    rp.add_argument("--task", type=Path, required=True)
-    rp.add_argument("--config", type=Path, default=CONFIG_DIR / "demo.json")
-    rp.add_argument("--mode", choices=("fake", "real"), required=True)
-    rp.add_argument("--output-root", type=Path, default=REPO_ROOT / "results/repair")
-    rp.add_argument("--keep-workspace", action="store_true")
-    rp.add_argument("--supersedes-run-id")
-    rp.add_argument("--rerun-reason")
-    rp.set_defaults(fn=cmd_repair)
-
-    sv = sub.add_parser("solve", help="LangGraph workflow running the M2 pipeline once on a task file")
-    sv.add_argument("--task", type=Path, help="task JSON (trusted fixture); or use --experiment/--task-id")
-    sv.add_argument("--mode", choices=("fake", "real"), default="fake")
-    sv.add_argument("--keep", action="store_true", help="keep temp dir")
-    sv.add_argument("--output-root", type=Path, default=REPO_ROOT / "results/solve")
-    sv.add_argument("--agent", action="store_true", help="let the agent choose the repair tools")
-    sv.add_argument("--generator", choices=("worker", "agent"),
-                    help="with --agent: diff from the M2 worker (default) or the agent's own model")
-    sv.add_argument("--experiment", type=Path, help="with --agent: M3 experiment config of a SWE-bench task (S15)")
-    sv.add_argument("--task-id", help="with --experiment: task to plan and admit")
-    sv.add_argument("--variant", default="A2", help="with --experiment: variant whose policy the runs use")
-    sv.add_argument("--data-root", type=Path, default=REPO_ROOT / "data", help="with --experiment: '@data' root")
-    sv.add_argument("--config", type=Path, help="with --agent: repair config (default: configs/m2/demo.json)")
-    sv.add_argument("--scripted-patch", type=Path,
-                    help="with --experiment --mode fake: patch file used instead of the generator (smoke only)")
-    sv.set_defaults(fn=cmd_solve)
-
-    rn = sub.add_parser("run", help="run the agent read-only on a disposable copy of --repo (no code edits)")
-    rn.add_argument("query")
-    rn.add_argument("--repo", required=True)
-    rn.add_argument("--selector", help="pytest selector, e.g. tests/test_x.py::test_y (without it: UNVERIFIED)")
-    rn.add_argument("--keep", action="store_true", help="keep temp dir")
-    rn.set_defaults(fn=cmd_run)
-
-    ch = sub.add_parser("chat", help="chat with the agent on a declared task; edits go through the M2 engine")
-    ch.add_argument("--task", type=Path, required=True, help="task JSON, e.g. examples/m2/tasks/single_file_login.json")
-    ch.add_argument("--config", type=Path, help="repair config (default: configs/m2/demo.json)")
-    ch.add_argument("--mode", choices=("fake", "real"), default="real")
-    ch.add_argument("--output-root", type=Path, default=REPO_ROOT / "results/chat")
-    ch.add_argument("--keep", action="store_true", help="keep temp dir")
-    ch.set_defaults(fn=cmd_chat)
     return p
 
 
 def main(argv: list[str] | None = None) -> int:
     if hasattr(sys.stdout, "reconfigure"):
         sys.stdout.reconfigure(encoding="utf-8", errors="replace")
-    p = parser()
-    args = p.parse_args(argv)
-    if args.command == "solve":
-        if args.generator and not args.agent:
-            p.error("--generator requires --agent")
-        if args.experiment and not (args.agent and args.task_id):
-            p.error("--experiment requires --agent and --task-id")
-        if args.experiment and args.mode == "fake" and not args.scripted_patch:
-            p.error("--experiment --mode fake requires --scripted-patch")
-        if not args.experiment and not args.task:
-            p.error("solve requires --task (or --agent --experiment --task-id)")
+    args = parser().parse_args(argv)
     return asyncio.run(args.fn(args))
 
 

@@ -276,7 +276,7 @@ def test_tool_description_mentions_ports_and_args() -> None:
     tool = next(t for t in asyncio.run(graph_server.mcp.list_tools()) if t.name == "analyze_patch_impact")
     assert "Port" in tool.description and "port_check" in tool.description
     for name in ("diff", "graph_version", "max_hops", "max_nodes"):
-        assert name in tool.description and name in tool.inputSchema["properties"]
+        assert name in tool.description and name in (getattr(tool, "input_schema", None) or tool.inputSchema)["properties"]
 
 
 def test_check_writes_nothing_to_stdout(tmp_path: Path, capfd: pytest.CaptureFixture[str]) -> None:

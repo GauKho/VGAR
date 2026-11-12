@@ -1,5 +1,7 @@
 # VGAR MCP — Runbook preflight và bàn giao L6-8
 
+> **Cập nhật 12/11/2026 (TV2, quyết định của nhóm):** repo chỉ còn **3 server** (`graph`, `repository`, `execution`); `repair_server`, client LangChain (`create_mcp_client`), agent và generator Qwen đã bị xóa. `pyproject.toml` ghim `mcp==2.2.0` (đúng `requirements/mcp-server.lock`), nên **một `.venv` duy nhất** chạy server SDK2: `pip install -e ".[dev,history,code-graph]"`. Lane SDK1/LangChain bên dưới chỉ còn là lịch sử nghiệm thu L6-1. Chi tiết: `docs/superpowers/specs/2026-11-12-remove-langchain-sdk2-design.md`, báo cáo `docs/status/tv2_remove_langchain_sdk2_run_2026-11-12.md`; debug và logging: `docs/mcp_server/debugging.md`.
+
 Ngày: **09/11/2026 (Asia/Saigon)**. Task này chỉ thực hiện **offline preflight**, không cài client/package, login, gọi model hoặc nghiệm thu toàn bộ L6-8.
 
 ## Các mức kết quả

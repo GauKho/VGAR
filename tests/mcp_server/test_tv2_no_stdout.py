@@ -17,7 +17,10 @@ REF = (ROOT / "tests" / "fixtures" / "m2" / "reference_patches" / "single_file_l
 
 
 def test_new_modules_never_print():
-    for path in ("src/vgar/repair/patch_evidence.py", "src/vgar/graph/sqlite_service.py", "src/vgar/graph/factory.py"):
+    for path in ("src/vgar/repair/patch_evidence.py", "src/vgar/graph/sqlite_service.py", "src/vgar/graph/factory.py",
+                 "src/vgar/mcp/tooling.py", "src/vgar/mcp/logging_setup.py", "src/vgar/mcp/server_factory.py",
+                 "src/vgar/mcp/servers/graph_server.py", "src/vgar/mcp/servers/execution_server.py",
+                 "src/vgar/mcp/servers/repository_server.py"):
         assert "print(" not in (ROOT / path).read_text(encoding="utf-8"), path
 
 

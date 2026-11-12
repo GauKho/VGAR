@@ -15,14 +15,14 @@ NEW = {
 def test_core_inventory_adds_five_without_removing_legacy():
     oracle = json.loads((ROOT / "tests/fixtures/mcp_server/expected_contract.json").read_text(encoding="utf-8"))
     total = 0
-    for server in ("graph", "repository", "execution", "repair"):
+    for server in ("graph", "repository", "execution"):
         tree = ast.parse((ROOT / f"src/vgar/mcp/servers/{server}_server.py").read_text(encoding="utf-8"))
         names = {n.name for n in tree.body if isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef))
                  and any(isinstance(d, ast.Call) and isinstance(d.func, ast.Attribute) and d.func.attr == "tool" for d in n.decorator_list)}
         legacy = {x["name"] for x in oracle["legacy_surface"] if x["server"] == server}
         assert names == legacy | NEW.get(server, set())
         total += len(names)
-    assert total == 20
+    assert total == 16
 
 
 def test_depth_one_payload_is_legacy_but_depth_two_cannot_lie(monkeypatch, tmp_path):

@@ -8,13 +8,7 @@ import threading
 
 import pytest
 
-from w78_support import CharacterChatTokenizer
-from vgar.repair import contracts as m_contracts
-from vgar.repair import evidence as m_evidence
-from vgar.models import generator as m_generator
-from vgar.repair import pipeline as m_pipeline
 from vgar.repair import workspace as m_workspace
-from test_w78_pipeline import FIX
 
 
 def owned_tree(tmp_path):
@@ -113,35 +107,6 @@ def test_cleanup_ownership_guard_runs_before_any_delete_or_log(tmp_path):
         module._remove_owned(private, tmp_path / 'different-root')
     assert (private / 'seed' / 'app.py').read_bytes() == b'value = 1\n'
     assert not (root / '.cleanup-records').exists()
-
-
-@pytest.mark.parametrize('blocked', [False, True])
-def test_pipeline_links_cleanup_evidence_and_never_passes_a_locked_workspace(m1_case, tmp_path, monkeypatch, blocked):
-    task, counter = m1_case
-    original = os.rmdir
-
-    def rmdir(path, *args, **kwargs):
-        if blocked and is_seed(path):
-            raise windows_error(32, path)
-        return original(path, *args, **kwargs)
-
-    monkeypatch.setattr(os, 'rmdir', rmdir)
-    run = m_pipeline.run_repair(task, m_contracts.RepairPolicy(),
-        m_generator.FakeGenerator(FIX), None, tmp_path / 'runs',
-        m1_counter=counter, tokenizer=CharacterChatTokenizer(), temp_root=tmp_path / 'temp')
-    record = json.loads(run.path.read_text(encoding='utf-8'))
-    assert record['status'] == ('ERROR' if blocked else 'PASS')
-    assert record['original_source_unchanged'] is True
-    cleanup = record['stages']['cleanup']
-    assert cleanup['status'] == ('ERROR' if blocked else 'PASS')
-    assert cleanup == json.loads(Path(cleanup['diagnostics_path']).read_text(encoding='utf-8'))
-    if blocked:
-        assert len(cleanup['attempts']) == 6
-        assert record['reason'] == 'FINALIZATION_ERROR'
-        assert record['finalization_errors'][0]['stage'] == 'cleanup'
-        assert 'PermissionError' in record['finalization_errors'][0]['traceback']
-    bundle = json.loads((run.directory / record['artifacts']['bundle']).read_text(encoding='utf-8'))
-    assert bundle['metadata']['canonical_sha256'] == m_evidence.digest(run.path.read_bytes())
 
 
 @pytest.mark.skipif(os.name != 'nt', reason='Real Windows directory sharing handle')

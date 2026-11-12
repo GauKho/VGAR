@@ -9,7 +9,7 @@ Repo chỉ còn phục vụ **3 server MCP** (graph, execution, repository) đ�
 ## 2. Mục tiêu
 
 1. `pyproject.toml` không còn `langchain`, `langgraph`, `langchain-huggingface`, `langchain-mcp-adapters`; `mcp` ghim `==2.2.0` (đúng `requirements/mcp-server.lock` của TV1).
-2. Một `.venv` duy nhất chạy được: `vgar index`, `vgar doctor`, `vgar repair --mode fake`, 3 server MCP qua stdio, và giao thức `2026-07-28`.
+2. Một `.venv` duy nhất chạy được: `vgar index`, `vgar doctor`, 3 server MCP qua stdio, và giao thức `2026-07-28`.
 3. Suite: không có lỗi mới so với baseline (32 lỗi hiện tại); 29 lỗi do thiếu SDK2 phải chuyển sang PASS hoặc được giải thích từng cái.
 4. Server vẫn chạy trên graph thật (giữ nguyên kết quả đợt nối layer 11–12/11).
 5. Logging và debug theo hướng dẫn build-server `2026-07-28` (yêu cầu người dùng 12/11): không ghi stdout; `logging.getLogger(__name__)` ở mọi module server; log ra stderr để host thu; không dùng logging qua giao thức (deprecated ở `2026-07-28`); mức log bật bằng `VGAR_MCP_LOG_LEVEL` (mặc định `WARNING`); có `docs/mcp_server/debugging.md` (Inspector, nơi xem log của Claude Code / Claude Desktop / OpenCode, audit log, lỗi thường gặp).
@@ -42,6 +42,21 @@ Repo chỉ còn phục vụ **3 server MCP** (graph, execution, repository) đ�
 - `src/vgar/models/{base,config,generator}.py`: `FakeGenerator` cho chế độ `fake` và test engine M2.
 - Script của TV1 `scripts/mcp_server/{check_runtime,_runtime_probe,_runtime_worker,smoke_mcp,_preflight_worker}.py`: công cụ kiểm runtime server MCP (L6-1, L6-8); chỉ nhắc LangChain để kiểm "venv không có LangChain".
 - `session.py` quét `src/vgar/agents/prompts` để lấy fingerprint; thư mục mất thì `rglob` trả rỗng, không lỗi, nên không cần sửa.
+
+### 4.1b Engine sinh patch M2 (bổ sung 12/11, người dùng chọn "bỏ ngay trong đợt này": build MCP, không phải agentic AI)
+
+Server MCP chỉ kéo engine sinh patch vì `diff_tests_provider.py` (EV-3, TV3) và `docker_executor.py` import `DeadlineExecutor`, `require_trusted_fixture` từ `repair/pipeline.py`.
+
+- **Chuyển** `StopRun`, `require_trusted_fixture`, `DeadlineExecutor` sang `src/vgar/repair/deadline.py`; sửa import ở `diff_tests_provider.py`, `docker_executor.py`, `evaluation/repair/verifier_eval.py`.
+- **Xóa** (vòng sinh patch bằng mô hình và chiến dịch chạy nó): `repair/{pipeline,session,prompt,failure}.py`, `models/` (toàn bộ), lệnh `vgar repair` (CLI còn `doctor`, `index`), `evaluation/repair/{launch,runner,gpu,preflight,aggregate,derive_config}.py`, `evaluation/{dry_run,agent_metrics}.py`, `evaluation/harness/candidates.py`; script `run_repair_experiment.py`, `derive_experiment_config.py`, `dry_run_heldout_chain.py`, `grade_repair_candidates.py`, `aggregate_agent_traces.py`; test chỉ kiểm các phần trên.
+- **Giữ** phép đo Verification của plan 2 tuần (tuần 2 ngày 4: `build_mutant_pool.py`, `evaluate_mutant_pool.py`; pilot V1 của TV3 dùng `verifier_eval.confusion_metrics`): `evaluation/repair/{mutant_pool,verifier_eval,fairness,manifest}.py`. Hai file sau hash mẫu prompt V11 làm dấu vân tay cấu hình thí nghiệm, nên mẫu `repair_v11.txt` và hàm `template_path` chuyển sang `src/vgar/evaluation/repair/prompt_fingerprint.py` (+ `src/vgar/evaluation/repair/prompts/repair_v11.txt`, giữ nguyên từng byte): chỉ dùng để hash, không dựng prompt.
+
+### 4.1c Code chết của plan 16 tuần (bổ sung 12/11, người dùng chốt danh sách)
+
+Chỉ giữ file của plan 2 tuần và proposal. Xóa kèm test:
+- Script: `run_agent.py`, `accept_m1_tokenizer.py`, `provision_m1_tokenizer.py`, `export_m1_handoff.py`, `consume_m1_handoff.py`, `demo_w7_w8_handoff.py`, `package_m1.py`, `run_m1_tests.py`, `smoke_w5_w6_resolvers.py`, `build_w9_bundle_fixture.py`, `export_w9_pilot_bundles.py`, `prepare_w9_pilot_inputs.py`, `analyze_repair_timeouts.py`, `compare_tune_steps.py`, `check_results_sources.py`, `smoke_real_repo_graph.py`, `find_task_anchors.py`, `visualize_graph.py`.
+- `src`: `evaluation/results_sources.py`, `graph/visualization.py`, `config/logging.py`; cùng module `src` chỉ các file trên dùng (mồ côi sau khi xóa).
+- Giữ (plan 2 tuần dùng): `build_graph.py` + `load_graph_fixture.py` (dựng graph đủ tùy chọn JARVIS/Joern/SCIP rồi nạp SQLite), `get_related_context.py`, `build_task_overlay.py`, script RT-1/TR-1/SC-1 của TV2, `audit_mypy_deltas.py`, `graph/ast_diff.py` (TV3 L4-4), script chuẩn bị môi trường SWE-bench (`prepare_manifest.py`, `prepare_task_env.py`, `pin_task_images.py`, `build_swebench_test_cmds.py`), `grade_repair_candidates.py`, `aggregate_agent_traces.py`.
 
 ### 4.2 Test
 

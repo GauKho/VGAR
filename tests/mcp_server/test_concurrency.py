@@ -116,32 +116,6 @@ def test_repo_guards_serialize_threads_and_publication_compare_revision(bound):
     assert p.read_bytes()==before
 
 
-def test_two_real_repair_calls_apply_once(tmp_path,monkeypatch):
-    from concurrent.futures import ThreadPoolExecutor
-
-    from vgar.mcp.audit import AuditLogger
-    from vgar.mcp.servers import repair_server as server
-    root=Path(__file__).resolve().parents[2]
-    monkeypatch.setenv("PYTHONPATH",str(root/"src"))
-    monkeypatch.setenv("VGAR_RUN_ROOT",str(tmp_path))
-    monkeypatch.setattr(server,"_audit_logger",AuditLogger(tmp_path/"audit.jsonl"))
-    opened=server.get_task_context(str(root/"examples/m2/tasks/single_file_login.json"),"fake",str(tmp_path/"runs"),str(tmp_path/"work"))
-    assert opened["status"]=="PASS" and opened["data"]["verdict"]=="PASS",opened
-    run=opened["data"]["run_dir"];patch=(root/"tests/fixtures/m2/reference_patches/single_file_login.diff").read_text(encoding="utf-8")
-    gate=threading.Barrier(2)
-    def apply():
-        gate.wait(timeout=15)
-        return server.apply_patch(run,patch)
-    with ThreadPoolExecutor(max_workers=2) as pool:
-        values=[f.result(timeout=30) for f in [pool.submit(apply),pool.submit(apply)]]
-    assert sorted(x["status"] for x in values)==["ERROR","PASS"]
-    assert next(x for x in values if x["status"]=="ERROR")["error"]["code"]=="TOOL_ORDER_VIOLATION"
-    tested=server.run_relevant_tests(run)
-    assert tested["status"]=="PASS" and tested["data"]["verdict"]=="PASS",tested
-    final=server.verify_patch(run)
-    assert final["data"]["recommendation"]=="ACCEPT",final
-
-
 def test_cancellation_and_final_publication_have_one_commit_order(bound,monkeypatch):
     from vgar.mcp.proposal import state
     from vgar.mcp.proposal.context import cancel_request

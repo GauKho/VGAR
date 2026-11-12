@@ -1,17 +1,11 @@
-import json
-import sys
 
 import pytest
 
-from w78_support import CharacterChatTokenizer
 from vgar.repair import static_checks as m_checks
 from vgar.repair import contracts as m_contracts
 from vgar.repair import diagnostics as m_diagnostics
 from vgar.repair import executor as m_executor
-from vgar.models import generator as m_generator
-from vgar.models.huggingface import model_worker as m_model_worker
 from vgar.repair import patch as m_patch
-from vgar.repair import pipeline as m_pipeline
 from vgar.repair import test_runner as m_test_runner
 
 
@@ -75,21 +69,6 @@ def test_quoted_header_syntax_exception_keeps_type_and_gets_location():
     assert caught.value.parser_diagnostics['raw_line'] == 1
 
 
-def test_pipeline_persists_parser_diagnostics_and_traceback(m1_case, tmp_path):
-    task, counter = m1_case
-    run = m_pipeline.run_repair(task, m_contracts.RepairPolicy(),
-        m_generator.FakeGenerator('not a diff'), None, tmp_path/'runs',
-        m1_counter=counter, tokenizer=CharacterChatTokenizer(), temp_root=tmp_path/'temp')
-    r = json.loads(run.path.read_text(encoding='utf-8'))
-    assert r['status'] == 'FAIL' and r['reason'] == 'PATCH_PARSE_ERROR'
-    error = r['error_detail']
-    assert error['parser_diagnostics']['raw_line'] == 1
-    assert 'Traceback (most recent call last)' in error['traceback']
-    assert 'parse_unified_diff' in error['traceback'] and 'ValueError:' in error['traceback']
-    assert r['stages']['parse_patch']['traceback'] == error['traceback'] or 'parse_unified_diff' in r['stages']['parse_patch']['traceback']
-    assert r['stages']['apply']['status'] == 'NOT_RUN' and r['original_source_unchanged']
-
-
 def test_command_launch_exception_preserves_traceback(tmp_path):
     result = m_executor.run_bounded((str(tmp_path/'missing-python.exe'),), tmp_path, 2)
     assert result['status'] == 'ERROR' and not result['complete']
@@ -108,29 +87,6 @@ def test_chained_exception_logs_frames_without_locals():
     assert 'ValueError: inner' in result['traceback'] and 'RuntimeError: outer' in result['traceback']
     assert secret_local not in result['traceback']
     assert result['type'] == 'RuntimeError' and result['message'] == 'outer'
-
-
-def test_cli_config_error_has_traceback(tmp_path):
-    import subprocess
-    result = subprocess.run([sys.executable, '-m', 'vgar.cli', 'repair', '--mode', 'fake',
-        '--task', str(tmp_path/'missing-task.json'), '--output-root', str(tmp_path/'runs')],
-        capture_output=True, text=True, timeout=30)
-    assert result.returncode == 2
-    saved = json.loads(next((tmp_path/'runs').glob('*/run_record.json')).read_text(encoding='utf-8'))
-    assert 'FileNotFoundError' in saved['traceback'] and saved['status'] == 'ERROR'
-
-
-def test_worker_error_response_keeps_its_original_traceback(tmp_path):
-    response = tmp_path/'response.json'
-    code = ("import json, traceback; from pathlib import Path\n"
-            "try:\n    raise RuntimeError('worker exploded')\n"
-            "except RuntimeError:\n    " +
-            f"Path({str(response)!r}).write_text(json.dumps(dict(status='ERROR', reason='worker exploded', "
-            "traceback=traceback.format_exc())), encoding='utf-8')\n"
-            "raise SystemExit(2)")
-    result = m_model_worker.invoke_worker((sys.executable, '-c', code), tmp_path, response, 10)
-    assert result['status'] == 'ERROR' and result['command']['exit_code'] == 2
-    assert 'RuntimeError: worker exploded' in result['response']['traceback']
 
 
 def test_syntax_failure_retains_traceback(tmp_path):

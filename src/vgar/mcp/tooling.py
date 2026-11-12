@@ -1,6 +1,7 @@
 """Run an MCP tool/resource body with the shared envelope and audit trail."""
 from __future__ import annotations
 
+import logging
 import os
 import time
 import uuid
@@ -23,6 +24,8 @@ from vgar.mcp.schemas import (
     ToolResponse,
     error_from_exception,
 )
+
+logger = logging.getLogger(__name__)
 
 # Server-set limits (security design §4.4); no tool accepts these as arguments.
 READ_FILE_MAX_BYTES = 64 * 1024
@@ -87,6 +90,8 @@ def run_tool(
     context = current_context()
     request_id = context.request_id if context else uuid.uuid4().hex
     started = _ASYNC_STARTED.get() or time.perf_counter()
+    # audit_fields are already safe to log (hashes, sizes, names; never diff content or secrets).
+    logger.debug("tool=%s server=%s request_id=%s args=%s", tool, server, request_id, audit_fields or {})
     data: dict[str, Any] | None = None
     error = None
     interrupted = None
@@ -97,6 +102,8 @@ def run_tool(
     except Exception as exc:  # noqa: BLE001 - boundary: nothing may escape raw
         error = error_from_exception(exc)
         extra = _error_audit_fields(exc, error.code)
+        if error.code == INTERNAL_ERROR:
+            logger.exception("tool=%s server=%s request_id=%s raised unexpectedly", tool, server, request_id)
     except BaseException as exc:  # noqa: BLE001 - cancellation is audited then re-raised unchanged
         interrupted = exc
         error = error_from_exception(RuntimeError("Request interrupted"))
@@ -121,6 +128,8 @@ def run_tool(
         error = error_from_exception(RuntimeError("Audit persistence failed"))
         data = None
         status = "ERROR"
+    logger.info("tool=%s server=%s status=%s duration_ms=%d request_id=%s%s", tool, server, status, duration_ms,
+                request_id, f" error_code={extra['error_code']}" if "error_code" in extra else "")
     if interrupted is not None:
         raise interrupted
     response = ToolResponse(

@@ -277,7 +277,7 @@ def consume_runtime(root):
     oracle = json.loads((ROOT/"tests/fixtures/mcp_server/expected_contract.json").read_text(encoding="utf-8"))
     resources = json.loads((ROOT/"tests/fixtures/mcp_server/resource_contract.json").read_text(encoding="utf-8"))
     prompt = json.loads((ROOT/"tests/fixtures/mcp_server/prompt_contract.json").read_text(encoding="utf-8"))
-    expected = {(s,m) for s in ("graph","repository","execution","repair") for m in ("2026-07-28","legacy")}
+    expected = {(s,m) for s in ("graph","repository","execution") for m in ("2026-07-28","legacy")}
     actual, observations = set(), []
     for row in summary.get("wire",[]):
         key = (row.get("server"),row.get("requested_mode"))
@@ -344,19 +344,10 @@ def consume_runtime(root):
             require(data.get("verdict") == "PASS" and type(data.get("exit_code")) is int
                     and data["exit_code"] == 0,"Fixture pytest did not pass")
             denied("run_pytest","SELECTOR_REJECTED")
-        elif key[0] == "repair":
-            for name in ("get_task_context","apply_patch","run_relevant_tests","verify_patch"):
-                require(passed(name).get("verdict") == "PASS","Repair workflow failed: "+name)
-            require(passed("verify_patch").get("recommendation") == "ACCEPT","Repair did not accept")
-            denied("verify_patch","RUN_NOT_FOUND")
-            denied("run_relevant_tests","TOOL_ORDER_VIOLATION")
-            repair = wire.get("repair_fixture",{})
-            require(repair.get("synthetic") is True and repair.get("generator_called") is False
-                    and repair.get("model_loaded") is False and repair.get("recommendation") == "ACCEPT","Repair fixture receipts invalid")
         observations.append({"server":key[0],"mode":key[1],"protocol":wire["protocol"],"tool_count":len(tools),
             "calls":len(wire["calls"]),"fixture_scope":True,"receipt":row["receipt"],"receipt_hash":sha(resolve_read_path(root,row["receipt"]).read_bytes())})
     require(actual == expected,"Missing runtime lanes")
-    return {"status":"PASS","tools":20,"core_tools":11,"canonical_resources":8,"resource_aliases":1,"prompts":1,
+    return {"status":"PASS","tools":16,"core_tools":11,"canonical_resources":8,"resource_aliases":1,"prompts":1,
             "production_acceptance":False,"lanes":observations}
 
 

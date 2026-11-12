@@ -199,7 +199,7 @@ def _empty_vector(task, reason):
 def verify_once(task, raw_patch, policy, output_root, *, admission=None, temp_root=None, pool_binding=None):
     """Own one private workspace and one fixed patch; never call a repair generator."""
     from vgar.repair.admission import prepare_admitted_workspace, validate_admission
-    from vgar.repair.pipeline import DeadlineExecutor, require_trusted_fixture
+    from vgar.repair.deadline import DeadlineExecutor, require_trusted_fixture
     from vgar.repair.workspace import create_workspace
     root = Path(output_root).resolve()
     if root.exists() or root.is_relative_to(task.source_repo.resolve()):

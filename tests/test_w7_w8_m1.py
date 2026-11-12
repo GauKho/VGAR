@@ -11,7 +11,6 @@ from vgar.graph.builder import PythonGraphBuilder
 from vgar.graph.sqlite_service import SQLiteGraphService
 from vgar.graph.sqlite_store import SQLiteGraphStore
 from vgar.graph.test_selection import select_related_tests
-from vgar.graph.visualization import plot_graph_tracking
 from vgar.mcp.audit import AuditLogger
 from vgar.mcp.servers import graph_server
 
@@ -80,18 +79,3 @@ def test_mcp_context_metadata_prompt_and_test_selection(snapshot, tmp_path, monk
     (root / 'app.py').write_text('def target(): return 2\n')
     assert graph_server.get_related_context([target], 1000, version, 'task')['status'] == 'ERROR'
     assert 'retrieval_error' in (tmp_path / 'debug.jsonl').read_text()
-
-
-def test_plot_has_bounded_graph_and_complete_resolver_counts(snapshot, tmp_path):
-    _, doc = snapshot
-    pytest.importorskip('matplotlib')
-    import matplotlib
-    matplotlib.use('Agg')
-    import matplotlib.pyplot as plt
-    figure = plot_graph_tracking(doc, max_nodes=2, events=[{'event': 'resolver_fallback'}])
-    assert len(figure.axes) == 2
-    assert len(figure.axes[0].collections) <= 2
-    assert sum(bar.get_width() for bar in figure.axes[1].patches) == doc['statistics']['callsite_count']
-    figure.savefig(tmp_path / 'plot.png')
-    assert (tmp_path / 'plot.png').stat().st_size > 1000
-    plt.close(figure)

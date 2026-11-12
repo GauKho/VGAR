@@ -7,7 +7,7 @@ import json
 from vgar.evaluation.repair.manifest import Experiment
 from vgar.repair.evidence import digest
 from vgar.repair.policy import VariantPolicy
-from vgar.repair.prompt import template_path
+from vgar.evaluation.repair.prompt_fingerprint import template_path
 
 ARM_SPECIFIC = ('variant_id', 'arm', 'required_checks')
 

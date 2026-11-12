@@ -265,42 +265,6 @@ def test_consumer_missing_links_retains_selected_scope(handoff_case, tmp_path):
                for path in targets)
 
 
-@pytest.fixture
-def consumer_cli_case(handoff_case, tmp_path):
-    from tokenizers import Tokenizer, models, pre_tokenizers
-    from vgar.graph.token_counter import COUNTING_POLICY, LocalTokenizerCounter
-    from vgar.contracts.handoff import byte_digest
-    root, document, original, _ = handoff_case
-    assets = tmp_path / 'tokenizer-assets'
-    assets.mkdir()
-    native = Tokenizer(models.WordLevel({'[UNK]': 0}, unk_token='[UNK]'))
-    native.pre_tokenizer = pre_tokenizers.Whitespace()
-    (assets / 'tokenizer.json').write_text(native.to_str(), encoding='utf-8')
-    for name in ('tokenizer_config.json', 'vocab.json', 'merges.txt'):
-        (assets / name).write_text('{}', encoding='utf-8')
-    manifest = tmp_path / 'tokenizer-manifest.json'
-    manifest.write_text(json.dumps(dict(model_id='fixture/tokenizer', revision='a' * 40,
-        assets_directory=assets.name, counting_policy=COUNTING_POLICY, weights_downloaded=False,
-        files=[dict(name=f.name, size=f.stat().st_size, sha256=byte_digest(f.read_bytes()).removeprefix('sha256:'))
-               for f in assets.iterdir()])), encoding='utf-8')
-    counter = LocalTokenizerCounter(manifest)
-    bundle = copy.deepcopy(original)
-    for item in bundle['context']['items']:
-        item['token_count'] = counter(item['snippet'])
-    bundle['context']['total_token_count'] = sum(item['token_count'] for item in bundle['context']['items'])
-    bundle['manifest']['counter_label'] = counter.counter_label
-    bundle['manifest']['context_sha256'] = payload_digest(bundle['context'])
-    exported = write_context_handoff(bundle, tmp_path / 'exported')
-    destination = tmp_path / 'consumer clone'
-    shutil.copytree(root, destination)
-    config = tmp_path / 'approved-task.json'
-    config.write_text(json.dumps(approved_target(document)), encoding='utf-8')
-    command = [sys.executable, str(Path(__file__).resolve().parents[1] / 'scripts/consume_m1_handoff.py'),
-        '--bundle', str(exported), '--repository', str(destination), '--task-config', str(config),
-        '--tokenizer-manifest', str(manifest), '--output-root', str(tmp_path / 'consumer-outputs')]
-    return command, bundle, exported, destination, config, assets
-
-
 def run_consumer_cli(command):
     completed = subprocess.run(command, capture_output=True, text=True, encoding='utf-8', shell=False, timeout=20)
     assert completed.stdout, completed.stderr
@@ -308,60 +272,6 @@ def run_consumer_cli(command):
     output = Path(record['output_directory'])
     assert json.loads((output / 'result.json').read_text(encoding='utf-8')) == record
     return completed.returncode, record, output
-
-
-def test_consumer_cli_preserves_snippets_and_separates_invocations(consumer_cli_case):
-    command, bundle, exported, destination, _, _ = consumer_cli_case
-    before = {f.relative_to(destination): f.read_bytes() for f in destination.rglob('*.py')}
-    (exported / 'repair-context.txt').write_bytes(b'UNTRUSTED PROMPT')
-    code, record, output = run_consumer_cli(command)
-    assert code == 0 and record['status'] == 'PASS'
-    assert record['metadata']['collection_verified'] is False
-    assert record['scope'] == 'm1_consumer_no_model_no_patch_no_test_execution'
-    rendered = (output / 'repair-context.txt').read_bytes()
-    assert b'UNTRUSTED PROMPT' not in rendered
-    for item in bundle['context']['items']:
-        assert item['snippet'].encode('utf-8') in rendered
-    assert before == {f.relative_to(destination): f.read_bytes() for f in destination.rglob('*.py')}
-    events = [json.loads(line) for line in (output / 'events.jsonl').read_text(encoding='utf-8').splitlines()]
-    assert [e['event'] for e in events] == ['handoff_validated', 'test_hint_diagnostics']
-    assert all(e['run_id'] == record['run_id'] for e in events)
-    assert '"snippet":' not in json.dumps(events)
-    code, _, second = run_consumer_cli(command)
-    assert code == 0 and second != output
-
-
-@pytest.mark.parametrize('fault', ['identity', 'source', 'tokenizer', 'missing_bundle_file', 'hint_flags', 'payload_shape'])
-def test_consumer_cli_rejects_invalid_input_before_prompt(consumer_cli_case, fault):
-    command, bundle, exported, destination, config, assets = consumer_cli_case
-    if fault == 'identity':
-        target = json.loads(config.read_text(encoding='utf-8'))
-        target['graph_version'] = 'other-snapshot'
-        config.write_text(json.dumps(target), encoding='utf-8')
-    elif fault == 'source':
-        source = destination / 'app.py'
-        source.write_bytes(source.read_bytes() + b'\n# changed snapshot\n')
-    elif fault == 'tokenizer':
-        (assets / 'vocab.json').write_bytes(b'[]')
-    elif fault == 'missing_bundle_file':
-        (exported / 'test_links.json').unlink()
-    elif fault == 'hint_flags':
-        hints = copy.deepcopy(bundle['test_hints'])
-        next(iter(hints['link_details'].values()))['truncated'] = 'false'
-        (exported / 'test_links.json').write_text(json.dumps(hints), encoding='utf-8')
-    else:
-        payload = copy.deepcopy(bundle['context'])
-        payload['total_token_count'] = -1
-        (exported / 'context.json').write_text(json.dumps(payload), encoding='utf-8')
-    code, record, output = run_consumer_cli(command)
-    assert code == 2 and record['status'] == 'ERROR'
-    assert record['error_stage'] in {'load_tokenizer', 'receive_handoff'}
-    assert not (output / 'repair-context.txt').exists()
-    assert not (output / 'test-inputs.json').exists()
-    assert 'consumer_error' in (output / 'events.jsonl').read_text(encoding='utf-8')
-    if fault == 'payload_shape':
-        assert 'input_value' not in record['reason']
-        assert all(item['snippet'] not in record['reason'] for item in bundle['context']['items'])
 
 
 def test_changed_files_keep_graph_candidates_and_all_explicit_inputs(handoff_case):
@@ -444,29 +354,6 @@ def test_post_patch_diagnostics_use_original_snapshot_only(handoff_case):
     (root / targets[0]).unlink()
     with pytest.raises(ValueError, match='snapshot'):
         diagnose_changed_paths(bundle['test_hints'], bundle['manifest'], root, targets)
-
-
-def test_consumer_cli_reports_actual_changed_paths(consumer_cli_case):
-    command, bundle, _, _, _, _ = consumer_cli_case
-    paths = sorted({item['path'] for item in bundle['context']['items']})
-    paths.append('new.py')
-    arguments = [value for path in paths for value in ('--changed-path', path)]
-    code, record, output = run_consumer_cli(command + arguments)
-    assert code == 0 and record['status'] == 'PASS'
-    report = json.loads((output / 'test-targets.json').read_text(encoding='utf-8'))
-    assert report['targets']['new.py']['mapping_status'] == 'outside_source_scope'
-    assert report['fallback_required'] and report['failing_selectors']
-    assert record['test_target_diagnostics']['fallback_required']
-    events = [json.loads(line) for line in (output / 'events.jsonl').read_text(encoding='utf-8').splitlines()]
-    assert events[-1]['event'] == 'test_target_diagnostics'
-    assert '"snippet":' not in json.dumps(events)
-
-
-def test_consumer_cli_invalid_changed_path_produces_no_prompt(consumer_cli_case):
-    command, _, _, _, _, _ = consumer_cli_case
-    code, record, output = run_consumer_cli(command + ['--changed-path', '../escape.py'])
-    assert code == 2 and record['error_stage'] == 'receive_handoff'
-    assert not (output / 'repair-context.txt').exists()
 
 
 def test_ranking_config_hash_is_recorded_in_context_sidecar(handoff_case):

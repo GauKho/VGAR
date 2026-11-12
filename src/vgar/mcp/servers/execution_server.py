@@ -6,6 +6,7 @@ both set by the host. Timeout and output cap are server constants; argv is fixed
 from __future__ import annotations
 
 import hashlib
+import logging
 
 import anyio
 import json
@@ -19,6 +20,7 @@ from vgar.mcp.proposal.contracts import DiffRequest
 from vgar.mcp.proposal.ports import ProviderRegistry
 from vgar.mcp.proposal.tools import CoreTools
 from vgar.mcp.schemas import SELECTOR_REJECTED, CodedToolError
+from vgar.mcp.logging_setup import configure_server_logging, server_log_level
 from vgar.mcp.server_factory import create_server
 from vgar.mcp.tooling import (
     PYTEST_OUTPUT_CAP,
@@ -30,7 +32,10 @@ from vgar.mcp.tooling import (
 )
 from vgar.observability.instrumentation import instrument_mcp_tool
 
-mcp = create_server("vgar-execution", log_level="WARNING")  # no per-request INFO lines (trace spec P8)
+# Run as `python -m`, __name__ is "__main__"; keep the module name so the vgar log handler applies.
+logger = logging.getLogger("vgar.mcp.servers.execution_server" if __name__ == "__main__" else __name__)
+
+mcp = create_server("vgar-execution", log_level=server_log_level())  # default WARNING (trace spec P8)
 core_tools = CoreTools(ProviderRegistry())
 _audit_logger = AuditLogger(Path(os.getenv("VGAR_MCP_AUDIT_LOG", "logs/mcp_audit.jsonl")))
 _graph_service = None  # created on first use, so importing this server needs no graph
@@ -114,6 +119,11 @@ async def run_relevant_tests(diff: str) -> dict[str, Any]:
 def main() -> None:
     if core_tools.registry.test_only:
         raise ValueError("Synthetic registry is forbidden in production entrypoint")
+    configure_server_logging()
+    from importlib.metadata import version
+    logger.info("server=vgar-execution mcp=%s backend=%s database=%s repository_root=%s lease_root=%s",
+                version("mcp"), os.getenv("VGAR_GRAPH_BACKEND", "sqlite"), os.getenv("VGAR_GRAPH_DATABASE"),
+                os.getenv("VGAR_REPOSITORY_ROOT"), os.getenv("VGAR_LEASE_ROOT"))
     mcp.run(transport="stdio")
 
 

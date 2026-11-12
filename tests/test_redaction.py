@@ -34,11 +34,6 @@ def test_instrumentation_summary_uses_the_shared_redactor():
     assert HF not in json.dumps(summarize({"detail": f"Authorization: Bearer {HF}"}))
 
 
-def test_phase_logger_summary_redacts():
-    from vgar.observability.phase_logger import summarize
-    assert HF not in json.dumps(summarize({"stderr": f"export HF_TOKEN={HF}"}))
-
-
 def test_secret_never_reaches_audit_or_tool_error(tmp_path):
     # S6
     audit = tmp_path / "audit.jsonl"
@@ -52,20 +47,6 @@ def test_secret_never_reaches_audit_or_tool_error(tmp_path):
     assert response["status"] == "ERROR"
     assert HF not in json.dumps(response)
     assert HF not in audit.read_text(encoding="utf-8")
-
-
-def test_child_environment_is_allow_listed(monkeypatch):
-    # S7
-    from vgar.config.settings import get_settings
-    from vgar.mcp.client import _child_env
-    monkeypatch.setenv("HF_TOKEN", HF)
-    monkeypatch.setenv("SOME_PRIVATE_THING", "x")
-    monkeypatch.setenv("PATH", "/usr/bin")
-    monkeypatch.setenv("VGAR_CUSTOM_FLAG", "1")
-    env = _child_env(get_settings())
-    assert "HF_TOKEN" not in env and "SOME_PRIVATE_THING" not in env
-    assert env["PATH"] == "/usr/bin" and env["VGAR_CUSTOM_FLAG"] == "1"
-    assert HF not in json.dumps(env)
 
 
 @pytest.mark.parametrize("key", ["input_tokens", "output_tokens", "feedback_tokens", "total_token_count",

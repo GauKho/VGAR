@@ -344,26 +344,6 @@
       "server": "execution",
       "name": "run_pytest",
       "signature": "selector: str"
-    },
-    {
-      "server": "repair",
-      "name": "get_task_context",
-      "signature": "task_path: str, mode: str, output_root: str, work_root: str, config_path: str | None=None, keep_workspace: bool=False, feedback: dict[str, Any] | None=None, supersedes_run_id: str | None=None, rerun_reason: str | None=None, experiment: dict[str, Any] | None=None, admission: dict[str, Any] | None=None"
-    },
-    {
-      "server": "repair",
-      "name": "apply_patch",
-      "signature": "run_dir: str, diff: str, generation: dict[str, Any] | None=None"
-    },
-    {
-      "server": "repair",
-      "name": "run_relevant_tests",
-      "signature": "run_dir: str"
-    },
-    {
-      "server": "repair",
-      "name": "verify_patch",
-      "signature": "run_dir: str"
     }
   ],
   "legacy_resources": [

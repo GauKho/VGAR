@@ -40,9 +40,19 @@ def main():
     with request_scope(ctx):
         log.write("synthetic-seed", {"number": 0})
 
-    class SyntheticService(SQLiteGraphService):
+    database, version = build_fixture_database(root / "graph")
+    real = SQLiteGraphService(SQLiteGraphStore(database, graph_version=version))
+
+    class SyntheticService:
+        """Host-pinned synthetic backend: real summary under the bound snapshot id, handwritten URI nodes.
+
+        It has no ``store`` (like the removed demo service), so the bound-store pin check does not apply.
+        """
+
+        backend_name = real.backend_name
+
         def get_repository_summary(self):
-            return super().get_repository_summary().model_copy(update={"graph_version": ctx.snapshot_hash})
+            return real.get_repository_summary().model_copy(update={"graph_version": ctx.snapshot_hash})
 
         def get_node(self, node_id):
             from vgar.contracts.error import NodeNotFoundError
@@ -67,8 +77,7 @@ def main():
         frozenset({"resource_schema", "resource_component", "resource_task", "resource_baseline"}), synthetic=True),), test_only=True)
     from vgar.mcp.servers import graph_server as module
     module.core_tools = CoreTools(registry, context_factory=lambda operation, request: ctx)
-    database, version = build_fixture_database(root / "graph")
-    module.graph_service = SyntheticService(SQLiteGraphStore(database, graph_version=version))
+    module.graph_service = SyntheticService()
     module._audit_logger = log
     # Fixture-only entrypoint; production main rejects this registry.
     module.mcp.run(transport="stdio")

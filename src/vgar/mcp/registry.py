@@ -55,7 +55,6 @@ PUBLIC_TOOLS = frozenset({
     "graph_get_related_context", "graph_get_related_tests", "graph_analyze_patch_impact",
     "repository_health", "repository_read_file",
     "execution_health", "execution_run_pytest",
-    "repair_get_task_context", "repair_apply_patch", "repair_run_relevant_tests", "repair_verify_patch",
 })
 
 

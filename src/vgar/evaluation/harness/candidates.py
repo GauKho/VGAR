@@ -14,9 +14,20 @@ from vgar.evaluation.harness.reports import read_report
 from vgar.evaluation.retrieval.evidence import sha256
 
 
+def read_attempts(exp_dir: Path) -> dict[tuple[str, str], list[dict]]:
+    """Attempt records per (task, variant) under ``attempts/*/attempt-*.json``, ordered by attempt number.
+
+    The record layout of the removed M2 runner; any producer that writes the same layout can be graded.
+    """
+    found = {}
+    for path in Path(exp_dir).glob('attempts/*/attempt-*.json'):
+        record = json.loads(path.read_text(encoding='utf-8'))
+        found.setdefault((record['task_id'], record['variant_id']), []).append(record)
+    return {key: sorted(items, key=lambda r: r['attempt']) for key, items in found.items()}
+
+
 def collect_candidates(exp_dir: Path) -> list[dict]:
     """Latest TERMINAL attempt per pair whose engine run applied a patch; the graded diff is applied.diff."""
-    from vgar.evaluation.repair.runner import read_attempts
     exp_dir = Path(exp_dir)
     found = []
     for (task_id, variant_id), items in sorted(read_attempts(exp_dir).items()):

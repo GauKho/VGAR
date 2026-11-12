@@ -61,19 +61,6 @@ def test_cross_experiment_same_config_passes(tmp_path):
     check(load(config(tmp_path)), load(config(tmp_path, name='again.json')))
 
 
-def test_refused_run_writes_nothing(tmp_path, capsys):
-    import importlib.util
-    spec = importlib.util.spec_from_file_location('run_cli', ROOT/'scripts/run_repair_experiment.py')
-    cli = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(cli)
-    paths = {v: VARIANTS/'w10'/f'{v}.json' for v in W10} | {'A1': VARIANTS/'A1.json'}
-    path = config(tmp_path, variant_paths=paths)
-    out = tmp_path/'out'
-    assert cli.main(['run', '--config', str(path), '--data-root', str(ROOT), '--output-root', str(out)]) == 2
-    assert not out.exists() or not any(out.iterdir())
-    assert 'Arm fairness violation' in capsys.readouterr().err
-
-
 def a3_paths():
     return {'A2': VARIANTS / 'w10/A2.json', 'A3': VARIANTS / 'A3.json'}
 
@@ -84,21 +71,6 @@ def test_A3_differs_from_A2_only_in_required_checks(tmp_path):
     assert [(v.variant_id, v.arm) for v in exp.variants] == [('A2', 'graph'), ('A3', 'graph')]
     check(load(config(tmp_path, name='a2.json', variant_paths={'A2': a3_paths()['A2']})),
           load(config(tmp_path, name='a3.json', variant_paths={'A3': a3_paths()['A3']})))
-
-
-@pytest.mark.parametrize('field,value', [('patch_mode', 'strict'), ('path_listing', 'all')])
-def test_a3_shared_policy_drift_is_rejected_before_any_attempt(tmp_path, capsys, field, value):
-    import importlib.util
-    spec = importlib.util.spec_from_file_location('a3_run_cli', ROOT / 'scripts/run_repair_experiment.py')
-    cli = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(cli)
-    changed = json.loads((VARIANTS / 'A3.json').read_bytes()) | {field: value}
-    paths = a3_paths() | {'A3': write_json(tmp_path / 'changed_a3.json', changed)}
-    path = config(tmp_path, variant_paths=paths)
-    output = tmp_path / 'out'
-    assert cli.main(['run', '--config', str(path), '--data-root', str(ROOT), '--output-root', str(output)]) == 2
-    assert not output.exists() or not any(output.iterdir())
-    assert field in capsys.readouterr().err
 
 
 @pytest.mark.parametrize('changed_variant', ['A2', 'A3'])

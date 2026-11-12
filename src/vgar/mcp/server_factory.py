@@ -1,10 +1,13 @@
 """Select the installed official MCP SDK without importing a legacy client."""
 from __future__ import annotations
 
+import logging
 from importlib import import_module, metadata
 from typing import Any
 
 from packaging.version import InvalidVersion, Version
+
+logger = logging.getLogger(__name__)
 
 
 def create_server(name: str, *, log_level: str = "WARNING") -> Any:
@@ -23,6 +26,7 @@ def create_server(name: str, *, log_level: str = "WARNING") -> Any:
         cls = import_module("mcp.server.fastmcp").FastMCP
     else:
         raise RuntimeError(f"Unsupported MCP SDK major: {version.major}")
+    logger.debug("server=%s mcp=%s class=%s log_level=%s", name, version, cls.__name__, log_level)
     return cls(name, log_level=log_level)
 
 

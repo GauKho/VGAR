@@ -117,22 +117,6 @@ async def exercise(client, args, report):
         data = await call("run_pytest", {"selector": "tests/test_auth.py::test_ok"})
         require(data["verdict"] == "PASS" and data["exit_code"] == 0, "Execution fixture did not pass")
         await call("run_pytest", {"selector": "forbidden.py"}, status="ERROR", error="SELECTOR_REJECTED")
-    elif args.server == "repair":
-        await call("verify_patch", {"run_dir": str(Path(args.output)/"absent")}, status="ERROR", error="RUN_NOT_FOUND")
-        data = await call("get_task_context", {"task_path": str(ROOT/"examples/m2/tasks/single_file_login.json"), "mode": "fake", "output_root": str(Path(args.output)/"runs"), "work_root": str(Path(args.output)/"work")})
-        require(data["verdict"] == "PASS", data)
-        run_dir = data["run_dir"]
-        await call("run_relevant_tests", {"run_dir": run_dir}, status="ERROR", error="TOOL_ORDER_VIOLATION")
-        patch = (ROOT/"tests/fixtures/m2/reference_patches/single_file_login.diff").read_text(encoding="utf-8")
-        applied = await call("apply_patch", {"run_dir": run_dir, "diff": patch})
-        require(applied["verdict"] == "PASS", "Reference patch was not applied")
-        tested = await call("run_relevant_tests", {"run_dir": run_dir})
-        require(tested["verdict"] == "PASS", "Reference patch tests did not pass")
-        final = await call("verify_patch", {"run_dir": run_dir})
-        require(final["recommendation"] == "ACCEPT", final)
-        await call("verify_patch", {"run_dir": run_dir}, status="ERROR", error="TOOL_ORDER_VIOLATION")
-        require(not list((Path(args.output)/"work").glob("m2-w78-*")), "Private worktree not cleaned")
-        report["repair_fixture"] = {"synthetic": True, "generator_called": False, "model_loaded": False, "run_dir": run_dir, "recommendation": final["recommendation"]}
 
 
 async def connect(args, report):
@@ -166,7 +150,7 @@ async def connect(args, report):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--server", required=True, choices=("graph", "repository", "execution", "repair"))
+    parser.add_argument("--server", required=True, choices=("graph", "repository", "execution"))
     parser.add_argument("--mode", required=True)
     parser.add_argument("--server-python", required=True)
     parser.add_argument("--output", required=True)

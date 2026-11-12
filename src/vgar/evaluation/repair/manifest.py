@@ -16,7 +16,7 @@ from vgar.repair.config import load_config, load_task
 from vgar.repair.contracts import ModelProfile, RepairPolicy, RepairTask
 from vgar.repair.evidence import digest
 from vgar.repair.policy import VariantPolicy, load_variant, policy_hash
-from vgar.repair.prompt import template_path
+from vgar.evaluation.repair.prompt_fingerprint import template_path
 
 SCHEMA = 'vgar-m3-experiment-v1'
 _TEST_DIRS = ('test', 'tests', 'testing')

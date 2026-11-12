@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import hashlib
+import logging
 
 import anyio
 import os
@@ -22,14 +23,23 @@ from vgar.mcp.proposal.prompts import (
 )
 from vgar.mcp.proposal.resources import ResourceReader
 from vgar.mcp.proposal.tools import CoreTools, legacy_binding
+from vgar.mcp.logging_setup import configure_server_logging, server_log_level
 from vgar.mcp.server_factory import create_resource_server
 from vgar.mcp.tooling import PYTEST_OUTPUT_CAP, PYTEST_TIMEOUT_SECONDS, audit_resource, run_tool
 from vgar.observability.instrumentation import instrument_mcp_tool
 
-mcp = create_resource_server("vgar-graph", lambda uri: _read_resource(uri), log_level="WARNING",
+# Run as `python -m`, __name__ is "__main__"; keep the module name so the vgar log handler applies.
+logger = logging.getLogger("vgar.mcp.servers.graph_server" if __name__ == "__main__" else __name__)
+
+mcp = create_resource_server("vgar-graph", lambda uri: _read_resource(uri), log_level=server_log_level(),
                              prompt_reader=lambda name, arguments: _get_prompt(name, arguments),
                              protocol_reject=lambda: audit_protocol_reject(_audit_logger))
-graph_service = create_graph_service()
+try:
+    graph_service = create_graph_service()
+except Exception as error:
+    configure_server_logging()  # the error must reach the host's log before the process exits
+    logger.error("vgar-graph cannot start: %s", error, exc_info=True)
+    raise
 core_tools = CoreTools(ProviderRegistry())  # Trusted bootstrap may replace before serving; never a tool argument.
 prompt_renderer = PromptRenderer()  # Host may configure lower limits/redaction before serving.
 _audit_logger = AuditLogger(Path(os.getenv("VGAR_MCP_AUDIT_LOG", "logs/mcp_audit.jsonl")))
@@ -422,6 +432,11 @@ def _get_prompt(name, arguments):
 def main() -> None:
     if core_tools.registry.test_only:
         raise ValueError("Synthetic registry is forbidden in production entrypoint")
+    configure_server_logging()
+    from importlib.metadata import version
+    logger.info("server=vgar-graph mcp=%s backend=%s database=%s graph_version=%s repository_root=%s",
+                version("mcp"), os.getenv("VGAR_GRAPH_BACKEND", "sqlite"), os.getenv("VGAR_GRAPH_DATABASE"),
+                graph_service.get_repository_summary().graph_version, os.getenv("VGAR_REPOSITORY_ROOT"))
     try:
         mcp.run(transport="stdio")
     finally:

@@ -19,7 +19,7 @@ from vgar.repair.config import CONFIG_DIR
 from vgar.repair.contracts import safe_selector
 from vgar.repair.evidence import atomic_json, digest
 from vgar.repair.executor import remaining_timeout, run_bounded
-from vgar.repair.pipeline import DeadlineExecutor
+from vgar.repair.deadline import DeadlineExecutor
 from vgar.repair.static_tools import (
     CONTAINER_ROOT,
     LOCK_PATH,

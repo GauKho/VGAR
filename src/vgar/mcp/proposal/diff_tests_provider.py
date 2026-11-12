@@ -15,7 +15,7 @@ from vgar.repair.contracts import RepairPolicy, RepairTask
 from vgar.repair.docker_executor import DockerExecutor
 from vgar.repair.evidence import atomic_json, digest, encode_json
 from vgar.repair.patch import PatchPolicy, apply_patch, parse_unified_diff
-from vgar.repair.pipeline import DeadlineExecutor, require_trusted_fixture
+from vgar.repair.deadline import DeadlineExecutor, require_trusted_fixture
 from vgar.repair.semantic_contract import ContractExecutor, SemanticContract
 from vgar.repair.test_runner import run_tests
 from vgar.repair.verification import assess_transition, expand_required

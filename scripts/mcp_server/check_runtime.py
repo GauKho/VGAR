@@ -42,7 +42,7 @@ def main(argv=None):
         probe.append("--require-no-langchain")
     record = run_bounded(tuple(probe), out, 30, output_cap=1024*1024, environment=environment)
     dump(out/"probe-command.json", record)
-    summary = {"status": "FAIL", "wire": [], "prompt_gate": "NOT_RUN", "scope": "legacy runtime, resources and prompt; synthetic trusted repair fixture, no generator/model"}
+    summary = {"status": "FAIL", "wire": [], "prompt_gate": "NOT_RUN", "scope": "legacy runtime, resources and prompt; no generator/model"}
     if record["exit_code"] != 0 or not record["complete"]:
         dump(out/"summary.json", summary)
         return 1
@@ -64,7 +64,7 @@ def main(argv=None):
         return 1
     modes = ("2026-07-28", "legacy") if major == 2 else ("legacy",)
     for mode in modes:
-        for server in ("graph", "repository", "execution", "repair"):
+        for server in ("graph", "repository", "execution"):
             target = out/(mode+"-"+server)
             target.mkdir()
             shutil.copy2(ROOT/"artifacts/sample_graph.db", target/"sample_graph.db")

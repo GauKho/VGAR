@@ -11,8 +11,7 @@
   "entrypoints": {
     "graph": "vgar.mcp.servers.graph_server",
     "repository": "vgar.mcp.servers.repository_server",
-    "execution": "vgar.mcp.servers.execution_server",
-    "repair": "vgar.mcp.servers.repair_server"
+    "execution": "vgar.mcp.servers.execution_server"
   },
   "environment": {
     "PYTHONUTF8": "1",
@@ -30,9 +29,6 @@
     "execution": [
       "VGAR_LEASE_ROOT=<private allowed root>",
       "VGAR_ALLOWED_SELECTORS=<JSON list>"
-    ],
-    "repair": [
-      "VGAR_RUN_ROOT=<private run/output root>"
     ],
     "all": [
       "VGAR_MCP_AUDIT_LOG=<operator-controlled output file>"

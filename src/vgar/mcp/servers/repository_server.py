@@ -1,10 +1,11 @@
 """Read-only repository access inside the root the host leased (D7, M3-W11-2).
 
-The model never chooses the root: it comes from ``VGAR_LEASE_ROOT``. No tool here writes files; edits go
-through ``repair_server`` and the M2 engine.
+The model never chooses the root: it comes from ``VGAR_LEASE_ROOT``. No tool here writes files; the coding agent
+attached to the server makes its own edits.
 """
 from __future__ import annotations
 
+import logging
 import os
 from pathlib import Path
 from typing import Any
@@ -12,12 +13,16 @@ from typing import Any
 from vgar.mcp.audit import AuditLogger
 from vgar.mcp.proposal.security import read_lease_bytes, resolve_read_path
 from vgar.mcp.schemas import PATH_OUTSIDE_ROOT, CodedToolError
+from vgar.mcp.logging_setup import configure_server_logging, server_log_level
 from vgar.mcp.server_factory import create_server
 from vgar.mcp.tooling import READ_FILE_MAX_BYTES, leased_root, run_tool
 from vgar.observability.instrumentation import instrument_mcp_tool
 from vgar.repair.workspace import safe_relative_path
 
-mcp = create_server("vgar-repository", log_level="WARNING")  # no per-request INFO lines (trace spec P8)
+# Run as `python -m`, __name__ is "__main__"; keep the module name so the vgar log handler applies.
+logger = logging.getLogger("vgar.mcp.servers.repository_server" if __name__ == "__main__" else __name__)
+
+mcp = create_server("vgar-repository", log_level=server_log_level())  # default WARNING (trace spec P8)
 _audit_logger = AuditLogger(Path(os.getenv("VGAR_MCP_AUDIT_LOG", "logs/mcp_audit.jsonl")))
 __all__ = ["READ_FILE_MAX_BYTES", "health", "mcp", "read_file"]
 
@@ -66,6 +71,9 @@ def read_file(path: str) -> dict[str, Any]:
 
 
 def main() -> None:
+    configure_server_logging()
+    from importlib.metadata import version
+    logger.info("server=vgar-repository mcp=%s lease_root=%s", version("mcp"), os.getenv("VGAR_LEASE_ROOT"))
     mcp.run(transport="stdio")
 
 

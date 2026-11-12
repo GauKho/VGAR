@@ -1,4 +1,4 @@
-"""M3-W11-2 legacy servers (D7): host-leased root, allow-listed selectors, no write tool outside repair_server.
+"""M3-W11-2 legacy servers (D7): host-leased root, allow-listed selectors, no write tool.
 
 Design: docs/superpowers/specs/2026-11-01-m3-w11-legacy-servers-design.md
 """
@@ -154,35 +154,20 @@ def test_execution_server_tools():
     # S14 (part)
     tools = {tool.name: tool for tool in asyncio.run(execution_server.mcp.list_tools())}
     assert set(tools) == {"health", "run_pytest", "run_relevant_tests"}
-    assert set(tools["run_pytest"].inputSchema["properties"]) == {"selector"}
-    assert set(tools["run_relevant_tests"].inputSchema["properties"]) == {"diff"}
+    assert set(_schema(tools["run_pytest"])["properties"]) == {"selector"}
+    assert set(_schema(tools["run_relevant_tests"])["properties"]) == {"diff"}
+
+
+def _schema(tool) -> dict:
+    """Tool input schema on MCP SDK 2 (``input_schema``) and SDK 1 (``inputSchema``)."""
+    return getattr(tool, "input_schema", None) or tool.inputSchema
 
 
 # ------------------------------------------------------------------- Task 4: tool surface + plumbing
-def test_no_tool_accepts_root_or_timeout_and_only_repair_writes():
-    # S9 / S14
-    from vgar.mcp.servers import repair_server
-    for module in (repository_server, execution_server, repair_server):
+def test_no_tool_accepts_root_or_timeout_or_writes():
+    # S9 / S14; repair_server (the only writer) was removed: the attached coding agent edits code itself.
+    for module in (repository_server, execution_server):
         for tool in asyncio.run(module.mcp.list_tools()):
-            fields = set(tool.inputSchema.get("properties", {}))
+            fields = set(_schema(tool).get("properties", {}))
             assert not fields & {"repo_path", "timeout_seconds"}, (module.__name__, tool.name)
-            if module is not repair_server:
-                assert "patch" not in tool.name and "write" not in tool.name, tool.name
-
-
-def test_load_mcp_tools_forwards_lease_env(monkeypatch):
-    from vgar.agents import core
-    seen = {}
-
-    class FakeClient:
-        async def get_tools(self):
-            from types import SimpleNamespace
-            return [SimpleNamespace(name="repository_read_file")]
-
-    def fake_client(settings=None, servers=None, extra_env=None):
-        seen.update(servers=servers, extra_env=extra_env)
-        return FakeClient()
-
-    monkeypatch.setattr(core, "create_mcp_client", fake_client)
-    asyncio.run(core.load_mcp_tools(None, servers=("repository",), extra_env={"VGAR_LEASE_ROOT": "x"}))
-    assert seen == {"servers": ("repository",), "extra_env": {"VGAR_LEASE_ROOT": "x"}}
+            assert "patch" not in tool.name and "write" not in tool.name, tool.name
