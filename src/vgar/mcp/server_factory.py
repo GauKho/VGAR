@@ -10,7 +10,7 @@ from packaging.version import InvalidVersion, Version
 logger = logging.getLogger(__name__)
 
 
-def create_server(name: str, *, log_level: str = "WARNING") -> Any:
+def create_server(name: str, *, log_level: str = "WARNING", instructions: str | None = None) -> Any:
     """SDK2 is production; SDK1 remains an explicit compatibility lane.
 
     A broken SDK import must surface unchanged: falling back would hide a
@@ -27,10 +27,12 @@ def create_server(name: str, *, log_level: str = "WARNING") -> Any:
     else:
         raise RuntimeError(f"Unsupported MCP SDK major: {version.major}")
     logger.debug("server=%s mcp=%s class=%s log_level=%s", name, version, cls.__name__, log_level)
-    return cls(name, log_level=log_level)
+    extra = {"instructions": instructions} if instructions else {}  # sent to the client at initialize
+    return cls(name, log_level=log_level, **extra)
 
 
-def create_resource_server(name: str, resource_reader, *, log_level: str = "WARNING", prompt_reader=None, protocol_reject=None) -> Any:
+def create_resource_server(name: str, resource_reader, *, log_level: str = "WARNING", prompt_reader=None, protocol_reject=None,
+                           instructions: str | None = None) -> Any:
     """Route raw URIs before SDK1/SDK2 template decoding, using a public override."""
     import anyio
     from mcp.server.lowlevel.helper_types import ReadResourceContents
@@ -69,7 +71,7 @@ def create_resource_server(name: str, resource_reader, *, log_level: str = "WARN
             except Exception as exc:  # noqa: BLE001 - safe boundary before SDK argument validation/name echo
                 protocol_error(exc)
 
-    server = ResourceServer(name, log_level=log_level)
+    server = ResourceServer(name, log_level=log_level, **({"instructions": instructions} if instructions else {}))
     if protocol_reject is not None:
         from vgar.mcp.proposal.prompts import install_protocol_log_guard
         install_protocol_log_guard(protocol_reject)

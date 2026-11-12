@@ -77,6 +77,26 @@ As in the MCP build-server guide: declare each server in the host's configuratio
 
 Replace every `<ABSOLUTE ...>` placeholder. The database file may not exist yet.
 
+### One configuration for every repository
+
+[`configs/mcp_server/mcp.shared.example.json`](configs/mcp_server/mcp.shared.example.json) names no repository: each server works on the folder the host was started in (`cd <repo>` then `claude`), when that folder holds `.git`, `pyproject.toml`, `setup.py`, `setup.cfg`, `pytest.ini` or `tox.ini`. Unset variables are filled in from that folder:
+
+| Variable | Default |
+|---|---|
+| `VGAR_REPOSITORY_ROOT`, `VGAR_LEASE_ROOT` | the folder the host was started in |
+| `VGAR_GRAPH_DATABASE` | `%LOCALAPPDATA%gar\graphs\<folder>-<8 hex of sha256(full path)>.db` (Linux/macOS: `~/.cache/vgar/graphs/...`): one graph per repository, outside it; two repositories with the same folder name get different files |
+| `VGAR_MCP_AUDIT_LOG` | `%LOCALAPPDATA%gar\logs\<server>.jsonl` (nothing is written into the repository) |
+
+Install it once for all repositories in Claude Code's user scope (`~/.claude.json`):
+
+```powershell
+claude mcp add-json --scope user vgar-graph '{"type":"stdio","command":"D:/kltn/vgar_mcp_mvp_demo/.venv/Scripts/python.exe","args":["-m","vgar.mcp.servers.graph_server"],"env":{"PYTHONUTF8":"1"}}'
+```
+
+(the same for `vgar-execution` and `vgar-repository`), or copy the file to `.mcp.json` in a repository. Variables set in the configuration still win. Moving or renaming a repository changes its path, so its first build there is a cold build into a new file.
+
+At initialize, `vgar-graph` sends the agent instructions naming the repository and telling it to call `build_or_update_graph` first and again after edits; `vgar-execution` says the same for `run_relevant_tests`.
+
 | Variable | Server | Meaning |
 |---|---|---|
 | `VGAR_GRAPH_BACKEND` | graph, execution | `sqlite` (or `snapshot`) |
@@ -84,7 +104,7 @@ Replace every `<ABSOLUTE ...>` placeholder. The database file may not exist yet.
 | `VGAR_REPOSITORY_ROOT` | graph, execution | the repository; the only one `build_or_update_graph` will build |
 | `VGAR_LEASE_ROOT` | repository | root `read_file` may read |
 | `VGAR_GRAPH_BUILD_TIMEOUT_SECONDS` | graph | limit for one build or update (default 900) |
-| `VGAR_MCP_AUDIT_LOG` | all | audit log of every tool call (default `logs/mcp_audit.jsonl`) |
+| `VGAR_MCP_AUDIT_LOG` | all | audit log of every tool call (default: see below when the host starts the server in a repository, else `logs/mcp_audit.jsonl`) |
 | `VGAR_MCP_LOG_LEVEL` | all | `WARNING` (default), `INFO`, `DEBUG`; logs go to stderr |
 | `VGAR_MCP_METRICS_LOG` | all | per-call metrics JSONL (default: `<audit log name>.metrics.jsonl` next to the audit log) |
 | `VGAR_TOKENIZER_MANIFEST` | all | pinned tokenizer for exact token counts; without it counts are estimates |

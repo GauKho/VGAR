@@ -16,11 +16,15 @@ from vgar.mcp.schemas import PATH_OUTSIDE_ROOT, CodedToolError
 from vgar.mcp.logging_setup import configure_server_logging, server_log_level
 from vgar.mcp.server_factory import create_server
 from vgar.mcp.tooling import READ_FILE_MAX_BYTES, leased_root, run_tool
+from vgar.mcp.workspace import apply_workspace_defaults
 from vgar.observability.instrumentation import instrument_mcp_tool
 from vgar.repair.workspace import safe_relative_path
 
 # Run as `python -m`, __name__ is "__main__"; keep the module name so the vgar log handler applies.
 logger = logging.getLogger("vgar.mcp.servers.repository_server" if __name__ == "__main__" else __name__)
+
+if __name__ == "__main__":  # started by a host: the repository is the folder the agent was opened in
+    apply_workspace_defaults("repository")
 
 mcp = create_server("vgar-repository", log_level=server_log_level())  # default WARNING (trace spec P8)
 _audit_logger = AuditLogger(Path(os.getenv("VGAR_MCP_AUDIT_LOG", "logs/mcp_audit.jsonl")))

@@ -30,12 +30,19 @@ from vgar.mcp.tooling import (
     run_tool,
     run_tool_async,
 )
+from vgar.mcp.workspace import apply_workspace_defaults
 from vgar.observability.instrumentation import instrument_mcp_tool
 
 # Run as `python -m`, __name__ is "__main__"; keep the module name so the vgar log handler applies.
 logger = logging.getLogger("vgar.mcp.servers.execution_server" if __name__ == "__main__" else __name__)
 
-mcp = create_server("vgar-execution", log_level=server_log_level())  # default WARNING (trace spec P8)
+if __name__ == "__main__":  # started by a host: the repository is the folder the agent was opened in
+    apply_workspace_defaults("execution")
+
+mcp = create_server("vgar-execution", log_level=server_log_level(),  # default WARNING (trace spec P8)
+                    instructions="Runs pytest in the repository. run_relevant_tests picks tests from the code graph "
+                                 "that vgar-graph builds: call vgar-graph build_or_update_graph first, and again "
+                                 "after editing code.")
 core_tools = CoreTools(ProviderRegistry())
 _audit_logger = AuditLogger(Path(os.getenv("VGAR_MCP_AUDIT_LOG", "logs/mcp_audit.jsonl")))
 _graph_service = None  # created on first use, so importing this server needs no graph
