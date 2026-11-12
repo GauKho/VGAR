@@ -350,7 +350,12 @@ _COMMON_FIELDS = {
 
 
 def schema_description() -> dict[str, Any]:
-    """The schema S as plain data, for the ``vgar://repo/schema`` resource; lists are sorted so the output is stable."""
+    """The schema S as plain data, for the ``vgar://repo/schema`` resource; lists are sorted so the output is stable.
+
+    Each call returns new objects. An edge type's ``properties`` is a list of
+    ``{"source", "target", "properties"}`` entries, one per endpoint pair that has required properties
+    (empty when none), because the same edge type can need different properties for different endpoints.
+    """
     node_types = {
         name: {"layer": LAYERS[name], "producer": _PRODUCERS.get(name, "builder"),
                "properties": dict(sorted(NODE_PROPERTIES[name].items())), "source_backed": name in SOURCE_BACKED_NODE_TYPES}
@@ -364,10 +369,12 @@ def schema_description() -> dict[str, Any]:
                            for (edge_type, source, target), rules in sorted(EDGE_PROPERTIES.items()) if edge_type == name],
         }
         if name in _EXTRA_LAYERS:
-            entry["layers"] = _EXTRA_LAYERS[name]
+            entry["layers"] = list(_EXTRA_LAYERS[name])
         edge_types[name] = entry
+    # Fresh lists every call: a caller that edits the result must not change the schema or break SCHEMA_HASH.
     return {"schema_version": SCHEMA_VERSION, "node_types": node_types, "edge_types": edge_types,
-            "common": _COMMON_FIELDS, "invariants": [{"name": name, "description": text} for name, text in INVARIANTS]}
+            "common": {kind: list(fields) for kind, fields in _COMMON_FIELDS.items()},
+            "invariants": [{"name": name, "description": text} for name, text in INVARIANTS]}
 
 
 def _description_hash(description: Mapping[str, Any]) -> str:

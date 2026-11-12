@@ -139,13 +139,17 @@ Mỗi luật kiểm bằng tra từ điển hoặc đếm bậc vào, một lư�
 
 ### 4.5 `schema_description()`
 
-Trả về, với khóa và danh sách đã sắp xếp:
+Trả về, với khóa và danh sách đã sắp xếp, mỗi lần gọi là một bản mới (sửa kết quả không làm đổi lần gọi sau). `properties` của một loại cạnh là danh sách, mỗi phần tử ứng với một cặp đầu cuối có thuộc tính bắt buộc, vì cùng một loại cạnh có thể cần thuộc tính khác nhau tùy cặp đầu cuối:
 
 ```json
 {
   "schema_version": "vgar-schema-full-v5",
   "node_types": {"Port": {"layer": "G_arch", "properties": {"owner_component_id": "string", "...": "..."}, "producer": "builder"}},
-  "edge_types": {"EXPOSES_PORT": {"layer": "G_arch", "endpoints": [["Component", "Port"]], "properties": {}}},
+  "edge_types": {
+    "EXPOSES_PORT": {"layer": "G_arch", "endpoints": [["Component", "Port"]], "properties": []},
+    "DEPENDS_ON": {"layer": "G_arch", "layers": ["G_arch", "G_task"], "endpoints": [["Component", "Component"], ["Requirement", "Requirement"]],
+                   "properties": [{"source": "Component", "target": "Component", "properties": {"weight": "positive_integer"}}]}
+  },
   "common": {"node": ["id", "type", "repo_key", "name", "qualified_name", "graph_version", "properties"], "edge": ["id", "type", "source_id", "target_id", "confidence", "graph_version", "properties", "provenance"]},
   "invariants": [{"name": "port_owner", "description": "..."}]
 }

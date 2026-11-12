@@ -352,3 +352,13 @@ def test_external_module_still_needs_module_keys() -> None:
     broken = copy.deepcopy(document)
     del _node(broken, "n:Module")["properties"]["module_name"]
     _rejected(broken, "properties.module_name is required for Module")
+
+
+def test_description_is_a_fresh_copy_each_call() -> None:
+    first = schema_description()
+    first["common"]["node"].append("extra")
+    first["edge_types"]["DEPENDS_ON"]["layers"].append("G_other")
+    first["node_types"]["Port"]["properties"]["extra"] = "string"
+    second = schema_description()
+    assert "extra" not in second["common"]["node"] and second["edge_types"]["DEPENDS_ON"]["layers"] == ["G_arch", "G_task"]
+    assert "extra" not in second["node_types"]["Port"]["properties"] and _hash(second) == SCHEMA_HASH

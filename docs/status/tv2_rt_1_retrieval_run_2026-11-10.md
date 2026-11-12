@@ -92,7 +92,7 @@ python scripts/compare_rt1_ablation.py ~/rt1/results/full50 --arm graph_f2p
 - Tác dụng trên bộ dev nhỏ: `RT1_CONFIG` tăng Recall@B file (+0,045) và MRR file (+0,023), nhưng mọi CI95 đều chạm 0, và Recall@5 file giảm ở 1 task. Chưa đủ để khẳng định cải thiện; kết luận đúng là "không làm kém đi rõ rệt, cải thiện nhỏ ở Recall@B và MRR".
 - Hai cờ không giúp, kèm nguyên nhân thấy trong dữ liệu:
   - `use_component_dependents`: hàm gọi trực tiếp đã nằm trong 2 bước duyệt, nên cờ chỉ thêm symbol xa, đẩy hàm gold xuống.
-  - `use_trace_component`: khi hai component bằng điểm (cùng 0,95, cùng `anchor_count`), `rank_component_traces` của TR-1 phân định theo id, nên component ngoài (ví dụ package gốc) thường thắng. Nên sửa thứ tự này ở TR-1 trước khi đo lại cờ.
+  - `use_trace_component`: khi hai component bằng điểm (cùng 0,95, cùng `anchor_count`), `rank_component_traces` của TR-1 phân định theo id, nên component ngoài (ví dụ package gốc) thường thắng. Đã sửa ở TR-1 ngày 11/11 (component lồng sâu hơn thắng khi bằng điểm; top-1 TR-1 trên 31 task từ P 0,70 lên 0,74); số đo của cờ `trace` ở bảng trên là trước khi sửa và cần đo lại (R1).
 - `MAY_CALL` được lưu như `CALLS`, nên lượt duyệt từ test fail (arm `graph_f2p`) cũng đi theo các cạnh đoán; vì vậy `failing_test_proximity` ở arm này đổi khi bật `RT1_CONFIG`.
 - So sánh với BM25, grep, embedding, file-neighbor, agent default thuộc R1 (tuần 2 ngày 3); R1 dùng lại hai run 50 task ở trên. Run BM25 phải cùng manifest gold, cùng 12.000 token, cùng bộ đếm token.
 

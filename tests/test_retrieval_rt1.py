@@ -356,3 +356,11 @@ def test_dependent_limit_is_per_component_not_per_anchor(tmp_path):
                                       config=RetrievalConfig(use_component_dependents=True, max_hops=0))
     result = retriever.retrieve(sorted([_symbol_id(document, "round_vnd"), _symbol_id(document, "round_usd")]), 12000)
     assert len(_dependents(result)) == 3
+
+
+def test_trace_seeds_come_from_the_failing_package_when_an_outer_frame_ties(tmp_path):
+    issue = TRACEBACK_ISSUE.replace('Traceback (most recent call last):\n',
+                                    'Traceback (most recent call last):\n  File "fees/engine.py", line 7, in total\n')
+    result = _retrieve(tmp_path, FEE_REPO, issue=issue, overlay=True, use_trace_component=True)
+    assert result.config["trace_component_id"].endswith(":component:fees/discounts")
+    assert all(c["path"] == "fees/discounts/rules.py" for c in _trace_seeds(result))
