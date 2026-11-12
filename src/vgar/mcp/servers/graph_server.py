@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import hashlib
+
+import anyio
 import os
 from contextlib import nullcontext
 from pathlib import Path
@@ -21,7 +23,7 @@ from vgar.mcp.proposal.prompts import (
 from vgar.mcp.proposal.resources import ResourceReader
 from vgar.mcp.proposal.tools import CoreTools, legacy_binding
 from vgar.mcp.server_factory import create_resource_server
-from vgar.mcp.tooling import audit_resource, run_tool
+from vgar.mcp.tooling import PYTEST_OUTPUT_CAP, PYTEST_TIMEOUT_SECONDS, audit_resource, run_tool
 from vgar.observability.instrumentation import instrument_mcp_tool
 
 mcp = create_resource_server("vgar-graph", lambda uri: _read_resource(uri), log_level="WARNING",
@@ -101,10 +103,16 @@ def search_symbols(query: str, limit: int = 20) -> dict[str, Any]:
 @mcp.tool()
 @instrument_mcp_tool("get_callers")
 def get_callers(symbol_id: str, depth: int = 1) -> dict[str, Any]:
-    """Return direct callers; multi-hop requires a host-bound traversal provider."""
+    """Return the functions that call a symbol, following up to ``depth`` caller hops.
+
+    Args:
+        symbol_id: Graph node id of the function, method, class or test.
+        depth: Number of caller hops; 1 returns direct callers. Possible callers through
+            unresolved calls (MAY_CALL) are listed separately in ``may_call`` when depth > 1.
+    """
 
     if type(depth) is int and depth > 1:
-        return _multihop(symbol_id, depth, "callers")
+        return _multihop(symbol_id, depth, "callers") if _has_provider("traversal") else _traverse(symbol_id, depth, "callers")
     def call() -> dict[str, Any]:
         legacy_binding()
         if type(depth) is not int or depth < 1:
@@ -126,10 +134,16 @@ def get_callers(symbol_id: str, depth: int = 1) -> dict[str, Any]:
 @mcp.tool()
 @instrument_mcp_tool("get_callees")
 def get_callees(symbol_id: str, depth: int = 1) -> dict[str, Any]:
-    """Return direct callees; multi-hop requires a host-bound traversal provider."""
+    """Return the functions a symbol calls, following up to ``depth`` callee hops.
+
+    Args:
+        symbol_id: Graph node id of the function, method, class or test.
+        depth: Number of callee hops; 1 returns direct callees. Possible callees through
+            unresolved calls (MAY_CALL) are listed separately in ``may_call`` when depth > 1.
+    """
 
     if type(depth) is int and depth > 1:
-        return _multihop(symbol_id, depth, "callees")
+        return _multihop(symbol_id, depth, "callees") if _has_provider("traversal") else _traverse(symbol_id, depth, "callees")
     def call() -> dict[str, Any]:
         legacy_binding()
         if type(depth) is not int or depth < 1:
@@ -258,6 +272,53 @@ def audit_log_resource() -> str:
     return _read_resource("vgar://audit/log")
 
 
+def _diff_hash(diff: str) -> str:
+    return "sha256:" + hashlib.sha256(diff.encode("utf-8")).hexdigest()
+
+
+_verify_cache: dict[str, dict[str, Any]] = {}
+_test_cache: dict[str, dict[str, Any]] = {}
+
+
+def _cache_key(diff: str) -> tuple[str, str]:
+    return graph_service.get_repository_summary().graph_version, _diff_hash(diff)
+
+
+def _verified(diff: str) -> dict[str, Any]:
+    """verify_patch result for ``diff`` on the served snapshot, computed once per (snapshot, diff)."""
+    from vgar.repair.patch_evidence import verify_patch
+    version, key = _cache_key(diff)
+    if (version, key) not in _verify_cache:
+        _verify_cache[(version, key)] = verify_patch(graph_service, diff, graph_version=version)
+    return _verify_cache[(version, key)]
+
+
+def _tested(diff: str) -> dict[str, Any]:
+    """run_patch_tests result for ``diff`` on the served snapshot, computed once per (snapshot, diff)."""
+    from vgar.repair.patch_evidence import run_patch_tests
+    version, key = _cache_key(diff)
+    if (version, key) not in _test_cache:
+        _test_cache[(version, key)] = run_patch_tests(graph_service, diff, graph_version=version,
+                                                      timeout_seconds=PYTEST_TIMEOUT_SECONDS, output_cap=PYTEST_OUTPUT_CAP)
+    return _test_cache[(version, key)]
+
+
+def _has_provider(capability: str) -> bool:
+    """True when the host registered a provider for ``capability``; otherwise the guide-style path serves it."""
+    return core_tools.registry.get(capability) is not None
+
+
+def _traverse(symbol_id, depth, direction):
+    def call() -> dict[str, Any]:
+        legacy_binding()
+        result = graph_service.traverse(symbol_id, direction, depth, max_nodes=core_tools.limits.max_nodes)
+        return {"symbol_id": symbol_id, "depth": depth, direction: result["symbols"],
+                "may_call": result["may_call"], "truncated": result["truncated"]}
+
+    return _tool("get_" + direction, call, {"symbol_id": symbol_id, "depth": depth},
+                 lambda data: {"result_count": len(data[direction]), "truncated": data["truncated"]})
+
+
 def _multihop(symbol_id, depth, direction):
     return core_tools.respond("get_" + direction, lambda: proposal_contracts.TraversalRequest(
         symbol_id=symbol_id, direction=direction, depth=depth, max_nodes=core_tools.limits.max_nodes,
@@ -278,7 +339,19 @@ async def build_or_update_graph(repo_path: str) -> dict[str, Any]:
 @mcp.tool()
 @instrument_mcp_tool("explain_dependency_path")
 def explain_dependency_path(source_id: str, target_id: str) -> dict[str, Any]:
-    """Explain a bounded typed path in the host-bound snapshot; requires a path provider."""
+    """Explain how one symbol depends on another: the shortest typed edge path between them.
+
+    Args:
+        source_id: Graph node id where the path starts.
+        target_id: Graph node id where the path ends.
+    """
+    if not _has_provider("path"):
+        def call() -> dict[str, Any]:
+            legacy_binding()
+            return graph_service.explain_dependency_path(source_id, target_id, max_nodes=core_tools.limits.max_nodes)
+
+        return _tool("explain_dependency_path", call, {"source_id": source_id, "target_id": target_id},
+                     lambda data: {"found": data["found"], "edge_count": len(data["edges"])})
     return core_tools.respond("explain_dependency_path", lambda: proposal_contracts.PathRequest(
         source_id=source_id, target_id=target_id, max_hops=core_tools.limits.max_hops,
         max_nodes=core_tools.limits.max_nodes, max_examined_edges=core_tools.limits.max_examined_edges),
@@ -287,16 +360,51 @@ def explain_dependency_path(source_id: str, target_id: str) -> dict[str, Any]:
 
 @mcp.tool()
 @instrument_mcp_tool("verify_patch_graph_constraints")
-def verify_patch_graph_constraints(diff: str) -> dict[str, Any]:
-    """Return graph constraint evidence without applying/finalizing a legacy repair run."""
+async def verify_patch_graph_constraints(diff: str) -> dict[str, Any]:
+    """Check a proposed patch against the graph: schema, structure, public API, import cycles and lost Ports.
+
+    The repository is never modified; the patch is checked on a temporary copy.
+
+    Args:
+        diff: Unified diff against the served snapshot's source.
+    """
+    if not _has_provider("verification"):
+        def call() -> dict[str, Any]:
+            legacy_binding()
+            return _verified(diff)
+
+        # Building the candidate graph is slow: run it off the event loop (build-server guide: stay responsive).
+        return await anyio.to_thread.run_sync(lambda: _tool(
+            "verify_patch_graph_constraints", call, {"diff_sha256": _diff_hash(diff)},
+            lambda data: {"verdict": data["status"], "reason_count": len(data["reasons"])}))
     return core_tools.respond("verify_patch_graph_constraints", lambda: proposal_contracts.DiffRequest.from_diff(diff),
                               server="graph", audit=_audit_logger, invoke=core_tools.verify)
 
 
 @mcp.tool()
 @instrument_mcp_tool("rank_patch_candidates")
-def rank_patch_candidates(candidates: list[proposal_contracts.Candidate]) -> dict[str, Any]:
-    """Rank bound candidates; scores never override required check failures or unknowns."""
+async def rank_patch_candidates(candidates: list[proposal_contracts.Candidate]) -> dict[str, Any]:
+    """Rank candidate patches by their evidence: eligible patches first, then score(patch).
+
+    A high score never lifts a patch whose required check failed. Patches not yet verified or
+    tested are checked first (on temporary copies; the repository is never modified).
+
+    Args:
+        candidates: Candidate patches, each with ``candidate_id``, ``diff`` and ``diff_hash``.
+    """
+    if not _has_provider("ranking"):
+        def call() -> dict[str, Any]:
+            legacy_binding()
+            from vgar.repair.patch_evidence import load_ranking_weights, rank_candidates
+            items = [{"candidate_id": item.candidate_id, "diff": item.diff} for item in candidates]
+            verify = {_diff_hash(item["diff"]): _verified(item["diff"]) for item in items}
+            tests = {_diff_hash(item["diff"]): _tested(item["diff"]) for item in items}
+            return rank_candidates(items, verify_results=verify, test_results=tests, weights=load_ranking_weights())
+
+        # Ranking may verify and test each candidate: run it off the event loop.
+        return await anyio.to_thread.run_sync(lambda: _tool(
+            "rank_patch_candidates", call, {"candidate_count": len(candidates)},
+            lambda data: {"ranked": len(data["ranking"]), "eligible": sum(row["eligible"] for row in data["ranking"])}))
     return core_tools.respond("rank_patch_candidates", lambda: proposal_contracts.RankRequest(candidates=tuple(candidates)),
                               server="graph", audit=_audit_logger, invoke=core_tools.rank)
 

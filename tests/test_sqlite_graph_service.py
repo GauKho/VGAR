@@ -59,7 +59,7 @@ class SQLiteGraphServiceContractTests(unittest.TestCase):
             [LOGIN_ID],
         )
 
-    def test_unknown_symbol_matches_demo_service_behavior(self) -> None:
+    def test_unknown_symbol_raises_node_not_found(self) -> None:
         with self.assertRaises(NodeNotFoundError) as raised:
             self.service.get_callers("missing:symbol")
         self.assertIsInstance(raised.exception, KeyError)

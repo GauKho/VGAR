@@ -28,6 +28,7 @@ from vgar.mcp.proposal.ranking_provider import (
 from vgar.mcp.proposal.tools import CoreTools
 from vgar.repair.contracts import RepairPolicy
 from vgar.repair.evidence import digest
+from graph_fixture import real_graph_env
 
 ROOT = Path(__file__).resolve().parents[2]
 POLICY = RankingPolicy(
@@ -169,7 +170,7 @@ def test_verify_test_rank_over_stdio(tmp_path_factory, mode):
             command=sys.executable,
             args=["-B", str(ROOT / "tests/fixtures/mcp_server/tv3_handoff_server.py"), str(root), stage],
             env={"PYTHONPATH": str(ROOT / "src"), "PYTHONUTF8": "1", "PYTHONDONTWRITEBYTECODE": "1",
-                 "PYTHON_DOTENV_DISABLED": "1", "VGAR_GRAPH_BACKEND": "demo"},
+                 "PYTHON_DOTENV_DISABLED": "1", **real_graph_env()},
         ), mode=mode)
 
     def evidence_record(ref):

@@ -137,10 +137,10 @@ def test_resource_read_is_audited_and_errors_are_logged(audit_path):
     assert {"request_id", "duration_ms"} <= set(bad)
 
 
-def test_demo_backend_uses_the_same_error_code(monkeypatch, tmp_path):
-    from vgar.graph.demo_service import DemoGraphService
+def test_real_backend_uses_the_same_error_code(monkeypatch, tmp_path):
+    from graph_fixture import fixture_service
 
-    monkeypatch.setattr(graph_server, "graph_service", DemoGraphService())
+    monkeypatch.setattr(graph_server, "graph_service", fixture_service(tmp_path / "graph"))
     monkeypatch.setattr(graph_server, "_audit_logger", AuditLogger(tmp_path / "a.jsonl"))
     response = graph_server.get_callers("missing:symbol")
     assert response["error"]["code"] == "NODE_NOT_FOUND"

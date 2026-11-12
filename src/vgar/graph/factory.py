@@ -3,18 +3,23 @@ from __future__ import annotations
 import os
 from pathlib import Path
 
-from vgar.graph.demo_service import DemoGraphService
 from vgar.graph.port import GraphService
 from vgar.graph.sqlite_service import SQLiteGraphService
 from vgar.graph.sqlite_store import SQLiteGraphStore
 
+_BUILD_HINT = "build a real graph with `vgar index <repo> --db <file>.db` and set VGAR_GRAPH_DATABASE"
+
 
 def create_graph_service() -> GraphService:
-    """Create a graph backend without coupling the MCP server to storage."""
+    """Create the graph backend from the environment; only real graphs are served.
 
-    backend = os.getenv("VGAR_GRAPH_BACKEND", "demo").strip().lower()
+    ``VGAR_GRAPH_BACKEND`` is ``sqlite`` (default) or ``snapshot``. A missing graph
+    fails at startup instead of falling back to placeholder data.
+    """
+
+    backend = os.getenv("VGAR_GRAPH_BACKEND", "sqlite").strip().lower() or "sqlite"
     if backend == "demo":
-        return DemoGraphService()
+        raise RuntimeError(f"Backend 'demo' was removed; {_BUILD_HINT}")
 
     if backend == "snapshot":
         from vgar.graph.storage_capabilities import SnapshotGraphStore, legacy_profile
@@ -30,28 +35,21 @@ def create_graph_service() -> GraphService:
     elif backend == "sqlite":
         database_value = os.getenv("VGAR_GRAPH_DATABASE", "").strip()
         if not database_value:
-            raise RuntimeError(
-                "VGAR_GRAPH_DATABASE is required when "
-                "VGAR_GRAPH_BACKEND=sqlite"
-            )
+            raise RuntimeError(f"VGAR_GRAPH_DATABASE is required when VGAR_GRAPH_BACKEND=sqlite; {_BUILD_HINT}")
+        database = Path(database_value)
+        if not database.is_file():
+            raise RuntimeError(f"Graph database not found: {database}; {_BUILD_HINT}")
 
         graph_version = os.getenv("VGAR_GRAPH_VERSION", "").strip() or None
-        store = SQLiteGraphStore(
-            Path(database_value),
-            graph_version=graph_version,
-        )
+        store = SQLiteGraphStore(database, graph_version=graph_version)
         store.resolve_graph_version()
     else:
-        raise RuntimeError(
-            f"Unsupported VGAR_GRAPH_BACKEND: {backend!r}; "
-            "expected 'demo', 'sqlite' or 'snapshot'"
-        )
+        raise RuntimeError(f"Unsupported VGAR_GRAPH_BACKEND: {backend!r}; expected 'sqlite' or 'snapshot'")
 
-    if backend in {"sqlite", "snapshot"}:
-        manifest = os.getenv("VGAR_TOKENIZER_MANIFEST", "").strip()
-        counter = None
-        if manifest:
-            from vgar.graph.token_counter import LocalTokenizerCounter
-            counter = LocalTokenizerCounter(manifest)
-        return SQLiteGraphService(store, repository_root=os.getenv("VGAR_REPOSITORY_ROOT", "").strip() or None,
-                                  count_tokens=counter, counter_label=counter.counter_label if counter else "")
+    manifest = os.getenv("VGAR_TOKENIZER_MANIFEST", "").strip()
+    counter = None
+    if manifest:
+        from vgar.graph.token_counter import LocalTokenizerCounter
+        counter = LocalTokenizerCounter(manifest)
+    return SQLiteGraphService(store, repository_root=os.getenv("VGAR_REPOSITORY_ROOT", "").strip() or None,
+                              count_tokens=counter, counter_label=counter.counter_label if counter else "")

@@ -437,7 +437,7 @@ Read by `src/vgar/config/settings.py`. Precedence: **process environment > `.env
 | `VGAR_MAX_TOOL_CALLS` | `30` | Legacy agent warning threshold (agent mode has its own limit of 15) |
 | `VGAR_RECURSION_LIMIT` | `50` | Legacy agent LangGraph recursion limit |
 | `VGAR_TOKEN_BUDGET` | `8000` | Context budget setting |
-| `VGAR_GRAPH_BACKEND` | `demo` | `demo` or `sqlite` for the standalone graph server |
+| `VGAR_GRAPH_BACKEND` | `sqlite` | `sqlite` or `snapshot`; build the graph with `vgar index <repo> --db <file>.db` and set `VGAR_GRAPH_DATABASE` |
 | `VGAR_GRAPH_DATABASE` | unset | SQLite graph path; required with `sqlite` |
 | `VGAR_GRAPH_VERSION` | latest ready snapshot | Pin one snapshot |
 | `VGAR_MCP_AUDIT_LOG` | `logs/mcp_audit.jsonl` | Graph server audit log |

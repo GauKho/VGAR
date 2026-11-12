@@ -65,7 +65,8 @@ Mỗi lời gọi reader có một terminal `resource_read`; known context có r
 $sdk2 = 'D:\Project\CAPSTONES\environments\vgar-mcp-server-sdk2\Scripts\python.exe'
 $env:PYTHONUTF8 = '1'
 $env:PYTHONDONTWRITEBYTECODE = '1'
-$env:VGAR_GRAPH_BACKEND = 'demo'
+vgar index <repo> --db <graph>.db   # dựng graph thật (backend demo đã bỏ)
+$env:VGAR_GRAPH_BACKEND = 'sqlite'; $env:VGAR_GRAPH_DATABASE = '<graph>.db'; $env:VGAR_REPOSITORY_ROOT = '<repo>'
 $env:PYTHONPATH = "$PWD\src"
 & $sdk2 -B -m pytest tests/mcp_server/test_resources.py tests/mcp_server/test_resource_wire.py -q -p no:cacheprovider --basetemp "$env:TEMP\vg-l63-user-01"
 ```

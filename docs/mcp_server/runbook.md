@@ -17,7 +17,8 @@ Ngày: **09/11/2026 (Asia/Saigon)**. Task này chỉ thực hiện **offline pre
 $vgarPython = 'D:\Project\CAPSTONES\environments\vgar-mcp-server-sdk2\Scripts\python.exe'
 $env:PYTHONUTF8 = '1'
 $env:PYTHONDONTWRITEBYTECODE = '1'
-$env:VGAR_GRAPH_BACKEND = 'demo'
+vgar index <repo> --db <graph>.db   # dựng graph thật (backend demo đã bỏ)
+$env:VGAR_GRAPH_BACKEND = 'sqlite'; $env:VGAR_GRAPH_DATABASE = '<graph>.db'; $env:VGAR_REPOSITORY_ROOT = '<repo>'
 $env:PYTHONPATH = "$PWD\src"
 & $vgarPython -B scripts/mcp_server/smoke_mcp.py --preflight `
   --client-python $vgarPython --server-python $vgarPython `

@@ -7,6 +7,7 @@ from pathlib import Path
 
 import anyio
 import pytest
+from graph_fixture import real_graph_env
 
 ROOT = Path(__file__).resolve().parents[2]
 LEGACY = ROOT.parent / "environments/vgar-week78-cuda/Scripts/python.exe"
@@ -22,7 +23,7 @@ def test_prompt_wire_schema_messages_redaction_and_audit(server_python, mode, tm
     from mcp.shared.exceptions import MCPError
     params = StdioServerParameters(command=server_python, args=["-B", str(ROOT / "tests/fixtures/mcp_server/prompt_fixture_server.py"),
         "--root", str(tmp_path / "server")], env={"PYTHONPATH": str(ROOT / "src"), "PYTHONUTF8": "1",
-        "PYTHONDONTWRITEBYTECODE": "1", "PYTHON_DOTENV_DISABLED": "1", "VGAR_GRAPH_BACKEND": "demo"})
+        "PYTHONDONTWRITEBYTECODE": "1", "PYTHON_DOTENV_DISABLED": "1", **real_graph_env()})
     receipts = []
     async def run():
         with anyio.fail_after(45):
@@ -80,7 +81,7 @@ def test_raw_protocol_rejection_has_no_secret_or_fake_render(server_python, lega
     from mcp.shared.message import SessionMessage
     params = StdioServerParameters(command=server_python, args=["-B", str(ROOT / "tests/fixtures/mcp_server/prompt_fixture_server.py"),
         "--root", str(tmp_path / "raw-server")], env={"PYTHONPATH": str(ROOT / "src"), "PYTHONUTF8": "1",
-        "PYTHONDONTWRITEBYTECODE": "1", "PYTHON_DOTENV_DISABLED": "1", "VGAR_GRAPH_BACKEND": "demo"})
+        "PYTHONDONTWRITEBYTECODE": "1", "PYTHON_DOTENV_DISABLED": "1", **real_graph_env()})
     responses = []
     async def run(errlog):
         with anyio.fail_after(30):

@@ -1,4 +1,5 @@
 """Real STDIO transport to explicit synthetic providers; never an agent benchmark."""
+from graph_fixture import real_graph_env
 import json
 import os
 import subprocess
@@ -21,7 +22,7 @@ def test_core_stdio_synthetic_provider(server, expected, mode, tmp_path):
     root = tmp_path / server
     params = StdioServerParameters(command=sys.executable, args=["-B", str(ROOT / "tests/fixtures/mcp_server/core_fixture_server.py"),
         "--root", str(root), "--server", server], env={"PYTHONPATH": str(ROOT / "src"), "PYTHONUTF8": "1",
-        "PYTHONDONTWRITEBYTECODE": "1", "VGAR_GRAPH_BACKEND": "demo", "PYTHON_DOTENV_DISABLED": "1"})
+        "PYTHONDONTWRITEBYTECODE": "1", **real_graph_env(), "PYTHON_DOTENV_DISABLED": "1"})
     receipts = []
 
     async def run():

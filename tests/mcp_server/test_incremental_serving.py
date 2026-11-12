@@ -6,6 +6,7 @@ from pathlib import Path
 import pytest
 from test_graph_jobs import details, execute
 from test_graph_jobs import jobs as jobs  # noqa: PLC0414 - explicitly re-export pytest fixture
+from graph_fixture import real_graph_env
 
 
 def read_document(controller, ctx, result):
@@ -94,7 +95,7 @@ def test_real_build_update_and_snapshot_read_over_stdio(server_python, mode, tmp
     params = StdioServerParameters(command=server_python,
         args=["-B", str(Path(__file__).parents[1]/"fixtures/mcp_server/graph_jobs_fixture_server.py"), "--root", str(root)],
         env={"PYTHONPATH": str(Path(__file__).parents[2]/"src"), "PYTHONUTF8": "1",
-             "PYTHONDONTWRITEBYTECODE": "1", "PYTHON_DOTENV_DISABLED": "1", "VGAR_GRAPH_BACKEND": "demo"})
+             "PYTHONDONTWRITEBYTECODE": "1", "PYTHON_DOTENV_DISABLED": "1", **real_graph_env()})
     rows = []
     async def run():
         with anyio.fail_after(60):

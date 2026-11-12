@@ -2,9 +2,9 @@ from vgar.mcp.servers.graph_server import get_callees, get_callers, search_symbo
 
 
 def test_graph_search_uses_configured_graph_service():
-    result = search_symbols("auth")
+    result = search_symbols("login")
     assert result["status"] == "PASS"
-    assert result["metadata"]["backend"] in {"demo", "sqlite"}
+    assert result["metadata"]["backend"] == "sqlite"
     assert result["data"]["symbols"]
 
 

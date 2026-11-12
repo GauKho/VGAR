@@ -5,6 +5,9 @@ both set by the host. Timeout and output cap are server constants; argv is fixed
 """
 from __future__ import annotations
 
+import hashlib
+
+import anyio
 import json
 import os
 from pathlib import Path
@@ -23,12 +26,23 @@ from vgar.mcp.tooling import (
     inside,
     leased_root,
     run_tool,
+    run_tool_async,
 )
 from vgar.observability.instrumentation import instrument_mcp_tool
 
 mcp = create_server("vgar-execution", log_level="WARNING")  # no per-request INFO lines (trace spec P8)
 core_tools = CoreTools(ProviderRegistry())
 _audit_logger = AuditLogger(Path(os.getenv("VGAR_MCP_AUDIT_LOG", "logs/mcp_audit.jsonl")))
+_graph_service = None  # created on first use, so importing this server needs no graph
+
+
+def _service():
+    """The graph service for guide-style test runs, created lazily from the environment."""
+    global _graph_service
+    if _graph_service is None:
+        from vgar.graph.factory import create_graph_service
+        _graph_service = create_graph_service()
+    return _graph_service
 __all__ = ["PYTEST_OUTPUT_CAP", "PYTEST_TIMEOUT_SECONDS", "health", "mcp", "run_pytest"]
 
 
@@ -73,7 +87,26 @@ def run_pytest(selector: str) -> dict[str, Any]:
 @mcp.tool()
 @instrument_mcp_tool("run_relevant_tests")
 async def run_relevant_tests(diff: str) -> dict[str, Any]:
-    """Test a bound diff in an admitted private candidate workspace; never finalize repair."""
+    """Run the tests related to a patch on a temporary copy, before and after applying it.
+
+    The repository is never modified. Tests are chosen from the graph (TESTS edges and callers).
+
+    Args:
+        diff: Unified diff against the served snapshot's source.
+    """
+    if core_tools.registry.get("tests") is None:
+        def call() -> dict[str, Any]:
+            from vgar.repair.patch_evidence import run_patch_tests
+            service = _service()
+            version = service.get_repository_summary().graph_version
+            return run_patch_tests(service, diff, graph_version=version, timeout_seconds=PYTEST_TIMEOUT_SECONDS,
+                                   output_cap=PYTEST_OUTPUT_CAP)
+
+        # pytest runs can take minutes: run them off the event loop (build-server guide: stay responsive).
+        return await run_tool_async(server="execution", tool="run_relevant_tests", backend="pytest", audit=_audit_logger,
+                        call=lambda: anyio.to_thread.run_sync(call), audit_fields={"diff_sha256": "sha256:" + hashlib.sha256(diff.encode("utf-8")).hexdigest()},
+                        summarize=lambda data: {"verdict": data["status"], "test_count": len(data["selectors"])},
+                        untrusted=True)
     return await core_tools.respond_async("run_relevant_tests", lambda: DiffRequest.from_diff(diff),
                                           server="execution", audit=_audit_logger, invoke=core_tools.tests)
 

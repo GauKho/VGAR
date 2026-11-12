@@ -8,6 +8,7 @@ from urllib.parse import quote
 
 import anyio
 import pytest
+from graph_fixture import real_graph_env
 
 ROOT = Path(__file__).resolve().parents[2]
 LEGACY_PYTHON = ROOT.parent / "environments/vgar-week78-cuda/Scripts/python.exe"
@@ -23,7 +24,7 @@ def test_resource_stdio_inventory_encoding_and_scope(server_python, mode, tmp_pa
     assert require_python.is_file(), "Required compatibility interpreter missing"
     params = StdioServerParameters(command=server_python, args=["-B", str(ROOT / "tests/fixtures/mcp_server/resource_fixture_server.py"),
         "--root", str(tmp_path / "fixture")], env={"PYTHONPATH": str(ROOT / "src"), "PYTHONUTF8": "1",
-        "PYTHONDONTWRITEBYTECODE": "1", "PYTHON_DOTENV_DISABLED": "1", "VGAR_GRAPH_BACKEND": "demo"})
+        "PYTHONDONTWRITEBYTECODE": "1", "PYTHON_DOTENV_DISABLED": "1", **real_graph_env()})
     receipts = []
     async def run():
         with anyio.fail_after(60):

@@ -76,7 +76,7 @@ class AgentSettings:
 
 @dataclass(frozen=True)
 class GraphSettings:
-    backend: str = "demo"  # demo | sqlite
+    backend: str = "sqlite"  # sqlite | snapshot
     database: Path | None = None
     version: str | None = None
 
@@ -119,7 +119,7 @@ def _build() -> Settings:
             token_budget=_int("VGAR_TOKEN_BUDGET", 8000),
         ),
         graph=GraphSettings(
-            backend=_str("VGAR_GRAPH_BACKEND", "demo").lower(),
+            backend=_str("VGAR_GRAPH_BACKEND", "sqlite").lower(),
             database=_path("VGAR_GRAPH_DATABASE", database) if database else None,
             version=_raw("VGAR_GRAPH_VERSION"),
         ),

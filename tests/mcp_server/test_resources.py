@@ -14,15 +14,15 @@ def test_resource_module_exists():
 
 
 @pytest.fixture
-def reader(bound):
-    from vgar.graph.demo_service import DemoGraphService
+def reader(bound, tmp_path):
+    from graph_fixture import fixture_service
     from vgar.mcp.audit import AuditLogger
     from vgar.mcp.proposal.ports import ProviderRegistry
     from vgar.mcp.proposal.resources import ResourceReader
     from vgar.mcp.proposal.tools import CoreTools
     authority, ctx = bound
     audit = AuditLogger(ctx.output_root / "audit.jsonl")
-    return ResourceReader(CoreTools(ProviderRegistry()), DemoGraphService(), audit), authority, ctx
+    return ResourceReader(CoreTools(ProviderRegistry()), fixture_service(tmp_path / "graph"), audit), authority, ctx
 
 
 @pytest.mark.parametrize("raw,kind,identifier", [
@@ -87,14 +87,30 @@ def test_legacy_raw_json_and_unknown_node_error(reader):
 
 
 @pytest.mark.parametrize("uri", ["vgar://repo/schema", "vgar://component/a", "vgar://task/task", "vgar://evidence/baseline", "vgar://audit/log", "vgar://graph/subgraph/a?k=2"])
-def test_new_resources_need_trusted_context(reader, uri):
+def test_untrusted_context_is_always_refused(reader, uri):
     r, _, _ = reader
-    with pytest.raises(ValueError, match="context"): r.read(uri)
     with pytest.raises(ValueError): r.read(uri, context={"confirmed": True})
 
 
+@pytest.mark.parametrize("uri", ["vgar://audit/log"])
+def test_audit_resource_still_needs_trusted_context(reader, uri):
+    r, _, _ = reader
+    with pytest.raises(ValueError, match="context"): r.read(uri)
+
+
+def test_graph_resources_are_served_without_context_when_no_provider(reader):
+    # Spec §7.2 (guide-style): schema/component/task/baseline come from the real graph service.
+    from vgar.contracts.error import GraphNotReadyError, NodeNotFoundError
+    r, _, _ = reader
+    assert json.loads(r.read("vgar://repo/schema")) == r.service.get_schema()
+    assert json.loads(r.read("vgar://evidence/baseline"))["tests"] == "NOT_RUN"
+    assert json.loads(r.read("vgar://component/app"))["component"] == "app"
+    with pytest.raises(NodeNotFoundError): r.read("vgar://component/a")
+    with pytest.raises(GraphNotReadyError): r.read("vgar://task/task")
+
+
 def resource_provider_reader(ctx, *, kind="component", payload='{"component_id":"a"}', output_binding=None, evidence=(), availability="AVAILABLE"):
-    from vgar.graph.demo_service import DemoGraphService
+    from graph_fixture import fixture_service
     from vgar.mcp.audit import AuditLogger
     from vgar.mcp.proposal import contracts as c
     from vgar.mcp.proposal.ports import ProviderBinding, ProviderRegistry
@@ -105,15 +121,21 @@ def resource_provider_reader(ctx, *, kind="component", payload='{"component_id":
             return c.ResourceResult(binding=output_binding or c.SnapshotBinding.from_context(context), payload_json=payload,
                 availability=availability, evidence=evidence, resource_kind=request.kind, resource_id=request.resource_id)
     record = ProviderBinding(SyntheticProvider(), c.SnapshotBinding.from_context(ctx), frozenset({"resource_" + kind}), synthetic=True)
-    return ResourceReader(CoreTools(ProviderRegistry((record,), test_only=True)), DemoGraphService(), AuditLogger(ctx.output_root / "audit.jsonl"))
+    return ResourceReader(CoreTools(ProviderRegistry((record,), test_only=True)), fixture_service(ctx.output_root.parent / "graph"),
+                          AuditLogger(ctx.output_root / "audit.jsonl"))
 
 
 @pytest.mark.parametrize("uri", ["vgar://repo/schema", "vgar://component/a", "vgar://task/task", "vgar://evidence/baseline"])
-def test_missing_provider_is_protocol_error_not_empty_success(reader, uri):
+def test_missing_provider_falls_back_to_the_graph_not_to_empty_success(reader, uri):
+    # Spec §7.2: without a provider the graph service answers; a missing entity is a coded error, never `{}`.
     from vgar.contracts.error import GraphError
     r, _, ctx = reader
-    with pytest.raises(GraphError) as error: r.read(uri, context=ctx)
-    assert error.value.details["reason"] == "CAPABILITY_UNAVAILABLE"
+    try:
+        payload = json.loads(r.read(uri, context=ctx))
+    except GraphError as error:
+        assert error.details.get("reason") != "CAPABILITY_UNAVAILABLE"
+    else:
+        assert payload
 
 
 def test_provider_json_binding_and_secret_redaction(reader):

@@ -8,7 +8,6 @@ import pytest
 
 from vgar.contracts.impact import ImpactReport
 from vgar.graph.builder import PythonGraphBuilder
-from vgar.graph.demo_service import DemoGraphService
 from vgar.graph.sqlite_service import SQLiteGraphService
 from vgar.graph.sqlite_store import SQLiteGraphStore
 from vgar.mcp.audit import AuditLogger
@@ -71,8 +70,6 @@ def test_tool_needs_a_repository_root_and_a_snapshot_backend(snapshot, monkeypat
     _, version = snapshot
     store = graph_server.graph_service.store
     monkeypatch.setattr(graph_server, 'graph_service', SQLiteGraphService(store))
-    assert graph_server.analyze_patch_impact(PATCH, version)['error']['code'] == 'GRAPH_NOT_READY'
-    monkeypatch.setattr(graph_server, 'graph_service', DemoGraphService())
     assert graph_server.analyze_patch_impact(PATCH, version)['error']['code'] == 'GRAPH_NOT_READY'
 
 

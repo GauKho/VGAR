@@ -1,6 +1,7 @@
 """SDK selection and framework-free server imports; no model or target execution."""
 from __future__ import annotations
 
+from graph_fixture import real_graph_env
 import importlib
 import json
 import os
@@ -91,7 +92,7 @@ for name in ('graph','repository','execution','repair'):
 assert not any(k.split('.')[0] in blocked for k in sys.modules)
 print(json.dumps({'imported':4,'forbidden':False}))
 '''
-    env = {**os.environ, "PYTHONPATH": str(ROOT / "src"), "VGAR_GRAPH_BACKEND": "demo",
+    env = {**os.environ, "PYTHONPATH": str(ROOT / "src"), **real_graph_env(),
            "VGAR_MCP_AUDIT_LOG": str(tmp_path / "audit.jsonl"), "PYTHONDONTWRITEBYTECODE": "1"}
     result = subprocess.run([sys.executable, "-B", "-c", code], env=env, cwd=tmp_path,
                             capture_output=True, text=True, encoding="utf-8", timeout=30, check=False)

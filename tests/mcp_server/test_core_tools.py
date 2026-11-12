@@ -34,7 +34,9 @@ def test_depth_one_payload_is_legacy_but_depth_two_cannot_lie(monkeypatch, tmp_p
         method = getattr(graph, name)
         direct = method(symbol)
         assert direct["status"] == "PASS" and set(direct["data"]) == {"symbol_id", "depth", key}
-        assert method(symbol, depth=2)["status"] == "ERROR"
+        multi = method(symbol, depth=2)  # spec §7.2: served by graph_service when no traversal provider
+        assert multi["status"] == "PASS" and {"symbol_id", "depth", key, "may_call", "truncated"} == set(multi["data"])
+        assert all(item["hop"] in {1, 2} for item in multi["data"][key])
         assert method(symbol, depth=True)["status"] == "ERROR"
 
 

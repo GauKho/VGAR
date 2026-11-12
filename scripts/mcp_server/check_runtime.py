@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import shutil
 import sys
 from pathlib import Path
@@ -12,6 +13,10 @@ sys.path.insert(0, str(ROOT/"src"))
 
 from vgar.repair.executor import run_bounded
 
+
+def _graph_env(name):
+    value = os.environ.get(name, "")
+    return str(ROOT / value) if value and not os.path.isabs(value) else value
 
 def dump(path, value):
     path.write_text(json.dumps(value, ensure_ascii=False, indent=2)+"\n", encoding="utf-8")
@@ -31,7 +36,7 @@ def main(argv=None):
         if not Path(value).is_file():
             raise ValueError(f"Missing interpreter: {value}")
     out.mkdir(parents=True, exist_ok=False)
-    environment = {"PYTHONPATH": str(ROOT/"src"), "PYTHONUTF8": "1", "PYTHONDONTWRITEBYTECODE": "1", "PYTHONOPTIMIZE": "0", "VGAR_GRAPH_BACKEND": "demo", "VGAR_MCP_AUDIT_LOG": str(out/"probe-audit.jsonl")}
+    environment = {"PYTHONPATH": str(ROOT/"src"), "PYTHONUTF8": "1", "PYTHONDONTWRITEBYTECODE": "1", "PYTHONOPTIMIZE": "0", "VGAR_GRAPH_BACKEND": "sqlite", "VGAR_GRAPH_DATABASE": _graph_env("VGAR_GRAPH_DATABASE"), "VGAR_REPOSITORY_ROOT": _graph_env("VGAR_REPOSITORY_ROOT"), "VGAR_MCP_AUDIT_LOG": str(out/"probe-audit.jsonl")}
     probe = [args.server_python, "-B", str(Path(__file__).with_name("_runtime_probe.py"))]
     if args.require_no_langchain:
         probe.append("--require-no-langchain")

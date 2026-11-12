@@ -20,6 +20,10 @@ from vgar.mcp.proposal.security import read_lease_bytes, resolve_read_path
 from vgar.repair.executor import run_bounded
 
 
+def _graph_env(name):
+    value = os.environ.get(name, "")
+    return str(ROOT / value) if value and not os.path.isabs(value) else value
+
 def require(value, message):
     if not value:
         raise ValueError(message)
@@ -204,7 +208,9 @@ def _run(command, output, label, timeout):
     # Fixed helper actions only. Helper clears inherited env before imports/spawn.
     record = run_bounded(tuple(command),output,timeout,output_cap=4*1024*1024,
         environment={"PYTHONPATH":str(ROOT/"src"),"PYTHONUTF8":"1","PYTHONDONTWRITEBYTECODE":"1",
-                     "PYTHON_DOTENV_DISABLED":"1","GIT_OPTIONAL_LOCKS":"0","VGAR_GRAPH_BACKEND":"demo",
+                     "PYTHON_DOTENV_DISABLED":"1","GIT_OPTIONAL_LOCKS":"0","VGAR_GRAPH_BACKEND":"sqlite",
+                     "VGAR_GRAPH_DATABASE":_graph_env("VGAR_GRAPH_DATABASE"),
+                     "VGAR_REPOSITORY_ROOT":_graph_env("VGAR_REPOSITORY_ROOT"),
                      "VGAR_MCP_AUDIT_LOG":str(output/(label+"-audit.jsonl"))})
     dump(output/(label+"-command.json"),record)
     require(record["complete"] and record["exit_code"] == 0, "Preflight subprocess failed: "+label)

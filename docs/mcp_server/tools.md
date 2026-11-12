@@ -74,7 +74,8 @@ Artifact: `results/mcp_server/tools/20261108T141511Z-adapters/`. Xem final summa
 $sdk2 = 'D:\Project\CAPSTONES\environments\vgar-mcp-server-sdk2\Scripts\python.exe'
 $env:PYTHONUTF8 = '1'
 $env:PYTHONDONTWRITEBYTECODE = '1'
-$env:VGAR_GRAPH_BACKEND = 'demo'
+vgar index <repo> --db <graph>.db   # dựng graph thật (backend demo đã bỏ)
+$env:VGAR_GRAPH_BACKEND = 'sqlite'; $env:VGAR_GRAPH_DATABASE = '<graph>.db'; $env:VGAR_REPOSITORY_ROOT = '<repo>'
 $env:PYTHONPATH = "$PWD\src"
 & $sdk2 -B -m pytest tests/mcp_server/test_core_tools.py tests/mcp_server/test_provider_binding.py tests/mcp_server/test_core_wire.py -q -p no:cacheprovider --basetemp "$env:TEMP\vg-l62-user-01"
 ```

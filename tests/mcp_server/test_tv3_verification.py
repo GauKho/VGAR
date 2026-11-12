@@ -23,6 +23,7 @@ from vgar.mcp.proposal.tools import CoreTools
 from vgar.mcp.proposal.verification_provider import StaticVerificationProvider
 from vgar.repair.evidence import digest
 from vgar.repair.patch import PatchPolicy
+from graph_fixture import real_graph_env
 
 ROOT = Path(__file__).resolve().parents[2]
 ALLOWED = ("src/a.py", "src/b.py")
@@ -156,7 +157,7 @@ def test_static_provider_through_sdk2_stdio(verifier, mode):
         args=["-B", str(ROOT / "tests/fixtures/mcp_server/tv3_verification_server.py"),
               str(ctx.repo_root.parent), str(store.manifest_path), ctx.snapshot_hash, store.identity.profile_hash],
         env={"PYTHONPATH": str(ROOT / "src"), "PYTHONUTF8": "1", "PYTHONDONTWRITEBYTECODE": "1",
-             "PYTHON_DOTENV_DISABLED": "1", "VGAR_GRAPH_BACKEND": "demo"},
+             "PYTHON_DOTENV_DISABLED": "1", **real_graph_env()},
     )
 
     async def run():

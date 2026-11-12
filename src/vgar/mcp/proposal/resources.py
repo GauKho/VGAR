@@ -105,6 +105,9 @@ def encode_resource(value):
     return json.dumps(value, ensure_ascii=False, allow_nan=False, separators=(",", ":"))
 
 
+_GRAPH_KINDS = frozenset({"schema", "component", "task", "baseline"})
+
+
 class ResourceReader:
     def __init__(self, tools, service, audit):
         self.tools, self.service, self.audit = tools, service, audit
@@ -121,7 +124,7 @@ class ResourceReader:
                 ctx = self.tools._context("resource_read", request)
             if ctx is not None:
                 check_source(ctx)
-            elif not request.legacy:
+            elif not request.legacy and not self._served_by_graph(request):
                 raise ValueError("Host-bound context required for new resources")
         except BaseException as exc:
             trusted = None
@@ -151,6 +154,8 @@ class ResourceReader:
         elif request.kind == "audit":
             cap = min(262144, ctx.limits.audit_bytes)
             raw = encode_resource(read_audit(ctx, request.cursor, output_bytes=cap))
+        elif self._served_by_graph(request):
+            raw = self._graph_resource(request, ctx)
         else:
             raw = self._provider(request, ctx, cap)
         if len(raw.encode("utf-8")) > cap:
@@ -159,6 +164,24 @@ class ResourceReader:
         if ctx:
             check_source(ctx)
         return raw
+
+    def _served_by_graph(self, request):
+        """Schema/component/task/baseline come from the graph service when the host registered no provider."""
+        return request.kind in _GRAPH_KINDS and self.tools.registry.get("resource_" + request.kind) is None
+
+    def _graph_resource(self, request, ctx):
+        if request.kind == "task" and ctx is not None and request.resource_id != ctx.task_id:
+            raise ValueError("Cross-task resource access refused")
+        if request.kind == "schema":
+            value = self.service.get_schema()
+        elif request.kind == "component":
+            value = self.service.get_component(request.resource_id)
+        elif request.kind == "task":
+            value = self.service.get_task(request.resource_id)
+        else:
+            value = self.service.get_baseline()
+        raw = encode_resource(value)
+        return scrub_secrets(raw, ctx.secrets) if ctx else raw
 
     def _legacy(self, request, ctx):
         def validate():

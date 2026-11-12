@@ -1,0 +1,11 @@
+{
+  "status": "provisional, pending team decision (spec H10: TV3 pilot weights; proposal §8.5 gives no values)",
+  "weights": {
+    "tests": 0.5,
+    "schema_conformance": 0.15,
+    "architecture": 0.1,
+    "api": 0.15,
+    "semantic": 0.1,
+    "impact_risk": 0.2
+  }
+}

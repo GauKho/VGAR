@@ -9,10 +9,16 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 # A new helper process only: discard inherited credentials/client/global settings
 # before importing VGAR or spawning any server. Do not alter the caller's env.
+def _graph_env(name):
+    value = os.environ.get(name, "")
+    return str(ROOT / value) if value and not os.path.isabs(value) else value
+
+
 allow = {"PATH","PATHEXT","SYSTEMROOT","WINDIR","TEMP","TMP","COMSPEC","USERPROFILE","LOCALAPPDATA","APPDATA"}
 clean = {key:value for key,value in os.environ.items() if key.upper() in allow}
 clean.update(PYTHONUTF8="1",PYTHONDONTWRITEBYTECODE="1",PYTHONOPTIMIZE="0",PYTHON_DOTENV_DISABLED="1",
-             PYTHONPATH=str(ROOT/"src"),VGAR_GRAPH_BACKEND="demo",GIT_OPTIONAL_LOCKS="0",
+             PYTHONPATH=str(ROOT/"src"),VGAR_GRAPH_BACKEND="sqlite",GIT_OPTIONAL_LOCKS="0",
+             VGAR_GRAPH_DATABASE=_graph_env("VGAR_GRAPH_DATABASE"),VGAR_REPOSITORY_ROOT=_graph_env("VGAR_REPOSITORY_ROOT"),
              HF_HUB_OFFLINE="1",TRANSFORMERS_OFFLINE="1")
 os.environ.clear()
 os.environ.update(clean)

@@ -18,7 +18,7 @@ def _isolated(monkeypatch, tmp_path):
 
 def test_defaults():
     s = reload_settings()
-    assert s.model.max_new_tokens == 512 and s.graph.backend == "demo" and s.graph.database is None
+    assert s.model.max_new_tokens == 512 and s.graph.backend == "sqlite" and s.graph.database is None
 
 
 def test_env_overrides_and_blank_means_default(monkeypatch):

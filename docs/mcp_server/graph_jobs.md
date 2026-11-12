@@ -112,7 +112,8 @@ Fixture server `tests/fixtures/mcp_server/graph_jobs_fixture_server.py` minh h�
 $vgarPython = 'D:\Project\CAPSTONES\environments\vgar-mcp-server-sdk2\Scripts\python.exe'
 $env:PYTHONUTF8 = '1'
 $env:PYTHONDONTWRITEBYTECODE = '1'
-$env:VGAR_GRAPH_BACKEND = 'demo'
+vgar index <repo> --db <graph>.db   # dựng graph thật (backend demo đã bỏ)
+$env:VGAR_GRAPH_BACKEND = 'sqlite'; $env:VGAR_GRAPH_DATABASE = '<graph>.db'; $env:VGAR_REPOSITORY_ROOT = '<repo>'
 $env:PYTHONPATH = "$PWD\src"
 & $vgarPython -B -m pytest tests/mcp_server/test_graph_jobs.py tests/mcp_server/test_incremental_serving.py tests/mcp_server/test_storage_snapshots.py tests/test_incremental.py -q -p no:cacheprovider --basetemp "$env:TEMP\vg-graph-jobs-new-01"
 ```

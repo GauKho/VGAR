@@ -107,7 +107,7 @@ $vgarPython = 'D:\Project\CAPSTONES\environments\vgar-mcp-server-sdk2\Scripts\py
 $env:PYTHONUTF8 = '1'
 $env:PYTHONDONTWRITEBYTECODE = '1'
 $env:PYTHONPATH = "$PWD\src"
-$env:VGAR_GRAPH_BACKEND = 'demo' # collection; fixture tự chọn snapshot ở child process
+$env:VGAR_GRAPH_BACKEND = 'sqlite'; $env:VGAR_GRAPH_DATABASE = '<graph>.db' # collection (dựng bằng vgar index); fixture tự chọn snapshot ở child process
 & $vgarPython -B -m pytest tests/mcp_server/test_storage_snapshots.py tests/test_sqlite_graph_service.py -q -p no:cacheprovider --basetemp "$env:TEMP\vg-storage-new-01"
 ```
 

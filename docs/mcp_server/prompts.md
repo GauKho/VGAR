@@ -74,7 +74,8 @@ Không patch SDK package, viết transport proxy, native agent host hoặc sửa
 $sdk2 = 'D:\Project\CAPSTONES\environments\vgar-mcp-server-sdk2\Scripts\python.exe'
 $env:PYTHONUTF8 = '1'
 $env:PYTHONDONTWRITEBYTECODE = '1'
-$env:VGAR_GRAPH_BACKEND = 'demo'
+vgar index <repo> --db <graph>.db   # dựng graph thật (backend demo đã bỏ)
+$env:VGAR_GRAPH_BACKEND = 'sqlite'; $env:VGAR_GRAPH_DATABASE = '<graph>.db'; $env:VGAR_REPOSITORY_ROOT = '<repo>'
 $env:PYTHONPATH = "$PWD\src"
 & $sdk2 -B -m pytest tests/mcp_server/test_prompt.py tests/mcp_server/test_prompt_wire.py tests/mcp_server/test_runtime_cli.py -q -p no:cacheprovider --basetemp "$env:TEMP\vg-l64-user-01"
 ```

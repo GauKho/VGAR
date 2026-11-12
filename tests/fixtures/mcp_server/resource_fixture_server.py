@@ -1,11 +1,16 @@
 """Explicit synthetic STDIO server for URI and resource isolation tests; no real graph experiment."""
 import argparse
 import json
+import sys
 import time
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))  # tests/, for graph_fixture
+
 from vgar.contracts.graph import GraphNodeRef, GraphNodeRepo, GraphSubgraphResult
-from vgar.graph.demo_service import DemoGraphService
+from graph_fixture import build_fixture_database
+from vgar.graph.sqlite_service import SQLiteGraphService
+from vgar.graph.sqlite_store import SQLiteGraphStore
 from vgar.mcp.audit import AuditLogger
 from vgar.mcp.proposal import contracts as c
 from vgar.mcp.proposal.context import (
@@ -35,7 +40,7 @@ def main():
     with request_scope(ctx):
         log.write("synthetic-seed", {"number": 0})
 
-    class SyntheticService(DemoGraphService):
+    class SyntheticService(SQLiteGraphService):
         def get_repository_summary(self):
             return super().get_repository_summary().model_copy(update={"graph_version": ctx.snapshot_hash})
 
@@ -62,7 +67,8 @@ def main():
         frozenset({"resource_schema", "resource_component", "resource_task", "resource_baseline"}), synthetic=True),), test_only=True)
     from vgar.mcp.servers import graph_server as module
     module.core_tools = CoreTools(registry, context_factory=lambda operation, request: ctx)
-    module.graph_service = SyntheticService()
+    database, version = build_fixture_database(root / "graph")
+    module.graph_service = SyntheticService(SQLiteGraphStore(database, graph_version=version))
     module._audit_logger = log
     # Fixture-only entrypoint; production main rejects this registry.
     module.mcp.run(transport="stdio")
