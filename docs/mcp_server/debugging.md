@@ -24,6 +24,31 @@ Ví dụ Claude Code (PowerShell, một dòng):
 claude --% mcp add vgar-graph -s local -e VGAR_MCP_LOG_LEVEL=INFO -e VGAR_GRAPH_BACKEND=sqlite -e VGAR_GRAPH_DATABASE=D:/kltn/graphs/<repo>.db -e VGAR_REPOSITORY_ROOT=<repo> -e PYTHONUTF8=1 -- D:/kltn/vgar_mcp_mvp_demo/.venv/Scripts/python.exe -m vgar.mcp.servers.graph_server
 ```
 
+## Token, thời gian và định dạng của từng lời gọi tool
+
+Mỗi lời gọi tool (cả 3 server) có một bản ghi metrics; server chỉ thấy dữ liệu đi qua tool (tham số vào, kết quả ra), còn token của mô hình do host đếm (Claude Code `/cost`, thống kê phiên của OpenCode).
+
+| Trường | Ý nghĩa |
+|---|---|
+| `tool`, `server`, `request_id`, `status` | Tool nào, server nào, khớp với audit log qua `request_id` |
+| `duration_ms` | Thời gian xử lý của tool (tính cả chờ trong server) |
+| `input_tokens`, `output_tokens`, `token_method` | Token của tham số và của kết quả tool trả về mô hình (chi phí ngữ cảnh, proposal §13.2). `token_method` là nhãn tokenizer đã ghim khi khai `VGAR_TOKENIZER_MANIFEST`, nếu không là `approx_chars_div_4` (ước lượng) |
+| `input_bytes`, `output_bytes` | Kích thước JSON vào, ra |
+| `args` | Định dạng tham số: tên → kiểu và kích thước (`"diff": "str 412B"`, `"depth": "int"`), không bao giờ có nội dung |
+| `result` | Định dạng kết quả: `status`, các khóa của `data` → kiểu và kích thước (`"symbols": "list[8]"`), `error_code` nếu lỗi |
+
+Nơi ghi:
+- **stderr**, khi `VGAR_MCP_LOG_LEVEL=INFO` hoặc `DEBUG`: một dòng `metrics tool=… duration_ms=… input_tokens=… output_tokens=… args=… result=…`.
+- **File JSONL**: `VGAR_MCP_METRICS_LOG`, mặc định cạnh audit log (`graph.jsonl` → `graph.metrics.jsonl`); không khai cả hai thì không ghi file.
+
+Tổng hợp theo tool (số lần gọi, lỗi, độ trễ trung bình/p50/p95/max, tổng token vào/ra):
+
+```powershell
+python scripts/summarize_mcp_metrics.py --metrics D:/kltn/vgar-logs/graph.metrics.jsonl --metrics D:/kltn/vgar-logs/execution.metrics.jsonl --out results/mcp_metrics
+```
+
+Ra `mcp_metrics.json` và `mcp_metrics.md`; dùng cho phép đo MCP usability (số lời gọi tool, độ trễ, chi phí token ngữ cảnh) với Claude Code hoặc OpenCode.
+
 ## Xem log ở đâu
 
 | Host | Nơi xem |

@@ -86,6 +86,8 @@ Replace every `<ABSOLUTE ...>` placeholder. The database file may not exist yet.
 | `VGAR_GRAPH_BUILD_TIMEOUT_SECONDS` | graph | limit for one build or update (default 900) |
 | `VGAR_MCP_AUDIT_LOG` | all | audit log of every tool call (default `logs/mcp_audit.jsonl`) |
 | `VGAR_MCP_LOG_LEVEL` | all | `WARNING` (default), `INFO`, `DEBUG`; logs go to stderr |
+| `VGAR_MCP_METRICS_LOG` | all | per-call metrics JSONL (default: `<audit log name>.metrics.jsonl` next to the audit log) |
+| `VGAR_TOKENIZER_MANIFEST` | all | pinned tokenizer for exact token counts; without it counts are estimates |
 
 OpenCode: `codemode: false` exposes the tools directly, which keeps tool-call counts measurable; for a run without MCP set `"disabled": true` on the servers.
 
@@ -132,6 +134,8 @@ Details: [`tools.md`](docs/mcp_server/tools.md), [`resources.md`](docs/mcp_serve
 
 Following the MCP build-server guide (`2026-07-28`): nothing but JSON-RPC on stdout, one `logging.getLogger(__name__)` per module, logs on stderr (the host captures them), no protocol logging. `VGAR_MCP_LOG_LEVEL=INFO` adds a start-up line and one line per tool call; `DEBUG` adds the call arguments as hashes and sizes, never diff content.
 
+Every tool call also records its processing time, tokens in and out (pinned tokenizer via `VGAR_TOKENIZER_MANIFEST`, otherwise an estimate) and the format of its arguments and result (types and sizes, never content): a `metrics` line on stderr at INFO and one JSON line in `VGAR_MCP_METRICS_LOG` (default: next to the audit log). `python scripts/summarize_mcp_metrics.py --metrics <file> --out <dir>` turns them into a per-tool table (calls, errors, latency p50/p95, tokens).
+
 MCP Inspector, host log locations and common errors: [`docs/mcp_server/debugging.md`](docs/mcp_server/debugging.md).
 
 ## Evaluation
@@ -146,7 +150,7 @@ Week 2 of the two-week plan (§4–§5):
 | Impact (RQ3) | `measure_patch_impact.py` |
 | Verification (FAR/FRR) | `build_mutant_pool.py`, `evaluate_mutant_pool.py`, `audit_mypy_deltas.py` |
 | Repair | `grade_repair_candidates.py --execute` (official SWE-bench harness). **Needs an adapter:** it reads the removed M2 runner layout (`attempts/*/attempt-*.json` whose `engine_run_dir` holds `run_record.json` with `stages.apply.status == PASS` and `applied.diff`); patches from Claude Code/OpenCode must be written in that layout first |
-| MCP usability | `aggregate_agent_traces.py --traces … --audit …`. **Needs an adapter:** it requires trace files of the removed `vgar solve --agent` (`<UTC>-<task>.json` with `calls`, `mode`, `by`) besides the audit log; Claude Code/OpenCode produce no such traces |
+| MCP usability | `summarize_mcp_metrics.py --metrics …` (per-tool calls, latency and tokens from the servers' own metrics; works with any host). `aggregate_agent_traces.py --traces … --audit …` **needs an adapter:** it requires trace files of the removed `vgar solve --agent` (`<UTC>-<task>.json` with `calls`, `mode`, `by`) besides the audit log; Claude Code/OpenCode produce no such traces |
 | SWE-bench task environments | `prepare_manifest.py`, `prepare_task_env.py`, `pin_task_images.py`, `build_swebench_test_cmds.py` |
 
 ## Testing

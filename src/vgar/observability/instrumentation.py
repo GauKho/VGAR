@@ -183,6 +183,17 @@ def _output_run_id(result: Any, fallback: str | None) -> str | None:
     return result.get("run_id") or (data.get("run_id") if isinstance(data, Mapping) else None) or fallback
 
 
+def _metrics(name: str, fn: Callable, args: tuple, kwargs: dict, result: Any, started: float,
+             error: BaseException | None = None) -> None:
+    """Tokens, time and argument/result format of one tool call (vgar.mcp.tool_metrics)."""
+    from vgar.mcp.tool_metrics import observe
+    try:
+        bound = inspect.signature(fn).bind_partial(*args, **kwargs).arguments
+    except (TypeError, ValueError):
+        bound = {**{str(i): a for i, a in enumerate(args)}, **kwargs}
+    observe(name, fn.__module__, dict(bound), result, started, error)
+
+
 def instrument_mcp_tool(name: str) -> Callable:
     """Decorate MCP tool implementations without changing their return values."""
     def decorate(fn: Callable) -> Callable:
@@ -196,7 +207,9 @@ def instrument_mcp_tool(name: str) -> Callable:
                 except Exception as exc:
                     emit("MCP_TOOL_ERROR", tool=name, run_id=run_id, duration_ms=round((time.perf_counter()-started)*1000),
                          exception=type(exc).__name__, message=str(exc))
+                    _metrics(name, fn, args, kwargs, None, started, exc)
                     raise
+                _metrics(name, fn, args, kwargs, result, started)
                 run_id = _output_run_id(result, run_id)
                 emit("MCP_TOOL_OUTPUT", tool=name, run_id=run_id, output=result)
                 emit("MCP_TOOL_END", tool=name, run_id=run_id, duration_ms=round((time.perf_counter()-started)*1000), status="OK")
@@ -211,7 +224,9 @@ def instrument_mcp_tool(name: str) -> Callable:
             except Exception as exc:
                 emit("MCP_TOOL_ERROR", tool=name, run_id=run_id, duration_ms=round((time.perf_counter()-started)*1000),
                      exception=type(exc).__name__, message=str(exc))
+                _metrics(name, fn, args, kwargs, None, started, exc)
                 raise
+            _metrics(name, fn, args, kwargs, result, started)
             run_id = _output_run_id(result, run_id)
             emit("MCP_TOOL_OUTPUT", tool=name, run_id=run_id, output=result)
             emit("MCP_TOOL_END", tool=name, run_id=run_id, duration_ms=round((time.perf_counter()-started)*1000), status="OK")
