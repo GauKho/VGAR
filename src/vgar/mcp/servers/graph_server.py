@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import logging
+import threading
 
 import anyio
 import os
@@ -10,10 +11,12 @@ from pathlib import Path
 from types import MappingProxyType
 from typing import Any
 
+from vgar.contracts.error import GraphError
 from vgar.graph.factory import create_graph_service
 from vgar.mcp.audit import AuditLogger
 from vgar.mcp.proposal import contracts as proposal_contracts
 from vgar.mcp.proposal.context import current_context, request_scope
+from vgar.mcp.proposal.locking import no_links
 from vgar.mcp.proposal.ports import ProviderRegistry
 from vgar.mcp.proposal.prompts import (
     PROMPT_NAME,
@@ -24,6 +27,7 @@ from vgar.mcp.proposal.prompts import (
 from vgar.mcp.proposal.resources import ResourceReader
 from vgar.mcp.proposal.tools import CoreTools, legacy_binding
 from vgar.mcp.logging_setup import configure_server_logging, server_log_level
+from vgar.mcp.schemas import PATH_OUTSIDE_ROOT, ROOT_NOT_LEASED, CodedToolError
 from vgar.mcp.server_factory import create_resource_server
 from vgar.mcp.tooling import PYTEST_OUTPUT_CAP, PYTEST_TIMEOUT_SECONDS, audit_resource, run_tool
 from vgar.observability.instrumentation import instrument_mcp_tool
@@ -341,9 +345,69 @@ def _multihop(symbol_id, depth, direction):
 @mcp.tool()
 @instrument_mcp_tool("build_or_update_graph")
 async def build_or_update_graph(repo_path: str) -> dict[str, Any]:
-    """Request a graph build for exactly the host-bound repository; requires a write grant."""
-    return await core_tools.respond_async("build_or_update_graph", lambda: proposal_contracts.BuildRequest(repo_path=repo_path),
-                                          server="graph", audit=_audit_logger, invoke=core_tools.build)
+    """Build the graph of the configured repository, or update it after edits. This tool WRITES the graph.
+
+    Call it once before the other tools on a new repository, and again after changing code: later calls
+    re-extract only the changed files (incremental update), and every read tool sees the new graph at once.
+
+    Args:
+        repo_path: The repository root this server is configured for (VGAR_REPOSITORY_ROOT); any other path is refused.
+    """
+    if _trusted_build_host():  # host with a trusted build provider, job controller or bound context (TV1, L6-6)
+        return await core_tools.respond_async("build_or_update_graph",
+                                              lambda: proposal_contracts.BuildRequest(repo_path=repo_path),
+                                              server="graph", audit=_audit_logger, invoke=core_tools.build)
+
+    def call() -> dict[str, Any]:
+        return _live().run()
+
+    def checked() -> dict[str, Any]:
+        _same_repository(repo_path)
+        return call()
+
+    # Building can take minutes on a large repository: run it off the event loop (build-server guide).
+    return await anyio.to_thread.run_sync(lambda: _tool(
+        "build_or_update_graph", checked, {"repo_path_sha256": _diff_hash(repo_path)},
+        lambda data: {"mode": data["mode"], "graph_version": data["graph_version"],
+                      "changed_files": len(data["changed_files"])}))
+
+
+def _trusted_build_host() -> bool:
+    """True when TV1's trusted path owns builds: a registered build provider, a graph job controller or a host context."""
+    return (_has_provider("build") or core_tools.graph_jobs is not None
+            or core_tools.context_factory is not None or current_context() is not None)
+
+
+_live_builder = None
+_live_lock = threading.Lock()
+
+
+def _live():
+    """The process-wide LiveGraphBuilder for the configured repository and database (created on first use)."""
+    global _live_builder
+    with _live_lock:
+        if _live_builder is None:
+            from vgar.graph.live_build import LiveGraphBuilder
+            root, database = os.getenv("VGAR_REPOSITORY_ROOT", "").strip(), os.getenv("VGAR_GRAPH_DATABASE", "").strip()
+            if not root or not database:
+                raise CodedToolError(ROOT_NOT_LEASED, "VGAR_REPOSITORY_ROOT and VGAR_GRAPH_DATABASE must be configured")
+            _live_builder = LiveGraphBuilder(Path(root), Path(database),
+                                             timeout_seconds=float(os.getenv("VGAR_GRAPH_BUILD_TIMEOUT_SECONDS", "900")))
+        return _live_builder
+
+
+def _same_repository(repo_path: str) -> None:
+    """Path jail (proposal §10.5): only the configured repository may be built; links are refused."""
+    configured = os.getenv("VGAR_REPOSITORY_ROOT", "").strip()
+    if not configured:
+        raise CodedToolError(ROOT_NOT_LEASED, "VGAR_REPOSITORY_ROOT is not configured")
+    try:
+        requested = no_links(Path(repo_path)).resolve(strict=True)
+        root = no_links(Path(configured)).resolve(strict=True)
+    except (OSError, ValueError):
+        raise CodedToolError(PATH_OUTSIDE_ROOT, "repo_path is not the configured repository") from None
+    if os.path.normcase(str(requested)) != os.path.normcase(str(root)):
+        raise CodedToolError(PATH_OUTSIDE_ROOT, "repo_path is not the configured repository")
 
 
 @mcp.tool()
@@ -433,10 +497,15 @@ def main() -> None:
     if core_tools.registry.test_only:
         raise ValueError("Synthetic registry is forbidden in production entrypoint")
     configure_server_logging()
-    from importlib.metadata import version
-    logger.info("server=vgar-graph mcp=%s backend=%s database=%s graph_version=%s repository_root=%s",
-                version("mcp"), os.getenv("VGAR_GRAPH_BACKEND", "sqlite"), os.getenv("VGAR_GRAPH_DATABASE"),
-                graph_service.get_repository_summary().graph_version, os.getenv("VGAR_REPOSITORY_ROOT"))
+    if logger.isEnabledFor(logging.INFO):
+        from importlib.metadata import version
+        try:
+            graph_version = graph_service.get_repository_summary().graph_version
+        except GraphError:  # no graph yet: the agent builds it with build_or_update_graph
+            graph_version = "not built"
+        logger.info("server=vgar-graph mcp=%s backend=%s database=%s graph_version=%s repository_root=%s",
+                    version("mcp"), os.getenv("VGAR_GRAPH_BACKEND", "sqlite"), os.getenv("VGAR_GRAPH_DATABASE"),
+                    graph_version, os.getenv("VGAR_REPOSITORY_ROOT"))
     try:
         mcp.run(transport="stdio")
     finally:

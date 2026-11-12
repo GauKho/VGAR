@@ -8,7 +8,7 @@ The agent keeps writing the code. VGAR answers graph questions (callers, depende
 
 ```mermaid
 flowchart LR
-    R[Repository] -->|vgar index| DB[(Arch-CPG<br/>SQLite)]
+    R[Repository] -->|build_or_update_graph<br/>or vgar index| DB[(Arch-CPG<br/>SQLite)]
     DB --> G[vgar-graph<br/>11 tools, 8 resources, 1 prompt]
     R --> X[vgar-execution<br/>run_relevant_tests, run_pytest]
     R --> F[vgar-repository<br/>read_file]
@@ -21,8 +21,9 @@ Scope and source of truth: the project proposal (*VGAR-MCP: Verified Graph-Augme
 
 - [Layers](#layers)
 - [Installation](#installation)
-- [Build a graph](#build-a-graph)
 - [Attach the servers to a coding agent](#attach-the-servers-to-a-coding-agent)
+- [Working session](#working-session-proposal-1011)
+- [Build a graph ahead of time](#build-a-graph-ahead-of-time)
 - [Tools, resources and prompt](#tools-resources-and-prompt)
 - [Logging and debugging](#logging-and-debugging)
 - [Evaluation](#evaluation)
@@ -64,9 +65,43 @@ pip install -e ".[dev,history,code-graph]"
 
 Optional backends need Docker: JARVIS (`--enable-jarvis`), Joern (`--joern`).
 
-## Build a graph
+## Attach the servers to a coding agent
 
-The graph server reads a SQLite graph; it never builds one at start-up.
+As in the MCP build-server guide: declare each server in the host's configuration under `mcpServers` with a `command`, its `args` and the `env` it needs, using absolute paths, then quit the host completely and reopen it. Stdio servers receive only the environment you declare.
+
+| Host | Copy | Into |
+|---|---|---|
+| Claude Desktop | [`configs/mcp_server/claude-desktop.example.json`](configs/mcp_server/claude-desktop.example.json) | `%APPDATA%\Claude\claude_desktop_config.json` |
+| Claude Code | [`configs/mcp_server/mcp.example.json`](configs/mcp_server/mcp.example.json) | `.mcp.json` in the repository root (project scope; Claude Code asks once whether to trust it) |
+| OpenCode | [`configs/mcp_server/opencode.example.jsonc`](configs/mcp_server/opencode.example.jsonc) | `opencode.jsonc` in the repository root |
+
+Replace every `<ABSOLUTE ...>` placeholder. The database file may not exist yet.
+
+| Variable | Server | Meaning |
+|---|---|---|
+| `VGAR_GRAPH_BACKEND` | graph, execution | `sqlite` (or `snapshot`) |
+| `VGAR_GRAPH_DATABASE` | graph, execution | SQLite graph file; created by `build_or_update_graph` if missing |
+| `VGAR_REPOSITORY_ROOT` | graph, execution | the repository; the only one `build_or_update_graph` will build |
+| `VGAR_LEASE_ROOT` | repository | root `read_file` may read |
+| `VGAR_GRAPH_BUILD_TIMEOUT_SECONDS` | graph | limit for one build or update (default 900) |
+| `VGAR_MCP_AUDIT_LOG` | all | audit log of every tool call (default `logs/mcp_audit.jsonl`) |
+| `VGAR_MCP_LOG_LEVEL` | all | `WARNING` (default), `INFO`, `DEBUG`; logs go to stderr |
+
+OpenCode: `codemode: false` exposes the tools directly, which keeps tool-call counts measurable; for a run without MCP set `"disabled": true` on the servers.
+
+## Working session (proposal §10–§11)
+
+1. Open Claude Code or OpenCode in the repository and ask your question.
+2. The agent calls `build_or_update_graph`; the host asks you to approve it (the confirmation of proposal §10.5). The first call builds the graph.
+3. The agent uses the read tools (`find_task_anchors`, `get_related_context`, `get_callers`, …) and edits code.
+4. After editing, the agent calls `build_or_update_graph` again: only the changed files are re-extracted (incremental update), and every read tool sees the new graph on its next call, without reconnecting. The database keeps only the current snapshot of the repository, so reverting an edit serves the reverted code. If a call answers `TIMEOUT`, the build keeps running and the next call waits for it.
+5. The agent checks its patch with `verify_patch_graph_constraints`, `run_relevant_tests` and `rank_patch_candidates`.
+
+Until the first build, read tools answer `GRAPH_NOT_READY` with a hint to call `build_or_update_graph`.
+
+## Build a graph ahead of time
+
+For evaluation runs (one graph per SWE-bench task at `base_commit`), or so that the read tools can answer before the agent's first build. Building ahead does not shorten the agent's first `build_or_update_graph` call: the incremental cache lives in the server process, so that first call is still a full build (on a large repository, let it run past one TIMEOUT and call again, or raise `VGAR_GRAPH_BUILD_TIMEOUT_SECONDS` and the host's tool timeout). Later calls are incremental.
 
 ```powershell
 python -m vgar.cli index <repo> --db D:/graphs/<repo>.db      # static graph, prints "<n> nodes -> <db>"
@@ -79,58 +114,11 @@ python scripts/build_graph.py <repo> graph.json --repo-key <key> --revision <sha
 python scripts/load_graph_fixture.py graph.json D:/graphs/<repo>.db
 ```
 
-The graph does not follow edits made by the agent; run the index again after the code changes.
-
-## Attach the servers to a coding agent
-
-Every server is one stdio process. Paths must be absolute; stdio servers receive only the environment you declare.
-
-| Variable | Server | Meaning |
-|---|---|---|
-| `VGAR_GRAPH_BACKEND` | graph, execution | `sqlite` (or `snapshot`) |
-| `VGAR_GRAPH_DATABASE` | graph, execution | SQLite file from `vgar index` |
-| `VGAR_REPOSITORY_ROOT` | graph, execution | repository the graph was built from |
-| `VGAR_LEASE_ROOT` | repository | root `read_file` may read |
-| `VGAR_MCP_AUDIT_LOG` | all | audit log of every tool call (default `logs/mcp_audit.jsonl`) |
-| `VGAR_MCP_LOG_LEVEL` | all | `WARNING` (default), `INFO`, `DEBUG`; logs go to stderr |
-
-**Claude Code** (PowerShell, run inside the repository you will work on):
-
-```powershell
-claude --% mcp add vgar-graph -s local -e VGAR_GRAPH_BACKEND=sqlite -e VGAR_GRAPH_DATABASE=D:/graphs/<repo>.db -e VGAR_REPOSITORY_ROOT=<repo> -e PYTHONUTF8=1 -- <path-to>/.venv/Scripts/python.exe -m vgar.mcp.servers.graph_server
-claude --% mcp add vgar-execution -s local -e VGAR_GRAPH_BACKEND=sqlite -e VGAR_GRAPH_DATABASE=D:/graphs/<repo>.db -e VGAR_REPOSITORY_ROOT=<repo> -e PYTHONUTF8=1 -- <path-to>/.venv/Scripts/python.exe -m vgar.mcp.servers.execution_server
-```
-
-Then `/mcp` in a session shows the servers and their tools. Templates: [`configs/mcp_server/claude-code.template.json`](configs/mcp_server/claude-code.template.json).
-
-**OpenCode** (`opencode.jsonc` in the repository root; any local model that supports tool calls):
-
-```jsonc
-{
-  "$schema": "https://opencode.ai/config.json",
-  "mcp": {
-    "timeout": { "execution": 600000 },
-    "servers": {
-      "vgar-graph": {
-        "type": "local",
-        "command": ["<path-to>/.venv/Scripts/python.exe", "-m", "vgar.mcp.servers.graph_server"],
-        "environment": { "VGAR_GRAPH_BACKEND": "sqlite", "VGAR_GRAPH_DATABASE": "D:/graphs/<repo>.db",
-                         "VGAR_REPOSITORY_ROOT": "<repo>", "VGAR_MCP_AUDIT_LOG": "D:/runs/graph.jsonl" },
-        "codemode": false,
-        "protocol": "2026-07-28"
-      }
-    }
-  }
-}
-```
-
-`codemode: false` exposes the tools directly, which keeps tool-call counts measurable. For a run without MCP, set `"disabled": true` on the servers.
-
 ## Tools, resources and prompt
 
 | Server | Tools |
 |---|---|
-| `vgar-graph` | `search_symbols`, `get_callers`, `get_callees` (multi-hop; `MAY_CALL` listed apart), `explain_dependency_path`, `find_task_anchors`, `get_related_context`, `get_related_tests`, `analyze_patch_impact`, `verify_patch_graph_constraints`, `rank_patch_candidates`, `build_or_update_graph` (write tool; needs a host grant) |
+| `vgar-graph` | `search_symbols`, `get_callers`, `get_callees` (multi-hop; `MAY_CALL` listed apart), `explain_dependency_path`, `find_task_anchors`, `get_related_context`, `get_related_tests`, `analyze_patch_impact`, `verify_patch_graph_constraints`, `rank_patch_candidates`, `build_or_update_graph` (writes the graph: cold build, then incremental updates) |
 | `vgar-execution` | `run_relevant_tests` (graph-selected tests before and after a diff, on a temporary copy), `run_pytest`, `health` |
 | `vgar-repository` | `read_file`, `health` |
 
@@ -191,4 +179,4 @@ docs/status/            # plans and run reports
 
 ## Security
 
-Read tools only read; `build_or_update_graph` writes and needs a host grant. Paths stay inside the leased root, secrets and `.env` files are refused, outputs are redacted, every call is audited, test runs have server-set timeouts and output caps, and repository text is marked untrusted. See [`docs/mcp_server/security.md`](docs/mcp_server/security.md).
+Read tools only read; `build_or_update_graph` is the one write tool, builds only `VGAR_REPOSITORY_ROOT`, and the host asks before each call (a host with TV1's trusted context keeps its write grant). Paths stay inside the leased root, secrets and `.env` files are refused, outputs are redacted, every call is audited, test runs have server-set timeouts and output caps, and repository text is marked untrusted. See [`docs/mcp_server/security.md`](docs/mcp_server/security.md).

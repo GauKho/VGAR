@@ -101,9 +101,8 @@ def test_verification_tools_survive():
 
     path = template_path("m2-w78-v11")
     assert path == ROOT / "src/vgar/evaluation/repair/prompts/repair_v11.txt"
-    head = subprocess.run(["git", "show", "HEAD:src/vgar/agents/prompts/repair_v11.txt"], cwd=ROOT,
-                          capture_output=True, check=True).stdout
-    assert hashlib.sha256(path.read_bytes()).digest() == hashlib.sha256(head).digest()
+    # SHA-256 of src/vgar/agents/prompts/repair_v11.txt at 611e9984, before the move: recorded hashes stay valid.
+    assert hashlib.sha256(path.read_bytes()).hexdigest() == "ba6d147898eaf411b57b12ab70527aadef239ff9d7a2a8fb3f6639aa333d5ef8"
 
 
 def test_settings_have_no_model_or_agent_section():

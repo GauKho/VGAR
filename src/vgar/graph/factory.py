@@ -37,12 +37,19 @@ def create_graph_service() -> GraphService:
         if not database_value:
             raise RuntimeError(f"VGAR_GRAPH_DATABASE is required when VGAR_GRAPH_BACKEND=sqlite; {_BUILD_HINT}")
         database = Path(database_value)
-        if not database.is_file():
+        repository_root = os.getenv("VGAR_REPOSITORY_ROOT", "").strip()
+        # A configured repository lets the agent build the first graph itself through
+        # build_or_update_graph (proposal §10.3, §11); read tools answer GRAPH_NOT_READY until then.
+        buildable = bool(repository_root) and Path(repository_root).is_dir()
+        if not database.is_file() and not buildable:
             raise RuntimeError(f"Graph database not found: {database}; {_BUILD_HINT}")
+        if not database.is_file():
+            database.parent.mkdir(parents=True, exist_ok=True)
 
         graph_version = os.getenv("VGAR_GRAPH_VERSION", "").strip() or None
         store = SQLiteGraphStore(database, graph_version=graph_version)
-        store.resolve_graph_version()
+        if not buildable:
+            store.resolve_graph_version()
     else:
         raise RuntimeError(f"Unsupported VGAR_GRAPH_BACKEND: {backend!r}; expected 'sqlite' or 'snapshot'")
 

@@ -24,8 +24,10 @@ def test_default_backend_is_sqlite_and_needs_a_database(monkeypatch):
 
 
 def test_missing_database_file_fails_at_startup(monkeypatch, tmp_path):
+    # Without a configured repository nothing can build the graph, so start-up still fails.
     monkeypatch.setenv("VGAR_GRAPH_BACKEND", "sqlite")
     monkeypatch.setenv("VGAR_GRAPH_DATABASE", str(tmp_path / "absent.db"))
+    monkeypatch.delenv("VGAR_REPOSITORY_ROOT", raising=False)
     with pytest.raises(RuntimeError, match="absent.db"):
         create_graph_service()
     assert not (tmp_path / "absent.db").exists()

@@ -42,7 +42,9 @@ class GraphNotReadyError(GraphError, LookupError):
     code = "GRAPH_NOT_READY"
 
     def __init__(self, graph_version: str) -> None:
+        hint = ("; no graph is built yet: call the build_or_update_graph tool or run `vgar index`"
+                if graph_version == "latest-ready" else "")
         super().__init__(
-            f"Graph version is not ready: {graph_version}",
+            f"Graph version is not ready: {graph_version}{hint}",
             details={"graph_version": graph_version},
         )

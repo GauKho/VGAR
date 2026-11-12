@@ -51,7 +51,8 @@ npx -y @modelcontextprotocol/inspector --cli `
 
 | Triệu chứng | Nguyên nhân và cách xử lý |
 |---|---|
-| `Graph database not found` | Chưa dựng graph: `python -m vgar.cli index <repo> --db <file>.db`, rồi đặt `VGAR_GRAPH_DATABASE` là **đường dẫn tuyệt đối** |
+| `GRAPH_NOT_READY` … `call the build_or_update_graph tool` | Chưa dựng graph cho repo: để agent gọi `build_or_update_graph` (host hỏi bạn xác nhận), hoặc chạy `vgar index` |
+| `Graph database not found` | Không khai `VGAR_REPOSITORY_ROOT` nên server không thể tự dựng graph: `python -m vgar.cli index <repo> --db <file>.db`, rồi đặt `VGAR_GRAPH_DATABASE` là **đường dẫn tuyệt đối** |
 | `Backend 'demo' was removed` | `.env` cũ còn `VGAR_GRAPH_BACKEND=demo`; đổi sang `sqlite` |
 | Server không thấy biến môi trường | Server stdio chỉ nhận một phần biến của máy; khai đủ trong `env` của cấu hình host |
 | `-32022 UnsupportedProtocolVersionError` | Host và server không chung bản giao thức; lỗi liệt kê các bản server hỗ trợ (SDK 1.x: `2025-11-25`; SDK 2.x thêm `2026-07-28`) |

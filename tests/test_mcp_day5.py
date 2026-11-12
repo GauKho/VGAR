@@ -25,7 +25,8 @@ def test_graph_tools_mark_repository_text_untrusted(monkeypatch, tmp_path):
 
 
 def test_graph_server_has_no_write_tool(monkeypatch, tmp_path):
-    # S13 updated by L6-2: a graph build is exposed but cannot authorize itself.
+    # S13 updated by L6-2, then 12/11/2026 (proposal §10.5): the only write tool is build_or_update_graph; the host
+    # asks the user before each call, and it builds nothing but the configured repository.
     import asyncio
 
     from vgar.mcp.servers import graph_server
@@ -35,8 +36,8 @@ def test_graph_server_has_no_write_tool(monkeypatch, tmp_path):
                      "get_related_tests", "analyze_patch_impact", "build_or_update_graph", "explain_dependency_path",
                      "verify_patch_graph_constraints", "rank_patch_candidates"}
     assert not any(word in name for name in names for word in ("write", "apply", "patch_file", "delete", "save"))
-    response = asyncio.run(graph_server.build_or_update_graph(str(tmp_path)))
-    assert response["status"] == "ERROR" and response["error"]["code"] == "INVALID_ARGUMENT"
+    response = asyncio.run(graph_server.build_or_update_graph(str(tmp_path)))  # not VGAR_REPOSITORY_ROOT
+    assert response["status"] == "ERROR" and response["error"]["code"] == "PATH_OUTSIDE_ROOT"
 
 
 def test_tool_errors_carry_known_code_and_retryable(tmp_path, monkeypatch):

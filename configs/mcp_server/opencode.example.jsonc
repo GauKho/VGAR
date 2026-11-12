@@ -1,0 +1,63 @@
+// OpenCode: copy to opencode.jsonc in the repository root and replace every <ABSOLUTE ...> placeholder.
+// VGAR_GRAPH_DATABASE may not exist yet: the agent creates it with the build_or_update_graph tool.
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "timeout": {
+      "execution": 900000
+    },
+    "servers": {
+      "vgar-graph": {
+        "type": "local",
+        "command": [
+          "<ABSOLUTE PATH TO>/vgar_mcp_mvp_demo/.venv/Scripts/python.exe",
+          "-m",
+          "vgar.mcp.servers.graph_server"
+        ],
+        "environment": {
+          "VGAR_GRAPH_BACKEND": "sqlite",
+          "VGAR_GRAPH_DATABASE": "<ABSOLUTE PATH TO>/graphs/<repo>.db",
+          "VGAR_REPOSITORY_ROOT": "<ABSOLUTE PATH TO THE REPOSITORY>",
+          "VGAR_MCP_LOG_LEVEL": "WARNING",
+          "PYTHONUTF8": "1",
+          "VGAR_MCP_AUDIT_LOG": "<ABSOLUTE PATH TO>/vgar-logs/graph.jsonl"
+        },
+        "codemode": false,
+        "protocol": "2026-07-28"
+      },
+      "vgar-execution": {
+        "type": "local",
+        "command": [
+          "<ABSOLUTE PATH TO>/vgar_mcp_mvp_demo/.venv/Scripts/python.exe",
+          "-m",
+          "vgar.mcp.servers.execution_server"
+        ],
+        "environment": {
+          "VGAR_GRAPH_BACKEND": "sqlite",
+          "VGAR_GRAPH_DATABASE": "<ABSOLUTE PATH TO>/graphs/<repo>.db",
+          "VGAR_REPOSITORY_ROOT": "<ABSOLUTE PATH TO THE REPOSITORY>",
+          "VGAR_MCP_LOG_LEVEL": "WARNING",
+          "PYTHONUTF8": "1",
+          "VGAR_MCP_AUDIT_LOG": "<ABSOLUTE PATH TO>/vgar-logs/execution.jsonl"
+        },
+        "codemode": false,
+        "protocol": "2026-07-28"
+      },
+      "vgar-repository": {
+        "type": "local",
+        "command": [
+          "<ABSOLUTE PATH TO>/vgar_mcp_mvp_demo/.venv/Scripts/python.exe",
+          "-m",
+          "vgar.mcp.servers.repository_server"
+        ],
+        "environment": {
+          "VGAR_LEASE_ROOT": "<ABSOLUTE PATH TO THE REPOSITORY>",
+          "PYTHONUTF8": "1",
+          "VGAR_MCP_AUDIT_LOG": "<ABSOLUTE PATH TO>/vgar-logs/repository.jsonl"
+        },
+        "codemode": false,
+        "protocol": "2026-07-28"
+      }
+    }
+  }
+}

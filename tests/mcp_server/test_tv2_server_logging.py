@@ -85,7 +85,8 @@ def test_debug_level_never_logs_diff_content(tmp_path):
 
 
 def test_missing_database_is_logged_before_exit(tmp_path):
-    _, stderr, code = _serve(tmp_path, [], VGAR_GRAPH_DATABASE=str(tmp_path / "missing.db"))
+    # No repository configured: nothing can build the graph, so the server must stop and say why.
+    _, stderr, code = _serve(tmp_path, [], VGAR_GRAPH_DATABASE=str(tmp_path / "missing.db"), VGAR_REPOSITORY_ROOT="")
     assert code != 0
     assert any("ERROR" in line and "vgar.mcp.servers.graph_server" in line and "Graph database not found" in line
                for line in stderr.splitlines())
@@ -103,3 +104,13 @@ def test_configure_server_logging_is_idempotent(monkeypatch):
     assert len([h for h in logging.getLogger("vgar").handlers if getattr(h, "_vgar", False)]) == 1
     monkeypatch.setenv("VGAR_MCP_LOG_LEVEL", "loud")
     assert configure_server_logging() == "WARNING"
+
+
+def test_server_without_a_graph_starts_and_answers_graph_not_ready(tmp_path):
+    # The repository is configured, the database does not exist yet: the agent will build it (proposal §10.3).
+    responses, stderr, _ = _serve(tmp_path, [("search_symbols", {"query": "login"})], VGAR_MCP_LOG_LEVEL="INFO",
+                                  VGAR_GRAPH_DATABASE=str(tmp_path / "graphs" / "new.db"))
+    assert len(responses) == 2, stderr[-2000:]
+    envelope = _envelope(responses[-1])
+    assert envelope["status"] == "ERROR" and envelope["error"]["code"] == "GRAPH_NOT_READY"
+    assert "graph_version=not built" in stderr

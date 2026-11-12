@@ -663,6 +663,19 @@ class SQLiteGraphStore:
             ).fetchall()
         return [_row_to_node(row) for row in rows]
 
+    def prune_other_versions(self, keep: str, repo_key: str) -> int:
+        """Delete every other snapshot of ``repo_key`` (nodes and edges cascade); return how many were removed.
+
+        Args:
+            keep: The snapshot that stays (the one just published).
+            repo_key: Repository whose older snapshots are removed; other repositories are untouched.
+        """
+        self.initialize()
+        with self._connect() as connection:
+            cursor = connection.execute(
+                "DELETE FROM graph_metadata WHERE repo_key = ? AND graph_version != ?", (repo_key, keep))
+            return cursor.rowcount
+
     def resolve_graph_version(self) -> str:
         self.initialize()
         with self._connect() as connection:
