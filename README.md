@@ -90,10 +90,13 @@ Replace every `<ABSOLUTE ...>` placeholder. The database file may not exist yet.
 Install it once for all repositories in Claude Code's user scope (`~/.claude.json`):
 
 ```powershell
-claude mcp add-json --scope user vgar-graph '{"type":"stdio","command":"D:/kltn/vgar_mcp_mvp_demo/.venv/Scripts/python.exe","args":["-m","vgar.mcp.servers.graph_server"],"env":{"PYTHONUTF8":"1"}}'
+$py = "D:/kltn/vgar_mcp_mvp_demo/.venv/Scripts/python.exe"
+claude mcp add --scope user vgar-graph -e PYTHONUTF8=1 -- $py -m vgar.mcp.servers.graph_server
+claude mcp add --scope user vgar-execution -e PYTHONUTF8=1 -- $py -m vgar.mcp.servers.execution_server
+claude mcp add --scope user vgar-repository -e PYTHONUTF8=1 -- $py -m vgar.mcp.servers.repository_server
 ```
 
-(the same for `vgar-execution` and `vgar-repository`), or copy the file to `.mcp.json` in a repository. Variables set in the configuration still win. Moving or renaming a repository changes its path, so its first build there is a cold build into a new file.
+(`claude mcp add` rather than `add-json`: Windows PowerShell 5.1 strips the quotes inside a JSON argument), or copy the file to `.mcp.json` in a repository. Variables set in the configuration still win. Moving or renaming a repository changes its path, so its first build there is a cold build into a new file.
 
 At initialize, `vgar-graph` sends the agent instructions naming the repository and telling it to call `build_or_update_graph` first and again after edits; `vgar-execution` says the same for `run_relevant_tests`.
 

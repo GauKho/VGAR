@@ -18,6 +18,7 @@ logger = logging.getLogger(__name__)
 
 # A folder holding one of these is a repository; a home or download folder is not graphed by accident.
 PROJECT_MARKERS = (".git", "pyproject.toml", "setup.py", "setup.cfg", "pytest.ini", "tox.ini")
+_FILE_KEYS = ("VGAR_GRAPH_DATABASE", "VGAR_MCP_AUDIT_LOG")
 
 
 def data_dir() -> Path:
@@ -69,6 +70,11 @@ def apply_workspace_defaults(server: str, environ: MutableMapping[str, str] | No
     for key, value in (("VGAR_REPOSITORY_ROOT", str(root)), ("VGAR_LEASE_ROOT", str(root)),
                        ("VGAR_GRAPH_DATABASE", str(default_database(root, base))),
                        ("VGAR_MCP_AUDIT_LOG", str(base / "logs" / f"{server}.jsonl"))):
-        if not (env.get(key) or "").strip():
+        current = (env.get(key) or "").strip()
+        if current and key in _FILE_KEYS and not Path(current).is_absolute():
+            # A relative file (e.g. from the VGAR project's .env) would be written inside the repository.
+            logger.warning("%s=%s is relative to the repository being edited; using %s", key, current, value)
+            current = ""
+        if not current:
             env[key] = value
     return root

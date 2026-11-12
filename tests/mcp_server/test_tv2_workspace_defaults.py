@@ -54,10 +54,23 @@ def test_defaults_come_from_the_folder_the_agent_was_opened_in(tmp_path):
 
 def test_explicit_configuration_wins(tmp_path):
     repo, other = _repo(tmp_path / "repo"), _repo(tmp_path / "other")
-    environ = {"VGAR_REPOSITORY_ROOT": str(other), "VGAR_GRAPH_DATABASE": "D:/g/x.db", "VGAR_MCP_AUDIT_LOG": "a.jsonl"}
+    database, audit = str(tmp_path / "g" / "x.db"), str(tmp_path / "a.jsonl")
+    environ = {"VGAR_REPOSITORY_ROOT": str(other), "VGAR_GRAPH_DATABASE": database, "VGAR_MCP_AUDIT_LOG": audit}
     workspace.apply_workspace_defaults("graph", environ, cwd=repo, base=tmp_path / "data")
     assert environ["VGAR_REPOSITORY_ROOT"] == str(other) and environ["VGAR_LEASE_ROOT"] == str(other.resolve())
-    assert environ["VGAR_GRAPH_DATABASE"] == "D:/g/x.db" and environ["VGAR_MCP_AUDIT_LOG"] == "a.jsonl"
+    assert environ["VGAR_GRAPH_DATABASE"] == database and environ["VGAR_MCP_AUDIT_LOG"] == audit
+
+
+def test_relative_graph_and_log_paths_would_land_in_the_repository_and_are_replaced(tmp_path, caplog):
+    # The VGAR project's .env (copied from .env.example) holds artifacts/sample_graph.db and logs/mcp_audit.jsonl;
+    # a host starts the server in the user's repository, so those paths would write into it.
+    repo = _repo(tmp_path / "repo")
+    environ = {"VGAR_GRAPH_DATABASE": "artifacts/sample_graph.db", "VGAR_MCP_AUDIT_LOG": "logs/mcp_audit.jsonl"}
+    with caplog.at_level("WARNING", logger="vgar.mcp.workspace"):
+        workspace.apply_workspace_defaults("graph", environ, cwd=repo, base=tmp_path / "data")
+    assert environ["VGAR_GRAPH_DATABASE"] == str(workspace.default_database(repo, tmp_path / "data"))
+    assert environ["VGAR_MCP_AUDIT_LOG"] == str(tmp_path / "data" / "logs" / "graph.jsonl")
+    assert "artifacts/sample_graph.db" in caplog.text and "VGAR_GRAPH_DATABASE" in caplog.text
 
 
 def test_explicit_root_names_its_own_graph(tmp_path):
