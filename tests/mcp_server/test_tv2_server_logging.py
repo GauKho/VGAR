@@ -88,7 +88,7 @@ def test_missing_database_is_logged_before_exit(tmp_path):
     # No repository configured: nothing can build the graph, so the server must stop and say why.
     _, stderr, code = _serve(tmp_path, [], VGAR_GRAPH_DATABASE=str(tmp_path / "missing.db"), VGAR_REPOSITORY_ROOT="")
     assert code != 0
-    assert any("ERROR" in line and "vgar.mcp.servers.graph_server" in line and "Graph database not found" in line
+    assert any("ERROR" in line and "vgar.mcp.host_config" in line and "VGAR_REPOSITORY_ROOT is not set" in line
                for line in stderr.splitlines())
 
 

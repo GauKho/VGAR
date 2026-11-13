@@ -1,56 +1,45 @@
-"""Select the installed official MCP SDK without importing a legacy client."""
+"""Create the servers with the official MCP Python SDK 2 (build-server guide: ``from mcp.server import MCPServer``)."""
 from __future__ import annotations
 
 import logging
-from importlib import import_module, metadata
-from typing import Any
 
-from packaging.version import InvalidVersion, Version
+from mcp.server import MCPServer
 
 logger = logging.getLogger(__name__)
 
 
-def create_server(name: str, *, log_level: str = "WARNING", instructions: str | None = None) -> Any:
-    """SDK2 is production; SDK1 remains an explicit compatibility lane.
+def create_server(name: str, *, log_level: str = "WARNING") -> MCPServer:
+    """A plain MCPServer, as in the build-server guide.
 
-    A broken SDK import must surface unchanged: falling back would hide a
-    partially installed runtime and invalidate its dependency receipt.
+    Args:
+        name: Server name shown to the host.
+        log_level: SDK log level.
     """
-    try:
-        version = Version(metadata.version("mcp"))
-    except (metadata.PackageNotFoundError, InvalidVersion) as exc:
-        raise RuntimeError("MCP SDK distribution is missing or has invalid version metadata") from exc
-    if version.major == 2:
-        cls = import_module("mcp.server").MCPServer
-    elif version.major == 1:
-        cls = import_module("mcp.server.fastmcp").FastMCP
-    else:
-        raise RuntimeError(f"Unsupported MCP SDK major: {version.major}")
-    logger.debug("server=%s mcp=%s class=%s log_level=%s", name, version, cls.__name__, log_level)
-    extra = {"instructions": instructions} if instructions else {}  # sent to the client at initialize
-    return cls(name, log_level=log_level, **extra)
+    logger.debug("server=%s log_level=%s", name, log_level)
+    return MCPServer(name, log_level=log_level)
 
 
-def create_resource_server(name: str, resource_reader, *, log_level: str = "WARNING", prompt_reader=None, protocol_reject=None,
-                           instructions: str | None = None) -> Any:
-    """Route raw URIs before SDK1/SDK2 template decoding, using a public override."""
+def create_resource_server(name: str, resource_reader, *, log_level: str = "WARNING", prompt_reader=None) -> MCPServer:
+    """An MCPServer that reads raw resource URIs and renders prompts through VGAR's readers.
+
+    Args:
+        name: Server name shown to the host.
+        resource_reader: Function from a raw URI to its text content.
+        log_level: SDK log level.
+        prompt_reader: Function from a prompt name and its arguments to prompt messages.
+    """
     import anyio
+    import mcp.types as types
     from mcp.server.lowlevel.helper_types import ReadResourceContents
-
-    base = type(create_server(name, log_level=log_level))
+    from mcp.shared.exceptions import MCPError
 
     def protocol_error(exc):
         from vgar.mcp.schemas import error_from_exception
         error = error_from_exception(exc)
         code = -32602 if error.code == "INVALID_ARGUMENT" else -32603
-        if Version(metadata.version("mcp")).major == 2:
-            from mcp.shared.exceptions import MCPError
-            raise MCPError(code, error.message, error.model_dump()) from None
-        from mcp.shared.exceptions import McpError
-        from mcp.types import ErrorData
-        raise McpError(ErrorData(code=code, message=error.message, data=error.model_dump())) from None
+        raise MCPError(code, error.message, error.model_dump()) from None
 
-    class ResourceServer(base):
+    class ResourceServer(MCPServer):
         async def read_resource(self, uri, *args, **kwargs):
             # Read-only bounded adapter, awaited to completion. Do not abandon a
             # thread on cancellation and pretend its work has stopped.
@@ -66,13 +55,9 @@ def create_resource_server(name: str, resource_reader, *, log_level: str = "WARN
                 return await super().get_prompt(name, arguments, *args, **kwargs)
             try:
                 messages = await anyio.to_thread.run_sync(prompt_reader, name, arguments, abandon_on_cancel=False)
-                types = import_module("mcp_types" if Version(metadata.version("mcp")).major == 2 else "mcp.types")
                 return types.GetPromptResult(description="VGAR seven-step MCP repair workflow.", messages=messages)
             except Exception as exc:  # noqa: BLE001 - safe boundary before SDK argument validation/name echo
                 protocol_error(exc)
 
-    server = ResourceServer(name, log_level=log_level, **({"instructions": instructions} if instructions else {}))
-    if protocol_reject is not None:
-        from vgar.mcp.proposal.prompts import install_protocol_log_guard
-        install_protocol_log_guard(protocol_reject)
-    return server
+    logger.debug("server=%s log_level=%s", name, log_level)
+    return ResourceServer(name, log_level=log_level)

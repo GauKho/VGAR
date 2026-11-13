@@ -21,7 +21,6 @@ from vgar.mcp.proposal.ports import ProviderRegistry
 from vgar.mcp.proposal.prompts import (
     PROMPT_NAME,
     PromptRenderer,
-    audit_protocol_reject,
     serve_prompt,
 )
 from vgar.mcp.proposal.resources import ResourceReader
@@ -30,29 +29,18 @@ from vgar.mcp.logging_setup import configure_server_logging, server_log_level
 from vgar.mcp.schemas import PATH_OUTSIDE_ROOT, ROOT_NOT_LEASED, CodedToolError
 from vgar.mcp.server_factory import create_resource_server
 from vgar.mcp.tooling import PYTEST_OUTPUT_CAP, PYTEST_TIMEOUT_SECONDS, audit_resource, run_tool
-from vgar.mcp.workspace import apply_workspace_defaults
+from vgar.mcp.host_config import require_host_config
 from vgar.observability.instrumentation import instrument_mcp_tool
 
 # Run as `python -m`, __name__ is "__main__"; keep the module name so the vgar log handler applies.
 logger = logging.getLogger("vgar.mcp.servers.graph_server" if __name__ == "__main__" else __name__)
 
-if __name__ == "__main__":  # started by a host: the repository is the folder the agent was opened in
-    apply_workspace_defaults("graph")
-
-
-def _instructions() -> str:
-    root = os.getenv("VGAR_REPOSITORY_ROOT", "").strip()
-    target = f"the repository at {root}" if root else "the configured repository"
-    return (f"Code graph (Arch-CPG) of {target}. Before using the other tools on it, call build_or_update_graph "
-            f"with repo_path set to {root or 'that repository root'}; the first call builds the graph. Call it again "
-            "after editing code: only changed files are re-extracted and every tool sees the new graph at once. "
-            "Read tools answer GRAPH_NOT_READY until a graph exists.")
+if __name__ == "__main__":  # started by a host: everything it works on comes from the host configuration
+    require_host_config("graph")
 
 
 mcp = create_resource_server("vgar-graph", lambda uri: _read_resource(uri), log_level=server_log_level(),
-                             prompt_reader=lambda name, arguments: _get_prompt(name, arguments),
-                             protocol_reject=lambda: audit_protocol_reject(_audit_logger),
-                             instructions=_instructions())
+                             prompt_reader=lambda name, arguments: _get_prompt(name, arguments))
 try:
     graph_service = create_graph_service()
 except Exception as error:

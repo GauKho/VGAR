@@ -148,27 +148,3 @@ def test_leading_zero_budget_does_not_depend_on_python_digit_limit():
     from vgar.mcp.proposal.prompts import PromptRenderer
     messages = PromptRenderer().render("issue", "[]", "0"*5000 + "1")
     assert json.loads(messages[1]["content"]["text"])["context_budget"] == 1
-
-
-def test_sdk_validation_warning_never_echoes_raw_input():
-    import io
-    import logging
-
-    from vgar.mcp.proposal.prompts import ProtocolValidationFilter
-    records, buffer = [], io.StringIO()
-    handler = logging.StreamHandler(buffer)
-    logger = logging.getLogger("synthetic-protocol-only")
-    original_level, original_propagate = logger.level, logger.propagate
-    logger.setLevel(logging.WARNING)
-    logger.propagate = False
-    logger.addHandler(handler)
-    guard = ProtocolValidationFilter(lambda: records.append("ERROR"))
-    logger.addFilter(guard)
-    try:
-        logger.warning("Failed to validate request: %s", "opaque-synthetic-secret-value")
-    finally:
-        logger.removeFilter(guard); logger.removeHandler(handler)
-        logger.setLevel(original_level); logger.propagate = original_propagate
-    assert "opaque-synthetic-secret-value" not in buffer.getvalue()
-    assert "MCP protocol request rejected before application dispatch" in buffer.getvalue()
-    assert records == ["ERROR"]

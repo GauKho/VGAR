@@ -1,4 +1,4 @@
-"""Official SDK2 client over real STDIO to SDK2/SDK1 prompt servers, no agent."""
+"""Official SDK2 client over real STDIO to the SDK2 prompt server, no agent."""
 import json
 import os
 import subprocess
@@ -10,13 +10,12 @@ import pytest
 from graph_fixture import real_graph_env
 
 ROOT = Path(__file__).resolve().parents[2]
-LEGACY = ROOT.parent / "environments/vgar-week78-cuda/Scripts/python.exe"
 ORACLE = json.loads((ROOT / "tests/fixtures/mcp_server/prompt_contract.json").read_text(encoding="utf-8"))
 SECRET = "opaque-synthetic-secret-value"
 
 
-@pytest.mark.parametrize("server_python,mode", [(sys.executable, "2026-07-28"), (sys.executable, "legacy"), (str(LEGACY), "legacy")],
-                         ids=["sdk2-modern", "sdk2-legacy", "sdk1-legacy"])
+@pytest.mark.parametrize("server_python,mode", [(sys.executable, "2026-07-28"), (sys.executable, "legacy")],
+                         ids=["sdk2-modern", "sdk2-legacy"])
 def test_prompt_wire_schema_messages_redaction_and_audit(server_python, mode, tmp_path):
     from mcp import Client
     from mcp.client.stdio import StdioServerParameters
@@ -74,12 +73,11 @@ def test_optimized_prompt_validation_still_rejects(tmp_path):
     assert result.returncode != 0 and b"context_budget" in result.stderr
 
 
-@pytest.mark.parametrize("server_python,legacy", [(sys.executable, False), (str(LEGACY), True)], ids=["sdk2", "sdk1"])
-def test_raw_protocol_rejection_has_no_secret_or_fake_render(server_python, legacy, tmp_path):
-    import mcp_types as types
+def test_raw_protocol_rejection_has_no_secret_or_fake_render(tmp_path):
+    import mcp.types as types
     from mcp.client.stdio import StdioServerParameters, stdio_client
     from mcp.shared.message import SessionMessage
-    params = StdioServerParameters(command=server_python, args=["-B", str(ROOT / "tests/fixtures/mcp_server/prompt_fixture_server.py"),
+    params = StdioServerParameters(command=sys.executable, args=["-B", str(ROOT / "tests/fixtures/mcp_server/prompt_fixture_server.py"),
         "--root", str(tmp_path / "raw-server")], env={"PYTHONPATH": str(ROOT / "src"), "PYTHONUTF8": "1",
         "PYTHONDONTWRITEBYTECODE": "1", "PYTHON_DOTENV_DISABLED": "1", **real_graph_env()})
     responses = []
@@ -109,7 +107,6 @@ def test_raw_protocol_rejection_has_no_secret_or_fake_render(server_python, lega
     events = [json.loads(line) for line in (tmp_path / "raw-server/audit.jsonl").read_text(encoding="utf-8").splitlines()]
     assert len([e for e in events if e["event_type"] == "prompt_render"]) == 1  # Only the valid, dispatched request.
     rejects = [e for e in events if e["event_type"] == "protocol_reject"]
-    assert len(rejects) == (1 if legacy else 0)
-    if rejects: assert rejects[0]["payload"]["correlation"] == "UNAVAILABLE_BEFORE_DISPATCH"
-    (tmp_path / "raw-protocol.json").write_text(json.dumps({"synthetic": True, "legacy": legacy, "responses": responses,
+    assert rejects == []  # SDK2 rejects bad params before dispatch without logging them
+    (tmp_path / "raw-protocol.json").write_text(json.dumps({"synthetic": True, "responses": responses,
                                                           "audit": events}, ensure_ascii=False, indent=2), encoding="utf-8")

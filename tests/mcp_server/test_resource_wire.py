@@ -11,11 +11,10 @@ import pytest
 from graph_fixture import real_graph_env
 
 ROOT = Path(__file__).resolve().parents[2]
-LEGACY_PYTHON = ROOT.parent / "environments/vgar-week78-cuda/Scripts/python.exe"
 
 
-@pytest.mark.parametrize("server_python,mode", [(sys.executable, "2026-07-28"), (sys.executable, "legacy"), (str(LEGACY_PYTHON), "legacy")],
-                         ids=["sdk2-modern", "sdk2-legacy", "sdk1-legacy"])
+@pytest.mark.parametrize("server_python,mode", [(sys.executable, "2026-07-28"), (sys.executable, "legacy")],
+                         ids=["sdk2-modern", "sdk2-legacy"])
 def test_resource_stdio_inventory_encoding_and_scope(server_python, mode, tmp_path):
     from mcp import Client
     from mcp.client.stdio import StdioServerParameters

@@ -16,63 +16,12 @@ import pytest
 ROOT = Path(__file__).resolve().parents[2]
 
 
-@pytest.mark.parametrize("version,module_name,class_name", [
-    ("1.30.0", "mcp.server.fastmcp", "FastMCP"),
-    ("2.2.0", "mcp.server", "MCPServer"),
-])
-def test_factory_selects_only_installed_major(monkeypatch, version, module_name, class_name):
-    from vgar.mcp import server_factory
-    calls = []
+def test_create_server_is_the_sdk2_mcpserver():
+    from mcp.server import MCPServer
 
-    class Server:
-        def __init__(self, name, *, log_level):
-            self.name, self.log_level = name, log_level
-
-    def load(name):
-        calls.append(name)
-        assert name == module_name
-        return SimpleNamespace(**{class_name: Server})
-
-    monkeypatch.setattr(server_factory.metadata, "version", lambda name: version)
-    monkeypatch.setattr(server_factory, "import_module", load)
-    result = server_factory.create_server("vgar-test")
-    assert (result.name, result.log_level) == ("vgar-test", "WARNING")
-    assert calls == [module_name]
-
-
-@pytest.mark.parametrize("version", ["0.9.0", "3.0.0", "broken", "", "2garbage"])
-def test_factory_rejects_unsupported_or_malformed_without_import(monkeypatch, version):
-    from vgar.mcp import server_factory
-    monkeypatch.setattr(server_factory.metadata, "version", lambda name: version)
-    monkeypatch.setattr(server_factory, "import_module", lambda name: pytest.fail("must not import"))
-    with pytest.raises(RuntimeError, match="MCP"):
-        server_factory.create_server("test")
-
-
-def test_factory_missing_distribution_is_explicit(monkeypatch):
-    from vgar.mcp import server_factory
-
-    def missing(name):
-        raise metadata.PackageNotFoundError(name)
-
-    monkeypatch.setattr(server_factory.metadata, "version", missing)
-    with pytest.raises(RuntimeError, match="MCP"):
-        server_factory.create_server("test")
-
-
-def test_sdk2_import_error_never_falls_back(monkeypatch):
-    from vgar.mcp import server_factory
-    monkeypatch.setattr(server_factory.metadata, "version", lambda name: "2.2.0")
-    calls = []
-
-    def broken(name):
-        calls.append(name)
-        raise ModuleNotFoundError("SDK2 dependency absent")
-
-    monkeypatch.setattr(server_factory, "import_module", broken)
-    with pytest.raises(ModuleNotFoundError, match="SDK2 dependency absent"):
-        server_factory.create_server("test")
-    assert calls == ["mcp.server"]
+    from vgar.mcp.server_factory import create_server
+    server = create_server("vgar-test")
+    assert isinstance(server, MCPServer) and server.name == "vgar-test"
 
 
 def test_framework_free_imports_in_fresh_process(tmp_path):

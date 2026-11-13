@@ -73,7 +73,7 @@ def test_tool_needs_a_repository_root_and_a_snapshot_backend(snapshot, monkeypat
     assert graph_server.analyze_patch_impact(PATCH, version)['error']['code'] == 'GRAPH_NOT_READY'
 
 
-def test_tool_is_listed_over_stdio():
+def test_tool_is_listed_over_stdio(tmp_path):
     import os
     import sys
 
@@ -82,18 +82,11 @@ def test_tool_is_listed_over_stdio():
     from graph_fixture import real_graph_env
 
     params = StdioServerParameters(command=sys.executable, args=["-B", "-m", "vgar.mcp.servers.graph_server"],
-                                   env={**os.environ, "PYTHONUTF8": "1", **real_graph_env()})
+                                   env={**os.environ, "PYTHONUTF8": "1", **real_graph_env(),
+                                        "VGAR_MCP_AUDIT_LOG": str(tmp_path / "audit.jsonl")})
 
     async def names():
-        try:
-            from mcp import Client  # SDK2
-        except ImportError:  # SDK1
-            from mcp import ClientSession
-            from mcp.client.stdio import stdio_client
-            async with stdio_client(params) as (read, write):
-                async with ClientSession(read, write) as session:
-                    await session.initialize()
-                    return {t.name for t in (await session.list_tools()).tools}
+        from mcp import Client
         async with Client(params) as client:
             return {t.name for t in (await client.list_tools()).tools}
 

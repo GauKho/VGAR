@@ -3,7 +3,6 @@ from __future__ import annotations
 
 import hashlib
 import json
-import logging
 import re
 from dataclasses import dataclass, field
 from uuid import uuid4
@@ -133,33 +132,3 @@ def serve_prompt(renderer, name, arguments, audit):
     if error is not None:
         raise error
     return messages
-
-
-class ProtocolValidationFilter(logging.Filter):
-    """SDK1 logs invalid protocol params before application dispatch: never echo them."""
-    def __init__(self, on_reject):
-        super().__init__()
-        self.on_reject = on_reject
-
-    def filter(self, record):
-        if isinstance(record.msg, str) and record.msg.startswith("Failed to validate request:"):
-            record.msg = "MCP protocol request rejected before application dispatch"
-            record.args = ()
-            record.exc_info = record.exc_text = record.stack_info = None
-            self.on_reject()
-        return True
-
-
-def install_protocol_log_guard(on_reject):
-    root = logging.getLogger()
-    if not any(isinstance(item, ProtocolValidationFilter) for item in root.filters):
-        root.addFilter(ProtocolValidationFilter(on_reject))
-
-
-def audit_protocol_reject(audit):
-    """Control-plane rejection, not a fabricated render or transport request correlation."""
-    try:
-        audit.write("protocol_reject", {"server": "graph", "status": "ERROR", "phase": "sdk_params",
-                                        "reason": "INVALID_REQUEST", "correlation": "UNAVAILABLE_BEFORE_DISPATCH"})
-    except Exception:  # noqa: BLE001 - audit failure cannot disclose SDK validation material
-        raise CodedToolError(INTERNAL_ERROR, "Protocol rejection audit failed") from None

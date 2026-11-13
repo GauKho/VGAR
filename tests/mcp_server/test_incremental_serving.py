@@ -82,8 +82,7 @@ def test_warm_update_equals_full_rebuild_on_bound_source(jobs, change):
 
 @pytest.mark.parametrize("server_python,mode", [
     (sys.executable, "2026-07-28"), (sys.executable, "legacy"),
-    (str(Path(__file__).parents[2].parent / "environments/vgar-week78-cuda/Scripts/python.exe"), "legacy"),
-], ids=["sdk2-modern", "sdk2-legacy", "sdk1-legacy"])
+], ids=["sdk2-modern", "sdk2-legacy"])
 def test_real_build_update_and_snapshot_read_over_stdio(server_python, mode, tmp_path):
     import anyio
     from mcp import Client
