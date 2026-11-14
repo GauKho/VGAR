@@ -1,7 +1,8 @@
 """Per-call metrics of MCP tools: tokens in and out, processing time, and the format of arguments and results.
 
 Only what crosses a tool is visible here (proposal §13.2: context token cost, average tool latency, tool calls
-per task); the model's own tokens are counted by the host. Records never hold argument or result content, only
+per task); the model's own tokens are counted by the host. Tokens are UTF-8 bytes / 4, the same counter as the
+retrieval evaluation, so they are tool-side measures, not the model's tokens. Records never hold argument or result content, only
 types and sizes. Written as one JSON line per call to ``VGAR_MCP_METRICS_LOG`` (default: next to
 ``VGAR_MCP_AUDIT_LOG`` as ``<audit name>.metrics.jsonl``; no file when neither is set) and logged at INFO on stderr.
 """
@@ -9,14 +10,14 @@ from __future__ import annotations
 
 import json
 import logging
-import math
 import os
 import sys
 import threading
 import time
-from functools import lru_cache
 from pathlib import Path
 from typing import Any
+
+from vgar.graph.token_counter import FALLBACK_COUNTER_LABEL, bytes_div4_counter
 
 logger = logging.getLogger(__name__)
 _write_lock = threading.Lock()
@@ -43,32 +44,16 @@ def describe(value: Any) -> str:
     return type(value).__name__
 
 
-@lru_cache(maxsize=1)
-def _counter():
-    manifest = os.getenv("VGAR_TOKENIZER_MANIFEST", "").strip()
-    if not manifest:
-        return None
-    try:
-        from vgar.graph.token_counter import LocalTokenizerCounter
-        return LocalTokenizerCounter(manifest)
-    except Exception as error:  # noqa: BLE001 - fall back to the estimate, say why once
-        logger.warning("VGAR_TOKENIZER_MANIFEST unusable (%s); token counts are estimates", error)
-        return None
-
-
 def token_count(text: str) -> tuple[int, str]:
-    """Tokens of ``text`` with the pinned tokenizer when ``VGAR_TOKENIZER_MANIFEST`` is set, else about 4 chars a token.
+    """Tokens of ``text`` as UTF-8 bytes / 4, the counter of the retrieval evaluation (not the model's tokenizer).
 
     Args:
         text: Serialized tool arguments or result.
 
     Returns:
-        The count and the method (the tokenizer label, or ``approx_chars_div_4``).
+        The count and the label ``FALLBACK:utf8_bytes_ceil_div4``.
     """
-    counter = _counter()
-    if counter is not None:
-        return int(counter(text)), str(counter.counter_label)
-    return math.ceil(len(text) / 4), "approx_chars_div_4"
+    return bytes_div4_counter(text), FALLBACK_COUNTER_LABEL
 
 
 def _server_of(module: str) -> str:

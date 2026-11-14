@@ -61,7 +61,7 @@ def test_mcp_context_metadata_prompt_and_test_selection(snapshot, tmp_path, monk
     monkeypatch.setenv('VGAR_GRAPH_DEBUG_LOG', str(tmp_path / 'debug.jsonl'))
     version = doc['graph_version']
     target = next(n['id'] for n in doc['nodes'] if n['name'] == 'target' and n['type'] == 'Function')
-    response = graph_server.get_related_context([target], 1000, version, 'task', 'target fails')
+    response = graph_server.get_related_context([target], graph_version=version, task_id='task', budget_tokens=1000, issue_text='target fails')
     assert response['status'] == 'PASS'
     data = response['data']
     assert data['context_format'] == 'vgar.context.v1'
@@ -77,5 +77,5 @@ def test_mcp_context_metadata_prompt_and_test_selection(snapshot, tmp_path, monk
     assert {'retrieval_start', 'retrieval_candidate', 'retrieval_complete', 'test_selection'} <= {e['event'] for e in events}
     assert all('snippet' not in event for event in events)
     (root / 'app.py').write_text('def target(): return 2\n')
-    assert graph_server.get_related_context([target], 1000, version, 'task')['status'] == 'ERROR'
+    assert graph_server.get_related_context([target], graph_version=version, task_id='task', budget_tokens=1000)['status'] == 'ERROR'
     assert 'retrieval_error' in (tmp_path / 'debug.jsonl').read_text()

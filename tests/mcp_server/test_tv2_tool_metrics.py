@@ -29,21 +29,21 @@ def test_describe_gives_type_and_size_never_content():
     assert describe([1, 2]) == "list[2]" and describe({"a": 1}) == "dict[1]"
 
 
-def test_tokens_use_the_pinned_tokenizer_when_configured(monkeypatch):
+def test_tokens_are_utf8_bytes_div_4(monkeypatch):
     from vgar.mcp import tool_metrics
 
-    monkeypatch.delenv("VGAR_TOKENIZER_MANIFEST", raising=False)
-    tool_metrics._counter.cache_clear()
-    assert tool_metrics.token_count("abcdefgh") == (2, "approx_chars_div_4")
+    monkeypatch.setenv("VGAR_TOKENIZER_MANIFEST", "C:/does/not/exist.json")  # ignored (spec D2)
+    assert tool_metrics.token_count("abcdefgh") == (2, "FALLBACK:utf8_bytes_ceil_div4")
+    assert tool_metrics.token_count("é" * 4) == (2, "FALLBACK:utf8_bytes_ceil_div4")  # 8 bytes, 4 chars
+    assert tool_metrics.token_count("") == (0, "FALLBACK:utf8_bytes_ceil_div4")
 
-    class Fake:
-        counter_label = "local-hf:fake"
 
-        def __call__(self, text):
-            return len(text.split())
+def test_evaluation_and_mcp_share_one_counter():
+    from vgar.evaluation.retrieval import scoring
+    from vgar.graph import token_counter
 
-    monkeypatch.setattr(tool_metrics, "_counter", lambda: Fake())
-    assert tool_metrics.token_count("one two three") == (3, "local-hf:fake")
+    assert scoring.bytes_div4_counter is token_counter.bytes_div4_counter
+    assert scoring.FALLBACK_COUNTER_LABEL == token_counter.FALLBACK_COUNTER_LABEL == "FALLBACK:utf8_bytes_ceil_div4"
 
 
 def test_each_tool_call_writes_one_metrics_record(tmp_path, monkeypatch):
@@ -77,9 +77,9 @@ def test_metrics_never_contain_diff_content(tmp_path, monkeypatch):
 def test_summary_script_tabulates_calls_latency_and_tokens(tmp_path):
     metrics = tmp_path / "metrics.jsonl"
     rows = [{"tool": "search_symbols", "server": "graph", "status": "PASS", "duration_ms": d, "input_tokens": 5,
-             "output_tokens": 50, "token_method": "approx_chars_div_4"} for d in (10, 20, 30, 40)]
+             "output_tokens": 50, "token_method": "FALLBACK:utf8_bytes_ceil_div4"} for d in (10, 20, 30, 40)]
     rows.append({"tool": "get_callers", "server": "graph", "status": "ERROR", "duration_ms": 7, "input_tokens": 9,
-                 "output_tokens": 20, "token_method": "approx_chars_div_4"})
+                 "output_tokens": 20, "token_method": "FALLBACK:utf8_bytes_ceil_div4"})
     metrics.write_text("\n".join(json.dumps(r) for r in rows) + "\n", encoding="utf-8")
     out = tmp_path / "summary"
     result = subprocess.run([sys.executable, str(ROOT / "scripts/summarize_mcp_metrics.py"), "--metrics", str(metrics),

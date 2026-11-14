@@ -9,7 +9,9 @@ import os
 from contextlib import nullcontext
 from pathlib import Path
 from types import MappingProxyType
-from typing import Any
+from typing import Annotated, Any
+
+from pydantic import Strict
 
 from vgar.contracts.error import GraphError
 from vgar.graph.factory import create_graph_service
@@ -197,17 +199,41 @@ def find_task_anchors(issue_text: str, graph_version: str, task_id: str,
         lambda data: {"anchor_count": len(data["anchors"])})
 
 
+DEFAULT_CONTEXT_BUDGET = 12000  # [P] §9.2 line 972: extract_context_graph(..., budget_tokens=12000)
+MAX_CONTEXT_BUDGET = 12000  # [P] §10.5 line 1134: resource limit per tool; value from §9.2
+
+
 @mcp.tool()
 @instrument_mcp_tool("get_related_context")
-def get_related_context(anchor_ids: list[str], budget_tokens: int, graph_version: str,
-                        task_id: str, issue_text: str = "", failing_tests: list[str] | None = None) -> dict[str, Any]:
-    """Retrieve and pack graph context under a verified token budget; task inputs are request-local."""
+def get_related_context(anchor_ids: list[str], graph_version: str, task_id: str,
+                        budget_tokens: Annotated[int, Strict()] = DEFAULT_CONTEXT_BUDGET, issue_text: str = "",
+                        failing_tests: list[str] | None = None) -> dict[str, Any]:
+    """Retrieve and pack graph context around anchors under a token budget; task inputs are request-local.
+
+    The budget bounds this one call, not the whole session. Tokens are UTF-8 bytes / 4, not the model's own
+    tokens. ``diagnostics.budget`` in the result gives the requested and effective budget and whether the
+    request was clamped to the server ceiling.
+
+    Args:
+        anchor_ids: Graph node ids to start from (from find_task_anchors or search_symbols).
+        graph_version: Graph version the anchors belong to.
+        task_id: Task identifier used for the task overlay.
+        budget_tokens: Optional token budget; defaults to 12000 and is capped at 12000.
+        issue_text: Issue text used for ranking.
+        failing_tests: Optional failing test selectors.
+    """
+    effective = min(budget_tokens, MAX_CONTEXT_BUDGET)  # min(True, n) stays a bool, rejected below as INVALID_LIMIT
+
     def call():
         legacy_binding(graph_version=graph_version, task_id=task_id)
-        return graph_service.get_related_context(anchor_ids, budget_tokens, graph_version=graph_version,
-                                                task_id=task_id, issue_text=issue_text, failing_tests=failing_tests)
+        data = graph_service.get_related_context(anchor_ids, effective, graph_version=graph_version,
+                                                 task_id=task_id, issue_text=issue_text, failing_tests=failing_tests)
+        data["diagnostics"]["budget"] = {"requested": budget_tokens, "effective": effective,
+                                         "ceiling": MAX_CONTEXT_BUDGET, "clamped": budget_tokens > MAX_CONTEXT_BUDGET}
+        return data
     return _tool("get_related_context", call,
-        {"graph_version": graph_version, "task_id": task_id, "budget_tokens": budget_tokens},
+        {"graph_version": graph_version, "task_id": task_id, "budget_tokens": budget_tokens,
+         "effective_budget_tokens": effective},
         lambda data: {"item_count": len(data["context"]["items"]),
                       "total_token_count": data["context"]["total_token_count"]})
 

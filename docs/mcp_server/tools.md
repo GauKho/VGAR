@@ -10,7 +10,7 @@ Production entrypoints đăng ký **20 tools**: 15 legacy và 5 bổ sung, bao g
 |---|---|
 | search_symbols | Legacy service; giữ signature/payload. Khi host cấu hình context, kiểm source và actual backend snapshot. |
 | find_task_anchors | Giữ graph_version/task_id bắt buộc; đối chiếu trusted context khi có. |
-| get_related_context | Giữ budget và tokenizer/ranking legacy; không giả rich graph mới. |
+| get_related_context | `budget_tokens` không bắt buộc, mặc định 12000, server cắt ở mức trần 12000 (proposal §9.2, §10.5); đếm bằng byte UTF-8/4 (`FALLBACK:utf8_bytes_ceil_div4`), không phải token của model; ngân sách giới hạn một lần gọi. Kết quả có `diagnostics.budget` = `requested`, `effective`, `ceiling`, `clamped`; audit ghi `budget_tokens` và `effective_budget_tokens`. |
 | get_callers / get_callees | Depth 1 giữ shape/order cũ. Depth >1 cần traversal provider; thiếu provider/context trả ERROR. |
 | analyze_patch_impact | Giữ ImpactReport hiện có; không thêm architecture facts hoặc đổi schema legacy. |
 | build_or_update_graph | Adapter/grant/lifecycle sẵn; production WAITING_PROVIDER và L6-6 orchestration. |

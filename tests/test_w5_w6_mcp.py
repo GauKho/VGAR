@@ -44,18 +44,18 @@ def test_tools_are_stateless_and_enforce_budget_and_version(snapshot):
     assert found["status"] == "PASS"
     assert found["data"]["trace_nodes"][0]["type"] == "Issue"
     anchors = [anchor["node_id"] for anchor in found["data"]["anchors"]]
-    context = graph_server.get_related_context(anchors, 100, version, "one", "login fails")
+    context = graph_server.get_related_context(anchors, graph_version=version, task_id="one", budget_tokens=100, issue_text="login fails")
     assert context["status"] == "PASS"
     packed = context["data"]["context"]
     assert packed["items"] and packed["total_token_count"] <= 100
-    tight = graph_server.get_related_context(anchors, 1, version, "two", "login fails")
+    tight = graph_server.get_related_context(anchors, graph_version=version, task_id="two", budget_tokens=1, issue_text="login fails")
     assert tight["data"]["context"]["items"] == []
     assert tight["data"]["overlay_id"] != context["data"]["overlay_id"]
     assert graph_server.find_task_anchors("login", "missing", "one")["error"]["code"] == "GRAPH_NOT_READY"
-    assert graph_server.get_related_context(["missing"], 100, version, "one")["error"]["code"] == "NODE_NOT_FOUND"
+    assert graph_server.get_related_context(["missing"], graph_version=version, task_id="one", budget_tokens=100)["error"]["code"] == "NODE_NOT_FOUND"
     assert store.load_document(version) == before
     (repo / "app.py").write_text("def login(): return 2\n", encoding="utf-8")
-    assert graph_server.get_related_context(anchors, 100, version, "one")["status"] == "ERROR"
+    assert graph_server.get_related_context(anchors, graph_version=version, task_id="one", budget_tokens=100)["status"] == "ERROR"
 
 
 def test_legacy_snapshot_requires_rebuild_for_retrieval(snapshot):

@@ -6,6 +6,7 @@ from pathlib import Path
 from vgar.graph.port import GraphService
 from vgar.graph.sqlite_service import SQLiteGraphService
 from vgar.graph.sqlite_store import SQLiteGraphStore
+from vgar.graph.token_counter import FALLBACK_COUNTER_LABEL, bytes_div4_counter
 
 _BUILD_HINT = "build a real graph with `vgar index <repo> --db <file>.db` and set VGAR_GRAPH_DATABASE"
 
@@ -53,10 +54,6 @@ def create_graph_service() -> GraphService:
     else:
         raise RuntimeError(f"Unsupported VGAR_GRAPH_BACKEND: {backend!r}; expected 'sqlite' or 'snapshot'")
 
-    manifest = os.getenv("VGAR_TOKENIZER_MANIFEST", "").strip()
-    counter = None
-    if manifest:
-        from vgar.graph.token_counter import LocalTokenizerCounter
-        counter = LocalTokenizerCounter(manifest)
+    # One counter, UTF-8 bytes / 4, the same as the retrieval evaluation: the proposal names no tokenizer.
     return SQLiteGraphService(store, repository_root=os.getenv("VGAR_REPOSITORY_ROOT", "").strip() or None,
-                              count_tokens=counter, counter_label=counter.counter_label if counter else "")
+                              count_tokens=bytes_div4_counter, counter_label=FALLBACK_COUNTER_LABEL)

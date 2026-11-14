@@ -64,7 +64,7 @@
       "server": "graph",
       "client_name": "graph_get_related_context",
       "state": "CURRENT",
-      "signature": "anchor_ids: list[str], budget_tokens: int, graph_version: str, task_id: str, issue_text: str='', failing_tests: list[str] | None=None",
+      "signature": "anchor_ids: list[str], graph_version: str, task_id: str, budget_tokens: Annotated[int, Strict()]=DEFAULT_CONTEXT_BUDGET, issue_text: str='', failing_tests: list[str] | None=None",
       "output": "ToolResponse[provider context]",
       "provider": "legacy GraphService; rich TV2 pending",
       "constraints": [
@@ -313,7 +313,7 @@
     {
       "server": "graph",
       "name": "get_related_context",
-      "signature": "anchor_ids: list[str], budget_tokens: int, graph_version: str, task_id: str, issue_text: str='', failing_tests: list[str] | None=None"
+      "signature": "anchor_ids: list[str], graph_version: str, task_id: str, budget_tokens: Annotated[int, Strict()]=DEFAULT_CONTEXT_BUDGET, issue_text: str='', failing_tests: list[str] | None=None"
     },
     {
       "server": "graph",

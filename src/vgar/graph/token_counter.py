@@ -10,6 +10,12 @@ from pathlib import Path
 TOKENIZER_FILES = {"tokenizer.json", "tokenizer_config.json", "vocab.json", "merges.txt"}
 COUNTING_POLICY = "encode-each-snippet:add_special_tokens=false:sum-item-counts"
 RUNTIME_VERSION = "0.22.1"
+FALLBACK_COUNTER_LABEL = "FALLBACK:utf8_bytes_ceil_div4"
+
+
+def bytes_div4_counter(text: str) -> int:
+    """Fallback only (decision W5-6). Not a model tokenizer; results using it must be flagged."""
+    return (len(text.encode("utf-8")) + 3) // 4
 
 
 def _version_prefix(version: str) -> str:

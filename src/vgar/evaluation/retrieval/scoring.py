@@ -25,6 +25,7 @@ from typing import Any, Callable, Iterable, Mapping
 from .bm25 import BM25
 from .chunks import entities, extract_chunks, is_source, normalize_path, physical_lines
 from .metrics import evaluate_ranking
+from vgar.graph.token_counter import FALLBACK_COUNTER_LABEL, bytes_div4_counter  # noqa: F401 - re-exported
 
 TokenCounter = Callable[[str], int]
 SCORING_VERSION = "retrieval-scoring-v1"
@@ -320,12 +321,6 @@ def _count(values: Iterable[str]) -> dict[str, int]:
 
 
 # --------------------------------------------------------------------------- flat view for aggregation / reports
-FALLBACK_COUNTER_LABEL = "FALLBACK:utf8_bytes_ceil_div4"
-
-
-def bytes_div4_counter(text: str) -> int:
-    """Fallback only (decision W5-6). Not a model tokenizer; results using it must be flagged."""
-    return (len(text.encode("utf-8")) + 3) // 4
 
 
 def flat_metrics(scored: Mapping[str, Any]) -> dict[str, Any]:

@@ -32,7 +32,7 @@ Mỗi lời gọi tool (cả 3 server) có một bản ghi metrics; server chỉ
 |---|---|
 | `tool`, `server`, `request_id`, `status` | Tool nào, server nào, khớp với audit log qua `request_id` |
 | `duration_ms` | Thời gian xử lý của tool (tính cả chờ trong server) |
-| `input_tokens`, `output_tokens`, `token_method` | Token của tham số và của kết quả tool trả về mô hình (chi phí ngữ cảnh, proposal §13.2). `token_method` là nhãn tokenizer đã ghim khi khai `VGAR_TOKENIZER_MANIFEST`, nếu không là `approx_chars_div_4` (ước lượng) |
+| `input_tokens`, `output_tokens`, `token_method` | Token của tham số và của kết quả tool trả về mô hình (chi phí ngữ cảnh, proposal §13.2). `token_method` là `FALLBACK:utf8_bytes_ceil_div4`: số byte UTF-8 chia 4, cùng bộ đếm với đánh giá retrieval (R1), không phải tokenizer của model |
 | `input_bytes`, `output_bytes` | Kích thước JSON vào, ra |
 | `args` | Định dạng tham số: tên → kiểu và kích thước (`"diff": "str 412B"`, `"depth": "int"`), không bao giờ có nội dung |
 | `result` | Định dạng kết quả: `status`, các khóa của `data` → kiểu và kích thước (`"symbols": "list[8]"`), `error_code` nếu lỗi |
