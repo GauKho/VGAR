@@ -1,0 +1,3 @@
+INFO starting
+WARN Could not parse file shop/broken.py at commit COMMIT_A
+INFO done

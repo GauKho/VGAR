@@ -1,0 +1,25 @@
+{
+"commits": [
+{
+	"repository": "",
+	"sha1": "COMMIT_A",
+	"url": "",
+	"refactorings": [{
+	"type": "Rename Method",
+	"description": "Rename Method public estimate_delivery(order_date, days) renamed to public estimate_delivery_date(order_date, days) in class services.shipping.__module__",
+	"leftSideLocations": [{"filePath": "shop\\services\\shipping.py", "startLine": 4, "endLine": 5, "startColumn": 1, "endColumn": 1,
+		"codeElementType": "METHOD_DECLARATION", "description": "original method declaration", "codeElement": "public estimate_delivery(order_date, days)"}],
+	"rightSideLocations": [{"filePath": "shop/services/shipping.py", "startLine": 4, "endLine": 5, "startColumn": 1, "endColumn": 1,
+		"codeElementType": "METHOD_DECLARATION", "description": "renamed method declaration", "codeElement": "public estimate_delivery_date(order_date, days)"},
+		{"filePath": "shop/unchanged.py", "startLine": 1, "endLine": 1, "startColumn": 1, "endColumn": 1,
+		"codeElementType": "METHOD_INVOCATION", "description": "outside the commit's changed files", "codeElement": "x"}]
+	}]
+},
+{
+	"repository": "",
+	"sha1": "COMMIT_X_NOT_IN_WINDOW",
+	"url": "",
+	"refactorings": [{"type": "Rename Method", "description": "ignored", "leftSideLocations": [], "rightSideLocations": []}]
+}
+]
+}

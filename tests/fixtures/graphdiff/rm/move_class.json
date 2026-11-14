@@ -1,0 +1,27 @@
+{
+"commits": [
+{
+	"repository": "",
+	"sha1": "COMMIT_M",
+	"url": "",
+	"refactorings": [{
+	"type": "Move Class",
+	"description": "Move Class services.notify.Notifier moved to services.messaging.Notifier",
+	"leftSideLocations": [{"filePath": "shop/notify.py", "startLine": 1, "endLine": 3, "startColumn": 1, "endColumn": 1,
+		"codeElementType": "TYPE_DECLARATION", "description": "original type declaration", "codeElement": "services.notify.Notifier"}],
+	"rightSideLocations": [{"filePath": "shop/messaging.py", "startLine": 1, "endLine": 3, "startColumn": 1, "endColumn": 1,
+		"codeElementType": "TYPE_DECLARATION", "description": "moved type declaration", "codeElement": "services.messaging.Notifier"}]
+	},
+	{
+	"type": "Extract Method",
+	"description": "Extract Method protected _fee(x) extracted from public quote(x) in class services.messaging.__module__",
+	"leftSideLocations": [{"filePath": "shop/messaging.py", "startLine": 5, "endLine": 6, "startColumn": 1, "endColumn": 1,
+		"codeElementType": "METHOD_DECLARATION", "description": "source method declaration before extraction", "codeElement": "public quote(x)"}],
+	"rightSideLocations": [{"filePath": "shop/messaging.py", "startLine": 8, "endLine": 9, "startColumn": 1, "endColumn": 1,
+		"codeElementType": "METHOD_DECLARATION", "description": "extracted method declaration", "codeElement": "protected _fee(x)"},
+		{"filePath": "shop/messaging.py", "startLine": 5, "endLine": 6, "startColumn": 1, "endColumn": 1,
+		"codeElementType": "METHOD_DECLARATION", "description": "source method declaration after extraction", "codeElement": "public quote(x)"}]
+	}]
+}
+]
+}

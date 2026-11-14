@@ -10,6 +10,14 @@ mean of every arm and the paired pairs of the spec (bootstrap CI95).
 Usage:
     python ablation_matrix/run_r1_ablation.py <root> <gold manifest> --out <dir> \
         --allow-fallback-counter [--only ids.txt] [--prune] [--resume]
+        [--history none|raw|graphdiff --git-root <clones> [--history-commits 50]]
+    python ablation_matrix/run_r1_ablation.py --compare-history <none dir> <raw dir> <graphdiff dir>
+
+``--history raw|graphdiff`` (GraphDiff downstream, proposal line 760) runs only the ``task_trace`` arm with
+``recent_change_frequency`` fed from the first-parent window ending at the task's base commit, read from a
+full-history clone ``<git-root>/<owner>__<name>``: ``raw`` counts commits per path, ``graphdiff`` counts
+commits with at least one validated graph edit per node id. A task without that history fails with
+``HistoryUnavailable``.
 """
 from __future__ import annotations
 
@@ -49,6 +57,11 @@ from vgar.evaluation.retrieval.scoring import (
     score_record,
 )
 
+
+class HistoryUnavailable(RuntimeError):
+    """The task's clone or its base commit history is missing."""
+
+
 TEXT_ARMS = ("bm25", "grep", "neighbor")
 ALL_ARMS = TEXT_ARMS + GRAPH_ARMS
 # (candidate, base): the candidate adds one thing to the base.
@@ -76,6 +89,53 @@ def _text_arm(record: Any, gold: dict[str, Any], document: dict[str, Any], budge
     return {"rank_hash": record.rank_hash, "ranked": detail["items"][:100], "meta": record.meta, "metrics": metrics}
 
 
+def arms_for(args: argparse.Namespace) -> tuple[tuple[str, ...], bool]:
+    """Graph arms to run and whether the text baselines run."""
+    return (GRAPH_ARMS, True) if args.history == "none" else (("task_trace",), False)
+
+
+def graphdiff_counts(edits: Any) -> dict[str, int]:
+    """Per node id, the number of commits with at least one validated graph edit on it."""
+    commits: dict[str, set[str]] = {}
+    for edit in edits:
+        if edit.validated:
+            commits.setdefault(edit.node_id, set()).add(edit.commit_id)
+    return {node_id: len(ids) for node_id, ids in sorted(commits.items())}
+
+
+def history_counts(mode: str, row: dict[str, Any], document: dict[str, Any], *, git_root: Path,
+                   max_commits: int) -> tuple[dict[str, int], str]:
+    """Change counts and their label for one task; never reads commits after ``base_commit``.
+
+    Args:
+        mode: ``raw`` or ``graphdiff``.
+        row: Gold manifest task.
+        document: Graph built at the task's base commit.
+        git_root: Folder of full-history clones named ``<owner>__<name>``.
+        max_commits: Window size.
+
+    Raises:
+        HistoryUnavailable: The clone or the base commit's history is missing.
+    """
+    from vgar.graph.history import read_commit_history
+
+    clone = git_root / row["repo"].replace("/", "__")
+    if not clone.is_dir():
+        raise HistoryUnavailable(f"clone missing: {clone}")
+    try:
+        window = read_commit_history(clone, revision=row["base_commit"], max_commits=max_commits)
+        if mode == "raw":
+            return window.change_counts, window.history_label
+        from vgar.graph.graphdiff import run_graphdiff
+        from vgar.graph.refactorings import RefactoringMinerConfig
+
+        result = run_graphdiff(clone, document, max_commits=max_commits, source_roots=("src",),
+                               rm_config=RefactoringMinerConfig.from_env(), repository_name=runner.key_of(row))
+    except (ValueError, TypeError) as error:
+        raise HistoryUnavailable(f"history unavailable: {error}") from error
+    return graphdiff_counts(result.edits), f"graphdiff:v1:{window.history_label}"
+
+
 def evaluate_task(root: Path, row: dict[str, Any], args: argparse.Namespace, builder_hash: str,
                   counter: Any, label: str) -> dict[str, Any]:
     """Build one task's graph and score every arm on it.
@@ -98,18 +158,24 @@ def evaluate_task(root: Path, row: dict[str, Any], args: argparse.Namespace, bui
     document, graph_meta = runner.load_or_build_graph(root, row, tree, rebuild=False, builder_hash=builder_hash,
                                                       cache=False)
     corpus = CorpusIndex(sources)
+    graph_arms, run_text = arms_for(args)
+    counts, history_label, history = None, None, None
+    if args.history != "none":
+        counts, history_label = history_counts(args.history, row, document, git_root=args.git_root,
+                                               max_commits=args.history_commits)
+        history = {"mode": args.history, "label": history_label, "keys": len(counts)}
     # Every ranking is computed before the gold patch is parsed.
     outputs = variant_outputs(document, tree, row["problem_statement"], include=make_include(corpus),
                               count_tokens=counter, counter_label=label, budget_tokens=args.budget_tokens,
-                              arms=GRAPH_ARMS)
+                              arms=graph_arms, change_counts=counts, history_label=history_label)
     text_records = {"bm25": bm25_rank(row["instance_id"], row["problem_statement"], sources),
                     "grep": grep_rank(row["instance_id"], row["problem_statement"], sources),
-                    "neighbor": neighbor_rank(row["instance_id"], row["problem_statement"], sources)}
-    contexts = {arm: outputs[arm].pop("context") for arm in GRAPH_ARMS}
+                    "neighbor": neighbor_rank(row["instance_id"], row["problem_statement"], sources)} if run_text else {}
+    contexts = {arm: outputs[arm].pop("context") for arm in graph_arms}
     nodes = {node["id"]: node for node in document["nodes"]}
     result = evaluate_graph_task(dict(row, patch=patch), sources, corpus, nodes, outputs,
                                  budget_tokens=args.budget_tokens, counter=counter, counter_label=label)
-    for arm in GRAPH_ARMS:
+    for arm in graph_arms:
         metrics = result["arms"][arm]["metrics"]
         metrics.update(native_context_metrics(contexts[arm], result["gold"], corpus))
         metrics.update(component_metrics(document, [row_["path"] for row_ in result["arms"][arm]["ranked"]],
@@ -118,6 +184,8 @@ def evaluate_task(root: Path, row: dict[str, Any], args: argparse.Namespace, bui
         result["arms"][arm] = _text_arm(record, result["gold"], document, args.budget_tokens, counter, label)
     result.update(graph={k: graph_meta[k] for k in ("build_seconds", "nodes", "edges", "graph_version")},
                   duration_seconds=time.perf_counter() - started)
+    if history is not None:
+        result["history"] = history
     return result
 
 
@@ -160,18 +228,77 @@ def summarize(out: Path, seed: int = 0) -> dict[str, Any]:
     return {"succeeded": len(done), "failed": failed, "means": means, "pairs": pairs}
 
 
-def main(argv: list[str] | None = None) -> int:
+HISTORY_METRICS = ("file_recall@1", "file_recall@3", "file_recall@5", "file_recall@10", "function_recall@1",
+                   "function_recall@3", "function_recall@5", "function_recall@10", "file_mrr", "function_mrr")
+
+
+def compare_history_runs(none_dir: Path, raw_dir: Path, graphdiff_dir: Path, seed: int = 0) -> dict[str, Any]:
+    """Means of the ``task_trace`` arm per history mode and paired deltas against ``none``.
+
+    Args:
+        none_dir: Run without history.
+        raw_dir: Run with ``--history raw``.
+        graphdiff_dir: Run with ``--history graphdiff``.
+        seed: Bootstrap seed.
+    """
+    def values(folder: Path) -> dict[str, dict[str, float]]:
+        out: dict[str, dict[str, float]] = {}
+        for path in sorted((folder / "tasks").glob("*.json")):
+            data = json.loads(path.read_text(encoding="utf-8"))
+            if data.get("status") == "SUCCEEDED" and "task_trace" in data.get("arms", {}):
+                out[data["instance_id"]] = data["arms"]["task_trace"]["metrics"]
+        return out
+
+    runs = {"none": values(none_dir), "raw": values(raw_dir), "graphdiff": values(graphdiff_dir)}
+    means = {mode: {name: statistics.fmean(v) if (v := [m[name] for m in run.values() if m.get(name) is not None])
+                    else None for name in HISTORY_METRICS} for mode, run in runs.items()}
+    pairs: dict[str, dict[str, Any]] = {}
+    for mode in ("raw", "graphdiff"):
+        rows = {}
+        for name in HISTORY_METRICS:
+            shared = sorted(i for i in runs[mode].keys() & runs["none"].keys()
+                            if runs[mode][i].get(name) is not None and runs["none"][i].get(name) is not None)
+            deltas = [runs[mode][i][name] - runs["none"][i][name] for i in shared]
+            if deltas:
+                rows[name] = {"n": len(deltas), "mean_delta": statistics.fmean(deltas), "ci95": _bootstrap(deltas, seed),
+                              "wins": sum(d > 1e-9 for d in deltas), "losses": sum(d < -1e-9 for d in deltas)}
+        pairs[f"{mode} - none"] = rows
+    return {"tasks": {mode: len(run) for mode, run in runs.items()}, "means": means, "pairs": pairs}
+
+
+def parse_args(argv: list[str] | None) -> argparse.Namespace:
+    """Command line of the R1 run, or of ``--compare-history``."""
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    parser.add_argument("root", type=Path)
-    parser.add_argument("manifest", type=Path)
-    parser.add_argument("--out", type=Path, required=True)
+    parser.add_argument("root", type=Path, nargs="?")
+    parser.add_argument("manifest", type=Path, nargs="?")
+    parser.add_argument("--out", type=Path)
     parser.add_argument("--only", type=Path)
     parser.add_argument("--prune", action="store_true")
     parser.add_argument("--resume", action="store_true")
     parser.add_argument("--offline", action="store_true")
     parser.add_argument("--budget-tokens", type=int, default=12000)
-    parser.add_argument("--allow-fallback-counter", action="store_true", required=True)
+    parser.add_argument("--allow-fallback-counter", action="store_true")
+    parser.add_argument("--history", choices=("none", "raw", "graphdiff"), default="none")
+    parser.add_argument("--git-root", type=Path)
+    parser.add_argument("--history-commits", type=int, default=50)
+    parser.add_argument("--compare-history", type=Path, nargs=3, metavar=("NONE", "RAW", "GRAPHDIFF"))
     args = parser.parse_args(argv)
+    if args.compare_history:
+        return args
+    if args.root is None or args.manifest is None or args.out is None:
+        parser.error("root, manifest and --out are required")
+    if not args.allow_fallback_counter:
+        parser.error("--allow-fallback-counter is required")
+    if args.history != "none" and args.git_root is None:
+        parser.error("--history raw|graphdiff needs --git-root")
+    return args
+
+
+def main(argv: list[str] | None = None) -> int:
+    args = parse_args(argv)
+    if args.compare_history:
+        print(json.dumps(compare_history_runs(*args.compare_history), indent=2))
+        return 0
     root = args.root.resolve()
     manifest = json.loads(args.manifest.read_text(encoding="utf-8"))
     for task in manifest["tasks"]:
@@ -200,7 +327,8 @@ def main(argv: list[str] | None = None) -> int:
             _prune(root, row)
     summary = summarize(args.out)
     summary.update(manifest_hash=runner.sha256(args.manifest.read_bytes()), budget_tokens=args.budget_tokens,
-                   counter_label=FALLBACK_COUNTER_LABEL, builder_hash=builder_hash)
+                   counter_label=FALLBACK_COUNTER_LABEL, builder_hash=builder_hash, history=args.history,
+                   history_commits=args.history_commits if args.history != "none" else None)
     runner.write_json(args.out / "summary.json", summary)
     print(json.dumps({"succeeded": summary["succeeded"], "failed": summary["failed"]}))
     return 0 if not summary["failed"] else 1

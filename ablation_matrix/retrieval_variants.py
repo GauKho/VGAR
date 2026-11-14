@@ -122,7 +122,8 @@ def ast_only(document: dict[str, Any]) -> dict[str, Any]:
 def variant_outputs(document: dict[str, Any], tree: Path, issue_text: str, *,
                     include: Callable[[Mapping[str, Any]], bool] | None, count_tokens: Callable[[str], int],
                     counter_label: str, budget_tokens: int = 12000,
-                    arms: tuple[str, ...] = ARMS) -> dict[str, dict[str, Any]]:
+                    arms: tuple[str, ...] = ARMS, change_counts: Mapping[str, float] | None = None,
+                    history_label: str | None = None) -> dict[str, dict[str, Any]]:
     """Run the named graph arms on one graph; output follows ``evaluate_graph_task``'s ``arm_outputs``.
 
     Args:
@@ -134,6 +135,8 @@ def variant_outputs(document: dict[str, Any], tree: Path, issue_text: str, *,
         counter_label: Name of that counter.
         budget_tokens: Context budget.
         arms: Names from ``GRAPH_ARM_SPECS``.
+        change_counts: Commit-history counts for ``recent_change_frequency`` (node id or path keys).
+        history_label: Provenance label of ``change_counts``.
     """
     overlay = TaskOverlayBuilder(document).build("ablation:task_trace", issue_text, None)
     # Arms sharing a config share one retriever. Each retriever deep-copies the
@@ -148,7 +151,8 @@ def variant_outputs(document: dict[str, Any], tree: Path, issue_text: str, *,
         flags = GRAPH_ARM_SPECS[names[0]][1]
         graph = ast_only(document) if ast else document
         retriever = GraphContextRetriever(graph, tree, count_tokens=count_tokens, counter_label=counter_label,
-                                          config=RetrievalConfig(**flags))
+                                          config=RetrievalConfig(**flags), change_counts=change_counts,
+                                          history_label=history_label)
         del graph
         for arm in names:
             if GRAPH_ARM_SPECS[arm][0] == "overlay":

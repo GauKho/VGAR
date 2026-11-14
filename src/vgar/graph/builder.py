@@ -94,6 +94,24 @@ class _ClassRecord:
     bases: list[str]
 
 
+def module_name_for(relative_path: str, source_roots: tuple[str, ...], repository_name: str) -> str:
+    """Dotted module name the builder gives a repository-relative ``.py`` path (shared with GraphDiff).
+
+    Args:
+        relative_path: POSIX path inside the repository.
+        source_roots: Leading folders that are not part of the module name.
+        repository_name: Folder name of the repository root.
+    """
+    parts = list(Path(relative_path).with_suffix("").parts)
+    if parts and parts[0] in source_roots:
+        parts.pop(0)
+    if parts and parts[-1] == "__init__":
+        parts.pop()
+    # A root-level __init__.py has no parts left; Python names that package
+    # after the folder that holds it, which here is the repository root.
+    return ".".join(parts) or Path(relative_path).parent.name or repository_name
+
+
 class PythonGraphBuilder:
     """Build documents that follow the frozen VGAR graph contract."""
 
@@ -2198,15 +2216,8 @@ class PythonGraphBuilder:
         )
 
     def _module_name(self, relative_path: str) -> str:
-        parts = list(Path(relative_path).with_suffix("").parts)
-        if parts and parts[0] in self.source_roots:
-            parts.pop(0)
-        if parts and parts[-1] == "__init__":
-            parts.pop()
-        # A root-level __init__.py has no parts left; Python names that package
-        # after the folder that holds it, which here is the repository root.
         root = getattr(self, "repository_root", None)
-        return ".".join(parts) or Path(relative_path).parent.name or (root.name if root is not None else "")
+        return module_name_for(relative_path, self.source_roots, root.name if root is not None else "")
 
     @staticmethod
     def _text(node: Node, source: bytes) -> str:
