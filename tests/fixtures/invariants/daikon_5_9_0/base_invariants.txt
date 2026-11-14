@@ -1,0 +1,107 @@
+===========================================================================
+shop.cart.Cart.__init__(self):::ENTER
+this has only one value
+===========================================================================
+shop.cart.Cart.__init__(self):::EXIT
+===========================================================================
+shop.cart.Cart.add(self, sku, quantity):::ENTER
+quantity one of { 1, 2 }
+sku one of { "BOOK", "MUG", "PEN" }
+this__quantities_size one of { 0, 1 }
+quantity >= this__quantities_size
+===========================================================================
+shop.cart.Cart.add(self, sku, quantity):::EXIT
+this__quantities_size == orig(this__quantities_size)
+this__quantities_size one of { 0, 1 }
+this__quantities_size <= orig(quantity)
+===========================================================================
+shop.cart.Cart.subtotal(self):::ENTER
+this__quantities_size one of { 1, 2 }
+===========================================================================
+shop.cart.Cart.subtotal(self):::EXIT
+this__quantities_size == orig(this__quantities_size)
+this__quantities_size one of { 1, 2 }
+return % this__quantities_size == 0
+===========================================================================
+shop.catalog.get_product(sku):::ENTER
+sku one of { "BOOK", "MUG", "PEN" }
+===========================================================================
+shop.catalog.get_product(sku):::EXIT
+return.sku == orig(sku)
+return != null
+return.name one of { "Coffee mug", "Gel pen", "Python handbook" }
+return.sku one of { "BOOK", "MUG", "PEN" }
+return.unit_price one of { 15000, 100000, 200000 }
+return.name != return.sku
+===========================================================================
+shop.checkout.checkout(cart, coupon_code):::ENTER
+cart__quantities_size one of { 1, 2 }
+coupon_code == "SAVE10"
+coupon_code_is_none one of { 0, 1 }
+===========================================================================
+shop.checkout.checkout(cart, coupon_code):::EXIT
+cart__quantities_size == orig(cart__quantities_size)
+cart__quantities_size one of { 1, 2 }
+return.discount == 0
+return.shipping one of { 0, 30000 }
+return.subtotal one of { 200000, 400000, 500000 }
+return.tax one of { 20000, 40000, 50000 }
+return.total one of { 250000, 440000, 550000 }
+===========================================================================
+shop.discounts.discount_amount(subtotal, code):::ENTER
+code == "SAVE10"
+code_is_none one of { 0, 1 }
+===========================================================================
+shop.discounts.discount_amount(subtotal, code):::EXIT
+return one of { 0, 90000 }
+return < orig(subtotal)
+===========================================================================
+shop.discounts.get_coupon(code):::ENTER
+code == "SAVE10"
+===========================================================================
+shop.discounts.get_coupon(code):::EXIT
+return.code == orig(code)
+return has only one value
+return.code == "SAVE10"
+return.min_order == 500000
+return.percent == 10
+===========================================================================
+shop.discounts.is_eligible(coupon, subtotal):::ENTER
+coupon has only one value
+coupon.code == "SAVE10"
+coupon.min_order == 500000
+coupon.percent == 10
+===========================================================================
+shop.discounts.is_eligible(coupon, subtotal):::EXIT
+coupon.code == orig(coupon.code)
+coupon.min_order == orig(coupon.min_order)
+coupon.percent == orig(coupon.percent)
+(return == 0)  <==>  (orig(subtotal) one of { 400000, 499999, 500000 })
+(return == 1)  <==>  (orig(subtotal) == 900000)
+coupon.code == "SAVE10"
+coupon.min_order == 500000
+coupon.percent == 10
+return one of { 0, 1 }
+===========================================================================
+shop.discounts.is_eligible(coupon, subtotal):::EXIT;condition="return == true"
+return == 1
+orig(subtotal) == 900000
+===========================================================================
+shop.discounts.is_eligible(coupon, subtotal):::EXIT;condition="not(return == true)"
+return == 0
+orig(subtotal) one of { 400000, 499999, 500000 }
+===========================================================================
+shop.money.round_vnd(amount):::ENTER
+===========================================================================
+shop.money.round_vnd(amount):::EXIT
+===========================================================================
+shop.shipping.shipping_fee(subtotal):::ENTER
+subtotal one of { 200000, 400000, 500000 }
+===========================================================================
+shop.shipping.shipping_fee(subtotal):::EXIT
+return one of { 0, 30000 }
+===========================================================================
+shop.tax.vat(taxable_amount):::ENTER
+===========================================================================
+shop.tax.vat(taxable_amount):::EXIT
+

@@ -1,0 +1,17 @@
+
+                                                                               
+
+[2026-11-14T21:49:22.633807700]:                                               At ppt shop.catalog.get_product(sku):::EXIT, Invariant 'return.name one of { "Coffee mug", "Gel pen", "Python handbook" }' invalidated by sample return.name="GEL PEN": at line 450 in file <work>\traces\M5_product_name_upper\trace.dtrace
+At ppt shop.catalog.get_product(sku):::EXIT1, Invariant 'return.name one of { "Coffee mug", "Gel pen", "Python handbook" }' invalidated by sample return.name="GEL PEN": at line 450 in file <work>\traces\M5_product_name_upper\trace.dtrace
+
+No return from procedure observed 5 times.  Unmatched entries are ignored!
+Unterminated calls:
+  shop.cart.Cart.add(self, sku, quantity) : 2 invocations
+  shop.catalog.get_product(sku) : 1 invocation
+  shop.discounts.discount_amount(subtotal, code) : 1 invocation
+  shop.discounts.get_coupon(code) : 1 invocation
+End of report for procedures not returned from.  Unmatched entries are ignored!
+
+<work>\a\base.inv.gz: 2 errors found in 3,736 samples (0.05%)
+<work>\a\base.inv.gz: 2 false positives, out of 697, which is 0.29%.
+

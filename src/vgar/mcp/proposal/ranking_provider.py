@@ -172,6 +172,22 @@ def _graph_fields(record, fields):
     return _candidate_bytes(raw, record["scope"]) if record["status"] == "PASS" or raw is not None else None
 
 
+def combine_semantic(contract: str | None, invariants: str | None) -> str | None:
+    """``semantic_invariant_preserved`` from a host semantic contract and the L5 invariant check.
+
+    FAIL when either failed; PASS when the measured ones passed; ``None`` (field stays NOT_RUN) when
+    neither measured anything.
+
+    Args:
+        contract: ``PASS``/``FAIL``/``None`` from the semantic contract examples.
+        invariants: ``semantic_invariants.status`` of the EV-3 evidence (``PASS``/``FAIL``/``NOT_RUN``/``ERROR``/``None``).
+    """
+    measured = [value for value in (contract, invariants) if value in {"PASS", "FAIL"}]
+    if "FAIL" in measured:
+        return "FAIL"
+    return "PASS" if measured else None
+
+
 def _test_fields(record, fields):
     receipt = c.TestReceipt.model_validate(record["receipt"])
     if receipt.diff_hash != record["diff_hash"] or not receipt.admitted or not receipt.cleaned:
@@ -196,10 +212,12 @@ def _test_fields(record, fields):
         if any(original.get(key) != "PASS" for key in ids):
             raise ValueError("Semantic contract baseline was not qualified")
         observed = {outcomes.get(key) for key in ids}
-        if observed == {"PASS"}:
-            fields["semantic_invariant_preserved"] = "PASS"
-        elif "FAIL" in observed:
-            fields["semantic_invariant_preserved"] = "FAIL"
+        contract_status = "PASS" if observed == {"PASS"} else ("FAIL" if "FAIL" in observed else None)
+    else:
+        contract_status = None
+    semantic = combine_semantic(contract_status, (record.get("semantic_invariants") or {}).get("status"))
+    if semantic is not None:
+        fields["semantic_invariant_preserved"] = semantic
     required = tuple(record["required_failures"])
     if (baseline["status"] != "FAIL" or "ERROR" in original.values() or not required
             or set(required) != {k for k, v in original.items() if v == "FAIL"}):

@@ -1,0 +1,30 @@
+
+                                                                               
+
+[2026-11-14T21:49:23.600314700]:                                               At ppt shop.cart.Cart.add(self, sku, quantity):::ENTER, Invariant 'quantity one of { 1, 2 }' invalidated by sample quantity=0: at line 752 in file <work>\traces\M7_zero_quantity_allowed\trace.dtrace
+At ppt shop.cart.Cart.add(self, sku, quantity):::ENTER, Invariant 'quantity != 0' invalidated by sample quantity=0: at line 752 in file <work>\traces\M7_zero_quantity_allowed\trace.dtrace
+At ppt shop.cart.Cart.add(self, sku, quantity):::ENTER, Invariant 'quantity >= 1' invalidated by sample quantity=0: at line 752 in file <work>\traces\M7_zero_quantity_allowed\trace.dtrace
+At ppt shop.cart.Cart.add(self, sku, quantity):::ENTER, Invariant 'quantity is a power of 2' invalidated by sample quantity=0: at line 752 in file <work>\traces\M7_zero_quantity_allowed\trace.dtrace
+At ppt shop.cart.Cart.add(self, sku, quantity):::ENTER, Invariant 'this__quantities_size % quantity == 0' invalidated by sample quantity=0: this__quantities_size=0: at line 752 in file <work>\traces\M7_zero_quantity_allowed\trace.dtrace
+At ppt shop.cart.Cart.add(self, sku, quantity):::EXIT, Invariant 'orig(quantity) one of { 1, 2 }' invalidated by sample orig(quantity)=0: at line 752 in file <work>\traces\M7_zero_quantity_allowed\trace.dtrace
+At ppt shop.cart.Cart.add(self, sku, quantity):::EXIT, Invariant 'orig(quantity) != 0' invalidated by sample orig(quantity)=0: at line 752 in file <work>\traces\M7_zero_quantity_allowed\trace.dtrace
+At ppt shop.cart.Cart.add(self, sku, quantity):::EXIT, Invariant 'orig(quantity) >= 1' invalidated by sample orig(quantity)=0: at line 752 in file <work>\traces\M7_zero_quantity_allowed\trace.dtrace
+At ppt shop.cart.Cart.add(self, sku, quantity):::EXIT, Invariant 'orig(quantity) is a power of 2' invalidated by sample orig(quantity)=0: at line 752 in file <work>\traces\M7_zero_quantity_allowed\trace.dtrace
+At ppt shop.cart.Cart.add(self, sku, quantity):::EXIT, Invariant 'this__quantities_size % orig(quantity) == 0' invalidated by sample this__quantities_size=0: orig(quantity)=0: at line 752 in file <work>\traces\M7_zero_quantity_allowed\trace.dtrace
+At ppt shop.cart.Cart.add(self, sku, quantity):::EXIT1, Invariant 'orig(quantity) one of { 1, 2 }' invalidated by sample orig(quantity)=0: at line 752 in file <work>\traces\M7_zero_quantity_allowed\trace.dtrace
+At ppt shop.cart.Cart.add(self, sku, quantity):::EXIT1, Invariant 'orig(quantity) != 0' invalidated by sample orig(quantity)=0: at line 752 in file <work>\traces\M7_zero_quantity_allowed\trace.dtrace
+At ppt shop.cart.Cart.add(self, sku, quantity):::EXIT1, Invariant 'orig(quantity) >= 1' invalidated by sample orig(quantity)=0: at line 752 in file <work>\traces\M7_zero_quantity_allowed\trace.dtrace
+At ppt shop.cart.Cart.add(self, sku, quantity):::EXIT1, Invariant 'orig(quantity) is a power of 2' invalidated by sample orig(quantity)=0: at line 752 in file <work>\traces\M7_zero_quantity_allowed\trace.dtrace
+At ppt shop.cart.Cart.add(self, sku, quantity):::EXIT1, Invariant 'this__quantities_size % orig(quantity) == 0' invalidated by sample this__quantities_size=0: orig(quantity)=0: at line 752 in file <work>\traces\M7_zero_quantity_allowed\trace.dtrace
+
+No return from procedure observed 4 times.  Unmatched entries are ignored!
+Unterminated calls:
+  shop.cart.Cart.add(self, sku, quantity) : 1 invocation
+  shop.catalog.get_product(sku) : 1 invocation
+  shop.discounts.discount_amount(subtotal, code) : 1 invocation
+  shop.discounts.get_coupon(code) : 1 invocation
+End of report for procedures not returned from.  Unmatched entries are ignored!
+
+<work>\a\base.inv.gz: 15 errors found in 3,813 samples (0.39%)
+<work>\a\base.inv.gz: 15 false positives, out of 697, which is 2.15%.
+

@@ -1,0 +1,15 @@
+
+                                                                               
+
+[2026-11-14T21:49:18.940016]:                                                  
+No return from procedure observed 5 times.  Unmatched entries are ignored!
+Unterminated calls:
+  shop.cart.Cart.add(self, sku, quantity) : 2 invocations
+  shop.catalog.get_product(sku) : 1 invocation
+  shop.discounts.discount_amount(subtotal, code) : 1 invocation
+  shop.discounts.get_coupon(code) : 1 invocation
+End of report for procedures not returned from.  Unmatched entries are ignored!
+
+<work>\a\base.inv.gz: 0 errors found in 3,762 samples (0.00%)
+<work>\a\base.inv.gz: 0 false positives, out of 697, which is 0.00%.
+

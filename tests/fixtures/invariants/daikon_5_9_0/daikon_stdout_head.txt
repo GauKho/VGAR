@@ -1,0 +1,2 @@
+Daikon version 5.9.0, released September 1, 2026; http://plse.cs.washington.edu/daikon.
+Reading declaration files Processing trace data; reading 1 dtrace file:

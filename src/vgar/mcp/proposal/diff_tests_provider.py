@@ -14,6 +14,13 @@ from vgar.repair.admission import prepare_admitted_workspace, validate_admission
 from vgar.repair.contracts import RepairPolicy, RepairTask
 from vgar.repair.docker_executor import DockerExecutor
 from vgar.repair.evidence import atomic_json, digest, encode_json
+from vgar.repair.invariants import (
+    InvariantExecutor,
+    InvariantSettings,
+    compute_semantic_invariants,
+    fit_record,
+    not_run_record,
+)
 from vgar.repair.patch import PatchPolicy, apply_patch, parse_unified_diff
 from vgar.repair.deadline import DeadlineExecutor, require_trusted_fixture
 from vgar.repair.semantic_contract import ContractExecutor, SemanticContract
@@ -35,7 +42,8 @@ class DiffTestsProvider:
 
     def __init__(self, task: RepairTask, policy: RepairPolicy, binding: c.SnapshotBinding, *,
                  candidate_workspace: str, admission=None, approved_fixture_diffs: tuple[str, ...] = (),
-                 snapshot_id: str | None = None, semantic_contract: SemanticContract | None = None):
+                 snapshot_id: str | None = None, semantic_contract: SemanticContract | None = None,
+                 invariants: InvariantSettings | None = None):
         self._task = RepairTask.model_validate(task.model_dump())
         self._policy = RepairPolicy.model_validate(policy.model_dump())
         self._binding = c.SnapshotBinding.model_validate(binding.model_dump())
@@ -81,7 +89,13 @@ class DiffTestsProvider:
             "admission": self._admission["admission_hash"] if self._admission else None,
             "fixture_diff_hashes": sorted(self._fixture_diffs),
             "semantic_contract": self._contract_payload,
+            **({} if invariants is None else {"invariants": repr(invariants)}),
         }))
+        # L5-1/L5-2 (off unless the host passes settings); node ids use the task's graph naming.
+        self._invariants = None if invariants is None else InvariantSettings(
+            daikon=invariants.daikon, repo_key=invariants.repo_key or self._task.repo_key,
+            source_roots=invariants.source_roots,
+            repository_name=invariants.repository_name or self._task.source_repo.name)
 
     async def run_diff_tests(self, request: c.DiffRequest, context) -> c.TestEvidence:
         request = c.DiffRequest.model_validate(request.model_dump())
@@ -172,8 +186,17 @@ class DiffTestsProvider:
             if self._contract_payload is not None:
                 executor = ContractExecutor(executor, self._contract_payload)
             guard()
+            traced = self._invariants is not None and self._admission is None
+            if self._invariants is not None and not traced:
+                # The admitted Docker executor runs a fixed pytest command and copies out only its reports.
+                state["semantic_invariants"] = not_run_record("TRACE_OUTPUT_UNAVAILABLE")
+            elif traced:
+                state["semantic_invariants"] = not_run_record("BASELINE_NOT_QUALIFIED")
+            trace_root = lease.private / "invariants"
             before = inventory_hash(inventory(lease.path))
-            baseline = run_tests(lease, task.fallback_scope, executor, policy.command_timeout)
+            baseline = run_tests(lease, task.fallback_scope,
+                                 InvariantExecutor(executor, trace_root / "baseline") if traced else executor,
+                                 policy.command_timeout)
             guard()
             state["baseline"] = _test_summary(baseline)
             if inventory_hash(inventory(lease.path)) != before:
@@ -201,7 +224,11 @@ class DiffTestsProvider:
                 return
             state.update(changed_paths=applied.changed_files, candidate_inventory_hash=lease.applied_inventory_hash,
                          executed=True)
-            candidate = run_tests(lease, task.fallback_scope, executor, policy.command_timeout)
+            if traced:
+                state["semantic_invariants"] = not_run_record("PATCH_NOT_APPLIED")
+            candidate = run_tests(lease, task.fallback_scope,
+                                  InvariantExecutor(executor, trace_root / "candidate") if traced else executor,
+                                  policy.command_timeout)
             guard()
             state["candidate"] = _test_summary(candidate)
             after = inventory(lease.path)
@@ -210,6 +237,13 @@ class DiffTestsProvider:
             state["changed_source_hashes"] = {path: after[path] for path in applied.changed_files}
             lease.assert_original()
             status, reasons = assess_transition({"required_ids": required, "tests": baseline}, candidate)
+            if traced:
+                try:
+                    state["semantic_invariants"] = compute_semantic_invariants(
+                        trace_root / "baseline", trace_root / "candidate", baseline["outcomes"], self._invariants, end)
+                except Exception as error:  # noqa: BLE001 - invariant analysis never changes the test verdict
+                    state["semantic_invariants"] = not_run_record(
+                        f"INVARIANT_ANALYSIS_ERROR:{type(error).__name__}", status="ERROR")
             state.update(status=status, coverage="COMPLETE" if status in {"PASS", "FAIL"} else "PARTIAL",
                          reasons=tuple(dict.fromkeys(reasons)))
 
@@ -219,6 +253,8 @@ class DiffTestsProvider:
                   "snapshot_id": self._snapshot_id,
                   "diff_hash": request.diff_hash, "scope": self._task.fallback_scope, "receipt": receipt.model_dump(),
                   "runtime": self._policy.runtime, "coverage_count": "NOT_MEASURED", **state}
+        if "semantic_invariants" in record:
+            record["semantic_invariants"] = fit_record(record["semantic_invariants"], context.limits.read_bytes // 4)
         if self._contract_payload is not None:
             record["semantic_contract"] = {"definition": self._contract_payload, "sha256": digest(self._contract_payload)}
         raw = encode_json(record)

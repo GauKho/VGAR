@@ -246,3 +246,14 @@ def test_verify_test_rank_over_stdio(tmp_path_factory, mode):
         }, indent=2) + "\n", encoding="utf-8")
 
     anyio.run(run)
+
+
+@pytest.mark.parametrize(("contract", "invariants", "expected"), [
+    (None, None, None), ("PASS", None, "PASS"), ("FAIL", None, "FAIL"), (None, "PASS", "PASS"),
+    (None, "FAIL", "FAIL"), ("PASS", "PASS", "PASS"), ("PASS", "FAIL", "FAIL"), ("FAIL", "PASS", "FAIL"),
+    (None, "NOT_RUN", None), ("PASS", "NOT_RUN", "PASS"), (None, "ERROR", None),
+])
+def test_ranking_reads_semantic_invariants(contract, invariants, expected):
+    from vgar.mcp.proposal.ranking_provider import combine_semantic
+
+    assert combine_semantic(contract, invariants) == expected
