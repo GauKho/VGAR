@@ -110,14 +110,14 @@ NODE_PROPERTIES: dict[str, dict[str, str]] = {
     "DeploymentUnit": {},
     "ExternalSystem": {"import_name": "string"},
     "BugReport": {},
-    "Requirement": {},
-    "UserStory": {},
+    "Requirement": {"text": "string"},
+    "UserStory": {"text": "string"},
     "AcceptanceCriterion": {},
     "FailingTest": {"selector": "string", "test_node_ids": "array"},
     "ErrorMessage": {"exception_type": "string"},
     "StackTraceFrame": {"file": "string", "line": "integer", "function": "string|null"},
-    "Constraint": {},
-    "Actor": {},
+    "Constraint": {"text": "string"},
+    "Actor": {"name": "string"},
     "Statement": {},
 }
 
@@ -125,6 +125,7 @@ NODE_PROPERTIES: dict[str, dict[str, str]] = {
 EDGE_PROPERTIES: dict[tuple[str, str, str], dict[str, str]] = {
     ("DEPENDS_ON", "Component", "Component"): {"weight": "positive_integer"},
     ("TRACES_TO", "Issue", "Component"): {"anchor_count": "positive_integer"},
+    ("TRACES_TO", "Requirement", "Component"): {"anchor_count": "positive_integer"},
 }
 
 # Gamma (proposal lines 866, 878): every invariant is a type, property, endpoint or cycle check over one pass.
@@ -282,6 +283,11 @@ EDGE_ENDPOINTS: dict[str, set[tuple[str, str]]] = {
             "AcceptanceCriterion",
             "BugReport",
             "Route",
+            # Team rules of 16/11 (GT-1; spec 2026-11-17-tv2-gt-1-requirements-design).
+            "Requirement",
+            "Constraint",
+            "UserStory",
+            "Actor",
         }
     },
     # FailingTest -> BugReport is proposed, pending team review (plan GT-1; proposal line 322).
@@ -342,11 +348,11 @@ LAYERS: dict[str, str] = {
 # DEPENDS_ON joins Components (proposal line 264) and Requirements (line 320).
 _EXTRA_LAYERS = {"DEPENDS_ON": ["G_arch", "G_task"]}
 _PRODUCERS = {
-    **{name: "overlay" for name in ("Issue", "BugReport", "AcceptanceCriterion", "FailingTest", "ErrorMessage", "StackTraceFrame")},
+    **{name: "overlay" for name in ("Issue", "BugReport", "AcceptanceCriterion", "FailingTest", "ErrorMessage", "StackTraceFrame",
+                                             "Requirement", "UserStory", "Constraint", "Actor")},
     **{name: "builder (tree-sitter-graph)" for name in ("Field", "GlobalVariable", "ConfigEntry", "Route", "Schema")},
     "Identifier": "builder (tree-sitter-graph or joern)",
     "Statement": "builder (joern)",
-    **{name: None for name in ("Requirement", "UserStory", "Constraint", "Actor")},
 }
 _COMMON_FIELDS = {
     "node": ["id", "type", "repo_key", "name", "qualified_name", "graph_version", "properties"],

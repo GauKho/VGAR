@@ -47,7 +47,7 @@ class TaskOverlayBuilder:
         overlay_id = _digest({
             "graph_version": grounding.graph_version, "task_id": task_id,
             "issue_text": issue_text, "failing_tests": reports, "labels": facts.labels,
-            "profile": "task-overlay-v11-trace-links",
+            "profile": "task-overlay-v12-requirements",
         })
         issue_id = f"vgar:{self._document['repo_key']}:issue:{task_hash}"
         if issue_id in self._nodes:
@@ -147,6 +147,24 @@ class TaskOverlayBuilder:
                                     {"input_reported_failure": True, "execution_verified": False}))
         for route_id, confidence in sorted(self._mentioned_routes(issue["properties"]["issue_text"]).items()):
             mention(route_id, confidence)
+        # Requirement family (spec 2026-11-17-tv2-gt-1-requirements-design §2-§3).
+        requirement_ids = []
+        for ordinal, requirement in enumerate(facts.requirements):
+            requirement_ids.append(add("requirement", "Requirement", ordinal, requirement.text[:80],
+                                       {"text": requirement.text, "source": requirement.source}))
+            mention(requirement_ids[-1], 0.6)
+        for source, target, kind in facts.requirement_links:
+            edges.append(self._edge(kind, requirement_ids[source], requirement_ids[target], 0.5, [], overlay_id, {},
+                                    f"task.{kind.lower()}.requirement.v1"))
+        for ordinal, constraint in enumerate(facts.constraints):
+            mention(add("constraint", "Constraint", ordinal, constraint.text[:80],
+                        {"text": constraint.text, "kind": constraint.kind}), 0.6)
+        actors: dict[str, int] = {}
+        for ordinal, story in enumerate(facts.stories):
+            mention(add("user_story", "UserStory", ordinal, story.text[:80], {"text": story.text, "actor": story.actor}), 0.7)
+            actors.setdefault(story.actor, len(actors))
+        for actor, ordinal in actors.items():
+            mention(add("actor", "Actor", ordinal, actor, {"name": actor}), 0.5)
         return nodes
 
     def _mentioned_routes(self, issue_text: str) -> dict[str, float]:

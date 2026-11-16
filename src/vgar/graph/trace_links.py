@@ -3,8 +3,9 @@ from __future__ import annotations
 
 import builtins
 import logging
+import re
 from collections import defaultdict
-from collections.abc import Collection, Iterable
+from collections.abc import Callable, Collection, Iterable
 from dataclasses import dataclass
 from typing import Any
 
@@ -67,6 +68,11 @@ def build_trace_links(
             )
         elif node["type"] == "ErrorMessage":
             links.extend(_error_links(node, classes))
+        elif node["type"] == "Requirement":
+            text = node["properties"]["text"]
+            links.extend(_component_links(
+                node["id"], grounding, nodes, "task.traces_to.requirement.v1",
+                lambda item, text=text: re.search(rf"(?<!\w){re.escape(item.matched_text)}(?!\w)", text) is not None))
     logger.debug("built %d trace links for %s", len(links), issue_id)
     return links
 
@@ -90,16 +96,21 @@ def _component_depth(component_id: str) -> int:
     return len(component_id.rsplit(":component:", 1)[-1].split("/"))
 
 
-def _component_links(issue_id: str, grounding: AnchorResult, nodes: list[dict[str, Any]]) -> list[TraceLink]:
-    """Issue -> Component for every Component holding an anchor that is not purely ambiguous."""
+def _component_links(source_id: str, grounding: AnchorResult, nodes: list[dict[str, Any]],
+                     rule_id: str = "task.traces_to.v1", keep: Callable[[Any], bool] = lambda item: True) -> list[TraceLink]:
+    """Source -> Component for every Component holding an anchor that is not purely ambiguous.
+
+    ``keep`` selects the anchor evidence that counts; a Requirement keeps only text found in its sentence.
+    """
     owners = {path: node["id"] for node in nodes if node["type"] == "Component" for path in node["properties"]["files"]}
     ambiguous = {(match.matched_text, node_id) for match in grounding.ambiguous_matches for node_id in match.candidate_ids}
     anchors: dict[str, list[Any]] = defaultdict(list)
     for anchor in grounding.anchors:
-        if anchor.path in owners and not all((item.matched_text, anchor.node_id) in ambiguous for item in anchor.evidence):
+        evidence = [item for item in anchor.evidence if keep(item)]
+        if anchor.path in owners and evidence and not all((item.matched_text, anchor.node_id) in ambiguous for item in evidence):
             anchors[owners[anchor.path]].append(anchor)
     return [
-        TraceLink("TRACES_TO", issue_id, component_id, max(member.score for member in members), "task.traces_to.v1",
+        TraceLink("TRACES_TO", source_id, component_id, max(member.score for member in members), rule_id,
                   [{"kind": "anchor", "node_id": node_id} for node_id in sorted(member.node_id for member in members)[:_MAX_TRACE_EVIDENCE]],
                   {"anchor_count": len(members)})
         for component_id, members in anchors.items()

@@ -300,7 +300,7 @@ def test_gamma_runs_for_trusted_ids() -> None:
 
 
 LAYER_NAMES = {"G_repo", "G_code", "G_arch", "G_task"}
-NO_PRODUCER = {"Requirement", "UserStory", "Constraint", "Actor"}
+NO_PRODUCER: set[str] = set()
 
 
 def _hash(description: dict[str, Any]) -> str:

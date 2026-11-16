@@ -302,3 +302,98 @@ def test_bare_slash_needs_a_method_to_mention_a_route() -> None:
     builder._document["nodes"].append({"id": "root", "type": "Route", "properties": {"route_path": "/", "methods": ["GET"]}})
     assert builder._mentioned_routes("use a / b and / or c") == {}
     assert builder._mentioned_routes("GET / fails") == {"root": 0.8}
+
+
+# GT-1 remainder: Requirement, Constraint, UserStory, Actor (spec docs/superpowers/specs/2026-11-17-tv2-gt-1-requirements-design.md).
+def _texts(items: tuple[Any, ...]) -> list[str]:
+    return [item.text for item in items]
+
+
+def test_modal_sentences_are_requirements() -> None:
+    facts = extract_task_facts("Calling login is broken. It should return the user. The cache must be cleared.\n")
+    assert [(item.text, item.source) for item in facts.requirements] == [
+        ("It should return the user.", "modal"), ("The cache must be cleared.", "modal")]
+
+
+@pytest.mark.parametrize("heading", ["### Expected behavior", "**Expected Result**", "Expected output:", "## Expected behaviour"])
+def test_expected_section_is_requirement(heading: str) -> None:
+    facts = extract_task_facts(f"Bug.\n\n{heading}\nThe value is 3.\n\n### Actual behavior\nThe value is 4.\n")
+    assert [(item.text, item.source) for item in facts.requirements] == [("The value is 3.", "expected_section")]
+
+
+def test_template_comments_and_bare_expected_heading() -> None:
+    text = ("### Expected behavior\n<!-- What did you expect to happen.\nShould be short. -->\nThe value is 3.\n\n"
+            "Expected:\nempty list\n")
+    assert [(item.text, item.source) for item in extract_task_facts(text).requirements] == [
+        ("The value is 3.", "expected_section"), ("empty list", "expected_section")]
+
+
+def test_constraints_version_and_prohibition() -> None:
+    facts = extract_task_facts("Seen on Python 3.8 with numpy>=1.20. The fix must not change the API. It should work.\n")
+    assert [(item.text, item.kind) for item in facts.constraints] == [
+        ("Seen on Python 3.8 with numpy>=1.20.", "version"), ("The fix must not change the API.", "prohibition")]
+    assert _texts(facts.requirements) == ["It should work."]  # one node type per sentence
+
+
+def test_user_story_and_actor() -> None:
+    facts = extract_task_facts("As a data scientist, I want to plot dates so that reports are readable.\n"
+                               "As a Data Scientist, I would like faster joins.\n")
+    assert [(item.text, item.actor) for item in facts.stories] == [
+        ("As a data scientist, I want to plot dates so that reports are readable.", "data scientist"),
+        ("As a Data Scientist, I would like faster joins.", "data scientist")]
+
+
+def test_code_and_long_sentences_are_skipped() -> None:
+    text = ("```python\nassert x should be 1  # must\n```\n    y = 2  # should\n"
+            + "It should " + "really " * 60 + "work.\nIt should work.\nIt should work.\n")
+    assert _texts(extract_task_facts(text).requirements) == ["It should work."]
+
+
+def test_requirement_links_are_explicit_only() -> None:
+    facts = extract_task_facts("The parser should accept tabs. This requires the lexer to keep whitespace.\n"
+                               "Output should be sorted. Grouping should conflict with sorting.\n"
+                               "It should return X instead of Y.\n")
+    texts = _texts(facts.requirements)
+    links = {(texts[source], texts[target], kind) for source, target, kind in facts.requirement_links}
+    assert links == {("This requires the lexer to keep whitespace.", "The parser should accept tabs.", "DEPENDS_ON")}
+    facts = extract_task_facts("Output should be sorted. This should conflicts with grouping.\n")
+    texts = _texts(facts.requirements)
+    assert [(texts[s], texts[t], k) for s, t, k in facts.requirement_links] == [
+        ("This should conflicts with grouping.", "Output should be sorted.", "CONFLICTS_WITH")]
+
+
+def test_bug_report_without_requirements_has_none() -> None:
+    facts = extract_task_facts(ISSUE)
+    assert facts.requirements == facts.constraints == facts.stories == () and facts.requirement_links == ()
+
+
+REQ_ISSUE = ("Login is wrong.\n\n### Expected behavior\nlogin should call normalize first.\n\n"
+             "Seen on Python 3.9. As a shop owner, I want logins to be fast.\n"
+             "Users should see an error. This requires a message.\n")
+
+
+def test_overlay_requirement_nodes_and_mentions() -> None:
+    overlay = _overlay("multi_package", REQ_ISSUE)
+    names = {node["type"]: [] for node in overlay.nodes}
+    for node in overlay.nodes:
+        names[node["type"]].append(node["properties"].get("text") or node["properties"].get("name"))
+    assert names["Requirement"] == ["login should call normalize first.", "Users should see an error.", "This requires a message."]
+    assert names["Constraint"] == ["Seen on Python 3.9."]
+    assert names["UserStory"] == ["As a shop owner, I want logins to be fast."]
+    assert names["Actor"] == ["shop owner"]
+    mentions = {_type(overlay, edge["target_id"]): edge["confidence"] for edge in overlay.edges
+                if edge["type"] == "MENTIONS" and _type(overlay, edge["target_id"]) in {"Requirement", "Constraint", "UserStory", "Actor"}}
+    assert mentions == {"Requirement": 0.6, "Constraint": 0.6, "UserStory": 0.7, "Actor": 0.5}
+
+
+def test_overlay_requirement_traces_and_depends_on() -> None:
+    overlay = _overlay("multi_package", REQ_ISSUE)
+    by_id = {node["id"]: node for node in overlay.nodes}
+    traces = [edge for edge in overlay.edges if edge["type"] == "TRACES_TO" and by_id.get(edge["source_id"], {}).get("type") == "Requirement"]
+    assert [(by_id[e["source_id"]]["properties"]["text"], e["target_id"]) for e in traces] == [
+        ("login should call normalize first.", "vgar:t/arch:python:component:app")]
+    assert traces[0]["properties"]["anchor_count"] >= 1
+    assert traces[0]["provenance"]["rule_id"] == "task.traces_to.requirement.v1"
+    depends = [(by_id[e["source_id"]]["properties"]["text"], by_id[e["target_id"]]["properties"]["text"], e["confidence"])
+               for e in overlay.edges if e["type"] == "DEPENDS_ON"]
+    assert depends == [("This requires a message.", "Users should see an error.", 0.5)]
