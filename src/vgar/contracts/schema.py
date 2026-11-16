@@ -65,7 +65,7 @@ G_ARCH_EDGE_TYPES = frozenset({
 G_CODE_EDGE_TYPES = frozenset({"AST_CHILD", "CFG_NEXT", "DATA_DEPENDS_ON", "CONTROL_DEPENDS_ON"})
 
 # One schema S (proposal §8.4); a built document records this profile name in statistics.schema_profile.
-SCHEMA_VERSION = "vgar-schema-full-v5"
+SCHEMA_VERSION = "vgar-schema-full-v6"
 PROFILE_FULL_VGAR_MCP = "full_vgar_mcp"
 
 SOURCE_BACKED_NODE_TYPES = {
@@ -105,10 +105,10 @@ NODE_PROPERTIES: dict[str, dict[str, str]] = {
     "Schema": {},
     "Component": {"files": "array"},
     "Port": {"export": "string", "owner_component_id": "string", "symbol_id": "string"},
-    "Connector": {},
+    "Connector": {"kind": "string", "owner_component_id": "string"},
     "Service": {},
     "DeploymentUnit": {},
-    "ExternalSystem": {},
+    "ExternalSystem": {"import_name": "string"},
     "BugReport": {},
     "Requirement": {},
     "UserStory": {},
@@ -287,10 +287,11 @@ EDGE_ENDPOINTS: dict[str, set[tuple[str, str]]] = {
     # FailingTest -> BugReport is proposed, pending team review (plan GT-1; proposal line 322).
     "REPRODUCES": {("Test", "Issue"), ("FailingTest", "BugReport")},
     # Proposed, pending team review (plan GA-2, GT-1; proposal lines 264, 320).
-    "DEPENDS_ON": {("Component", "Component"), ("Requirement", "Requirement")},
+    # Component -> ExternalSystem and the Connector pairs: team rules of 16/11 (GA-2; spec 2026-11-17-tv2-ga-2-connector-external).
+    "DEPENDS_ON": {("Component", "Component"), ("Requirement", "Requirement"), ("Component", "ExternalSystem")},
     "EXPOSES_PORT": {("Component", "Port")},
     "CONSUMES_PORT": {("Component", "Port")},
-    "COMMUNICATES_WITH": {("Service", "Service")},
+    "COMMUNICATES_WITH": {("Service", "Service"), ("Component", "Connector"), ("Connector", "ExternalSystem")},
     "CONTAINS_COMPONENT": {("Module", "Component")},
     "DEPLOYS_TO": {("Component", "DeploymentUnit")},
     # Proposed, pending team review (plan L1-3; proposal line 236).
@@ -345,7 +346,7 @@ _PRODUCERS = {
     **{name: "builder (tree-sitter-graph)" for name in ("Field", "GlobalVariable", "ConfigEntry", "Route", "Schema")},
     "Identifier": "builder (tree-sitter-graph or joern)",
     "Statement": "builder (joern)",
-    **{name: None for name in ("Requirement", "UserStory", "Constraint", "Actor", "Connector", "ExternalSystem")},
+    **{name: None for name in ("Requirement", "UserStory", "Constraint", "Actor")},
 }
 _COMMON_FIELDS = {
     "node": ["id", "type", "repo_key", "name", "qualified_name", "graph_version", "properties"],

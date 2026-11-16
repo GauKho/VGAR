@@ -291,7 +291,7 @@ class SQLiteGraphService:
         for edge in document["edges"]:
             if edge["type"] == "EXPOSES_PORT" and edge["source_id"] == own:
                 ports.append(by_id[edge["target_id"]]["qualified_name"])
-            elif edge["type"] == "DEPENDS_ON" and edge["source_id"] == own:
+            elif edge["type"] == "DEPENDS_ON" and edge["source_id"] == own and by_id[edge["target_id"]]["type"] == "Component":
                 dependencies.add(by_id[edge["target_id"]]["name"])
             elif edge["type"] == "DEPENDS_ON" and edge["target_id"] == own:
                 dependents.add(by_id[edge["source_id"]]["name"])

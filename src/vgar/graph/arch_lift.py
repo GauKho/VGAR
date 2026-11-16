@@ -9,6 +9,7 @@ import ast
 import json
 import os
 import re
+import sys
 from collections import Counter, defaultdict
 from collections.abc import Callable, Collection, Mapping, Sequence
 from dataclasses import dataclass, field
@@ -18,12 +19,27 @@ from typing import Any
 
 import yaml
 
-RULE_VERSION = "arch-lift-v1"
+from vgar.graph import layer1_rules
+
+RULE_VERSION = "arch-lift-v2"
 SOURCE_TOOL = "vgar-arch-lift"
 
 _ENTITY_TYPES = {"Class", "Function", "Method"}
 _EPSILON = 1e-9
 _MAX_EVIDENCE = 5
+# Communication libraries -> Connector kind (team rules of 16/11, GA-2 spec §1).
+_CONNECTOR_KINDS = MappingProxyType({
+    **dict.fromkeys(("requests", "httpx", "aiohttp", "urllib", "urllib3", "http"), "http"),
+    **dict.fromkeys(("sqlite3", "sqlalchemy", "psycopg", "psycopg2", "pymysql", "pymongo"), "database"),
+    **dict.fromkeys(("redis", "pika", "kafka", "aiokafka"), "queue_cache"),
+    "subprocess": "process",
+})
+# Not third-party: Python 2 standard modules (behind ``try/except ImportError``) and the type-checking-only ``_typeshed``.
+_NOT_EXTERNAL = frozenset({
+    "StringIO", "cStringIO", "cPickle", "Queue", "httplib", "urllib2", "urlparse", "Cookie", "cookielib", "__builtin__",
+    "_abcoll", "thread", "dummy_thread", "_dummy_thread", "dummy_threading", "ConfigParser", "HTMLParser", "SocketServer",
+    "Tkinter", "commands", "exceptions", "copy_reg", "_typeshed",
+})
 
 
 @dataclass(frozen=True)
@@ -265,6 +281,66 @@ def _lift_compose(repo_key: str, item: DeploymentFile, result: LiftResult, error
                                              "communicates_with", {}))
 
 
+def _external_system_id(repo_key: str, name: str) -> str:
+    return f"vgar:{repo_key}:python:external_system:{name}"
+
+
+def _lift_external(repo_key: str, nodes: Sequence[dict[str, Any]], edges: Sequence[dict[str, Any]],
+                   by_id: Mapping[str, dict[str, Any]], by_file: Mapping[str, _Component], result: LiftResult) -> tuple[int, int]:
+    """ExternalSystem, Connector and their edges (GA-2 spec §1); returns the two node counts."""
+    # Every name of an in-repo module or package, at any depth: a nested package (``project/shop``) is imported as ``shop``.
+    internal_roots = {part for node in nodes if node["type"] == "Module" and not node["properties"].get("is_external")
+                      for part in node["qualified_name"].split(".")}
+    imports: dict[tuple[str, str], list[str]] = defaultdict(list)
+    for edge in edges:
+        target = by_id[edge["target_id"]] if edge["type"] == "IMPORTS" else None
+        if target is None or not target["properties"].get("is_external"):
+            continue
+        component = by_file.get(by_id[edge["source_id"]].get("path"))
+        root = target["qualified_name"].split(".", 1)[0]
+        if component is None or not root.isidentifier() or root in sys.stdlib_module_names or root in _NOT_EXTERNAL \
+                or root in internal_roots:
+            continue
+        imports[component.id, root].append(edge["id"])
+    systems = sorted({root for _, root in imports})
+    for root in systems:
+        result.nodes.append({"id": _external_system_id(repo_key, root), "type": "ExternalSystem", "repo_key": repo_key,
+                             "name": root, "qualified_name": root, "path": None, "language": "python", "range": None,
+                             "properties": {"import_name": root}})
+    for (component_id, root), ids in sorted(imports.items()):
+        result.edges.append(EdgeSpec("DEPENDS_ON", component_id, _external_system_id(repo_key, root), 0.9, "heuristic",
+                                     "depends_on_external", {"import_count": len(ids)}, tuple(sorted(ids)[:_MAX_EVIDENCE])))
+
+    tables: dict[str, dict[str, str]] = defaultdict(dict)
+    for node in nodes:
+        if node["type"] == "Import" and node.get("path"):
+            tables[node["path"]].update(layer1_rules.import_table([node["properties"]]))
+    calls: dict[tuple[str, str], Counter[str]] = defaultdict(Counter)
+    component_ids: dict[str, str] = {}
+    for node in nodes:
+        component = by_file.get(node.get("path")) if node["type"] == "CallSite" else None
+        if component is None:
+            continue
+        origin = layer1_rules.resolve(node["properties"]["callee_text"], tables.get(node["path"], {}))
+        library = origin.split(".", 1)[0] if origin else None
+        if library in _CONNECTOR_KINDS:
+            calls[component.key, _CONNECTOR_KINDS[library]][library] += 1
+            component_ids[component.key] = component.id
+    for (key, kind), libraries in sorted(calls.items()):
+        connector_id = f"vgar:{repo_key}:python:connector:{key}:{kind}"
+        count = sum(libraries.values())
+        result.nodes.append({"id": connector_id, "type": "Connector", "repo_key": repo_key, "name": kind,
+                             "qualified_name": f"{key}:{kind}", "path": None, "language": "python", "range": None,
+                             "properties": {"kind": kind, "owner_component_id": component_ids[key],
+                                            "libraries": sorted(libraries), "call_count": count}})
+        result.edges.append(EdgeSpec("COMMUNICATES_WITH", component_ids[key], connector_id, 0.8, "heuristic",
+                                     "communicates_via_connector", {"call_count": count}))
+        for library in sorted(set(libraries) & set(systems)):
+            result.edges.append(EdgeSpec("COMMUNICATES_WITH", connector_id, _external_system_id(repo_key, library), 0.8,
+                                         "heuristic", "connector_to_external", {"call_count": libraries[library]}))
+    return len(systems), len(calls)
+
+
 def lift(repo_key: str, nodes: Sequence[dict[str, Any]], edges: Sequence[dict[str, Any]], *,
          is_test: Callable[[str], bool], exports: Mapping[str, frozenset[str]] = MappingProxyType({}),
          deployment: Sequence[DeploymentFile] = ()) -> LiftResult:
@@ -350,6 +426,8 @@ def lift(repo_key: str, nodes: Sequence[dict[str, Any]], edges: Sequence[dict[st
     for (config_id, component_id), count in sorted(readers.items()):
         result.edges.append(EdgeSpec("CONFIGURES", config_id, component_id, 0.8, "heuristic", "configures", {"reader_count": count}))
 
+    systems, connector_count = _lift_external(repo_key, nodes, edges, by_id, by_file, result)
+
     errors = [{"path": item.path, "reason": item.read_error} for item in deployment if item.read_error is not None]
     dockerfiles = [item for item in deployment if _is_dockerfile(PurePosixPath(item.path).name)]
     compose_files = [item for item in deployment if _is_compose(PurePosixPath(item.path).name)]
@@ -362,6 +440,7 @@ def lift(repo_key: str, nodes: Sequence[dict[str, Any]], edges: Sequence[dict[st
 
     sources = {node["path"] for node in nodes if node["type"] == "File" and not is_test(node["path"])}
     result.report = {"mode": mode, "component_count": len(components), "port_count": len(ports),
+                     "external_system_count": systems, "connector_count": connector_count,
                      "unassigned_source_files": len(sources - set(by_file)),
                      "signals": {
                          "package_path": _signal(components),

@@ -70,7 +70,7 @@ def test_schema_declares_resolves_to() -> None:
         ("StackTraceFrame", "Test"), ("FailingTest", "Test"), ("ErrorMessage", "Class"),
     }
     assert EDGE_ENDPOINTS["TRACES_TO"] == {("Issue", "Component"), ("Requirement", "Component")}
-    assert SCHEMA_VERSION == "vgar-schema-full-v5"
+    assert SCHEMA_VERSION == "vgar-schema-full-v6"
 
 
 def _repo_document(tmp_path: Path) -> dict[str, Any]:

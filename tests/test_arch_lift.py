@@ -64,7 +64,9 @@ def test_schema_declares_g_arch() -> None:
     assert not {"Port", "Component"} & SOURCE_BACKED_NODE_TYPES  # source-backed nodes need a CONTAINS owner; these have none
     assert ("Component", "Component") in EDGE_ENDPOINTS["DEPENDS_ON"]
     assert EDGE_ENDPOINTS["EXPOSES_PORT"] == EDGE_ENDPOINTS["CONSUMES_PORT"] == {("Component", "Port")}
-    assert EDGE_ENDPOINTS["COMMUNICATES_WITH"] == {("Service", "Service")}
+    assert EDGE_ENDPOINTS["COMMUNICATES_WITH"] == {("Service", "Service"), ("Component", "Connector"),
+                                                   ("Connector", "ExternalSystem")}
+    assert ("Component", "ExternalSystem") in EDGE_ENDPOINTS["DEPENDS_ON"]
     assert EDGE_ENDPOINTS["CONTAINS_COMPONENT"] == {("Module", "Component")}
     assert EDGE_ENDPOINTS["DEPLOYS_TO"] == {("Component", "DeploymentUnit")}
     assert EDGE_ENDPOINTS["CONFIGURES"] == {("ConfigEntry", "Component"), ("ConfigEntry", "Service")}
@@ -476,3 +478,82 @@ def test_boundary_private_function_is_counted_but_not_a_port() -> None:
     document = _build(CASES / "boundary_cases")
     calls = _depends(document)[("api", "services")]["call_count"]
     assert calls == 6 and "services.pricing._secret" not in {node["qualified_name"] for node in _nodes(document, "Port")}
+
+
+# GA-2 remainder: Connector and ExternalSystem (spec docs/superpowers/specs/2026-11-17-tv2-ga-2-connector-external-design.md).
+_EXTERNAL_FILES = {
+    "shop/__init__.py": "",
+    "shop/api.py": ("import requests\nimport numpy as np\nimport os\nfrom subprocess import run\n\n"
+                    "def fetch(url):\n    return requests.get(url)\n\n"
+                    "def shell():\n    return run(['ls'])\n\n"
+                    "def arr():\n    return np.zeros(os.cpu_count())\n"),
+    "store/__init__.py": "",
+    "store/db.py": ("import sqlite3\nfrom shop import api\nfrom sqlalchemy.orm import Session\n"
+                    "try:\n    import cStringIO\nexcept ImportError:\n    import io\n"
+                    "from typing import TYPE_CHECKING\nif TYPE_CHECKING:\n    from _typeshed import StrPath\n\n"
+                    "def connect():\n    return sqlite3.connect(':memory:')\n\n"
+                    "def get():\n    return api.fetch('x')\n"),
+    "tests/test_x.py": "import pytest\nimport requests\n\ndef test_a():\n    requests.get('x')\n",
+}
+
+
+def test_external_systems_skip_stdlib_internal_and_tests(tmp_path: Path) -> None:
+    document = _build(_write(tmp_path, _EXTERNAL_FILES))
+    systems = {node["name"]: node for node in _nodes(document, "ExternalSystem")}
+    assert set(systems) == {"numpy", "requests", "sqlalchemy"}
+    assert systems["numpy"]["id"] == "vgar:t/arch:python:external_system:numpy"
+    assert systems["numpy"]["properties"]["import_name"] == "numpy"
+    assert document["statistics"]["arch"]["external_system_count"] == 3
+
+
+def test_nested_package_is_not_an_external_system(tmp_path: Path) -> None:
+    files = {f"project/{path}": text for path, text in _EXTERNAL_FILES.items() if not path.startswith("tests/")}
+    systems = {node["name"] for node in _nodes(_build(_write(tmp_path, files)), "ExternalSystem")}
+    assert systems == {"numpy", "requests", "sqlalchemy"}  # "shop" is imported unresolved but lives in the repo
+
+
+def test_depends_on_external_system(tmp_path: Path) -> None:
+    document = _build(_write(tmp_path, _EXTERNAL_FILES))
+    edges = {(x["source"]["name"], x["target"]["name"]): x["edge"] for x in _typed(document, "DEPENDS_ON")
+             if x["target"]["type"] == "ExternalSystem"}
+    assert set(edges) == {("shop", "numpy"), ("shop", "requests"), ("store", "sqlalchemy")}
+    edge = edges[("shop", "requests")]
+    assert edge["properties"] == {"import_count": 1}
+    assert (edge["confidence"], edge["resolution"]) == (0.9, "heuristic")
+    assert edge["provenance"]["rule_id"] == "python.arch.depends_on_external.v1"
+    assert len(edge["provenance"]["evidence"]) == 1
+    assert _depends(document)[("store", "shop")]["weight"] >= 1  # Component -> Component unchanged
+
+
+def test_connectors_by_component_and_kind(tmp_path: Path) -> None:
+    document = _build(_write(tmp_path, _EXTERNAL_FILES))
+    connectors = {node["qualified_name"]: node["properties"] for node in _nodes(document, "Connector")}
+    assert connectors == {
+        "shop:http": {"kind": "http", "owner_component_id": "vgar:t/arch:python:component:shop",
+                      "libraries": ["requests"], "call_count": 1},
+        "shop:process": {"kind": "process", "owner_component_id": "vgar:t/arch:python:component:shop",
+                         "libraries": ["subprocess"], "call_count": 1},
+        "store:database": {"kind": "database", "owner_component_id": "vgar:t/arch:python:component:store",
+                           "libraries": ["sqlite3"], "call_count": 1},
+    }
+    assert document["statistics"]["arch"]["connector_count"] == 3
+
+
+def test_communicates_with_connector_and_external_system(tmp_path: Path) -> None:
+    document = _build(_write(tmp_path, _EXTERNAL_FILES))
+    pairs = {(x["source"]["type"], x["source"]["qualified_name"], x["target"]["type"], x["target"]["qualified_name"],
+              x["edge"]["confidence"]) for x in _typed(document, "COMMUNICATES_WITH")}
+    assert pairs == {
+        ("Component", "shop", "Connector", "shop:http", 0.8),
+        ("Component", "shop", "Connector", "shop:process", 0.8),
+        ("Component", "store", "Connector", "store:database", 0.8),
+        ("Connector", "shop:http", "ExternalSystem", "requests", 0.8),  # stdlib subprocess/sqlite3 have no ExternalSystem
+    }
+
+
+def test_component_resource_lists_only_components(tmp_path: Path) -> None:
+    from graph_fixture import fixture_service
+    service = fixture_service(tmp_path / "graph", repo=_write(tmp_path / "repo", _EXTERNAL_FILES))
+    shop = service.get_component("shop")
+    assert shop["dependencies"] == [] and shop["dependents"] == ["store"]
+    assert service.get_component("store")["dependencies"] == ["shop"]
