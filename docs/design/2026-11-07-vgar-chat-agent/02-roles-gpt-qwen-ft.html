@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chia vai GPT và Qwen-FT</title>
+<style>body{margin:0;padding:24px 16px;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:#ffffff;color:#1f2328;line-height:1.5}
+main{max-width:1280px;margin:0 auto}
+h2{margin:0 0 6px}.subtitle{color:#57606a;margin:0 0 14px}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:900px){.split{grid-template-columns:1fr}}
+.mockup{border:1px solid #d0d7de;border-radius:10px;overflow:hidden;background:#fff}
+.mockup-header{background:#f6f8fa;border-bottom:1px solid #d0d7de;padding:8px 12px;font-weight:600;font-size:14px}
+.mockup-body{padding:10px}
+.section{margin-top:18px}</style>
+<script>function toggleSelect(){}</script>
+</head>
+<body>
+<main>
+<style>
+  .flow{font-family:Consolas,monospace;font-size:12.5px;line-height:1.55;background:#0f1117;color:#d7dae0;border-radius:8px;padding:14px 16px;white-space:pre}
+  .g{color:#9ecbff;font-weight:bold}.q{color:#ffd866;font-weight:bold}.h{color:#7ee787;font-weight:bold}.m{color:#c9a0ff}
+  .bad{color:#f85149}.ok{color:#3fb950}.dim{color:#8b949e}
+</style>
+
+<h2>Chia vai giữa GPT và Qwen fine-tune</h2>
+<p class="subtitle">Bên trái là ý bạn vừa nêu, bên phải là cách tôi đề xuất. Màu: <span style="color:#3a7bd5">GPT</span>, <span style="color:#b8860b">Qwen-FT</span>, <span style="color:#2e8b57">host (code tất định)</span>, <span style="color:#8a5cc2">MCP server</span>.</p>
+
+<div class="split">
+<div class="mockup" data-choice="b" onclick="toggleSelect(this)">
+<div class="mockup-header">B. Qwen-FT viết hướng dẫn → GPT điều phối</div>
+<div class="mockup-body"><div class="flow">người dùng: "lỗi giảm giá ở đâu? hãy sửa"
+      │
+      ▼
+<span class="q">[Qwen-FT]</span> viết prompt hướng dẫn:
+   "hãy gọi find_task_anchors, rồi
+    get_related_context, rồi sửa is_eligible…"
+      │  <span class="bad">model yếu hướng dẫn model mạnh</span>
+      ▼
+<span class="g">[GPT]</span> đọc hướng dẫn, gọi tool
+      │
+      ▼
+<span class="m">[MCP]</span> graph / repository / repair
+      │
+      ▼
+<span class="g">[GPT]</span> hoặc <span class="q">[Qwen-FT]</span> sinh diff?  <span class="bad">← chưa rõ</span>
+      │
+      ▼
+<span class="h">[host + engine M2]</span> verify → PASS/FAIL
+
+<span class="dim">Cần fine-tune lại cho vai "viết hướng dẫn":
+không có dữ liệu gán nhãn, không có cách chấm tự động.</span></div></div>
+</div>
+
+<div class="mockup" data-choice="a" onclick="toggleSelect(this)">
+<div class="mockup-header">A. GPT điều phối → Qwen-FT sinh diff (đề xuất)</div>
+<div class="mockup-body"><div class="flow">người dùng: "lỗi giảm giá ở đâu? hãy sửa"
+      │
+      ▼
+<span class="g">[GPT]</span> lập kế hoạch, chọn tool, đọc kết quả
+      │
+      ▼
+<span class="m">[MCP]</span> find_task_anchors → get_related_context
+      │     → read_file → analyze_patch_impact
+      ▼
+<span class="g">[GPT]</span> gọi tool generate_patch (không tham số)
+      │
+      ▼
+<span class="h">[host]</span> dựng prompt V11 từ template + context
+      │     (tất định, có hash, như thí nghiệm)
+      ▼
+<span class="q">[Qwen-FT]</span> sinh diff V11   <span class="ok">← việc đã fine-tune</span>
+      │     GPT không thấy, không sửa diff
+      ▼
+<span class="h">[host + engine M2]</span> apply → test → verify
+      │
+      ▼
+<span class="g">[GPT]</span> giải thích evidence cho người dùng
+
+<span class="dim">Qwen-FT đo được riêng: format V11, tỉ lệ áp được,
+F1 file/hàm, so bản gốc trên cùng prompt.</span></div></div>
+</div>
+</div>
+
+</main>
+</body>
+</html>

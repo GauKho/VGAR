@@ -1,0 +1,1440 @@
+[
+ {
+  "bug": "B01",
+  "variant": "pure",
+  "gold": [
+   "shopflow/repositories/base.py::InMemoryRepository.paginate"
+  ],
+  "A": [
+   "shopflow/repositories/base.py::InMemoryRepository.paginate"
+  ],
+  "P": [
+   "shopflow/repositories/base.py::InMemoryRepository.paginate"
+  ],
+  "H": [
+   "shopflow/repositories/base.py::InMemoryRepository.paginate"
+  ],
+  "ast_ref": [],
+  "rm": []
+ },
+ {
+  "bug": "B01",
+  "variant": "format",
+  "gold": [
+   "shopflow/repositories/base.py::InMemoryRepository.paginate"
+  ],
+  "A": [
+   "shopflow/repositories/base.py::InMemoryRepository.paginate"
+  ],
+  "P": [
+   "shopflow/models/product.py::Product.to_dict",
+   "shopflow/repositories/base.py::InMemoryRepository.paginate"
+  ],
+  "H": [
+   "shopflow/repositories/base.py::InMemoryRepository.paginate"
+  ],
+  "ast_ref": [],
+  "rm": []
+ },
+ {
+  "bug": "B01",
+  "variant": "refactor",
+  "gold": [
+   "shopflow/repositories/base.py::InMemoryRepository.paginate"
+  ],
+  "A": [
+   "shopflow/repositories/base.py::InMemoryRepository.paginate"
+  ],
+  "P": [
+   "shopflow/repositories/base.py::InMemoryRepository.paginate"
+  ],
+  "H": [
+   "shopflow/repositories/base.py::InMemoryRepository.paginate"
+  ],
+  "ast_ref": [
+   "rename_method shopflow/utils/money.py::percent_of -> shopflow/utils/money.py::percentage_of"
+  ],
+  "rm": [
+   "Rename Method public percent_of(amount, rate) renamed to public percentage_of(amount, rate) in class utils.money.__module__"
+  ]
+ },
+ {
+  "bug": "B01",
+  "variant": "refactor+format",
+  "gold": [
+   "shopflow/repositories/base.py::InMemoryRepository.paginate"
+  ],
+  "A": [
+   "shopflow/repositories/base.py::InMemoryRepository.paginate"
+  ],
+  "P": [
+   "shopflow/repositories/base.py::InMemoryRepository.paginate"
+  ],
+  "H": [
+   "shopflow/repositories/base.py::InMemoryRepository.paginate"
+  ],
+  "ast_ref": [
+   "rename_method shopflow/utils/money.py::percent_of -> shopflow/utils/money.py::percentage_of"
+  ],
+  "rm": [
+   "Rename Method public percent_of(amount, rate) renamed to public percentage_of(amount, rate) in class utils.money.__module__"
+  ]
+ },
+ {
+  "bug": "B02",
+  "variant": "pure",
+  "gold": [
+   "shopflow/utils/money.py::to_money"
+  ],
+  "A": [
+   "shopflow/utils/money.py::to_money"
+  ],
+  "P": [
+   "shopflow/utils/money.py::to_money"
+  ],
+  "H": [
+   "shopflow/utils/money.py::to_money"
+  ],
+  "ast_ref": [],
+  "rm": []
+ },
+ {
+  "bug": "B02",
+  "variant": "format",
+  "gold": [
+   "shopflow/utils/money.py::to_money"
+  ],
+  "A": [
+   "shopflow/utils/money.py::to_money"
+  ],
+  "P": [
+   "shopflow/models/customer.py::Customer.to_dict",
+   "shopflow/utils/money.py::to_money"
+  ],
+  "H": [
+   "shopflow/utils/money.py::to_money"
+  ],
+  "ast_ref": [],
+  "rm": []
+ },
+ {
+  "bug": "B02",
+  "variant": "refactor",
+  "gold": [
+   "shopflow/utils/money.py::to_money"
+  ],
+  "A": [
+   "shopflow/utils/money.py::to_money"
+  ],
+  "P": [
+   "shopflow/utils/money.py::to_money"
+  ],
+  "H": [
+   "shopflow/utils/money.py::to_money"
+  ],
+  "ast_ref": [
+   "rename_method shopflow/services/shipping.py::estimate_delivery -> shopflow/services/shipping.py::estimate_delivery_date"
+  ],
+  "rm": [
+   "Rename Method public estimate_delivery(order_date, transit_business_days) renamed to public estimate_delivery_date(order_date, transit_business_days) in class services.shipping.__module__"
+  ]
+ },
+ {
+  "bug": "B02",
+  "variant": "refactor+format",
+  "gold": [
+   "shopflow/utils/money.py::to_money"
+  ],
+  "A": [
+   "shopflow/utils/money.py::to_money"
+  ],
+  "P": [
+   "shopflow/utils/money.py::to_money"
+  ],
+  "H": [
+   "shopflow/utils/money.py::to_money"
+  ],
+  "ast_ref": [
+   "rename_method shopflow/services/shipping.py::estimate_delivery -> shopflow/services/shipping.py::estimate_delivery_date"
+  ],
+  "rm": [
+   "Rename Method public estimate_delivery(order_date, transit_business_days) renamed to public estimate_delivery_date(order_date, transit_business_days) in class services.shipping.__module__"
+  ]
+ },
+ {
+  "bug": "B03",
+  "variant": "pure",
+  "gold": [
+   "shopflow/services/discount.py::coupon_rate"
+  ],
+  "A": [
+   "shopflow/services/discount.py::coupon_rate"
+  ],
+  "P": [
+   "shopflow/services/discount.py::coupon_rate"
+  ],
+  "H": [
+   "shopflow/services/discount.py::coupon_rate"
+  ],
+  "ast_ref": [],
+  "rm": []
+ },
+ {
+  "bug": "B03",
+  "variant": "format",
+  "gold": [
+   "shopflow/services/discount.py::coupon_rate"
+  ],
+  "A": [
+   "shopflow/services/discount.py::coupon_rate"
+  ],
+  "P": [
+   "shopflow/repositories/product_repo.py::ProductRepository.search",
+   "shopflow/services/discount.py::coupon_rate"
+  ],
+  "H": [
+   "shopflow/services/discount.py::coupon_rate"
+  ],
+  "ast_ref": [],
+  "rm": []
+ },
+ {
+  "bug": "B03",
+  "variant": "refactor",
+  "gold": [
+   "shopflow/services/discount.py::coupon_rate"
+  ],
+  "A": [
+   "shopflow/services/discount.py::coupon_rate",
+   "shopflow/services/pricing.py::_discount_for",
+   "shopflow/services/pricing.py::quote_order"
+  ],
+  "P": [
+   "shopflow/services/discount.py::coupon_rate"
+  ],
+  "H": [
+   "shopflow/services/discount.py::coupon_rate"
+  ],
+  "ast_ref": [],
+  "rm": [
+   "Extract Method protected _discount_for(subtotal, customer, coupon_code) extracted from public quote_order(order, customer, products, coupon_code) in class services.pricing.__module__"
+  ]
+ },
+ {
+  "bug": "B03",
+  "variant": "refactor+format",
+  "gold": [
+   "shopflow/services/discount.py::coupon_rate"
+  ],
+  "A": [
+   "shopflow/services/discount.py::coupon_rate",
+   "shopflow/services/pricing.py::_discount_for",
+   "shopflow/services/pricing.py::quote_order"
+  ],
+  "P": [
+   "shopflow/repositories/product_repo.py::ProductRepository.search",
+   "shopflow/services/discount.py::coupon_rate"
+  ],
+  "H": [
+   "shopflow/services/discount.py::coupon_rate"
+  ],
+  "ast_ref": [],
+  "rm": [
+   "Extract Method protected _discount_for(subtotal, customer, coupon_code) extracted from public quote_order(order, customer, products, coupon_code) in class services.pricing.__module__"
+  ]
+ },
+ {
+  "bug": "B04",
+  "variant": "pure",
+  "gold": [
+   "shopflow/models/order.py::<module>",
+   "shopflow/models/order.py::Order.__init__"
+  ],
+  "A": [
+   "shopflow/models/order.py::<module>",
+   "shopflow/models/order.py::Order.__init__"
+  ],
+  "P": [
+   "shopflow/models/order.py::<module>",
+   "shopflow/models/order.py::Order.__init__"
+  ],
+  "H": [
+   "shopflow/models/order.py::<module>",
+   "shopflow/models/order.py::Order.__init__"
+  ],
+  "ast_ref": [],
+  "rm": []
+ },
+ {
+  "bug": "B04",
+  "variant": "format",
+  "gold": [
+   "shopflow/models/order.py::<module>",
+   "shopflow/models/order.py::Order.__init__"
+  ],
+  "A": [
+   "shopflow/models/order.py::<module>",
+   "shopflow/models/order.py::Order.__init__"
+  ],
+  "P": [
+   "shopflow/models/order.py::<module>",
+   "shopflow/models/order.py::Order.__init__",
+   "shopflow/services/reporting.py::revenue_by_day"
+  ],
+  "H": [
+   "shopflow/models/order.py::<module>",
+   "shopflow/models/order.py::Order.__init__"
+  ],
+  "ast_ref": [],
+  "rm": []
+ },
+ {
+  "bug": "B04",
+  "variant": "refactor",
+  "gold": [
+   "shopflow/models/order.py::<module>",
+   "shopflow/models/order.py::Order.__init__"
+  ],
+  "A": [
+   "shopflow/models/order.py::<module>",
+   "shopflow/models/order.py::Order.__init__",
+   "shopflow/services/shipping.py::<module>"
+  ],
+  "P": [
+   "shopflow/models/order.py::<module>",
+   "shopflow/models/order.py::Order.__init__",
+   "shopflow/services/shipping.py::<module>"
+  ],
+  "H": [
+   "shopflow/models/order.py::<module>",
+   "shopflow/models/order.py::Order.__init__",
+   "shopflow/services/shipping.py::<module>"
+  ],
+  "ast_ref": [
+   "move_method shopflow/services/pricing.py::order_weight -> shopflow/services/shipping.py::order_weight"
+  ],
+  "rm": [
+   "Move Method public order_weight(order, products) from class services.pricing.__module__ to public order_weight(order, products) from class services.shipping.__module__"
+  ]
+ },
+ {
+  "bug": "B04",
+  "variant": "refactor+format",
+  "gold": [
+   "shopflow/models/order.py::<module>",
+   "shopflow/models/order.py::Order.__init__"
+  ],
+  "A": [
+   "shopflow/models/order.py::<module>",
+   "shopflow/models/order.py::Order.__init__",
+   "shopflow/services/shipping.py::<module>"
+  ],
+  "P": [
+   "shopflow/models/order.py::<module>",
+   "shopflow/models/order.py::Order.__init__",
+   "shopflow/services/reporting.py::revenue_by_day",
+   "shopflow/services/shipping.py::<module>"
+  ],
+  "H": [
+   "shopflow/models/order.py::<module>",
+   "shopflow/models/order.py::Order.__init__",
+   "shopflow/services/shipping.py::<module>"
+  ],
+  "ast_ref": [
+   "move_method shopflow/services/pricing.py::order_weight -> shopflow/services/shipping.py::order_weight"
+  ],
+  "rm": [
+   "Move Method public order_weight(order, products) from class services.pricing.__module__ to public order_weight(order, products) from class services.shipping.__module__"
+  ]
+ },
+ {
+  "bug": "B05",
+  "variant": "pure",
+  "gold": [
+   "shopflow/repositories/product_repo.py::ProductRepository.find_low_stock"
+  ],
+  "A": [
+   "shopflow/repositories/product_repo.py::ProductRepository.find_low_stock"
+  ],
+  "P": [
+   "shopflow/repositories/product_repo.py::ProductRepository.find_low_stock"
+  ],
+  "H": [
+   "shopflow/repositories/product_repo.py::ProductRepository.find_low_stock"
+  ],
+  "ast_ref": [],
+  "rm": []
+ },
+ {
+  "bug": "B05",
+  "variant": "format",
+  "gold": [
+   "shopflow/repositories/product_repo.py::ProductRepository.find_low_stock"
+  ],
+  "A": [
+   "shopflow/repositories/product_repo.py::ProductRepository.find_low_stock"
+  ],
+  "P": [
+   "shopflow/repositories/product_repo.py::ProductRepository.find_low_stock",
+   "shopflow/services/inventory.py::InventoryService.restock"
+  ],
+  "H": [
+   "shopflow/repositories/product_repo.py::ProductRepository.find_low_stock"
+  ],
+  "ast_ref": [],
+  "rm": []
+ },
+ {
+  "bug": "B05",
+  "variant": "refactor",
+  "gold": [
+   "shopflow/repositories/product_repo.py::ProductRepository.find_low_stock"
+  ],
+  "A": [
+   "shopflow/repositories/product_repo.py::ProductRepository.find_low_stock",
+   "shopflow/utils/validators.py::validate_quantity"
+  ],
+  "P": [
+   "shopflow/repositories/product_repo.py::ProductRepository.find_low_stock"
+  ],
+  "H": [
+   "shopflow/repositories/product_repo.py::ProductRepository.find_low_stock"
+  ],
+  "ast_ref": [],
+  "rm": [
+   "Rename Parameter quantity to qty in method public validate_quantity(qty) from class utils.validators.__module__"
+  ]
+ },
+ {
+  "bug": "B05",
+  "variant": "refactor+format",
+  "gold": [
+   "shopflow/repositories/product_repo.py::ProductRepository.find_low_stock"
+  ],
+  "A": [
+   "shopflow/repositories/product_repo.py::ProductRepository.find_low_stock",
+   "shopflow/utils/validators.py::validate_quantity"
+  ],
+  "P": [
+   "shopflow/repositories/product_repo.py::ProductRepository.find_low_stock",
+   "shopflow/services/inventory.py::InventoryService.restock"
+  ],
+  "H": [
+   "shopflow/repositories/product_repo.py::ProductRepository.find_low_stock"
+  ],
+  "ast_ref": [],
+  "rm": [
+   "Rename Parameter quantity to qty in method public validate_quantity(qty) from class utils.validators.__module__"
+  ]
+ },
+ {
+  "bug": "B06",
+  "variant": "pure",
+  "gold": [
+   "shopflow/services/inventory.py::InventoryService.reserve"
+  ],
+  "A": [
+   "shopflow/services/inventory.py::InventoryService.reserve"
+  ],
+  "P": [
+   "shopflow/services/inventory.py::InventoryService.reserve"
+  ],
+  "H": [
+   "shopflow/services/inventory.py::InventoryService.reserve"
+  ],
+  "ast_ref": [],
+  "rm": []
+ },
+ {
+  "bug": "B06",
+  "variant": "format",
+  "gold": [
+   "shopflow/services/inventory.py::InventoryService.reserve"
+  ],
+  "A": [
+   "shopflow/services/inventory.py::InventoryService.reserve"
+  ],
+  "P": [
+   "shopflow/models/order.py::Order.to_dict",
+   "shopflow/services/inventory.py::InventoryService.reserve"
+  ],
+  "H": [
+   "shopflow/services/inventory.py::InventoryService.reserve"
+  ],
+  "ast_ref": [],
+  "rm": []
+ },
+ {
+  "bug": "B06",
+  "variant": "refactor",
+  "gold": [
+   "shopflow/services/inventory.py::InventoryService.reserve"
+  ],
+  "A": [
+   "shopflow/services/inventory.py::InventoryService.reserve"
+  ],
+  "P": [
+   "shopflow/services/inventory.py::InventoryService.reserve"
+  ],
+  "H": [
+   "shopflow/services/inventory.py::InventoryService.reserve"
+  ],
+  "ast_ref": [
+   "rename_class shopflow/services/notifications.py::Notifier -> shopflow/services/notifications.py::NotificationService"
+  ],
+  "rm": [
+   "Rename Class services.notifications.Notifier renamed to services.notifications.NotificationService",
+   "Change Attribute Type notifier : Notifier to notifier : NotificationService in class app.App",
+   "Change Variable Type notifier : Notifier to notifier : NotificationService in method public build_app(today, with_seed) from class app.__module__"
+  ]
+ },
+ {
+  "bug": "B06",
+  "variant": "refactor+format",
+  "gold": [
+   "shopflow/services/inventory.py::InventoryService.reserve"
+  ],
+  "A": [
+   "shopflow/services/inventory.py::InventoryService.reserve"
+  ],
+  "P": [
+   "shopflow/services/inventory.py::InventoryService.reserve"
+  ],
+  "H": [
+   "shopflow/services/inventory.py::InventoryService.reserve"
+  ],
+  "ast_ref": [
+   "rename_class shopflow/services/notifications.py::Notifier -> shopflow/services/notifications.py::NotificationService"
+  ],
+  "rm": [
+   "Rename Class services.notifications.Notifier renamed to services.notifications.NotificationService",
+   "Change Attribute Type notifier : Notifier to notifier : NotificationService in class app.App",
+   "Change Variable Type notifier : Notifier to notifier : NotificationService in method public build_app(today, with_seed) from class app.__module__"
+  ]
+ },
+ {
+  "bug": "B07",
+  "variant": "pure",
+  "gold": [
+   "shopflow/utils/dates.py::is_business_day"
+  ],
+  "A": [
+   "shopflow/utils/dates.py::is_business_day"
+  ],
+  "P": [
+   "shopflow/utils/dates.py::is_business_day"
+  ],
+  "H": [
+   "shopflow/utils/dates.py::is_business_day"
+  ],
+  "ast_ref": [],
+  "rm": []
+ },
+ {
+  "bug": "B07",
+  "variant": "format",
+  "gold": [
+   "shopflow/utils/dates.py::is_business_day"
+  ],
+  "A": [
+   "shopflow/utils/dates.py::is_business_day"
+  ],
+  "P": [
+   "shopflow/models/product.py::Product.to_dict",
+   "shopflow/utils/dates.py::is_business_day"
+  ],
+  "H": [
+   "shopflow/utils/dates.py::is_business_day"
+  ],
+  "ast_ref": [],
+  "rm": []
+ },
+ {
+  "bug": "B07",
+  "variant": "refactor",
+  "gold": [
+   "shopflow/utils/dates.py::is_business_day"
+  ],
+  "A": [
+   "shopflow/services/reporting.py::top_products",
+   "shopflow/utils/dates.py::is_business_day"
+  ],
+  "P": [
+   "shopflow/utils/dates.py::is_business_day"
+  ],
+  "H": [
+   "shopflow/utils/dates.py::is_business_day"
+  ],
+  "ast_ref": [],
+  "rm": [
+   "Rename Variable counter : Counter to sku_counts : Counter in method public top_products(orders, n) from class services.reporting.__module__"
+  ]
+ },
+ {
+  "bug": "B07",
+  "variant": "refactor+format",
+  "gold": [
+   "shopflow/utils/dates.py::is_business_day"
+  ],
+  "A": [
+   "shopflow/services/reporting.py::top_products",
+   "shopflow/utils/dates.py::is_business_day"
+  ],
+  "P": [
+   "shopflow/models/product.py::Product.to_dict",
+   "shopflow/utils/dates.py::is_business_day"
+  ],
+  "H": [
+   "shopflow/utils/dates.py::is_business_day"
+  ],
+  "ast_ref": [],
+  "rm": [
+   "Rename Variable counter : Counter to sku_counts : Counter in method public top_products(orders, n) from class services.reporting.__module__"
+  ]
+ },
+ {
+  "bug": "B08",
+  "variant": "pure",
+  "gold": [
+   "shopflow/services/order_service.py::<module>",
+   "shopflow/services/order_service.py::OrderService.place_order"
+  ],
+  "A": [
+   "shopflow/services/order_service.py::<module>",
+   "shopflow/services/order_service.py::OrderService.place_order"
+  ],
+  "P": [
+   "shopflow/services/order_service.py::<module>",
+   "shopflow/services/order_service.py::OrderService.place_order"
+  ],
+  "H": [
+   "shopflow/services/order_service.py::<module>",
+   "shopflow/services/order_service.py::OrderService.place_order"
+  ],
+  "ast_ref": [],
+  "rm": []
+ },
+ {
+  "bug": "B08",
+  "variant": "format",
+  "gold": [
+   "shopflow/services/order_service.py::<module>",
+   "shopflow/services/order_service.py::OrderService.place_order"
+  ],
+  "A": [
+   "shopflow/services/order_service.py::<module>",
+   "shopflow/services/order_service.py::OrderService.place_order"
+  ],
+  "P": [
+   "shopflow/models/customer.py::Customer.to_dict",
+   "shopflow/services/order_service.py::<module>",
+   "shopflow/services/order_service.py::OrderService.place_order"
+  ],
+  "H": [
+   "shopflow/services/order_service.py::<module>",
+   "shopflow/services/order_service.py::OrderService.place_order"
+  ],
+  "ast_ref": [],
+  "rm": []
+ },
+ {
+  "bug": "B08",
+  "variant": "refactor",
+  "gold": [
+   "shopflow/services/order_service.py::<module>",
+   "shopflow/services/order_service.py::OrderService.place_order"
+  ],
+  "A": [
+   "shopflow/services/discount.py::tier_discount_rate",
+   "shopflow/services/order_service.py::<module>",
+   "shopflow/services/order_service.py::OrderService.place_order",
+   "shopflow/services/pricing.py::<module>",
+   "shopflow/services/pricing.py::quote_order"
+  ],
+  "P": [
+   "shopflow/services/discount.py::tier_discount_rate",
+   "shopflow/services/order_service.py::<module>",
+   "shopflow/services/order_service.py::OrderService.place_order",
+   "shopflow/services/pricing.py::<module>",
+   "shopflow/services/pricing.py::quote_order"
+  ],
+  "H": [
+   "shopflow/services/discount.py::tier_discount_rate",
+   "shopflow/services/order_service.py::<module>",
+   "shopflow/services/order_service.py::OrderService.place_order",
+   "shopflow/services/pricing.py::<module>",
+   "shopflow/services/pricing.py::quote_order"
+  ],
+  "ast_ref": [],
+  "rm": []
+ },
+ {
+  "bug": "B08",
+  "variant": "refactor+format",
+  "gold": [
+   "shopflow/services/order_service.py::<module>",
+   "shopflow/services/order_service.py::OrderService.place_order"
+  ],
+  "A": [
+   "shopflow/services/discount.py::tier_discount_rate",
+   "shopflow/services/order_service.py::<module>",
+   "shopflow/services/order_service.py::OrderService.place_order",
+   "shopflow/services/pricing.py::<module>",
+   "shopflow/services/pricing.py::quote_order"
+  ],
+  "P": [
+   "shopflow/models/customer.py::Customer.to_dict",
+   "shopflow/services/discount.py::tier_discount_rate",
+   "shopflow/services/order_service.py::<module>",
+   "shopflow/services/order_service.py::OrderService.place_order",
+   "shopflow/services/pricing.py::<module>",
+   "shopflow/services/pricing.py::quote_order"
+  ],
+  "H": [
+   "shopflow/services/discount.py::tier_discount_rate",
+   "shopflow/services/order_service.py::<module>",
+   "shopflow/services/order_service.py::OrderService.place_order",
+   "shopflow/services/pricing.py::<module>",
+   "shopflow/services/pricing.py::quote_order"
+  ],
+  "ast_ref": [],
+  "rm": []
+ },
+ {
+  "bug": "B09",
+  "variant": "pure",
+  "gold": [
+   "shopflow/services/notifications.py::Notifier.order_shipped"
+  ],
+  "A": [
+   "shopflow/services/notifications.py::Notifier.order_shipped"
+  ],
+  "P": [
+   "shopflow/services/notifications.py::Notifier.order_shipped"
+  ],
+  "H": [
+   "shopflow/services/notifications.py::Notifier.order_shipped"
+  ],
+  "ast_ref": [],
+  "rm": []
+ },
+ {
+  "bug": "B09",
+  "variant": "format",
+  "gold": [
+   "shopflow/services/notifications.py::Notifier.order_shipped"
+  ],
+  "A": [
+   "shopflow/services/notifications.py::Notifier.order_shipped"
+  ],
+  "P": [
+   "shopflow/repositories/product_repo.py::ProductRepository.search",
+   "shopflow/services/notifications.py::Notifier.order_shipped"
+  ],
+  "H": [
+   "shopflow/services/notifications.py::Notifier.order_shipped"
+  ],
+  "ast_ref": [],
+  "rm": []
+ },
+ {
+  "bug": "B09",
+  "variant": "refactor",
+  "gold": [
+   "shopflow/services/notifications.py::Notifier.order_shipped"
+  ],
+  "A": [
+   "shopflow/services/notifications.py::Notifier.order_shipped"
+  ],
+  "P": [
+   "shopflow/services/notifications.py::Notifier.order_shipped"
+  ],
+  "H": [
+   "shopflow/services/notifications.py::Notifier.order_shipped"
+  ],
+  "ast_ref": [
+   "rename_method shopflow/utils/money.py::percent_of -> shopflow/utils/money.py::percentage_of"
+  ],
+  "rm": [
+   "Rename Method public percent_of(amount, rate) renamed to public percentage_of(amount, rate) in class utils.money.__module__"
+  ]
+ },
+ {
+  "bug": "B09",
+  "variant": "refactor+format",
+  "gold": [
+   "shopflow/services/notifications.py::Notifier.order_shipped"
+  ],
+  "A": [
+   "shopflow/services/notifications.py::Notifier.order_shipped"
+  ],
+  "P": [
+   "shopflow/services/notifications.py::Notifier.order_shipped"
+  ],
+  "H": [
+   "shopflow/services/notifications.py::Notifier.order_shipped"
+  ],
+  "ast_ref": [
+   "rename_method shopflow/utils/money.py::percent_of -> shopflow/utils/money.py::percentage_of"
+  ],
+  "rm": [
+   "Rename Method public percent_of(amount, rate) renamed to public percentage_of(amount, rate) in class utils.money.__module__"
+  ]
+ },
+ {
+  "bug": "B10",
+  "variant": "pure",
+  "gold": [
+   "shopflow/services/reporting.py::average_order_value"
+  ],
+  "A": [
+   "shopflow/services/reporting.py::average_order_value"
+  ],
+  "P": [
+   "shopflow/services/reporting.py::average_order_value"
+  ],
+  "H": [
+   "shopflow/services/reporting.py::average_order_value"
+  ],
+  "ast_ref": [],
+  "rm": []
+ },
+ {
+  "bug": "B10",
+  "variant": "format",
+  "gold": [
+   "shopflow/services/reporting.py::average_order_value"
+  ],
+  "A": [
+   "shopflow/services/reporting.py::average_order_value"
+  ],
+  "P": [
+   "shopflow/services/inventory.py::InventoryService.restock",
+   "shopflow/services/reporting.py::average_order_value"
+  ],
+  "H": [
+   "shopflow/services/reporting.py::average_order_value"
+  ],
+  "ast_ref": [],
+  "rm": []
+ },
+ {
+  "bug": "B10",
+  "variant": "refactor",
+  "gold": [
+   "shopflow/services/reporting.py::average_order_value"
+  ],
+  "A": [
+   "shopflow/services/reporting.py::average_order_value"
+  ],
+  "P": [
+   "shopflow/services/reporting.py::average_order_value"
+  ],
+  "H": [
+   "shopflow/services/reporting.py::average_order_value"
+  ],
+  "ast_ref": [
+   "rename_method shopflow/services/shipping.py::estimate_delivery -> shopflow/services/shipping.py::estimate_delivery_date"
+  ],
+  "rm": [
+   "Rename Method public estimate_delivery(order_date, transit_business_days) renamed to public estimate_delivery_date(order_date, transit_business_days) in class services.shipping.__module__"
+  ]
+ },
+ {
+  "bug": "B10",
+  "variant": "refactor+format",
+  "gold": [
+   "shopflow/services/reporting.py::average_order_value"
+  ],
+  "A": [
+   "shopflow/services/reporting.py::average_order_value"
+  ],
+  "P": [
+   "shopflow/services/reporting.py::average_order_value"
+  ],
+  "H": [
+   "shopflow/services/reporting.py::average_order_value"
+  ],
+  "ast_ref": [
+   "rename_method shopflow/services/shipping.py::estimate_delivery -> shopflow/services/shipping.py::estimate_delivery_date"
+  ],
+  "rm": [
+   "Rename Method public estimate_delivery(order_date, transit_business_days) renamed to public estimate_delivery_date(order_date, transit_business_days) in class services.shipping.__module__"
+  ]
+ },
+ {
+  "bug": "B11",
+  "variant": "pure",
+  "gold": [
+   "shopflow/services/pricing.py::quote_order"
+  ],
+  "A": [
+   "shopflow/services/pricing.py::quote_order"
+  ],
+  "P": [
+   "shopflow/services/pricing.py::quote_order"
+  ],
+  "H": [
+   "shopflow/services/pricing.py::quote_order"
+  ],
+  "ast_ref": [],
+  "rm": []
+ },
+ {
+  "bug": "B11",
+  "variant": "format",
+  "gold": [
+   "shopflow/services/pricing.py::quote_order"
+  ],
+  "A": [
+   "shopflow/services/pricing.py::quote_order"
+  ],
+  "P": [
+   "shopflow/services/inventory.py::InventoryService.restock",
+   "shopflow/services/pricing.py::quote_order"
+  ],
+  "H": [
+   "shopflow/services/pricing.py::quote_order"
+  ],
+  "ast_ref": [],
+  "rm": []
+ },
+ {
+  "bug": "B11",
+  "variant": "refactor",
+  "gold": [
+   "shopflow/services/pricing.py::quote_order"
+  ],
+  "A": [
+   "shopflow/services/pricing.py::quote_order",
+   "shopflow/utils/validators.py::validate_quantity"
+  ],
+  "P": [
+   "shopflow/services/pricing.py::quote_order"
+  ],
+  "H": [
+   "shopflow/services/pricing.py::quote_order"
+  ],
+  "ast_ref": [],
+  "rm": [
+   "Rename Parameter quantity to qty in method public validate_quantity(qty) from class utils.validators.__module__"
+  ]
+ },
+ {
+  "bug": "B11",
+  "variant": "refactor+format",
+  "gold": [
+   "shopflow/services/pricing.py::quote_order"
+  ],
+  "A": [
+   "shopflow/services/pricing.py::quote_order",
+   "shopflow/utils/validators.py::validate_quantity"
+  ],
+  "P": [
+   "shopflow/services/inventory.py::InventoryService.restock",
+   "shopflow/services/pricing.py::quote_order"
+  ],
+  "H": [
+   "shopflow/services/pricing.py::quote_order"
+  ],
+  "ast_ref": [],
+  "rm": [
+   "Rename Parameter quantity to qty in method public validate_quantity(qty) from class utils.validators.__module__"
+  ]
+ },
+ {
+  "bug": "B12",
+  "variant": "pure",
+  "gold": [
+   "shopflow/api/handlers.py::ApiHandler._dispatch"
+  ],
+  "A": [
+   "shopflow/api/handlers.py::ApiHandler._dispatch"
+  ],
+  "P": [
+   "shopflow/api/handlers.py::ApiHandler._dispatch"
+  ],
+  "H": [
+   "shopflow/api/handlers.py::ApiHandler._dispatch"
+  ],
+  "ast_ref": [],
+  "rm": []
+ },
+ {
+  "bug": "B12",
+  "variant": "format",
+  "gold": [
+   "shopflow/api/handlers.py::ApiHandler._dispatch"
+  ],
+  "A": [
+   "shopflow/api/handlers.py::ApiHandler._dispatch"
+  ],
+  "P": [
+   "shopflow/api/handlers.py::ApiHandler._dispatch",
+   "shopflow/models/order.py::Order.to_dict"
+  ],
+  "H": [
+   "shopflow/api/handlers.py::ApiHandler._dispatch"
+  ],
+  "ast_ref": [],
+  "rm": []
+ },
+ {
+  "bug": "B12",
+  "variant": "refactor",
+  "gold": [
+   "shopflow/api/handlers.py::ApiHandler._dispatch"
+  ],
+  "A": [
+   "shopflow/api/handlers.py::ApiHandler._dispatch",
+   "shopflow/services/shipping.py::<module>"
+  ],
+  "P": [
+   "shopflow/api/handlers.py::ApiHandler._dispatch",
+   "shopflow/services/shipping.py::<module>"
+  ],
+  "H": [
+   "shopflow/api/handlers.py::ApiHandler._dispatch",
+   "shopflow/services/shipping.py::<module>"
+  ],
+  "ast_ref": [
+   "move_method shopflow/services/pricing.py::order_weight -> shopflow/services/shipping.py::order_weight"
+  ],
+  "rm": [
+   "Move Method public order_weight(order, products) from class services.pricing.__module__ to public order_weight(order, products) from class services.shipping.__module__"
+  ]
+ },
+ {
+  "bug": "B12",
+  "variant": "refactor+format",
+  "gold": [
+   "shopflow/api/handlers.py::ApiHandler._dispatch"
+  ],
+  "A": [
+   "shopflow/api/handlers.py::ApiHandler._dispatch",
+   "shopflow/services/shipping.py::<module>"
+  ],
+  "P": [
+   "shopflow/api/handlers.py::ApiHandler._dispatch",
+   "shopflow/models/order.py::Order.to_dict",
+   "shopflow/services/shipping.py::<module>"
+  ],
+  "H": [
+   "shopflow/api/handlers.py::ApiHandler._dispatch",
+   "shopflow/services/shipping.py::<module>"
+  ],
+  "ast_ref": [
+   "move_method shopflow/services/pricing.py::order_weight -> shopflow/services/shipping.py::order_weight"
+  ],
+  "rm": [
+   "Move Method public order_weight(order, products) from class services.pricing.__module__ to public order_weight(order, products) from class services.shipping.__module__"
+  ]
+ },
+ {
+  "bug": "B13",
+  "variant": "pure",
+  "gold": [
+   "shopflow/models/order.py::<module>"
+  ],
+  "A": [
+   "shopflow/models/order.py::<module>"
+  ],
+  "P": [
+   "shopflow/models/order.py::<module>"
+  ],
+  "H": [
+   "shopflow/models/order.py::<module>"
+  ],
+  "ast_ref": [],
+  "rm": []
+ },
+ {
+  "bug": "B13",
+  "variant": "format",
+  "gold": [
+   "shopflow/models/order.py::<module>"
+  ],
+  "A": [
+   "shopflow/models/order.py::<module>"
+  ],
+  "P": [
+   "shopflow/models/order.py::<module>",
+   "shopflow/models/product.py::Product.to_dict"
+  ],
+  "H": [
+   "shopflow/models/order.py::<module>"
+  ],
+  "ast_ref": [],
+  "rm": []
+ },
+ {
+  "bug": "B13",
+  "variant": "refactor",
+  "gold": [
+   "shopflow/models/order.py::<module>"
+  ],
+  "A": [
+   "shopflow/models/order.py::<module>",
+   "shopflow/utils/validators.py::validate_quantity"
+  ],
+  "P": [
+   "shopflow/models/order.py::<module>"
+  ],
+  "H": [
+   "shopflow/models/order.py::<module>"
+  ],
+  "ast_ref": [],
+  "rm": [
+   "Rename Parameter quantity to qty in method public validate_quantity(qty) from class utils.validators.__module__"
+  ]
+ },
+ {
+  "bug": "B13",
+  "variant": "refactor+format",
+  "gold": [
+   "shopflow/models/order.py::<module>"
+  ],
+  "A": [
+   "shopflow/models/order.py::<module>",
+   "shopflow/utils/validators.py::validate_quantity"
+  ],
+  "P": [
+   "shopflow/models/order.py::<module>",
+   "shopflow/models/product.py::Product.to_dict"
+  ],
+  "H": [
+   "shopflow/models/order.py::<module>"
+  ],
+  "ast_ref": [],
+  "rm": [
+   "Rename Parameter quantity to qty in method public validate_quantity(qty) from class utils.validators.__module__"
+  ]
+ },
+ {
+  "bug": "B14",
+  "variant": "pure",
+  "gold": [
+   "shopflow/utils/validators.py::<module>"
+  ],
+  "A": [
+   "shopflow/utils/validators.py::<module>"
+  ],
+  "P": [
+   "shopflow/utils/validators.py::<module>"
+  ],
+  "H": [
+   "shopflow/utils/validators.py::<module>"
+  ],
+  "ast_ref": [],
+  "rm": []
+ },
+ {
+  "bug": "B14",
+  "variant": "format",
+  "gold": [
+   "shopflow/utils/validators.py::<module>"
+  ],
+  "A": [
+   "shopflow/utils/validators.py::<module>"
+  ],
+  "P": [
+   "shopflow/models/customer.py::Customer.to_dict",
+   "shopflow/utils/validators.py::<module>"
+  ],
+  "H": [
+   "shopflow/utils/validators.py::<module>"
+  ],
+  "ast_ref": [],
+  "rm": []
+ },
+ {
+  "bug": "B14",
+  "variant": "refactor",
+  "gold": [
+   "shopflow/utils/validators.py::<module>"
+  ],
+  "A": [
+   "shopflow/utils/validators.py::<module>"
+  ],
+  "P": [
+   "shopflow/utils/validators.py::<module>"
+  ],
+  "H": [
+   "shopflow/utils/validators.py::<module>"
+  ],
+  "ast_ref": [
+   "rename_class shopflow/services/notifications.py::Notifier -> shopflow/services/notifications.py::NotificationService"
+  ],
+  "rm": [
+   "Rename Class services.notifications.Notifier renamed to services.notifications.NotificationService",
+   "Change Attribute Type notifier : Notifier to notifier : NotificationService in class app.App",
+   "Change Variable Type notifier : Notifier to notifier : NotificationService in method public build_app(today, with_seed) from class app.__module__"
+  ]
+ },
+ {
+  "bug": "B14",
+  "variant": "refactor+format",
+  "gold": [
+   "shopflow/utils/validators.py::<module>"
+  ],
+  "A": [
+   "shopflow/utils/validators.py::<module>"
+  ],
+  "P": [
+   "shopflow/utils/validators.py::<module>"
+  ],
+  "H": [
+   "shopflow/utils/validators.py::<module>"
+  ],
+  "ast_ref": [
+   "rename_class shopflow/services/notifications.py::Notifier -> shopflow/services/notifications.py::NotificationService"
+  ],
+  "rm": [
+   "Rename Class services.notifications.Notifier renamed to services.notifications.NotificationService",
+   "Change Attribute Type notifier : Notifier to notifier : NotificationService in class app.App",
+   "Change Variable Type notifier : Notifier to notifier : NotificationService in method public build_app(today, with_seed) from class app.__module__"
+  ]
+ },
+ {
+  "bug": "B15",
+  "variant": "pure",
+  "gold": [
+   "shopflow/repositories/customer_repo.py::CustomerRepository.find_by_email"
+  ],
+  "A": [
+   "shopflow/repositories/customer_repo.py::CustomerRepository.find_by_email"
+  ],
+  "P": [
+   "shopflow/repositories/customer_repo.py::CustomerRepository.find_by_email"
+  ],
+  "H": [
+   "shopflow/repositories/customer_repo.py::CustomerRepository.find_by_email"
+  ],
+  "ast_ref": [],
+  "rm": []
+ },
+ {
+  "bug": "B15",
+  "variant": "format",
+  "gold": [
+   "shopflow/repositories/customer_repo.py::CustomerRepository.find_by_email"
+  ],
+  "A": [
+   "shopflow/repositories/customer_repo.py::CustomerRepository.find_by_email"
+  ],
+  "P": [
+   "shopflow/repositories/customer_repo.py::CustomerRepository.find_by_email",
+   "shopflow/repositories/product_repo.py::ProductRepository.search"
+  ],
+  "H": [
+   "shopflow/repositories/customer_repo.py::CustomerRepository.find_by_email"
+  ],
+  "ast_ref": [],
+  "rm": []
+ },
+ {
+  "bug": "B15",
+  "variant": "refactor",
+  "gold": [
+   "shopflow/repositories/customer_repo.py::CustomerRepository.find_by_email"
+  ],
+  "A": [
+   "shopflow/repositories/customer_repo.py::CustomerRepository.find_by_email",
+   "shopflow/services/reporting.py::top_products"
+  ],
+  "P": [
+   "shopflow/repositories/customer_repo.py::CustomerRepository.find_by_email"
+  ],
+  "H": [
+   "shopflow/repositories/customer_repo.py::CustomerRepository.find_by_email"
+  ],
+  "ast_ref": [],
+  "rm": [
+   "Rename Variable counter : Counter to sku_counts : Counter in method public top_products(orders, n) from class services.reporting.__module__"
+  ]
+ },
+ {
+  "bug": "B15",
+  "variant": "refactor+format",
+  "gold": [
+   "shopflow/repositories/customer_repo.py::CustomerRepository.find_by_email"
+  ],
+  "A": [
+   "shopflow/repositories/customer_repo.py::CustomerRepository.find_by_email",
+   "shopflow/services/reporting.py::top_products"
+  ],
+  "P": [
+   "shopflow/repositories/customer_repo.py::CustomerRepository.find_by_email",
+   "shopflow/repositories/product_repo.py::ProductRepository.search"
+  ],
+  "H": [
+   "shopflow/repositories/customer_repo.py::CustomerRepository.find_by_email"
+  ],
+  "ast_ref": [],
+  "rm": [
+   "Rename Variable counter : Counter to sku_counts : Counter in method public top_products(orders, n) from class services.reporting.__module__"
+  ]
+ },
+ {
+  "bug": "B16",
+  "variant": "pure",
+  "gold": [
+   "shopflow/services/pricing.py::quote_order"
+  ],
+  "A": [
+   "shopflow/services/pricing.py::quote_order"
+  ],
+  "P": [
+   "shopflow/services/pricing.py::quote_order"
+  ],
+  "H": [
+   "shopflow/services/pricing.py::quote_order"
+  ],
+  "ast_ref": [],
+  "rm": []
+ },
+ {
+  "bug": "B16",
+  "variant": "format",
+  "gold": [
+   "shopflow/services/pricing.py::quote_order"
+  ],
+  "A": [
+   "shopflow/services/pricing.py::quote_order"
+  ],
+  "P": [
+   "shopflow/services/pricing.py::quote_order",
+   "shopflow/services/reporting.py::revenue_by_day"
+  ],
+  "H": [
+   "shopflow/services/pricing.py::quote_order"
+  ],
+  "ast_ref": [],
+  "rm": []
+ },
+ {
+  "bug": "B16",
+  "variant": "refactor",
+  "gold": [
+   "shopflow/services/pricing.py::quote_order"
+  ],
+  "A": [
+   "shopflow/services/pricing.py::quote_order"
+  ],
+  "P": [
+   "shopflow/services/pricing.py::quote_order"
+  ],
+  "H": [
+   "shopflow/services/pricing.py::quote_order"
+  ],
+  "ast_ref": [
+   "rename_method shopflow/services/shipping.py::estimate_delivery -> shopflow/services/shipping.py::estimate_delivery_date"
+  ],
+  "rm": [
+   "Rename Method public estimate_delivery(order_date, transit_business_days) renamed to public estimate_delivery_date(order_date, transit_business_days) in class services.shipping.__module__"
+  ]
+ },
+ {
+  "bug": "B16",
+  "variant": "refactor+format",
+  "gold": [
+   "shopflow/services/pricing.py::quote_order"
+  ],
+  "A": [
+   "shopflow/services/pricing.py::quote_order"
+  ],
+  "P": [
+   "shopflow/services/pricing.py::quote_order"
+  ],
+  "H": [
+   "shopflow/services/pricing.py::quote_order"
+  ],
+  "ast_ref": [
+   "rename_method shopflow/services/shipping.py::estimate_delivery -> shopflow/services/shipping.py::estimate_delivery_date"
+  ],
+  "rm": [
+   "Rename Method public estimate_delivery(order_date, transit_business_days) renamed to public estimate_delivery_date(order_date, transit_business_days) in class services.shipping.__module__"
+  ]
+ },
+ {
+  "bug": "B17",
+  "variant": "pure",
+  "gold": [
+   "shopflow/services/inventory.py::InventoryService.commit"
+  ],
+  "A": [
+   "shopflow/services/inventory.py::InventoryService.commit"
+  ],
+  "P": [
+   "shopflow/services/inventory.py::InventoryService.commit"
+  ],
+  "H": [
+   "shopflow/services/inventory.py::InventoryService.commit"
+  ],
+  "ast_ref": [],
+  "rm": []
+ },
+ {
+  "bug": "B17",
+  "variant": "format",
+  "gold": [
+   "shopflow/services/inventory.py::InventoryService.commit"
+  ],
+  "A": [
+   "shopflow/services/inventory.py::InventoryService.commit"
+  ],
+  "P": [
+   "shopflow/models/order.py::Order.to_dict",
+   "shopflow/services/inventory.py::InventoryService.commit"
+  ],
+  "H": [
+   "shopflow/services/inventory.py::InventoryService.commit"
+  ],
+  "ast_ref": [],
+  "rm": []
+ },
+ {
+  "bug": "B17",
+  "variant": "refactor",
+  "gold": [
+   "shopflow/services/inventory.py::InventoryService.commit"
+  ],
+  "A": [
+   "shopflow/services/inventory.py::InventoryService.commit"
+  ],
+  "P": [
+   "shopflow/services/inventory.py::InventoryService.commit"
+  ],
+  "H": [
+   "shopflow/services/inventory.py::InventoryService.commit"
+  ],
+  "ast_ref": [
+   "rename_method shopflow/utils/money.py::percent_of -> shopflow/utils/money.py::percentage_of"
+  ],
+  "rm": [
+   "Rename Method public percent_of(amount, rate) renamed to public percentage_of(amount, rate) in class utils.money.__module__"
+  ]
+ },
+ {
+  "bug": "B17",
+  "variant": "refactor+format",
+  "gold": [
+   "shopflow/services/inventory.py::InventoryService.commit"
+  ],
+  "A": [
+   "shopflow/services/inventory.py::InventoryService.commit"
+  ],
+  "P": [
+   "shopflow/services/inventory.py::InventoryService.commit"
+  ],
+  "H": [
+   "shopflow/services/inventory.py::InventoryService.commit"
+  ],
+  "ast_ref": [
+   "rename_method shopflow/utils/money.py::percent_of -> shopflow/utils/money.py::percentage_of"
+  ],
+  "rm": [
+   "Rename Method public percent_of(amount, rate) renamed to public percentage_of(amount, rate) in class utils.money.__module__"
+  ]
+ }
+]

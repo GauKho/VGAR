@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kiến trúc agent sau thay đổi</title>
+<style>body{margin:0;padding:24px 16px;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:#ffffff;color:#1f2328;line-height:1.5}
+main{max-width:1280px;margin:0 auto}
+h2{margin:0 0 6px}.subtitle{color:#57606a;margin:0 0 14px}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:900px){.split{grid-template-columns:1fr}}
+.mockup{border:1px solid #d0d7de;border-radius:10px;overflow:hidden;background:#fff}
+.mockup-header{background:#f6f8fa;border-bottom:1px solid #d0d7de;padding:8px 12px;font-weight:600;font-size:14px}
+.mockup-body{padding:10px}
+.section{margin-top:18px}</style>
+<script>function toggleSelect(){}</script>
+</head>
+<body>
+<main>
+<style>
+  .dk{background:#0d1117;color:#e6edf3;border-radius:12px;padding:16px 18px}
+  .dk h2,.dk h3{color:#f0f6fc}
+  .dk .subtitle{color:#c9d1d9}
+  .lg span{display:inline-block;padding:3px 10px;border-radius:4px;margin-right:6px;font-size:12px;font-weight:bold}
+  .new{background:#14532d;border:2px solid #4ade80;color:#f0fdf4}
+  .chg{background:#78350f;border:2px solid #fbbf24;color:#fffbeb}
+  .same{background:#1f2937;border:2px solid #9ca3af;color:#f3f4f6}
+  .cloud{background:#1e3a8a;border:2px dashed #93c5fd;color:#eff6ff}
+  .lay{border:1px solid #3d444d;border-radius:10px;padding:14px 12px 10px;margin:10px 0;position:relative}
+  .lay>.lt{position:absolute;top:-10px;left:12px;background:#0d1117;padding:0 6px;font-size:11px;font-weight:bold;color:#e6edf3;letter-spacing:.5px}
+  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:stretch}
+  .b{flex:1;min-width:170px;border-radius:8px;padding:8px 10px;font-size:12.5px;line-height:1.5}
+  .b h4{margin:0 0 4px 0;font-size:13.5px;color:inherit}
+  .b code{font-size:11px;background:rgba(255,255,255,.16);color:inherit;padding:0 4px;border-radius:3px}
+  .b .f{color:inherit;opacity:.85;font-size:11px;margin-top:4px;font-style:italic}
+  .arrow{text-align:center;color:#e6edf3;font-size:13px;margin:2px 0}
+  .arrow b{font-size:18px}
+  .two{display:grid;grid-template-columns:3fr 1fr;gap:14px}
+  .side .b{margin-bottom:8px}
+  .bnd{border-left:4px solid #f87171;padding:6px 10px;background:#450a0a;color:#fee2e2;font-size:12.5px;margin:6px 0;border-radius:4px}
+  @media (max-width:900px){.two{grid-template-columns:1fr}}
+</style>
+
+<div class="dk">
+<h2>Kiến trúc agent sau khi thêm GPT (langchain_openai) và Qwen-FT</h2>
+<p class="subtitle">Đi từ trên xuống: một phiên <code style="background:rgba(255,255,255,.16);padding:0 4px;border-radius:3px">vgar chat --repo</code>. Màu viền và nền: block mới, block phải sửa, block giữ nguyên, dịch vụ cloud.</p>
+<p class="lg"><span class="new">Mới</span><span class="chg">Sửa</span><span class="same">Giữ nguyên</span><span class="cloud">Cloud (OpenAI)</span></p>
+
+<div class="two">
+<div>
+
+<div class="lay"><div class="lt">1 · NGƯỜI DÙNG / CLI</div>
+<div class="row">
+  <div class="b chg"><h4>vgar chat --repo PATH</h4>Nhận đường dẫn repo và câu chat. Cờ <code>--orchestrator gpt|qwen</code>, <code>--generator qwen-ft|qwen-base</code>.<div class="f">cli.py (parser chat)</div></div>
+</div></div>
+<div class="arrow"><b>↓</b></div>
+
+<div class="lay"><div class="lt">2 · HOST: CHUẨN BỊ PHIÊN</div>
+<div class="row">
+  <div class="b new"><h4>Repo intake</h4>pytest ban đầu → FAIL_TO_PASS / PASS_TO_PASS; file được sửa = <code>.py</code> không phải test; khoá <code>tests/</code>; revision = git HEAD; xuất bundle; ghi hash fixture.<div class="f">agents/intake.py (mới)</div></div>
+  <div class="b same"><h4>Dựng graph</h4>tree-sitter + static resolver → SQLite snapshot <code>sha256:…</code><div class="f">agents/runtime.py · index_repo</div></div>
+  <div class="b new"><h4>Môi trường server graph</h4><code>VGAR_REPOSITORY_ROOT</code>, <code>VGAR_GRAPH_VERSION</code>, <code>VGAR_TOKENIZER_MANIFEST</code><div class="f">spec 06/11, Task B</div></div>
+</div></div>
+<div class="arrow"><b>↓</b></div>
+
+<div class="lay"><div class="lt">3 · NẠP MODEL (ĐIỂM CẮM DUY NHẤT)</div>
+<div class="row">
+  <div class="b chg"><h4>create_core_model(provider)</h4>Chọn model điều phối theo <code>ModelSettings.provider</code>.<div class="f">models/factory.py</div></div>
+  <div class="b new"><h4>provider = "openai"</h4><code>ChatOpenAI(model, temperature=0)</code> từ <code>langchain_openai</code>. API key đọc từ env, không vào env của MCP server.<div class="f">optional extra trong pyproject.toml</div></div>
+  <div class="b same"><h4>provider = "huggingface"</h4>Qwen3-4B gốc (rev <code>cdbee75f</code>), <code>LocalHFChatModel</code>. Dùng ở chế độ chỉ Qwen.<div class="f">models/huggingface/</div></div>
+</div></div>
+<div class="arrow"><b>↓</b></div>
+
+<div class="lay"><div class="lt">4 · VÒNG REACT (LANGCHAIN)</div>
+<div class="row">
+  <div class="b chg"><h4>Bộ chia lượt</h4>Câu hỏi → <b>lượt CHỈ ĐỌC</b> (tool graph + read_file). Yêu cầu sửa → <b>lượt SỬA</b> (giao cho AgentRepairHost).<div class="f">agents/chat.py</div></div>
+  <div class="b same"><h4>create_agent + middleware</h4><code>ToolCallLimitMiddleware</code>, <code>recursion_limit</code>, trace v2.<div class="f">agents/core.py</div></div>
+  <div class="b cloud"><h4>GPT (điều phối)</h4>Chọn tool, đọc kết quả, giải thích. <b>Không thấy diff.</b></div>
+</div></div>
+<div class="bnd"><b>Ranh giới dữ liệu:</b> những gì GPT đọc (tên symbol, đoạn code trong context, output test, evidence) được gửi lên OpenAI. Diff và prompt V11 không đi qua GPT.</div>
+<div class="arrow"><b>↓</b> tool call qua MCP</div>
+
+<div class="lay"><div class="lt">5 · MCP CLIENT</div>
+<div class="row">
+  <div class="b chg"><h4>langchain-mcp-adapters</h4>stdio, mỗi server một tiến trình con; env lọc theo allowlist; <code>read_timeout</code> 120 s cho graph.<div class="f">mcp/client.py (Task E)</div></div>
+</div></div>
+<div class="arrow"><b>↓</b></div>
+
+<div class="lay"><div class="lt">6 · MCP SERVERS</div>
+<div class="row">
+  <div class="b chg"><h4>graph</h4>search_symbols · get_callers · get_callees · find_task_anchors · get_related_context · get_related_tests · analyze_patch_impact. <code>graph_version</code>/<code>task_id</code> không bắt buộc.<div class="f">mcp/servers/graph_server.py (Task A)</div></div>
+  <div class="b same"><h4>repository</h4>read_file (jail trong bản sao, 64 KB)</div>
+  <div class="b same"><h4>execution</h4>run_pytest (chỉ selector được phép, 120 s)</div>
+  <div class="b same"><h4>repair</h4>get_task_context · apply_patch · run_relevant_tests · verify_patch</div>
+</div></div>
+<div class="arrow"><b>↓</b> lượt SỬA</div>
+
+<div class="lay"><div class="lt">7 · LƯỢT SỬA: HOST GIỮ DIFF</div>
+<div class="row">
+  <div class="b chg"><h4>AgentRepairHost</h4>6 tool không tham số; tối đa 3 lần thử, mỗi lần một run mới; feedback do host dựng; impact sau khi áp patch (cờ chỉ cho chat).<div class="f">agents/tool_agent.py</div></div>
+  <div class="b same"><h4>Dựng prompt V11</h4>Template + bundle 1.500 token + path được sửa + test fail. Tất định, có hash.<div class="f">repair/prompt.py · build_repair_prompt</div></div>
+</div></div>
+<div class="arrow"><b>↓</b> generate_patch</div>
+
+<div class="lay"><div class="lt">8 · SINH DIFF (LOCAL, GPU 6 GB)</div>
+<div class="row">
+  <div class="b new"><h4>Qwen-FT = Qwen3-4B gốc + LoRA V11</h4>Bật adapter chỉ cho <code>generate_patch</code>. Một lượt, không tool. Trọng số định danh bằng hash file.<div class="f">models/huggingface (adapter) hoặc server vLLM chọn LoRA theo request</div></div>
+  <div class="b chg"><h4>Profile model</h4>Cho phép model local (hash thay revision HF). M2 duyệt.<div class="f">configs/m2/*.json · check_pinned_profile</div></div>
+</div></div>
+<div class="arrow"><b>↓</b> diff</div>
+
+<div class="lay"><div class="lt">9 · ENGINE M2: KẾT LUẬN BẰNG BẰNG CHỨNG</div>
+<div class="row">
+  <div class="b same"><h4>Apply</h4>strict / normalized; path policy; worktree</div>
+  <div class="b same"><h4>Test</h4>FAIL_TO_PASS + regression trong scope</div>
+  <div class="b same"><h4>Static</h4>syntax · mypy · ruff (so baseline)</div>
+  <div class="b chg"><h4>API / structural</h4>Sửa #2 (API NOT_RUN), #3 (module root). Config structural cho repo demo.</div>
+  <div class="b same"><h4>Verdict</h4>PASS/FAIL/ERROR → ACCEPT/REVISE/REJECT</div>
+</div></div>
+<div class="arrow"><b>↓</b></div>
+
+<div class="lay"><div class="lt">10 · HIỂN THỊ VÀ LƯU VẾT</div>
+<div class="row">
+  <div class="b new"><h4>Bảng evidence bundle</h4>Render từ run_record.json; ghi model nào làm bước nào (<code>[GPT]</code>, <code>[Qwen-FT]</code>).<div class="f">agents/trace_report.py</div></div>
+  <div class="b same"><h4>Audit + trace v2</h4>mcp_audit.jsonl, run_record, evidence_bundle.json</div>
+</div></div>
+
+</div>
+
+<div class="side">
+<h3>Không đổi: batch A0–A3</h3>
+<div class="b same"><h4>runner → run_repair</h4>Không có agent, không GPT. Generator = Qwen gốc ghim. Một lượt sinh.<div class="f">evaluation/repair/runner.py</div></div>
+<div class="b same"><h4>Số liệu thí nghiệm</h4>F1–F8, Recall@k, FAR/FRR giữ nguyên định nghĩa và model.</div>
+
+<h3>Thí nghiệm riêng cho fine-tune</h3>
+<div class="b new"><h4>Qwen gốc vs Qwen-FT</h4>Cùng bundle, cùng prompt V11, 25 task dev. Đo format hợp lệ, F2/F3, F4/F5.</div>
+
+<h3>Chế độ dự phòng</h3>
+<div class="b same"><h4>--orchestrator qwen</h4>Mất mạng / không có key: Qwen gốc điều phối (tắt adapter), Qwen-FT sinh diff (bật adapter). Một bản model trên GPU.</div>
+
+<h3>Ai làm gì</h3>
+<div class="b cloud"><h4>GPT</h4>Hiểu câu hỏi, chọn tool, giải thích</div>
+<div class="b new"><h4>Qwen-FT</h4>Chỉ sinh diff V11</div>
+<div class="b same"><h4>Host + engine</h4>Dựng prompt, áp patch, verify, kết luận</div>
+</div>
+</div>
+</div>
+
+</main>
+</body>
+</html>

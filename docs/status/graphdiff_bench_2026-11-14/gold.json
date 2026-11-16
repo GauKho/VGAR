@@ -1,0 +1,1635 @@
+{
+ "bench_repo": "C:\\Users\\nlhnh\\AppData\\Local\\Temp\\claude\\c7303f268de0247f\\2f2ee8be-bd2c-4304-89f5-7187b00684f6\\scratchpad\\graphdiff2\\bench\\repo",
+ "vgar_repo": "D:\\kltn\\vgar_mcp_mvp_demo",
+ "scenarios": [
+  {
+   "sha": "dd99a5e2cfb4e455e1a6bff9c36da55887e75dbe",
+   "parent": "3658d4d29231285b671d0d655dfe5201d84b630d",
+   "bug": "B01",
+   "variant": "pure",
+   "gold_bugfix": [
+    "shopflow/repositories/base.py::InMemoryRepository.paginate"
+   ],
+   "gold_refactor": [],
+   "gold_format": [],
+   "refactoring": null
+  },
+  {
+   "sha": "69b175fa78ade0185989ae76a0c55b1417a128cc",
+   "parent": "8672c1b07a058b0e3e36ad17af21814494c1bdfc",
+   "bug": "B01",
+   "variant": "format",
+   "gold_bugfix": [
+    "shopflow/repositories/base.py::InMemoryRepository.paginate"
+   ],
+   "gold_refactor": [],
+   "gold_format": [
+    "shopflow/models/product.py::Product.to_dict"
+   ],
+   "refactoring": null
+  },
+  {
+   "sha": "ddd04169587a95e41434a78be3b5cd05c8135f5a",
+   "parent": "ce37e9139b84ec595ff01af21d834009b4480dd7",
+   "bug": "B01",
+   "variant": "refactor",
+   "gold_bugfix": [
+    "shopflow/repositories/base.py::InMemoryRepository.paginate"
+   ],
+   "gold_refactor": [
+    "shopflow/services/pricing.py::<module>",
+    "shopflow/services/pricing.py::quote_order",
+    "shopflow/utils/money.py::percent_of",
+    "shopflow/utils/money.py::percentage_of"
+   ],
+   "gold_format": [],
+   "refactoring": {
+    "id": "R1",
+    "family": "rename_method",
+    "entities": [
+     "percent_of",
+     "percentage_of"
+    ]
+   }
+  },
+  {
+   "sha": "6c0544454ade5226e8451d45c18156d12d6fddf0",
+   "parent": "7e6f712fc263644a8f5ff2db1bfdfa90f42755b3",
+   "bug": "B01",
+   "variant": "refactor+format",
+   "gold_bugfix": [
+    "shopflow/repositories/base.py::InMemoryRepository.paginate"
+   ],
+   "gold_refactor": [
+    "shopflow/services/pricing.py::<module>",
+    "shopflow/services/pricing.py::quote_order",
+    "shopflow/utils/money.py::percent_of",
+    "shopflow/utils/money.py::percentage_of"
+   ],
+   "gold_format": [
+    "shopflow/models/product.py::Product.to_dict"
+   ],
+   "refactoring": {
+    "id": "R1",
+    "family": "rename_method",
+    "entities": [
+     "percent_of",
+     "percentage_of"
+    ]
+   }
+  },
+  {
+   "sha": "715d1ea1ac03a87f1f1c0c16af8d68fe88964887",
+   "parent": "7832b986cdd14f725fe966adb9aa054f1f556aca",
+   "bug": "B02",
+   "variant": "pure",
+   "gold_bugfix": [
+    "shopflow/utils/money.py::to_money"
+   ],
+   "gold_refactor": [],
+   "gold_format": [],
+   "refactoring": null
+  },
+  {
+   "sha": "3706c0d24e7afdd0c04f28ada5813af34b6e4f48",
+   "parent": "ad24dd970950e4c262b2d3ae6526067f7f6d6736",
+   "bug": "B02",
+   "variant": "format",
+   "gold_bugfix": [
+    "shopflow/utils/money.py::to_money"
+   ],
+   "gold_refactor": [],
+   "gold_format": [
+    "shopflow/models/customer.py::Customer.to_dict"
+   ],
+   "refactoring": null
+  },
+  {
+   "sha": "c64b88526d138f895173d2b04da051668edfd2bb",
+   "parent": "88176cd9a55244d27f32915677ee6269dc5fcb00",
+   "bug": "B02",
+   "variant": "refactor",
+   "gold_bugfix": [
+    "shopflow/utils/money.py::to_money"
+   ],
+   "gold_refactor": [
+    "shopflow/services/order_service.py::<module>",
+    "shopflow/services/order_service.py::OrderService.ship_order",
+    "shopflow/services/shipping.py::estimate_delivery",
+    "shopflow/services/shipping.py::estimate_delivery_date"
+   ],
+   "gold_format": [],
+   "refactoring": {
+    "id": "R2",
+    "family": "rename_method",
+    "entities": [
+     "estimate_delivery",
+     "estimate_delivery_date"
+    ]
+   }
+  },
+  {
+   "sha": "fe2c3940709daf510b4ce95a9f23e4e554bb4f45",
+   "parent": "493d325c162e141e8a328f4d18bc3cd9807ab60c",
+   "bug": "B02",
+   "variant": "refactor+format",
+   "gold_bugfix": [
+    "shopflow/utils/money.py::to_money"
+   ],
+   "gold_refactor": [
+    "shopflow/services/order_service.py::<module>",
+    "shopflow/services/order_service.py::OrderService.ship_order",
+    "shopflow/services/shipping.py::estimate_delivery",
+    "shopflow/services/shipping.py::estimate_delivery_date"
+   ],
+   "gold_format": [
+    "shopflow/models/customer.py::Customer.to_dict"
+   ],
+   "refactoring": {
+    "id": "R2",
+    "family": "rename_method",
+    "entities": [
+     "estimate_delivery",
+     "estimate_delivery_date"
+    ]
+   }
+  },
+  {
+   "sha": "ca1834d708b7a8e6dcb5fd648a90095f41f5ac93",
+   "parent": "223afa70bd963ac7a46e6b792a562b4b2cc2c141",
+   "bug": "B03",
+   "variant": "pure",
+   "gold_bugfix": [
+    "shopflow/services/discount.py::coupon_rate"
+   ],
+   "gold_refactor": [],
+   "gold_format": [],
+   "refactoring": null
+  },
+  {
+   "sha": "295b71e8e21baa578b03ae98e7a34a4cfc2da07f",
+   "parent": "a68c1e5665f521a2bedb05fba2b47b0b7a6fe74e",
+   "bug": "B03",
+   "variant": "format",
+   "gold_bugfix": [
+    "shopflow/services/discount.py::coupon_rate"
+   ],
+   "gold_refactor": [],
+   "gold_format": [
+    "shopflow/repositories/product_repo.py::ProductRepository.search"
+   ],
+   "refactoring": null
+  },
+  {
+   "sha": "01758c408ccbfbc8e80b1d988dd2888455be52c6",
+   "parent": "5eb0f2f864cb36c8352ad94dc2b8978ef232af85",
+   "bug": "B03",
+   "variant": "refactor",
+   "gold_bugfix": [
+    "shopflow/services/discount.py::coupon_rate"
+   ],
+   "gold_refactor": [
+    "shopflow/services/pricing.py::_discount_for",
+    "shopflow/services/pricing.py::quote_order"
+   ],
+   "gold_format": [],
+   "refactoring": {
+    "id": "R3",
+    "family": "extract_method",
+    "entities": [
+     "_discount_for",
+     "quote_order"
+    ]
+   }
+  },
+  {
+   "sha": "f64570f100c140e935f8bb4b883c5693c152c37d",
+   "parent": "4dc5ad52677842af5e91d1f5577c971fcba1d555",
+   "bug": "B03",
+   "variant": "refactor+format",
+   "gold_bugfix": [
+    "shopflow/services/discount.py::coupon_rate"
+   ],
+   "gold_refactor": [
+    "shopflow/services/pricing.py::_discount_for",
+    "shopflow/services/pricing.py::quote_order"
+   ],
+   "gold_format": [
+    "shopflow/repositories/product_repo.py::ProductRepository.search"
+   ],
+   "refactoring": {
+    "id": "R3",
+    "family": "extract_method",
+    "entities": [
+     "_discount_for",
+     "quote_order"
+    ]
+   }
+  },
+  {
+   "sha": "2e04492ea988f042f203fc144bc2e6f526d3be55",
+   "parent": "bb6721c77dbdadd06305b82b856e3e43d26512d2",
+   "bug": "B04",
+   "variant": "pure",
+   "gold_bugfix": [
+    "shopflow/models/order.py::<module>",
+    "shopflow/models/order.py::Order.__init__"
+   ],
+   "gold_refactor": [],
+   "gold_format": [],
+   "refactoring": null
+  },
+  {
+   "sha": "e390c3d3ba002cc34587ccddaef83f6ebd994ef1",
+   "parent": "ad8832a9d89e6b7627782553d83ab0d74f2ba6ff",
+   "bug": "B04",
+   "variant": "format",
+   "gold_bugfix": [
+    "shopflow/models/order.py::<module>",
+    "shopflow/models/order.py::Order.__init__"
+   ],
+   "gold_refactor": [],
+   "gold_format": [
+    "shopflow/services/reporting.py::revenue_by_day"
+   ],
+   "refactoring": null
+  },
+  {
+   "sha": "fd80c48faa7e0ab9fb6221ee1e6d2a7750e39aa6",
+   "parent": "9b6f38ddf382bfbcdee708fab00642efa2437a8c",
+   "bug": "B04",
+   "variant": "refactor",
+   "gold_bugfix": [
+    "shopflow/models/order.py::<module>",
+    "shopflow/models/order.py::Order.__init__"
+   ],
+   "gold_refactor": [
+    "shopflow/services/pricing.py::<module>",
+    "shopflow/services/pricing.py::order_weight",
+    "shopflow/services/shipping.py::<module>",
+    "shopflow/services/shipping.py::order_weight"
+   ],
+   "gold_format": [],
+   "refactoring": {
+    "id": "R4",
+    "family": "move_method",
+    "entities": [
+     "order_weight"
+    ]
+   }
+  },
+  {
+   "sha": "974e694c8a682fb731c78bfd9fdb4125fc22368c",
+   "parent": "83ee9de621c4368db9699a51027916b27786108c",
+   "bug": "B04",
+   "variant": "refactor+format",
+   "gold_bugfix": [
+    "shopflow/models/order.py::<module>",
+    "shopflow/models/order.py::Order.__init__"
+   ],
+   "gold_refactor": [
+    "shopflow/services/pricing.py::<module>",
+    "shopflow/services/pricing.py::order_weight",
+    "shopflow/services/shipping.py::<module>",
+    "shopflow/services/shipping.py::order_weight"
+   ],
+   "gold_format": [
+    "shopflow/services/reporting.py::revenue_by_day"
+   ],
+   "refactoring": {
+    "id": "R4",
+    "family": "move_method",
+    "entities": [
+     "order_weight"
+    ]
+   }
+  },
+  {
+   "sha": "be55a3e29947828169cd1b61b159e07241f86362",
+   "parent": "a8101e04793c4a6e74ea1c2eb0120370d127360f",
+   "bug": "B05",
+   "variant": "pure",
+   "gold_bugfix": [
+    "shopflow/repositories/product_repo.py::ProductRepository.find_low_stock"
+   ],
+   "gold_refactor": [],
+   "gold_format": [],
+   "refactoring": null
+  },
+  {
+   "sha": "1e827eea5f2603037c2bc789d6a440de50fe57dd",
+   "parent": "d8eabbbe53dd0daa4c37aad7e009e0efe628dcbc",
+   "bug": "B05",
+   "variant": "format",
+   "gold_bugfix": [
+    "shopflow/repositories/product_repo.py::ProductRepository.find_low_stock"
+   ],
+   "gold_refactor": [],
+   "gold_format": [
+    "shopflow/services/inventory.py::InventoryService.restock"
+   ],
+   "refactoring": null
+  },
+  {
+   "sha": "0b55a64a0d2e2105c067c683d750ee0b18f6129b",
+   "parent": "0965006fa323e8581998f6ee4e7b699547896569",
+   "bug": "B05",
+   "variant": "refactor",
+   "gold_bugfix": [
+    "shopflow/repositories/product_repo.py::ProductRepository.find_low_stock"
+   ],
+   "gold_refactor": [
+    "shopflow/utils/validators.py::validate_quantity"
+   ],
+   "gold_format": [],
+   "refactoring": {
+    "id": "R5",
+    "family": "rename_parameter",
+    "entities": [
+     "quantity",
+     "qty"
+    ]
+   }
+  },
+  {
+   "sha": "544fe94edeefd04800c6cd5925becc153066819b",
+   "parent": "3430be73742ccc968b9828e2869d26578c71e6ec",
+   "bug": "B05",
+   "variant": "refactor+format",
+   "gold_bugfix": [
+    "shopflow/repositories/product_repo.py::ProductRepository.find_low_stock"
+   ],
+   "gold_refactor": [
+    "shopflow/utils/validators.py::validate_quantity"
+   ],
+   "gold_format": [
+    "shopflow/services/inventory.py::InventoryService.restock"
+   ],
+   "refactoring": {
+    "id": "R5",
+    "family": "rename_parameter",
+    "entities": [
+     "quantity",
+     "qty"
+    ]
+   }
+  },
+  {
+   "sha": "c92a01827fbaea9006a99200cf11738d6fa2c443",
+   "parent": "768619f1dcfb7b5ac58f1541abf03c2e2f38f6f4",
+   "bug": "B06",
+   "variant": "pure",
+   "gold_bugfix": [
+    "shopflow/services/inventory.py::InventoryService.reserve"
+   ],
+   "gold_refactor": [],
+   "gold_format": [],
+   "refactoring": null
+  },
+  {
+   "sha": "de55e3fb42eefafef2c14149b91df5a72fe1d1f9",
+   "parent": "08c3f4b84541e79ce49a2b551632d12007fcaffd",
+   "bug": "B06",
+   "variant": "format",
+   "gold_bugfix": [
+    "shopflow/services/inventory.py::InventoryService.reserve"
+   ],
+   "gold_refactor": [],
+   "gold_format": [
+    "shopflow/models/order.py::Order.to_dict"
+   ],
+   "refactoring": null
+  },
+  {
+   "sha": "20033d0991de84fa43bbf8e8dbeeceea5ade53b0",
+   "parent": "7a617bab7f4217d6064b1656f9f24405ef14484e",
+   "bug": "B06",
+   "variant": "refactor",
+   "gold_bugfix": [
+    "shopflow/services/inventory.py::InventoryService.reserve"
+   ],
+   "gold_refactor": [
+    "shopflow/app.py::<module>",
+    "shopflow/app.py::App",
+    "shopflow/app.py::build_app",
+    "shopflow/services/notifications.py::NotificationService",
+    "shopflow/services/notifications.py::Notifier",
+    "shopflow/services/order_service.py::<module>",
+    "shopflow/services/order_service.py::OrderService.__init__"
+   ],
+   "gold_format": [],
+   "refactoring": {
+    "id": "R6",
+    "family": "rename_class",
+    "entities": [
+     "Notifier",
+     "NotificationService"
+    ]
+   }
+  },
+  {
+   "sha": "0ff5a40224a4b867325e7e195918eefd50ac968c",
+   "parent": "700277b973851c9e7a739486e9dd0e361cc2518a",
+   "bug": "B06",
+   "variant": "refactor+format",
+   "gold_bugfix": [
+    "shopflow/services/inventory.py::InventoryService.reserve"
+   ],
+   "gold_refactor": [
+    "shopflow/app.py::<module>",
+    "shopflow/app.py::App",
+    "shopflow/app.py::build_app",
+    "shopflow/services/notifications.py::NotificationService",
+    "shopflow/services/notifications.py::Notifier",
+    "shopflow/services/order_service.py::<module>",
+    "shopflow/services/order_service.py::OrderService.__init__"
+   ],
+   "gold_format": [
+    "shopflow/models/order.py::Order.to_dict"
+   ],
+   "refactoring": {
+    "id": "R6",
+    "family": "rename_class",
+    "entities": [
+     "Notifier",
+     "NotificationService"
+    ]
+   }
+  },
+  {
+   "sha": "d374abd9c52cf754ba54a570100a6494184613ab",
+   "parent": "662daea559f2475b6cb8f8089c4e5efbddb57305",
+   "bug": "B07",
+   "variant": "pure",
+   "gold_bugfix": [
+    "shopflow/utils/dates.py::is_business_day"
+   ],
+   "gold_refactor": [],
+   "gold_format": [],
+   "refactoring": null
+  },
+  {
+   "sha": "efcc65e1900c418abd6ea7303e452f415aafe7f0",
+   "parent": "817b042fad1f264952a65585564e60f931afa2b3",
+   "bug": "B07",
+   "variant": "format",
+   "gold_bugfix": [
+    "shopflow/utils/dates.py::is_business_day"
+   ],
+   "gold_refactor": [],
+   "gold_format": [
+    "shopflow/models/product.py::Product.to_dict"
+   ],
+   "refactoring": null
+  },
+  {
+   "sha": "28c426341347c702d24405612f0c4e65c629e01b",
+   "parent": "7c0bb21159d70572a0a1435ac1d425dda05376f1",
+   "bug": "B07",
+   "variant": "refactor",
+   "gold_bugfix": [
+    "shopflow/utils/dates.py::is_business_day"
+   ],
+   "gold_refactor": [
+    "shopflow/services/reporting.py::top_products"
+   ],
+   "gold_format": [],
+   "refactoring": {
+    "id": "R7",
+    "family": "rename_variable",
+    "entities": [
+     "counter",
+     "sku_counts"
+    ]
+   }
+  },
+  {
+   "sha": "1397a4038662bf507b6a88c88f4e1fc1a1291a09",
+   "parent": "646143c0e831b82a0682ac9972bb880e8be1f5aa",
+   "bug": "B07",
+   "variant": "refactor+format",
+   "gold_bugfix": [
+    "shopflow/utils/dates.py::is_business_day"
+   ],
+   "gold_refactor": [
+    "shopflow/services/reporting.py::top_products"
+   ],
+   "gold_format": [
+    "shopflow/models/product.py::Product.to_dict"
+   ],
+   "refactoring": {
+    "id": "R7",
+    "family": "rename_variable",
+    "entities": [
+     "counter",
+     "sku_counts"
+    ]
+   }
+  },
+  {
+   "sha": "4ad5422979881d38c5dc4d71dd0c3c990c5ef4c3",
+   "parent": "5548f443b8738c03d29297c76a9d74db62780fce",
+   "bug": "B08",
+   "variant": "pure",
+   "gold_bugfix": [
+    "shopflow/services/order_service.py::<module>",
+    "shopflow/services/order_service.py::OrderService.place_order"
+   ],
+   "gold_refactor": [],
+   "gold_format": [],
+   "refactoring": null
+  },
+  {
+   "sha": "bdcddccd4ea6f3fe3b04e09804d4c3cc4f33e4ed",
+   "parent": "965464ac1082924e658f92ce7104c3d4f4dec28c",
+   "bug": "B08",
+   "variant": "format",
+   "gold_bugfix": [
+    "shopflow/services/order_service.py::<module>",
+    "shopflow/services/order_service.py::OrderService.place_order"
+   ],
+   "gold_refactor": [],
+   "gold_format": [
+    "shopflow/models/customer.py::Customer.to_dict"
+   ],
+   "refactoring": null
+  },
+  {
+   "sha": "23ed0484b260773c200db545004c8386fbbbf0b6",
+   "parent": "c3d691c2848d17b6edde387816d2bc9dbf4f216c",
+   "bug": "B08",
+   "variant": "refactor",
+   "gold_bugfix": [
+    "shopflow/services/order_service.py::<module>",
+    "shopflow/services/order_service.py::OrderService.place_order"
+   ],
+   "gold_refactor": [
+    "shopflow/services/discount.py::tier_discount_rate",
+    "shopflow/services/pricing.py::<module>",
+    "shopflow/services/pricing.py::quote_order"
+   ],
+   "gold_format": [],
+   "refactoring": {
+    "id": "R8",
+    "family": "inline_method",
+    "entities": [
+     "tier_discount_rate"
+    ]
+   }
+  },
+  {
+   "sha": "1626c394ab78d2e5071793d3e11a0e9b16d3bdfb",
+   "parent": "8940d0b5220935aa7a4118ccfd8606166ff85570",
+   "bug": "B08",
+   "variant": "refactor+format",
+   "gold_bugfix": [
+    "shopflow/services/order_service.py::<module>",
+    "shopflow/services/order_service.py::OrderService.place_order"
+   ],
+   "gold_refactor": [
+    "shopflow/services/discount.py::tier_discount_rate",
+    "shopflow/services/pricing.py::<module>",
+    "shopflow/services/pricing.py::quote_order"
+   ],
+   "gold_format": [
+    "shopflow/models/customer.py::Customer.to_dict"
+   ],
+   "refactoring": {
+    "id": "R8",
+    "family": "inline_method",
+    "entities": [
+     "tier_discount_rate"
+    ]
+   }
+  },
+  {
+   "sha": "c6472cfca21181fc6c69b37c153fcaca672a08ef",
+   "parent": "15e3fd66b79efb76fbd4947089d233038f8b008e",
+   "bug": "B09",
+   "variant": "pure",
+   "gold_bugfix": [
+    "shopflow/services/notifications.py::Notifier.order_shipped"
+   ],
+   "gold_refactor": [],
+   "gold_format": [],
+   "refactoring": null
+  },
+  {
+   "sha": "a3d67b8e265691e0b8dde58536a2c73c6818e5ed",
+   "parent": "58b08f25b79f18ae36cfeaf92cffa1cc873d320a",
+   "bug": "B09",
+   "variant": "format",
+   "gold_bugfix": [
+    "shopflow/services/notifications.py::Notifier.order_shipped"
+   ],
+   "gold_refactor": [],
+   "gold_format": [
+    "shopflow/repositories/product_repo.py::ProductRepository.search"
+   ],
+   "refactoring": null
+  },
+  {
+   "sha": "5d563691a21fde71fcf64e53cc402fc0c5106d18",
+   "parent": "d09fad5218db285eb18164573358c56e510b78b0",
+   "bug": "B09",
+   "variant": "refactor",
+   "gold_bugfix": [
+    "shopflow/services/notifications.py::Notifier.order_shipped"
+   ],
+   "gold_refactor": [
+    "shopflow/services/pricing.py::<module>",
+    "shopflow/services/pricing.py::quote_order",
+    "shopflow/utils/money.py::percent_of",
+    "shopflow/utils/money.py::percentage_of"
+   ],
+   "gold_format": [],
+   "refactoring": {
+    "id": "R1",
+    "family": "rename_method",
+    "entities": [
+     "percent_of",
+     "percentage_of"
+    ]
+   }
+  },
+  {
+   "sha": "b5beae4d490f418bed6d26efc555d363d53ffe57",
+   "parent": "5c96be2f49181b4320aec6c001f909e5a6778830",
+   "bug": "B09",
+   "variant": "refactor+format",
+   "gold_bugfix": [
+    "shopflow/services/notifications.py::Notifier.order_shipped"
+   ],
+   "gold_refactor": [
+    "shopflow/services/pricing.py::<module>",
+    "shopflow/services/pricing.py::quote_order",
+    "shopflow/utils/money.py::percent_of",
+    "shopflow/utils/money.py::percentage_of"
+   ],
+   "gold_format": [
+    "shopflow/repositories/product_repo.py::ProductRepository.search"
+   ],
+   "refactoring": {
+    "id": "R1",
+    "family": "rename_method",
+    "entities": [
+     "percent_of",
+     "percentage_of"
+    ]
+   }
+  },
+  {
+   "sha": "a942721827aa6a2484e74f5f2073ee0526a59d07",
+   "parent": "f43c5edd87f2484d02036076dd5bb0db8e64596a",
+   "bug": "B10",
+   "variant": "pure",
+   "gold_bugfix": [
+    "shopflow/services/reporting.py::average_order_value"
+   ],
+   "gold_refactor": [],
+   "gold_format": [],
+   "refactoring": null
+  },
+  {
+   "sha": "56db821831d44e0b6a87ce733503a5b225d61478",
+   "parent": "e300a065fd142f5774ab173547455b2d5f92b35d",
+   "bug": "B10",
+   "variant": "format",
+   "gold_bugfix": [
+    "shopflow/services/reporting.py::average_order_value"
+   ],
+   "gold_refactor": [],
+   "gold_format": [
+    "shopflow/services/inventory.py::InventoryService.restock"
+   ],
+   "refactoring": null
+  },
+  {
+   "sha": "14b474b7c0660dc11b5e7473e8ee9e3bedd2908b",
+   "parent": "27131b179589eacd2b506a548197d2ff2e15bf58",
+   "bug": "B10",
+   "variant": "refactor",
+   "gold_bugfix": [
+    "shopflow/services/reporting.py::average_order_value"
+   ],
+   "gold_refactor": [
+    "shopflow/services/order_service.py::<module>",
+    "shopflow/services/order_service.py::OrderService.ship_order",
+    "shopflow/services/shipping.py::estimate_delivery",
+    "shopflow/services/shipping.py::estimate_delivery_date"
+   ],
+   "gold_format": [],
+   "refactoring": {
+    "id": "R2",
+    "family": "rename_method",
+    "entities": [
+     "estimate_delivery",
+     "estimate_delivery_date"
+    ]
+   }
+  },
+  {
+   "sha": "765193cf2fc26514c45c530081b25b5bd491dcd3",
+   "parent": "b30b8f5e40a6854149278e91fe2128e5d35d2fe6",
+   "bug": "B10",
+   "variant": "refactor+format",
+   "gold_bugfix": [
+    "shopflow/services/reporting.py::average_order_value"
+   ],
+   "gold_refactor": [
+    "shopflow/services/order_service.py::<module>",
+    "shopflow/services/order_service.py::OrderService.ship_order",
+    "shopflow/services/shipping.py::estimate_delivery",
+    "shopflow/services/shipping.py::estimate_delivery_date"
+   ],
+   "gold_format": [
+    "shopflow/services/inventory.py::InventoryService.restock"
+   ],
+   "refactoring": {
+    "id": "R2",
+    "family": "rename_method",
+    "entities": [
+     "estimate_delivery",
+     "estimate_delivery_date"
+    ]
+   }
+  },
+  {
+   "sha": "5a1cb675ee5225d8f2931ac714153994ceeab3a5",
+   "parent": "a8480feceb5e6c2909f190b08aaaae5c397b1d4c",
+   "bug": "B11",
+   "variant": "pure",
+   "gold_bugfix": [
+    "shopflow/services/pricing.py::quote_order"
+   ],
+   "gold_refactor": [],
+   "gold_format": [],
+   "refactoring": null
+  },
+  {
+   "sha": "0e8b2e4ff5033089e6b84f47b531234e8bccdbc3",
+   "parent": "64766ee02a1670d4f12dac78b88770c061f3bcc7",
+   "bug": "B11",
+   "variant": "format",
+   "gold_bugfix": [
+    "shopflow/services/pricing.py::quote_order"
+   ],
+   "gold_refactor": [],
+   "gold_format": [
+    "shopflow/services/inventory.py::InventoryService.restock"
+   ],
+   "refactoring": null
+  },
+  {
+   "sha": "51df7754ac3ec59e32e86a4c03a663cbd0142e9a",
+   "parent": "406c198ca985b80314e3972d7a8188e9082a4f27",
+   "bug": "B11",
+   "variant": "refactor",
+   "gold_bugfix": [
+    "shopflow/services/pricing.py::quote_order"
+   ],
+   "gold_refactor": [
+    "shopflow/utils/validators.py::validate_quantity"
+   ],
+   "gold_format": [],
+   "refactoring": {
+    "id": "R5",
+    "family": "rename_parameter",
+    "entities": [
+     "quantity",
+     "qty"
+    ]
+   }
+  },
+  {
+   "sha": "990fb3eb110fb57629ab7a9d0db0b2131ef2dbff",
+   "parent": "1447457ed4bda366aef71eb77a9c6b8a1e5015a1",
+   "bug": "B11",
+   "variant": "refactor+format",
+   "gold_bugfix": [
+    "shopflow/services/pricing.py::quote_order"
+   ],
+   "gold_refactor": [
+    "shopflow/utils/validators.py::validate_quantity"
+   ],
+   "gold_format": [
+    "shopflow/services/inventory.py::InventoryService.restock"
+   ],
+   "refactoring": {
+    "id": "R5",
+    "family": "rename_parameter",
+    "entities": [
+     "quantity",
+     "qty"
+    ]
+   }
+  },
+  {
+   "sha": "3011488449c4e7f8e013abb05de74f26abf0f825",
+   "parent": "9d75097096a2f6906149435c7d25c56d448c469e",
+   "bug": "B12",
+   "variant": "pure",
+   "gold_bugfix": [
+    "shopflow/api/handlers.py::ApiHandler._dispatch"
+   ],
+   "gold_refactor": [],
+   "gold_format": [],
+   "refactoring": null
+  },
+  {
+   "sha": "990352cbcdd79c0d5b95f28e9f18e4f2a0de484b",
+   "parent": "772e0ad97ed9876f8938f6fa4bfd6da8d78f48d8",
+   "bug": "B12",
+   "variant": "format",
+   "gold_bugfix": [
+    "shopflow/api/handlers.py::ApiHandler._dispatch"
+   ],
+   "gold_refactor": [],
+   "gold_format": [
+    "shopflow/models/order.py::Order.to_dict"
+   ],
+   "refactoring": null
+  },
+  {
+   "sha": "3d86f6b6ddb457acd186d25d7af343e0490970b1",
+   "parent": "d865b68ad85f78ec3cbf26326c4a2d6d1b3f5476",
+   "bug": "B12",
+   "variant": "refactor",
+   "gold_bugfix": [
+    "shopflow/api/handlers.py::ApiHandler._dispatch"
+   ],
+   "gold_refactor": [
+    "shopflow/services/pricing.py::<module>",
+    "shopflow/services/pricing.py::order_weight",
+    "shopflow/services/shipping.py::<module>",
+    "shopflow/services/shipping.py::order_weight"
+   ],
+   "gold_format": [],
+   "refactoring": {
+    "id": "R4",
+    "family": "move_method",
+    "entities": [
+     "order_weight"
+    ]
+   }
+  },
+  {
+   "sha": "d04946d74811cd90e268a8c09d41aa56f6284466",
+   "parent": "c23cf8334958299c6f5586ba8b98b47a256d6372",
+   "bug": "B12",
+   "variant": "refactor+format",
+   "gold_bugfix": [
+    "shopflow/api/handlers.py::ApiHandler._dispatch"
+   ],
+   "gold_refactor": [
+    "shopflow/services/pricing.py::<module>",
+    "shopflow/services/pricing.py::order_weight",
+    "shopflow/services/shipping.py::<module>",
+    "shopflow/services/shipping.py::order_weight"
+   ],
+   "gold_format": [
+    "shopflow/models/order.py::Order.to_dict"
+   ],
+   "refactoring": {
+    "id": "R4",
+    "family": "move_method",
+    "entities": [
+     "order_weight"
+    ]
+   }
+  },
+  {
+   "sha": "ea37dccc46ad7a7e4a68fe9e3919fe6671289102",
+   "parent": "3d55dbd9e106ce1a6165fca0ba22ce4e51c78eae",
+   "bug": "B13",
+   "variant": "pure",
+   "gold_bugfix": [
+    "shopflow/models/order.py::<module>"
+   ],
+   "gold_refactor": [],
+   "gold_format": [],
+   "refactoring": null
+  },
+  {
+   "sha": "a0b623befcd09766f436d9539720179763a89932",
+   "parent": "7a240a94822a14d94bd99d9403b085ede225120f",
+   "bug": "B13",
+   "variant": "format",
+   "gold_bugfix": [
+    "shopflow/models/order.py::<module>"
+   ],
+   "gold_refactor": [],
+   "gold_format": [
+    "shopflow/models/product.py::Product.to_dict"
+   ],
+   "refactoring": null
+  },
+  {
+   "sha": "d857cd1dfb3b4fe64f0692987acc38cb00fef4c4",
+   "parent": "9bda3601e2587d6cd17d54239a9020bf829bd58f",
+   "bug": "B13",
+   "variant": "refactor",
+   "gold_bugfix": [
+    "shopflow/models/order.py::<module>"
+   ],
+   "gold_refactor": [
+    "shopflow/utils/validators.py::validate_quantity"
+   ],
+   "gold_format": [],
+   "refactoring": {
+    "id": "R5",
+    "family": "rename_parameter",
+    "entities": [
+     "quantity",
+     "qty"
+    ]
+   }
+  },
+  {
+   "sha": "1e7c75376156472a9d5b8553fb005167c33339b7",
+   "parent": "b586d3ff519c62421d471cdee804dfe4372c1ddb",
+   "bug": "B13",
+   "variant": "refactor+format",
+   "gold_bugfix": [
+    "shopflow/models/order.py::<module>"
+   ],
+   "gold_refactor": [
+    "shopflow/utils/validators.py::validate_quantity"
+   ],
+   "gold_format": [
+    "shopflow/models/product.py::Product.to_dict"
+   ],
+   "refactoring": {
+    "id": "R5",
+    "family": "rename_parameter",
+    "entities": [
+     "quantity",
+     "qty"
+    ]
+   }
+  },
+  {
+   "sha": "aaa0fc4ba3f464e5bf13110757b76be4e4ebec95",
+   "parent": "2dfa6f6a78d0b1a992d051b5d69d96ac6c2b80a1",
+   "bug": "B14",
+   "variant": "pure",
+   "gold_bugfix": [
+    "shopflow/utils/validators.py::<module>"
+   ],
+   "gold_refactor": [],
+   "gold_format": [],
+   "refactoring": null
+  },
+  {
+   "sha": "d044fe4968fca3bb2716740b0a1fdae892da06db",
+   "parent": "a252405ee1235a79656410da7c0e24aa7f2caaaa",
+   "bug": "B14",
+   "variant": "format",
+   "gold_bugfix": [
+    "shopflow/utils/validators.py::<module>"
+   ],
+   "gold_refactor": [],
+   "gold_format": [
+    "shopflow/models/customer.py::Customer.to_dict"
+   ],
+   "refactoring": null
+  },
+  {
+   "sha": "12db139226f89fc91f8dd88e1a435df31c2c70bc",
+   "parent": "b67d396028821dd72d84a43af39f2efdfd0ed8d2",
+   "bug": "B14",
+   "variant": "refactor",
+   "gold_bugfix": [
+    "shopflow/utils/validators.py::<module>"
+   ],
+   "gold_refactor": [
+    "shopflow/app.py::<module>",
+    "shopflow/app.py::App",
+    "shopflow/app.py::build_app",
+    "shopflow/services/notifications.py::NotificationService",
+    "shopflow/services/notifications.py::Notifier",
+    "shopflow/services/order_service.py::<module>",
+    "shopflow/services/order_service.py::OrderService.__init__"
+   ],
+   "gold_format": [],
+   "refactoring": {
+    "id": "R6",
+    "family": "rename_class",
+    "entities": [
+     "Notifier",
+     "NotificationService"
+    ]
+   }
+  },
+  {
+   "sha": "24bf95d64456c4e6301a8ebec134d811643ff427",
+   "parent": "f9104e767ca8dbf07ed32f22316a807f338e3985",
+   "bug": "B14",
+   "variant": "refactor+format",
+   "gold_bugfix": [
+    "shopflow/utils/validators.py::<module>"
+   ],
+   "gold_refactor": [
+    "shopflow/app.py::<module>",
+    "shopflow/app.py::App",
+    "shopflow/app.py::build_app",
+    "shopflow/services/notifications.py::NotificationService",
+    "shopflow/services/notifications.py::Notifier",
+    "shopflow/services/order_service.py::<module>",
+    "shopflow/services/order_service.py::OrderService.__init__"
+   ],
+   "gold_format": [
+    "shopflow/models/customer.py::Customer.to_dict"
+   ],
+   "refactoring": {
+    "id": "R6",
+    "family": "rename_class",
+    "entities": [
+     "Notifier",
+     "NotificationService"
+    ]
+   }
+  },
+  {
+   "sha": "7b179dc9d5361f59aeddd81d8020ae6eccdefda2",
+   "parent": "25854285c5059c876be7a3da35bebc253b4614bd",
+   "bug": "B15",
+   "variant": "pure",
+   "gold_bugfix": [
+    "shopflow/repositories/customer_repo.py::CustomerRepository.find_by_email"
+   ],
+   "gold_refactor": [],
+   "gold_format": [],
+   "refactoring": null
+  },
+  {
+   "sha": "10e2e5ec94fe1e4c595217c3b7bef1beb689dbef",
+   "parent": "3693df2728eda708d48c224fe59e0224351aefb1",
+   "bug": "B15",
+   "variant": "format",
+   "gold_bugfix": [
+    "shopflow/repositories/customer_repo.py::CustomerRepository.find_by_email"
+   ],
+   "gold_refactor": [],
+   "gold_format": [
+    "shopflow/repositories/product_repo.py::ProductRepository.search"
+   ],
+   "refactoring": null
+  },
+  {
+   "sha": "44d06076750e00d46bfac732fb4abdd9a3bccee3",
+   "parent": "f7fc3795afd45da5222a034de38ae532c351d7da",
+   "bug": "B15",
+   "variant": "refactor",
+   "gold_bugfix": [
+    "shopflow/repositories/customer_repo.py::CustomerRepository.find_by_email"
+   ],
+   "gold_refactor": [
+    "shopflow/services/reporting.py::top_products"
+   ],
+   "gold_format": [],
+   "refactoring": {
+    "id": "R7",
+    "family": "rename_variable",
+    "entities": [
+     "counter",
+     "sku_counts"
+    ]
+   }
+  },
+  {
+   "sha": "0464a2219af617871cb4dae0fdc15245cf747d94",
+   "parent": "839bc0e765a70cde71273c092c0826a41d80e649",
+   "bug": "B15",
+   "variant": "refactor+format",
+   "gold_bugfix": [
+    "shopflow/repositories/customer_repo.py::CustomerRepository.find_by_email"
+   ],
+   "gold_refactor": [
+    "shopflow/services/reporting.py::top_products"
+   ],
+   "gold_format": [
+    "shopflow/repositories/product_repo.py::ProductRepository.search"
+   ],
+   "refactoring": {
+    "id": "R7",
+    "family": "rename_variable",
+    "entities": [
+     "counter",
+     "sku_counts"
+    ]
+   }
+  },
+  {
+   "sha": "e7f9f52f4acb034930531c365c326b5f7b2acbd2",
+   "parent": "2b4a4fc7a96932ffd79e5c6b7976216143c2e719",
+   "bug": "B16",
+   "variant": "pure",
+   "gold_bugfix": [
+    "shopflow/services/pricing.py::quote_order"
+   ],
+   "gold_refactor": [],
+   "gold_format": [],
+   "refactoring": null
+  },
+  {
+   "sha": "49e4b1e90e65a3259f39dde3c54215407d9ba6e1",
+   "parent": "b21ba87db3fe43e15c1ea116952699e0459b294f",
+   "bug": "B16",
+   "variant": "format",
+   "gold_bugfix": [
+    "shopflow/services/pricing.py::quote_order"
+   ],
+   "gold_refactor": [],
+   "gold_format": [
+    "shopflow/services/reporting.py::revenue_by_day"
+   ],
+   "refactoring": null
+  },
+  {
+   "sha": "4606928c2c9ef619a61d417d8c4c3122e17faec2",
+   "parent": "fac7db28cfc3b54ffc1b714bbea2b6556ddd306c",
+   "bug": "B16",
+   "variant": "refactor",
+   "gold_bugfix": [
+    "shopflow/services/pricing.py::quote_order"
+   ],
+   "gold_refactor": [
+    "shopflow/services/order_service.py::<module>",
+    "shopflow/services/order_service.py::OrderService.ship_order",
+    "shopflow/services/shipping.py::estimate_delivery",
+    "shopflow/services/shipping.py::estimate_delivery_date"
+   ],
+   "gold_format": [],
+   "refactoring": {
+    "id": "R2",
+    "family": "rename_method",
+    "entities": [
+     "estimate_delivery",
+     "estimate_delivery_date"
+    ]
+   }
+  },
+  {
+   "sha": "2055a15ae8c849070ec3c75015b81d603d1c03e2",
+   "parent": "cf3d52210b7b15423458ac593b473adc4910e56e",
+   "bug": "B16",
+   "variant": "refactor+format",
+   "gold_bugfix": [
+    "shopflow/services/pricing.py::quote_order"
+   ],
+   "gold_refactor": [
+    "shopflow/services/order_service.py::<module>",
+    "shopflow/services/order_service.py::OrderService.ship_order",
+    "shopflow/services/shipping.py::estimate_delivery",
+    "shopflow/services/shipping.py::estimate_delivery_date"
+   ],
+   "gold_format": [
+    "shopflow/services/reporting.py::revenue_by_day"
+   ],
+   "refactoring": {
+    "id": "R2",
+    "family": "rename_method",
+    "entities": [
+     "estimate_delivery",
+     "estimate_delivery_date"
+    ]
+   }
+  },
+  {
+   "sha": "33eb374ac9083a910070f85a3fbef7e7e2d7ada3",
+   "parent": "af297cb077108d8fed094b0afeda2b648bfc3b85",
+   "bug": "B17",
+   "variant": "pure",
+   "gold_bugfix": [
+    "shopflow/services/inventory.py::InventoryService.commit"
+   ],
+   "gold_refactor": [],
+   "gold_format": [],
+   "refactoring": null
+  },
+  {
+   "sha": "580b0d2bcedda7df2789ed299a5380d577cf694d",
+   "parent": "54bacaaeb81f72225b6f767fbc409deccee34a56",
+   "bug": "B17",
+   "variant": "format",
+   "gold_bugfix": [
+    "shopflow/services/inventory.py::InventoryService.commit"
+   ],
+   "gold_refactor": [],
+   "gold_format": [
+    "shopflow/models/order.py::Order.to_dict"
+   ],
+   "refactoring": null
+  },
+  {
+   "sha": "9e8a003edb385a1fbe1f0dc3c169c13da0b8edcd",
+   "parent": "d88b19af3031669860d8bde065f381193879b289",
+   "bug": "B17",
+   "variant": "refactor",
+   "gold_bugfix": [
+    "shopflow/services/inventory.py::InventoryService.commit"
+   ],
+   "gold_refactor": [
+    "shopflow/services/pricing.py::<module>",
+    "shopflow/services/pricing.py::quote_order",
+    "shopflow/utils/money.py::percent_of",
+    "shopflow/utils/money.py::percentage_of"
+   ],
+   "gold_format": [],
+   "refactoring": {
+    "id": "R1",
+    "family": "rename_method",
+    "entities": [
+     "percent_of",
+     "percentage_of"
+    ]
+   }
+  },
+  {
+   "sha": "4ac54847aa30e979b9c1749902e08b71915c3b44",
+   "parent": "a4b3f4eb3233d68c1fdf2c1106bf025d6439b6c6",
+   "bug": "B17",
+   "variant": "refactor+format",
+   "gold_bugfix": [
+    "shopflow/services/inventory.py::InventoryService.commit"
+   ],
+   "gold_refactor": [
+    "shopflow/services/pricing.py::<module>",
+    "shopflow/services/pricing.py::quote_order",
+    "shopflow/utils/money.py::percent_of",
+    "shopflow/utils/money.py::percentage_of"
+   ],
+   "gold_format": [
+    "shopflow/models/order.py::Order.to_dict"
+   ],
+   "refactoring": {
+    "id": "R1",
+    "family": "rename_method",
+    "entities": [
+     "percent_of",
+     "percentage_of"
+    ]
+   }
+  }
+ ],
+ "history": [
+  {
+   "sha": "9c3532c92e4fa4058e86cef6dd44b24add40bbde",
+   "modified_py": [
+    "src/vgar/mcp/proposal/prompts.py",
+    "src/vgar/mcp/server_factory.py",
+    "src/vgar/mcp/servers/execution_server.py",
+    "src/vgar/mcp/servers/graph_server.py",
+    "src/vgar/mcp/servers/repository_server.py",
+    "tests/mcp_server/test_incremental_serving.py",
+    "tests/mcp_server/test_prompt.py",
+    "tests/mcp_server/test_prompt_wire.py",
+    "tests/mcp_server/test_resource_wire.py",
+    "tests/mcp_server/test_sdk_runtime.py",
+    "tests/mcp_server/test_tv2_server_logging.py",
+    "tests/test_w10_impact_mcp.py"
+   ]
+  },
+  {
+   "sha": "b4cbaec0481f8ac53700a9dc10194fc78738d2f5",
+   "modified_py": [
+    "src/vgar/mcp/workspace.py",
+    "tests/mcp_server/test_tv2_workspace_defaults.py"
+   ]
+  },
+  {
+   "sha": "e668ba0f45e1676cc3d8c9a9ba60b27ebb961b69",
+   "modified_py": [
+    "src/vgar/mcp/server_factory.py",
+    "src/vgar/mcp/servers/execution_server.py",
+    "src/vgar/mcp/servers/graph_server.py",
+    "src/vgar/mcp/servers/repository_server.py"
+   ]
+  },
+  {
+   "sha": "2bdbba476340b2eb5a310038fd8b2ae8481a42bd",
+   "modified_py": [
+    "src/vgar/observability/instrumentation.py",
+    "tests/mcp_server/test_tv2_no_stdout.py"
+   ]
+  },
+  {
+   "sha": "244cdd8ec6a052a842c29bbb0f1e90bc774427e1",
+   "modified_py": [
+    "src/vgar/contracts/error.py",
+    "src/vgar/graph/factory.py",
+    "src/vgar/graph/sqlite_store.py",
+    "src/vgar/mcp/servers/graph_server.py",
+    "tests/mcp_server/test_tv2_server_logging.py",
+    "tests/test_mcp_day5.py",
+    "tests/test_tv2_real_backend.py",
+    "tests/test_tv2_removed_stack.py"
+   ]
+  },
+  {
+   "sha": "90a7902968d674ccbf4ab83aafb63699e71f54cd",
+   "modified_py": [
+    "scripts/mcp_server/_runtime_probe.py",
+    "scripts/mcp_server/_runtime_worker.py",
+    "scripts/mcp_server/check_runtime.py",
+    "scripts/mcp_server/smoke_mcp.py",
+    "src/vgar/cli.py",
+    "src/vgar/config/__init__.py",
+    "src/vgar/config/settings.py",
+    "src/vgar/evaluation/harness/candidates.py",
+    "src/vgar/evaluation/repair/fairness.py",
+    "src/vgar/evaluation/repair/manifest.py",
+    "src/vgar/evaluation/repair/verifier_eval.py",
+    "src/vgar/mcp/__init__.py",
+    "src/vgar/mcp/proposal/diff_tests_provider.py",
+    "src/vgar/mcp/registry.py",
+    "src/vgar/mcp/server_factory.py",
+    "src/vgar/mcp/servers/execution_server.py",
+    "src/vgar/mcp/servers/graph_server.py",
+    "src/vgar/mcp/servers/repository_server.py",
+    "src/vgar/mcp/tooling.py",
+    "src/vgar/repair/docker_executor.py",
+    "tests/fixtures/mcp_server/resource_fixture_server.py",
+    "tests/m2/w78/test_w78_diagnostic_logging.py",
+    "tests/m2/w78/test_w78_evidence_bundle.py",
+    "tests/m2/w78/test_w78_finalization.py",
+    "tests/m2/w78/test_w78_review_guards.py",
+    "tests/m2/w78/test_w78_workspace_cleanup.py",
+    "tests/m2/w910/conftest.py",
+    "tests/m2/w910/test_admission.py",
+    "tests/m2/w910/test_arm_fairness.py",
+    "tests/m2/w910/test_runner_contract.py",
+    "tests/m2/w910/test_variant_provenance.py",
+    "tests/mcp_server/test_concurrency.py",
+    "tests/mcp_server/test_core_tools.py",
+    "tests/mcp_server/test_legacy_compatibility.py",
+    "tests/mcp_server/test_sdk_runtime.py",
+    "tests/mcp_server/test_tv2_no_stdout.py",
+    "tests/test_m1_handoff.py",
+    "tests/test_mcp_day5.py",
+    "tests/test_mcp_legacy_servers.py",
+    "tests/test_mcp_security.py",
+    "tests/test_port_check.py",
+    "tests/test_redaction.py",
+    "tests/test_settings.py",
+    "tests/test_trace_debug.py",
+    "tests/test_w10_impact_mcp.py",
+    "tests/test_w10_manifest.py",
+    "tests/test_w7_w8_m1.py",
+    "tests/test_w9_pilot_bundles.py"
+   ]
+  },
+  {
+   "sha": "6a0f16c71f75b1f0beb66b348687e33ac89891ea",
+   "modified_py": [
+    "scripts/mcp_server/_preflight_worker.py",
+    "scripts/mcp_server/check_runtime.py",
+    "scripts/mcp_server/smoke_mcp.py",
+    "src/vgar/config/settings.py",
+    "src/vgar/graph/factory.py",
+    "src/vgar/graph/sqlite_service.py",
+    "src/vgar/mcp/proposal/resources.py",
+    "src/vgar/mcp/servers/execution_server.py",
+    "src/vgar/mcp/servers/graph_server.py",
+    "tests/fixtures/mcp_server/resource_fixture_server.py",
+    "tests/mcp_server/test_core_tools.py",
+    "tests/mcp_server/test_core_wire.py",
+    "tests/mcp_server/test_incremental_serving.py",
+    "tests/mcp_server/test_prompt_wire.py",
+    "tests/mcp_server/test_resource_wire.py",
+    "tests/mcp_server/test_resources.py",
+    "tests/mcp_server/test_sdk_runtime.py",
+    "tests/mcp_server/test_tv3_ranking.py",
+    "tests/mcp_server/test_tv3_verification.py",
+    "tests/test_mcp_client.py",
+    "tests/test_mcp_tool_contract.py",
+    "tests/test_settings.py",
+    "tests/test_sqlite_graph_service.py",
+    "tests/test_w10_impact_mcp.py"
+   ]
+  },
+  {
+   "sha": "122ee6662b339f7d0c021821ad4e898785a377fb",
+   "modified_py": [
+    "src/vgar/contracts/schema.py",
+    "tests/test_retrieval_rt1.py",
+    "tests/test_schema_contract.py"
+   ]
+  },
+  {
+   "sha": "ea4d6face089558e2e4e3e1bf7ccec87cc12eae1",
+   "modified_py": [
+    "configs/m3/w10_dev/tasks/astropy__astropy-13033.repro.py",
+    "src/vgar/evaluation/repair/verifier_eval.py",
+    "src/vgar/graph/factory.py",
+    "src/vgar/graph/sqlite_store.py",
+    "src/vgar/mcp/__init__.py",
+    "src/vgar/mcp/audit.py",
+    "src/vgar/mcp/client.py",
+    "src/vgar/mcp/registry.py",
+    "src/vgar/mcp/servers/execution_server.py",
+    "src/vgar/mcp/servers/graph_server.py",
+    "src/vgar/mcp/servers/repair_server.py",
+    "src/vgar/mcp/servers/repository_server.py",
+    "src/vgar/mcp/tooling.py",
+    "src/vgar/repair/api_check.py",
+    "src/vgar/repair/docker_executor.py",
+    "src/vgar/repair/docker_probe.py",
+    "src/vgar/repair/executor.py",
+    "src/vgar/repair/pipeline.py",
+    "src/vgar/repair/static_diagnostics.py",
+    "src/vgar/repair/test_runner.py",
+    "src/vgar/repair/verification.py",
+    "src/vgar/repair/verification_checks.py",
+    "tests/m2/w1112/test_a3_verification.py",
+    "tests/m2/w1112/test_evidence_checks.py",
+    "tests/m2/w1112/test_verifier_campaign.py",
+    "tests/m2/w1112/test_verifier_eval.py",
+    "tests/m2/w910/test_docker_admission.py",
+    "tests/m2/w910/test_runner_contract.py",
+    "tests/m2/w910/test_static_diagnostics.py",
+    "tests/test_mcp_day5.py",
+    "tests/test_mcp_legacy_servers.py"
+   ]
+  },
+  {
+   "sha": "64e23d78beb34285bcae1c225c36feda1eb24445",
+   "modified_py": []
+  },
+  {
+   "sha": "8220b6e713cfeb7e2d0a13ce8da0f2e104a856fd",
+   "modified_py": [
+    "src/vgar/graph/builder.py",
+    "src/vgar/graph/trace_links.py",
+    "tests/test_graph_builder_robustness.py",
+    "tests/test_trace_links.py"
+   ]
+  },
+  {
+   "sha": "0a89b5a67811096ab1ec71e7fbeeede6f3d85fb3",
+   "modified_py": [
+    "src/vgar/graph/retrieval.py",
+    "src/vgar/graph/sqlite_service.py"
+   ]
+  },
+  {
+   "sha": "18ed055ea51ca91ba4e1ee60c879647055d4b868",
+   "modified_py": [
+    "src/vgar/contracts/schema.py"
+   ]
+  },
+  {
+   "sha": "caed1eb11fd41a98c4b59affd41880e970fb1040",
+   "modified_py": [
+    "src/vgar/contracts/schema.py",
+    "src/vgar/graph/builder.py",
+    "tests/test_graph_builder.py",
+    "tests/test_may_call.py"
+   ]
+  },
+  {
+   "sha": "fc98ee568d2c7474e1c5fc070ee7802a7378b8be",
+   "modified_py": [
+    "scripts/measure_trace_links.py",
+    "src/vgar/graph/grounding.py",
+    "tests/test_measure_trace_links.py",
+    "tests/test_trace_links.py",
+    "tests/test_trace_quality.py"
+   ]
+  },
+  {
+   "sha": "3267d5b1efcae2b9293ba8ce549645e63e75b514",
+   "modified_py": [
+    "src/vgar/contracts/schema.py",
+    "src/vgar/graph/grounding.py",
+    "src/vgar/graph/task_overlay.py",
+    "tests/test_code_graph.py",
+    "tests/test_task_graph.py"
+   ]
+  },
+  {
+   "sha": "bca33720532303cb8de8f9aeefacb6da1b04e376",
+   "modified_py": [
+    "scripts/build_graph.py",
+    "src/vgar/contracts/schema.py",
+    "src/vgar/graph/builder.py",
+    "src/vgar/graph/sqlite_store.py",
+    "tests/test_callgraph_cases.py",
+    "tests/test_task_graph.py"
+   ]
+  },
+  {
+   "sha": "9eab5c4d0c8106c07b9908850660806dc9153626",
+   "modified_py": [
+    "src/vgar/contracts/impact.py",
+    "src/vgar/graph/arch_lift.py",
+    "src/vgar/graph/builder.py",
+    "src/vgar/graph/impact.py",
+    "src/vgar/mcp/servers/graph_server.py",
+    "tests/test_impact.py",
+    "tests/test_w10_impact_mcp.py"
+   ]
+  },
+  {
+   "sha": "9150cea296844255df013f160f360c37b5608119",
+   "modified_py": [
+    "src/vgar/contracts/schema.py",
+    "src/vgar/graph/grounding.py",
+    "src/vgar/graph/retrieval.py",
+    "src/vgar/graph/task_overlay.py",
+    "tests/test_arch_lift.py",
+    "tests/test_task_overlay.py"
+   ]
+  },
+  {
+   "sha": "a1a7215be7095666fe6a7437415692344dff3c93",
+   "modified_py": [
+    "scripts/build_graph.py",
+    "src/vgar/contracts/schema.py",
+    "src/vgar/graph/builder.py",
+    "src/vgar/graph/incremental.py",
+    "src/vgar/graph/sqlite_store.py",
+    "tests/test_graph_builder.py",
+    "tests/test_graph_builder_robustness.py"
+   ]
+  },
+  {
+   "sha": "c2cb8f620d9d194da7dae363efe51fc3621d8d68",
+   "modified_py": []
+  },
+  {
+   "sha": "ebc06527fc5e1ac66d06fbc44d86634d75360ed0",
+   "modified_py": [
+    "src/vgar/repair/static_checks.py"
+   ]
+  },
+  {
+   "sha": "f95cf684bd4bfc63ea144c722e30fe815c0e7b4d",
+   "modified_py": [
+    "src/vgar/evaluation/repair/fairness.py",
+    "src/vgar/repair/policy.py",
+    "tests/m2/w910/test_arm_fairness.py",
+    "tests/m2/w910/test_policy.py"
+   ]
+  },
+  {
+   "sha": "c88290a147bc42b70261b39e50b7f11d5e5137ea",
+   "modified_py": []
+  },
+  {
+   "sha": "ad0aa7407ee438f141e421e77b5ca9dfff95f1f4",
+   "modified_py": [
+    "src/vgar/agents/admitted.py",
+    "src/vgar/agents/agent_generator.py",
+    "src/vgar/agents/chat.py",
+    "src/vgar/agents/feedback.py",
+    "src/vgar/agents/runtime.py",
+    "src/vgar/agents/tool_agent.py",
+    "src/vgar/cli.py",
+    "src/vgar/mcp/servers/execution_server.py",
+    "src/vgar/mcp/servers/graph_server.py",
+    "src/vgar/mcp/servers/repair_server.py",
+    "src/vgar/mcp/servers/repository_server.py",
+    "src/vgar/mcp/tooling.py",
+    "src/vgar/observability/instrumentation.py",
+    "src/vgar/observability/phase_logger.py",
+    "tests/m3/test_agent_admitted.py",
+    "tests/test_cli_run_chat.py",
+    "tests/test_redaction.py",
+    "tests/unit/test_agent_impact_tool.py"
+   ]
+  },
+  {
+   "sha": "ccac57d3c3a0084e67440c49d70d140b6398ed52",
+   "modified_py": [
+    "src/vgar/evaluation/repair/aggregate.py",
+    "src/vgar/evaluation/repair/runner.py"
+   ]
+  },
+  {
+   "sha": "ac312f587f42aa9414f61f01ae0c3621b3eb9f59",
+   "modified_py": [
+    "scripts/prepare_manifest.py",
+    "src/vgar/evaluation/retrieval/dataset.py",
+    "tests/m2/test_dataset_split.py"
+   ]
+  },
+  {
+   "sha": "bcc8cb08571ee298984081aa63fc8498cd7d3ad7",
+   "modified_py": [
+    "scripts/derive_experiment_config.py",
+    "src/vgar/evaluation/repair/derive_config.py",
+    "tests/m3/test_derive_config.py"
+   ]
+  },
+  {
+   "sha": "e0b5b10a198d03b9c21a7064fd898649f7a36291",
+   "modified_py": []
+  },
+  {
+   "sha": "3e50d245659e238ae8240dd7465a2927c3077986",
+   "modified_py": []
+  }
+ ]
+}
