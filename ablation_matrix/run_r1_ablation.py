@@ -89,6 +89,11 @@ def _text_arm(record: Any, gold: dict[str, Any], document: dict[str, Any], budge
     return {"rank_hash": record.rank_hash, "ranked": detail["items"][:100], "meta": record.meta, "metrics": metrics}
 
 
+def arm_flags(args: argparse.Namespace) -> dict[str, dict[str, bool]]:
+    """Extra retrieval flags per arm: --use-variable-references applies to task_trace only (spec 2026-11-15 §5)."""
+    return {"task_trace": {"use_variable_references": True}} if args.use_variable_references else {}
+
+
 def arms_for(args: argparse.Namespace) -> tuple[tuple[str, ...], bool]:
     """Graph arms to run and whether the text baselines run."""
     return (GRAPH_ARMS, True) if args.history == "none" else (("task_trace",), False)
@@ -155,8 +160,10 @@ def evaluate_task(root: Path, row: dict[str, Any], args: argparse.Namespace, bui
     sources, provenance = read_repository_sources(row, root / "data" / "repositories", network=not args.offline)
     tree = root / "data" / "repositories" / "trees" / runner.key_of(row)
     extract_python_tree(provenance["cache_path"], row["repo"], row["base_commit"], tree)
+    from vgar.graph.layer_config import layers_from_args
+
     document, graph_meta = runner.load_or_build_graph(root, row, tree, rebuild=False, builder_hash=builder_hash,
-                                                      cache=False)
+                                                      cache=False, layers=layers_from_args(args))
     corpus = CorpusIndex(sources)
     graph_arms, run_text = arms_for(args)
     counts, history_label, history = None, None, None
@@ -167,7 +174,8 @@ def evaluate_task(root: Path, row: dict[str, Any], args: argparse.Namespace, bui
     # Every ranking is computed before the gold patch is parsed.
     outputs = variant_outputs(document, tree, row["problem_statement"], include=make_include(corpus),
                               count_tokens=counter, counter_label=label, budget_tokens=args.budget_tokens,
-                              arms=graph_arms, change_counts=counts, history_label=history_label)
+                              arms=graph_arms, change_counts=counts, history_label=history_label,
+                              arm_flags=arm_flags(args))
     text_records = {"bm25": bm25_rank(row["instance_id"], row["problem_statement"], sources),
                     "grep": grep_rank(row["instance_id"], row["problem_statement"], sources),
                     "neighbor": neighbor_rank(row["instance_id"], row["problem_statement"], sources)} if run_text else {}
@@ -186,7 +194,28 @@ def evaluate_task(root: Path, row: dict[str, Any], args: argparse.Namespace, bui
                   duration_seconds=time.perf_counter() - started)
     if history is not None:
         result["history"] = history
+    provenance = layers_and_flags(args, document)
+    if provenance is not None:
+        result["layers_and_flags"] = provenance
     return result
+
+
+def layers_and_flags(args: argparse.Namespace, document: dict[str, Any] | None = None) -> dict[str, Any] | None:
+    """Arm flags and optional layers of the run for the task result; ``None`` when none is on (results stay as before).
+
+    With the built ``document`` and a layer on, ``layer_status`` says per layer whether it was ready, failed or off.
+    """
+    from vgar.graph.layer_config import layer_summary, layers_from_args
+
+    flags = arm_flags(args)
+    configs = layers_from_args(args)
+    layers = sorted(k for k, v in configs.builder_kwargs().items() if v)
+    if not flags and not layers:
+        return None
+    provenance = {"arm_flags": flags, "layers": layers}
+    if document is not None and layers:
+        provenance["layer_status"] = layer_summary(document, configs)
+    return provenance
 
 
 def _bootstrap(deltas: list[float], seed: int, rounds: int = 2000) -> list[float]:
@@ -282,6 +311,11 @@ def parse_args(argv: list[str] | None) -> argparse.Namespace:
     parser.add_argument("--git-root", type=Path)
     parser.add_argument("--history-commits", type=int, default=50)
     parser.add_argument("--compare-history", type=Path, nargs=3, metavar=("NONE", "RAW", "GRAPHDIFF"))
+    parser.add_argument("--use-variable-references", action="store_true",
+                        help="context flag on the task_trace arm (needs --tsg-*)")
+    from vgar.graph.layer_config import add_layer_options
+
+    add_layer_options(parser)
     args = parser.parse_args(argv)
     if args.compare_history:
         return args

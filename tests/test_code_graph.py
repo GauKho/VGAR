@@ -194,6 +194,15 @@ def test_statement_count_matches_python_ast(repo: Path) -> None:
     assert compared > 0
 
 
+def test_missing_identifier_from_error_recovery_is_skipped() -> None:
+    # tree-sitter-python reads the f-string spec `{x:=}` as a walrus without a value and inserts a zero-width
+    # MISSING identifier (matplotlib-23476, lib/matplotlib/axis.py:1836); it is not in the source.
+    source = b'def f(ticklabels):\n    raise TypeError(f"{ticklabels:=} must be a sequence") from None\n'
+    function = _function(source)
+    facts = function_identifiers(function, source, function_statements(function, source))
+    assert [fact.name for fact in facts] == ["TypeError", "ticklabels"]
+
+
 def test_deeply_nested_expression_does_not_overflow() -> None:
     source = b"def f():\n    return " + b" + ".join([b"1"] * 5000) + b"\n"
     function = _function(source)
@@ -389,3 +398,50 @@ def test_parse_export_keeps_helper_methods_apart() -> None:
     assert {"<module>", "login"} <= {item.name for item in FLOW_METHODS}
     assert next(item for item in FLOW_METHODS if item.name == "login").line == 1
     assert "<operator>.assignment" in {item.name for item in parse_export(FLOW_TEXT)}
+
+
+EFFECTS = b"""def f(a, b):
+    global COUNT
+    x = a + 1
+    b.total = x
+    a[0] = x
+    COUNT = 2
+    log(x)
+    if x:
+        return x
+    raise ValueError(x)
+    def inner():
+        return g()
+    yield x
+"""
+
+
+def test_statement_effects_kinds() -> None:
+    facts = function_statements(_function(EFFECTS), EFFECTS)
+    effects = [(s.kind, s.effects) for s in facts]
+    assert effects == [("global", ()), ("expression", ()), ("expression", ("store_attribute",)),
+                       ("expression", ("store_subscript",)), ("expression", ("store_global",)),
+                       ("expression", ("call",)), ("if", ()), ("return", ("return",)),
+                       ("raise", ("call", "raise")), ("def", ()), ("expression", ("yield",))]
+
+
+def test_effects_ignore_nested_definitions() -> None:
+    facts = function_statements(_function(EFFECTS), EFFECTS)
+    inner = next(s for s in facts if s.kind == "def")
+    assert inner.effects == ()  # the call and return inside inner() are inner's, not f's
+
+
+MORE_EFFECTS = b"""def f(d, o, k, x):
+    assert x > 0
+    del d[k]
+    del o.attr
+    for o.a in d:
+        pass
+"""
+
+
+def test_assert_delete_and_for_targets_have_effects() -> None:
+    facts = function_statements(_function(MORE_EFFECTS), MORE_EFFECTS)
+    assert [(s.kind, s.effects) for s in facts] == [
+        ("assert", ("raise",)), ("delete", ("store_subscript",)), ("delete", ("store_attribute",)),
+        ("for", ("store_attribute",)), ("pass", ())]

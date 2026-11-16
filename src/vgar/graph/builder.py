@@ -17,6 +17,7 @@ from tree_sitter import Language, Node, Parser
 
 from vgar.contracts.schema import EDGE_ENDPOINTS, G_CODE_EDGE_TYPES, PROFILE_FULL_VGAR_MCP, SCHEMA_VERSION, validate_graph_document
 from vgar.graph import arch_lift, code_graph, jarvis_merge, jarvis_runner, joern_runner, layer1_rules, may_call, tsg_extractor
+from vgar.graph.variable_refs import variable_accesses
 from vgar.graph.code_graph import JoernMethod
 from vgar.graph.jarvis_merge import Site, Target
 from vgar.graph.jarvis_runner import JarvisConfig, JarvisResult
@@ -1787,7 +1788,46 @@ class PythonGraphBuilder:
                     added["Identifier"] += 1
         if config_reads:
             added["ConfigEntry"] += self._add_config_entries(config_reads, version)
+        added["VariableReference"] += self._add_variable_references(root, sorted(facts_by_path))
         self.tsg_report.update(added=dict(sorted(added.items())), unmatched=dict(sorted(unmatched.items())))
+
+    def _add_variable_references(self, root: Path, paths: list[str]) -> int:
+        """REFERENCES from a function to the GlobalVariable / Field nodes it reads or writes (spec 2026-11-15 §2).
+
+        Only targets tree-sitter-graph created get an edge; a name imported with ``from m import X`` is
+        resolved through the module's import table to ``m``'s global (heuristic, confidence 0.8).
+        """
+        functions = {(n["path"], n["qualified_name"]): n for n in self.nodes
+                     if n["type"] in {"Function", "Method", "Test"}}
+        variables = {n["qualified_name"]: n for n in self.nodes if n["type"] in {"GlobalVariable", "Field"}}
+        modules = {state.path: state for state in self.modules.values()}
+        tables = self._import_tables()
+        edges: dict[tuple[str, str], tuple[set[str], bool]] = {}
+        for path in paths:
+            module = modules.get(path)
+            if module is None:
+                continue
+            table = tables.get(module.module_id, {})
+            for access in variable_accesses((root / path).read_bytes(), path):
+                function = functions.get((path, f"{module.module_name}.{access.function}"))
+                if access.kind == "imported":
+                    origin = table.get(access.name)
+                    target = variables.get(origin) if origin else None
+                elif access.kind == "field":
+                    target = variables.get(f"{module.module_name}.{access.owner}.{access.name}")
+                else:
+                    target = variables.get(f"{module.module_name}.{access.name}")
+                if function is None or target is None or target["type"] == "Field" and access.kind != "field":
+                    continue
+                key = (function["id"], target["id"])
+                kinds, _ = edges.get(key, (set(), False))
+                edges[key] = (kinds | ({"read", "write"} if access.access == "read_write" else {access.access}),
+                              access.kind == "imported")
+        for (source_id, target_id), (kinds, heuristic) in sorted(edges.items()):
+            self._add_edge("REFERENCES", source_id, target_id, confidence=0.8 if heuristic else 1.0,
+                           resolution="heuristic" if heuristic else "exact", rule_id="python.layer1.reads.v1",
+                           properties={"access": "read_write" if kinds == {"read", "write"} else next(iter(kinds))})
+        return len(edges)
 
     def _add_config_entries(self, reads: list[tuple[str, str, str, str, int]], version: str) -> int:
         """One repo-wide ConfigEntry per environment key; one REFERENCES edge per (reader, key)."""
@@ -2054,7 +2094,7 @@ class PythonGraphBuilder:
         statement_ids = [f"{owner_id}::{fact.kind}#{fact.n}" for fact in statements]
         children: dict[str, list[str]] = defaultdict(list)
         for fact, statement_id in zip(statements, statement_ids):
-            properties = {"kind": fact.kind, "owner_id": owner_id}
+            properties = {"kind": fact.kind, "owner_id": owner_id, "effects": list(fact.effects)}
             if fact.condition is not None:
                 properties["condition"] = fact.condition
             if fact.value is not None:

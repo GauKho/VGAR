@@ -104,10 +104,11 @@ def test_statement_node_fields(repo: Path, monkeypatch: pytest.MonkeyPatch) -> N
     node = _statement(document, ".login::if#1")
     assert node["id"] == f"{owner['id']}::if#1" and node["qualified_name"] == f"{owner['qualified_name']}::if#1"
     assert node["name"] == "if" and node["path"] == "flow_cases.py"
-    assert node["properties"] == {"kind": "if", "owner_id": owner["id"], "condition": "user is None"}
+    assert node["properties"] == {"kind": "if", "owner_id": owner["id"], "condition": "user is None", "effects": []}
     assert node["range"]["start_line"] == 3 and node["range"]["end_line"] == 4
     assert node["content_hash"] == PythonGraphBuilder._hash_bytes(b"if user is None:\n        return None")
-    assert _statement(document, ".login::return#2")["properties"]["value"] == "session"
+    returned = _statement(document, ".login::return#2")["properties"]
+    assert returned["value"] == "session" and returned["effects"] == ["return"]
 
 
 def test_ast_child_shape_and_ordinal(repo: Path, monkeypatch: pytest.MonkeyPatch) -> None:

@@ -119,11 +119,17 @@ def ast_only(document: dict[str, Any]) -> dict[str, Any]:
                       and edge["source_id"] not in dropped and edge["target_id"] not in dropped]}
 
 
+def arm_config(arm: str, arm_flags: Mapping[str, Mapping[str, Any]] | None = None) -> RetrievalConfig:
+    """Retrieval config of an arm: its spec flags plus any extra flags given for it (spec 2026-11-15 §5)."""
+    return RetrievalConfig(**{**GRAPH_ARM_SPECS[arm][1], **dict((arm_flags or {}).get(arm, {}))})
+
+
 def variant_outputs(document: dict[str, Any], tree: Path, issue_text: str, *,
                     include: Callable[[Mapping[str, Any]], bool] | None, count_tokens: Callable[[str], int],
                     counter_label: str, budget_tokens: int = 12000,
                     arms: tuple[str, ...] = ARMS, change_counts: Mapping[str, float] | None = None,
-                    history_label: str | None = None) -> dict[str, dict[str, Any]]:
+                    history_label: str | None = None,
+                    arm_flags: Mapping[str, Mapping[str, Any]] | None = None) -> dict[str, dict[str, Any]]:
     """Run the named graph arms on one graph; output follows ``evaluate_graph_task``'s ``arm_outputs``.
 
     Args:
@@ -137,6 +143,7 @@ def variant_outputs(document: dict[str, Any], tree: Path, issue_text: str, *,
         arms: Names from ``GRAPH_ARM_SPECS``.
         change_counts: Commit-history counts for ``recent_change_frequency`` (node id or path keys).
         history_label: Provenance label of ``change_counts``.
+        arm_flags: Extra ``RetrievalConfig`` flags per arm name (e.g. ``use_variable_references`` on ``task_trace``).
     """
     overlay = TaskOverlayBuilder(document).build("ablation:task_trace", issue_text, None)
     # Arms sharing a config share one retriever. Each retriever deep-copies the
@@ -144,14 +151,14 @@ def variant_outputs(document: dict[str, Any], tree: Path, issue_text: str, *,
     # all five were kept).
     groups: dict[tuple[str, bool], list[str]] = {}
     for arm in arms:
-        _, flags, ast = GRAPH_ARM_SPECS[arm]
+        _, _, ast = GRAPH_ARM_SPECS[arm]
+        flags = {**GRAPH_ARM_SPECS[arm][1], **dict((arm_flags or {}).get(arm, {}))}
         groups.setdefault((repr(sorted(flags.items())), ast), []).append(arm)
     outputs: dict[str, dict[str, Any]] = {}
     for (_, ast), names in groups.items():
-        flags = GRAPH_ARM_SPECS[names[0]][1]
         graph = ast_only(document) if ast else document
         retriever = GraphContextRetriever(graph, tree, count_tokens=count_tokens, counter_label=counter_label,
-                                          config=RetrievalConfig(**flags), change_counts=change_counts,
+                                          config=arm_config(names[0], arm_flags), change_counts=change_counts,
                                           history_label=history_label)
         del graph
         for arm in names:

@@ -52,6 +52,9 @@ class RetrievalConfig:
     may_call_factor: float = 0.0
     use_trace_component: bool = False
     public_api_from_ports: bool = False
+    # Spec 2026-11-15 §4: variables an anchor reads and their other readers (needs tree-sitter-graph reader edges).
+    use_variable_references: bool = False
+    variable_co_readers: int = 3
 
     def __post_init__(self) -> None:
         for name, value, minimum in (("max_hops", self.max_hops, 0),
@@ -81,6 +84,11 @@ class RetrievalConfig:
                 or not isinstance(self.dependent_symbols_per_component, int)
                 or self.dependent_symbols_per_component < 1):
             raise InvalidLimitError("dependent_symbols_per_component must be an integer >= 1")
+        if not isinstance(self.use_variable_references, bool):
+            raise InvalidQueryError("use_variable_references must be a boolean")
+        if (isinstance(self.variable_co_readers, bool) or not isinstance(self.variable_co_readers, int)
+                or self.variable_co_readers < 0):
+            raise InvalidLimitError("variable_co_readers must be an integer >= 0")
         if not _number(self.may_call_factor) or not 0 <= self.may_call_factor <= 1:
             raise InvalidQueryError("may_call_factor must be within [0, 1]")
 
@@ -88,7 +96,10 @@ class RetrievalConfig:
 RT1_FLAG_DEFAULTS: dict[str, object] = {
     "use_component_dependents": False, "dependent_symbols_per_component": 3, "may_call_factor": 0.0,
     "use_trace_component": False, "public_api_from_ports": False,
+    # Later opt-in flags follow the same rule (spec 2026-11-15 §4).
+    "use_variable_references": False, "variable_co_readers": 3,
 }
+READS_RULE = "python.layer1.reads.v1"
 
 
 def ranking_config_hash(config: RetrievalConfig) -> str:
@@ -273,6 +284,8 @@ class GraphContextRetriever:
             dependents = self._component_dependents(anchors, states, include)
             states.update(dependents)
             dependent_ids = sorted(dependents)
+        if self.config.use_variable_references:
+            states.update(self._variable_neighbours(anchors, states, include))
         test_states, test_limited = self._walk(
             failing_tests, {}, relations={"CALLS", "CALLERS", "TESTS", "TESTED_BY"},
         )
@@ -456,6 +469,8 @@ class GraphContextRetriever:
 
     def _index_relations(self) -> None:
         parents = {edge["target_id"]: edge for edge in self.document["edges"] if edge["type"] == "CONTAINS"}
+        self._variable_reads: dict[str, list[tuple[str, float]]] = defaultdict(list)
+        self._variable_readers: dict[str, set[str]] = defaultdict(set)
 
         def connect(source: str, target: str, confidence: float, forward: str, reverse: str,
                     bypass_threshold: bool = False) -> None:
@@ -497,6 +512,11 @@ class GraphContextRetriever:
                         declared = evidence.get("declared_member_ids", [])
                         if target in declared or (not declared and self.nodes[target]["properties"].get("owner_class_id") == evidence.get("class_id")):
                             self.reference_dependencies[parent["source_id"]].add(target)
+            elif edge["type"] == "REFERENCES" and edge["provenance"]["rule_id"] == READS_RULE:
+                # Reader edges are seen only through use_variable_references (spec 2026-11-15 §4).
+                if self.config.use_variable_references:
+                    self._variable_reads[source].append((target, confidence))
+                    self._variable_readers[target].add(source)
             elif edge["type"] in {"CONTAINS", "TESTS", "INHERITS", "REFERENCES"}:
                 connect(source, target, confidence, edge["type"],
                         {"CONTAINS": "CONTAINED_BY", "TESTS": "TESTED_BY",
@@ -554,6 +574,37 @@ class GraphContextRetriever:
                         if source_component != target_component:
                             self._component_calls[(source_component, target_component)][caller["id"]].append(
                                 min(edge["confidence"], parent["confidence"]))
+
+    def _variable_neighbours(self, anchors: list[str], states: dict[str, Any],
+                             include: Callable[[dict[str, Any]], bool] | None) -> dict[str, tuple[int, float, tuple[str, ...]]]:
+        """Variables the anchors read (READS_VARIABLE) and up to ``variable_co_readers`` other readers of each (CO_READER).
+
+        Args:
+            anchors: Anchor node ids of this query.
+            states: Candidates already reached by the walk; they are not added again.
+            include: Optional evaluation filter applied to every added node.
+        """
+        added: dict[str, tuple[int, float, tuple[str, ...]]] = {}
+
+        def allowed(node: dict[str, Any]) -> bool:
+            return bool(node.get("path")) and bool(node.get("range")) and (
+                include is None or (include(node) and not node["qualified_name"].startswith("tests.")))
+
+        for anchor in anchors:
+            for variable, confidence in sorted(self._variable_reads.get(anchor, ())):
+                node = self.nodes[variable]
+                if variable not in states and variable not in added and allowed(node):
+                    added[variable] = (1, confidence, ("READS_VARIABLE", f"REFERENCES:{anchor}->{variable}"))
+                kept = 0
+                for reader in sorted(self._variable_readers.get(variable, set()) - {anchor}):
+                    if kept >= self.config.variable_co_readers:
+                        break
+                    if reader in states or reader in added or not self._eligible(self.nodes[reader]) \
+                            or not allowed(self.nodes[reader]):
+                        continue
+                    added[reader] = (1, confidence, ("CO_READER", variable))
+                    kept += 1
+        return added
 
     def _component_dependents(self, anchors: list[str], states: dict[str, Any],
                               include: Callable[[dict[str, Any]], bool] | None) -> dict[str, tuple[int, float, tuple[str, ...]]]:

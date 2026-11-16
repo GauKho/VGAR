@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import logging
+import os
 from collections import deque
 from dataclasses import asdict
 from pathlib import Path
@@ -37,6 +38,15 @@ logger = logging.getLogger(__name__)
 _SYMBOL_OWNERS = frozenset({"Function", "Method", "Test"})
 # Directed edges a dependency path may follow; a call is CONTAINS (owner -> CallSite) then CALLS.
 _PATH_EDGES = frozenset({"CALLS", "MAY_CALL", "IMPORTS", "DEPENDS_ON", "CONTAINS", "HAS_METHOD", "HAS_CALLSITE"})
+
+
+def impact_flags_from_env() -> dict[str, bool]:
+    """Opt-in impact flags from the host (spec 2026-11-15 §3); ``1`` turns one on, anything else leaves it off."""
+    def on(name: str) -> bool:
+        return os.getenv(name, "").strip().lower() in {"1", "true", "yes", "on"}
+
+    return {"follow_variable_readers": on("VGAR_IMPACT_FOLLOW_VARIABLE_READERS"),
+            "narrow_with_dataflow": on("VGAR_IMPACT_NARROW_WITH_DATAFLOW")}
 
 
 class SQLiteGraphService:
@@ -356,6 +366,7 @@ class SQLiteGraphService:
         document = self._document(graph_version)
         paths = tuple(sorted(node["path"] for node in document["nodes"] if node["type"] == "File"))
         report = analyze_patch_impact(diff, document, self.repository_root, patch_policy=PatchPolicy(paths, ()),
+                                      **impact_flags_from_env(),
                                       max_hops=max_hops, max_nodes=max_nodes)
         return json.loads(report.canonical_json())
 

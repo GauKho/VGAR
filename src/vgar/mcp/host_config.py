@@ -53,7 +53,16 @@ def check_host_config(server: Server, environ: Mapping[str, str] | None = None) 
     if server == "graph":
         if (_value(env, "VGAR_GRAPH_BACKEND").lower() or "sqlite") != "sqlite":
             return problems  # a snapshot is read-only and names no repository
-        return problems + _absolute(env, "VGAR_REPOSITORY_ROOT", directory=True) + _absolute(env, "VGAR_GRAPH_DATABASE")
+        from vgar.graph.layer_config import PATH_SETTINGS, layer_configs
+
+        layers = [problem for name in PATH_SETTINGS for problem in _absolute(env, name, required=False)]
+        if not layers:  # paths are fine: check the rules between settings (pairs, numbers) the build would hit later
+            try:
+                layer_configs(env)
+            except ValueError as error:
+                layers.append(str(error))
+        return (problems + _absolute(env, "VGAR_REPOSITORY_ROOT", directory=True) + _absolute(env, "VGAR_GRAPH_DATABASE")
+                + layers)
     # execution: run_pytest works in VGAR_LEASE_ROOT, run_relevant_tests in VGAR_REPOSITORY_ROOT with its graph
     if not _value(env, "VGAR_REPOSITORY_ROOT") and not _value(env, "VGAR_LEASE_ROOT"):
         return problems + ["VGAR_REPOSITORY_ROOT is not set (or set VGAR_LEASE_ROOT)"]

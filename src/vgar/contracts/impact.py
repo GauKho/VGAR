@@ -4,7 +4,7 @@ from __future__ import annotations
 import hashlib
 import json
 from pathlib import PurePosixPath
-from typing import Annotated, Literal
+from typing import Annotated, Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
@@ -95,7 +95,9 @@ class UnmappedChange(_Located):
 
 
 # LIFT is the proposal's Lift mapping (code -> Component), not a graph edge.
-ImpactRelation = Literal['CALLS', 'IMPORTS', 'INHERITS', 'TESTS', 'LIFT', 'EXPOSES_PORT', 'CONSUMES_PORT', 'DEPENDS_ON']
+# READS_CHANGED_VARIABLE / SHARES_STATE: opt-in impact flag follow_variable_readers (spec 2026-11-15 §3 A).
+ImpactRelation = Literal['CALLS', 'IMPORTS', 'INHERITS', 'TESTS', 'LIFT', 'EXPOSES_PORT', 'CONSUMES_PORT', 'DEPENDS_ON',
+                         'READS_CHANGED_VARIABLE', 'SHARES_STATE']
 
 
 class ImpactedNode(_Contract):
@@ -139,6 +141,9 @@ class ImpactedNodes(_Contract):
     min_confidence: float | None = Field(default=None, ge=0, le=1)
     traversed: list[ImpactRelation] = Field(default_factory=list)
     unsupported: list[UnsupportedRelation] = Field(default_factory=list)
+    # Only when an opt-in impact flag is on (spec 2026-11-15 §3): flags, variable_seeds, narrowed_by_dataflow,
+    # dataflow_fallbacks. Left out of canonical_json when None, so default reports keep their bytes.
+    extensions: dict[str, Any] | None = None
 
     @model_validator(mode='after')
     def consistent(self) -> ImpactedNodes:
@@ -277,6 +282,8 @@ class ImpactReport(_Contract):
     def canonical_json(self) -> str:
         """Stable collection ordering without mutating the report or its lists."""
         data = self.model_dump(mode='json')
+        if data['impacted'].get('extensions') is None:
+            data['impacted'].pop('extensions', None)
         for node in data['changed']:
             node['spans'].sort(key=lambda span: tuple(span.values()))
         data['changed'].sort(key=lambda node: (node['path'], node['node_id']))

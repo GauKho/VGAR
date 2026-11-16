@@ -250,6 +250,10 @@ EDGE_ENDPOINTS: dict[str, set[tuple[str, str]]] = {
     } | {
         # Proposed, pending team review (plan L1-3; proposal lines 223, 1238): schema -> its class.
         ("Schema", "Class"),
+    } | {
+        # Proposed, pending team review (spec 2026-11-15 §2; proposal §4.3 REFERENCES: Entity -> Entity):
+        # code that reads or writes a module global or a class attribute.
+        (source, target) for source in {"Function", "Method", "Test"} for target in {"GlobalVariable", "Field"}
     },
     "TESTS": {
         ("Test", target)

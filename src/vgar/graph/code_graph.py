@@ -27,6 +27,9 @@ class StatementFact:
     parent: int | None  # index of the enclosing statement; None when directly in the function
     condition: str | None  # if, elif, while
     value: str | None  # return
+    # What the statement's own code (not its child statements, not nested definitions) can do outside the
+    # function: return, raise, yield, call, store_attribute, store_subscript, store_global (spec 2026-11-15 §3 B).
+    effects: tuple[str, ...] = ()
 
 
 @dataclass(frozen=True)
@@ -89,13 +92,73 @@ def _kind(node: Node) -> str:
     return node.type.removesuffix("_statement")
 
 
-def _fact(node: Node, source: bytes, n: int, kind: str, parent: int | None) -> StatementFact:
+def _effects(node: Node, source: bytes, declared: set[str]) -> tuple[str, ...]:
+    found: set[str] = set()
+    if node.type == "return_statement":
+        found.add("return")
+    elif node.type in {"raise_statement", "assert_statement"}:
+        found.add("raise")
+
+    def store(target: Node | None) -> None:
+        targets = [target]
+        while targets:
+            item = targets.pop()
+            if item is None:
+                continue
+            if item.type == "attribute":
+                found.add("store_attribute")
+            elif item.type == "subscript":
+                found.add("store_subscript")
+            elif item.type == "identifier" and _text(item, source) in declared:
+                found.add("store_global")
+            elif item.type in {"pattern_list", "tuple_pattern", "list_pattern", "tuple", "list", "expression_list"}:
+                targets.extend(item.named_children)
+
+    if node.type == "delete_statement":
+        for child in node.named_children:
+            store(child)
+    elif node.type == "for_statement":
+        store(node.child_by_field_name("left"))
+    stack = list(node.named_children)
+    while stack:
+        child = stack.pop()
+        if _is_statement(child) or child.type in _DEFINITIONS or child.type == "lambda":
+            continue
+        if child.type == "call":
+            found.add("call")
+        elif child.type == "yield":
+            found.add("yield")
+        elif child.type in {"assignment", "augmented_assignment"}:
+            store(child.child_by_field_name("left"))
+        elif child.type == "named_expression":
+            store(child.child_by_field_name("name"))
+        stack.extend(child.named_children)
+    return tuple(sorted(found))
+
+
+def _declared(function: Node, source: bytes) -> set[str]:
+    """Names a ``global`` or ``nonlocal`` statement of the function (not of nested definitions) declares."""
+    names: set[str] = set()
+    stack = list(_body(function))
+    while stack:
+        node = stack.pop()
+        if node.type in _DEFINITIONS:
+            continue
+        if node.type in {"global_statement", "nonlocal_statement"}:
+            names |= {_text(child, source) for child in node.named_children if child.type == "identifier"}
+        stack.extend(node.named_children)
+    return names
+
+
+def _fact(node: Node, source: bytes, n: int, kind: str, parent: int | None,
+          declared: set[str] | None = None) -> StatementFact:
     condition = node.child_by_field_name("condition") if kind in {"if", "elif", "while"} else None
     value = None
     if kind == "return":
         value = next((child for child in node.named_children if child.type != "comment"), None)
+    effects = () if node.type in _DEFINITIONS else _effects(node, source, declared or set())
     return StatementFact(node, kind, n, parent, None if condition is None else _text(condition, source),
-                         None if value is None else _text(value, source))
+                         None if value is None else _text(value, source), effects)
 
 
 def function_statements(function: Node, source: bytes) -> list[StatementFact]:
@@ -104,12 +167,13 @@ def function_statements(function: Node, source: bytes) -> list[StatementFact]:
     same_kind: Counter[str] = Counter()
     # An explicit stack: a long chain such as a + b + c ... nests deeper than Python's recursion limit.
     stack: list[tuple[Node, int | None]] = [(child, None) for child in reversed(_body(function))]
+    declared = _declared(function, source)
     while stack:
         node, parent = stack.pop()
         if _is_statement(node):
             kind = _kind(node)
             same_kind[kind] += 1
-            facts.append(_fact(node, source, same_kind[kind], kind, parent))
+            facts.append(_fact(node, source, same_kind[kind], kind, parent, declared))
             if node.type in _DEFINITIONS:
                 continue
             parent = len(facts) - 1
@@ -129,7 +193,8 @@ def function_identifiers(function: Node, source: bytes, statements: list[Stateme
         if node.type in _DEFINITIONS:
             continue
         statement = index_of.get(node.id, statement)
-        if node.type == "identifier" and statement is not None:
+        # A MISSING identifier is a zero-width node tree-sitter inserts while recovering from a parse error.
+        if node.type == "identifier" and not node.is_missing and statement is not None:
             name = _text(node, source)
             same_name[name] += 1
             facts.append(IdentifierFact(node, name, same_name[name], statement, declared.get(node.id)))

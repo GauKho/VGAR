@@ -10,8 +10,7 @@ from vgar.graph.builder import PythonGraphBuilder
 from vgar.graph.jarvis_runner import DEFAULT_IMAGE as JARVIS_IMAGE
 from vgar.graph.jarvis_runner import JarvisConfig
 from vgar.graph.joern_runner import DEFAULT_IMAGE, JoernConfig
-from vgar.graph.scip_resolver import ScipConfig
-from vgar.graph.lsp_resolver import LspConfig
+from vgar.graph.layer_config import lsp_config, scip_config
 from vgar.graph.tsg_extractor import TsgConfig
 from vgar.observability.graph_trace import GraphTrace
 
@@ -57,25 +56,17 @@ def main() -> None:
 
     scip = None
     if args.resolver in {"scip", "scip-lsp"}:
-        runtime = Path(__file__).resolve().parents[1] / "artifacts/m1/w7-w8/scip-runtime/node_modules/@sourcegraph/scip-python/index.js"
-        entry = (args.scip_entry or runtime).resolve()
-        shim = Path(__file__).with_name("scip_windows_compat.cjs").resolve()
-        node = shutil.which(args.node) or args.node
-        scip = ScipConfig(command=(str(Path(node).resolve()), "-r", str(shim), str(entry)),
-                          bundle=args.scip_bundle, timeout_seconds=args.scip_timeout, strict=args.strict_resolver,
-                          environment_file=args.scip_environment, configure_imports=not args.scip_native_config,
-                          import_roots=tuple(args.scip_import_root or ("src", "lib")), target_only=args.scip_target_only,
-                          python_executable=args.scip_python)
+        scip = scip_config(args.scip_entry, node=args.node, timeout=args.scip_timeout, strict=args.strict_resolver,
+                           environment=args.scip_environment, native_config=args.scip_native_config,
+                           import_roots=tuple(args.scip_import_root or ("src", "lib")), target_only=args.scip_target_only,
+                           python=args.scip_python, bundle=args.scip_bundle)
 
     lsp = None
     if args.resolver in {"lsp", "scip-lsp"}:
-        runtime = Path(__file__).resolve().parents[1] / "artifacts/m1/w5-w6/lsp-runtime/node_modules/pyright/langserver.index.js"
-        entry = (args.lsp_entry or runtime).resolve()
-        node = shutil.which(args.node) or args.node
-        lsp = LspConfig(command=(str(Path(node).resolve()), str(entry), "--stdio"),
-                        total_timeout=args.lsp_timeout, request_timeout=args.lsp_request_timeout,
-                        max_requests=args.lsp_max_requests, python_executable=args.lsp_python,
-                        import_roots=tuple(args.lsp_import_root or ("src", "lib")), strict=args.strict_resolver)
+        lsp = lsp_config(args.lsp_entry, node=args.node, total_timeout=args.lsp_timeout,
+                         request_timeout=args.lsp_request_timeout, max_requests=args.lsp_max_requests,
+                         python=args.lsp_python, import_roots=tuple(args.lsp_import_root or ("src", "lib")),
+                         strict=args.strict_resolver)
 
     tsg = TsgConfig.from_env()
     if args.tsg_executable or args.tsg_tree_sitter_dir:

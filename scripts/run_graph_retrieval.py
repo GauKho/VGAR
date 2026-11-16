@@ -56,13 +56,21 @@ def key_of(row: dict) -> str:
 
 
 def load_or_build_graph(root: Path, row: dict, tree: Path, *, rebuild: bool, builder_hash: str, cache: bool = False,
-                        resolver="static", scip_config=None, resolver_profile=None, cache_root=None, trace=None):
-    """Cache is bound to every graph source and the resolver's implementation/runtime profile."""
+                        resolver="static", scip_config=None, resolver_profile=None, cache_root=None, trace=None,
+                        layers=None):
+    """Cache is bound to every graph source and the resolver's implementation/runtime profile.
+
+    ``layers`` (tree-sitter-graph / Joern / JARVIS, spec 2026-11-15 §5) enter the cache key only when one is on.
+    """
+    from vgar.graph.layer_config import LayerConfigs, layer_profile
     from vgar.graph.builder import PythonGraphBuilder
     from vgar.graph.scip_resolver import current_fingerprint
     from vgar.graph.scip_profile import auxiliary_fingerprint
     from vgar.contracts.schema import validate_graph_document
     profile = resolver_profile or {"resolver": resolver}
+    if layer_profile(layers) is not None:
+        profile = dict(profile, layers=layer_profile(layers))
+    optional = {k: v for k, v in (layers or LayerConfigs()).builder_kwargs().items() if k in {"tsg", "joern", "jarvis"}}
     source_digest = sha256(json.dumps(current_fingerprint(tree), sort_keys=True))
     auxiliary_digest = sha256(json.dumps(auxiliary_fingerprint(tree), sort_keys=True))
     identity = resolver_cache_key(row["repo"], row["base_commit"], source_digest, builder_hash,
@@ -83,7 +91,7 @@ def load_or_build_graph(root: Path, row: dict, tree: Path, *, rebuild: bool, bui
         return document, meta | {"cached": True, "cache_read_seconds": time.perf_counter() - cache_started}
     started = time.perf_counter()
     builder = PythonGraphBuilder(repo_key=row["repo"].replace("/", "__"), repository_revision=row["base_commit"],
-                                 scip=scip_config, trace=trace)
+                                 scip=scip_config, trace=trace, **optional)
     document = builder.build(tree)
     if source_digest != sha256(json.dumps(current_fingerprint(tree), sort_keys=True)):
         raise ValueError("Source tree changed while building graph")

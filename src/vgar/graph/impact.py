@@ -224,13 +224,81 @@ def _public(qualified_name: str) -> bool:
                for part in qualified_name.split('.'))
 
 
+READS_RULE = 'python.layer1.reads.v1'
+_LEAVES = {'return', 'raise', 'yield', 'call', 'store_attribute', 'store_subscript', 'store_global'}
+
+
+def _old_lines(span) -> tuple[int, int]:
+    return span.old_start, span.old_start + max(span.old_count, 1) - 1
+
+
+def _overlaps(lines: tuple[int, int], node: dict) -> bool:
+    return lines[0] <= node['range']['end_line'] and node['range']['start_line'] <= lines[1]
+
+
+def _variable_seeds(report: ImpactReport, nodes: dict, parent: dict) -> list[str]:
+    """GlobalVariable nodes under a module-level change, and Field nodes under a changed class body."""
+    seeds = set()
+    for change in report.unmapped:
+        if change.reason == 'MODULE_LEVEL_CHANGE':
+            lines = _old_lines(change.span)
+            seeds |= {n['id'] for n in nodes.values()
+                      if n['type'] == 'GlobalVariable' and n['path'] == change.path and _overlaps(lines, n)}
+    for change in report.changed:
+        if change.kind == 'Class':
+            for span in change.spans:
+                seeds |= {n['id'] for n in nodes.values() if n['type'] == 'Field'
+                          and parent.get(n['id']) == change.node_id and _overlaps(_old_lines(span), n)}
+    return sorted(seeds)
+
+
+def _narrowed(report: ImpactReport, document: dict, nodes: dict) -> tuple[set[str], int]:
+    """Changed functions whose changed statements reach nothing that leaves the function (flag B)."""
+    statements: dict[str, list[dict]] = defaultdict(list)
+    for node in nodes.values():
+        if node['type'] == 'Statement':
+            statements[node['properties']['owner_id']].append(node)
+    dependents: dict[str, set[str]] = defaultdict(set)
+    for edge in document['edges']:
+        if edge['type'] in ('DATA_DEPENDS_ON', 'CONTROL_DEPENDS_ON'):
+            dependents[edge['target_id']].add(edge['source_id'])
+    narrowed, fallbacks = set(), 0
+    for change in report.changed:
+        if change.kind not in ('Function', 'Method'):
+            continue
+        own = statements.get(change.node_id, [])
+        changed = {n['id'] for n in own for span in change.spans if _overlaps(_old_lines(span), n)}
+        # A pure insertion (old_count 0) has no baseline statement of its own: the overlap would be a neighbour.
+        if not changed or any(span.old_count == 0 for span in change.spans):
+            fallbacks += 1
+            continue
+        influence, stack = set(changed), list(changed)
+        while stack:
+            for dependent in dependents[stack.pop()]:
+                if dependent not in influence:
+                    influence.add(dependent)
+                    stack.append(dependent)
+        recorded = [nodes[i]['properties'].get('effects') for i in influence if i in nodes]
+        if any(effects is None for effects in recorded):  # graph built before effects were recorded
+            fallbacks += 1
+            continue
+        if not any(_LEAVES & set(effects) for effects in recorded):
+            narrowed.add(change.node_id)
+    return narrowed, fallbacks
+
+
 def compute_impact(report: ImpactReport, document: dict, *, max_hops: int = 2, max_nodes: int = 200,
-                   min_confidence: float = 0.6) -> ImpactReport:
+                   min_confidence: float = 0.6, follow_variable_readers: bool = False,
+                   narrow_with_dataflow: bool = False) -> ImpactReport:
     """Fill `impacted` and `risk` by walking CALLS/IMPORTS/INHERITS/TESTS backwards from the changed nodes,
     plus their Ports and Components when the graph has G_arch (spec IM-1 §4).
 
     Only edges present in the graph with confidence >= min_confidence are followed; nothing is inferred.
     Relations the walk cannot see (REFERENCES, call sites with no resolved target) are listed as unsupported.
+    Two opt-in team extensions of proposal §9.3 (spec 2026-11-15 §3): ``follow_variable_readers`` adds the
+    functions reading a changed global or field (and, one hop, the readers of what a changed function writes);
+    ``narrow_with_dataflow`` stops the reverse walk at a changed function whose changed statements reach no
+    return, raise, yield, call or outside store (Joern G_code), and counts functions it could not check.
     """
     if type(max_hops) is not int or not 1 <= max_hops <= 5:
         raise ValueError('max_hops must be within [1, 5]')
@@ -257,8 +325,27 @@ def compute_impact(report: ImpactReport, document: dict, *, max_hops: int = 2, m
     component_of = {path: n['id'] for n in document['nodes'] if n['type'] == 'Component' for path in n['properties']['files']}
     has_arch = any(n['type'] == 'Component' for n in document['nodes'])
     seeds = sorted(c.node_id for c in report.changed)
+    extensions = None
+    if follow_variable_readers or narrow_with_dataflow:
+        extensions = {'flags': {name: True for name, on in (('follow_variable_readers', follow_variable_readers),
+                                                           ('narrow_with_dataflow', narrow_with_dataflow)) if on}}
+    readers, written, var_seeds = defaultdict(list), defaultdict(list), []
+    if follow_variable_readers:
+        for edge in document['edges']:
+            if edge['provenance']['rule_id'] == READS_RULE and edge['confidence'] >= min_confidence:
+                readers[edge['target_id']].append(edge['source_id'])
+                if edge['properties'].get('access') in ('write', 'read_write'):
+                    written[edge['source_id']].append(edge['target_id'])
+        var_seeds = _variable_seeds(report, nodes, parent)
+        extensions['variable_seeds'] = var_seeds
+    narrowed = set()
+    if narrow_with_dataflow:
+        narrowed, fallbacks = _narrowed(report, document, nodes)
+        extensions.update(narrowed_by_dataflow=sorted(narrowed), dataflow_fallbacks=fallbacks)
     # DEPENDS_ON spans whole packages: one step from the changed code, or it reports most of the repo (spec §4.3).
-    seed_components = {component_of[nodes[s]['path']] for s in seeds if nodes[s]['path'] in component_of}
+    # A seed narrowed by flag B reaches nothing outside itself, so its component's dependents are not followed.
+    seed_components = {component_of[nodes[s]['path']] for s in seeds
+                       if s not in narrowed and nodes[s]['path'] in component_of}
     port_sources = set(seeds)  # the changed nodes and the base methods they override
 
     def module_of(node_id):
@@ -298,6 +385,12 @@ def compute_impact(report: ImpactReport, document: dict, *, max_hops: int = 2, m
 
     def neighbours(node_id):
         node = nodes[node_id]
+        if node['type'] in ('GlobalVariable', 'Field'):
+            yield from (('READS_CHANGED_VARIABLE', reader) for reader in sorted(set(readers[node_id])))
+            return
+        if node_id in narrowed:
+            yield from (('TESTS', test) for test in sorted(set(incoming[node_id]['TESTS'])))
+            return
         if node['type'] == 'Port':
             yield from (('CONSUMES_PORT', component) for component in sorted(set(incoming[node_id]['CONSUMES_PORT'])))
             return
@@ -319,7 +412,7 @@ def compute_impact(report: ImpactReport, document: dict, *, max_hops: int = 2, m
                 port_sources.add(base)
                 yield 'INHERITS', base
 
-    seen, items = set(seeds), []
+    seen, items = set(seeds) | set(var_seeds), []
 
     def visit(sources, step, hops):
         """Record what `step` reaches from `sources`. The flag says max_nodes cut the walk short."""
@@ -337,7 +430,7 @@ def compute_impact(report: ImpactReport, document: dict, *, max_hops: int = 2, m
                               'hops': hops, 'relation': relation, 'via': source})
         return reached, False
 
-    level, truncated = seeds, False
+    level, truncated = seeds + var_seeds, False
     for hops in range(max_hops + 1):
         lifted, truncated = visit(level, lift, hops)
         if truncated or hops == max_hops:
@@ -346,12 +439,27 @@ def compute_impact(report: ImpactReport, document: dict, *, max_hops: int = 2, m
         level, truncated = visit(sorted(level + lifted, key=lambda i: nodes[i]['type'] not in _ARCH_KINDS), neighbours, hops + 1)
         if truncated:
             break
+    # SHARES_STATE (flag A): readers of what a changed function writes, one hop, never walked further, and only
+    # nodes the walk above did not reach, so the flag adds to the default region and removes nothing.
+    for seed in seeds:
+        for variable in sorted(set(written.get(seed, ()))):
+            for reader in sorted(set(readers[variable]) - seen):
+                if len(items) == max_nodes:
+                    truncated = True
+                    break
+                seen.add(reader)
+                items.append({'node_id': reader, 'qualified_name': nodes[reader]['qualified_name'],
+                              'path': nodes[reader]['path'], 'kind': nodes[reader]['type'],
+                              'hops': 1, 'relation': 'SHARES_STATE', 'via': seed})
     unresolved = sum(n['type'] == 'CallSite' and n['id'] not in resolved for n in document['nodes'])
     impacted = {'status': 'PARTIAL' if truncated else 'COMPLETE', 'items': items, 'max_hops': max_hops,
                 'max_nodes': max_nodes, 'min_confidence': float(min_confidence),
-                'traversed': [*_RELATIONS, *(_ARCH_RELATIONS if has_arch else ())],
-                'unsupported': [{'relation': 'REFERENCES', 'reason': 'NOT_TRAVERSED'},
-                                {'relation': 'CALLS', 'reason': 'UNRESOLVED_CALL_SITES', 'count': unresolved}]}
+                'traversed': [*_RELATIONS, *(_ARCH_RELATIONS if has_arch else ()),
+                              *(('READS_CHANGED_VARIABLE', 'SHARES_STATE') if follow_variable_readers else ())],
+                'unsupported': [{'relation': 'REFERENCES (except python.layer1.reads.v1)' if follow_variable_readers
+                                 else 'REFERENCES', 'reason': 'NOT_TRAVERSED'},
+                                {'relation': 'CALLS', 'reason': 'UNRESOLVED_CALL_SITES', 'count': unresolved}],
+                'extensions': extensions}
 
     def unavailable(names, reason):
         return [{'name': name, 'available': False, 'reason': reason} for name in names]

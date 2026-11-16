@@ -20,7 +20,10 @@ from vgar.evaluation.incremental_bench import environment_info  # noqa: E402
 from vgar.evaluation.retrieval.dataset import require_split  # noqa: E402
 
 
-def main(argv=None) -> int:
+def parse_args(argv=None) -> argparse.Namespace:
+    """Command line, with the optional graph layers and impact flags (spec 2026-11-15 §5)."""
+    from vgar.graph.layer_config import add_layer_options
+
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--manifest", type=Path, required=True)
     parser.add_argument("--data-root", type=Path, required=True)
@@ -28,7 +31,26 @@ def main(argv=None) -> int:
     parser.add_argument("--task-inputs", type=Path, required=True, help="directory of <instance_id>.json task inputs")
     parser.add_argument("--out", type=Path, required=True)
     parser.add_argument("--limit", type=int, help="only the first N manifest tasks")
+    add_layer_options(parser)
+    parser.add_argument("--follow-variable-readers", action="store_true", help="impact flag A (needs --tsg-*)")
+    parser.add_argument("--narrow-with-dataflow", action="store_true", help="impact flag B (needs --joern)")
     args = parser.parse_args(argv)
+    args.parser = parser
+    return args
+
+
+def impact_flags(args: argparse.Namespace) -> dict[str, bool]:
+    """Impact flags chosen on the command line."""
+    return {"follow_variable_readers": args.follow_variable_readers, "narrow_with_dataflow": args.narrow_with_dataflow}
+
+
+def main(argv=None) -> int:
+    from vgar.graph.layer_config import layers_from_args
+
+    args = parse_args(argv)
+    parser = args.parser
+    layers = layers_from_args(args)
+    flags = impact_flags(args)
     manifest = json.loads(args.manifest.read_text(encoding="utf-8"))
     try:
         require_split(manifest, allowed=("dev",))
@@ -49,12 +71,16 @@ def main(argv=None) -> int:
             results.append({"task_id": task_id, "status": "ERROR", "reason": "task missing from parquet"})
         else:
             roots = json.loads(inputs.read_text(encoding="utf-8"))["source_roots"]
-            results.append(evaluate_task(task_id, args.data_root / "repositories" / task_id, roots, rows[task_id]))
+            results.append(evaluate_task(task_id, args.data_root / "repositories" / task_id, roots, rows[task_id],
+                                         layers=layers, impact_flags=flags))
         print(task_id, results[-1]["status"], results[-1].get("reason", ""), flush=True)
     summary = summarize(results)
     record = {"manifest": str(args.manifest), "manifest_hash": manifest.get("manifest_hash"),
               "parquet": str(args.parquet), "environment": environment_info(ROOT), "summary": summary,
               "tasks": results}
+    if any(flags.values()) or layers.any_optional:  # default records keep the earlier shape
+        record.update(impact_flags=flags,
+                      layers=sorted(name for name, value in layers.builder_kwargs().items() if value))
     args.out.mkdir(parents=True, exist_ok=True)
     (args.out / "i1.json").write_text(json.dumps(record, indent=2, sort_keys=True, ensure_ascii=False) + "\n",
                                       encoding="utf-8")

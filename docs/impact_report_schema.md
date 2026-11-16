@@ -191,3 +191,23 @@ Evidence task: `results/m1/w9/m1-w9-1/20261023-contract/`; trạng thái và s�
 thực tế được cập nhật tại `docs/status/m1.md`. Evidence nghiệm thu mới tại
 `results/m1/w9/m1-w9-1/20261023-close-review/`; giữ nguyên evidence ban đầu.
 Dừng sau W9-1.
+
+## Opt-in extensions (15/11/2026)
+
+Spec `docs/superpowers/specs/2026-11-15-layers-in-build-and-agent-tools-design.md` §3. Both are off by default; a
+report made with both off is byte-identical to before (no `impacted.extensions` key).
+
+- `follow_variable_readers` (host: `VGAR_IMPACT_FOLLOW_VARIABLE_READERS=1`): a module-level change on a
+  `GlobalVariable`, or a class-body change on a `Field`, adds the functions with a `REFERENCES`
+  (`rule_id` `python.layer1.reads.v1`) edge to it, relation `READS_CHANGED_VARIABLE`, hop 1, `via` = the
+  variable node id; the normal walk continues from them. A changed function that writes a variable adds that
+  variable's other readers, relation `SHARES_STATE`, hop 1, not walked further. Needs tree-sitter-graph.
+- `narrow_with_dataflow` (host: `VGAR_IMPACT_NARROW_WITH_DATAFLOW=1`): a changed function whose changed
+  statements reach (through `DATA_DEPENDS_ON` / `CONTROL_DEPENDS_ON`) no statement with an effect in
+  {return, raise, yield, call, store_attribute, store_subscript, store_global} keeps only its `TESTS`; its
+  callers, importers and subclasses are not added. Needs Joern G_code; functions without it fall back to the
+  normal walk and are counted.
+- `impacted.extensions` = `{"flags": {...}, "variable_seeds": [...], "narrowed_by_dataflow": [...],
+  "dataflow_fallbacks": n}` (keys present for the flags that are on).
+
+Both are team extensions of proposal §9.3, not part of its definition of the impact radius.

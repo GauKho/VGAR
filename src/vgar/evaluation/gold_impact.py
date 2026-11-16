@@ -140,15 +140,27 @@ def _method(region: set[str], matched: dict[int, set[str]], nodes_by_id: dict, r
             'test_patch_files_hit': len({nodes_by_id[i]['path'] for i in region} & test_patch_files)}
 
 
-def evaluate_task(task_id: str, checkout: Path, task_roots: list[str], row: dict) -> dict:
+def evaluate_task(task_id: str, checkout: Path, task_roots: list[str], row: dict, *,
+                  layers=None, impact_flags: dict | None = None) -> dict:
     """Graph impact and diff-only regions of the gold patch on the baseline checkout.
 
     The graph is built like the retrieval/bundle graphs (builder default roots); task_roots only bound which gold
     files count as source changes. F2P tests absent from the baseline (added by test_patch) are not measurable.
+    ``layers`` (optional graph layers) and ``impact_flags`` (spec 2026-11-15 §3) are recorded in the result only
+    when a layer or flag is on, so default results keep the earlier shape.
     """
+    from vgar.graph.layer_config import LayerConfigs, layer_summary
+
+    layers = layers or LayerConfigs()
+    impact_flags = dict(impact_flags or {})
     out: dict = {'task_id': task_id}
+    if any(impact_flags.values()):
+        out['impact_flags'] = impact_flags
     try:
-        document = PythonGraphBuilder(repo_key=task_id, repository_revision='base').build(checkout)
+        document = PythonGraphBuilder(repo_key=task_id, repository_revision='base',
+                                      **layers.builder_kwargs()).build(checkout)
+        if layers.any_optional:
+            out['layers'] = layer_summary(document, layers)
         files = {n['path'] for n in document['nodes'] if n['type'] == 'File'}
         keep = {p for p in files if _under(p, task_roots)}
         diff, dropped = filter_patch(row['patch'], keep)
@@ -167,7 +179,7 @@ def evaluate_task(task_id: str, checkout: Path, task_roots: list[str], row: dict
         changed = patch_files(diff)
         policy = PatchPolicy(tuple(sorted(keep)), (), max_bytes=len(diff.encode('utf-8')) + 1,
                              max_files=len(changed), max_changed_lines=len(diff.splitlines()))
-        report = analyze_patch_impact(diff, document, checkout, patch_policy=policy)
+        report = analyze_patch_impact(diff, document, checkout, patch_policy=policy, **impact_flags)
         nodes_by_id = {n['id']: n for n in test_nodes}
         graph_region = {item.node_id for item in report.impacted.items if item.kind == 'Test'}
         diff_region = diff_only_tests(changed, test_nodes)

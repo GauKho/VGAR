@@ -420,8 +420,11 @@ def _live():
             root, database = os.getenv("VGAR_REPOSITORY_ROOT", "").strip(), os.getenv("VGAR_GRAPH_DATABASE", "").strip()
             if not root or not database:
                 raise CodedToolError(ROOT_NOT_LEASED, "VGAR_REPOSITORY_ROOT and VGAR_GRAPH_DATABASE must be configured")
+            from vgar.graph.layer_config import layer_configs
+
             _live_builder = LiveGraphBuilder(Path(root), Path(database),
-                                             timeout_seconds=float(os.getenv("VGAR_GRAPH_BUILD_TIMEOUT_SECONDS", "900")))
+                                             timeout_seconds=float(os.getenv("VGAR_GRAPH_BUILD_TIMEOUT_SECONDS", "900")),
+                                             layers=layer_configs(os.environ))
         return _live_builder
 
 
