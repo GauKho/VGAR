@@ -15,6 +15,7 @@ from typing import Any, Callable, Mapping
 
 from .chunks import normalize_path
 from .evidence import sha256
+from .frontier import dependency_frontier
 from .gold_labels import extract_gold
 from .scoring import CorpusIndex, flat_metrics, graph_rank, score_record
 
@@ -118,13 +119,16 @@ def load_fail_to_pass(root, manifest: Mapping[str, Any]) -> dict[str, list[str]]
 def evaluate_graph_task(task: Mapping[str, Any], sources: Mapping[str, str], corpus: CorpusIndex,
                         nodes: Mapping[str, Mapping[str, Any]], arm_outputs: Mapping[str, Mapping[str, Any]], *,
                         budget_tokens: int, counter: Callable[[str], int], counter_label: str,
-                        max_snippet_lines: int | None = 80) -> dict[str, Any]:
+                        max_snippet_lines: int | None = 80, frontier: bool = False) -> dict[str, Any]:
     """``arm_outputs[arm]`` = {"candidates": RetrievalResult.candidates, "anchors": [{"node_id",...}],
-    "seconds": float, "diagnostics": {...}}.  Ranking is frozen (rank_hash) BEFORE the developer patch is opened."""
+    "seconds": float, "diagnostics": {...}}.  Ranking is frozen (rank_hash) BEFORE the developer patch is opened.
+    ``frontier=True`` adds ``gold["frontier_functions"]`` (F*_approx), scored as ``packed_frontier_in_context``."""
     records = {arm: graph_rank(task["instance_id"], out["candidates"], nodes, sources, corpus, arm=arm)
                for arm, out in arm_outputs.items()}
     frozen = {arm: record.rank_hash for arm, record in records.items()}
     gold = extract_gold(task["patch"], sources)
+    if frontier and gold.get("function_labels_complete", True):   # as every other function metric
+        gold["frontier_functions"] = dependency_frontier(task["patch"], gold, corpus)
     arms: dict[str, Any] = {}
     for arm, record in records.items():
         out = arm_outputs[arm]

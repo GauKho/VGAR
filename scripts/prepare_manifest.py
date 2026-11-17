@@ -26,17 +26,20 @@ def main() -> int:
                         help="2 = multi-file only (pilot); 1 = also single-file tasks (pool)")
     parser.add_argument("--revision", help="40-char HF dataset revision to pin (default: current)")
     parser.add_argument("--allow-heldout", action="store_true", help="required for --split heldout")
+    parser.add_argument("--protocol", choices=("repair", "r1"), default="repair",
+                        help="freeze protocol of a held-out manifest: repair (protocol-freeze) or r1 (protocol-freeze-r1)")
     args = parser.parse_args()
     if args.split == "heldout" and not args.allow_heldout:
         parser.error("--split heldout requires --allow-heldout (record the decision in docs/research_design.md first)")
     freeze = None
     if args.split == "heldout":  # M3-W12-2: bind the manifest to the signed protocol freeze
         try:
-            freeze = freeze_sha256(ROOT)
+            freeze = freeze_sha256(ROOT, args.protocol)
         except ValueError as error:
             parser.error(str(error))
     path, manifest = prepare_dataset(args.root, count=args.count, revision=args.revision, split=args.split,
-                                     min_source_files=args.min_source_files, freeze_sha256=freeze)
+                                     min_source_files=args.min_source_files, freeze_sha256=freeze,
+                                     freeze_protocol=args.protocol if args.split == "heldout" else None)
     audit = manifest["selection_audit"]
     print(f"manifest: {path}")
     print(f"split={manifest['split']} tasks={len(manifest['tasks'])} raw_by_split={audit['raw_by_split']} "

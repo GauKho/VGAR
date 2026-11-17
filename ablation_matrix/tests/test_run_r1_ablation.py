@@ -22,8 +22,18 @@ def test_summary_reports_every_pair(tmp_path):
     _write(tmp_path / "tasks", "a", {arm: 0.0 for arm in arms} | {"task_trace": 1.0})
     _write(tmp_path / "tasks", "b", {arm: 1.0 for arm in arms})
     summary = run.summarize(tmp_path)
-    assert set(summary["pairs"]) == {f"{c} - {b}" for c, b in run.PAIRS}
+    assert set(summary["pairs"]) == {f"{c} - {b}" for c, b in run.PAIRS} and summary["pairs_missing"] == []
     pair = summary["pairs"]["task_trace - no_task_trace"]["file_recall@5"]
     assert pair["n"] == 2 and pair["mean_delta"] == 0.5 and pair["wins"] == 1
     assert summary["pairs"]["task_trace - no_task_trace"]["component_recall@5"]["mean_delta"] == 0.5
     assert summary["means"]["task_trace"]["file_recall@5"] == 1.0
+
+
+def test_summary_lists_pairs_without_shared_tasks_as_missing(tmp_path):
+    (tmp_path / "tasks").mkdir()
+    arms = [arm for arm in run.ALL_ARMS if arm != "embedding"]   # a run without --embedding-model
+    _write(tmp_path / "tasks", "a", {arm: 0.5 for arm in arms})
+    summary = run.summarize(tmp_path)
+    embedding = {f"{c} - {b}" for c, b in run.PAIRS if "embedding" in (c, b)}
+    assert set(summary["pairs_missing"]) == embedding and not embedding & set(summary["pairs"])
+    assert set(summary["pairs"]) | embedding == {f"{c} - {b}" for c, b in run.PAIRS}

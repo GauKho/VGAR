@@ -302,6 +302,9 @@ def score_record(record: RankRecord, gold: Mapping[str, Any], *, budget_tokens: 
         "items_packed": len(packed["items"]), "skipped": packed["skipped"],
         "truncated": packed["skipped"]["token_budget"] > 0,   # overlap skips are redundancy, not truncation
     }
+    frontier = set(gold.get("frontier_functions") or ())
+    if frontier:  # dependency_frontier_recall@B over F*_approx (spec 2026-11-17 §2.4); absent keeps older outputs unchanged
+        packed_metrics["frontier_in_context"] = len(frontier & p_funcs) / len(frontier)
     return {"instance_id": record.instance_id, "arm": record.arm, "scoring_version": SCORING_VERSION,
             "rank_hash": record.rank_hash,
             "rank": rank_mode,

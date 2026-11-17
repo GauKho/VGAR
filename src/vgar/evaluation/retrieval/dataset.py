@@ -8,7 +8,7 @@ import time
 from collections import defaultdict
 from pathlib import Path
 
-from vgar.evaluation.heldout_gate import assert_heldout_unlocked
+from vgar.evaluation.heldout_gate import PROTOCOLS, assert_heldout_unlocked
 
 from .chunks import decode_source, is_source, normalize_path
 from .evidence import sha256, write_json
@@ -27,7 +27,7 @@ def split_of(instance_id, dev_percent=DEV_PERCENT):
     return "dev" if bucket < dev_percent else "heldout"
 
 
-def require_split(manifest, allowed=("dev",)):
+def require_split(manifest, allowed=("dev",), protocol="repair"):
     """Guard: refuse to evaluate a manifest that contains tasks outside the allowed split(s).
     The split is RECOMPUTED from instance_id, so a hand-edited 'split' field cannot bypass it."""
     declared = manifest.get("split")
@@ -40,7 +40,7 @@ def require_split(manifest, allowed=("dev",)):
             raise ValueError(f"Task {task['instance_id']} is {actual!r} (manifest field: {task.get('split')!r}); allowed {list(allowed)}")
     # M3-W12-2: held-out tasks open only after the signed protocol freeze (tag + unchanged freeze file).
     if "heldout" in allowed and any(split_of(t["instance_id"]) == "heldout" for t in manifest.get("tasks", [])):
-        assert_heldout_unlocked(manifest)
+        assert_heldout_unlocked(manifest, protocol=protocol)
 
 
 def validate_task(row):
@@ -122,11 +122,23 @@ def download(url, destination, max_bytes=100_000_000):
         temporary.unlink(missing_ok=True)
 
 
+def manifest_name(revision, split, count, freeze_protocol=None):
+    """File name of a manifest; a held-out one names its freeze protocol, so repair and R1 never share a file."""
+    if split != "heldout":
+        return f"verified-{revision[:12]}-{split}-{count}.json"
+    return f"verified-{revision[:12]}-{split}-{freeze_protocol or 'repair'}-{count}.json"
+
+
 def prepare_dataset(root, count=25, dataset_id="princeton-nlp/SWE-bench_Verified", revision=None, split="dev", min_source_files=2,
-                    freeze_sha256=None):
+                    freeze_sha256=None, freeze_protocol=None):
     # M3-W12-2: a held-out manifest is bound to the signed protocol freeze; checked before any download.
     if (split == "heldout") != (freeze_sha256 is not None):
         raise ValueError("freeze_sha256 is required for a held-out manifest and not allowed for dev")
+    if freeze_protocol is not None:  # plan 2026-11-17 Task 7: which freeze file and tag the gate checks
+        if split != "heldout":
+            raise ValueError("freeze_protocol is only allowed for a held-out manifest")
+        if freeze_protocol not in PROTOCOLS:
+            raise ValueError(f"unknown freeze protocol {freeze_protocol!r}; known: {sorted(PROTOCOLS)}")
     import pyarrow.parquet as parquet
     root = Path(root)
     if dataset_id not in {"princeton-nlp/SWE-bench_Verified", "SWE-bench/SWE-bench_Verified"}:
@@ -169,7 +181,9 @@ def prepare_dataset(root, count=25, dataset_id="princeton-nlp/SWE-bench_Verified
                 "downloads": downloads, "selection_audit": audit, "tasks": tasks}
     if freeze_sha256 is not None:
         manifest["freeze_sha256"] = freeze_sha256
-    destination = root / "data" / "manifests" / f"verified-{resolved[:12]}-{split}-{count}.json"
+    if freeze_protocol is not None:
+        manifest["freeze_protocol"] = freeze_protocol
+    destination = root / "data" / "manifests" / manifest_name(resolved, split, count, freeze_protocol)
     # Locked manifest: rerunning with same pinned input cannot replace a different selection.
     if destination.exists() and json.loads(destination.read_text(encoding="utf-8")) != manifest:
         raise ValueError("Existing locked manifest differs; choose a new experiment manifest")

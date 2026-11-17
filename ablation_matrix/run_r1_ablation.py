@@ -36,6 +36,15 @@ sys.path[:0] = [str(HERE), str(ROOT / "src"), str(ROOT / "scripts")]
 
 import run_graph_retrieval as runner
 from component_metrics import component_metrics
+from embedding_baseline import (
+    QUERY_PREFIXES,
+    REVISION_SHA,
+    EmbeddingCache,
+    SentenceTransformerEmbedder,
+    embedding_rank,
+    embedding_settings,
+)
+from fusion import FUSION_PAIRS, FUSIONS, bootstrap_p, fused_metrics, holm_adjust
 from retrieval_variants import GRAPH_ARMS, variant_outputs
 from run_no_trace_ablation import _prune
 from text_baselines import grep_rank, neighbor_rank
@@ -62,21 +71,28 @@ class HistoryUnavailable(RuntimeError):
     """The task's clone or its base commit history is missing."""
 
 
-TEXT_ARMS = ("bm25", "grep", "neighbor")
+TEXT_ARMS = ("bm25", "grep", "neighbor", "embedding")   # embedding runs only with --embedding-model
 ALL_ARMS = TEXT_ARMS + GRAPH_ARMS
 # (candidate, base): the candidate adds one thing to the base.
 PAIRS = (
     ("no_task_trace", "bm25"), ("no_task_trace", "grep"), ("no_task_trace", "neighbor"),   # graph vs text (A1 vs A0)
-    ("task_trace", "bm25"),                                                                   # A2 vs A0
+    ("no_task_trace", "embedding"),
+    ("task_trace", "bm25"), ("task_trace", "embedding"),                                      # A2 vs A0
+    ("task_trace_rt1", "bm25"), ("task_trace_rt1", "embedding"), ("task_trace_rt1", "grep"),  # served graph vs §13.1
     ("task_trace", "no_task_trace"),                                                          # task trace (A2 vs A1)
     ("a3", "task_trace"),                                                                     # architecture (A3 vs A2)
     ("no_task_trace", "ast_no_task_trace"),                                                   # call/import edges vs AST only
     ("arch_no_task_trace", "no_task_trace"),                                                  # architecture without task trace
     ("task_trace_rt1", "task_trace"),                                                         # RT1_CONFIG
 )
+# Pre-registered for the held-out run (spec 2026-11-17 §3.1): graph vs the §13.1 baselines, and task trace.
+PRIMARY_PAIRS = (("task_trace_rt1", "bm25"), ("task_trace_rt1", "embedding"), ("task_trace_rt1", "grep"),
+                 ("task_trace", "no_task_trace"))
+PRIMARY_METRICS = ("file_recall@1", "file_recall@5", "function_recall@5", "function_mrr",
+                   "packed_gold_function_in_context", "packed_frontier_in_context")
 METRICS = ("file_recall@1", "file_recall@3", "file_recall@5", "file_recall@10", "function_recall@1",
            "function_recall@3", "function_recall@5", "function_recall@10", "file_mrr", "function_mrr",
-           "packed_gold_file_in_context", "packed_gold_function_in_context", "context_tokens",
+           "packed_gold_file_in_context", "packed_gold_function_in_context", "packed_frontier_in_context", "context_tokens",
            "component_recall@1", "component_recall@3", "component_recall@5", "component_mrr")
 
 
@@ -142,7 +158,7 @@ def history_counts(mode: str, row: dict[str, Any], document: dict[str, Any], *, 
 
 
 def evaluate_task(root: Path, row: dict[str, Any], args: argparse.Namespace, builder_hash: str,
-                  counter: Any, label: str) -> dict[str, Any]:
+                  counter: Any, label: str, embedder: Any = None, embedding_cache: Any = None) -> dict[str, Any]:
     """Build one task's graph and score every arm on it.
 
     Args:
@@ -179,10 +195,13 @@ def evaluate_task(root: Path, row: dict[str, Any], args: argparse.Namespace, bui
     text_records = {"bm25": bm25_rank(row["instance_id"], row["problem_statement"], sources),
                     "grep": grep_rank(row["instance_id"], row["problem_statement"], sources),
                     "neighbor": neighbor_rank(row["instance_id"], row["problem_statement"], sources)} if run_text else {}
+    if run_text and embedder is not None:
+        text_records["embedding"] = embedding_rank(row["instance_id"], row["problem_statement"], sources, embedder,
+                                                   cache=embedding_cache)
     contexts = {arm: outputs[arm].pop("context") for arm in graph_arms}
     nodes = {node["id"]: node for node in document["nodes"]}
     result = evaluate_graph_task(dict(row, patch=patch), sources, corpus, nodes, outputs,
-                                 budget_tokens=args.budget_tokens, counter=counter, counter_label=label)
+                                 budget_tokens=args.budget_tokens, counter=counter, counter_label=label, frontier=True)
     for arm in graph_arms:
         metrics = result["arms"][arm]["metrics"]
         metrics.update(native_context_metrics(contexts[arm], result["gold"], corpus))
@@ -198,6 +217,23 @@ def evaluate_task(root: Path, row: dict[str, Any], args: argparse.Namespace, bui
     if provenance is not None:
         result["layers_and_flags"] = provenance
     return result
+
+
+def check_resume_embedding(artifact: Path, embedding: dict[str, str] | None) -> None:
+    """Stop a --resume whose embedding model, revision or prefix differs from the task result already on disk.
+
+    Args:
+        artifact: An earlier task result of this run folder.
+        embedding: ``embedding_settings`` of the resumed run (``None`` without the embedding arm).
+    """
+    data = json.loads(artifact.read_text(encoding="utf-8"))
+    if data.get("status") != "SUCCEEDED" or "bm25" not in data["arms"]:
+        return   # failed, or a --history run: no text arm, so no embedding arm either
+    meta = data["arms"].get("embedding", {}).get("meta")
+    earlier = {key: meta.get(key) for key in ("model_id", "revision", "query_prefix")} if meta else None
+    if earlier != embedding:
+        raise SystemExit(f"{artifact} was scored with embedding {earlier}, this run uses {embedding}; "
+                         "use a new --out folder")
 
 
 def layers_and_flags(args: argparse.Namespace, document: dict[str, Any] | None = None) -> dict[str, Any] | None:
@@ -245,6 +281,7 @@ def summarize(out: Path, seed: int = 0) -> dict[str, Any]:
     means = {arm: {name: statistics.fmean(v.values()) if (v := values(arm, name)) else None for name in METRICS}
              for arm in ALL_ARMS}
     pairs: dict[str, dict[str, Any]] = {}
+    pairs_missing: list[str] = []   # e.g. embedding pairs of a run without --embedding-model
     for candidate, base in PAIRS:
         rows = {}
         for name in METRICS:
@@ -253,8 +290,66 @@ def summarize(out: Path, seed: int = 0) -> dict[str, Any]:
             if deltas:
                 rows[name] = {"n": len(deltas), "mean_delta": statistics.fmean(deltas), "ci95": _bootstrap(deltas, seed),
                               "wins": sum(d > 1e-9 for d in deltas), "losses": sum(d < -1e-9 for d in deltas)}
-        pairs[f"{candidate} - {base}"] = rows
-    return {"succeeded": len(done), "failed": failed, "means": means, "pairs": pairs}
+        if rows:
+            pairs[f"{candidate} - {base}"] = rows
+        else:
+            pairs_missing.append(f"{candidate} - {base}")
+    primary, family = _primary(values, seed)
+    return {"succeeded": len(done), "failed": failed, "means": means, "pairs": pairs, "pairs_missing": pairs_missing,
+            "primary": primary, "primary_family": family, "secondary": _secondary(done, seed)}
+
+
+def _primary(values: Any, seed: int) -> tuple[dict[str, dict[str, dict[str, Any]]], dict[str, Any]]:
+    """Pre-registered pairs with bootstrap p and Holm over the whole fixed family (pairs x metrics).
+
+    A pre-registered cell without data stays in the family with p = 1, so a missing arm never shrinks the Holm
+    correction; ``family`` lists the size and the missing cells.
+    """
+    cells: dict[tuple[str, str], dict[str, Any]] = {}
+    pvalues: dict[str, float] = {}
+    missing: list[str] = []
+    for candidate, base in PRIMARY_PAIRS:
+        for name in PRIMARY_METRICS:
+            key = f"{candidate} - {base}|{name}"
+            cand, ref = values(candidate, name), values(base, name)
+            deltas = [cand[i] - ref[i] for i in sorted(cand.keys() & ref.keys())]
+            if not deltas:
+                missing.append(key)
+                pvalues[key] = 1.0
+                continue
+            cells[f"{candidate} - {base}", name] = {"mean_delta": statistics.fmean(deltas),
+                                                    "ci95": _bootstrap(deltas, seed), "p": bootstrap_p(deltas, seed)}
+            pvalues[key] = cells[f"{candidate} - {base}", name]["p"]
+    adjusted = holm_adjust(pvalues)
+    primary: dict[str, dict[str, dict[str, Any]]] = {}
+    for (pair, name), cell in cells.items():
+        primary.setdefault(pair, {})[name] = {**cell, "p_holm": adjusted[f"{pair}|{name}"]}
+    return primary, {"size": len(pvalues), "missing": missing}
+
+
+def _secondary(done: dict[str, Any], seed: int) -> dict[str, Any]:
+    """RRF fusions of saved rankings: analysis beyond the proposal, not used to answer RQ2."""
+    per_task = {name: {i: m for i, d in done.items() if (m := fused_metrics(d, members))}
+                for name, members in FUSIONS.items()}
+    per_task = {name: rows for name, rows in per_task.items() if rows}
+
+    def values(name: str, metric: str) -> dict[str, float]:
+        return {i: v for i, m in per_task.get(name, {}).items() if (v := m.get(metric)) is not None}
+
+    metrics = ("file_recall@1", "file_recall@5", "function_recall@5", "function_recall@10", "function_mrr")
+    means = {name: {metric: statistics.fmean(v.values()) if (v := values(name, metric)) else None for metric in metrics}
+             for name in per_task}
+    pairs: dict[str, dict[str, Any]] = {}
+    for candidate, base in FUSION_PAIRS:
+        rows = {}
+        for metric in metrics:
+            cand, ref = values(candidate, metric), values(base, metric)
+            deltas = [cand[i] - ref[i] for i in sorted(cand.keys() & ref.keys())]
+            if deltas:
+                rows[metric] = {"n": len(deltas), "mean_delta": statistics.fmean(deltas), "ci95": _bootstrap(deltas, seed)}
+        if rows:
+            pairs[f"{candidate} - {base}"] = rows
+    return {"note": "analysis beyond the proposal", "means": means, "pairs": pairs}
 
 
 HISTORY_METRICS = ("file_recall@1", "file_recall@3", "file_recall@5", "file_recall@10", "function_recall@1",
@@ -313,6 +408,14 @@ def parse_args(argv: list[str] | None) -> argparse.Namespace:
     parser.add_argument("--compare-history", type=Path, nargs=3, metavar=("NONE", "RAW", "GRAPHDIFF"))
     parser.add_argument("--use-variable-references", action="store_true",
                         help="context flag on the task_trace arm (needs --tsg-*)")
+    parser.add_argument("--embedding-model", help="run the embedding arm with this sentence-transformers model")
+    parser.add_argument("--embedding-revision", help="pinned model revision (commit SHA); required with --embedding-model")
+    parser.add_argument("--embedding-query-prefix",
+                        help="text put before the issue for the query vector; default from the model's card")
+    parser.add_argument("--embedding-cache", type=Path, help="folder of the chunk vector cache")
+    parser.add_argument("--embedding-device", default="cuda")
+    parser.add_argument("--allow-heldout", action="store_true",
+                        help="FINAL held-out run only, after the protocol-freeze-r1 tag; never while tuning")
     from vgar.graph.layer_config import add_layer_options
 
     add_layer_options(parser)
@@ -325,6 +428,16 @@ def parse_args(argv: list[str] | None) -> argparse.Namespace:
         parser.error("--allow-fallback-counter is required")
     if args.history != "none" and args.git_root is None:
         parser.error("--history raw|graphdiff needs --git-root")
+    if args.embedding_model and not args.embedding_revision:
+        parser.error("--embedding-model needs --embedding-revision (a pinned commit SHA)")
+    if args.embedding_revision and not REVISION_SHA.fullmatch(args.embedding_revision):
+        parser.error("--embedding-revision must be a 40-character commit SHA, not a branch or tag")
+    if args.embedding_model and args.embedding_query_prefix is None:
+        if args.embedding_model not in QUERY_PREFIXES:
+            parser.error(f"no known query prefix for {args.embedding_model}; pass --embedding-query-prefix")
+        args.embedding_query_prefix = QUERY_PREFIXES[args.embedding_model]
+    if args.allow_heldout and not args.embedding_model:
+        parser.error("--allow-heldout needs the embedding arm (--embedding-model, --embedding-revision): it is pre-registered")
     return args
 
 
@@ -337,21 +450,29 @@ def main(argv: list[str] | None = None) -> int:
     manifest = json.loads(args.manifest.read_text(encoding="utf-8"))
     for task in manifest["tasks"]:
         validate_task(task)
-    require_split(manifest, allowed=("dev",))
+    require_split(manifest, allowed=("dev", "heldout") if args.allow_heldout else ("dev",), protocol="r1")
     tasks = manifest["tasks"]
     if args.only:
         wanted = set(args.only.read_text(encoding="utf-8").split())
         tasks = [task for task in tasks if task["instance_id"] in wanted]
     (args.out / "tasks").mkdir(parents=True, exist_ok=True)
     builder_hash = runner.source_fingerprint(ROOT)["digest"]
+    embedder = embedding_cache = None
+    if args.embedding_model:
+        embedder = SentenceTransformerEmbedder(args.embedding_model, args.embedding_revision, args.embedding_query_prefix,
+                                               device=args.embedding_device)
+        embedding_cache = EmbeddingCache(args.embedding_cache) if args.embedding_cache else None
+    embedding = embedding_settings(embedder)
     for number, row in enumerate(tasks, 1):
         artifact = args.out / "tasks" / f"{row['instance_id']}.json"
         if artifact.exists():
             if args.resume:
+                check_resume_embedding(artifact, embedding)
                 continue
             raise SystemExit(f"{artifact} exists; pass --resume")
         try:
-            result = evaluate_task(root, row, args, builder_hash, bytes_div4_counter, FALLBACK_COUNTER_LABEL)
+            result = evaluate_task(root, row, args, builder_hash, bytes_div4_counter, FALLBACK_COUNTER_LABEL,
+                                   embedder=embedder, embedding_cache=embedding_cache)
         except Exception as exc:  # noqa: BLE001 - one bad task never kills the run
             result = {"instance_id": row["instance_id"], "status": "FAILED", "error_class": type(exc).__name__,
                       "error": str(exc)}
@@ -362,7 +483,7 @@ def main(argv: list[str] | None = None) -> int:
     summary = summarize(args.out)
     summary.update(manifest_hash=runner.sha256(args.manifest.read_bytes()), budget_tokens=args.budget_tokens,
                    counter_label=FALLBACK_COUNTER_LABEL, builder_hash=builder_hash, history=args.history,
-                   history_commits=args.history_commits if args.history != "none" else None)
+                   history_commits=args.history_commits if args.history != "none" else None, embedding=embedding)
     runner.write_json(args.out / "summary.json", summary)
     print(json.dumps({"succeeded": summary["succeeded"], "failed": summary["failed"]}))
     return 0 if not summary["failed"] else 1
