@@ -164,3 +164,37 @@ def test_cli_refuses_heldout_manifest(tmp_path):
                              cwd=ROOT, capture_output=True, text=True)
     assert process.returncode != 0 and 'allowed' in process.stderr
     assert not (tmp_path / 'out').exists()
+
+
+# ---- multi-file reach (I1 multi-file, 19/11) ----
+
+def _hunk(path, line, old, new):
+    return f'diff --git a/{path} b/{path}\n--- a/{path}\n+++ b/{path}\n@@ -{line} +{line} @@\n-{old}\n+{new}\n'
+
+
+def test_cross_file_reach_finds_the_caller_file_not_the_unrelated_one(tmp_path):
+    from vgar.evaluation.gold_impact import cross_file_reach
+    from vgar.graph.builder import PythonGraphBuilder
+
+    files = {'pkg/__init__.py': '', 'pkg/a.py': 'def f():\n    return 1\n',
+             'pkg/b.py': 'from pkg.a import f\n\n\ndef g():\n    return f()\n',
+             'pkg/d.py': 'Z = 0\n', 'other/__init__.py': '', 'other/c.py': 'def h():\n    return 0\n'}
+    for path, text in files.items():
+        (tmp_path / path).parent.mkdir(parents=True, exist_ok=True)
+        (tmp_path / path).write_text(text, encoding='utf-8')
+    document = PythonGraphBuilder(repo_key='demo', repository_revision='base').build(tmp_path)
+    diff = (_hunk('pkg/a.py', 2, '    return 1', '    return 2') + _hunk('pkg/b.py', 5, '    return f()', '    return f() + 1')
+            + _hunk('other/c.py', 2, '    return 0', '    return 3'))
+    rows = {row['source']: row for row in cross_file_reach(diff, document, tmp_path)}
+    assert set(rows) == {'pkg/a.py', 'pkg/b.py', 'other/c.py'}
+    assert rows['pkg/a.py']['others'] == ['other/c.py', 'pkg/b.py'] and rows['pkg/a.py']['reached'] == ['pkg/b.py']
+    assert rows['other/c.py']['reached'] == []
+    assert rows['pkg/a.py']['same_dir_reached'] == ['pkg/b.py'] and rows['pkg/a.py']['same_dir_files'] == 3
+    assert rows['pkg/a.py']['region_files'] >= 1
+
+
+def test_cross_file_reach_is_empty_for_a_single_file_patch(tmp_path):
+    from vgar.evaluation.gold_impact import cross_file_reach
+
+    (tmp_path / 'a.py').write_text('def f():\n    return 1\n', encoding='utf-8')
+    assert cross_file_reach(_hunk('a.py', 2, '    return 1', '    return 2'), {'nodes': []}, tmp_path) == []

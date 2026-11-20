@@ -85,7 +85,9 @@ Chỉ liệt kê các metric có ít nhất một task thay đổi. Mọi metric
 | task_trace_rt1 | Recall@B hàm | −0,020 | [−0,061; 0,000] | 0 / 1 |
 | no_task_trace, arch_no_task_trace | MRR hàm | −0,001 | chứa 0 | 3–4 / 4 |
 
-Hai task mà `task_trace` mất R@5 hàm là `pydata__xarray-4629` (1,0 → 0,0) và `pydata__xarray-6992` (0,67 → 0,33). Ở cả hai, top-3 giữ nguyên. Một hàm mới chen vào hạng 4 hoặc 6 (`xarray/core/utils.py`, `xarray/core/variable.py`) và đẩy hàm gold ra khỏi top-5 hàm. `task_trace_rt1` cũng chạy trên graph có layer nhưng không bật cờ, và R@5 hàm của nó không đổi ở task nào. Vì vậy hai lần thua này nhiều khả năng do cờ `use_variable_references`, không phải do layer. Kết luận này chưa chắc chắn hoàn toàn, vì `task_trace_rt1` còn khác `task_trace` ở `may_call_factor`.
+Hai task mà `task_trace` mất R@5 hàm là `pydata__xarray-4629` (1,0 → 0,0) và `pydata__xarray-6992` (0,67 → 0,33). Ở cả hai, top-3 giữ nguyên. Một hàm mới chen vào hạng 4 hoặc 6 (`xarray/core/utils.py`, `xarray/core/variable.py`) và đẩy hàm gold ra khỏi top-5 hàm. `task_trace_rt1` cũng chạy trên graph có layer nhưng không bật cờ, và R@5 hàm của nó không đổi ở task nào. Báo cáo này ban đầu suy ra rằng cả hai lần thua nhiều khả năng do cờ `use_variable_references`.
+
+**Cập nhật 18/11:** lượt tách `r1_full50_noflag` (layer bật, cờ tắt) cho thấy phỏng đoán trên chỉ đúng một nửa: `xarray-4629` thua do **layer**, còn `xarray-6992` thua do **cờ** (`tv2_r1_all_numbers_2026-11-16.md`, bảng so sánh `r1_now50` → `r1_full50_noflag` → `r1_full50`).
 
 ## Chi phí
 
@@ -113,7 +115,7 @@ Lượt chạy này cũng dùng tính năng mới thêm ngày 15/11: R1 ghi `lay
 ## Giới hạn
 
 - ~~Code khác giữa hai lượt.~~ **Đã loại trừ** bằng lượt `r1_now50` (code hiện tại, không layer, không cờ; 50/50 SUCCEEDED; 1,32 giờ). So với `r1_50`, `rank_hash` của cả 9 arm giống hệt ở 50/50 task, graph có cùng số node và cạnh, mọi metric bằng nhau. Code thay đổi từ 11/11 không ảnh hưởng tới retrieval khi tắt layer, nên mọi chênh lệch ở trên đều do layer + cờ. (`python3 ~/rt1/compare_full50.py r1_50 r1_now50`; so `r1_now50` với `r1_full50` cho đúng các số ở bảng trên.)
-- **Chưa tách được tác dụng của cờ.** Cờ `use_variable_references` chỉ được đo cùng lúc với các layer. Để tách, cần chạy thêm một lượt full layer không bật cờ (khoảng 5,6 giờ), như cách đo trong `layers_in_build_measurement_guide.md` mục 4.
+- ~~Chưa tách được tác dụng của cờ.~~ **Đã tách (cập nhật 18/11)** bằng lượt `r1_full50_noflag` (`~/rt1/results/r1_full50_noflag`, 50/50 task): layer làm thua `xarray-4629`, cờ `use_variable_references` làm thua `xarray-6992`; không task nào tăng ở cả hai bước. Số đầy đủ ở `tv2_r1_all_numbers_2026-11-16.md`.
 - **Một số task thiếu layer.** 9 task thiếu JARVIS và 1 task thiếu Joern, như bảng trạng thái ở trên.
 - **Chưa đo hết các layer.** SCIP và LSP vẫn tắt. Layer 4 (GraphDiff, `--history`) cần repo có lịch sử git, mà `~/rt1` chỉ có cây mã. Layer 5 (Daikon) không phải layer retrieval.
 - **Chỉ có tập dev.** Đây là kết quả trên 50 task dev; tập held-out chưa được mở.

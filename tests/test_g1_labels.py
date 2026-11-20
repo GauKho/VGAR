@@ -528,3 +528,15 @@ def test_default_sheet_behaviour_unchanged(tmp_path):
     assert result.exit_code is None and result.report["agreement_source"] == "claude_second_pass"
     manifest = json.loads((out / "manifest.json").read_text(encoding="utf-8"))
     assert result.report["agreement"]["n"] == 2 and "agreement_locks" not in manifest
+
+
+def test_scip_timeout_option_reaches_the_scip_arm(tmp_path):
+    import argparse
+
+    module = _load_eval()
+    args = argparse.Namespace(tsg_executable=tmp_path / "tsg", tsg_tree_sitter_dir=tmp_path, joern=False,
+                              enable_jarvis=False, scip_entry=tmp_path / "index.js", scip_node="node",
+                              scip_timeout=2700.0)
+    scip = module._configurations(args)["scip_tsg"].scip
+    assert scip.timeout_seconds == 2700.0
+    assert scip.import_roots == ("src", "lib")   # same SCIP setup as R1 and the served graph

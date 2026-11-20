@@ -108,3 +108,19 @@ def test_worker_memory_is_scoped_explicitly():
     if result["python_worker_peak_rss_bytes"] is not None:
         assert result["python_worker_peak_rss_bytes"] > 0
         assert "excludes Node" in result["scope"]
+
+
+def test_native_context_reports_all_gold_files_and_frontier_on_the_served_payload():
+    corpus = CorpusIndex({"src/a.py": "def f():\n    return 1\n", "src/b.py": "def g():\n    return 2\n"})
+    f, g = (corpus.definitions[path][0] for path in ("src/a.py", "src/b.py"))
+    whole = {"start_line": 1, "start_col": 0, "end_line": 3, "end_col": 0}
+    context = {"items": [{"path": "src/a.py", "range": whole}], "total_token_count": 5, "truncated": False}
+    gold = {"gold_files": ["src/a.py", "src/b.py"], "gold_functions": [f["parent_id"]], "function_labels_complete": True,
+            "frontier_functions": [f["parent_id"], g["parent_id"]]}
+    metrics = native_context_metrics(context, gold, corpus)
+    assert metrics["native_all_gold_files_in_context"] == 0 and metrics["native_frontier_in_context"] == 0.5
+    context["items"].append({"path": "src/b.py", "range": whole})
+    metrics = native_context_metrics(context, gold, corpus)
+    assert metrics["native_all_gold_files_in_context"] == 1 and metrics["native_frontier_in_context"] == 1.0
+    del gold["frontier_functions"]   # older outputs without F*_approx keep their shape
+    assert "native_frontier_in_context" not in native_context_metrics(context, gold, corpus)

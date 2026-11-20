@@ -19,30 +19,39 @@ def native_context_metrics(context, gold, corpus):
     """Count whole gold functions contained in actual payload ranges, including class/file items.
 
     Coordinates are UTF-8 bytes, end exclusive. Missing/incomplete labels remain null.
-    The shared 80-line scoring pack is a separate metric and is never substituted here.
+    The shared 80-line scoring pack is a separate metric and is never substituted here. ``native_frontier_in_context``
+    is dependency_frontier_recall@B (proposal §8.2) on this payload, present only when gold has ``frontier_functions``.
     """
     items = context["items"]
     files = set(gold["gold_files"])
     functions = set(gold["gold_functions"]) if gold["function_labels_complete"] else set()
     definitions = {d["parent_id"]: d for values in corpus.definitions.values() for d in values}
-    covered = set()
-    for identity in functions:
-        definition = definitions.get(identity)
-        if definition is None:
-            continue
-        start = definition["start_line"], definition["start_col"]
-        end = definition["end_line"], definition["end_col"]
-        for item in items:
-            span = item["range"]
-            if (item["path"] == definition["path"]
-                    and (span["start_line"], span["start_col"]) <= start
-                    and end <= (span["end_line"], span["end_col"])):
-                covered.add(identity)
-                break
-    return {"native_gold_file_in_context": len(files & {i["path"] for i in items}) / len(files) if files else None,
-            "native_gold_function_in_context": len(covered) / len(functions) if functions else None,
-            "native_context_tokens": context["total_token_count"], "native_context_items": len(items),
-            "native_context_truncated": int(context["truncated"])}
+
+    def covered(identities):
+        """Ids whose whole definition range lies inside one payload item."""
+        found = set()
+        for identity in identities:
+            definition = definitions.get(identity)
+            if definition is None:
+                continue
+            start = definition["start_line"], definition["start_col"]
+            end = definition["end_line"], definition["end_col"]
+            if any(item["path"] == definition["path"]
+                   and (item["range"]["start_line"], item["range"]["start_col"]) <= start
+                   and end <= (item["range"]["end_line"], item["range"]["end_col"]) for item in items):
+                found.add(identity)
+        return found
+
+    paths = {i["path"] for i in items}
+    metrics = {"native_gold_file_in_context": len(files & paths) / len(files) if files else None,
+               "native_all_gold_files_in_context": int(files <= paths) if files else None,
+               "native_gold_function_in_context": len(covered(functions)) / len(functions) if functions else None,
+               "native_context_tokens": context["total_token_count"], "native_context_items": len(items),
+               "native_context_truncated": int(context["truncated"])}
+    frontier = set(gold.get("frontier_functions") or ())
+    if frontier:  # dependency_frontier_recall@B on the served payload; absent keeps older outputs unchanged
+        metrics["native_frontier_in_context"] = len(covered(frontier)) / len(frontier)
+    return metrics
 
 
 def paired_summary(pairs, metric_names):

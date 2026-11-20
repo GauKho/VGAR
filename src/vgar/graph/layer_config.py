@@ -53,8 +53,8 @@ def _node(node: str) -> str:
 
 
 def scip_config(entry: Path | None, *, node: str, timeout: float, strict: bool, environment: Path | None,
-                native_config: bool, import_roots: tuple[str, ...], target_only: str | None,
-                python: Path | None, bundle: Path | None = None) -> ScipConfig:
+                native_config: bool, target_only: str | None, python: Path | None,
+                import_roots: tuple[str, ...] = ("src", "lib"), bundle: Path | None = None) -> ScipConfig:
     """SCIP resolver config, as ``build_graph.py --resolver scip`` builds it.
 
     Args:
@@ -64,9 +64,10 @@ def scip_config(entry: Path | None, *, node: str, timeout: float, strict: bool, 
         strict: Fail instead of falling back to the static resolver.
         environment: Package inventory JSON of the target environment.
         native_config: Use the repository's own import configuration.
-        import_roots: Repository-relative import roots.
         target_only: Optional directory subset.
         python: Interpreter for SCIP.
+        import_roots: Repository-relative import roots; ``src`` and ``lib`` by default, so the served graph, R1 and G1
+            index a repository the same way.
         bundle: Previously generated index bundle.
     """
     return ScipConfig(command=(_node(node), "-r", str(SCIP_SHIM.resolve()), str((entry or SCIP_RUNTIME).resolve())),
@@ -132,8 +133,7 @@ def layer_configs(env: Mapping[str, str]) -> LayerConfigs:
     node = str(node_path) if node_path else "node"
     scip_entry = _path(env, "VGAR_SCIP_ENTRY")
     scip = scip_config(scip_entry, node=node, timeout=_number(env, "VGAR_SCIP_TIMEOUT", 120), strict=False,
-                       environment=_path(env, "VGAR_SCIP_ENVIRONMENT"), native_config=False,
-                       import_roots=("src", "lib"), target_only=None,
+                       environment=_path(env, "VGAR_SCIP_ENVIRONMENT"), native_config=False, target_only=None,
                        python=_path(env, "VGAR_SCIP_PYTHON")) if scip_entry else None
     lsp_entry = _path(env, "VGAR_LSP_ENTRY")
     lsp = lsp_config(lsp_entry, node=node, total_timeout=30, request_timeout=5, max_requests=200,

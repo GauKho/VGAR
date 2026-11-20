@@ -1,7 +1,7 @@
 """G1 evaluator (spec 2026-11-16): call edge and name-use P/R of the graph against the locked labels.
 
   python scripts/g1_evaluate.py --kit ~/rt1/g1 --out ~/rt1/g1/report \
-      [--tsg-executable P --tsg-tree-sitter-dir P] [--enable-jarvis] [--scip-entry P --scip-node node]
+      [--tsg-executable P --tsg-tree-sitter-dir P] [--enable-jarvis] [--scip-entry P --scip-node node --scip-timeout S]
 
 Exit codes: 0 report written; 2 sheets not locked, edited after the lock, or checkout differs from the kit;
 3 the user's agreement labels disagree with Claude's and settlement.csv does not settle all of them
@@ -50,8 +50,8 @@ def _configurations(args) -> dict:
     else:
         configs["tsg_jarvis"] = "not run: needs --tsg-executable and --enable-jarvis"
     if base.tsg and args.scip_entry:
-        scip = scip_config(args.scip_entry, node=args.scip_node, timeout=600, strict=False, environment=None,
-                           native_config=False, import_roots=(), target_only=None, python=None)
+        scip = scip_config(args.scip_entry, node=args.scip_node, timeout=args.scip_timeout, strict=False, environment=None,
+                           native_config=False, target_only=None, python=None)
         configs["scip_tsg"] = LayerConfigs(tsg=base.tsg, scip=scip)
     else:
         configs["scip_tsg"] = "not run: needs --tsg-executable and --scip-entry"
@@ -157,6 +157,7 @@ def main(argv=None) -> int:
     parser.add_argument("--out", type=Path, required=True)
     parser.add_argument("--scip-entry", type=Path)
     parser.add_argument("--scip-node", default="node")
+    parser.add_argument("--scip-timeout", type=float, default=600, help="seconds for SCIP indexing per repository")
     parser.add_argument("--agreement-sheet", default=DEFAULT_AGREEMENT_SHEET,
                         help="agreement sheet in the kit; any other name than the default is a human labeller's")
     add_layer_options(parser)

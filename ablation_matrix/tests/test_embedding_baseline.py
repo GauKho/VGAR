@@ -16,7 +16,7 @@ from vgar.evaluation.retrieval.chunks import extract_chunks
 
 
 class Fake:
-    model_id, revision, query_prefix = "fake", "r0", ""
+    model_id, revision, query_prefix, max_tokens = "fake", "r0", "", 1024
 
     def __init__(self):
         self.encoded = 0
@@ -103,7 +103,7 @@ def _artifact(tmp_path, arms, status="SUCCEEDED"):
     return path
 
 
-SETTINGS = {"model_id": "m", "revision": SHA, "query_prefix": "q: "}
+SETTINGS = {"model_id": "m", "revision": SHA, "query_prefix": "q: ", "max_tokens": 1024}
 
 
 def test_resume_with_same_embedding_passes(tmp_path):
@@ -111,7 +111,8 @@ def test_resume_with_same_embedding_passes(tmp_path):
                                SETTINGS)
 
 
-@pytest.mark.parametrize("change", [{"model_id": "other"}, {"revision": "b" * 40}, {"query_prefix": ""}])
+@pytest.mark.parametrize("change", [{"model_id": "other"}, {"revision": "b" * 40}, {"query_prefix": ""},
+                                    {"max_tokens": 512}])
 def test_resume_with_other_embedding_stops(tmp_path, change):
     artifact = _artifact(tmp_path, {"bm25": {}, "embedding": {"meta": SETTINGS}})
     with pytest.raises(SystemExit):
@@ -128,3 +129,19 @@ def test_resume_adding_or_dropping_embedding_stops(tmp_path):
 def test_resume_ignores_failed_and_history_results(tmp_path):
     run.check_resume_embedding(_artifact(tmp_path, {}, status="FAILED"), SETTINGS)
     run.check_resume_embedding(_artifact(tmp_path, {"task_trace": {}}), SETTINGS)
+
+
+def test_cache_is_keyed_by_token_limit(tmp_path):
+    cache = EmbeddingCache(tmp_path)
+    embedding_rank("t", "alpha", SOURCES, Fake(), cache=cache)
+    shorter = Fake()
+    shorter.max_tokens = 512
+    assert embedding_rank("t", "alpha", SOURCES, shorter, cache=cache).meta["cache_hits"] == 0
+
+
+def test_runner_embedding_limits_default_and_settable():
+    args = run.parse_args(BASE + ["--embedding-model", "nomic-ai/CodeRankEmbed", "--embedding-revision", SHA])
+    assert args.embedding_max_tokens == 1024 and args.embedding_batch_size == 8
+    args = run.parse_args(BASE + ["--embedding-model", "nomic-ai/CodeRankEmbed", "--embedding-revision", SHA,
+                                  "--embedding-max-tokens", "512", "--embedding-batch-size", "4"])
+    assert args.embedding_max_tokens == 512 and args.embedding_batch_size == 4

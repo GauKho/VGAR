@@ -60,7 +60,8 @@ def load_or_build_graph(root: Path, row: dict, tree: Path, *, rebuild: bool, bui
                         layers=None):
     """Cache is bound to every graph source and the resolver's implementation/runtime profile.
 
-    ``layers`` (tree-sitter-graph / Joern / JARVIS, spec 2026-11-15 §5) enter the cache key only when one is on.
+    ``layers`` (tree-sitter-graph / Joern / JARVIS, spec 2026-11-15 §5; SCIP / LSP resolvers) enter the cache key only
+    when one is on. ``layers.scip`` is used when ``scip_config`` is not given.
     """
     from vgar.graph.layer_config import LayerConfigs, layer_profile
     from vgar.graph.builder import PythonGraphBuilder
@@ -70,7 +71,9 @@ def load_or_build_graph(root: Path, row: dict, tree: Path, *, rebuild: bool, bui
     profile = resolver_profile or {"resolver": resolver}
     if layer_profile(layers) is not None:
         profile = dict(profile, layers=layer_profile(layers))
-    optional = {k: v for k, v in (layers or LayerConfigs()).builder_kwargs().items() if k in {"tsg", "joern", "jarvis"}}
+    layers = layers or LayerConfigs()
+    optional = {k: v for k, v in layers.builder_kwargs().items() if k in {"tsg", "joern", "jarvis", "lsp"}}
+    scip_config = scip_config or layers.scip
     source_digest = sha256(json.dumps(current_fingerprint(tree), sort_keys=True))
     auxiliary_digest = sha256(json.dumps(auxiliary_fingerprint(tree), sort_keys=True))
     identity = resolver_cache_key(row["repo"], row["base_commit"], source_digest, builder_hash,

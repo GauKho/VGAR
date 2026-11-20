@@ -7,7 +7,7 @@ Tổng hợp mọi số liệu retrieval hiện có cho RQ2, kèm cách đọc. 
 - **Ngân sách:** 12.000 token, đếm bằng UTF-8 bytes/4. Mỗi mục kèm snippet tối đa 80 dòng.
 - **Số liệu là trung bình trên các task.** CI95 dùng bootstrap ghép cặp 2.000 lần.
 - **Kết quả gốc (WSL):** `~/rt1/results/r1_50`, `r1_now50`, `r1_full50_noflag`, `r1_full50`. Mỗi thư mục có `tasks/*.json` và `summary.json`; các file `compare_vs_*.json` nằm trong thư mục của lượt ứng viên.
-- **Báo cáo liên quan:** `tv2_r1_retrieval_ablation_2026-11-11.md` (R1 gốc), `tv2_r1_full_layers_2026-11-16.md` (bật layer).
+- **Báo cáo liên quan:** `tv2_r1_retrieval_ablation_2026-11-11.md` (R1 gốc), `tv2_r1_full_layers_2026-11-16.md` (bật layer), `tv2_r1_embedding_frontier_2026-11-17.md` (baseline embedding, `dependency_frontier_recall@B`, nhóm so sánh chính có Holm).
 - Lượt `r1_now50` (code hiện tại, không layer) cho thứ hạng giống hệt `r1_50` ở cả 9 cấu hình × 50 task, nên Phần 1 cũng là số của code hiện tại.
 
 **Tên cấu hình**

@@ -37,6 +37,7 @@ sys.path[:0] = [str(HERE), str(ROOT / "src"), str(ROOT / "scripts")]
 import run_graph_retrieval as runner
 from component_metrics import component_metrics
 from embedding_baseline import (
+    EMBEDDING_SETTINGS,
     QUERY_PREFIXES,
     REVISION_SHA,
     EmbeddingCache,
@@ -78,7 +79,7 @@ PAIRS = (
     ("no_task_trace", "bm25"), ("no_task_trace", "grep"), ("no_task_trace", "neighbor"),   # graph vs text (A1 vs A0)
     ("no_task_trace", "embedding"),
     ("task_trace", "bm25"), ("task_trace", "embedding"),                                      # A2 vs A0
-    ("task_trace_rt1", "bm25"), ("task_trace_rt1", "embedding"), ("task_trace_rt1", "grep"),  # served graph vs §13.1
+    ("task_trace_rt1", "bm25"), ("task_trace_rt1", "embedding"), ("task_trace_rt1", "grep"),  # RT-1 candidate vs §13.1 (server runs task_trace: SERVED_CONFIG)
     ("task_trace", "no_task_trace"),                                                          # task trace (A2 vs A1)
     ("a3", "task_trace"),                                                                     # architecture (A3 vs A2)
     ("no_task_trace", "ast_no_task_trace"),                                                   # call/import edges vs AST only
@@ -111,7 +112,9 @@ def arm_flags(args: argparse.Namespace) -> dict[str, dict[str, bool]]:
 
 
 def arms_for(args: argparse.Namespace) -> tuple[tuple[str, ...], bool]:
-    """Graph arms to run and whether the text baselines run."""
+    """Graph arms to run and whether the text baselines run (``--arms``: only those graph arms, no text arms)."""
+    if args.arms:
+        return tuple(args.arms.split(",")), False
     return (GRAPH_ARMS, True) if args.history == "none" else (("task_trace",), False)
 
 
@@ -176,10 +179,8 @@ def evaluate_task(root: Path, row: dict[str, Any], args: argparse.Namespace, bui
     sources, provenance = read_repository_sources(row, root / "data" / "repositories", network=not args.offline)
     tree = root / "data" / "repositories" / "trees" / runner.key_of(row)
     extract_python_tree(provenance["cache_path"], row["repo"], row["base_commit"], tree)
-    from vgar.graph.layer_config import layers_from_args
-
     document, graph_meta = runner.load_or_build_graph(root, row, tree, rebuild=False, builder_hash=builder_hash,
-                                                      cache=False, layers=layers_from_args(args))
+                                                      cache=False, layers=run_layers(args))
     corpus = CorpusIndex(sources)
     graph_arms, run_text = arms_for(args)
     counts, history_label, history = None, None, None
@@ -219,8 +220,8 @@ def evaluate_task(root: Path, row: dict[str, Any], args: argparse.Namespace, bui
     return result
 
 
-def check_resume_embedding(artifact: Path, embedding: dict[str, str] | None) -> None:
-    """Stop a --resume whose embedding model, revision or prefix differs from the task result already on disk.
+def check_resume_embedding(artifact: Path, embedding: dict[str, Any] | None) -> None:
+    """Stop a --resume whose embedding model, revision, prefix or token limit differs from the task result already on disk.
 
     Args:
         artifact: An earlier task result of this run folder.
@@ -230,10 +231,24 @@ def check_resume_embedding(artifact: Path, embedding: dict[str, str] | None) -> 
     if data.get("status") != "SUCCEEDED" or "bm25" not in data["arms"]:
         return   # failed, or a --history run: no text arm, so no embedding arm either
     meta = data["arms"].get("embedding", {}).get("meta")
-    earlier = {key: meta.get(key) for key in ("model_id", "revision", "query_prefix")} if meta else None
+    earlier = {key: meta.get(key) for key in EMBEDDING_SETTINGS} if meta else None
     if earlier != embedding:
         raise SystemExit(f"{artifact} was scored with embedding {earlier}, this run uses {embedding}; "
                          "use a new --out folder")
+
+
+def run_layers(args: argparse.Namespace):
+    """Optional layers of the run: the ``add_layer_options`` layers plus the SCIP / LSP resolvers (off unless an entry is given)."""
+    from dataclasses import replace
+
+    from vgar.graph.layer_config import layers_from_args, lsp_config, scip_config
+
+    scip = scip_config(args.scip_entry, node=args.node, timeout=args.scip_timeout, strict=False, environment=None,
+                       native_config=False, target_only=None, python=None) if args.scip_entry else None
+    lsp = lsp_config(args.lsp_entry, node=args.node, total_timeout=args.lsp_timeout, request_timeout=5,
+                     max_requests=args.lsp_max_requests, python=None, import_roots=("src", "lib"),
+                     strict=False) if args.lsp_entry else None
+    return replace(layers_from_args(args), scip=scip, lsp=lsp)
 
 
 def layers_and_flags(args: argparse.Namespace, document: dict[str, Any] | None = None) -> dict[str, Any] | None:
@@ -241,10 +256,10 @@ def layers_and_flags(args: argparse.Namespace, document: dict[str, Any] | None =
 
     With the built ``document`` and a layer on, ``layer_status`` says per layer whether it was ready, failed or off.
     """
-    from vgar.graph.layer_config import layer_summary, layers_from_args
+    from vgar.graph.layer_config import layer_summary
 
     flags = arm_flags(args)
-    configs = layers_from_args(args)
+    configs = run_layers(args)
     layers = sorted(k for k, v in configs.builder_kwargs().items() if v)
     if not flags and not layers:
         return None
@@ -412,6 +427,9 @@ def parse_args(argv: list[str] | None) -> argparse.Namespace:
     parser.add_argument("--embedding-revision", help="pinned model revision (commit SHA); required with --embedding-model")
     parser.add_argument("--embedding-query-prefix",
                         help="text put before the issue for the query vector; default from the model's card")
+    parser.add_argument("--embedding-max-tokens", type=int, default=1024,
+                        help="truncate each chunk and the query to this many model tokens (GPU memory)")
+    parser.add_argument("--embedding-batch-size", type=int, default=8)
     parser.add_argument("--embedding-cache", type=Path, help="folder of the chunk vector cache")
     parser.add_argument("--embedding-device", default="cuda")
     parser.add_argument("--allow-heldout", action="store_true",
@@ -419,7 +437,16 @@ def parse_args(argv: list[str] | None) -> argparse.Namespace:
     from vgar.graph.layer_config import add_layer_options
 
     add_layer_options(parser)
+    parser.add_argument("--arms", help="comma-separated graph arms to run (tuning); skips the text baselines")
+    parser.add_argument("--node", default="node", help="Node executable for SCIP / LSP")
+    parser.add_argument("--scip-entry", type=Path, help="scip-python index.js; turns the SCIP resolver on")
+    parser.add_argument("--scip-timeout", type=float, default=900, help="seconds for SCIP indexing per task")
+    parser.add_argument("--lsp-entry", type=Path, help="pyright langserver.index.js; turns the LSP resolver on")
+    parser.add_argument("--lsp-timeout", type=float, default=30, help="total LSP query budget per task, seconds")
+    parser.add_argument("--lsp-max-requests", type=int, default=200)
     args = parser.parse_args(argv)
+    if args.arms and set(args.arms.split(",")) - set(GRAPH_ARMS):
+        parser.error(f"--arms: unknown graph arm(s) {sorted(set(args.arms.split(',')) - set(GRAPH_ARMS))}")
     if args.compare_history:
         return args
     if args.root is None or args.manifest is None or args.out is None:
@@ -460,7 +487,8 @@ def main(argv: list[str] | None = None) -> int:
     embedder = embedding_cache = None
     if args.embedding_model:
         embedder = SentenceTransformerEmbedder(args.embedding_model, args.embedding_revision, args.embedding_query_prefix,
-                                               device=args.embedding_device)
+                                               max_tokens=args.embedding_max_tokens, device=args.embedding_device,
+                                               batch_size=args.embedding_batch_size)
         embedding_cache = EmbeddingCache(args.embedding_cache) if args.embedding_cache else None
     embedding = embedding_settings(embedder)
     for number, row in enumerate(tasks, 1):

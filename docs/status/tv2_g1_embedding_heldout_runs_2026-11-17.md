@@ -49,7 +49,10 @@ PYTHONPATH=$R/src ~/.vgar-wsl/bin/python $R/scripts/count_heldout_eligible.py ~/
 ## 5. Embedding và frontier trên 50 task dev (Task 8)
 
 ```bash
-~/.vgar-wsl/bin/pip install sentence-transformers torch --index-url https://download.pytorch.org/whl/cu121
+# venv tạo bằng uv, không có pip; torch lấy từ index PyTorch, phần còn lại từ PyPI (CodeRankEmbed cần einops)
+uv pip install --python ~/.vgar-wsl/bin/python torch --index-url https://download.pytorch.org/whl/cu121
+uv pip install --python ~/.vgar-wsl/bin/python sentence-transformers einops
+~/.vgar-wsl/bin/python -c "import torch, sentence_transformers as s; print(torch.__version__, torch.cuda.is_available(), s.__version__)"
 ~/.vgar-wsl/bin/python -c "from huggingface_hub import model_info; print(model_info('nomic-ai/CodeRankEmbed').sha)"
 PYTHONPATH=$R/src ~/.vgar-wsl/bin/python $R/ablation_matrix/run_r1_ablation.py ~/rt1 ~/rt1/data/manifests/w10-dev-50-gold.json \
   --out ~/rt1/results/r1_emb50 --allow-fallback-counter --prune \

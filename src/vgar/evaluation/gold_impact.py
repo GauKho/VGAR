@@ -193,6 +193,31 @@ def evaluate_task(task_id: str, checkout: Path, task_roots: list[str], row: dict
         return out | {'status': 'ERROR', 'reason': f'{type(error).__name__}: {error}'}
 
 
+def cross_file_reach(diff: str, document: dict, checkout: Path, impact_flags: dict | None = None) -> list[dict]:
+    """Multi-file gold patch: graph impact of each changed file's own hunks, and which other changed files it reaches.
+
+    Baseline: the other files in the same directory as the changed file. Single-file patches give [].
+    """
+    changed = patch_files(diff)
+    if len(changed) < 2:
+        return []
+    paths = {node['id']: node.get('path') for node in document['nodes']}
+    files = {node['path'] for node in document['nodes'] if node['type'] == 'File'}
+    rows = []
+    for source in changed:
+        part, _ = filter_patch(diff, {source})
+        policy = PatchPolicy(tuple(sorted(files)), (), max_bytes=len(part.encode('utf-8')) + 1, max_files=1,
+                             max_changed_lines=len(part.splitlines()))
+        report = analyze_patch_impact(part, document, checkout, patch_policy=policy, **(impact_flags or {}))
+        region = {paths[item.node_id] for item in report.impacted.items if paths.get(item.node_id)} - {source}
+        same_dir = {path for path in files if Path(path).parent == Path(source).parent} - {source}
+        others = set(changed) - {source}
+        rows.append({'source': source, 'others': sorted(others), 'reached': sorted(others & region),
+                     'region_files': len(region), 'same_dir_reached': sorted(others & same_dir),
+                     'same_dir_files': len(same_dir), 'impact_status': report.impacted.status})
+    return rows
+
+
 # ---- table ----------------------------------------------------------------------------------------------------------
 
 METHODS = (('diff_only', 'Chỉ dùng diff (file trong diff và test cùng tên)'),

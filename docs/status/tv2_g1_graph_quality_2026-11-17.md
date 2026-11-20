@@ -8,7 +8,7 @@
 
 - 300 mục (150 lời gọi, 150 tên dùng; 12 repo dev, một task mỗi repo) là **nhãn do Claude gán**, chỉ nhìn code và danh sách ứng viên cùng tên, trước khi build graph. Không phải "gán nhãn tay".
 - 30 mục được gán lần hai bởi **một lượt Claude khác**, theo yêu cầu của người dùng (16/11). Độ khớp raw 0,967, kappa 1,000 (n = 30), một mục lệch (C017) do người dùng chốt. Hai số khác nhau vì cách tính khác nhau (`g1_labels.agreement`): kappa chỉ so **loại nhãn**, còn độ khớp raw so cả loại nhãn lẫn **tập đích** trong repo. C017 cùng loại nhãn ở cả hai lượt, chỉ khác đích, nên raw là 29/30 mà kappa vẫn là 1,000. Đây là **độ nhất quán của Claude**, không phải độ khớp với người.
-- Lượt người: xem mục "Độ khớp với người" (Task 2 của plan 17/11).
+- Lượt người (17/11): độ khớp raw 0,733, kappa 0,599 trên 30 mục; xem mục "Độ khớp với người".
 
 ## Năm metric của proposal
 
@@ -60,6 +60,31 @@ Graph static không có cạnh đọc tên (`REFERENCES` từ tree-sitter-graph)
 
 ## Độ khớp với người
 
-Chưa có (đang chờ chấm `agreement_human.csv`, Task 2).
+Chạy ngày 17/11/2026, báo cáo gốc ở `~/rt1/g1/report_human/g1_report.md`, log ở `~/rt1/g1/human.log`.
+
+| Mục | Giá trị |
+|---|---|
+| Người gán | Người dùng (TV2), gán mù trên 30 mục của `agreement_human.csv` (15 lời gọi, 15 tên dùng), không mở nhãn của Claude |
+| Độ khớp raw | **0,733** (22/30) |
+| Cohen's kappa | **0,599**, mức "vừa phải" theo thang Landis–Koch (0,41–0,60) |
+| Mục lệch | 8: C017, C054, C098, C100, N006, N056, N069, N109 |
+| Cách chốt | **Claude đề xuất nhãn cuối kèm bằng chứng từ mã nguồn, người dùng duyệt** (`settlement_agreement_human.csv`). Cả 8 mục chốt theo nhãn Claude, nên số nhãn bị đổi là 0 và mọi số P/R ở trên giữ nguyên |
+
+Lý do của từng mục lệch, đối chiếu với mã nguồn tại `base_commit` và với `g1_labelling_guide.md`:
+
+| Mục | Claude | Người | Chốt | Lý do |
+|---|---|---|---|---|
+| C017 | `other:…PytestDoctestRunner` | `1` | Claude | `RUNNER_CLASS = _init_runner_class()` là biến toàn cục chứa class. Luật "biến toàn cục chứa class/hàm" ghi class đó; lượt Claude đã chốt giống vậy |
+| C054 | `external` | `1` | Claude | `from scipy.special import factorial, comb` (dòng 1339) |
+| C098 | `1` | `unknown` | Claude | `log, exp = _make_log_transforms(base)` (dòng 896) trả về `def exp` ở dòng 927 |
+| C100 | `other:…Kernel.__call__` | `unknown` | Claude, cần phán xét | `kernel(...)` gọi `__call__` của các Kernel trong `self.kernels` (đa hình). Nhãn `unknown` cũng có lý vì `kernel` là biến vòng lặp |
+| N006 | `unknown` | `other:…band.capi` | Claude | `from …prototypes import raster as capi` là bí danh module; luật ghi `unknown` |
+| N056 | `unknown` | `other:…Options` | Claude | `model` là tham số; `Options` là kiểu của `_meta`, không phải nơi định nghĩa tên `_meta` |
+| N069 | `10;11;12` | `10` | Claude, cần phán xét | `BaseSGD` trừu tượng; `intercept_` gán ở cả BaseSGD (198), BaseSGDClassifier (436), BaseSGDRegressor (1014). Luật đa hình ghi cả ba |
+| N109 | `unknown` | `external` | Claude | `import astropy.units as u` là bí danh module trong repo, không phải thư viện ngoài |
+
+Cách đọc: kappa 0,599 cho thấy nhãn của Claude và người khớp vừa phải. Bốn trong tám mục lệch (C017, C054, N006, N109) rơi vào ca mà guide đã có luật riêng (biến toàn cục chứa class, hàm của thư viện ngoài, bí danh module); hai mục (C100, N069) là ca đa hình cần phán xét. Vì nhãn cuối của các mục lệch do Claude đề xuất, báo cáo không được gọi bộ nhãn này là "gán nhãn tay độc lập".
+
+JARVIS lỗi ở lượt này giống các lượt trước (`AttributeError ... get_ns` và timeout 120 s), nên recall của `tsg_jarvis` là cận dưới.
 
 _Ngày 17/11 đã đối chiếu từng số với `g1_report.json` sinh ngày 16/11/2026 13:10._
