@@ -1,26 +1,29 @@
 from __future__ import annotations
 
 import json
+import shutil
 from pathlib import Path
 
 from vgar.graph.sqlite_service import SQLiteGraphService
 from vgar.graph.sqlite_store import SQLiteGraphStore
 
 
-def _sample_service() -> SQLiteGraphService:
-    database = Path(__file__).parents[1] / "artifacts" / "sample_graph.db"
+def _sample_service(tmp_path: Path) -> SQLiteGraphService:
+    # Work on a copy: opening the store writes to the database, and the sample is a tracked file.
+    database = tmp_path / "sample_graph.db"
+    shutil.copy2(Path(__file__).parents[1] / "artifacts" / "sample_graph.db", database)
     return SQLiteGraphService(SQLiteGraphStore(database))
 
 
-def test_repository_summary_reads_real_sqlite_graph():
-    summary = _sample_service().get_repository_summary()
+def test_repository_summary_reads_real_sqlite_graph(tmp_path):
+    summary = _sample_service(tmp_path).get_repository_summary()
     assert summary.node_count > 0
     assert summary.edge_count > 0
     assert summary.node_counts_by_type.get("Function", 0) > 0
 
 
-def test_graph_node_contract_is_repo_wrapped():
-    service = _sample_service()
+def test_graph_node_contract_is_repo_wrapped(tmp_path):
+    service = _sample_service(tmp_path)
     search = service.search_symbols("login", limit=10)
     assert search.symbols
 
@@ -38,8 +41,8 @@ def test_graph_node_contract_is_repo_wrapped():
     assert payload["repo"]["provenance"] == "tree-sitter"
 
 
-def test_get_node_and_subgraph_from_real_sqlite_graph():
-    service = _sample_service()
+def test_get_node_and_subgraph_from_real_sqlite_graph(tmp_path):
+    service = _sample_service(tmp_path)
     search = service.search_symbols("login", limit=10)
     assert search.symbols
     anchor = search.symbols[0].symbol_id
@@ -68,7 +71,7 @@ def test_node_resource_roundtrip_encoded_id(monkeypatch, tmp_path):
     from urllib.parse import quote
     from vgar.mcp.audit import AuditLogger
     from vgar.mcp.servers import graph_server
-    service = _sample_service()
+    service = _sample_service(tmp_path)
     monkeypatch.setattr(graph_server, "graph_service", service)
     monkeypatch.setattr(graph_server, "_audit_logger", AuditLogger(tmp_path / "audit.jsonl"))
     node_id = service.search_symbols("login", limit=1).symbols[0].symbol_id
@@ -88,7 +91,7 @@ def test_node_resource_decodes_id_only_once(monkeypatch, tmp_path):
     from vgar.mcp.audit import AuditLogger
     from vgar.mcp.servers import graph_server
     seen = []
-    service = _sample_service()
+    service = _sample_service(tmp_path)
     real_get_node = service.get_node
     monkeypatch.setattr(service, "get_node", lambda node_id: seen.append(node_id) or real_get_node(
         service.search_symbols("login", limit=1).symbols[0].symbol_id))

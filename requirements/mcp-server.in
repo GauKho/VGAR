@@ -1,5 +1,5 @@
 # Separate server runtime: launch the checkout through PYTHONPATH.
-# Do not install root VGAR metadata (its legacy client requires mcp<2).
+# Same pins as pyproject.toml (mcp==2.2.0); this file only adds the hashed lock for the server runtime.
 mcp==2.2.0
 pydantic>=2.12,<3
 packaging>=24

@@ -3,6 +3,7 @@ has no unguarded write tool (S13/L6-2), every guarded tool returns the C4 envelo
 from __future__ import annotations
 
 import json
+import shutil
 from pathlib import Path
 
 from vgar.mcp.audit import AuditLogger
@@ -18,8 +19,9 @@ def test_graph_tools_mark_repository_text_untrusted(monkeypatch, tmp_path):
     from vgar.graph.sqlite_service import SQLiteGraphService
     from vgar.graph.sqlite_store import SQLiteGraphStore
     from vgar.mcp.servers import graph_server
-    monkeypatch.setattr(graph_server, "graph_service", SQLiteGraphService(SQLiteGraphStore(
-        Path(__file__).parents[1] / "artifacts" / "sample_graph.db")))
+    database = tmp_path / "sample_graph.db"  # a copy: opening the store writes, and the sample is tracked
+    shutil.copy2(Path(__file__).parents[1] / "artifacts" / "sample_graph.db", database)
+    monkeypatch.setattr(graph_server, "graph_service", SQLiteGraphService(SQLiteGraphStore(database)))
     monkeypatch.setattr(graph_server, "_audit_logger", AuditLogger(tmp_path / "audit.jsonl"))
     assert graph_server.search_symbols("login", limit=5)["metadata"]["untrusted"] is True
 

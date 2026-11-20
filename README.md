@@ -55,6 +55,8 @@ cd <repository>
 $py   = "<ABSOLUTE PATH TO>/vgar_mcp_mvp_demo/.venv/Scripts/python.exe"
 $repo = "<ABSOLUTE PATH TO THE REPOSITORY>"
 $data = "<ABSOLUTE PATH TO A FOLDER OUTSIDE THE REPOSITORY>"
+$logs = "<ABSOLUTE PATH TO THE LOGS>"
+$db   = "<ABSOLUTE PATH TO THE REPOSITORY>/graph.db"
 claude mcp add vgar-graph      -e PYTHONUTF8=1 -e VGAR_GRAPH_BACKEND=sqlite -e VGAR_REPOSITORY_ROOT=$repo -e VGAR_GRAPH_DATABASE=$data/graph.db -e VGAR_MCP_AUDIT_LOG=$data/graph.jsonl -- $py -m vgar.mcp.servers.graph_server
 claude mcp add vgar-execution  -e PYTHONUTF8=1 -e VGAR_GRAPH_BACKEND=sqlite -e VGAR_REPOSITORY_ROOT=$repo -e VGAR_GRAPH_DATABASE=$data/graph.db -e VGAR_MCP_AUDIT_LOG=$data/execution.jsonl -- $py -m vgar.mcp.servers.execution_server
 claude mcp add vgar-repository -e PYTHONUTF8=1 -e VGAR_LEASE_ROOT=$repo -e VGAR_MCP_AUDIT_LOG=$data/repository.jsonl -- $py -m vgar.mcp.servers.repository_server
@@ -111,10 +113,26 @@ Replace every `<ABSOLUTE ...>` placeholder. The database file may not exist yet.
 Run in the root of the repository (`opencode.json` is written there), with `$py`, `$repo` and `$data` set as in the [Quick start](#quick-start):
 
 ```powershell
-opencode.cmd mcp add vgar-graph      --env PYTHONUTF8=1 --env VGAR_GRAPH_BACKEND=sqlite --env VGAR_REPOSITORY_ROOT=$repo --env VGAR_GRAPH_DATABASE=$data/graph.db --env VGAR_MCP_AUDIT_LOG=$data/graph.jsonl -- $py -m vgar.mcp.servers.graph_server
-opencode.cmd mcp add vgar-execution  --env PYTHONUTF8=1 --env VGAR_GRAPH_BACKEND=sqlite --env VGAR_REPOSITORY_ROOT=$repo --env VGAR_GRAPH_DATABASE=$data/graph.db --env VGAR_MCP_AUDIT_LOG=$data/execution.jsonl -- $py -m vgar.mcp.servers.execution_server
-opencode.cmd mcp add vgar-repository --env PYTHONUTF8=1 --env VGAR_LEASE_ROOT=$repo --env VGAR_MCP_AUDIT_LOG=$data/repository.jsonl -- $py -m vgar.mcp.servers.repository_server
-opencode mcp list                     # the three servers show "connected"
+New-Item -ItemType Directory -Force $data | Out-Null
+
+opencode.cmd mcp add vgar-graph `
+  --env PYTHONUTF8=1 --env VGAR_GRAPH_BACKEND=sqlite `
+  --env VGAR_REPOSITORY_ROOT=$repo --env VGAR_GRAPH_DATABASE=$data\graph.db `
+  --env VGAR_MCP_AUDIT_LOG=$data\graph.jsonl `
+  -- $py -m vgar.mcp.servers.graph_server
+
+opencode.cmd mcp add vgar-execution `
+  --env PYTHONUTF8=1 --env VGAR_GRAPH_BACKEND=sqlite `
+  --env VGAR_REPOSITORY_ROOT=$repo --env VGAR_GRAPH_DATABASE=$data\graph.db `
+  --env VGAR_MCP_AUDIT_LOG=$data\execution.jsonl `
+  -- $py -m vgar.mcp.servers.execution_server
+
+opencode.cmd mcp add vgar-repository `
+  --env PYTHONUTF8=1 --env VGAR_LEASE_ROOT=$repo `
+  --env VGAR_MCP_AUDIT_LOG=$data\repository.jsonl `
+  -- $py -m vgar.mcp.servers.repository_server
+
+opencode.cmd mcp list
 ```
 
 Call `opencode.cmd`, not `opencode`: under Windows PowerShell 5.1 the npm shim `opencode.ps1` drops the `--`, and OpenCode prints its help instead of adding the server. Running `mcp add` again replaces the server, including fields you edited by hand.

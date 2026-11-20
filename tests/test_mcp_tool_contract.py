@@ -7,6 +7,7 @@ scripts/smoke_w3_w4.py.
 from __future__ import annotations
 
 import json
+import shutil
 from pathlib import Path
 
 import pytest
@@ -26,10 +27,12 @@ ENVELOPE_KEYS = {"status", "data", "error", "metadata"}
 def audit_path(tmp_path, monkeypatch) -> Path:
     path = tmp_path / "audit.jsonl"
     monkeypatch.setattr(graph_server, "_audit_logger", AuditLogger(path))
+    database = tmp_path / "sample_graph.db"  # a copy: opening the store writes, and the sample is tracked
+    shutil.copy2(ROOT / "artifacts" / "sample_graph.db", database)
     monkeypatch.setattr(
         graph_server,
         "graph_service",
-        SQLiteGraphService(SQLiteGraphStore(ROOT / "artifacts" / "sample_graph.db")),
+        SQLiteGraphService(SQLiteGraphStore(database)),
     )
     return path
 
