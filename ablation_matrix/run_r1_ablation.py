@@ -192,7 +192,7 @@ def evaluate_task(root: Path, row: dict[str, Any], args: argparse.Namespace, bui
     outputs = variant_outputs(document, tree, row["problem_statement"], include=make_include(corpus),
                               count_tokens=counter, counter_label=label, budget_tokens=args.budget_tokens,
                               arms=graph_arms, change_counts=counts, history_label=history_label,
-                              arm_flags=arm_flags(args))
+                              arm_flags=arm_flags(args), sources=sources)
     text_records = {"bm25": bm25_rank(row["instance_id"], row["problem_statement"], sources),
                     "grep": grep_rank(row["instance_id"], row["problem_statement"], sources),
                     "neighbor": neighbor_rank(row["instance_id"], row["problem_statement"], sources)} if run_text else {}

@@ -12,6 +12,8 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+from collections.abc import Mapping
+from dataclasses import fields
 from pathlib import Path
 from typing import Any
 
@@ -48,13 +50,15 @@ from vgar.evaluation.retrieval.scoring import (
     make_include,
     score_record,
 )
+from vgar.graph.retrieval import RetrievalConfig
 
 TEXT_ARMS = ("bm25", "grep", "neighbor")
 ROOT = Path(__file__).resolve().parents[1]
 
 
 def evaluate_profiles(row: dict, sources: dict[str, str], tree: Path, documents: dict[str, dict], profiles: list[str],
-                      *, counter: Any, label: str, budget_tokens: int, with_text: bool) -> dict[str, Any]:
+                      *, counter: Any, label: str, budget_tokens: int, with_text: bool,
+                      arm_flags: Mapping[str, Any] | None = None) -> dict[str, Any]:
     """Score the profiles of one task; every ranking is computed before the gold patch is read.
 
     Args:
@@ -67,6 +71,7 @@ def evaluate_profiles(row: dict, sources: dict[str, str], tree: Path, documents:
         label: Counter label.
         budget_tokens: Context budget.
         with_text: Also score the text baselines (BM25, grep, file neighbour).
+        arm_flags: ``RetrievalConfig`` fields applied to every graph arm (T1 steps of spec 2026-11-20 §6.1).
     """
     corpus = CorpusIndex(sources)
     include = make_include(corpus)
@@ -78,7 +83,8 @@ def evaluate_profiles(row: dict, sources: dict[str, str], tree: Path, documents:
         document = documents[build]
         arms = tuple(sorted({PROFILES[name][1] for name in names}))
         built = variant_outputs(document, tree, row["problem_statement"], include=include, count_tokens=counter,
-                                counter_label=label, budget_tokens=budget_tokens, arms=arms)
+                                counter_label=label, budget_tokens=budget_tokens, arms=arms, sources=sources,
+                                arm_flags={arm: dict(arm_flags) for arm in arms} if arm_flags else None)
         nodes = {node["id"]: node for node in document["nodes"]}
         for name in names:
             outputs[name] = built[PROFILES[name][1]]
@@ -95,7 +101,9 @@ def evaluate_profiles(row: dict, sources: dict[str, str], tree: Path, documents:
         scored = score_record(record, gold, budget_tokens=budget_tokens, counter=counter, counter_label=label)
         metrics = (flat_metrics(scored) | native_context_metrics(out["context"], gold, corpus)
                    | component_metrics(document, [item.path for item in record.items], gold_files=gold["gold_files"]))
-        metrics.update(anchor_count=len(out["anchors"]), retrieve_seconds=out["seconds"])
+        metrics.update(anchor_count=len(out["anchors"]), retrieve_seconds=out["seconds"],
+                       candidate_count=len(out["candidates"]),
+                       traversal_limited=bool(out["diagnostics"]["traversal_limited"]))
         arms[name] = {"metrics": metrics, "ranked": record.to_json()["items"][:100], "anchors": list(out["anchors"])[:50],
                       "diagnostics": out.get("diagnostics", {})}
     for name, record in text.items():
@@ -123,7 +131,8 @@ def prepare_task(root: Path, row: dict) -> tuple[dict[str, str], Path]:
 
 
 def run_offline_task(root: Path, row: dict, profiles: list[str], tools: dict[str, str], *, out_dir: Path,
-                     graphs_dir: Path, builder_hash: str, budget_tokens: int, resume: bool) -> dict[str, Any]:
+                     graphs_dir: Path, builder_hash: str, budget_tokens: int, resume: bool,
+                     arm_flags: Mapping[str, Any] | None = None) -> dict[str, Any]:
     """Score one task and write ``<out_dir>/tasks/<id>.json``; with ``resume`` only missing profiles are computed."""
     path = out_dir / "tasks" / f"{row['instance_id']}.json"
     previous = json.loads(path.read_text(encoding="utf-8")) if resume and path.exists() else None
@@ -140,8 +149,10 @@ def run_offline_task(root: Path, row: dict, profiles: list[str], tools: dict[str
         graphs[build] = {key: str(value) if isinstance(value, Path) else value for key, value in meta.items()}
     with_text = previous is None or any(name not in previous["arms"] for name in TEXT_ARMS)
     result = evaluate_profiles(row, sources, tree, documents, todo, counter=bytes_div4_counter,
-                               label=FALLBACK_COUNTER_LABEL, budget_tokens=budget_tokens, with_text=with_text)
+                               label=FALLBACK_COUNTER_LABEL, budget_tokens=budget_tokens, with_text=with_text,
+                               arm_flags=arm_flags)
     result["graphs"] = graphs
+    result["arm_flags"] = dict(arm_flags or {})
     if previous is not None:
         result["arms"] = previous["arms"] | result["arms"]
         result["impact"] = previous.get("impact", {}) | result["impact"]
@@ -175,7 +186,12 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--lsp-entry", help="language server entry")
     parser.add_argument("--tsg-executable")
     parser.add_argument("--tsg-tree-sitter-dir")
+    parser.add_argument("--arm-flags", type=json.loads, default={},
+                        help='JSON RetrievalConfig fields for every graph arm, e.g. {"max_candidates": 100}')
     args = parser.parse_args(argv)
+    unknown = sorted(set(args.arm_flags) - {item.name for item in fields(RetrievalConfig)})
+    if unknown:
+        parser.error(f"--arm-flags: unknown RetrievalConfig field(s) {unknown}")
     profiles = args.profiles.split(",")
     if set(profiles) - set(PROFILES):
         parser.error(f"--profiles: unknown {sorted(set(profiles) - set(PROFILES))}")
@@ -198,7 +214,8 @@ def main(argv: list[str] | None = None) -> int:
             raise SystemExit(f"{row['instance_id']}: gold patch hash mismatch")
         try:
             run_offline_task(root, dict(row, patch=patch), profiles, tools, out_dir=args.out, graphs_dir=graphs_dir,
-                             builder_hash=builder_hash, budget_tokens=args.budget_tokens, resume=args.resume)
+                             builder_hash=builder_hash, budget_tokens=args.budget_tokens, resume=args.resume,
+                             arm_flags=args.arm_flags)
             status = "SUCCEEDED"
         except Exception as error:  # noqa: BLE001 -- the task stays in the run with its reason
             status = f"ERROR {type(error).__name__}: {error}"

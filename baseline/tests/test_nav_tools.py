@@ -62,32 +62,75 @@ def test_graph_tools_prebind_version_and_task(tmp_path):
     assert "request_id" not in found.text   # the server envelope's metadata is not shown to the model
 
 
-def test_graph_conf_adds_edge_confidence_and_sorts_callers(tmp_path):
-    import json
-    import sqlite3
-
+def _graph(tmp_path):
     tree = _tree(tmp_path)
-    (tree / "pkg" / "c.py").write_text("from pkg.a import f\n\n\ndef h():\n    return f()\n", encoding="utf-8")
     document = PythonGraphBuilder(repo_key="o__r", repository_revision="c" * 40).build(tree)
     db = tmp_path / "g.db"
     store = SQLiteGraphStore(db)
     store.initialize()
     store.ingest(document)
-    with sqlite3.connect(db) as connection:   # g's call weaker than h's, so the order must flip
-        connection.execute("UPDATE edges SET confidence = CASE WHEN source_id LIKE '%pkg.b.g%' THEN 0.7 ELSE 0.9 END "
-                           "WHERE type = 'CALLS'")
-    f_id = "vgar:o__r:python:function:pkg/a.py:pkg.a.f"
+    return tree, db, document
 
-    async def callers(with_confidence):
+
+ISSUE = "g in pkg/b.py returns the wrong value because f returns 1"
+G_ID = "vgar:o__r:python:function:pkg/b.py:pkg.b.g"
+
+
+def test_callers_show_the_servers_edge_confidence_without_harness_sql(tmp_path):
+    import inspect
+    import json
+
+    import baseline.nav.tools as tools_module
+    tree, db, document = _graph(tmp_path)
+
+    async def callers():
+        async with GraphTools(tree, db, document["graph_version"], "o__r-1", tmp_path / "a.jsonl") as tools:
+            return json.loads((await tools.call("get_callers", {"symbol_id": "vgar:o__r:python:function:pkg/a.py:pkg.a.f"})).text)
+
+    items = anyio.run(callers)["data"]["callers"]
+    assert items and all(item["confidence"] is not None for item in items)   # §6.4, served by the graph server
+    assert "with_confidence" not in inspect.signature(GraphTools).parameters and not hasattr(tools_module, "edge_evidence")
+
+
+def test_proposal_mode_hides_and_binds_issue_text_and_failing_tests(tmp_path):
+    tree, db, document = _graph(tmp_path)
+
+    async def scenario():
         async with GraphTools(tree, db, document["graph_version"], "o__r-1", tmp_path / "a.jsonl",
-                              with_confidence=with_confidence) as tools:
-            return json.loads((await tools.call("get_callers", {"symbol_id": f_id})).text)["data"]["callers"]
+                              issue_text=ISSUE) as tools:
+            return tools.schemas(), await tools.call("find_task_anchors", {"issue_text": "short"})
 
-    plain = anyio.run(callers, False)
-    rich = anyio.run(callers, True)
-    assert all("edge_confidence" not in item for item in plain)
-    assert [item["name"] for item in rich] == ["h", "g"] and [item["edge_confidence"] for item in rich] == [0.9, 0.7]
-    assert rich[0]["edge_source_tool"] == "vgar-python-graph-builder"
+    schemas, anchors = anyio.run(scenario)
+    params = {s["function"]["name"]: s["function"]["parameters"].get("properties", {}) for s in schemas}
+    assert "get_context_subgraph" in params
+    assert all("issue_text" not in p and "failing_tests" not in p for p in params.values())
+    assert "pkg/b.py" in anchors.text   # anchors come from the full issue, not the model's paraphrase
+
+
+def test_get_context_subgraph_returns_typed_edges_with_confidence(tmp_path):
+    tree, db, document = _graph(tmp_path)
+
+    async def scenario():
+        async with GraphTools(tree, db, document["graph_version"], "o__r-1", tmp_path / "a.jsonl",
+                              issue_text=ISSUE) as tools:
+            return await tools.call("get_context_subgraph", {"node_id": G_ID})
+
+    result = anyio.run(scenario)
+    assert "CALLS" in result.text and "confidence" in result.text
+    assert result.raw["edges"] and result.raw["nodes"]
+
+
+def test_prompt_follows_the_server_workflow_and_ends_with_the_run_instruction(tmp_path):
+    tree, db, document = _graph(tmp_path)
+
+    async def scenario():
+        async with GraphTools(tree, db, document["graph_version"], "o__r-1", tmp_path / "a.jsonl",
+                              issue_text=ISSUE) as tools:
+            return await tools.prompt("STOP AFTER STEP 3")
+
+    system, user = anyio.run(scenario)
+    assert "1. Find task anchors" in system and system.endswith("STOP AFTER STEP 3")
+    assert ISSUE in user
 
 
 def test_a_graph_call_past_the_timeout_disables_graph_tools_for_the_task(tmp_path):
@@ -131,8 +174,12 @@ def test_related_context_fits_the_tool_result_cap(tmp_path):
     assert "[truncated]" not in result.text and "--- BEGIN SOURCE" in result.text   # compact text, not escaped JSON
     assert "diagnostics" not in result.text and "content_hash" not in result.text
     assert result.spans   # it still records the code it showed
-    candidate = result.raw["data"]["diagnostics"]["candidates"][0]   # the full server answer is kept for the log
-    assert {"features", "relevance_score", "graph_rationale"} <= set(candidate)
+    # §9.2: the tool returns the packed context; the full ranking diagnostics stay in the per-task audit log.
+    assert set(result.raw["data"]["diagnostics"]) == {"budget", "traversal_limited"}
+    import json
+    events = [json.loads(line) for line in (tmp_path / "a.jsonl").read_text(encoding="utf-8").splitlines()]
+    logged = next(event["payload"]["diagnostics"] for event in events if event["payload"].get("diagnostics"))
+    assert {"features", "relevance_score", "graph_rationale"} <= set(logged["candidates"][0])
 
 
 def test_task_anchors_are_shown_compactly_without_overlay_internals(tmp_path):

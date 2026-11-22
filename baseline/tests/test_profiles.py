@@ -28,3 +28,10 @@ def test_missing_tool_for_a_build_names_the_variable():
         build_layers("scip", {})
     with pytest.raises(ValueError, match="unknown build"):
         build_layers("nope", {})
+
+
+def test_a1_arch_profile_uses_the_arch_arm_on_the_base_build():
+    # §13.1 "repo graph + architecture lift" without the task trace, compared with A1 (spec 2026-11-20 §5.4).
+    from baseline.profiles import BASELINE_PROFILE
+    assert PROFILES["A1_arch"] == ("base", "arch_no_task_trace")
+    assert BASELINE_PROFILE == {"A1_arch": "A1"}

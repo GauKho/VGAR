@@ -42,7 +42,8 @@ def load_or_build(root: Path, row: dict, tree: Path, *, build: str, layers: Laye
         if meta["builder_hash"] == builder_hash:
             store = SQLiteGraphStore(db, graph_version=meta["graph_version"])
             return store.load_document(meta["graph_version"]), meta | {"db": db, "from_cache": True}
-    for stale in (db, meta_path):
+    # A killed build leaves SQLite side files; a stale -journal would be rolled into the next database of this name.
+    for stale in (db, meta_path, *(db.with_name(db.name + suffix) for suffix in ("-journal", "-wal", "-shm"))):
         stale.unlink(missing_ok=True)
     document, built = runner.load_or_build_graph(root, row, tree, rebuild=True, builder_hash=builder_hash,
                                                  cache=False, layers=layers)

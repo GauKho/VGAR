@@ -54,3 +54,12 @@ def test_min_gold_files_keeps_only_multi_file_tasks():
                                      "a_e20": {"metrics": {"function_recall@5": 1.0}}}}, "one": cand["one"]},
                                      "task_trace_rt1", ["a_e20"], min_gold_files=2)
     assert arms["n_tasks"] == 1
+
+
+def test_t1_runs_compare_their_profile_arms_without_a_graph_record():
+    def task(r5):
+        return {"graphs": ["base"], "arms": {"A2": {"metrics": {"function_recall@5": r5}},
+                                             "bm25": {"metrics": {"function_recall@5": 0.0}}}}
+    out = compare_runs.compare({"a": task(0.0), "b": task(1.0)}, {"a": task(1.0), "b": task(1.0)})
+    assert out["pairs"]["A2"]["function_recall@5"]["delta"] == 0.5
+    assert "bm25" in out["pairs"] and "build_seconds" not in out

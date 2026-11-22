@@ -73,3 +73,25 @@ def test_resume_computes_only_missing_profiles(tmp_path, monkeypatch):
     assert "function_recall@5" in result["arms"]["A2"]["metrics"]
     saved = json.loads((out_dir / "tasks" / f"{ROW['instance_id']}.json").read_text(encoding="utf-8"))
     assert set(saved["arms"]) == {"P0", "A1", "A2", "bm25", "grep", "neighbor"}
+
+
+def test_arm_flags_reach_every_graph_arm(tmp_path):
+    tree = _tree(tmp_path)
+    document = PythonGraphBuilder(repo_key="o__r", repository_revision="c" * 40).build(tree)
+    out = run_offline.evaluate_profiles(ROW, dict(FILES), tree, {"base": document}, ["A1", "A2"],
+                                        counter=bytes_div4_counter, label=FALLBACK_COUNTER_LABEL, budget_tokens=4000,
+                                        with_text=False, arm_flags={"max_candidates": 7})
+    assert {out["arms"][name]["diagnostics"]["retrieval_config"]["max_candidates"] for name in ("A1", "A2")} == {7}
+
+
+def test_metrics_record_candidate_count_and_traversal_flag(tmp_path):
+    metrics = _evaluate(tmp_path, ["A2"], with_text=False)["arms"]["A2"]["metrics"]
+    assert metrics["candidate_count"] >= 1 and isinstance(metrics["traversal_limited"], bool)
+
+
+def test_unknown_arm_flag_is_rejected_before_any_task(tmp_path, capsys):
+    import pytest
+    with pytest.raises(SystemExit):
+        run_offline.main([str(tmp_path), str(tmp_path / "m.json"), "--out", str(tmp_path / "out"),
+                          "--arm-flags", '{"no_such_field": 1}'])
+    assert "unknown RetrievalConfig field" in capsys.readouterr().err

@@ -37,3 +37,24 @@ def test_new_builder_hash_rebuilds(tmp_path):
 
 def test_builds_use_separate_databases(tmp_path):
     assert graph_db_path(tmp_path, "base", "x") != graph_db_path(tmp_path, "scip", "x")
+
+
+def test_a_killed_build_leaves_no_journal_for_the_next_one(tmp_path, monkeypatch):
+    # A build killed mid-ingest (20/11, memory reaper) left <id>.db and <id>.db-journal; SQLite would treat that
+    # journal as hot and roll it into the next database of the same name.
+    import pytest
+
+    from baseline import graph_store
+    db = graph_db_path(tmp_path / "graphs", "base", ROW["instance_id"])
+    db.parent.mkdir(parents=True)
+    leftovers = [db, db.with_name(db.name + "-journal"), db.with_name(db.name + "-wal"), db.with_name(db.name + "-shm")]
+    for path in leftovers:
+        path.write_bytes(b"partial")
+
+    def stop(*args, **kwargs):
+        raise RuntimeError("stop after cleanup")
+
+    monkeypatch.setattr(graph_store.runner, "load_or_build_graph", stop)
+    with pytest.raises(RuntimeError):
+        _load(tmp_path, _tree(tmp_path))
+    assert not any(path.exists() for path in leftovers)

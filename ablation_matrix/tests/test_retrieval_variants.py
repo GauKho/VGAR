@@ -69,6 +69,32 @@ def test_variants_differ_only_by_the_task_trace(tmp_path):
     assert outputs["no_task_trace"]["candidates"] and outputs["task_trace"]["candidates"]
 
 
+def test_symbol_arm_keeps_at_most_50_anchors(tmp_path):
+    # The served seed limit became the resource limit N (spec 2026-11-20 §5.1); the A1 baseline keeps 50 anchors.
+    (tmp_path / "repo" / "shop").mkdir(parents=True)
+    (tmp_path / "repo" / "shop" / "__init__.py").write_text("", encoding="utf-8")
+    (tmp_path / "repo" / "shop" / "widgets.py").write_text(
+        "".join(f"def widget_{i}():\n    return {i}\n\n\n" for i in range(80)), encoding="utf-8")
+    document = PythonGraphBuilder(repo_key="t/variants", repository_revision="rev").build(tmp_path / "repo")
+    outputs = variant_outputs(document, tmp_path / "repo", "widget fails", include=_not_test, arms=("no_task_trace",),
+                              count_tokens=lambda text: len(text) // 4, counter_label="test")
+    assert len(outputs["no_task_trace"]["anchors"]) == 50
+
+
+def test_task_trace_arm_gets_error_message_anchors_from_sources(tmp_path):
+    # T1 must see the same G_task anchors as the served find_task_anchors (spec 2026-11-20 §5.3).
+    files = {"shop/__init__.py": "",
+             "shop/pay.py": "def charge(card):\n    raise RuntimeError('card could not be charged right now')\n"}
+    for path, text in files.items():
+        (tmp_path / "repo" / path).parent.mkdir(parents=True, exist_ok=True)
+        (tmp_path / "repo" / path).write_text(text, encoding="utf-8")
+    document = PythonGraphBuilder(repo_key="t/variants", repository_revision="rev").build(tmp_path / "repo")
+    issue = "Paying breaks.\n\nRuntimeError: card could not be charged right now\n"
+    outputs = variant_outputs(document, tmp_path / "repo", issue, include=_not_test, arms=("task_trace",),
+                              count_tokens=lambda text: len(text) // 4, counter_label="test", sources=files)
+    assert "shop.pay.charge" in {anchor["symbol"] for anchor in outputs["task_trace"]["anchors"]}
+
+
 def test_issue_without_symbol_words_gives_an_empty_no_trace_arm(tmp_path):
     document = _build(tmp_path)
     outputs = variant_outputs(document, tmp_path / "repo", "it crashes sometimes", include=_not_test,

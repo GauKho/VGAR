@@ -80,7 +80,9 @@ def compare(base: dict[str, dict], cand: dict[str, dict], ready: str | None = No
                  and gold_file_count(cand[i]) >= min_gold_files)
     out: dict[str, Any] = {"n_tasks": len(ids), "ready_filter": ready, "min_gold_files": min_gold_files,
                            "means": {}, "pairs": {}}
-    for arm in ARMS:
+    # T1 (baseline/run_offline.py) names its graph arms after profiles (A2, A1_arch, ...)
+    extra = sorted(set(cand[ids[0]]["arms"]) & set(base[ids[0]]["arms"]) - set(ARMS)) if ids else []
+    for arm in (*ARMS, *extra):
         if not ids or arm not in cand[ids[0]]["arms"] or arm not in base[ids[0]]["arms"]:
             continue
         _add_pair(out, arm, ids, lambda i, arm=arm: base[i]["arms"][arm]["metrics"],
@@ -92,7 +94,7 @@ def compare(base: dict[str, dict], cand: dict[str, dict], ready: str | None = No
             if value["status"] == "failed":
                 failed.append([i, layer, (value.get("reason") or "")[:80]])
     out["layer_status"], out["layer_failed"] = dict(statuses), failed
-    if ids:
+    if ids and all("graph" in base[i] and "graph" in cand[i] for i in ids):
         out["build_seconds"] = {"base": statistics.fmean(base[i]["graph"]["build_seconds"] for i in ids),
                                 "candidate": statistics.fmean(cand[i]["graph"]["build_seconds"] for i in ids)}
     return out

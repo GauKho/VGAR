@@ -37,6 +37,9 @@ SYMBOL_TYPES = frozenset({"Class", "Function", "Method", "Test"})
 # Without an overlay GraphContextRetriever gives every anchor confidence 1.0;
 # all R-A1 anchors are equal, so only issue similarity orders them.
 ANCHOR_CONFIDENCE = 1.0
+# R-A1 name-search anchors: the old seed limit (half of 100). The served seed limit became the §10.5 resource
+# limit (spec 2026-11-20 §5.1); the A1 baseline keeps its 50 anchors so it stays comparable.
+SYMBOL_ANCHOR_LIMIT = 50
 _IDENTIFIER = re.compile(r"[A-Za-z_][A-Za-z0-9_]*")
 _STOP = frozenset(["a", "an", "and", "are", "as", "at", "be", "by", "can", "describe", "does", "failing", "for", "from", "how", "in", "is", "it", "of", "on", "or", "problem", "python", "related", "request", "should", "that", "the", "this", "to", "use", "using", "was", "when", "with", "would", "not", "but", "if", "then", "there", "line", "file", "error", "none", "true", "false", "self"])
 
@@ -129,7 +132,8 @@ def variant_outputs(document: dict[str, Any], tree: Path, issue_text: str, *,
                     counter_label: str, budget_tokens: int = 12000,
                     arms: tuple[str, ...] = ARMS, change_counts: Mapping[str, float] | None = None,
                     history_label: str | None = None,
-                    arm_flags: Mapping[str, Mapping[str, Any]] | None = None) -> dict[str, dict[str, Any]]:
+                    arm_flags: Mapping[str, Mapping[str, Any]] | None = None,
+                    sources: Mapping[str, str] | None = None) -> dict[str, dict[str, Any]]:
     """Run the named graph arms on one graph; output follows ``evaluate_graph_task``'s ``arm_outputs``.
 
     Args:
@@ -144,8 +148,9 @@ def variant_outputs(document: dict[str, Any], tree: Path, issue_text: str, *,
         change_counts: Commit-history counts for ``recent_change_frequency`` (node id or path keys).
         history_label: Provenance label of ``change_counts``.
         arm_flags: Extra ``RetrievalConfig`` flags per arm name (e.g. ``use_variable_references`` on ``task_trace``).
+        sources: Source text by path, for the error-message anchors of G_task (as ``find_task_anchors`` serves them).
     """
-    overlay = TaskOverlayBuilder(document).build("ablation:task_trace", issue_text, None)
+    overlay = TaskOverlayBuilder(document).build("ablation:task_trace", issue_text, None, sources=sources)
     # Arms sharing a config share one retriever. Each retriever deep-copies the
     # graph, so only one lives at a time (sympy-size graphs ran out of RAM when
     # all five were kept).
@@ -167,7 +172,7 @@ def variant_outputs(document: dict[str, Any], tree: Path, issue_text: str, *,
                 outputs[arm] = _arm(retriever, anchors, budget_tokens, issue_text, overlay, include)
             else:
                 anchors = [_describe(retriever, node_id, ANCHOR_CONFIDENCE) for node_id in symbol_search_anchors(
-                    document, issue_text, limit=retriever._anchor_seed_limit(), include=include)]
+                    document, issue_text, limit=SYMBOL_ANCHOR_LIMIT, include=include)]
                 outputs[arm] = _arm(retriever, anchors, budget_tokens, issue_text, None, include)
         del retriever
         gc.collect()

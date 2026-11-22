@@ -14,6 +14,7 @@ BUILDS = ("base", "scip", "scip_lsp", "full")
 PROFILES: dict[str, tuple[str, str]] = {
     "P0": ("base", "ast_no_task_trace"),      # §13.1 AST-only graph
     "A1": ("base", "no_task_trace"),          # §13.3 A1 repo graph
+    "A1_arch": ("base", "arch_no_task_trace"),   # §13.1 repo graph + architecture lift, no task trace
     "A2": ("base", "task_trace"),             # + task trace (the served default)
     "A3": ("base", "a3"),                     # + architecture
     "A3_scip": ("scip", "a3"),
@@ -21,6 +22,8 @@ PROFILES: dict[str, tuple[str, str]] = {
     "full": ("full", "a3"),                   # + tree-sitter-graph, Joern, JARVIS
 }
 PROFILE_ORDER = tuple(PROFILES)
+# Profiles compared with a named profile instead of the previous one (the A1 -> A2 step stays the G_task step).
+BASELINE_PROFILE = {"A1_arch": "A1"}
 
 _REQUIRED = {"base": (), "scip": ("VGAR_SCIP_ENTRY",), "scip_lsp": ("VGAR_SCIP_ENTRY", "VGAR_LSP_ENTRY"),
              "full": ("VGAR_SCIP_ENTRY", "VGAR_LSP_ENTRY", "VGAR_TSG_EXECUTABLE", "VGAR_TSG_TREE_SITTER_DIR")}

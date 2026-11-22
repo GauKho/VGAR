@@ -80,9 +80,46 @@ def test_nav_table_lists_each_arm(tmp_path):
     assert "tool_calls" in table
 
 
-def test_graph_conf_arm_uses_the_base_graph_with_confidence():
-    from baseline.nav.run_nav import ARMS, CONFIDENCE_ARMS
-    assert ARMS["graph_conf"] == "base" and CONFIDENCE_ARMS == {"graph_conf"}
+def test_graph_v1_arm_is_known_and_graph_conf_is_gone():
+    from baseline.nav.run_nav import ARMS, PROPOSAL_ARMS
+    assert ARMS["graph_v1"] == "base" and "graph_v1" in PROPOSAL_ARMS and "graph_conf" not in ARMS
+
+
+def test_graph_v1_b3000_is_graph_v1_with_a_3000_token_context_budget():
+    from baseline.nav.run_nav import ARM_CONTEXT_BUDGET, ARMS, PROPOSAL_ARMS
+    assert ARMS["graph_v1_b3000"] == "base" and "graph_v1_b3000" in PROPOSAL_ARMS
+    assert ARM_CONTEXT_BUDGET["graph_v1_b3000"] == 3000 and "graph_v1" not in ARM_CONTEXT_BUDGET
+
+
+def test_graph_v1_n100_is_graph_v1_with_a_100_candidate_server_limit():
+    from baseline.nav.run_nav import (
+        ARM_CONTEXT_BUDGET,
+        ARM_SERVER_ENV,
+        ARMS,
+        PROPOSAL_ARMS,
+    )
+    assert ARMS["graph_v1_n100"] == "base" and "graph_v1_n100" in PROPOSAL_ARMS
+    assert ARM_SERVER_ENV == {"graph_v1_n100": {"VGAR_RETRIEVAL_MAX_CANDIDATES": "100"}}
+    assert "graph_v1_n100" not in ARM_CONTEXT_BUDGET
+
+
+def test_each_layer_build_has_a_free_tool_arm_and_a_proposal_arm():
+    from baseline.nav.run_nav import ARMS, PROPOSAL_ARMS
+    for build in ("scip", "scip_lsp", "full"):
+        assert ARMS[f"graph_v0_{build}"] == build and f"graph_v0_{build}" not in PROPOSAL_ARMS
+        assert ARMS[f"graph_v1_{build}"] == build and f"graph_v1_{build}" in PROPOSAL_ARMS
+
+
+def test_run_task_uses_the_given_prompt():
+    seen = []
+
+    class Recording(FakeModel):
+        def generate(self, messages, tools, max_new_tokens=1024):
+            seen.append([dict(message) for message in messages])
+            return super().generate(messages, tools, max_new_tokens)
+
+    anyio.run(lambda: run_task(Recording([ANSWER]), _tools(), [], ROW, prompt=("SYSTEM TEXT", "USER TEXT")))
+    assert seen[0][:2] == [{"role": "system", "content": "SYSTEM TEXT"}, {"role": "user", "content": "USER TEXT"}]
 
 
 def test_a_task_that_cannot_be_prepared_is_recorded_and_the_run_goes_on(tmp_path, monkeypatch):
@@ -120,6 +157,12 @@ def _result(answer, calls=(), spans=()):
 
 def test_dotted_function_names_without_a_path_are_scored():
     answer = {"files": [], "functions": ["pkg.a.f", "pkg.b.g"]}
+    assert score_nav(_result(answer), ROW, SOURCES)["function_recall@5"] == 1.0
+
+
+def test_path_with_a_single_colon_is_read_like_path_double_colon():
+    """graph_v1 answers copy the context's ``path:qualname`` shape (nav_v3: 9 of 62 answers)."""
+    answer = {"files": [], "functions": ["pkg/b.py:pkg.b.g", "pkg/a.py:f"]}
     assert score_nav(_result(answer), ROW, SOURCES)["function_recall@5"] == 1.0
 
 
@@ -217,6 +260,18 @@ def test_the_loop_keeps_the_longer_cap_of_related_context():
     replies = ['<tool_call>{"name": "get_related_context", "arguments": {"anchor_ids": ["n"]}}</tool_call>', ANSWER]
     result = anyio.run(lambda: run_task(FakeModel(replies), {"get_related_context": graph_call}, [], ROW))
     assert result["tool_calls"][0]["result"] == long_context   # not cut again to 1500
+
+
+def test_a_larger_context_cap_keeps_a_larger_related_context():
+    long_context = "x" * (3500 * 4)   # a 3000-token budget plus item headers
+
+    async def graph_call(**arguments):
+        return ToolResult(long_context, [])
+
+    replies = ['<tool_call>{"name": "get_related_context", "arguments": {"anchor_ids": ["n"]}}</tool_call>', ANSWER]
+    result = anyio.run(lambda: run_task(FakeModel(replies), {"get_related_context": graph_call}, [], ROW,
+                                        context_cap=4000))
+    assert result["tool_calls"][0]["result"] == long_context
 
 
 def test_resume_reruns_errored_tasks_but_keeps_finished_ones(tmp_path, monkeypatch):

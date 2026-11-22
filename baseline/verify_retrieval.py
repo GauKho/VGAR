@@ -83,7 +83,8 @@ def verify_task(row: dict, sources: dict[str, str], tree: Path, document: dict, 
                 budget_tokens: int) -> dict[str, Any]:
     """Level 1 checks and level 2 funnel for one task (A2 arm, as T1 and the MCP server run it)."""
     corpus = CorpusIndex(sources)
-    overlay = TaskOverlayBuilder(document).build("ablation:task_trace", row["problem_statement"], None)
+    overlay = TaskOverlayBuilder(document).build("ablation:task_trace", row["problem_statement"], None,
+                                                 sources=sources)
     retriever = GraphContextRetriever(document, tree, count_tokens=counter, counter_label=label,
                                       config=arm_config("task_trace"))
     anchors = {anchor.node_id: anchor.score for anchor in overlay.grounding.anchors}

@@ -18,7 +18,7 @@ import baseline._paths  # noqa: F401
 # isort: split
 import compare_runs
 
-from baseline.profiles import PROFILE_ORDER
+from baseline.profiles import BASELINE_PROFILE, PROFILE_ORDER
 
 DEFAULT_METRICS = ["file_recall@1", "function_recall@5", "function_mrr", "native_gold_function_in_context",
                    "native_all_gold_files_in_context", "native_frontier_in_context", "native_context_tokens"]
@@ -30,7 +30,11 @@ def _fmt(value: float, metric: str) -> str:
 
 
 def layer_table(run_dir: Path, metrics: list[str], min_gold_files: int = 0) -> str:
-    """Markdown: every profile present, mean and paired delta against the previous profile present (shared tasks)."""
+    """Markdown: every profile present, mean and paired delta against the previous profile present (shared tasks).
+
+    A profile in ``BASELINE_PROFILE`` is compared with its named profile when that one is present, and never becomes
+    the previous profile of the next row.
+    """
     loaded = compare_runs.load(Path(run_dir))
     run = {i: t for i, t in loaded.items() if t.get("status") == "SUCCEEDED"
            and compare_runs.gold_file_count(t) >= min_gold_files}
@@ -40,7 +44,8 @@ def layer_table(run_dir: Path, metrics: list[str], min_gold_files: int = 0) -> s
              "| profile | vs | n | " + " | ".join(metrics) + " |", "|---" * (3 + len(metrics)) + "|"]
     previous = None
     for profile in present + [arm for arm in TEXT_ARMS if any(arm in t["arms"] for t in run.values())]:
-        if previous is None or profile in TEXT_ARMS:
+        base = BASELINE_PROFILE.get(profile) if BASELINE_PROFILE.get(profile) in present else previous
+        if base is None or profile in TEXT_ARMS:
             ids = [i for i, t in run.items() if profile in t["arms"]]
             cells = []
             for metric in metrics:
@@ -49,8 +54,8 @@ def layer_table(run_dir: Path, metrics: list[str], min_gold_files: int = 0) -> s
                 cells.append(_fmt(statistics.fmean(values), metric) if values else "–")
             lines.append(f"| {profile} | – | n={len(ids)} | " + " | ".join(cells) + " |")
         else:
-            shared = {i: t for i, t in run.items() if previous in t["arms"] and profile in t["arms"]}
-            out = compare_runs.compare_arms(shared, previous, [profile])
+            shared = {i: t for i, t in run.items() if base in t["arms"] and profile in t["arms"]}
+            out = compare_runs.compare_arms(shared, base, [profile])
             cells = []
             for metric in metrics:
                 pair = out["pairs"].get(profile, {}).get(metric)
@@ -61,8 +66,8 @@ def layer_table(run_dir: Path, metrics: list[str], min_gold_files: int = 0) -> s
                 low, high = pair["ci95"]
                 cells.append(f"{_fmt(mean, metric)} ({pair['delta']:+.3f} [{low:+.3f}; {high:+.3f}] "
                              f"{pair['wins']}/{pair['losses']})")
-            lines.append(f"| {profile} | {previous} | n={out['n_tasks']} | " + " | ".join(cells) + " |")
-        if profile not in TEXT_ARMS:
+            lines.append(f"| {profile} | {base} | n={out['n_tasks']} | " + " | ".join(cells) + " |")
+        if profile not in TEXT_ARMS and profile not in BASELINE_PROFILE:
             previous = profile
     return "\n".join(lines) + "\n"
 

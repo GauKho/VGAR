@@ -43,3 +43,13 @@ def test_g1_table_reads_call_edge_precision_and_recall(tmp_path):
         "status": "failed"}}}), encoding="utf-8")
     table = g1_table(g1)
     assert "| static | 1.000 | 0.418" in table and "0.486" in table and "scip_tsg" in table and "failed" in table
+
+
+def test_layer_table_compares_a1_arch_with_a1_and_keeps_a2_against_a1(tmp_path):
+    tasks = tmp_path / "run" / "tasks"
+    tasks.mkdir(parents=True)
+    _task(tasks / "a.json", "a", ["x.py"], 0.0, 1.0, {"A1_arch": {"metrics": {"function_recall@5": 0.5}}})
+    table = layer_table(tmp_path / "run", ["function_recall@5"])
+    rows = {line.split("|")[1].strip(): line.split("|")[2].strip() for line in table.splitlines()
+            if line.startswith("| A")}
+    assert rows["A1_arch"] == "A1" and rows["A2"] == "A1"

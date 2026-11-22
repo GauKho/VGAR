@@ -76,7 +76,8 @@ def evaluate_task(root: Path, row: dict[str, Any], args: argparse.Namespace, bui
                                                       cache=False)
     corpus = CorpusIndex(sources)
     outputs = variant_outputs(document, tree, row["problem_statement"], include=make_include(corpus),
-                              count_tokens=counter, counter_label=label, budget_tokens=args.budget_tokens)
+                              count_tokens=counter, counter_label=label, budget_tokens=args.budget_tokens,
+                              sources=sources)
     contexts = {arm: outputs[arm].pop("context") for arm in ARMS}
     nodes = {node["id"]: node for node in document["nodes"]}
     result = evaluate_graph_task(dict(row, patch=patch), sources, corpus, nodes, outputs,

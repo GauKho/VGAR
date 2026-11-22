@@ -13,6 +13,7 @@ import argparse
 import inspect
 import json
 import posixpath
+import re
 import statistics
 import sys
 import time
@@ -49,13 +50,23 @@ from vgar.evaluation.retrieval.scoring import (
     score_record,
 )
 
-ARMS = {"base": None, "graph_v0": "base", "graph_v0_scip": "scip", "graph_conf": "base"}   # arm -> graph build
-CONFIDENCE_ARMS = {"graph_conf"}   # CALLS edges shown with confidence and provenance (harness-side trial)
-SYSTEM_PROMPT = (
-    "You are a coding agent. Find the files and functions that must change to resolve the issue. "
-    "Use the tools to explore the repository; call one or more tools per turn. When you are done, reply with only a "
-    'JSON object {"files": ["path", ...], "functions": ["path::module.Class.function", ...]}, at most '
-    f"{MAX_ANSWER_ITEMS} files and {MAX_ANSWER_ITEMS} functions, most likely first.")
+ARMS = {"base": None, "graph_v0": "base", "graph_v1": "base", "graph_v1_b3000": "base", "graph_v1_n100": "base",
+        # the same two harnesses on each layer build of baseline/profiles.py (proposal §5.2, §6.2 options)
+        **{f"graph_v{v}_{build}": build for build in ("scip", "scip_lsp", "full") for v in (0, 1)}}   # arm -> graph build
+# graph_v1 follows §9.1/§10.4 (spec 2026-11-20 §5.5): the harness binds the full issue, the model gets the server's
+# repair_with_graph_context prompt and the get_context_subgraph tool.
+PROPOSAL_ARMS = {"graph_v1", "graph_v1_b3000", "graph_v1_n100", "graph_v1_scip", "graph_v1_scip_lsp", "graph_v1_full"}
+# graph_v1 with a larger get_related_context budget (offline, gold fn in context 13 -> 16 of 49 tasks)
+ARM_CONTEXT_BUDGET = {"graph_v1_b3000": 3000}
+# graph_v1 with the server's candidate limit at 100 (T1: N=100 ranks gold functions higher than N=6000)
+ARM_SERVER_ENV = {"graph_v1_n100": {"VGAR_RETRIEVAL_MAX_CANDIDATES": "100"}}
+ANSWER_FORMAT = ('When you are done, reply with only a '
+                 'JSON object {"files": ["path", ...], "functions": ["path::module.Class.function", ...]}, at most '
+                 f"{MAX_ANSWER_ITEMS} files and {MAX_ANSWER_ITEMS} functions, most likely first.")
+SYSTEM_PROMPT = ("You are a coding agent. Find the files and functions that must change to resolve the issue. "
+                 "Use the tools to explore the repository; call one or more tools per turn. " + ANSWER_FORMAT)
+PROPOSAL_NOTE = ("This run stops after step 3: find and read the code that must change, do not write a patch. "
+                 "Call one or more tools per turn. " + ANSWER_FORMAT)
 FINAL_REQUEST = "The tool budget is used up. Reply now with the final JSON object only."
 CONTEXT_REQUEST = "The context is almost full. Reply now with the final JSON object only."
 ANSWER_MARGIN = 2500   # one capped tool result (<= 2000 tokens) plus the request still fit under the context limit
@@ -66,7 +77,8 @@ NAV_METRICS = ("seen_frontier_recall", "seen_all_gold_files", "non_gold_files_re
 
 
 async def run_task(model: Any, tools: dict[str, Any], schemas: list[dict[str, Any]], row: dict, *,
-                   max_calls: int = 12, max_context_tokens: int = 16000, max_seconds: float = 1200) -> dict[str, Any]:
+                   max_calls: int = 12, max_context_tokens: int = 16000, max_seconds: float = 1200,
+                   prompt: tuple[str, str] | None = None, context_cap: int = CONTEXT_RESULT_TOKENS) -> dict[str, Any]:
     """One task: the model calls tools until it answers, the call budget ends, or the context is full.
 
     Args:
@@ -77,9 +89,11 @@ async def run_task(model: Any, tools: dict[str, Any], schemas: list[dict[str, An
         max_calls: Tool call budget.
         max_context_tokens: Prompt size that stops the loop.
         max_seconds: Wall-clock limit of the task, checked between steps.
+        prompt: (system, user) messages replacing the default prompt (graph_v1 uses the server's §10.4 prompt).
+        context_cap: Token cap of a shown get_related_context result.
     """
-    messages = [{"role": "system", "content": SYSTEM_PROMPT},
-                {"role": "user", "content": f"Issue:\n{row['problem_statement']}"}]
+    system, user = prompt or (SYSTEM_PROMPT, f"Issue:\n{row['problem_statement']}")
+    messages = [{"role": "system", "content": system}, {"role": "user", "content": user}]
     calls, spans, turns = [], [], []
     usage = {"prompt_tokens": 0, "completion_tokens": 0, "seconds": 0.0}
     answer, status, ended_by = None, "NO_ANSWER", "answer"
@@ -101,7 +115,7 @@ async def run_task(model: Any, tools: dict[str, Any], schemas: list[dict[str, An
         if prompt > max_context_tokens:
             status, ended_by = "CONTEXT_FULL", "context_full"
             break
-        if prompt > max_context_tokens - ANSWER_MARGIN:   # ask for the answer instead of scoring the task as 0
+        if prompt > max_context_tokens - max(ANSWER_MARGIN, context_cap + 500):   # ask for the answer instead of scoring the task as 0
             messages.append({"role": "user", "content": CONTEXT_REQUEST})
             answer = parse_final(generate([]))
             status, ended_by = ("OK" if answer else "CONTEXT_FULL"), "context_limit"
@@ -128,7 +142,7 @@ async def run_task(model: Any, tools: dict[str, Any], schemas: list[dict[str, An
                         result = await result
                 except Exception as exc:  # noqa: BLE001 -- a bad call is shown to the model, the run goes on
                     result, error = ToolResult(f"error: {type(exc).__name__}: {exc}"), str(exc)
-            shown = cap_tokens(result.text, CONTEXT_RESULT_TOKENS if name == "get_related_context" else 1500)
+            shown = cap_tokens(result.text, context_cap if name == "get_related_context" else 1500)
             logged = {"name": name, "arguments": call.get("arguments"), "seconds": time.perf_counter() - started,
                       "tokens": len(result.text.encode("utf-8")) // 4, "error": error, "result": shown}
             if result.raw is not None:
@@ -154,6 +168,7 @@ def _match(definitions: list[dict[str, Any]], name: str) -> dict[str, Any] | Non
 
 def _resolve(corpus: CorpusIndex, entry: str) -> dict[str, Any] | None:
     """``path::name`` within that file; a bare dotted name by exact symbol, else by a unique dotted suffix."""
+    entry = re.sub(r"^([^:\s]+\.py):(?!:)", r"\1::", entry)   # ``path.py:name``, as the graph context prints it
     if "::" in entry:
         path, _, name = entry.partition("::")
         return _match(corpus.definitions.get(path.strip().lstrip("./"), []), name.strip())
@@ -252,11 +267,17 @@ async def _run_arm_tools(model: Any, arm: str, root: Path, row: dict, tree: Path
         if not meta_path.exists():
             raise FileNotFoundError(f"{meta_path}: build it first with baseline/run_offline.py")
         meta = json.loads(meta_path.read_text(encoding="utf-8")) | {"db": meta_path.with_suffix(".db")}
+    proposal = arm in PROPOSAL_ARMS
     async with GraphTools(tree, meta["db"], meta["graph_version"], row["instance_id"],
-                          audit_dir / f"{arm}-{row['instance_id']}.jsonl", with_confidence=arm in CONFIDENCE_ARMS) as graph:
-        for name in GraphTools.TOOLS:
+                          audit_dir / f"{arm}-{row['instance_id']}.jsonl",
+                          issue_text=row["problem_statement"] if proposal else None,
+                          context_budget=ARM_CONTEXT_BUDGET.get(arm, 1000),
+                          server_env=ARM_SERVER_ENV.get(arm)) as graph:
+        for name in graph.tool_names:
             tools[name] = lambda _name=name, **kwargs: graph.call(_name, kwargs)
-        return await run_task(model, tools, files.schemas() + graph.schemas(), row, max_calls=max_calls)
+        prompt = await graph.prompt(PROPOSAL_NOTE) if proposal else None
+        return await run_task(model, tools, files.schemas() + graph.schemas(), row, max_calls=max_calls, prompt=prompt,
+                              context_cap=graph.context_cap)
 
 
 def _rescore(out: Path, root: Path, tasks: list[dict], arms: list[str], prepare_task: Any) -> int:

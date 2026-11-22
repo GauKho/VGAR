@@ -9,13 +9,14 @@ import json
 import multiprocessing
 import os
 import re
-import sqlite3
 import sys
 from contextlib import AsyncExitStack
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Self
+from urllib.parse import quote
 
+import anyio
 from mcp import ClientSession
 from mcp.client.stdio import StdioServerParameters, stdio_client
 
@@ -145,25 +146,8 @@ def _spans(payload: Any) -> list[tuple[str, int, int]]:
     return found
 
 
-_EDGE_SQL = """
-    SELECT MAX(calls.confidence), calls.resolution, calls.provenance_json FROM edges AS calls
-    JOIN edges AS holds ON holds.target_id = calls.source_id AND holds.graph_version = calls.graph_version
-    WHERE calls.graph_version = ? AND calls.type = 'CALLS' AND holds.type = 'CONTAINS'
-      AND holds.source_id = ? AND calls.target_id = ?"""
-
-
-def edge_evidence(db: Path, graph_version: str, caller: str, callee: str) -> dict[str, Any] | None:
-    """Confidence and provenance of ``caller -CONTAINS-> callsite -CALLS-> callee`` (best call site), read-only."""
-    with sqlite3.connect(f"file:{Path(db).as_posix()}?mode=ro", uri=True) as connection:
-        confidence, resolution, provenance = connection.execute(_EDGE_SQL, (graph_version, caller, callee)).fetchone()
-    if confidence is None:
-        return None
-    source = json.loads(provenance or "{}")
-    return {"edge_confidence": confidence, "edge_resolution": resolution, "edge_source_tool": source.get("source_tool"),
-            "edge_rule": source.get("rule_id")}
-
-
 MAX_ANCHORS_SHOWN = 15
+SUBGRAPH_TOOL = "get_context_subgraph"   # §9.1; served as resource vgar://graph/subgraph/{id}?k=2
 CONTEXT_RESULT_TOKENS = 2000   # 1000 tokens of code + ~50 tokens per item header (path, node id, lines)
 
 
@@ -183,24 +167,47 @@ def _present(name: str, payload: Any) -> str:
     return payload if isinstance(payload, str) else json.dumps(payload, ensure_ascii=False)
 
 
+def _present_subgraph(payload: Any) -> str:
+    """The k=2 subgraph as lines: node ids with type and path, then typed edges with their confidence."""
+    if not isinstance(payload, dict):
+        return str(payload)
+    nodes, edges = payload.get("nodes", []), payload.get("edges", [])
+    lines = [f"k=2 subgraph around {payload.get('anchor_id')}: {len(nodes)} nodes, {len(edges)} edges", "nodes:"]
+    lines += [f"- {node.get('repo', {}).get('node_id')} ({node.get('repo', {}).get('type')}, "
+              f"{node.get('repo', {}).get('path')})" for node in nodes]
+    lines.append("edges:")
+    lines += [f"- {edge.get('edge_type')} {edge.get('source_id')} -> {edge.get('target_id')} "
+              f"confidence {edge.get('confidence')}" for edge in edges]
+    return "\n".join(lines)
+
+
 class GraphTools:
     """The graph server's tools for one task; ``graph_version`` and ``task_id`` are filled in by the harness.
 
-    ``with_confidence`` (arm ``graph_conf``, a harness-side trial of a server change): callers/callees also carry the
-    confidence and provenance of their CALLS edge, most confident first.
+    With ``issue_text`` (proposal mode, spec 2026-11-20 §5.5) the harness is the trusted host of §10.4: it also binds
+    the full issue and ``failing_tests`` (none in SWE-bench), offers ``get_context_subgraph`` (§9.1) and serves the
+    server's ``repair_with_graph_context`` prompt. ``server_env`` adds host settings to the server process (for example
+    ``VGAR_RETRIEVAL_MAX_CANDIDATES``).
     """
 
     TOOLS = ("search_symbols", "find_task_anchors", "get_related_context", "get_callers", "get_callees",
              "explain_dependency_path")
     BOUND = ("graph_version", "task_id")
 
-    def __init__(self, tree: Path, db: Path, graph_version: str, task_id: str, audit_log: Path,
-                 context_budget: int = 1000, with_confidence: bool = False, timeout_seconds: float = 300) -> None:
+    def __init__(self, tree: Path, db: Path, graph_version: str, task_id: str, audit_log: Path, *,
+                 issue_text: str | None = None, context_budget: int = 1000, timeout_seconds: float = 300,
+                 server_env: dict[str, str] | None = None) -> None:
         self.tree, self.db, self.audit_log = Path(tree).resolve(), Path(db).resolve(), Path(audit_log).resolve()
-        self.bound = {"graph_version": graph_version, "task_id": task_id}
+        self.bound: dict[str, Any] = {"graph_version": graph_version, "task_id": task_id}
+        self.proposal = issue_text is not None
+        if self.proposal:
+            self.bound.update(issue_text=issue_text, failing_tests=None)
+        self.tool_names = self.TOOLS + ((SUBGRAPH_TOOL,) if self.proposal else ())
         self.context_budget = context_budget
-        self.with_confidence = with_confidence
+        # result cap: the code budget plus ~1000 tokens of item headers (2000 at the default 1000 budget)
+        self.context_cap = context_budget + CONTEXT_RESULT_TOKENS - 1000
         self.timeout_seconds = timeout_seconds
+        self.server_env = dict(server_env or {})
         self.unavailable: str | None = None
         self._stack: AsyncExitStack | None = None
         self._session: ClientSession | None = None
@@ -210,6 +217,7 @@ class GraphTools:
         env = dict(os.environ, PYTHONPATH=str(ROOT / "src"), VGAR_REPOSITORY_ROOT=str(self.tree),
                    VGAR_GRAPH_DATABASE=str(self.db), VGAR_MCP_AUDIT_LOG=str(self.audit_log))
         env.pop("VGAR_GRAPH_VERSION", None)
+        env.update(self.server_env)
         params = StdioServerParameters(command=sys.executable, args=["-m", "vgar.mcp.servers.graph_server"], env=env,
                                        cwd=str(self.tree))   # not the repo root: its .env must not reach the server
         self._stack = AsyncExitStack()
@@ -228,12 +236,18 @@ class GraphTools:
         out = []
         for name in self.TOOLS:
             schema = dict(self._tools[name].input_schema)
-            properties = {k: v for k, v in schema.get("properties", {}).items() if k not in self.BOUND}
-            required = [k for k in schema.get("required", []) if k not in self.BOUND]
+            properties = {k: v for k, v in schema.get("properties", {}).items() if k not in self.bound}
+            required = [k for k in schema.get("required", []) if k not in self.bound]
             out.append(_function(name, self._tools[name].description or "", properties, required))
+        if self.proposal:
+            out.append(_function(SUBGRAPH_TOOL, "Return the k=2 subgraph around a graph node: its nodes and typed edges "
+                                 "with confidence.", {"node_id": {"type": "string", "description": "Graph node id"}},
+                                 ["node_id"]))
         return out
 
     async def call(self, name: str, arguments: dict[str, Any]) -> ToolResult:
+        if name == SUBGRAPH_TOOL and self.proposal:
+            return await self._subgraph(arguments.get("node_id"))
         if name not in self._tools:
             return ToolResult(f"unknown tool {name!r}")
         if self.unavailable:   # a call timed out: the server may still be busy, so do not queue more work on it
@@ -253,19 +267,42 @@ class GraphTools:
             payload = {key: payload[key] for key in ("status", "data", "error") if key in payload}
         if payload is None:
             payload = "\n".join(getattr(item, "text", "") for item in result.content)
-        if self.with_confidence and name in ("get_callers", "get_callees") and isinstance(payload, dict):
-            self._add_confidence(payload.get("data") or {}, name, arguments.get("symbol_id"))
         text = _present(name, payload)
-        limit = CONTEXT_RESULT_TOKENS if name == "get_related_context" else 1500
+        limit = self.context_cap if name == "get_related_context" else 1500
         return ToolResult(cap_tokens(("error: " if result.is_error else "") + text, limit), _spans(payload),
                           raw=result.structured_content)
 
-    def _add_confidence(self, data: dict[str, Any], name: str, symbol_id: str | None) -> None:
-        key = "callers" if name == "get_callers" else "callees"
-        items = data.get(key)
-        if not isinstance(items, list) or not symbol_id:
-            return
-        for item in items:
-            pair = (item["symbol_id"], symbol_id) if key == "callers" else (symbol_id, item["symbol_id"])
-            item.update(edge_evidence(self.db, self.bound["graph_version"], *pair) or {"edge_confidence": None})
-        items.sort(key=lambda item: -(item["edge_confidence"] or 0.0))
+    async def _subgraph(self, node_id: Any) -> ToolResult:
+        if not isinstance(node_id, str) or not node_id:
+            return ToolResult("error: node_id is required")
+        if self.unavailable:
+            return ToolResult(f"graph tools unavailable for this task: {self.unavailable}")
+        try:
+            with anyio.fail_after(self.timeout_seconds):
+                # The canonical vgar://graph/subgraph/{id}?k=2 needs a host-bound context; this unbound harness reads
+                # the legacy alias, which serves the same depth-2 subgraph.
+                result = await self._session.read_resource(f"vgar://graph/subgraph/{quote(node_id, safe='')}")
+        except TimeoutError:
+            self.unavailable = f"{SUBGRAPH_TOOL} timed out after {self.timeout_seconds:g} s"
+            return ToolResult(f"error: {self.unavailable}")
+        except Exception as error:  # noqa: BLE001 -- an unknown node is reported to the model
+            return ToolResult(f"error: {type(error).__name__}: {error}")
+        text = "\n".join(getattr(item, "text", "") for item in result.contents)
+        try:
+            payload = json.loads(text)
+        except ValueError:
+            payload = text
+        return ToolResult(cap_tokens(_present_subgraph(payload), 1500), _spans(payload), raw=payload)
+
+    async def prompt(self, instruction: str) -> tuple[str, str]:
+        """The server's §10.4 prompt for this task: (workflow + ``instruction``, the task data message).
+
+        Args:
+            instruction: How this run ends (T2 stops after step 3 and answers in its JSON format).
+        """
+        if not self.proposal:
+            raise ValueError("the §10.4 prompt needs the bound issue (GraphTools(..., issue_text=...))")
+        result = await self._session.get_prompt("repair_with_graph_context", {
+            "issue_text": self.bound["issue_text"], "failing_tests": "[]", "context_budget": str(self.context_budget)})
+        texts = [getattr(message.content, "text", "") for message in result.messages]
+        return texts[0] + "\n\n" + instruction, "\n\n".join(texts[1:])
