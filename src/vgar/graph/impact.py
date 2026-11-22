@@ -30,7 +30,7 @@ def _linked(path: Path) -> bool:
     return path.is_symlink() or bool(attrs & getattr(stat, 'FILE_ATTRIBUTE_REPARSE_POINT', 0x400))
 
 
-def _snapshot(document: dict, root: Path) -> dict[str, bytes]:
+def _read_sources(root: Path) -> dict[str, bytes]:
     from vgar.graph.builder import IGNORED_DIRECTORY_NAMES
     if not root.is_dir() or _linked(root):
         raise ValueError('Source root is missing or linked')
@@ -47,10 +47,43 @@ def _snapshot(document: dict, root: Path) -> dict[str, bytes]:
                 if not path.resolve().is_relative_to(root.resolve()):
                     raise ValueError('Source path escapes repository')
                 sources[relative] = path.read_bytes()
-    file_nodes = [n for n in document['nodes'] if n['type'] == 'File']
-    paths = [safe_path(n['path']) for n in file_nodes]
-    if len(paths) != len(set(paths)) or set(paths) != set(sources):
+    return sources
+
+
+def _drift_message(document: dict, sources: dict[str, bytes]) -> str | None:
+    files = {safe_path(n['path']): n['content_hash'] for n in document['nodes'] if n['type'] == 'File'}
+    changes = {'edited': sorted(p for p, digest in files.items() if p in sources and _digest(sources[p]) != digest),
+               'added': sorted(set(sources) - set(files)), 'removed': sorted(set(files) - set(sources))}
+    listed = '; '.join(f"{kind}: {', '.join(paths[:10])}{' ...' if len(paths) > 10 else ''}"
+                       for kind, paths in changes.items() if paths)
+    if not listed:
+        return None
+    return (f"The files differ from the code graph {document['graph_version']} was built from ({listed}). "
+            "Patch checks apply the diff to that code: run them before editing the files, or run `git stash`, "
+            "call the tool, then `git stash pop` (files added after the build are not stashed: move them away).")
+
+
+def source_drift(document: dict, root: Path) -> str | None:
+    """Agent-facing message naming the .py files under ``root`` that differ from the code of ``document``.
+
+    Args:
+        document: Graph snapshot whose File nodes hold the content hash of each source file.
+        root: Repository working tree.
+
+    Returns:
+        The message, or None when every source file matches the snapshot.
+    """
+    return _drift_message(document, _read_sources(root))
+
+
+def _snapshot(document: dict, root: Path) -> dict[str, bytes]:
+    sources = _read_sources(root)
+    paths = [safe_path(n['path']) for n in document['nodes'] if n['type'] == 'File']
+    if len(paths) != len(set(paths)):
         raise ValueError('Source inventory differs from graph snapshot')
+    drift = _drift_message(document, sources)
+    if drift:
+        raise ValueError(drift)
     for node in document['nodes']:
         if node['repo_key'] != document['repo_key']:
             raise ValueError('Graph node repository differs from document')

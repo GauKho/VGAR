@@ -203,8 +203,12 @@ class GraphContextRetriever:
         anchors = sorted(set(anchor_ids))
         self.trace.emit("retrieval_start", graph_version=self.document["graph_version"],
                         anchor_ids=anchors, budget_tokens=budget_tokens, overlay_id=overlay.overlay_id if overlay else None)
+        repo = self.document["repo_key"]
         for node_id in anchors:
             if node_id not in self.nodes:
+                if node_id.startswith((f"vgar:{repo}:issue:", f"vgar:{repo}:task:")):   # task overlay, not code
+                    raise InvalidQueryError(f"{node_id} is a task node from find_task_anchors trace_nodes, not code: "
+                                            "pass the ids in its anchors, or symbol ids from search_symbols")
                 raise NodeNotFoundError(node_id)
             if not self._eligible(self.nodes[node_id]):
                 raise InvalidQueryError("anchor must be a source-backed file/module/symbol/test")

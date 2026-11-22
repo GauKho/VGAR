@@ -328,6 +328,7 @@ class SQLiteGraphStore:
                 FROM nodes
                 WHERE graph_version = ?
                   AND type IN ({placeholders})
+                  AND path IS NOT NULL AND path != ''  -- external modules (e.g. decimal) are not repository symbols
                   AND (
                       name LIKE ? ESCAPE '\\' COLLATE NOCASE
                       OR qualified_name LIKE ? ESCAPE '\\' COLLATE NOCASE

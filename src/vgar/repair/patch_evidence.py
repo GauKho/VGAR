@@ -89,7 +89,10 @@ def verify_patch(service: Any, diff: str, *, graph_version: str,
                                      source_roots=source_roots)
         builder.trace.path = None
         if builder._calculate_graph_version(copy, discover_python_files(copy)) != graph_version:
-            return _result("ERROR", ["BUILDER_OPTIONS_OR_SOURCE_DIFFER_FROM_SNAPSHOT"], {}, graph_version, diff)
+            from vgar.graph.impact import source_drift
+            drift = source_drift(document, root)
+            return _result("ERROR", [f"SOURCE_DIFFERS_FROM_SNAPSHOT: {drift}" if drift
+                                     else "BUILDER_OPTIONS_OR_SOURCE_DIFFER_FROM_SNAPSHOT"], {}, graph_version, diff)
         before = {path: (copy / path).read_bytes() for path in policy.allowed_paths if (copy / path).is_file()}
         try:
             changed, _ = _bind(parsed, copy)

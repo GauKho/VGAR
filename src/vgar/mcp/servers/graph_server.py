@@ -217,7 +217,8 @@ def get_related_context(anchor_ids: list[str], graph_version: str, task_id: str,
     resource limit cut the k=2 neighbourhood. The full ranking diagnostics go to the audit log only.
 
     Args:
-        anchor_ids: Graph node ids to start from (from find_task_anchors or search_symbols).
+        anchor_ids: Code node ids to start from: the ``anchors`` of find_task_anchors (not its trace_nodes) or
+            symbol ids from search_symbols.
         graph_version: Graph version the anchors belong to.
         task_id: Task identifier used for the task overlay; a task bound by find_task_anchors is ranked against.
         budget_tokens: Optional token budget; defaults to 12000 and is capped at 12000.
@@ -239,6 +240,9 @@ def get_related_context(anchor_ids: list[str], graph_version: str, task_id: str,
         data["diagnostics"] = {"traversal_limited": data["diagnostics"]["traversal_limited"],
                                "budget": {"requested": budget_tokens, "effective": effective,
                                           "ceiling": MAX_CONTEXT_BUDGET, "clamped": budget_tokens > MAX_CONTEXT_BUDGET}}
+        if not anchor_ids and not data["context"]["items"]:
+            data["diagnostics"]["hint"] = ("no anchor_ids and nothing in issue_text matched the graph: pass the anchors "
+                                           "returned by find_task_anchors, or symbol ids from search_symbols")
         return data
     return _tool("get_related_context", call,
         {"graph_version": graph_version, "task_id": task_id, "budget_tokens": budget_tokens,
@@ -358,22 +362,28 @@ def _cache_key(diff: str) -> tuple[str, str]:
 
 
 def _verified(diff: str) -> dict[str, Any]:
-    """verify_patch result for ``diff`` on the served snapshot, computed once per (snapshot, diff)."""
+    """verify_patch result for ``diff`` on the served snapshot, kept per (snapshot, diff) unless ERROR."""
     from vgar.repair.patch_evidence import verify_patch
     version, key = _cache_key(diff)
-    if (version, key) not in _verify_cache:
-        _verify_cache[(version, key)] = verify_patch(graph_service, diff, graph_version=version)
-    return _verify_cache[(version, key)]
+    if (version, key) in _verify_cache:
+        return _verify_cache[(version, key)]
+    result = verify_patch(graph_service, diff, graph_version=version)
+    if result["status"] != "ERROR":   # an unfinished check depends on the working tree: never replay it
+        _verify_cache[(version, key)] = result
+    return result
 
 
 def _tested(diff: str) -> dict[str, Any]:
-    """run_patch_tests result for ``diff`` on the served snapshot, computed once per (snapshot, diff)."""
+    """run_patch_tests result for ``diff`` on the served snapshot, kept per (snapshot, diff) unless ERROR."""
     from vgar.repair.patch_evidence import run_patch_tests
     version, key = _cache_key(diff)
-    if (version, key) not in _test_cache:
-        _test_cache[(version, key)] = run_patch_tests(graph_service, diff, graph_version=version,
-                                                      timeout_seconds=PYTEST_TIMEOUT_SECONDS, output_cap=PYTEST_OUTPUT_CAP)
-    return _test_cache[(version, key)]
+    if (version, key) in _test_cache:
+        return _test_cache[(version, key)]
+    result = run_patch_tests(graph_service, diff, graph_version=version,
+                             timeout_seconds=PYTEST_TIMEOUT_SECONDS, output_cap=PYTEST_OUTPUT_CAP)
+    if result["status"] != "ERROR":   # same rule as _verified
+        _test_cache[(version, key)] = result
+    return result
 
 
 def _has_provider(capability: str) -> bool:
@@ -408,6 +418,8 @@ async def build_or_update_graph(repo_path: str) -> dict[str, Any]:
 
     Call it once before the other tools on a new repository, and again after changing code: later calls
     re-extract only the changed files (incremental update), and every read tool sees the new graph at once.
+    Run the patch checks (analyze_patch_impact, verify_patch_graph_constraints, run_relevant_tests) before
+    rebuilding: they apply a diff to the code the graph was built from.
 
     Args:
         repo_path: The repository root this server is configured for (VGAR_REPOSITORY_ROOT); any other path is refused.
@@ -477,9 +489,12 @@ def _same_repository(repo_path: str) -> None:
 def explain_dependency_path(source_id: str, target_id: str) -> dict[str, Any]:
     """Explain how one symbol depends on another: the shortest typed edge path between them.
 
+    The path follows edges forwards only (CALLS, MAY_CALL, IMPORTS, DEPENDS_ON, CONTAINS, HAS_METHOD,
+    HAS_CALLSITE): caller -> callee, importer -> imported module. ``found: false`` can mean the ids are swapped.
+
     Args:
-        source_id: Graph node id where the path starts.
-        target_id: Graph node id where the path ends.
+        source_id: Graph node id of the depending side (the caller or importer), where the path starts.
+        target_id: Graph node id of the side it depends on (the callee or imported module), where the path ends.
     """
     if not _has_provider("path"):
         def call() -> dict[str, Any]:
