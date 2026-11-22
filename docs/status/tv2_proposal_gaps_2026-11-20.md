@@ -199,3 +199,61 @@ Thứ tự đề xuất: TV1 chọn agent cho #18 và TV3 làm #33–36 song son
 4. T2 v3: chỉ chạy cánh `graph_v1`, dùng lại cánh `base` của `nav_k20`.
 5. Cập nhật bản freeze held-out, nhóm ký, chạy held-out một lần.
 6. Gửi danh sách mục của TV1 (18–24) và TV3 (25–36) cho họ.
+
+## 8. Cập nhật 21/11 (sau plan alignment, chưa commit)
+
+Kiểm lại với code trong working tree (không có commit code nào sau bản audit). TV1/TV3 không ai sửa; kiểm mẫu #18, #21,
+#25, #28, #32 vẫn như cũ.
+
+### 8.1 Trạng thái 36 mục
+
+| # | Trước | Nay | Ghi chú |
+|---|---|---|---|
+| 1 | L | ✅ | Gom hết k=2; giới hạn tài nguyên N = 6.000 (bao 49/50 task, lựa chọn của nhóm §10.5) |
+| 2 | L | ✅ | Hạt giống chỉ là anchor |
+| 3 | L | ✅ | MAY_CALL đi graph với confidence đã lưu |
+| 4 | L | ✅ | Đóng gói thuần (phần giữ ngân sách chưa từng chạy trên graph `base`) |
+| 5 | L | L (bỏ) | `public_api_risk` 0, `recent_change_frequency` tắt — như quyết định 20/11 |
+| 6 | L | ✅ | Xếp hạng theo task đã gắn bởi `find_task_anchors` |
+| 7 | L | ✅ | Kết quả chỉ còn `traversal_limited`, `budget`; audit giữ top-20 ứng viên + tổng số (giới hạn 64 KiB/dòng) |
+| 8 | L | ✅ | Callers/callees có confidence, resolution, source_tool |
+| 9 | L | ✅ | `find_task_anchors` trả `components` |
+| 10 | L | ✅ | Thông báo lỗi thành anchor (lớp exception; chuỗi log khi có source) |
+| 11, 12 | C, L | (bỏ) | Như quyết định 20/11 |
+| 13 | C | ✅ | Profile `A1_arch`; đo: bằng A1 trên mọi metric |
+| 14 | C | C | Chờ nhãn người |
+| 15–17 | L, L, C | ✅ | Cánh `graph_v1`: issue gắn sẵn, prompt §10.4, `get_context_subgraph` |
+| 18–24 (TV1) | | không đổi | #18 không có agent; #21 tool graph chỉ đọc chưa có timeout |
+| 25–36 (TV3) | | không đổi | #25 `tangle_risk` None; #28 fan-out `NOT_RUN`; #32 trừ phạt tối đa khi chưa đo |
+
+### 8.2 Lệch mới hoặc còn sót
+
+| # | Loại | Mục | Proposal | Code hiện tại | Người |
+|---|---|---|---|---|---|
+| 37 | L | §9.2 | Ứng viên gồm `components_depending_on(anchor)` | Cờ `use_component_dependents` có nhưng mặc định tắt | TV2 |
+| 38 | L | §10.2 | Resource `vgar://graph/subgraph/{id}?k=2` | Harness T2 đọc alias cũ `vgar://graph/subgraph/{id}` (cùng nội dung k=2; URI chuẩn cần host gắn context) | TV2 |
+| 39 | L | §10.5 | Resource limit mỗi tool | `find_task_anchors` với issue có dòng log parse lại source mỗi lần (`message_matches`); retriever lạnh trên sympy ~40 s | TV2 |
+| 40 | C | §13 | Held-out đo một lần theo bản freeze | Hash cấu hình đổi (`sha256:5849ebb8…`); bản freeze nháp chưa cập nhật, chưa ký | TV2 + nhóm |
+| 41 | L | §9.1 | Agent đi trọn vòng | Harness T2 dừng sau bước 3 (đo định vị); phụ thuộc #18 | TV1 |
+
+Đọc lại đủ §4–§15 ngày 21/11 (lần 2), thêm:
+
+| # | Loại | Mục | Proposal | Code / đánh giá hiện tại | Người |
+|---|---|---|---|---|---|
+| 42 | C | §4.5 | `TESTS: Test -> Requirement/Function` trong G_task | Có `TESTS` Test→Function (G_repo); không tạo `TESTS` Test→Requirement | TV2 |
+| 43 | C | §8.3, mục tiêu đề tài | Graph có ích khi gold patch phụ thuộc cross-file facts | Bộ dev 50 task chỉ 5 task nhiều file (45 task 1 file): mọi so sánh nhiều file có n = 5 | TV2 + nhóm |
+
+Đã kiểm, khớp: §4.3/§4.4/§4.5 đủ loại node; cạnh IMPLEMENTS, REFERENCES, CONFIGURES, DEPLOYS_TO, G_code (AST_CHILD,
+CFG_NEXT, DATA/CONTROL_DEPENDS_ON qua Joern); §6.5 ghi đủ 8 tín hiệu (co-change "unavailable" = #11); §6.6 route,
+labels, acceptance criteria, Requirement; §7.4 đủ 5 thành phần (tangle_risk = #25); §11.3 U1 đo cả cache hit rate;
+§13.1 baseline retrieval đủ (grep, BM25, embedding ở R1, neighbor, agent no-graph ở T2) và baseline graph đủ (AST-only,
+A1, A1_arch, A2, A3/full); §13.2 MCP usability đo tool calls, latency, file đọc không cần.
+
+### 8.3 Theo tiêu chí §14 Milestone 2 (kết quả đo, không phải lệch code)
+
+- Tiêu chí: "improve gold file/function recall over grep/BM25/embedding baseline". T1 A2 (mặc định mới, n = 50): file R@1
+  0,337 (bm25 0,247, neighbor 0,287: thắng); file R@5 0,683 (bm25 0,707, neighbor 0,747: thua); fn R@1 0,147, fn R@5
+  0,311, fn MRR 0,260 (neighbor 0,222 / 0,471 / 0,384: thua). Mặc định mới thua code cũ ở frontier trong context
+  (−0,041, CI loại 0). → Chưa đạt ở mức hàm.
+- T2 (`graph_v1`, sau khi sửa bộ chấm): bằng no-graph về độ đúng, nửa số lời gọi tool; thua `graph_v0` không có ý nghĩa.
+  Ngân sách 3.000 (`graph_v1_b3000`, 50 task): frontier đã thấy +0,077 (CI loại 0), fn R@1 không đổi (0,320).

@@ -166,8 +166,8 @@ Then edit `opencode.json` as in [`opencode.example.jsonc`](configs/mcp_server/op
 1. Open Claude Code or OpenCode in the repository and describe the problem.
 2. The agent calls `build_or_update_graph` and the host asks you to approve it (the confirmation of proposal §10.5). The first call builds the graph. Until then the read tools answer `GRAPH_NOT_READY` with a hint to build.
 3. The agent locates code with the read tools (`find_task_anchors`, `get_related_context`, `get_callers`, …) and edits it.
-4. After editing, it calls `build_or_update_graph` again. Only changed files are re-extracted, and every read tool sees the new graph on its next call without reconnecting. The database keeps only the current state of the repository, so reverting an edit serves the reverted code. If a build answers `TIMEOUT`, it keeps running and the next call waits for it.
-5. It checks its patch with `analyze_patch_impact`, `verify_patch_graph_constraints`, `run_relevant_tests` and `rank_patch_candidates`.
+4. It checks its patch with `analyze_patch_impact`, `verify_patch_graph_constraints`, `run_relevant_tests` and `rank_patch_candidates`. These tools apply the diff to the code the graph was built from and refuse to run when the files no longer match it (`Graph source coordinates differ`, `BUILDER_OPTIONS_OR_SOURCE_DIFFER_FROM_SNAPSHOT`). So check a diff before writing it into the files, or, after editing in place: save the output of `git diff`, run `git stash`, pass that output unchanged to the tools, then run `git stash pop`. When fixing several issues in a row, commit after each one so the next diff holds only the new change. A diff may touch at most 5 files and 500 changed lines.
+5. Then it calls `build_or_update_graph` again. Only changed files are re-extracted, and every read tool sees the new graph on its next call without reconnecting. The database keeps only the current state of the repository, so reverting an edit serves the reverted code, and a diff checked before the rebuild no longer applies after it. If a build answers `TIMEOUT`, it keeps running and the next call waits for it.
 
 ### Example prompts
 
