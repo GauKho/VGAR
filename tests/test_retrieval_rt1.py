@@ -6,7 +6,7 @@ import pytest
 from vgar.contracts.error import InvalidLimitError, InvalidQueryError
 from vgar.graph.retrieval import RetrievalConfig, ranking_config_hash
 
-FROZEN = "sha256:993f02c962dde7b1d506497798b44bcc4316ed5b5d64a9c84c5ab2a296bbb14a"
+FROZEN = "sha256:5849ebb843b4e7584baa5a71ea0b1409f26080c1498e9f10b53ee645024a6c6d"  # defaults follow proposal §9.2 (spec 2026-11-20)
 
 
 def test_default_hash_is_frozen():
@@ -174,11 +174,11 @@ ADDS = {"store.cart.Cart.add", "store.wishlist.Wishlist.add", "store.inventory.I
 
 def _walked_adds(result):
     return {c["symbol"] for c in result.candidates
-            if c["symbol"] in ADDS and any(step.startswith("CALLS:") for step in c["graph_rationale"])}
+            if c["symbol"] in ADDS and any(step.startswith("MAY_CALL:") for step in c["graph_rationale"])}
 
 
 def test_may_call_off_does_not_walk(tmp_path):
-    assert not _walked_adds(_retrieve(tmp_path, DISPATCH_REPO, anchor="handle_add"))
+    assert not _walked_adds(_retrieve(tmp_path, DISPATCH_REPO, anchor="handle_add", may_call_factor=0.0))
 
 
 def test_may_call_factor_reaches_all_candidates(tmp_path):

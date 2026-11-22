@@ -7,7 +7,11 @@ from pathlib import Path
 
 import pytest
 
-from vgar.graph.retrieval import RetrievalConfig, ranking_config_hash
+from vgar.graph.retrieval import (
+    RESOURCE_LIMIT_CANDIDATES,
+    RetrievalConfig,
+    ranking_config_hash,
+)
 
 ROOT = Path(__file__).resolve().parents[1]
 spec = importlib.util.spec_from_file_location("graph_eval_runner_config", ROOT / "scripts/run_graph_retrieval.py")
@@ -16,7 +20,7 @@ spec.loader.exec_module(runner)
 
 
 def _args(retrieval_config=None):
-    return argparse.Namespace(max_hops=2, max_candidates=100, retrieval_config=retrieval_config)
+    return argparse.Namespace(max_hops=2, max_candidates=RESOURCE_LIMIT_CANDIDATES, retrieval_config=retrieval_config)
 
 
 def test_without_override_file_the_default_config_is_used():

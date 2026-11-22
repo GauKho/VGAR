@@ -5,7 +5,10 @@
       "symbol_id": "vgar:demo/vgar-fixture:python:function:src/auth/service.py:login",
       "name": "login",
       "kind": "function",
-      "path": "src/auth/service.py"
+      "path": "src/auth/service.py",
+      "confidence": 0.95,
+      "resolution": "analyzer",
+      "source_tool": "fixture"
     }
   ]
 }

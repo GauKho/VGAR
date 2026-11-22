@@ -9,8 +9,11 @@ from pathlib import Path
 from typing import Callable, Any
 
 from vgar.contracts.error import GraphNotReadyError, NodeNotFoundError
+from vgar.graph.grounding import issue_symbol_text
 from vgar.graph.retrieval import GraphContextRetriever, RetrievalConfig, ranking_config_hash
+from vgar.graph.source_evidence import diagnostic_lines
 from vgar.graph.task_overlay import TaskOverlayBuilder
+from vgar.graph.trace_links import rank_component_traces
 from vgar.graph.test_selection import select_related_tests
 from vgar.contracts.prompt_context import CONTEXT_FORMAT
 from vgar.observability.graph_trace import GraphTrace
@@ -23,6 +26,7 @@ from vgar.contracts.graph import (
     RepositorySummaryResult,
     SearchSymbolsResult,
     SymbolRef,
+    SymbolRelation,
     SymbolRelationsResult,
 )
 from vgar.graph.sqlite_store import (
@@ -83,11 +87,38 @@ class SQLiteGraphService:
     def find_task_anchors(self, issue_text: str, failing_tests: list[str] | None = None, *,
                           graph_version: str, task_id: str) -> dict[str, Any]:
         document = self._document(graph_version)
-        overlay = TaskOverlayBuilder(document).build(task_id, issue_text, failing_tests)
+        overlay = TaskOverlayBuilder(document).build(task_id, issue_text, failing_tests,
+                                                     sources=self._message_sources(document, graph_version, issue_text))
+        issue_id = overlay.nodes[0]["id"]
+        traces = rank_component_traces(edge for edge in overlay.edges
+                                       if edge["type"] == "TRACES_TO" and edge["source_id"] == issue_id)
+        # §9.1: the anchors are the candidate files/functions; the traced components are the candidate components.
         result = {**asdict(overlay.grounding), "task_id": task_id, "overlay_id": overlay.overlay_id,
+                  "components": [{"component_id": edge["target_id"], "confidence": edge["confidence"],
+                                  "anchor_count": edge["properties"]["anchor_count"]} for edge in traces],
                   "trace_nodes": overlay.nodes, "trace_edges": overlay.edges}
         self._tasks[task_id] = result
         return result
+
+    def _retriever(self, document: dict[str, Any], graph_version: str, config: RetrievalConfig | None = None,
+                   history: dict[str, Any] | None = None) -> GraphContextRetriever:
+        """The cached retriever of one graph snapshot, ranking config and history window."""
+        label = history["label"] if history and history["available"] else None
+        key = (graph_version, ranking_config_hash(config or RetrievalConfig()), label or "")
+        retriever = self._retrievers.get(key)
+        if retriever is None:
+            retriever = GraphContextRetriever(document, self.repository_root, count_tokens=self.count_tokens,
+                                              counter_label=self.counter_label, config=config,
+                                              change_counts=history["counts"] if label else None, history_label=label)
+            self._retrievers[key] = retriever
+        return retriever
+
+    def _message_sources(self, document: dict[str, Any], graph_version: str, issue_text: str) -> dict | None:
+        """Verified sources for error-message anchors; None without a quoted log line or a usable checkout."""
+        if (self.repository_root is None or self.count_tokens is None or not self.counter_label
+                or not diagnostic_lines(issue_symbol_text(issue_text))):
+            return None
+        return self._retriever(document, graph_version)._verify_snapshot()
 
     def get_related_context(self, anchor_ids: list[str], budget_tokens: int, *, graph_version: str,
                             task_id: str, issue_text: str = "", failing_tests: list[str] | None = None,
@@ -100,8 +131,9 @@ class SQLiteGraphService:
             budget_tokens: Token budget for the packed context.
             graph_version: Stored graph snapshot to read.
             task_id: Task identifier used for the task overlay.
-            issue_text: Issue text used for grounding and ranking.
-            failing_tests: Optional failing test selectors.
+            issue_text: Issue text used for grounding and ranking when ``find_task_anchors`` has not bound a task
+                to ``task_id``; a bound task's own issue text and failing tests always win (proposal §10.3).
+            failing_tests: Optional failing test selectors (same rule as ``issue_text``).
             config: Optional ranking config; None keeps the default ``RetrievalConfig()``.
             use_history: Add the commit-history signal (``recent_change_frequency``) read from the
                 graph's own revision backwards; off by default so results stay unchanged.
@@ -109,17 +141,15 @@ class SQLiteGraphService:
         """
         if self.repository_root is None or self.count_tokens is None or not self.counter_label:
             raise GraphNotReadyError("W5 retrieval requires repository root and a verified tokenizer")
+        bound = self._tasks.get(task_id)
+        if bound is not None:   # rank against the task, not the caller's paraphrase of it
+            issue = bound["trace_nodes"][0]["properties"]
+            issue_text, failing_tests = issue["issue_text"], issue["failing_tests"] or None
         document = self._document(graph_version)
-        overlay = TaskOverlayBuilder(document).build(task_id, issue_text, failing_tests)
         history = self._history(document, history_commits) if use_history else None
-        label = history["label"] if history and history["available"] else None
-        key = (graph_version, ranking_config_hash(config or RetrievalConfig()), label or "")
-        retriever = self._retrievers.get(key)
-        if retriever is None:
-            retriever = GraphContextRetriever(document, self.repository_root, count_tokens=self.count_tokens,
-                                              counter_label=self.counter_label, config=config,
-                                              change_counts=history["counts"] if label else None, history_label=label)
-            self._retrievers[key] = retriever
+        retriever = self._retriever(document, graph_version, config, history)
+        overlay = TaskOverlayBuilder(document).build(task_id, issue_text, failing_tests,
+                                                     sources=self._message_sources(document, graph_version, issue_text))
         try:
             result = retriever.retrieve(anchor_ids, budget_tokens, issue_text=issue_text, overlay=overlay)
         except Exception as error:
@@ -184,7 +214,9 @@ class SQLiteGraphService:
                     seen.add(symbol.symbol_id)
                     following.append(symbol.symbol_id)
                     symbols.append({"symbol_id": symbol.symbol_id, "name": symbol.name, "kind": symbol.kind,
-                                    "path": symbol.path, "hop": hop, "via": current})
+                                    "path": symbol.path, "hop": hop, "via": current,
+                                    "confidence": symbol.confidence, "resolution": symbol.resolution,
+                                    "source_tool": symbol.source_tool})
                 for target, confidence in may_call.get(current, ()):
                     if target not in seen and target not in possible_seen:
                         possible_seen.add(target)
@@ -331,11 +363,11 @@ class SQLiteGraphService:
 
     def get_callers(self, symbol_id: str) -> SymbolRelationsResult:
         symbols = self.store.get_callers(symbol_id)
-        return SymbolRelationsResult(symbol_id=symbol_id, symbols=[_to_symbol_contract(s) for s in symbols])
+        return SymbolRelationsResult(symbol_id=symbol_id, symbols=[_to_relation_contract(s) for s in symbols])
 
     def get_callees(self, symbol_id: str) -> SymbolRelationsResult:
         symbols = self.store.get_callees(symbol_id)
-        return SymbolRelationsResult(symbol_id=symbol_id, symbols=[_to_symbol_contract(s) for s in symbols])
+        return SymbolRelationsResult(symbol_id=symbol_id, symbols=[_to_relation_contract(s) for s in symbols])
 
     def get_repository_summary(self) -> RepositorySummaryResult:
         return RepositorySummaryResult.model_validate(self.store.get_repository_summary())
@@ -354,7 +386,7 @@ class SQLiteGraphService:
 
     def get_importers(self, module_id: str) -> SymbolRelationsResult:
         symbols = self.store.get_importers(module_id)
-        return SymbolRelationsResult(symbol_id=module_id, symbols=[_to_symbol_contract(s) for s in symbols])
+        return SymbolRelationsResult(symbol_id=module_id, symbols=[_to_relation_contract(s) for s in symbols])
 
     def analyze_patch_impact(self, diff: str, *, graph_version: str, max_hops: int = 2,
                              max_nodes: int = 200) -> dict[str, Any]:
@@ -379,6 +411,11 @@ class SQLiteGraphService:
 
 def _to_symbol_contract(symbol: StoredSymbol) -> SymbolRef:
     return SymbolRef(symbol_id=symbol.symbol_id, name=symbol.name, kind=symbol.kind, path=symbol.path)
+
+
+def _to_relation_contract(symbol: StoredSymbol) -> SymbolRelation:
+    return SymbolRelation(symbol_id=symbol.symbol_id, name=symbol.name, kind=symbol.kind, path=symbol.path,
+                          confidence=symbol.confidence, resolution=symbol.resolution, source_tool=symbol.source_tool)
 
 
 def _to_node_contract(node: StoredNode) -> GraphNodeRef:

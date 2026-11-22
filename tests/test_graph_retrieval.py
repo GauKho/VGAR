@@ -20,7 +20,7 @@ from vgar.graph.task_overlay import TaskOverlayBuilder
 
 ROOT = Path(__file__).resolve().parents[1]
 SAMPLE = ROOT / "tests" / "fixtures" / "sample_repo"
-FROZEN_RANKING_HASH = "sha256:993f02c962dde7b1d506497798b44bcc4316ed5b5d64a9c84c5ab2a296bbb14a"
+FROZEN_RANKING_HASH = "sha256:5849ebb843b4e7584baa5a71ea0b1409f26080c1498e9f10b53ee645024a6c6d"  # defaults follow proposal §9.2 (spec 2026-11-20)
 
 
 def counter(text: str) -> int:
@@ -307,7 +307,8 @@ class Noise:
         self.assertEqual(exact.items[0].snippet, full.items[0].snippet)
         ContextPayload.model_validate_json(exact.model_dump_json())
 
-    def test_many_anchors_leave_room_for_a_callee(self) -> None:
+    def test_many_anchors_are_all_seeds_and_the_candidate_limit_truncates(self) -> None:
+        # §9.2 seeds every given anchor; the candidate limit is only a resource limit (spec 2026-11-20 §5.1).
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             (root / "demo.py").write_text(
@@ -317,16 +318,19 @@ class Noise:
             graph = PythonGraphBuilder(repo_key="demo/quota", repository_revision="fixture").build(root)
             starts = [node["id"] for node in graph["nodes"] if node["type"] == "Function"
                       and node["name"] != "z_target"]
-            retriever = self.retriever(graph, root, config=RetrievalConfig(max_candidates=4, max_hops=1))
             include = lambda node: node["type"] == "Function"
-            result = retriever.retrieve(starts, 1000, include=include)
-            target = next(item for item in result.candidates if item["symbol"] == "demo.z_target")
-            self.assertEqual(target["graph_distance"], 1)
-            self.assertTrue(any("CALLS:" in reason for reason in target["graph_rationale"]))
+            tight = self.retriever(graph, root, config=RetrievalConfig(max_candidates=4, max_hops=1))
+            result = tight.retrieve(starts, 1000, include=include)
             self.assertLessEqual(len(result.candidates), 4)
             self.assertTrue(result.traversal_limited)
-            reverse = retriever.retrieve(list(reversed(starts)), 1000, include=include)
+            reverse = tight.retrieve(list(reversed(starts)), 1000, include=include)
             self.assertEqual(asdict(result), asdict(reverse))
+            roomy = self.retriever(graph, root, config=RetrievalConfig(max_hops=1))
+            full = roomy.retrieve(starts, 1000, include=include)
+            target = next(item for item in full.candidates if item["symbol"] == "demo.z_target")
+            self.assertEqual(target["graph_distance"], 1)
+            self.assertTrue(any("CALLS:" in reason for reason in target["graph_rationale"]))
+            self.assertFalse(full.traversal_limited)
 
     def test_file_anchor_reaches_class_methods_in_one_semantic_hop(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

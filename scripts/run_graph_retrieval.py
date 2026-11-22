@@ -24,6 +24,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
 from vgar.graph.builder import RESOLVER_PROFILE
+from vgar.graph.retrieval import RESOURCE_LIMIT_CANDIDATES
 from vgar.evaluation.retrieval.dataset import read_repository_sources, require_split, validate_task
 from vgar.evaluation.retrieval.evaluation import DEFAULT_BUDGET_TOKENS, DEFAULT_SNIPPET_LINES
 from vgar.evaluation.retrieval.evidence import new_run, sha256, source_fingerprint, utc_now, write_json
@@ -291,7 +292,7 @@ def main() -> int:
     parser.add_argument("--rebuild-graphs", action="store_true")
     parser.add_argument("--cache-graphs", action="store_true", help="Opt in to saving full graph JSON; existing caches can be reused")
     parser.add_argument("--max-hops", type=int, default=2)
-    parser.add_argument("--max-candidates", type=int, default=100)
+    parser.add_argument("--max-candidates", type=int, default=RESOURCE_LIMIT_CANDIDATES)
     parser.add_argument("--retrieval-config", type=Path, help="JSON overrides of RetrievalConfig fields (W11 tuning steps)")
     parser.add_argument("--allow-heldout", action="store_true", help="FINAL evaluation only; never use while tuning")
     group = parser.add_mutually_exclusive_group(required=True)

@@ -22,10 +22,18 @@ class SearchSymbolsResult(BaseModel):
     )
 
 
+class SymbolRelation(SymbolRef):
+    """A caller or callee with the confidence and provenance of its best CALLS edge (proposal §6.4)."""
+
+    confidence: float | None = None
+    resolution: str | None = None
+    source_tool: str | None = None
+
+
 class SymbolRelationsResult(BaseModel):
     symbol_id: str
 
-    symbols: list[SymbolRef] = Field(
+    symbols: list[SymbolRelation] = Field(
         default_factory=list
     )
 

@@ -15,6 +15,7 @@ from pydantic import Strict
 
 from vgar.contracts.error import GraphError
 from vgar.graph.factory import create_graph_service
+from vgar.graph.retrieval import RetrievalConfig
 from vgar.mcp.audit import AuditLogger
 from vgar.mcp.proposal import contracts as proposal_contracts
 from vgar.mcp.proposal.context import current_context, request_scope
@@ -212,30 +213,59 @@ def get_related_context(anchor_ids: list[str], graph_version: str, task_id: str,
 
     The budget bounds this one call, not the whole session. Tokens are UTF-8 bytes / 4, not the model's own
     tokens. ``diagnostics.budget`` in the result gives the requested and effective budget and whether the
-    request was clamped to the server ceiling.
+    request was clamped to the server ceiling; ``diagnostics.traversal_limited`` says whether the candidate
+    resource limit cut the k=2 neighbourhood. The full ranking diagnostics go to the audit log only.
 
     Args:
         anchor_ids: Graph node ids to start from (from find_task_anchors or search_symbols).
         graph_version: Graph version the anchors belong to.
-        task_id: Task identifier used for the task overlay.
+        task_id: Task identifier used for the task overlay; a task bound by find_task_anchors is ranked against.
         budget_tokens: Optional token budget; defaults to 12000 and is capped at 12000.
-        issue_text: Issue text used for ranking.
+        issue_text: Issue text used for ranking when find_task_anchors has not bound task_id.
         failing_tests: Optional failing test selectors.
     """
     effective = min(budget_tokens, MAX_CONTEXT_BUDGET)  # min(True, n) stays a bool, rejected below as INVALID_LIMIT
+    held: dict[str, Any] = {}
 
     def call():
         legacy_binding(graph_version=graph_version, task_id=task_id)
+        limit = os.getenv("VGAR_RETRIEVAL_MAX_CANDIDATES", "").strip()   # host setting (§10.5 resource limit)
+        config = RetrievalConfig(max_candidates=int(limit)) if limit else None
         data = graph_service.get_related_context(anchor_ids, effective, graph_version=graph_version,
-                                                 task_id=task_id, issue_text=issue_text, failing_tests=failing_tests)
-        data["diagnostics"]["budget"] = {"requested": budget_tokens, "effective": effective,
-                                         "ceiling": MAX_CONTEXT_BUDGET, "clamped": budget_tokens > MAX_CONTEXT_BUDGET}
+                                                 task_id=task_id, issue_text=issue_text, failing_tests=failing_tests,
+                                                 config=config)
+        held["diagnostics"] = data["diagnostics"]
+        # §9.2 returns the packed context, not the whole candidate set (spec 2026-11-20 §5.2).
+        data["diagnostics"] = {"traversal_limited": data["diagnostics"]["traversal_limited"],
+                               "budget": {"requested": budget_tokens, "effective": effective,
+                                          "ceiling": MAX_CONTEXT_BUDGET, "clamped": budget_tokens > MAX_CONTEXT_BUDGET}}
         return data
     return _tool("get_related_context", call,
         {"graph_version": graph_version, "task_id": task_id, "budget_tokens": budget_tokens,
          "effective_budget_tokens": effective},
         lambda data: {"item_count": len(data["context"]["items"]),
-                      "total_token_count": data["context"]["total_token_count"]})
+                      "total_token_count": data["context"]["total_token_count"],
+                      "diagnostics": _audit_diagnostics(held.get("diagnostics"))})
+
+
+# An audit line is capped at 64 KiB (vgar.mcp.audit) and a candidate is ~1 KB: keep the head of the long lists.
+AUDIT_LIST_ITEMS = 20
+
+
+def _audit_diagnostics(diagnostics: dict[str, Any] | None) -> dict[str, Any] | None:
+    """Ranking diagnostics for the audit line: the top candidates and omissions plus their full counts.
+
+    Args:
+        diagnostics: Full diagnostics returned by the graph service, or None when the call failed.
+    """
+    if not diagnostics:
+        return diagnostics
+    kept = dict(diagnostics)
+    for key, count in (("candidates", "candidate_count"), ("omissions", "omission_count")):
+        if isinstance(kept.get(key), list):
+            kept[count] = len(kept[key])
+            kept[key] = kept[key][:AUDIT_LIST_ITEMS]
+    return kept
 
 
 @mcp.resource("vgar://graph/node/{node_id}")

@@ -95,12 +95,12 @@ def other():
     assert not retriever._source_evidence.has_messages
     result = retriever.retrieve([], 100, issue_text=issue)
     assert retriever._source_evidence.has_messages
-    assert result.candidates[0]['node_id'] == emit['id']
-    assert result.candidates[0]['graph_rationale'] == ['SOURCE_DIAGNOSTIC']
-    assert result.context.anchor_ids == [emit['id']]
-    assert result.config['diagnostic_seed_ids'] == [emit['id']]
-    assert not retriever.retrieve([], 100, issue_text='unknown configuration key cannot be loaded').candidates
-    assert not retriever.retrieve([], 100, issue_text='WARNING: unrelated configuration key cannot be loaded').candidates
+    # The emitter is still matched (similarity evidence; as an anchor it now comes from G_task), but a match is no
+    # longer a seed: §9.2 starts only from the given anchors (spec 2026-11-20 §5.1, §5.3).
+    assert result.config['diagnostic_match_ids'] == [emit['id']]
+    assert not result.candidates
+    assert not retriever.retrieve([], 100, issue_text='unknown configuration key cannot be loaded').config['diagnostic_match_ids']
+    assert not retriever.retrieve([], 100, issue_text='WARNING: unrelated configuration key cannot be loaded').config['diagnostic_match_ids']
     (tmp_path/'app.py').write_text('def emit(): pass\n', encoding='utf-8')
     with pytest.raises(GraphError):
         retriever.retrieve([], 100, issue_text=issue)
@@ -118,11 +118,10 @@ def short(logger):
     retriever = GraphContextRetriever(graph, tmp_path, count_tokens=lambda _:1, counter_label='fixture')
     issue = 'ValueError: invalid resource identifier cannot be accepted abc'
     result = retriever.retrieve([], 100, issue_text=issue)
-    seeds = result.config['diagnostic_seed_ids']
-    assert len(seeds) == 2
-    assert all(c['confidence'] == .5 for c in result.candidates if c['node_id'] in seeds)
-    assert not retriever.retrieve([], 100, issue_text='WARNING: failed request').candidates
-    assert not retriever.retrieve([], 100, issue_text=issue, include=lambda _:False).candidates
+    assert len(result.config['diagnostic_match_ids']) == 2   # shared template: both stay (0.5 each as G_task anchors)
+    assert not result.candidates
+    assert not retriever.retrieve([], 100, issue_text='WARNING: failed request').config['diagnostic_match_ids']
+    assert not retriever.retrieve([], 100, issue_text=issue, include=lambda _:False).config['diagnostic_match_ids']
     assert diagnostic_lines('ordinary prose\nERROR: broken resource') == ('error: broken resource',)
 
 
@@ -133,7 +132,10 @@ def test_component_hint_recovers_code_outside_unrelated_anchor(tmp_path):
     (tmp_path/'pkg'/'other.py').write_text('def helper(): pass\ndef first(): pass\ndef second(): pass\ndef third(): pass\n', encoding='utf-8')
     graph = PythonGraphBuilder(repo_key='demo/component', repository_revision='fixture').build(tmp_path)
     nodes = {n['name']:n for n in graph['nodes'] if n['type']=='Function'}
-    retriever = GraphContextRetriever(graph, tmp_path, count_tokens=lambda _:1, counter_label='fixture')
+    # Directory seeds are off by default (spec 2026-11-20 §5.1).
+    from vgar.graph.retrieval import RetrievalConfig
+    retriever = GraphContextRetriever(graph, tmp_path, count_tokens=lambda _:1, counter_label='fixture',
+                                      config=RetrievalConfig(use_component_seeds=True))
     result = retriever.retrieve([nodes['helper']['id']], 100, issue_text='widget timeout')
     assert result.config['component_seed_ids'] == [nodes['handle']['id']]
     handle = next(c for c in result.candidates if c['node_id']==nodes['handle']['id'])
@@ -152,7 +154,7 @@ def test_component_seed_limit_and_explicit_disable(tmp_path):
     (directory/'worker.py').write_text('\n'.join(f'def handle_{i}(client): return client.timeout' for i in range(20)), encoding='utf-8')
     (tmp_path/'other.py').write_text('\n'.join(f'def other_{i}(): pass' for i in range(21)), encoding='utf-8')
     graph = PythonGraphBuilder(repo_key='demo/component-cap', repository_revision='fixture').build(tmp_path)
-    retriever = GraphContextRetriever(graph, tmp_path, count_tokens=lambda _:1, counter_label='fixture', config=RetrievalConfig(max_candidates=10))
+    retriever = GraphContextRetriever(graph, tmp_path, count_tokens=lambda _:1, counter_label='fixture', config=RetrievalConfig(max_candidates=10, use_component_seeds=True))
     result = retriever.retrieve([], 100, issue_text='widget timeout')
     assert len(result.config['component_seed_ids']) == result.config['component_seed_limit'] == 1
     disabled = GraphContextRetriever(graph, tmp_path, count_tokens=lambda _:1, counter_label='fixture', config=RetrievalConfig(use_component_seeds=False))

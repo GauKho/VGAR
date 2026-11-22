@@ -32,24 +32,31 @@ _WEIGHTS = {"task_similarity": 0.5, "graph_distance": 0.2, "edge_confidence": 0.
             "failing_test_proximity": 0.2, "public_api_risk": 0.0, "recent_change_frequency": 0.1}
 
 
+# Resource limit on candidates per call (proposal §10.5); §9.2 itself gathers every k=2 neighbour. Team choice
+# per spec 2026-11-20 §6.2: covers 49/50 dev tasks (max 7661); per-call time does not depend on N.
+RESOURCE_LIMIT_CANDIDATES = 6000
+# Dependency relations: walked first, carry issue relevance along paths. MAY_CALL is a guessed call (§6.4).
+_SEMANTIC_RELATIONS = frozenset({"CALLS", "CALLERS", "MAY_CALL", "MAY_CALLED_BY", "TESTS", "TESTED_BY",
+                                 "MEMBER_REFERENCE", "MEMBER_REFERENCED_BY"})
+
+
 @dataclass(frozen=True)
 class RetrievalConfig:
     max_hops: int = 2
-    max_candidates: int = 100
+    max_candidates: int = RESOURCE_LIMIT_CANDIDATES
     min_edge_confidence: float = 0.6
     weights: dict[str, float] = field(default_factory=lambda: dict(_WEIGHTS))
-    reference_budget_fraction: float = 0.2
+    reference_budget_fraction: float = 0.0   # §9.2 pack_until_budget(ranked): no reserved share
     use_source_evidence: bool = True
     prefer_relevant_paths: bool = True
     gate_failing_test_evidence: bool = True
     use_diagnostic_evidence: bool = True
-    use_component_seeds: bool = True
+    use_component_seeds: bool = False   # directory-name seeds are outside §9.2's loop over task_anchors
     use_topic_evidence: bool = False
-    # RT-1 flags. Their off values are listed in RT1_FLAG_DEFAULTS and are left
-    # out of ranking_config_hash, so the frozen default hash stays the same.
+    # RT-1 flags. Fields still at their off value in RT1_FLAG_DEFAULTS are left out of ranking_config_hash.
     use_component_dependents: bool = False
     dependent_symbols_per_component: int = 3
-    may_call_factor: float = 0.0
+    may_call_factor: float = 1.0   # §6.4 keeps MAY_CALL at its own low confidence; §9.2 ranks by edge_confidence
     use_trace_component: bool = False
     public_api_from_ports: bool = False
     # Spec 2026-11-15 §4: variables an anchor reads and their other readers (needs tree-sitter-graph reader edges).
@@ -248,7 +255,7 @@ class GraphContextRetriever:
         # expansion. Keep all matches in diagnostics even when traversal caps.
         diagnostic_scores = {node_id: 0.5 if len(diagnostic_matches) > 1 else 0.85
                              for node_id in diagnostic_matches}
-        component_limit = min(10, max(1, self._anchor_seed_limit() // 5))
+        component_limit = min(10, max(1, self.config.max_candidates // 10))   # the values before the §9.2 seed change
         component_seeds = sorted(
             (node_id for node_id in component_nodes
              if node_id in self._source_evidence.terms
@@ -259,7 +266,8 @@ class GraphContextRetriever:
         )[:component_limit] if component_nodes else []
         trace_component, trace_seeds = (self._trace_seeds(overlay, task_words, include)
                                         if self.config.use_trace_component and overlay is not None else (None, []))
-        starts = sorted(set(anchors) | set(diagnostic_matches) | set(component_seeds) | set(trace_seeds))
+        # Message matches are similarity evidence only; as anchors they come from G_task (spec 2026-11-20 §5.3).
+        starts = sorted(set(anchors) | set(component_seeds) | set(trace_seeds))
         scores = dict(anchor_scores)
         for node_id in trace_seeds:
             scores[node_id] = max(scores.get(node_id, 1.0 if node_id in anchors else 0), 0.45)
@@ -268,12 +276,7 @@ class GraphContextRetriever:
             scores[node_id] = max(scores.get(node_id, 1.0 if node_id in anchors else 0), 0.45)
             self.trace.emit('retrieval_component_seed', node_id=node_id,
                             components=component_nodes[node_id], confidence=0.45)
-        for node_id, score in diagnostic_scores.items():
-            scores[node_id] = max(scores.get(node_id, 1.0 if node_id in anchors else 0), score)
-            self.trace.emit('retrieval_diagnostic_seed', node_id=node_id,
-                            matched_fragments=diagnostic_matches[node_id], confidence=score)
         seed_rationales = {node_id: ('SOURCE_COMPONENT',) for node_id in component_seeds if node_id not in anchors}
-        seed_rationales.update({node_id: ('SOURCE_DIAGNOSTIC',) for node_id in diagnostic_matches if node_id not in anchors})
         seed_rationales.update({node_id: ('TRACE_COMPONENT',) for node_id in trace_seeds if node_id not in anchors})
         states, limited = self._walk(starts, scores, include, task_words=task_words,
                                      diagnostic_scores=diagnostic_scores,
@@ -333,8 +336,9 @@ class GraphContextRetriever:
                                "component_hints": component_nodes.get(node_id, []) if node_id in component_seeds else [],
                                "graph_rationale": list(rationale), "features": features,
                                "relevance_score": score})
-        candidates.sort(key=lambda item: (-item["relevance_score"], item["graph_distance"],
-                                          item["path"], item["symbol"], item["node_id"]))
+        # Inherited similarity makes many neighbours tie; a node's own issue evidence breaks the tie before its name.
+        candidates.sort(key=lambda item: (-item["relevance_score"], -item["direct_task_similarity"],
+                                          item["graph_distance"], item["path"], item["symbol"], item["node_id"]))
         items: list[ContextItem] = []
         omissions = []
         total = 0
@@ -405,10 +409,10 @@ class GraphContextRetriever:
                                 token_budget=budget_tokens, truncated=truncated)
         diagnostics = asdict(self.config)
         diagnostics["ranking_config_hash"] = ranking_config_hash(self.config)
-        diagnostics.update({"profile": "semantic-context-v10-source-cache", "active_features": available,
+        diagnostics.update({"profile": "semantic-context-v11-own-similarity-ties", "active_features": available,
                             "topic_words": sorted(topic_words),
                             "similarity_cache_limit": 8192,
-                            "diagnostic_seed_ids": sorted(diagnostic_matches),
+                            "diagnostic_match_ids": sorted(diagnostic_matches),
                             "component_seed_ids": component_seeds,
                             "component_seed_limit": component_limit,
                             "component_dependent_ids": dependent_ids,
@@ -494,13 +498,13 @@ class GraphContextRetriever:
                 if edge["type"] == "CALLS" and confidence >= self.config.min_edge_confidence:
                     self.callers[target].add(source)
             elif edge["type"] == "MAY_CALL" and self.config.may_call_factor > 0:
-                # RT-1 §4.2: a name-matched guess is walked like CALLS with a
-                # decayed confidence; it never counts as fan-in.
+                # A name-matched guess is walked like a call at its own (low) confidence and keeps its
+                # MAY_CALL name in the rationale (§6.4); it never counts as fan-in.
                 parent = parents.get(source)
                 if parent is not None:
                     connect(parent["source_id"], target,
                             min(confidence, parent["confidence"]) * self.config.may_call_factor,
-                            "CALLS", "CALLERS", bypass_threshold=True)
+                            "MAY_CALL", "MAY_CALLED_BY", bypass_threshold=True)
             elif edge["type"] == "REFERENCES" and self.nodes[source]["type"] == "CallSite":
                 parent = parents.get(source)
                 if parent is not None:
@@ -541,7 +545,7 @@ class GraphContextRetriever:
         for node_id in self.adjacency:
             # Prefer semantic neighbors before broad container/sibling expansion.
             self.adjacency[node_id] = sorted(set(self.adjacency[node_id]), key=lambda item: (
-                0 if item[2] in {"CALLS", "CALLERS", "TESTS", "TESTED_BY", "MEMBER_REFERENCE", "MEMBER_REFERENCED_BY"} else
+                0 if item[2] in _SEMANTIC_RELATIONS else
                 2 if item[2] in {"CONTAINS", "CONTAINED_BY"} else 1,
                 -item[1], item[0], item[2],
             ))
@@ -668,9 +672,8 @@ class GraphContextRetriever:
         return component, ordered[:self.config.dependent_symbols_per_component]
 
     def _anchor_seed_limit(self) -> int:
-        # Reserve half the candidate quota for expansion when traversal is enabled.
-        return (max(1, self.config.max_candidates // 2) if self.config.max_hops
-                else self.config.max_candidates)
+        # Every given anchor is a seed (§9.2); the candidate limit is the only resource limit.
+        return self.config.max_candidates
 
     def _walk(
         self, starts: list[str], scores: dict[str, float],
@@ -737,7 +740,7 @@ class GraphContextRetriever:
             neighbors = self.adjacency[node_id]
             if task_words:
                 neighbors = sorted(neighbors, key=lambda item: (
-                    0 if item[2] in {"CALLS", "CALLERS", "TESTS", "TESTED_BY", "MEMBER_REFERENCE", "MEMBER_REFERENCED_BY"} else 1,
+                    0 if item[2] in _SEMANTIC_RELATIONS else 1,
                     -self._task_similarity(self.nodes[item[0]], task_words, diagnostic_scores, topic_words), -item[1], item[0], item[2]))
             for target, edge_confidence, relation in neighbors:
                 if relations is not None and relation not in relations:
@@ -748,14 +751,14 @@ class GraphContextRetriever:
                 if existing is not None and path_order(target, existing) <= path_order(target, candidate):
                     continue
                 pending[target] = candidate
-                semantic_bonus = 0.05 if relation in {"CALLS", "CALLERS", "TESTS", "TESTED_BY", "MEMBER_REFERENCE", "MEMBER_REFERENCED_BY"} else 0.0
+                semantic_bonus = 0.05 if relation in _SEMANTIC_RELATIONS else 0.0
                 heapq.heappush(queue, (-priority(target, candidate[0], candidate[1], path) - semantic_bonus,
                                       candidate[0], -candidate[1], target, candidate[2]))
         return states, limited
 
     def _path_similarity(self, node_id, distance, rationale, task_words, diagnostic_scores=None, topic_words=frozenset()) -> float:
         direct = self._task_similarity(self.nodes[node_id], task_words, diagnostic_scores, topic_words)
-        relations = {"CALLS", "CALLERS", "TESTS", "TESTED_BY", "MEMBER_REFERENCE", "MEMBER_REFERENCED_BY"}
+        relations = _SEMANTIC_RELATIONS
         # A dependency need not repeat the API name from the issue. Propagate
         # relevance only along semantic relations; file/sibling membership
         # alone must not make unrelated code relevant.

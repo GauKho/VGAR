@@ -5,7 +5,10 @@
       "symbol_id": "vgar:demo/vgar-fixture:python:function:src/web/routes.py:login_handler",
       "name": "login_handler",
       "kind": "function",
-      "path": "src/web/routes.py"
+      "path": "src/web/routes.py",
+      "confidence": 0.95,
+      "resolution": "analyzer",
+      "source_tool": "fixture"
     }
   ]
 }

@@ -18,6 +18,29 @@ def diagnostic_lines(text):
                  if _DIAGNOSTIC_LINE.search(line))
 
 
+def message_matches(nodes, verified_sources, issue_text):
+    """Functions whose message literals occur in a labelled log line of the issue (proposal §6.6 "error messages").
+
+    Sources are not read when the issue has no labelled line, which is the usual case.
+
+    Args:
+        nodes: Graph nodes; functions, methods and tests are matched.
+        verified_sources: Source text by repository path; paths missing here are skipped.
+        issue_text: The task's issue text.
+
+    Returns:
+        Node id -> matched message fragments.
+    """
+    # Imported here: grounding pulls in schema code, and this module stays light.
+    from vgar.graph.grounding import issue_symbol_text
+
+    lines = diagnostic_lines(issue_symbol_text(issue_text))
+    if not lines:
+        return {}
+    present = [node for node in nodes if node.get('path') in verified_sources]
+    return SourceEvidence(present, verified_sources, lambda text: frozenset(), include_messages=True).diagnostic_matches(lines)
+
+
 def _message_fragments(function):
     body = function.body
     if body and isinstance(body[0], ast.Expr) and isinstance(body[0].value, ast.Constant) and isinstance(body[0].value.value, str):

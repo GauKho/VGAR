@@ -5,13 +5,21 @@ import copy
 import hashlib
 import json
 import re
+from collections.abc import Mapping
 from dataclasses import asdict, dataclass
 from typing import Any
 
 from vgar.contracts.schema import validate_graph_document
-from vgar.graph.grounding import _ROUTE, AnchorResult, TaskAnchorFinder
+from vgar.graph.grounding import (
+    _ROUTE,
+    AnchorEvidence,
+    AnchorResult,
+    TaskAnchor,
+    TaskAnchorFinder,
+)
+from vgar.graph.source_evidence import message_matches
 from vgar.graph.task_graph import TaskFacts, extract_task_facts
-from vgar.graph.trace_links import build_trace_links
+from vgar.graph.trace_links import TraceLink, build_trace_links
 
 
 @dataclass
@@ -36,8 +44,18 @@ class TaskOverlayBuilder:
 
     def build(
         self, task_id: str, issue_text: str, failing_tests: list[str] | None = None,
-        *, labels: list[str] | None = None,
+        *, labels: list[str] | None = None, sources: Mapping[str, str] | None = None,
     ) -> TaskOverlay:
+        """The task overlay: anchors, G_task nodes, trace links.
+
+        Args:
+            task_id: Task identifier.
+            issue_text: The task's issue text.
+            failing_tests: Reported failing test selectors.
+            labels: Issue labels.
+            sources: Source text by path; when given, code whose message literal the issue quotes in a labelled
+                log line becomes an ``error_message`` anchor (proposal §6.6).
+        """
         if not isinstance(task_id, str) or not task_id.strip():
             raise ValueError("task_id must be a non-empty string")
         grounding = self._finder.find_task_anchors(issue_text, failing_tests)
@@ -47,7 +65,7 @@ class TaskOverlayBuilder:
         overlay_id = _digest({
             "graph_version": grounding.graph_version, "task_id": task_id,
             "issue_text": issue_text, "failing_tests": reports, "labels": facts.labels,
-            "profile": "task-overlay-v12-requirements",
+            "profile": "task-overlay-v13-error-anchors",
         })
         issue_id = f"vgar:{self._document['repo_key']}:issue:{task_hash}"
         if issue_id in self._nodes:
@@ -91,9 +109,11 @@ class TaskOverlayBuilder:
                     {"input_reported_failure": True, "execution_verified": False},
                 ))
         task_nodes = self._add_task_facts(facts, grounding, issue, task_hash, overlay_id, edges)
-        for link in build_trace_links(issue_id, task_nodes, grounding, self._document["nodes"]):
+        links = build_trace_links(issue_id, task_nodes, grounding, self._document["nodes"])
+        for link in links:
             edges.append(self._edge(link.edge_type, link.source_id, link.target_id, link.confidence, link.evidence,
                                     overlay_id, link.properties, link.rule_id))
+        self._add_error_anchors(grounding, links, task_nodes, issue_text, sources, issue_id, overlay_id, edges)
         edges.sort(key=lambda edge: (edge["type"], edge["source_id"], edge["target_id"]))
         # Validate existing endpoints/provenance without changing the shared contract.
         validate_graph_document({
@@ -101,6 +121,47 @@ class TaskOverlayBuilder:
             "edges": self._document["edges"] + edges,
         })
         return TaskOverlay(grounding.graph_version, overlay_id, task_id, [issue, *task_nodes], edges, grounding)
+
+    def _add_error_anchors(
+        self, grounding: AnchorResult, links: list[TraceLink], task_nodes: list[dict[str, Any]], issue_text: str,
+        sources: Mapping[str, str] | None, issue_id: str, overlay_id: str, edges: list[dict[str, Any]],
+    ) -> None:
+        """Error messages as anchors (proposal §6.6, spec 2026-11-20 §5.3), each with a MENTIONS edge.
+
+        The exception class an ErrorMessage resolves to scores its trace-link confidence; code whose message literal
+        the issue quotes scores 0.85 when it is the only match and 0.5 for a shared template (the retrieval values).
+        """
+        task_types = {node["id"]: node["type"] for node in task_nodes}
+        found: dict[str, list[tuple[float, AnchorEvidence]]] = {}
+        for link in links:
+            if link.edge_type == "RESOLVES_TO" and task_types.get(link.source_id) == "ErrorMessage":
+                name = link.evidence[0].get("name", "") if link.evidence else ""
+                found.setdefault(link.target_id, []).append((link.confidence, AnchorEvidence("error", name, "issue")))
+        matches = message_matches(self._document["nodes"], sources, issue_text) if sources is not None else {}
+        for node_id, fragments in matches.items():
+            score = 0.5 if len(matches) > 1 else 0.85
+            found.setdefault(node_id, []).append((score, AnchorEvidence("error_message", fragments[0], "issue")))
+        anchors = {anchor.node_id: anchor for anchor in grounding.anchors}
+        for node_id in sorted(found):
+            score = max(value for value, _ in found[node_id])
+            evidence = [item for _, item in found[node_id]]
+            anchor = anchors.get(node_id)
+            if anchor is None:
+                node = self._nodes[node_id]
+                anchor = TaskAnchor(node_id, node["path"], node["qualified_name"], score, evidence)
+                grounding.anchors.append(anchor)
+            else:
+                anchor.score = max(anchor.score, score)
+                anchor.evidence.extend(evidence)
+            old = next((edge for edge in edges if edge["type"] == "MENTIONS" and edge["target_id"] == node_id), None)
+            properties = ({key: value for key, value in old["properties"].items() if key != "overlay_id"}
+                          if old is not None else {"has_ambiguous_evidence": False})
+            if old is not None:
+                edges.remove(old)
+            edges.append(self._edge("MENTIONS", issue_id, node_id, anchor.score,
+                                    [asdict(item) for item in anchor.evidence], overlay_id, properties))
+        if found:
+            grounding.anchors.sort(key=lambda item: (-item.score, item.path, item.symbol, item.node_id))
 
     def _add_task_facts(
         self, facts: TaskFacts, grounding: AnchorResult, issue: dict[str, Any], task_hash: str, overlay_id: str,

@@ -33,6 +33,10 @@ class StoredSymbol:
     kind: str
     path: str
     qualified_name: str
+    # Caller/callee results: the best CALLS edge behind the relation (proposal §6.4 confidence and provenance).
+    confidence: float | None = None
+    resolution: str | None = None
+    source_tool: str | None = None
 
 
 @dataclass(frozen=True)
@@ -366,8 +370,10 @@ class SQLiteGraphStore:
         with self._connect() as connection:
             rows = connection.execute(
                 """
-                SELECT DISTINCT caller.id, caller.name, caller.type,
-                       caller.path, caller.qualified_name
+                SELECT caller.id, caller.name, caller.type,
+                       caller.path, caller.qualified_name,
+                       MAX(call_edge.confidence) AS confidence, call_edge.resolution AS resolution,
+                       call_edge.provenance_json AS provenance_json
                 FROM edges AS call_edge
                 JOIN edges AS contains_edge
                   ON contains_edge.graph_version = call_edge.graph_version
@@ -381,6 +387,7 @@ class SQLiteGraphStore:
                   AND call_edge.target_id = ?
                   AND call_edge.confidence >= ?
                   AND caller.type IN ('Function', 'Method', 'Test')
+                GROUP BY caller.id
                 ORDER BY caller.qualified_name, caller.id
                 """,
                 (graph_version, symbol_id, min_confidence),
@@ -401,8 +408,10 @@ class SQLiteGraphStore:
         with self._connect() as connection:
             rows = connection.execute(
                 """
-                SELECT DISTINCT callee.id, callee.name, callee.type,
-                       callee.path, callee.qualified_name
+                SELECT callee.id, callee.name, callee.type,
+                       callee.path, callee.qualified_name,
+                       MAX(call_edge.confidence) AS confidence, call_edge.resolution AS resolution,
+                       call_edge.provenance_json AS provenance_json
                 FROM edges AS contains_edge
                 JOIN edges AS call_edge
                   ON call_edge.graph_version = contains_edge.graph_version
@@ -416,6 +425,7 @@ class SQLiteGraphStore:
                   AND contains_edge.source_id = ?
                   AND call_edge.confidence >= ?
                   AND callee.type IN ('Class', 'Function', 'Method')
+                GROUP BY callee.id
                 ORDER BY callee.qualified_name, callee.id
                 """,
                 (graph_version, symbol_id, min_confidence),
@@ -775,12 +785,18 @@ def _row_to_symbol(row: sqlite3.Row) -> StoredSymbol:
     path = row["path"]
     if not isinstance(path, str) or not path:
         raise ValueError(f"symbol has no repository-relative path: {row['id']}")
+    edge = {}
+    # Caller/callee rows: SQLite takes resolution/provenance from the MAX row. `in row` would scan values, not names.
+    if "confidence" in row.keys():  # noqa: SIM118
+        edge = {"confidence": float(row["confidence"]), "resolution": row["resolution"],
+                "source_tool": json.loads(row["provenance_json"] or "{}").get("source_tool")}
     return StoredSymbol(
         symbol_id=str(row["id"]),
         name=str(row["name"]),
         kind=str(row["type"]).lower(),
         path=path.replace("\\", "/"),
         qualified_name=str(row["qualified_name"]),
+        **edge,
     )
 
 

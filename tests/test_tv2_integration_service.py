@@ -43,6 +43,7 @@ def test_related_context_output_is_unchanged_by_the_cache(tmp_path):
     first = service.get_related_context(anchor_ids, 2000, graph_version=version, task_id="t", issue_text="login")
     second = service.get_related_context(anchor_ids, 2000, graph_version=version, task_id="t", issue_text="login")
     fresh, _ = _service(tmp_path / "fresh", count_tokens=len, counter_label="test:characters")
+    fresh.find_task_anchors("login in app/service.py", graph_version=version, task_id="t")   # same bound task (§10.3)
     third = fresh.get_related_context(anchor_ids, 2000, graph_version=version, task_id="t", issue_text="login")
     assert first["context"] == second["context"] == third["context"]
 

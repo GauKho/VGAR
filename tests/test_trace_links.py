@@ -313,7 +313,7 @@ def test_overlay_has_resolves_to_and_new_profile() -> None:
     target = next(node for node in document["nodes"] if node["type"] == "Function" and node["name"] == "login")
     assert [(edge["target_id"], edge["confidence"], edge["provenance"]["rule_id"]) for edge in edges] == [(target["id"], 0.95, "task.resolves_to.frame.v1")]
     assert overlay.overlay_id == _digest({"graph_version": overlay.graph_version, "task_id": "t1", "issue_text": ISSUE, "failing_tests": [], "labels": [],
-                                          "profile": "task-overlay-v12-requirements"})
+                                          "profile": "task-overlay-v13-error-anchors"})
 
 
 def test_overlay_failing_test_resolves_to_test() -> None:
