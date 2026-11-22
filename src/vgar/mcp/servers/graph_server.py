@@ -34,6 +34,7 @@ from vgar.mcp.server_factory import create_resource_server
 from vgar.mcp.tooling import PYTEST_OUTPUT_CAP, PYTEST_TIMEOUT_SECONDS, audit_resource, run_tool
 from vgar.mcp.host_config import require_host_config
 from vgar.observability.instrumentation import instrument_mcp_tool
+from vgar.repair.patch_evidence import require_diff, resolve_diff, with_checked_diff
 
 # Run as `python -m`, __name__ is "__main__"; keep the module name so the vgar log handler applies.
 logger = logging.getLogger("vgar.mcp.servers.graph_server" if __name__ == "__main__" else __name__)
@@ -292,26 +293,36 @@ def get_related_tests(symbol_ids: list[str], graph_version: str, changed_paths: 
 
 @mcp.tool()
 @instrument_mcp_tool("analyze_patch_impact")
-def analyze_patch_impact(diff: str, graph_version: str, max_hops: int = 2, max_nodes: int = 200) -> dict[str, Any]:
-    """Report what a unified diff changes and what depends on it.
+def analyze_patch_impact(graph_version: str, diff: str = "", max_hops: int = 2, max_nodes: int = 200) -> dict[str, Any]:
+    """Report what a change does and what depends on it. Call it BEFORE build_or_update_graph.
 
     Walks callers, importers, subclasses and tests backwards, adds the affected Port and
     Component nodes, and reports Ports and public API removed by the patch in port_check.
+    ``checked_diff`` in the result says which diff was analyzed and which changes it could not carry.
 
     Args:
-        diff: Unified diff against the snapshot's baseline source.
         graph_version: Snapshot to analyze.
+        diff: Optional unified diff. Leave it empty: the server diffs the working tree against the source the
+            graph was built from. A diff given here is applied to that same source.
         max_hops: Traversal depth, 1 to 5.
         max_nodes: Maximum impacted nodes, 1 to 1000.
     """
     patch_sha256 = "sha256:" + hashlib.sha256(diff.encode("utf-8")).hexdigest()
     def call():
         legacy_binding(graph_version=graph_version)
-        return graph_service.analyze_patch_impact(diff, graph_version=graph_version, max_hops=max_hops, max_nodes=max_nodes)
+        checked, record = resolve_diff(graph_service, graph_version, diff)
+        if not checked and record["not_checked"]:
+            raise ValueError(f"nothing this check can analyze: the working tree only has {'; '.join(record['not_checked'])}")
+        if not checked:
+            raise ValueError(f"no change between the working tree and graph {graph_version}; if you just rebuilt "
+                             "the graph, the change is already in it: check before rebuilding")
+        data = graph_service.analyze_patch_impact(checked, graph_version=graph_version, max_hops=max_hops,
+                                                  max_nodes=max_nodes)
+        return {**data, "checked_diff": record}
     return _tool("analyze_patch_impact", call,
         {"graph_version": graph_version, "patch_sha256": patch_sha256, "max_hops": max_hops, "max_nodes": max_nodes},
         lambda data: {"changed_count": len(data["changed"]), "impacted_count": len(data["impacted"]["items"]),
-                      "impacted_status": data["impacted"]["status"]})
+                      "impacted_status": data["impacted"]["status"], **_checked_audit(data)})
 
 
 @mcp.resource("vgar://graph/subgraph/{node_id}")
@@ -511,25 +522,39 @@ def explain_dependency_path(source_id: str, target_id: str) -> dict[str, Any]:
 
 @mcp.tool()
 @instrument_mcp_tool("verify_patch_graph_constraints")
-async def verify_patch_graph_constraints(diff: str) -> dict[str, Any]:
-    """Check a proposed patch against the graph: schema, structure, public API, import cycles and lost Ports.
+async def verify_patch_graph_constraints(diff: str = "") -> dict[str, Any]:
+    """Check a change against the graph: schema, structure, public API, import cycles and lost Ports.
 
-    The repository is never modified; the patch is checked on a temporary copy.
+    Call it BEFORE build_or_update_graph. The repository is never modified; the change is checked on a temporary
+    copy of the source the graph was built from. ``checked_diff`` in the result says which diff was checked;
+    each change it could not carry (new or deleted file, line endings only) adds a ``NOT_CHECKED`` reason.
 
     Args:
-        diff: Unified diff against the served snapshot's source.
+        diff: Optional unified diff. Leave it empty: the server diffs the working tree against the graph's source.
     """
     if not _has_provider("verification"):
         def call() -> dict[str, Any]:
             legacy_binding()
-            return _verified(diff)
+            version = graph_service.get_repository_summary().graph_version
+            checked, record = resolve_diff(graph_service, version, diff)
+            if not checked:
+                return with_checked_diff({"status": "NOT_RUN", "checks": {}, "reasons": ["NO_CHANGES"],
+                                          "graph_version": version, "diff_sha256": _diff_hash("")}, record)
+            return with_checked_diff(_verified(checked), record)
 
         # Building the candidate graph is slow: run it off the event loop (build-server guide: stay responsive).
         return await anyio.to_thread.run_sync(lambda: _tool(
             "verify_patch_graph_constraints", call, {"diff_sha256": _diff_hash(diff)},
-            lambda data: {"verdict": data["status"], "reason_count": len(data["reasons"])}))
-    return core_tools.respond("verify_patch_graph_constraints", lambda: proposal_contracts.DiffRequest.from_diff(diff),
+            lambda data: {"verdict": data["status"], "reason_count": len(data["reasons"]), **_checked_audit(data)}))
+    return core_tools.respond("verify_patch_graph_constraints",
+                              lambda: proposal_contracts.DiffRequest.from_diff(require_diff(diff, "verification")),
                               server="graph", audit=_audit_logger, invoke=core_tools.verify)
+
+
+def _checked_audit(data: dict[str, Any]) -> dict[str, Any]:
+    """Audit fields of the diff a check ran on: known only after the call when the server computed it."""
+    checked = data.get("checked_diff") or {}
+    return {"checked_sha256": checked.get("sha256"), "diff_source": checked.get("source")}
 
 
 @mcp.tool()

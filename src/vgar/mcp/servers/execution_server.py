@@ -95,28 +95,40 @@ def run_pytest(selector: str) -> dict[str, Any]:
 
 @mcp.tool()
 @instrument_mcp_tool("run_relevant_tests")
-async def run_relevant_tests(diff: str) -> dict[str, Any]:
-    """Run the tests related to a patch on a temporary copy, before and after applying it.
+async def run_relevant_tests(diff: str = "") -> dict[str, Any]:
+    """Run the tests related to a change on a temporary copy, before and after applying it.
 
-    The repository is never modified. Tests are chosen from the graph (TESTS edges and callers).
+    Call it BEFORE build_or_update_graph. The repository is never modified: the copy holds the source the graph
+    was built from. Tests are chosen from the graph (TESTS edges and callers). ``checked_diff`` in the result says
+    which diff was tested; each change it could not carry adds a ``NOT_CHECKED`` reason.
 
     Args:
-        diff: Unified diff against the served snapshot's source.
+        diff: Optional unified diff. Leave it empty: the server diffs the working tree against the graph's source.
     """
     if core_tools.registry.get("tests") is None:
         def call() -> dict[str, Any]:
-            from vgar.repair.patch_evidence import run_patch_tests
+            from vgar.repair.patch_evidence import diff_sha256, resolve_diff, run_patch_tests, with_checked_diff
             service = _service()
             version = service.get_repository_summary().graph_version
-            return run_patch_tests(service, diff, graph_version=version, timeout_seconds=PYTEST_TIMEOUT_SECONDS,
-                                   output_cap=PYTEST_OUTPUT_CAP)
+            checked, record = resolve_diff(service, version, diff)
+            if not checked:
+                return with_checked_diff({"status": "NOT_RUN", "selectors": [], "baseline": {}, "candidate": {},
+                                          "previously_failing_fixed": [], "regressions": [], "reasons": ["NO_CHANGES"],
+                                          "diff_sha256": diff_sha256(""), "cleaned": True, "broader_suite": "NOT_RUN",
+                                          "coverage": "NOT_RUN"}, record)
+            return with_checked_diff(run_patch_tests(service, checked, graph_version=version,
+                                                     timeout_seconds=PYTEST_TIMEOUT_SECONDS,
+                                                     output_cap=PYTEST_OUTPUT_CAP), record)
 
         # pytest runs can take minutes: run them off the event loop (build-server guide: stay responsive).
         return await run_tool_async(server="execution", tool="run_relevant_tests", backend="pytest", audit=_audit_logger,
                         call=lambda: anyio.to_thread.run_sync(call), audit_fields={"diff_sha256": "sha256:" + hashlib.sha256(diff.encode("utf-8")).hexdigest()},
-                        summarize=lambda data: {"verdict": data["status"], "test_count": len(data["selectors"])},
+                        summarize=lambda data: {"verdict": data["status"], "test_count": len(data["selectors"]),
+                                                "checked_sha256": (data.get("checked_diff") or {}).get("sha256"),
+                                                "diff_source": (data.get("checked_diff") or {}).get("source")},
                         untrusted=True)
-    return await core_tools.respond_async("run_relevant_tests", lambda: DiffRequest.from_diff(diff),
+    from vgar.repair.patch_evidence import require_diff
+    return await core_tools.respond_async("run_relevant_tests", lambda: DiffRequest.from_diff(require_diff(diff, "tests")),
                                           server="execution", audit=_audit_logger, invoke=core_tools.tests)
 
 

@@ -18,10 +18,11 @@ def index_repo(repo: Path, db: Path) -> int:
         Number of nodes in the built graph.
     """
     from vgar.graph.builder import PythonGraphBuilder
+    from vgar.graph.snapshot_sources import read_graph_sources
     from vgar.graph.sqlite_store import SQLiteGraphStore
 
     doc = PythonGraphBuilder(repo_key=repo.name, repository_revision="cli").build(repo)
     db.parent.mkdir(parents=True, exist_ok=True)
-    SQLiteGraphStore(db).ingest(doc)
+    SQLiteGraphStore(db).ingest(doc, sources=read_graph_sources(repo, doc))
     logger.info("indexed %s: %d nodes, %d edges -> %s", repo, len(doc["nodes"]), len(doc["edges"]), db)
     return len(doc["nodes"])

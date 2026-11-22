@@ -43,7 +43,7 @@ def test_root_below_git_repo_is_reported_not_silent(tmp_path, monkeypatch, caplo
     root = write_tree(outer / "sub", FILES)
     seen = []
     original = SQLiteGraphStore.ingest
-    monkeypatch.setattr(SQLiteGraphStore, "ingest", lambda self, document: seen.append(document) or original(self, document))
+    monkeypatch.setattr(SQLiteGraphStore, "ingest", lambda self, document, **kwargs: seen.append(document) or original(self, document, **kwargs))
     with caplog.at_level("WARNING", logger="vgar.graph.live_build"):
         result = LiveGraphBuilder(root, tmp_path / "g.db").run()
     assert head_revision(root) == ("cli", False) and result["revision"] == "cli"

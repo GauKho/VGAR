@@ -1,8 +1,10 @@
 from __future__ import annotations
 
+import hashlib
 import json
 import logging
 import os
+import tempfile
 from collections import deque
 from dataclasses import asdict
 from pathlib import Path
@@ -393,14 +395,40 @@ class SQLiteGraphService:
         """ImpactReport (canonical JSON object) of a unified diff against the snapshot's baseline source."""
         if self.repository_root is None:
             raise GraphNotReadyError("Patch impact requires the repository root of the snapshot")
-        from vgar.graph.impact import analyze_patch_impact
+        from vgar.graph.impact import analyze_patch_impact, source_drift
+        from vgar.graph.snapshot_sources import NO_SOURCE_COPY_HINT, materialize_snapshot
         from vgar.repair.patch import PatchPolicy
         document = self._document(graph_version)
         paths = tuple(sorted(node["path"] for node in document["nodes"] if node["type"] == "File"))
-        report = analyze_patch_impact(diff, document, self.repository_root, patch_policy=PatchPolicy(paths, ()),
-                                      **impact_flags_from_env(),
-                                      max_hops=max_hops, max_nodes=max_nodes)
+        sources = self.snapshot_sources(graph_version)
+        with tempfile.TemporaryDirectory(prefix="vgar-impact-") as folder:
+            if sources is not None:   # the diff applies to the code the graph was built from, whatever the worktree holds
+                root = materialize_snapshot(sources, Path(folder) / "snapshot")
+            else:
+                drift = source_drift(document, self.repository_root)
+                if drift:
+                    raise ValueError(f"{drift} {NO_SOURCE_COPY_HINT}")
+                root = self.repository_root
+            report = analyze_patch_impact(diff, document, root, patch_policy=PatchPolicy(paths, ()),
+                                          **impact_flags_from_env(), max_hops=max_hops, max_nodes=max_nodes)
         return json.loads(report.canonical_json())
+
+    def snapshot_sources(self, graph_version: str) -> dict[str, bytes] | None:
+        """Stored source of ``graph_version`` checked against its File nodes; None when the graph stores none.
+
+        Args:
+            graph_version: Stored graph snapshot.
+        """
+        sources = self.store.get_sources(graph_version)
+        if not sources:
+            return None
+        for node in self._document(graph_version)["nodes"]:
+            if node["type"] != "File":
+                continue
+            content = sources.get(node["path"])
+            if content is None or "sha256:" + hashlib.sha256(content).hexdigest() != node["content_hash"]:
+                raise ValueError(f"stored source of {node['path']} does not match graph {graph_version}: rebuild the graph")
+        return sources
 
     def get_reverse_edges(self, node_ids: list[str], edge_types: list[str]) -> list[GraphEdgeRef]:
         return [_to_edge_contract(edge) for edge in self.store.get_reverse_edges(node_ids, edge_types)]

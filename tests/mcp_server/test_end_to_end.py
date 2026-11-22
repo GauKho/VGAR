@@ -191,7 +191,7 @@ def runtime_stub(tmp_path, *, exit_code=0, duplicate=False):
     schema = lambda props:{"type":"object","properties":{p:{"type":"string"} for p in props},"required":props}
     tools = [{"name":"health","inputSchema":schema([])},
              {"name":"run_pytest","inputSchema":schema(["selector"])},
-             {"name":"run_relevant_tests","inputSchema":schema(["diff"])}]
+             {"name":"run_relevant_tests","inputSchema":{**schema(["diff"]),"required":[]}}]   # diff is optional
     if duplicate:
         tools.append(copy.deepcopy(tools[0]))
     wire = {"status":"PASS","protocol":"2026-07-28","tools":tools,"resources":[],"calls":[

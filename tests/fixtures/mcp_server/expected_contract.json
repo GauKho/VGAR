@@ -125,7 +125,7 @@
       "server": "graph",
       "client_name": "graph_analyze_patch_impact",
       "state": "CURRENT",
-      "signature": "diff: str, graph_version: str, max_hops: int=2, max_nodes: int=200",
+      "signature": "graph_version: str, diff: str='', max_hops: int=2, max_nodes: int=200",
       "output": "ToolResponse[ImpactReport]",
       "provider": "legacy GraphService; architecture TV2 pending",
       "constraints": [
@@ -141,7 +141,7 @@
       "server": "graph",
       "client_name": "graph_verify_patch_graph_constraints",
       "state": "PROPOSED",
-      "signature": "diff: str",
+      "signature": "diff: str=''",
       "output": "CheckEvidence",
       "provider": "TV3",
       "constraints": [
@@ -157,7 +157,7 @@
       "server": "execution",
       "client_name": "execution_run_relevant_tests",
       "state": "PROPOSED",
-      "signature": "diff: str",
+      "signature": "diff: str=''",
       "output": "TestEvidence",
       "provider": "TV3/test provider + wrapper",
       "constraints": [
@@ -323,7 +323,7 @@
     {
       "server": "graph",
       "name": "analyze_patch_impact",
-      "signature": "diff: str, graph_version: str, max_hops: int=2, max_nodes: int=200"
+      "signature": "graph_version: str, diff: str='', max_hops: int=2, max_nodes: int=200"
     },
     {
       "server": "repository",

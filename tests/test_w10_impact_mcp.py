@@ -35,9 +35,11 @@ def audit_lines(tmp_path):
 
 def test_tool_returns_a_valid_impact_report_and_audits_without_the_diff(snapshot):
     tmp_path, version = snapshot
-    result = graph_server.analyze_patch_impact(PATCH, version)
+    result = graph_server.analyze_patch_impact(diff=PATCH, graph_version=version)
     assert result['status'] == 'PASS' and result['error'] is None
-    report = ImpactReport.model_validate_json(json.dumps(result['data']))
+    data = dict(result['data'])
+    assert data.pop('checked_diff')['source'] == 'argument'   # tool-layer record (spec 2026-11-22), not in the contract
+    report = ImpactReport.model_validate_json(json.dumps(data))
     code_items = [item for item in report.impacted.items if item.kind not in ('Port', 'Component')]
     assert len(report.changed) == 1 and report.impacted.status == 'COMPLETE' and len(code_items) == 8
     signature = next(f for f in report.risk.features if f.name == 'signature_changed')
@@ -50,7 +52,7 @@ def test_tool_returns_a_valid_impact_report_and_audits_without_the_diff(snapshot
 
 def test_tool_passes_limits(snapshot):
     _, version = snapshot
-    data = graph_server.analyze_patch_impact(PATCH, version, max_hops=1, max_nodes=3)['data']
+    data = graph_server.analyze_patch_impact(diff=PATCH, graph_version=version, max_hops=1, max_nodes=3)['data']
     assert data['impacted']['status'] == 'PARTIAL' and data['impacted']['max_hops'] == 1
 
 
@@ -61,7 +63,7 @@ def test_tool_passes_limits(snapshot):
     (PATCH, False, {}, 'GRAPH_NOT_READY')])
 def test_tool_errors_follow_the_schema_and_are_audited(snapshot, diff, version_ok, kwargs, code):
     tmp_path, version = snapshot
-    result = graph_server.analyze_patch_impact(diff, version if version_ok else 'missing', **kwargs)
+    result = graph_server.analyze_patch_impact(diff=diff, graph_version=version if version_ok else 'missing', **kwargs)
     assert result['status'] == 'ERROR' and result['data'] is None and result['error']['code'] == code
     assert audit_lines(tmp_path)[-1]['error_code'] == code
 
@@ -70,7 +72,7 @@ def test_tool_needs_a_repository_root_and_a_snapshot_backend(snapshot, monkeypat
     _, version = snapshot
     store = graph_server.graph_service.store
     monkeypatch.setattr(graph_server, 'graph_service', SQLiteGraphService(store))
-    assert graph_server.analyze_patch_impact(PATCH, version)['error']['code'] == 'GRAPH_NOT_READY'
+    assert graph_server.analyze_patch_impact(diff=PATCH, graph_version=version)['error']['code'] == 'GRAPH_NOT_READY'
 
 
 def test_tool_is_listed_over_stdio(tmp_path):

@@ -16,6 +16,7 @@ from vgar.contracts.error import GraphNotReadyError
 from vgar.graph.builder import PythonGraphBuilder
 from vgar.graph.incremental import IncrementalGraphBuilder
 from vgar.graph.layer_config import LayerConfigs, layer_summary
+from vgar.graph.snapshot_sources import read_graph_sources
 from vgar.graph.sqlite_store import SQLiteGraphStore
 
 logger = logging.getLogger(__name__)
@@ -148,10 +149,12 @@ class LiveGraphBuilder:
                                           worktree_dirty=dirty, layers=layers)
             version = str(document["graph_version"])
             if version != previous:
-                store.ingest(document)
+                store.ingest(document, sources=read_graph_sources(self.root, document))
                 # The published snapshot is the only one of this repository: reverting an edit cannot leave an
                 # older row "latest", and the database does not grow with every edit.
                 store.prune_other_versions(version, str(document["repo_key"]))
+            elif not store.get_sources(version):   # a graph stored before source copies existed
+                store.put_sources(version, read_graph_sources(self.root, document))
             job.result = {"graph_version": version, "previous_graph_version": previous,
                           "mode": "cold" if cold else "incremental", "changed_files": changed,
                           "nodes": len(document["nodes"]), "edges": len(document["edges"]),

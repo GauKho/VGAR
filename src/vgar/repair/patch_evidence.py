@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import re
 import logging
 import shutil
 import tempfile
@@ -20,6 +21,7 @@ from typing import Any
 from vgar.contracts.error import GraphNotReadyError
 from vgar.contracts.schema import GraphValidationError, validate_graph_document
 from vgar.graph.builder import PythonGraphBuilder, discover_python_files
+from vgar.graph.snapshot_sources import NO_SOURCE_COPY_HINT, materialize_snapshot
 from vgar.graph.test_selection import select_related_tests
 from vgar.mcp import pytest_runner
 from vgar.mcp.schemas import CodedToolError
@@ -55,6 +57,75 @@ def _result(status: str, reasons: list[str], checks: dict[str, Any], graph_versi
             "diff_sha256": diff_sha256(diff)}
 
 
+_INLINE_DIFF_BYTES = 8192
+
+
+def resolve_diff(service: Any, graph_version: str, diff: str) -> tuple[str, dict[str, Any]]:
+    """The diff a check runs on and its ``checked_diff`` record (spec 2026-11-22 section 4.3).
+
+    Args:
+        service: ``SQLiteGraphService`` serving the graph (needs ``repository_root``).
+        graph_version: Graph whose stored source the working tree is compared with.
+        diff: Unified diff given by the caller; empty means the working tree's changes against the stored source.
+
+    Returns:
+        The diff to check ("" when nothing changed) and the record of what is checked.
+    """
+    if diff:
+        files = sorted(re.findall(r"^\+\+\+ b/(.+)$", diff, re.MULTILINE))
+        return diff, _checked_diff(diff, "argument", files, [])
+    sources = service.snapshot_sources(graph_version)
+    if sources is None:
+        raise ValueError(f"no diff given and {NO_SOURCE_COPY_HINT}, or pass the diff")
+    from vgar.repair.worktree_diff import worktree_diff
+    found = worktree_diff(sources, _root(service))
+    limits = PatchPolicy((), ())
+    if len(found.files) > limits.max_files or found.changed_lines > limits.max_changed_lines:
+        raise ValueError(f"the working tree differs from graph {graph_version} in {len(found.files)} files / "
+                         f"{found.changed_lines} changed lines (limit {limits.max_files} files, "
+                         f"{limits.max_changed_lines} lines): check and rebuild the graph after each fix")
+    return found.diff, _checked_diff(found.diff, "worktree", list(found.files), list(found.not_checked))
+
+
+def _checked_diff(diff: str, source: str, files: list[str], not_checked: list[str]) -> dict[str, Any]:
+    return {"source": source, "files": files, "sha256": diff_sha256(diff),
+            "diff": diff if len(diff.encode("utf-8")) <= _INLINE_DIFF_BYTES else None, "not_checked": not_checked}
+
+
+def with_checked_diff(result: dict[str, Any], checked: dict[str, Any]) -> dict[str, Any]:
+    """A copy of a check result with ``checked_diff`` and one ``NOT_CHECKED`` reason per change it could not carry.
+
+    Args:
+        result: Result of verify_patch or run_patch_tests (possibly cached: never modified).
+        checked: Record returned by ``resolve_diff``.
+    """
+    return {**result, "reasons": [*result["reasons"], *(f"NOT_CHECKED: {entry}" for entry in checked["not_checked"])],
+            "checked_diff": checked}
+
+
+def require_diff(diff: str, capability: str) -> str:
+    """``diff`` for a host provider, which needs it explicitly (TV1 contract ``DiffRequest`` is unchanged).
+
+    Args:
+        diff: Diff given by the caller.
+        capability: Provider capability, for the message.
+    """
+    if not diff:
+        raise ValueError(f"diff is required with the host's {capability} provider")
+    return diff
+
+
+def _impact_report(diff: str, document: dict[str, Any], root: Path, policy: PatchPolicy,
+                   sources: dict[str, bytes] | None) -> dict[str, Any]:
+    """ImpactReport of ``diff`` on the graph's stored source, or on ``root`` for a graph that stores none."""
+    from vgar.graph.impact import analyze_patch_impact
+    if sources is None:
+        return json.loads(analyze_patch_impact(diff, document, root, patch_policy=policy).canonical_json())
+    with tempfile.TemporaryDirectory(prefix="vgar-impact-") as folder:
+        baseline = materialize_snapshot(sources, Path(folder) / "snapshot")
+        return json.loads(analyze_patch_impact(diff, document, baseline, patch_policy=policy).canonical_json())
+
+
 def _port_status(port_check: dict[str, Any]) -> str:
     if port_check.get("lost") or port_check.get("removed_api"):
         return "FAIL"
@@ -82,16 +153,20 @@ def verify_patch(service: Any, diff: str, *, graph_version: str,
     except (ValueError, UnicodeError) as error:
         return _result("ERROR", [f"PATCH_REJECTED: {error}"], {}, graph_version, diff)
 
+    sources = service.snapshot_sources(graph_version)
     with tempfile.TemporaryDirectory(prefix="vgar-verify-") as folder:
         copy = Path(folder) / "repo"
-        shutil.copytree(root, copy, ignore=_IGNORED)
+        if sources is not None:   # the code the graph was built from, whatever the working tree holds
+            materialize_snapshot(sources, copy, worktree=root)
+        else:
+            shutil.copytree(root, copy, ignore=_IGNORED)
         builder = PythonGraphBuilder(repo_key=document["repo_key"], repository_revision=document["repository_revision"],
                                      source_roots=source_roots)
         builder.trace.path = None
         if builder._calculate_graph_version(copy, discover_python_files(copy)) != graph_version:
             from vgar.graph.impact import source_drift
-            drift = source_drift(document, root)
-            return _result("ERROR", [f"SOURCE_DIFFERS_FROM_SNAPSHOT: {drift}" if drift
+            drift = source_drift(document, root) if sources is None else None   # stored source: builder options differ
+            return _result("ERROR", [f"SOURCE_DIFFERS_FROM_SNAPSHOT: {drift} {NO_SOURCE_COPY_HINT}" if drift
                                      else "BUILDER_OPTIONS_OR_SOURCE_DIFFER_FROM_SNAPSHOT"], {}, graph_version, diff)
         before = {path: (copy / path).read_bytes() for path in policy.allowed_paths if (copy / path).is_file()}
         try:
@@ -116,8 +191,7 @@ def verify_patch(service: Any, diff: str, *, graph_version: str,
     structure = check_structure(document, candidate, before_sources=before, after_sources=after)
     source_imports = check_source_import_cycles(document, candidate, before, after)
 
-    from vgar.graph.impact import analyze_patch_impact
-    report = json.loads(analyze_patch_impact(diff, document, root, patch_policy=policy).canonical_json())
+    report = _impact_report(diff, document, root, policy, sources)
     port_check = report.get("port_check", {})
     port_status = _port_status(port_check)
 
@@ -184,9 +258,9 @@ def run_patch_tests(service: Any, diff: str, *, graph_version: str, failing_test
     except (ValueError, UnicodeError) as error:
         return {**record, "reasons": [f"PATCH_REJECTED: {error}"], "cleaned": True}
 
-    from vgar.graph.impact import analyze_patch_impact
+    sources = service.snapshot_sources(graph_version)
     try:
-        report = json.loads(analyze_patch_impact(diff, document, root, patch_policy=policy).canonical_json())
+        report = _impact_report(diff, document, root, policy, sources)
     except (ValueError, UnicodeError) as error:  # hunk does not match, or the repo drifted from the snapshot
         return {**record, "reasons": [f"PATCH_DOES_NOT_APPLY: {error}"], "cleaned": True}
     known = {node["id"] for node in document["nodes"]}
@@ -197,7 +271,10 @@ def run_patch_tests(service: Any, diff: str, *, graph_version: str, failing_test
     folder = Path(tempfile.mkdtemp(prefix="vgar-tests-"))
     try:
         copy = folder / "repo"
-        shutil.copytree(root, copy, ignore=_IGNORED)
+        if sources is not None:
+            materialize_snapshot(sources, copy, worktree=root)
+        else:
+            shutil.copytree(root, copy, ignore=_IGNORED)
         selectors = [item for item in selection["tests"] if (copy / item.split("::", 1)[0]).is_file()]
         record["selectors"] = selectors
         if not selectors:

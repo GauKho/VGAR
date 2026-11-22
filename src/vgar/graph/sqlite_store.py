@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 import logging
 import sqlite3
@@ -132,6 +133,16 @@ class SQLiteGraphStore:
                         REFERENCES nodes(graph_version, id)
                 );
 
+                CREATE TABLE IF NOT EXISTS sources (
+                    graph_version TEXT NOT NULL,
+                    path TEXT NOT NULL,
+                    content BLOB NOT NULL,
+                    PRIMARY KEY (graph_version, path),
+                    FOREIGN KEY (graph_version)
+                        REFERENCES graph_metadata(graph_version)
+                        ON DELETE CASCADE
+                );
+
                 CREATE INDEX IF NOT EXISTS idx_nodes_type
                     ON nodes(graph_version, type);
                 CREATE INDEX IF NOT EXISTS idx_nodes_path
@@ -152,7 +163,13 @@ class SQLiteGraphStore:
                 if column not in columns:
                     connection.execute(f"ALTER TABLE nodes ADD COLUMN {column} TEXT")
 
-    def ingest(self, document: Mapping[str, Any]) -> None:
+    def ingest(self, document: Mapping[str, Any], sources: Mapping[str, bytes] | None = None) -> None:
+        """Store ``document`` as a new snapshot, with the bytes of its source files when given.
+
+        Args:
+            document: Graph document to store.
+            sources: Bytes of every File node's file, keyed by path; patch checks run on them (spec 2026-11-22).
+        """
         validate_graph_document(document)
         self.initialize()
 
@@ -261,6 +278,8 @@ class SQLiteGraphStore:
                     ),
                 )
 
+            if sources is not None:
+                _write_sources(connection, graph_version, sources)
             self._before_ready(connection, document)
             connection.execute(
                 """
@@ -674,6 +693,28 @@ class SQLiteGraphStore:
             ).fetchall()
         return [_row_to_node(row) for row in rows]
 
+    def put_sources(self, graph_version: str, sources: Mapping[str, bytes]) -> None:
+        """Replace the stored source bytes of an existing snapshot.
+
+        Args:
+            graph_version: Stored snapshot the bytes belong to.
+            sources: Bytes of every File node's file, keyed by path; each must match the node's content hash.
+        """
+        self.initialize()
+        with self._connect() as connection:
+            _write_sources(connection, graph_version, sources)
+
+    def get_sources(self, graph_version: str) -> dict[str, bytes]:
+        """Stored source bytes of a snapshot, keyed by path; empty when none were stored.
+
+        Args:
+            graph_version: Stored snapshot to read.
+        """
+        self.initialize()
+        with self._connect() as connection:
+            rows = connection.execute("SELECT path, content FROM sources WHERE graph_version = ?", (graph_version,))
+            return {row["path"]: bytes(row["content"]) for row in rows}
+
     def prune_other_versions(self, keep: str, repo_key: str) -> int:
         """Delete every other snapshot of ``repo_key`` (nodes and edges cascade); return how many were removed.
 
@@ -799,6 +840,20 @@ def _row_to_symbol(row: sqlite3.Row) -> StoredSymbol:
         qualified_name=str(row["qualified_name"]),
         **edge,
     )
+
+
+def _write_sources(connection: sqlite3.Connection, graph_version: str, sources: Mapping[str, bytes]) -> None:
+    hashes = {row["path"]: row["content_hash"] for row in connection.execute(
+        "SELECT path, content_hash FROM nodes WHERE graph_version = ? AND type = 'File'", (graph_version,))}
+    mismatched = sorted(set(hashes) ^ set(sources))
+    if mismatched:
+        raise ValueError(f"sources must cover exactly the File nodes of {graph_version}: {', '.join(mismatched)}")
+    for path, content in sorted(sources.items()):
+        if "sha256:" + hashlib.sha256(content).hexdigest() != hashes[path]:
+            raise ValueError(f"source bytes of {path} differ from graph {graph_version}")
+    connection.execute("DELETE FROM sources WHERE graph_version = ?", (graph_version,))
+    connection.executemany("INSERT INTO sources (graph_version, path, content) VALUES (?, ?, ?)",
+                           [(graph_version, path, content) for path, content in sources.items()])
 
 
 def _escape_like(value: str) -> str:
