@@ -10,9 +10,10 @@ from dataclasses import asdict
 from pathlib import Path
 from typing import Callable, Any
 
-from vgar.contracts.error import GraphNotReadyError, NodeNotFoundError
+from vgar.contracts.error import GraphNotReadyError, NodeNotFoundError, StaleGraphVersionError
 from vgar.graph.grounding import issue_symbol_text
 from vgar.graph.retrieval import GraphContextRetriever, RetrievalConfig, ranking_config_hash
+from vgar.graph.snapshot_sources import worktree_changes
 from vgar.graph.source_evidence import diagnostic_lines
 from vgar.graph.task_overlay import TaskOverlayBuilder
 from vgar.graph.trace_links import rank_component_traces
@@ -40,6 +41,9 @@ from vgar.graph.sqlite_store import (
 
 
 logger = logging.getLogger(__name__)
+
+WORKTREE_NOTE = ("context is the code the graph was built from; changes in these files are not in this context until "
+                 "you check them and rebuild the graph")
 
 _SYMBOL_OWNERS = frozenset({"Function", "Method", "Test"})
 # Directed edges a dependency path may follow; a call is CONTAINS (owner -> CallSite) then CALLS.
@@ -76,9 +80,28 @@ class SQLiteGraphService:
         Args:
             graph_version: Stored graph snapshot to read.
         """
+        if not self.store.is_ready(graph_version):   # spec 2026-11-23 §4.3: never serve a pruned version from memory
+            self._forget({graph_version})
+            current = self.store.resolve_graph_version()   # GraphNotReadyError when no graph is built yet
+            raise StaleGraphVersionError(graph_version, current)
         if graph_version not in self._documents:
             self._documents[graph_version] = self.store.load_document(graph_version)
         return self._documents[graph_version]
+
+    def forget_other_versions(self, keep: str) -> None:
+        """Drop the cached documents and retrievers of every version but ``keep`` (called after each build).
+
+        Args:
+            keep: The version just published.
+        """
+        self._forget({version for version in self._documents if version != keep}
+                     | {key[0] for key in self._retrievers if key[0] != keep})
+
+    def _forget(self, versions: set[str]) -> None:
+        for version in versions:
+            self._documents.pop(version, None)
+        for key in [key for key in self._retrievers if key[0] in versions]:
+            del self._retrievers[key]
 
     def get_related_tests(self, symbol_ids: list[str], *, graph_version: str,
                           changed_paths: list[str] | None = None, failing_tests: list[str] | None = None,
@@ -111,7 +134,8 @@ class SQLiteGraphService:
         if retriever is None:
             retriever = GraphContextRetriever(document, self.repository_root, count_tokens=self.count_tokens,
                                               counter_label=self.counter_label, config=config,
-                                              change_counts=history["counts"] if label else None, history_label=label)
+                                              change_counts=history["counts"] if label else None, history_label=label,
+                                              sources=self.snapshot_sources(graph_version))
             self._retrievers[key] = retriever
         return retriever
 
@@ -158,16 +182,22 @@ class SQLiteGraphService:
             retriever.trace.emit("retrieval_error", graph_version=graph_version, task_id=task_id,
                                  error_type=type(error).__name__, reason=str(error))
             raise
+        diagnostics = {"config": result.config, "omissions": result.omissions,
+                       "unavailable_features": result.unavailable_features,
+                       "candidates": result.candidates, "traversal_limited": result.traversal_limited,
+                       **({"history": {key: value for key, value in history.items() if key != "counts"}}
+                          if history is not None else {})}
+        stored = retriever.stored_sources
+        if stored is not None:   # spec 2026-11-23 §4.1: the context is the graph's code, say which files differ
+            diagnostics["worktree_changes"] = worktree_changes(stored, self.repository_root)
+            if diagnostics["worktree_changes"]:
+                diagnostics["worktree_note"] = WORKTREE_NOTE
         return {"graph_version": graph_version, "task_id": task_id, "overlay_id": overlay.overlay_id,
                 "context_format": CONTEXT_FORMAT, "repository_revision": document["repository_revision"],
                 "source_metadata": {item.node_id: {"content_hash": retriever.nodes[item.node_id]["content_hash"],
                                                     "range_encoding": "utf-8-bytes"} for item in result.context.items},
                 "context": result.context.model_dump(mode="json"), "counter_label": result.counter_label,
-                "diagnostics": {"config": result.config, "omissions": result.omissions,
-                                "unavailable_features": result.unavailable_features,
-                                "candidates": result.candidates, "traversal_limited": result.traversal_limited,
-                                **({"history": {key: value for key, value in history.items() if key != "counts"}}
-                                   if history is not None else {})}}
+                "diagnostics": diagnostics}
 
     def _history(self, document: dict[str, Any], max_commits: int) -> dict[str, Any]:
         """Commit-history window ending at the graph's own revision; never reads commits after the snapshot."""

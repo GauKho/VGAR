@@ -13,7 +13,7 @@ from typing import Annotated, Any
 
 from pydantic import Strict
 
-from vgar.contracts.error import GraphError
+from vgar.contracts.error import GraphError, GraphNotReadyError
 from vgar.graph.factory import create_graph_service
 from vgar.graph.retrieval import RetrievalConfig
 from vgar.mcp.audit import AuditLogger
@@ -103,7 +103,14 @@ def _read_resource(uri: str) -> str:
 @mcp.tool()
 @instrument_mcp_tool("search_symbols")
 def search_symbols(query: str, limit: int = 20) -> dict[str, Any]:
-    """Search repository symbols. Returns the VGAR envelope; data = {query, limit, symbols}."""
+    """Search repository symbols by name, qualified name or path. Returns the VGAR envelope; data = {query, limit, symbols}.
+
+    Several names separated by spaces return the symbols matching any of them, the ones matching the most names first.
+
+    Args:
+        query: One name, or several names separated by spaces.
+        limit: Maximum number of symbols, 1 to 100.
+    """
 
     def call() -> dict[str, Any]:
         legacy_binding()
@@ -216,6 +223,8 @@ def get_related_context(anchor_ids: list[str], graph_version: str, task_id: str,
     tokens. ``diagnostics.budget`` in the result gives the requested and effective budget and whether the
     request was clamped to the server ceiling; ``diagnostics.traversal_limited`` says whether the candidate
     resource limit cut the k=2 neighbourhood. The full ranking diagnostics go to the audit log only.
+    The context is the code the graph was built from, even after you edit files; ``diagnostics.worktree_changes``
+    lists the Python files that differ from it (edited, added or deleted).
 
     Args:
         anchor_ids: Code node ids to start from: the ``anchors`` of find_task_anchors (not its trace_nodes) or
@@ -241,6 +250,9 @@ def get_related_context(anchor_ids: list[str], graph_version: str, task_id: str,
         data["diagnostics"] = {"traversal_limited": data["diagnostics"]["traversal_limited"],
                                "budget": {"requested": budget_tokens, "effective": effective,
                                           "ceiling": MAX_CONTEXT_BUDGET, "clamped": budget_tokens > MAX_CONTEXT_BUDGET}}
+        for key in ("worktree_changes", "worktree_note"):   # spec 2026-11-23 §4.1
+            if key in held["diagnostics"]:
+                data["diagnostics"][key] = held["diagnostics"][key]
         if not anchor_ids and not data["context"]["items"]:
             data["diagnostics"]["hint"] = ("no anchor_ids and nothing in issue_text matched the graph: pass the anchors "
                                            "returned by find_task_anchors, or symbol ids from search_symbols")
@@ -315,9 +327,9 @@ def analyze_patch_impact(graph_version: str, diff: str = "", max_hops: int = 2, 
             raise ValueError(f"nothing this check can analyze: the working tree only has {'; '.join(record['not_checked'])}")
         if not checked:
             raise ValueError(f"no change between the working tree and graph {graph_version}; if you just rebuilt "
-                             "the graph, the change is already in it: check before rebuilding")
-        data = graph_service.analyze_patch_impact(checked, graph_version=graph_version, max_hops=max_hops,
-                                                  max_nodes=max_nodes)
+                             "the graph, the change is already in it and that build checked it: see "
+                             "checks_before_update in its result")
+        data = _analyzed(checked, graph_version, max_hops, max_nodes)
         return {**data, "checked_diff": record}
     return _tool("analyze_patch_impact", call,
         {"graph_version": graph_version, "patch_sha256": patch_sha256, "max_hops": max_hops, "max_nodes": max_nodes},
@@ -384,6 +396,45 @@ def _verified(diff: str) -> dict[str, Any]:
     return result
 
 
+_impact_cache: dict[tuple[int, str, str, int, int], dict[str, Any]] = {}
+
+
+def _analyzed(diff: str, graph_version: str, max_hops: int = 2, max_nodes: int = 200) -> dict[str, Any]:
+    """analyze_patch_impact result for ``diff`` on ``graph_version``, kept per (snapshot, diff, limits) unless it fails."""
+    key = (id(graph_service), graph_version, _diff_hash(diff), max_hops, max_nodes)   # one service = one repository
+    if key not in _impact_cache:   # an exception is never cached: it propagates
+        _impact_cache[key] = graph_service.analyze_patch_impact(diff, graph_version=graph_version, max_hops=max_hops,
+                                                                max_nodes=max_nodes)
+    return _impact_cache[key]
+
+
+def _checks_before_update() -> dict[str, Any]:
+    """Check the working tree's changes the graph does not have yet, before a build absorbs them (spec 2026-11-23 §4.2)."""
+    try:
+        version = graph_service.get_repository_summary().graph_version
+    except GraphNotReadyError:
+        return {"status": "NOT_RUN", "reason": "first build"}
+    try:
+        if graph_service.snapshot_sources(version) is None:
+            return {"status": "NOT_RUN", "reason": "graph has no stored source"}
+        try:
+            checked, record = resolve_diff(graph_service, version, "")
+        except ValueError as error:
+            return {"status": "NOT_RUN", "reason": str(error)}
+        if not checked:
+            if record["not_checked"]:
+                return {"status": "NOT_RUN", "reason": "only changes the checks cannot carry", "checked_diff": record}
+            return {"status": "NO_CHANGES"}
+        verify, impact = _verified(checked), _analyzed(checked, version)
+        return {"status": "CHECKED", "verify": {"status": verify["status"], "reasons": verify["reasons"]},
+                "impact": {"status": impact["impacted"]["status"], "changed_count": len(impact["changed"]),
+                           "impacted_count": len(impact["impacted"]["items"]), "port_check": impact.get("port_check")},
+                "checked_diff": record, "tests": "not run"}
+    except Exception as error:   # a failed check must not block the build; it is reported instead
+        logger.warning("checks before update failed: %s", error)
+        return {"status": "NOT_RUN", "reason": f"{type(error).__name__}: {error}"}
+
+
 def _tested(diff: str) -> dict[str, Any]:
     """run_patch_tests result for ``diff`` on the served snapshot, kept per (snapshot, diff) unless ERROR."""
     from vgar.repair.patch_evidence import run_patch_tests
@@ -431,6 +482,9 @@ async def build_or_update_graph(repo_path: str) -> dict[str, Any]:
     re-extract only the changed files (incremental update), and every read tool sees the new graph at once.
     Run the patch checks (analyze_patch_impact, verify_patch_graph_constraints, run_relevant_tests) before
     rebuilding: they apply a diff to the code the graph was built from.
+    If the working tree has changes the graph does not have, the server first checks them (analyze_patch_impact and
+    verify_patch_graph_constraints, no tests) and returns the results in checks_before_update; read them before
+    continuing.
 
     Args:
         repo_path: The repository root this server is configured for (VGAR_REPOSITORY_ROOT); any other path is refused.
@@ -445,13 +499,18 @@ async def build_or_update_graph(repo_path: str) -> dict[str, Any]:
 
     def checked() -> dict[str, Any]:
         _same_repository(repo_path)
-        return call()
+        checks = _checks_before_update()
+        data = call()
+        data["checks_before_update"] = checks
+        graph_service.forget_other_versions(data["graph_version"])
+        return data
 
     # Building can take minutes on a large repository: run it off the event loop (build-server guide).
     return await anyio.to_thread.run_sync(lambda: _tool(
         "build_or_update_graph", checked, {"repo_path_sha256": _diff_hash(repo_path)},
         lambda data: {"mode": data["mode"], "graph_version": data["graph_version"],
-                      "changed_files": len(data["changed_files"])}))
+                      "changed_files": len(data["changed_files"]),
+                      "checks_status": data["checks_before_update"]["status"]}))
 
 
 def _trusted_build_host() -> bool:

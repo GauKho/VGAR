@@ -48,3 +48,16 @@ class GraphNotReadyError(GraphError, LookupError):
             f"Graph version is not ready: {graph_version}{hint}",
             details={"graph_version": graph_version},
         )
+
+
+class StaleGraphVersionError(GraphNotReadyError):
+    """A graph_version that was replaced by a later build; keeps the GRAPH_NOT_READY code of unknown versions."""
+
+    def __init__(self, graph_version: str, current: str) -> None:
+        GraphError.__init__(
+            self,
+            f"graph_version {graph_version} is no longer the graph of this repository (each build_or_update_graph "
+            f"replaces it); current: {current}; use the current version and call find_task_anchors again if you "
+            "need anchors",
+            details={"reason": "stale_graph_version", "graph_version": graph_version, "current_graph_version": current},
+        )

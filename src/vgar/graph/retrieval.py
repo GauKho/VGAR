@@ -144,9 +144,11 @@ class GraphContextRetriever:
         count_tokens: Callable[[str], int], counter_label: str,
         config: RetrievalConfig | None = None,
         change_counts: Mapping[str, float] | None = None, history_label: str | None = None,
-        trace: GraphTrace | None = None,
+        trace: GraphTrace | None = None, sources: Mapping[str, bytes] | None = None,
     ) -> None:
         validate_graph_document(document)
+        # The graph's stored source (spec 2026-11-23 §4.1): read instead of the working tree, already hash-checked.
+        self._stored_sources = dict(sources) if sources is not None else None
         self.document = copy.deepcopy(document)
         self.nodes = {node["id"]: node for node in self.document["nodes"]}
         self.root = Path(repository_root).resolve()
@@ -407,7 +409,8 @@ class GraphContextRetriever:
                     dependencies.sort(key=lambda c: (-c["relevance_score"], c["path"], c["symbol"], c["node_id"]))
                     queue.extendleft((dependency, True) for dependency in reversed(dependencies))
             # Detect edits/additions/deletions while token counting/packing was running.
-            self._verify_snapshot()
+            if self._stored_sources is None:
+                self._verify_snapshot()
         result = ContextPayload(graph_version=self.document["graph_version"], anchor_ids=starts,
                                 items=items, total_token_count=total,
                                 token_budget=budget_tokens, truncated=truncated)
@@ -795,7 +798,14 @@ class GraphContextRetriever:
         return max(max(similarity(names, context) for names, context in self._spellings[node_id]),
                    diagnostic_score, focused)
 
+    @property
+    def stored_sources(self) -> dict[str, bytes] | None:
+        """The graph's stored source this retriever reads, or None when it reads the working tree."""
+        return self._stored_sources
+
     def _verify_snapshot(self) -> dict[str, bytes]:
+        if self._stored_sources is not None:
+            return self._stored_sources
         actual = {path.relative_to(self.root).as_posix() for path in discover_python_files(self.root)}
         if actual != set(self.files):
             raise GraphError("Source file set differs from graph snapshot; rebuild graph",

@@ -62,3 +62,21 @@ def materialize_snapshot(sources: Mapping[str, bytes], target: Path, *, worktree
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_bytes(content)
     return target
+
+
+def worktree_changes(sources: Mapping[str, bytes], root: Path) -> list[str]:
+    """Python files of the working tree that differ from the graph's stored source: edited, added or missing.
+
+    Args:
+        sources: Stored source of the graph, keyed by repository-relative path.
+        root: Working tree to compare with.
+
+    Returns:
+        Sorted repository-relative POSIX paths.
+    """
+    from vgar.graph.builder import discover_python_files
+
+    current = {path.relative_to(root).as_posix(): path for path in discover_python_files(root)}
+    changed = {relative for relative, path in current.items()
+               if relative not in sources or path.read_bytes() != sources[relative]}
+    return sorted(changed | (set(sources) - set(current)))

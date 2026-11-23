@@ -3,6 +3,7 @@ from __future__ import annotations
 import hashlib
 import json
 import logging
+import re
 import sqlite3
 from collections.abc import Mapping
 from collections.abc import Iterator
@@ -337,45 +338,50 @@ class SQLiteGraphStore:
             raise InvalidLimitError("limit must be within [1, 100]")
 
         graph_version = self.resolve_graph_version()
-        pattern = f"%{_escape_like(normalized_query)}%"
-        placeholders = ", ".join("?" for _ in SYMBOL_NODE_TYPES)
-
+        terms = _search_terms(normalized_query)
         with self._connect() as connection:
-            rows = connection.execute(
-                f"""
-                SELECT id, name, type, path, qualified_name
-                FROM nodes
-                WHERE graph_version = ?
-                  AND type IN ({placeholders})
-                  AND path IS NOT NULL AND path != ''  -- external modules (e.g. decimal) are not repository symbols
-                  AND (
-                      name LIKE ? ESCAPE '\\' COLLATE NOCASE
-                      OR qualified_name LIKE ? ESCAPE '\\' COLLATE NOCASE
-                      OR path LIKE ? ESCAPE '\\' COLLATE NOCASE
-                  )
-                ORDER BY
-                    CASE
-                        WHEN name = ? COLLATE NOCASE THEN 0
-                        WHEN qualified_name = ? COLLATE NOCASE THEN 1
-                        ELSE 2
-                    END,
-                    qualified_name,
-                    id
-                LIMIT ?
-                """,
-                (
-                    graph_version,
-                    *SYMBOL_NODE_TYPES,
-                    pattern,
-                    pattern,
-                    pattern,
-                    normalized_query,
-                    normalized_query,
-                    limit,
-                ),
-            ).fetchall()
+            if len(terms) == 1:
+                rows = self._symbol_rows(connection, graph_version, terms[0], limit)
+                return [_row_to_symbol(row) for row in rows]
+            # Several names (spec 2026-11-23 §4.4): any term matches; more matched terms rank first.
+            matched: dict[str, int] = {}
+            found: dict[str, Any] = {}
+            for term in terms:
+                for row in self._symbol_rows(connection, graph_version, term, _TERM_CANDIDATES):
+                    found[row["id"]] = row
+                    matched[row["id"]] = matched.get(row["id"], 0) + 1
+        lowered = {term.lower() for term in terms}
+        ranked = sorted(found.values(), key=lambda row: (-matched[row["id"]], row["name"].lower() not in lowered,
+                                                         row["qualified_name"], row["id"]))
+        return [_row_to_symbol(row) for row in ranked[:limit]]
 
-        return [_row_to_symbol(row) for row in rows]
+    def _symbol_rows(self, connection: sqlite3.Connection, graph_version: str, term: str, limit: int) -> list[Any]:
+        pattern = f"%{_escape_like(term)}%"
+        placeholders = ", ".join("?" for _ in SYMBOL_NODE_TYPES)
+        return connection.execute(
+            f"""
+            SELECT id, name, type, path, qualified_name
+            FROM nodes
+            WHERE graph_version = ?
+              AND type IN ({placeholders})
+              AND path IS NOT NULL AND path != ''  -- external modules (e.g. decimal) are not repository symbols
+              AND (
+                  name LIKE ? ESCAPE '\\' COLLATE NOCASE
+                  OR qualified_name LIKE ? ESCAPE '\\' COLLATE NOCASE
+                  OR path LIKE ? ESCAPE '\\' COLLATE NOCASE
+              )
+            ORDER BY
+                CASE
+                    WHEN name = ? COLLATE NOCASE THEN 0
+                    WHEN qualified_name = ? COLLATE NOCASE THEN 1
+                    ELSE 2
+                END,
+                qualified_name,
+                id
+            LIMIT ?
+            """,
+            (graph_version, *SYMBOL_NODE_TYPES, pattern, pattern, pattern, term, term, limit),
+        ).fetchall()
 
     def get_callers(
         self,
@@ -728,6 +734,17 @@ class SQLiteGraphStore:
                 "DELETE FROM graph_metadata WHERE repo_key = ? AND graph_version != ?", (repo_key, keep))
             return cursor.rowcount
 
+    def is_ready(self, graph_version: str) -> bool:
+        """True when ``graph_version`` is a stored, ready snapshot (pruned versions are not).
+
+        Args:
+            graph_version: Snapshot to look up.
+        """
+        self.initialize()
+        with self._connect() as connection:
+            return connection.execute("SELECT 1 FROM graph_metadata WHERE graph_version = ? AND status = 'ready'",
+                                      (graph_version,)).fetchone() is not None
+
     def resolve_graph_version(self) -> str:
         self.initialize()
         with self._connect() as connection:
@@ -854,6 +871,15 @@ def _write_sources(connection: sqlite3.Connection, graph_version: str, sources: 
     connection.execute("DELETE FROM sources WHERE graph_version = ?", (graph_version,))
     connection.executemany("INSERT INTO sources (graph_version, path, content) VALUES (?, ?, ?)",
                            [(graph_version, path, content) for path, content in sources.items()])
+
+
+_TERM_CANDIDATES = 200   # per term before ranking, so a short term on a big repository cannot pull thousands of rows
+
+
+def _search_terms(query: str) -> list[str]:
+    """Names of a search_symbols query (spec 2026-11-23 §4.4); the whole query when no term is long enough."""
+    terms = [term for term in dict.fromkeys(re.split(r"[\s,]+", query)) if len(term) >= 3][:10]
+    return terms or [query]
 
 
 def _escape_like(value: str) -> str:

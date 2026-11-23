@@ -325,7 +325,7 @@ def test_verify_without_changes_is_not_run(served):
 
 def test_analyze_without_changes_says_check_before_rebuilding(served):
     response = graph_server.analyze_patch_impact(graph_version=served[0])
-    assert response["status"] == "ERROR" and "before rebuilding" in response["error"]["message"]
+    assert response["status"] == "ERROR" and "checks_before_update" in response["error"]["message"]
 
 
 def test_verify_follows_new_edits_between_calls(served):
