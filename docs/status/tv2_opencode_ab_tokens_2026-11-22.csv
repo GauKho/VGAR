@@ -1,0 +1,442 @@
+run,session,step,msg_index,time,model,input,cache_read,output,reasoning,tools,vgar_calls
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,B1 hieu repo,5,17:12:13,oc/nemotron-3.5-lightning-free,16596,0,44,231,vgar-graph_build_or_update_graph,1
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,B1 hieu repo,6,17:12:17,oc/nemotron-3.5-lightning-free,4853,12672,41,115,vgar-graph_search_symbols,1
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,B1 hieu repo,7,17:12:23,oc/nemotron-3.5-lightning-free,5877,12672,41,6,vgar-graph_search_symbols,1
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,B1 hieu repo,8,17:12:24,oc/nemotron-3.5-lightning-free,5339,14784,41,6,vgar-graph_search_symbols,1
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,B1 hieu repo,9,17:12:25,oc/nemotron-3.5-lightning-free,6981,14784,277,239,vgar-graph_get_related_context,1
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,B1 hieu repo,10,17:12:29,oc/nemotron-3.5-lightning-free,17691,16896,2111,269,,0
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,B2 ra loi,13,17:12:45,oc/nemotron-3.5-lightning-free,37748,0,142,392,vgar-graph_find_task_anchors,1
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,B2 ra loi,14,17:12:49,oc/nemotron-3.5-lightning-free,5340,33792,41,33,vgar-graph_search_symbols,1
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,B2 ra loi,15,17:12:53,oc/nemotron-3.5-lightning-free,5590,33792,42,21,vgar-graph_search_symbols,1
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,B2 ra loi,16,17:12:54,oc/nemotron-3.5-lightning-free,5830,33792,42,24,vgar-graph_search_symbols,1
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,B2 ra loi,17,17:12:55,oc/nemotron-3.5-lightning-free,6063,33792,155,66,vgar-graph_find_task_anchors,1
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,B2 ra loi,18,17:12:57,oc/nemotron-3.5-lightning-free,6769,33792,41,26,vgar-graph_search_symbols,1
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,B2 ra loi,19,17:12:59,oc/nemotron-3.5-lightning-free,5170,35904,158,18,vgar-graph_get_related_context,1
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,B2 ra loi,20,17:13:00,oc/nemotron-3.5-lightning-free,15823,35904,3095,2229,,0
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 3,23,17:13:38,oc/nemotron-3.5-lightning-free,27696,31680,192,385,vgar-graph_find_task_anchors,1
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 3,24,17:13:43,oc/nemotron-3.5-lightning-free,10867,50688,159,22,vgar-graph_get_related_context,1
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 3,25,17:13:46,oc/nemotron-3.5-lightning-free,14530,52800,252,311,shell,0
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 3,26,17:13:51,oc/nemotron-3.5-lightning-free,7192,61248,222,190,shell,0
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 3,27,17:13:55,oc/nemotron-3.5-lightning-free,7881,61248,224,29,shell,0
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 3,28,17:13:57,oc/nemotron-3.5-lightning-free,8280,61248,61,779,read,0
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 3,29,17:14:03,oc/nemotron-3.5-lightning-free,10168,61248,50,5,glob,0
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 3,30,17:14:05,oc/nemotron-3.5-lightning-free,8192,63360,45,27,read,0
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 3,31,17:14:07,oc/nemotron-3.5-lightning-free,9153,63360,229,56,edit,0
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 3,32,17:14:10,oc/nemotron-3.5-lightning-free,9556,63360,224,10,shell,0
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 3,33,17:14:13,oc/nemotron-3.5-lightning-free,9901,63360,99,175,vgar-graph_analyze_patch_impact,1
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 3,34,17:14:16,oc/nemotron-3.5-lightning-free,11084,65472,24,8,vgar-graph_verify_patch_graph_constraints,1
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 3,35,17:14:20,oc/nemotron-3.5-lightning-free,22299,67584,44,54,vgar-graph_build_or_update_graph,1
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 3,36,17:14:22,oc/nemotron-3.5-lightning-free,3819,86592,1877,195,,0
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 1,39,17:17:49,oc/nemotron-3.5-lightning-free,92717,0,178,196,vgar-graph_find_task_anchors,1
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 1,40,17:17:57,oc/nemotron-3.5-lightning-free,7912,86592,160,58,vgar-graph_get_related_context,1
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 1,41,17:18:00,oc/nemotron-3.5-lightning-free,6216,88704,44,122,vgar-graph_build_or_update_graph,1
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 1,42,17:18:03,oc/nemotron-3.5-lightning-free,4696,90816,162,104,vgar-graph_get_related_context,1
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 1,43,17:18:05,oc/nemotron-3.5-lightning-free,11676,90816,265,221,shell,0
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 1,44,17:18:11,oc/nemotron-3.5-lightning-free,4070,99264,204,436,shell,0
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 1,45,17:18:17,oc/nemotron-3.5-lightning-free,5351,99264,68,47,read,0
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 1,46,17:18:22,oc/nemotron-3.5-lightning-free,6011,99264,123,13,edit,0
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 1,47,17:18:25,oc/nemotron-3.5-lightning-free,4141,101376,204,4,shell,0
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 1,48,17:18:33,oc/nemotron-3.5-lightning-free,4418,101376,101,32,vgar-graph_analyze_patch_impact,1
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 1,49,17:18:35,oc/nemotron-3.5-lightning-free,6553,101376,24,8,vgar-graph_verify_patch_graph_constraints,1
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 1,50,17:18:37,oc/nemotron-3.5-lightning-free,21587,103488,44,4,vgar-graph_build_or_update_graph,1
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 1,51,17:18:41,oc/nemotron-3.5-lightning-free,3109,122496,1391,300,,0
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 2,54,17:21:34,oc/nemotron-3.5-lightning-free,75404,50688,225,231,vgar-graph_find_task_anchors,1
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 2,55,17:21:45,oc/nemotron-3.5-lightning-free,8320,122496,183,58,vgar-graph_get_related_context,1
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 2,56,17:21:49,oc/nemotron-3.5-lightning-free,2392,128832,44,26,vgar-graph_build_or_update_graph,1
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 2,57,17:21:54,oc/nemotron-3.5-lightning-free,2929,128832,181,8,vgar-graph_get_related_context,1
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 2,58,17:21:59,oc/nemotron-3.5-lightning-free,16884,128832,173,148,shell,0
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 2,59,17:22:08,oc/nemotron-3.5-lightning-free,2529,143616,93,1237,edit,0
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 2,60,17:22:23,oc/nemotron-3.5-lightning-free,3885,143616,144,4,shell,0
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 2,61,17:22:27,oc/nemotron-3.5-lightning-free,4119,143616,68,206,read,0
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 2,62,17:22:32,oc/nemotron-3.5-lightning-free,2423,145728,174,180,shell,0
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 2,63,17:22:39,oc/nemotron-3.5-lightning-free,2905,145728,93,359,shell,0
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 2,64,17:22:46,oc/nemotron-3.5-lightning-free,3420,145728,121,49,shell,0
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 2,65,17:22:50,oc/nemotron-3.5-lightning-free,3631,145728,121,359,shell,0
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 2,66,17:22:58,oc/nemotron-3.5-lightning-free,4202,145728,94,17,shell,0
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 2,67,17:23:03,oc/nemotron-3.5-lightning-free,2226,147840,46,629,read,0
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 2,68,17:23:11,oc/nemotron-3.5-lightning-free,3406,147840,45,180,read,0
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 2,69,17:23:17,oc/nemotron-3.5-lightning-free,3886,147840,162,134,shell,0
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 2,70,17:23:22,oc/nemotron-3.5-lightning-free,2143,149952,93,5,shell,0
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 2,71,17:23:26,oc/nemotron-3.5-lightning-free,2280,149952,125,191,shell,0
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 2,72,17:23:39,oc/nemotron-3.5-lightning-free,2680,149952,295,574,shell,0
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 2,73,17:23:47,oc/nemotron-3.5-lightning-free,3616,149952,147,643,edit,0
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 2,74,17:23:55,oc/nemotron-3.5-lightning-free,2320,152064,82,4,shell,0
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 2,75,17:23:58,oc/nemotron-3.5-lightning-free,2553,152064,77,7,shell,0
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 2,76,17:24:00,oc/nemotron-3.5-lightning-free,2686,152064,93,163,shell,0
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 2,77,17:24:04,oc/nemotron-3.5-lightning-free,3072,152064,93,434,edit,0
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 2,78,17:24:10,oc/nemotron-3.5-lightning-free,4040,152064,149,10,edit,0
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 2,79,17:24:13,oc/nemotron-3.5-lightning-free,4312,152064,77,4,shell,0
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 2,80,17:24:16,oc/nemotron-3.5-lightning-free,4480,152064,93,63,shell,0
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 2,81,17:24:19,oc/nemotron-3.5-lightning-free,4789,152064,63,193,shell,0
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 2,82,17:24:22,oc/nemotron-3.5-lightning-free,3265,154176,243,58,edit,0
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 2,83,17:24:30,oc/nemotron-3.5-lightning-free,3679,154176,77,4,shell,0
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 2,84,17:24:33,oc/nemotron-3.5-lightning-free,3867,154176,95,358,edit,0
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 2,85,17:24:44,oc/nemotron-3.5-lightning-free,4692,154176,243,104,edit,0
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 2,86,17:24:48,oc/nemotron-3.5-lightning-free,5245,154176,93,22,edit,0
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 2,87,17:24:50,oc/nemotron-3.5-lightning-free,5469,154176,46,23,read,0
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 2,88,17:24:53,oc/nemotron-3.5-lightning-free,6100,154176,153,166,edit,0
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 2,89,17:24:57,oc/nemotron-3.5-lightning-free,4576,156288,144,5,shell,0
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 2,90,17:25:00,oc/nemotron-3.5-lightning-free,4814,156288,97,66,vgar-graph_analyze_patch_impact,1
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 2,91,17:25:03,oc/nemotron-3.5-lightning-free,7260,156288,24,8,vgar-graph_verify_patch_graph_constraints,1
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 2,93,17:25:05,oc/nemotron-3.5-lightning-free,28008,0,44,499,vgar-graph_build_or_update_graph,1
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 2,94,17:25:10,oc/nemotron-3.5-lightning-free,3691,25344,101,9,vgar-graph_analyze_patch_impact,1
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 2,95,17:25:11,oc/nemotron-3.5-lightning-free,4041,25344,24,31,vgar-graph_verify_patch_graph_constraints,1
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 2,96,17:25:12,oc/nemotron-3.5-lightning-free,4490,25344,1239,86,,0
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 4,99,17:25:24,oc/nemotron-3.5-lightning-free,5524,25344,178,132,vgar-graph_find_task_anchors,1
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 4,100,17:25:27,oc/nemotron-3.5-lightning-free,6238,27456,184,28,vgar-graph_get_related_context,1
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 4,101,17:25:29,oc/nemotron-3.5-lightning-free,2394,31680,44,18,vgar-graph_build_or_update_graph,1
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 4,102,17:25:30,oc/nemotron-3.5-lightning-free,2932,31680,186,12,vgar-graph_get_related_context,1
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 4,103,17:25:31,oc/nemotron-3.5-lightning-free,12149,31680,46,74,read,0
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 4,104,17:25:34,oc/nemotron-3.5-lightning-free,4972,40128,45,169,read,0
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 4,105,17:25:36,oc/nemotron-3.5-lightning-free,3567,42240,226,390,shell,0
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 4,106,17:25:42,oc/nemotron-3.5-lightning-free,2184,44352,206,77,execute,0
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 4,107,17:25:44,oc/nemotron-3.5-lightning-free,2510,44352,234,69,shell,0
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 4,108,17:25:48,oc/nemotron-3.5-lightning-free,2875,44352,269,82,shell,0
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 4,109,17:25:51,oc/nemotron-3.5-lightning-free,3312,44352,251,670,edit,0
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 4,110,17:25:57,oc/nemotron-3.5-lightning-free,2405,46464,248,7,shell,0
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 4,111,17:26:00,oc/nemotron-3.5-lightning-free,2784,46464,44,99,vgar-graph_build_or_update_graph,1
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 4,112,17:26:02,oc/nemotron-3.5-lightning-free,3426,46464,102,12,vgar-graph_analyze_patch_impact,1
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 4,113,17:26:04,oc/nemotron-3.5-lightning-free,3713,46464,24,40,vgar-graph_verify_patch_graph_constraints,1
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 4,114,17:26:05,oc/nemotron-3.5-lightning-free,4102,46464,962,72,,0
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 5,117,17:26:56,oc/nemotron-3.5-lightning-free,24380,27456,167,131,vgar-graph_find_task_anchors,1
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 5,118,17:27:00,oc/nemotron-3.5-lightning-free,8953,46464,191,28,vgar-graph_get_related_context,1
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 5,119,17:27:03,oc/nemotron-3.5-lightning-free,17530,52800,326,63,shell,0
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 5,120,17:27:07,oc/nemotron-3.5-lightning-free,3198,67584,281,6,shell,0
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 5,121,17:27:11,oc/nemotron-3.5-lightning-free,3695,67584,134,583,read,0
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 5,122,17:27:18,oc/nemotron-3.5-lightning-free,2417,69696,284,145,edit,0
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 5,123,17:27:22,oc/nemotron-3.5-lightning-free,2906,69696,281,18,shell,0
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 5,124,17:27:26,oc/nemotron-3.5-lightning-free,3355,69696,44,98,vgar-graph_build_or_update_graph,1
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 5,125,17:27:28,oc/nemotron-3.5-lightning-free,3977,69696,97,12,vgar-graph_analyze_patch_impact,1
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 5,126,17:27:30,oc/nemotron-3.5-lightning-free,4263,69696,24,8,vgar-graph_verify_patch_graph_constraints,1
+A_vgar,ses_dfd43685cffeFV963UwPkyBtdS,Loi 5,127,17:27:32,oc/nemotron-3.5-lightning-free,2575,71808,1078,250,,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,B1 hieu repo,2,17:40:59,oc/nemotron-3.5-lightning-free,13643,0,37,65,read,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,B1 hieu repo,3,17:41:01,oc/nemotron-3.5-lightning-free,5477,8448,40,22,read,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,B1 hieu repo,4,17:41:02,oc/nemotron-3.5-lightning-free,5677,8448,199,27,read read read read read,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,B1 hieu repo,5,17:41:05,oc/nemotron-3.5-lightning-free,6330,8448,130,30,read read read,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,B1 hieu repo,6,17:41:07,oc/nemotron-3.5-lightning-free,6367,10560,129,17,read read read,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,B1 hieu repo,7,17:41:08,oc/nemotron-3.5-lightning-free,5711,12672,181,7,read read read read,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,B1 hieu repo,8,17:41:10,oc/nemotron-3.5-lightning-free,7157,12672,301,15,read read read read read read read,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,B1 hieu repo,9,17:41:12,oc/nemotron-3.5-lightning-free,8901,14784,210,15,read read read read read,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,B1 hieu repo,10,17:41:16,oc/nemotron-3.5-lightning-free,6010,19008,45,10,read,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,B1 hieu repo,11,17:41:17,oc/nemotron-3.5-lightning-free,4173,21120,1338,1461,,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,B2 ra loi,14,17:42:42,oc/nemotron-3.5-lightning-free,29825,0,1973,12029,,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 3,17,17:44:44,oc/nemotron-3.5-lightning-free,32243,23232,598,194,execute,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 3,18,17:44:50,oc/nemotron-3.5-lightning-free,31121,25344,532,22,shell,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 3,19,17:44:55,oc/nemotron-3.5-lightning-free,31757,25344,534,9,write,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 3,20,17:44:58,oc/nemotron-3.5-lightning-free,30212,27456,46,7,shell,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 3,21,17:45:02,oc/nemotron-3.5-lightning-free,30430,27456,52,20,shell,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 3,22,17:45:03,oc/nemotron-3.5-lightning-free,30835,27456,525,491,write,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 3,23,17:45:11,oc/nemotron-3.5-lightning-free,32449,27456,53,14,shell,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 3,24,17:45:13,oc/nemotron-3.5-lightning-free,32703,27456,458,15,write,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 3,25,17:45:16,oc/nemotron-3.5-lightning-free,31161,29568,53,6,shell,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 3,26,17:45:18,oc/nemotron-3.5-lightning-free,31452,29568,567,595,write,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 3,27,17:45:25,oc/nemotron-3.5-lightning-free,30967,31680,53,20,shell,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 3,28,17:45:27,oc/nemotron-3.5-lightning-free,31454,31680,217,1329,read,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 3,29,17:45:38,oc/nemotron-3.5-lightning-free,32993,33792,229,539,edit,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 3,30,17:45:43,oc/nemotron-3.5-lightning-free,34332,33792,58,13,shell,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 3,31,17:45:44,oc/nemotron-3.5-lightning-free,34627,33792,67,72,shell,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 3,32,17:45:47,oc/nemotron-3.5-lightning-free,32936,35904,69,78,shell,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 3,33,17:45:49,oc/nemotron-3.5-lightning-free,33505,35904,139,177,shell,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 3,34,17:45:52,oc/nemotron-3.5-lightning-free,34195,35904,62,30,shell,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 3,35,17:45:57,oc/nemotron-3.5-lightning-free,34493,35904,62,23,shell,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 3,36,17:46:00,oc/nemotron-3.5-lightning-free,32663,38016,66,15,shell,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 3,37,17:46:04,oc/nemotron-3.5-lightning-free,32957,38016,63,48,shell,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 3,38,17:46:07,oc/nemotron-3.5-lightning-free,33293,38016,64,24,shell,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 3,39,17:46:09,oc/nemotron-3.5-lightning-free,33578,38016,49,82,shell,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 3,40,17:46:11,oc/nemotron-3.5-lightning-free,33990,38016,52,17,shell,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 3,41,17:46:13,oc/nemotron-3.5-lightning-free,34142,38016,60,12,shell,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 3,42,17:46:15,oc/nemotron-3.5-lightning-free,34362,38016,53,13,shell,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 3,43,17:46:17,oc/nemotron-3.5-lightning-free,34504,38016,53,0,shell,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 3,44,17:46:19,oc/nemotron-3.5-lightning-free,34593,38016,49,19,shell,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 3,45,17:46:21,oc/nemotron-3.5-lightning-free,34820,38016,521,18,shell,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 3,46,17:46:25,oc/nemotron-3.5-lightning-free,33428,40128,711,12,write,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 3,47,17:46:30,oc/nemotron-3.5-lightning-free,34309,40128,225,97,shell,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 3,48,17:46:34,oc/nemotron-3.5-lightning-free,34966,40128,54,44,shell,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 3,49,17:46:36,oc/nemotron-3.5-lightning-free,35351,40128,64,35,shell,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 3,50,17:46:38,oc/nemotron-3.5-lightning-free,35662,40128,49,16,shell,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 3,51,17:46:39,oc/nemotron-3.5-lightning-free,33776,42240,445,24,shell,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 3,52,17:46:44,oc/nemotron-3.5-lightning-free,34327,42240,78,15,,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 1,55,17:46:56,oc/nemotron-3.5-lightning-free,51531,25344,589,604,write,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 1,56,17:47:04,oc/nemotron-3.5-lightning-free,38503,40128,55,10,shell,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 1,57,17:47:06,oc/nemotron-3.5-lightning-free,38668,40128,356,35,shell,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 1,58,17:47:09,oc/nemotron-3.5-lightning-free,39192,40128,193,814,read read,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 1,59,17:47:17,oc/nemotron-3.5-lightning-free,42373,40128,126,577,edit,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 1,60,17:47:22,oc/nemotron-3.5-lightning-free,41638,42240,156,20,edit,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 1,61,17:47:25,oc/nemotron-3.5-lightning-free,41932,42240,425,11,shell,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 1,62,17:47:29,oc/nemotron-3.5-lightning-free,40354,44352,484,968,shell,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 1,63,17:47:42,oc/nemotron-3.5-lightning-free,42872,44352,62,135,shell,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 1,64,17:47:45,oc/nemotron-3.5-lightning-free,41467,46464,759,96,shell,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 1,65,17:47:52,oc/nemotron-3.5-lightning-free,42703,46464,711,133,shell,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 1,66,17:47:58,oc/nemotron-3.5-lightning-free,41703,48576,175,161,shell,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 1,67,17:48:02,oc/nemotron-3.5-lightning-free,42489,48576,57,164,shell,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 1,68,17:48:05,oc/nemotron-3.5-lightning-free,43022,48576,49,31,shell,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 1,69,17:48:08,oc/nemotron-3.5-lightning-free,43334,48576,55,17,shell,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 1,70,17:48:11,oc/nemotron-3.5-lightning-free,41374,50688,49,16,shell,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 1,71,17:48:13,oc/nemotron-3.5-lightning-free,41619,50688,558,17,,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 2,74,17:49:02,oc/nemotron-3.5-lightning-free,55062,38016,457,722,write,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 2,75,17:49:11,oc/nemotron-3.5-lightning-free,46006,48576,53,11,shell,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 2,76,17:49:13,oc/nemotron-3.5-lightning-free,46238,48576,573,530,write,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 2,77,17:49:22,oc/nemotron-3.5-lightning-free,47653,48576,54,13,shell,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 2,78,17:49:24,oc/nemotron-3.5-lightning-free,47924,48576,74,77,read,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 2,79,17:49:27,oc/nemotron-3.5-lightning-free,46255,50688,46,200,read,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 2,80,17:49:30,oc/nemotron-3.5-lightning-free,47174,50688,441,507,shell,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 2,81,17:49:36,oc/nemotron-3.5-lightning-free,46338,52800,389,547,edit,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 2,82,17:49:47,oc/nemotron-3.5-lightning-free,47583,52800,59,8,shell,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 2,83,17:49:51,oc/nemotron-3.5-lightning-free,47813,52800,726,242,shell,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 2,84,17:49:59,oc/nemotron-3.5-lightning-free,46669,54912,881,11,shell,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 2,85,17:50:07,oc/nemotron-3.5-lightning-free,47358,54912,555,23,shell,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 2,86,17:50:11,oc/nemotron-3.5-lightning-free,47962,54912,627,17,write,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 2,87,17:50:16,oc/nemotron-3.5-lightning-free,46455,57024,52,8,shell,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 2,88,17:50:17,oc/nemotron-3.5-lightning-free,46715,57024,513,1249,shell,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 2,89,17:50:29,oc/nemotron-3.5-lightning-free,47210,59136,123,571,read,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 2,90,17:50:36,oc/nemotron-3.5-lightning-free,48641,59136,132,634,edit,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 2,91,17:50:48,oc/nemotron-3.5-lightning-free,47976,61248,102,19,edit,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 2,92,17:50:50,oc/nemotron-3.5-lightning-free,48187,61248,58,14,shell,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 2,93,17:50:55,oc/nemotron-3.5-lightning-free,48469,61248,188,223,shell,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 2,94,17:50:59,oc/nemotron-3.5-lightning-free,49009,61248,314,255,shell,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 2,95,17:51:04,oc/nemotron-3.5-lightning-free,49820,61248,313,19,write,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 2,96,17:51:07,oc/nemotron-3.5-lightning-free,48112,63360,51,7,shell,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 2,97,17:51:09,oc/nemotron-3.5-lightning-free,48316,63360,1022,116,write,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 2,98,17:51:16,oc/nemotron-3.5-lightning-free,49316,63360,52,7,shell,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 2,99,17:51:18,oc/nemotron-3.5-lightning-free,49537,63360,129,19,edit,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 2,100,17:51:20,oc/nemotron-3.5-lightning-free,49829,63360,950,9,write,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 2,101,17:51:27,oc/nemotron-3.5-lightning-free,48493,65472,52,8,shell,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 2,102,17:51:28,oc/nemotron-3.5-lightning-free,48633,65472,50,47,shell,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 2,103,17:51:30,oc/nemotron-3.5-lightning-free,48945,65472,52,10,shell,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 2,104,17:51:33,oc/nemotron-3.5-lightning-free,49089,65472,49,80,shell,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 2,105,17:51:35,oc/nemotron-3.5-lightning-free,49821,65472,292,100,shell,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 2,106,17:51:39,oc/nemotron-3.5-lightning-free,48265,67584,118,26,shell,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 2,107,17:51:41,oc/nemotron-3.5-lightning-free,48490,67584,139,31,shell,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 2,108,17:51:43,oc/nemotron-3.5-lightning-free,48766,67584,126,30,shell,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 2,109,17:51:46,oc/nemotron-3.5-lightning-free,48992,67584,88,35,shell,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 2,110,17:51:48,oc/nemotron-3.5-lightning-free,49337,67584,49,16,shell,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 2,111,17:51:52,oc/nemotron-3.5-lightning-free,49528,67584,690,18,shell,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 2,112,17:51:57,oc/nemotron-3.5-lightning-free,50280,67584,344,12,shell,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 2,113,17:52:01,oc/nemotron-3.5-lightning-free,48568,69696,486,12,shell,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 2,114,17:52:05,oc/nemotron-3.5-lightning-free,49111,69696,65,14,,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 4,117,17:52:11,oc/nemotron-3.5-lightning-free,72632,46464,523,952,write,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 4,118,17:52:44,oc/nemotron-3.5-lightning-free,56128,65472,54,10,shell,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 4,119,17:52:47,oc/nemotron-3.5-lightning-free,56403,65472,130,1054,read,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 4,120,17:52:56,oc/nemotron-3.5-lightning-free,59236,65472,137,888,edit,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 4,121,17:53:07,oc/nemotron-3.5-lightning-free,59226,67584,45,7,read,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 4,122,17:53:09,oc/nemotron-3.5-lightning-free,59828,67584,95,28,edit,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 4,123,17:53:15,oc/nemotron-3.5-lightning-free,60069,67584,60,12,shell,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 4,124,17:53:20,oc/nemotron-3.5-lightning-free,60353,67584,62,164,shell,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 4,125,17:53:25,oc/nemotron-3.5-lightning-free,59193,69696,70,161,shell,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 4,126,17:53:28,oc/nemotron-3.5-lightning-free,59662,69696,746,16,shell,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 4,127,17:53:35,oc/nemotron-3.5-lightning-free,60426,69696,713,21,write,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 4,128,17:53:41,oc/nemotron-3.5-lightning-free,59012,71808,52,7,shell,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 4,129,17:53:42,oc/nemotron-3.5-lightning-free,59151,71808,46,73,shell,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 4,130,17:53:48,oc/nemotron-3.5-lightning-free,59520,71808,52,10,shell,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 4,131,17:53:49,oc/nemotron-3.5-lightning-free,59664,71808,61,77,shell,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 4,132,17:53:52,oc/nemotron-3.5-lightning-free,60087,71808,59,14,shell,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 4,133,17:53:54,oc/nemotron-3.5-lightning-free,60331,71808,56,25,shell,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 4,134,17:53:57,oc/nemotron-3.5-lightning-free,60544,71808,57,22,shell,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 4,135,17:53:59,oc/nemotron-3.5-lightning-free,60753,71808,63,26,shell,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 4,136,17:54:03,oc/nemotron-3.5-lightning-free,61061,71808,60,126,shell,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 4,137,17:54:06,oc/nemotron-3.5-lightning-free,59398,73920,52,20,shell,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 4,138,17:54:08,oc/nemotron-3.5-lightning-free,59556,73920,696,13,,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 5,141,17:54:21,oc/nemotron-3.5-lightning-free,70914,63360,368,265,write,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 5,142,17:54:28,oc/nemotron-3.5-lightning-free,65610,69696,54,10,shell,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 5,143,17:54:30,oc/nemotron-3.5-lightning-free,63729,71808,55,526,shell,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 5,144,17:54:38,oc/nemotron-3.5-lightning-free,64935,71808,149,1318,shell,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 5,145,17:54:51,oc/nemotron-3.5-lightning-free,66194,73920,54,23,shell,0
+B_nomcp,ses_dfd27b638ffeBCFHSUuuR386e8,Loi 5,146,17:54:54,oc/nemotron-3.5-lightning-free,66363,73920,577,16,,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,B1 hieu repo,1,00:42:44,oc/nemotron-3.5-lightning-free,13603,0,37,82,read,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,B1 hieu repo,2,00:42:46,oc/nemotron-3.5-lightning-free,5488,8448,40,8,read,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,B1 hieu repo,3,00:42:46,oc/nemotron-3.5-lightning-free,5658,8448,199,56,read read read read read,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,B1 hieu repo,4,00:42:49,oc/nemotron-3.5-lightning-free,6352,8448,166,29,read read read read,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,B1 hieu repo,5,00:42:50,oc/nemotron-3.5-lightning-free,6844,10560,224,18,read read read read read,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,B1 hieu repo,6,00:42:52,oc/nemotron-3.5-lightning-free,7355,12672,173,27,read read read read,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,B1 hieu repo,7,00:42:53,oc/nemotron-3.5-lightning-free,7144,14784,129,13,read read read,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,B1 hieu repo,8,00:42:55,oc/nemotron-3.5-lightning-free,6468,16896,172,15,read read read read,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,B1 hieu repo,9,00:42:57,oc/nemotron-3.5-lightning-free,5474,19008,45,9,read,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,B1 hieu repo,10,00:43:02,oc/nemotron-3.5-lightning-free,5747,19008,1656,1212,,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,B2 ra loi,13,00:43:35,oc/nemotron-3.5-lightning-free,29165,0,1568,2991,,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,Loi 3,16,00:45:23,oc/nemotron-3.5-lightning-free,16007,21120,377,254,execute,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,Loi 3,17,00:45:27,oc/nemotron-3.5-lightning-free,14836,23232,331,140,shell,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,Loi 3,18,00:45:31,oc/nemotron-3.5-lightning-free,13831,25344,327,36,write,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,Loi 3,19,00:45:33,oc/nemotron-3.5-lightning-free,14261,25344,44,5,shell,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,Loi 3,20,00:45:35,oc/nemotron-3.5-lightning-free,14470,25344,50,36,shell,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,Loi 3,21,00:45:38,oc/nemotron-3.5-lightning-free,14723,25344,310,1030,write,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,Loi 3,22,00:45:46,oc/nemotron-3.5-lightning-free,15048,27456,51,3,shell,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,Loi 3,23,00:45:48,oc/nemotron-3.5-lightning-free,15254,27456,722,130,write,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,Loi 3,24,00:45:54,oc/nemotron-3.5-lightning-free,16416,27456,51,3,shell,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,Loi 3,25,00:45:55,oc/nemotron-3.5-lightning-free,16828,27456,271,1124,edit,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,Loi 3,26,00:46:20,oc/nemotron-3.5-lightning-free,17508,29568,50,13,shell,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,Loi 3,27,00:46:21,oc/nemotron-3.5-lightning-free,17699,29568,49,126,shell,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,Loi 3,28,00:46:23,oc/nemotron-3.5-lightning-free,16060,31680,62,12,grep,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,Loi 3,29,00:46:26,oc/nemotron-3.5-lightning-free,16260,31680,1027,569,,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,Loi 1,32,00:47:47,oc/nemotron-3.5-lightning-free,27052,23232,231,751,write,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,Loi 1,33,00:47:53,oc/nemotron-3.5-lightning-free,22718,29568,52,4,shell,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,Loi 1,34,00:48:00,oc/nemotron-3.5-lightning-free,22863,29568,207,535,edit,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,Loi 1,35,00:48:05,oc/nemotron-3.5-lightning-free,22224,31680,276,12,edit,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,Loi 1,36,00:48:07,oc/nemotron-3.5-lightning-free,22677,31680,52,11,shell,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,Loi 1,37,00:48:09,oc/nemotron-3.5-lightning-free,22844,31680,231,385,write,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,Loi 1,38,00:48:13,oc/nemotron-3.5-lightning-free,23997,31680,53,4,shell,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,Loi 1,39,00:48:14,oc/nemotron-3.5-lightning-free,24146,31680,220,94,write,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,Loi 1,40,00:48:17,oc/nemotron-3.5-lightning-free,22536,33792,53,3,shell,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,Loi 1,41,00:48:19,oc/nemotron-3.5-lightning-free,22680,33792,49,114,shell,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,Loi 1,42,00:48:20,oc/nemotron-3.5-lightning-free,23357,33792,1317,194,,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,Loi 2,45,00:52:47,oc/nemotron-3.5-lightning-free,29501,29568,45,1346,read,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,Loi 2,46,00:52:57,oc/nemotron-3.5-lightning-free,28213,33792,46,10,read,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,Loi 2,47,00:53:00,oc/nemotron-3.5-lightning-free,26665,35904,239,326,write,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,Loi 2,48,00:53:06,oc/nemotron-3.5-lightning-free,27653,35904,52,4,shell,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,Loi 2,49,00:53:09,oc/nemotron-3.5-lightning-free,27809,35904,440,44,write,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,Loi 2,50,00:53:14,oc/nemotron-3.5-lightning-free,28378,35904,53,5,shell,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,Loi 2,51,00:53:18,oc/nemotron-3.5-lightning-free,28633,35904,257,4,write,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,Loi 2,52,00:53:22,oc/nemotron-3.5-lightning-free,26854,38016,53,2,shell,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,Loi 2,53,00:53:24,oc/nemotron-3.5-lightning-free,27049,38016,188,3,edit,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,Loi 2,54,00:53:27,oc/nemotron-3.5-lightning-free,27340,38016,53,2,shell,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,Loi 2,55,00:53:30,oc/nemotron-3.5-lightning-free,27520,38016,247,595,write,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,Loi 2,56,00:53:38,oc/nemotron-3.5-lightning-free,28719,38016,53,2,shell,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,Loi 2,57,00:53:41,oc/nemotron-3.5-lightning-free,28873,38016,288,70,write,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,Loi 2,58,00:53:44,oc/nemotron-3.5-lightning-free,27267,40128,53,2,shell,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,Loi 2,59,00:53:47,oc/nemotron-3.5-lightning-free,27404,40128,288,291,write,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,Loi 2,60,00:53:53,oc/nemotron-3.5-lightning-free,28361,40128,53,2,shell,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,Loi 2,61,00:53:55,oc/nemotron-3.5-lightning-free,28501,40128,255,53,write,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,Loi 2,62,00:53:59,oc/nemotron-3.5-lightning-free,28936,40128,53,2,shell,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,Loi 2,63,00:54:03,oc/nemotron-3.5-lightning-free,29095,40128,53,370,grep,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,Loi 2,64,00:54:10,oc/nemotron-3.5-lightning-free,29965,40128,422,35,write,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,Loi 2,65,00:54:16,oc/nemotron-3.5-lightning-free,28431,42240,53,2,shell,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,Loi 2,66,00:54:18,oc/nemotron-3.5-lightning-free,28642,42240,378,6,write,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,Loi 2,67,00:54:22,oc/nemotron-3.5-lightning-free,29113,42240,53,2,shell,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,Loi 2,68,00:54:24,oc/nemotron-3.5-lightning-free,29237,42240,346,437,write,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,Loi 2,69,00:54:32,oc/nemotron-3.5-lightning-free,30621,42240,53,2,shell,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,Loi 2,70,00:54:34,oc/nemotron-3.5-lightning-free,30774,42240,116,84,shell,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,Loi 2,71,00:54:39,oc/nemotron-3.5-lightning-free,31103,42240,182,1280,shell,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,Loi 2,72,00:54:48,oc/nemotron-3.5-lightning-free,31582,44352,282,38,edit,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,Loi 2,73,00:54:54,oc/nemotron-3.5-lightning-free,32037,44352,61,9,shell,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,Loi 2,74,00:54:57,oc/nemotron-3.5-lightning-free,32222,44352,85,38,shell,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,Loi 2,75,00:55:01,oc/nemotron-3.5-lightning-free,32826,44352,65,78,grep,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,Loi 2,76,00:55:26,oc/nemotron-3.5-lightning-free,31100,46464,125,109,shell,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,Loi 2,77,00:55:29,oc/nemotron-3.5-lightning-free,31668,46464,111,27,shell,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,Loi 2,78,00:55:33,oc/nemotron-3.5-lightning-free,32005,46464,161,16,execute,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,Loi 2,79,00:55:37,oc/nemotron-3.5-lightning-free,32270,46464,357,40,shell,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,Loi 2,80,00:55:41,oc/nemotron-3.5-lightning-free,32857,46464,915,87,,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,Loi 4,83,00:56:36,oc/nemotron-3.5-lightning-free,51032,29568,215,184,read read read read read,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,Loi 4,84,00:56:42,oc/nemotron-3.5-lightning-free,40013,44352,384,680,write,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,Loi 4,85,00:56:52,oc/nemotron-3.5-lightning-free,37704,48576,52,4,shell,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,Loi 4,86,00:56:55,oc/nemotron-3.5-lightning-free,37957,48576,236,363,edit,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,Loi 4,87,00:57:01,oc/nemotron-3.5-lightning-free,39180,48576,315,77,edit,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,Loi 4,88,00:57:05,oc/nemotron-3.5-lightning-free,39810,48576,52,5,shell,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,Loi 4,89,00:57:08,oc/nemotron-3.5-lightning-free,40000,48576,49,29,shell,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,Loi 4,90,00:57:11,oc/nemotron-3.5-lightning-free,38654,50688,52,226,grep,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,Loi 4,91,00:57:16,oc/nemotron-3.5-lightning-free,39358,50688,1344,68,,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,Loi 5,94,00:57:35,oc/nemotron-3.5-lightning-free,47431,44352,241,385,shell,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,Loi 5,95,00:57:41,oc/nemotron-3.5-lightning-free,42268,50688,90,75,edit,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,Loi 5,96,00:57:45,oc/nemotron-3.5-lightning-free,42548,50688,207,4,shell,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,Loi 5,97,00:57:49,oc/nemotron-3.5-lightning-free,40771,52800,49,13,shell,0
+B_nomcp_en,ses_dfba595caffey06mzR1csvCWLG,Loi 5,98,00:57:54,oc/nemotron-3.5-lightning-free,41563,52800,491,322,,0
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,B1 hieu repo,2,01:08:09,oc/nemotron-3.5-lightning-free,16597,0,44,439,vgar-graph_build_or_update_graph,1
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,B1 hieu repo,3,01:08:12,oc/nemotron-3.5-lightning-free,5163,12672,45,125,vgar-graph_search_symbols,1
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,B1 hieu repo,4,01:08:14,oc/nemotron-3.5-lightning-free,5640,12672,41,52,vgar-graph_search_symbols,1
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,B1 hieu repo,5,01:08:15,oc/nemotron-3.5-lightning-free,7991,12672,69,218,vgar-graph_get_callees,1
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,B1 hieu repo,6,01:08:17,oc/nemotron-3.5-lightning-free,7082,14784,67,66,vgar-graph_get_callees,1
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,B1 hieu repo,7,01:08:19,oc/nemotron-3.5-lightning-free,7624,16896,66,23,vgar-graph_get_callers,1
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,B1 hieu repo,8,01:08:20,oc/nemotron-3.5-lightning-free,5903,19008,70,256,vgar-graph_get_callees,1
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,B1 hieu repo,9,01:08:21,oc/nemotron-3.5-lightning-free,6687,19008,71,47,vgar-graph_get_callees,1
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,B1 hieu repo,10,01:08:23,oc/nemotron-3.5-lightning-free,4925,21120,1283,839,,0
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,B2 ra loi,13,01:08:55,oc/nemotron-3.5-lightning-free,16845,12672,51,187,glob,0
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,B2 ra loi,14,01:08:57,oc/nemotron-3.5-lightning-free,9127,21120,43,23,read,0
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,B2 ra loi,15,01:08:59,oc/nemotron-3.5-lightning-free,9481,21120,45,4,read,0
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,B2 ra loi,16,01:09:00,oc/nemotron-3.5-lightning-free,10394,21120,45,5,read,0
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,B2 ra loi,17,01:09:01,oc/nemotron-3.5-lightning-free,8550,23232,45,5,read,0
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,B2 ra loi,18,01:09:02,oc/nemotron-3.5-lightning-free,8891,23232,43,4,read,0
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,B2 ra loi,19,01:09:03,oc/nemotron-3.5-lightning-free,9236,23232,48,4,read,0
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,B2 ra loi,20,01:09:04,oc/nemotron-3.5-lightning-free,9545,23232,46,4,read,0
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,B2 ra loi,21,01:09:06,oc/nemotron-3.5-lightning-free,10163,23232,46,4,read,0
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,B2 ra loi,22,01:09:10,oc/nemotron-3.5-lightning-free,8600,25344,45,4,read,0
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,B2 ra loi,23,01:09:11,oc/nemotron-3.5-lightning-free,8992,25344,45,4,read,0
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,B2 ra loi,24,01:09:12,oc/nemotron-3.5-lightning-free,9307,25344,46,3,read,0
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,B2 ra loi,25,01:09:13,oc/nemotron-3.5-lightning-free,9847,25344,45,34,read,0
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,B2 ra loi,26,01:09:14,oc/nemotron-3.5-lightning-free,8398,27456,46,6,read,0
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,B2 ra loi,27,01:09:15,oc/nemotron-3.5-lightning-free,8793,27456,45,5,read,0
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,B2 ra loi,28,01:09:16,oc/nemotron-3.5-lightning-free,9059,27456,45,4,read,0
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,B2 ra loi,29,01:09:17,oc/nemotron-3.5-lightning-free,9322,27456,46,6,read,0
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,B2 ra loi,30,01:09:18,oc/nemotron-3.5-lightning-free,10523,27456,48,5,read,0
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,B2 ra loi,31,01:09:20,oc/nemotron-3.5-lightning-free,8714,29568,48,5,read,0
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,B2 ra loi,32,01:09:21,oc/nemotron-3.5-lightning-free,9073,29568,136,450,vgar-graph_find_task_anchors,1
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,B2 ra loi,33,01:09:25,oc/nemotron-3.5-lightning-free,10628,29568,42,25,vgar-graph_search_symbols,1
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,B2 ra loi,34,01:09:26,oc/nemotron-3.5-lightning-free,8759,31680,46,1400,read,0
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,B2 ra loi,35,01:09:33,oc/nemotron-3.5-lightning-free,10707,33792,2284,870,,0
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,Loi 3,38,01:10:04,oc/nemotron-3.5-lightning-free,27538,21120,182,219,vgar-graph_find_task_anchors,1
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,Loi 3,39,01:10:08,oc/nemotron-3.5-lightning-free,16671,33792,158,34,vgar-graph_get_related_context,1
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,Loi 3,40,01:10:10,oc/nemotron-3.5-lightning-free,20359,35904,43,105,read,0
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,Loi 3,41,01:10:13,oc/nemotron-3.5-lightning-free,12979,44352,369,342,shell,0
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,Loi 3,42,01:10:17,oc/nemotron-3.5-lightning-free,14114,44352,351,46,execute,0
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,Loi 3,43,01:10:21,oc/nemotron-3.5-lightning-free,12474,46464,361,52,shell,0
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,Loi 3,44,01:11:03,oc/nemotron-3.5-lightning-free,13382,46464,377,39,write,0
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,Loi 3,45,01:11:07,oc/nemotron-3.5-lightning-free,13835,46464,46,5,shell,0
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,Loi 3,46,01:11:09,oc/nemotron-3.5-lightning-free,14046,46464,29,58,shell,0
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,Loi 3,47,01:11:11,oc/nemotron-3.5-lightning-free,14382,46464,317,1050,edit,0
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,Loi 3,48,01:11:19,oc/nemotron-3.5-lightning-free,14694,48576,29,9,shell,0
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,Loi 3,49,01:11:22,oc/nemotron-3.5-lightning-free,14901,48576,132,125,vgar-graph_analyze_patch_impact,1
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,Loi 3,50,01:11:24,oc/nemotron-3.5-lightning-free,18107,48576,32,11,vgar-graph_verify_patch_graph_constraints,1
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,Loi 3,51,01:11:27,oc/nemotron-3.5-lightning-free,27226,52800,44,17,vgar-graph_build_or_update_graph,1
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,Loi 3,52,01:11:29,oc/nemotron-3.5-lightning-free,8678,71808,989,267,,0
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,Loi 1,55,01:12:21,oc/nemotron-3.5-lightning-free,82303,0,180,212,vgar-graph_find_task_anchors,1
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,Loi 1,56,01:12:26,oc/nemotron-3.5-lightning-free,13083,71808,187,305,vgar-graph_get_related_context,1
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,Loi 1,57,01:12:31,oc/nemotron-3.5-lightning-free,9933,76032,44,117,vgar-graph_build_or_update_graph,1
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,Loi 1,58,01:12:35,oc/nemotron-3.5-lightning-free,10607,76032,184,41,vgar-graph_get_related_context,1
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,Loi 1,59,01:12:37,oc/nemotron-3.5-lightning-free,21994,76032,260,260,shell,0
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,Loi 1,60,01:12:47,oc/nemotron-3.5-lightning-free,10184,88704,226,783,edit,0
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,Loi 1,61,01:12:54,oc/nemotron-3.5-lightning-free,10118,90816,324,20,edit,0
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,Loi 1,62,01:12:58,oc/nemotron-3.5-lightning-free,10653,90816,254,8,shell,0
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,Loi 1,63,01:13:01,oc/nemotron-3.5-lightning-free,10993,90816,139,117,vgar-graph_analyze_patch_impact,1
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,Loi 1,64,01:13:05,oc/nemotron-3.5-lightning-free,14236,90816,32,8,vgar-graph_verify_patch_graph_constraints,1
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,Loi 1,65,01:13:08,oc/nemotron-3.5-lightning-free,23939,95040,47,65,vgar-graph_build_or_update_graph,1
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,Loi 1,66,01:13:12,oc/nemotron-3.5-lightning-free,5512,114048,1299,315,,0
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,Loi 2,69,01:15:00,oc/nemotron-3.5-lightning-free,28867,92928,196,385,vgar-graph_find_task_anchors,1
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,Loi 2,70,01:15:07,oc/nemotron-3.5-lightning-free,10360,114048,153,130,vgar-graph_get_related_context,1
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,Loi 2,71,01:15:10,oc/nemotron-3.5-lightning-free,13283,118272,326,371,shell,0
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,Loi 2,72,01:15:16,oc/nemotron-3.5-lightning-free,5813,126720,107,260,edit,0
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,Loi 2,73,01:15:22,oc/nemotron-3.5-lightning-free,6526,126720,233,5,shell,0
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,Loi 2,74,01:15:24,oc/nemotron-3.5-lightning-free,6878,126720,264,301,shell,0
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,Loi 2,75,01:15:31,oc/nemotron-3.5-lightning-free,7749,126720,276,733,shell,0
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,Loi 2,76,01:15:40,oc/nemotron-3.5-lightning-free,7328,128832,108,204,edit,0
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,Loi 2,77,01:15:43,oc/nemotron-3.5-lightning-free,8007,128832,233,5,shell,0
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,Loi 2,78,01:15:46,oc/nemotron-3.5-lightning-free,8359,128832,135,65,vgar-graph_analyze_patch_impact,1
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,Loi 2,79,01:15:48,oc/nemotron-3.5-lightning-free,10819,128832,32,8,vgar-graph_verify_patch_graph_constraints,1
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,Loi 2,80,01:15:50,oc/nemotron-3.5-lightning-free,21101,133056,44,4,vgar-graph_build_or_update_graph,1
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,Loi 2,81,01:15:55,oc/nemotron-3.5-lightning-free,2615,152064,1385,433,,0
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,Loi 4 (bi dung),84,01:16:08,oc/nemotron-3.5-lightning-free,41794,114048,178,906,vgar-graph_find_task_anchors,1
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,Loi 5 (bi dung),86,01:16:24,oc/nemotron-3.5-lightning-free,10237,149952,141,251,vgar-graph_find_task_anchors,1
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,Loi 5 (bi dung),87,01:16:27,oc/nemotron-3.5-lightning-free,7661,154176,46,33,vgar-graph_search_symbols,1
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,Loi 4,91,01:16:37,oc/nemotron-3.5-lightning-free,8251,154176,308,2952,shell,0
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,Loi 4,92,01:16:58,oc/nemotron-3.5-lightning-free,10851,158400,365,16,shell,0
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,Loi 4,93,01:17:03,oc/nemotron-3.5-lightning-free,9242,160512,332,441,edit,0
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,Loi 4,95,01:17:09,oc/nemotron-3.5-lightning-free,28093,0,141,332,vgar-graph_find_task_anchors,1
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,Loi 4,96,01:17:14,oc/nemotron-3.5-lightning-free,4771,25344,44,49,vgar-graph_search_symbols,1
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,Loi 4,97,01:17:15,oc/nemotron-3.5-lightning-free,2889,27456,41,24,vgar-graph_search_symbols,1
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,Loi 4,98,01:17:17,oc/nemotron-3.5-lightning-free,3222,27456,42,134,vgar-graph_search_symbols,1
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,Loi 4,99,01:17:19,oc/nemotron-3.5-lightning-free,3596,27456,184,32,vgar-graph_get_related_context,1
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,Loi 4,100,01:17:21,oc/nemotron-3.5-lightning-free,3979,27456,44,20,vgar-graph_build_or_update_graph,1
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,Loi 4,101,01:17:23,oc/nemotron-3.5-lightning-free,4515,27456,179,111,vgar-graph_get_related_context,1
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,Loi 4,102,01:17:26,oc/nemotron-3.5-lightning-free,17811,29568,45,130,read,0
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,Loi 4,103,01:17:28,oc/nemotron-3.5-lightning-free,4199,44352,46,10,read,0
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,Loi 4,104,01:17:32,oc/nemotron-3.5-lightning-free,3399,46464,307,583,shell,0
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,Loi 4,105,01:17:40,oc/nemotron-3.5-lightning-free,2456,48576,50,235,read,0
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,Loi 4,106,01:17:44,oc/nemotron-3.5-lightning-free,2942,48576,190,299,edit,0
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,Loi 4,107,01:17:48,oc/nemotron-3.5-lightning-free,3458,48576,307,5,shell,0
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,Loi 4,108,01:17:51,oc/nemotron-3.5-lightning-free,3885,48576,93,231,edit,0
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,Loi 4,109,01:17:55,oc/nemotron-3.5-lightning-free,2124,50688,272,6,edit,0
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,Loi 4,110,01:18:00,oc/nemotron-3.5-lightning-free,2427,50688,311,15,shell,0
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,Loi 4,111,01:18:03,oc/nemotron-3.5-lightning-free,2870,50688,44,84,vgar-graph_build_or_update_graph,1
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,Loi 4,112,01:18:05,oc/nemotron-3.5-lightning-free,3479,50688,129,11,vgar-graph_analyze_patch_impact,1
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,Loi 4,113,01:18:08,oc/nemotron-3.5-lightning-free,3856,50688,57,336,vgar-graph_verify_patch_graph_constraints,1
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,Loi 4,114,01:18:11,oc/nemotron-3.5-lightning-free,2731,52800,1124,262,,0
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,Loi 5,117,01:20:12,oc/nemotron-3.5-lightning-free,57596,0,46,698,read,0
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,Loi 5,118,01:20:18,oc/nemotron-3.5-lightning-free,9715,50688,142,391,vgar-graph_find_task_anchors,1
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,Loi 5,119,01:20:22,oc/nemotron-3.5-lightning-free,9500,52800,44,61,vgar-graph_search_symbols,1
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,Loi 5,120,01:20:24,oc/nemotron-3.5-lightning-free,7740,54912,42,14,vgar-graph_search_symbols,1
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,Loi 5,121,01:20:25,oc/nemotron-3.5-lightning-free,8040,54912,42,27,vgar-graph_search_symbols,1
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,Loi 5,122,01:20:26,oc/nemotron-3.5-lightning-free,8361,54912,185,54,vgar-graph_get_related_context,1
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,Loi 5,123,01:20:29,oc/nemotron-3.5-lightning-free,22216,54912,168,180,edit,0
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,Loi 5,124,01:20:33,oc/nemotron-3.5-lightning-free,5980,71808,315,4,shell,0
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,Loi 5,125,01:20:36,oc/nemotron-3.5-lightning-free,6431,71808,178,60,edit,0
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,Loi 5,126,01:20:39,oc/nemotron-3.5-lightning-free,6862,71808,311,8,shell,0
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,Loi 5,127,01:20:42,oc/nemotron-3.5-lightning-free,7322,71808,129,66,vgar-graph_analyze_patch_impact,1
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,Loi 5,128,01:20:45,oc/nemotron-3.5-lightning-free,7747,71808,32,42,vgar-graph_verify_patch_graph_constraints,1
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,Loi 5,129,01:20:47,oc/nemotron-3.5-lightning-free,6042,73920,44,95,vgar-graph_build_or_update_graph,1
+A_vgar_en,ses_dfb8e5136ffeO3k6sZALVuDuUL,Loi 5,130,01:20:49,oc/nemotron-3.5-lightning-free,6660,73920,931,194,,0
