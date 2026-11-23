@@ -199,7 +199,19 @@ def repo_summary() -> str:
 @instrument_mcp_tool("find_task_anchors")
 def find_task_anchors(issue_text: str, graph_version: str, task_id: str,
                       failing_tests: list[str] | None = None) -> dict[str, Any]:
-    """Ground an issue and reported failing tests on one explicit repository snapshot."""
+    """Ground an issue and reported failing tests on one explicit repository snapshot.
+
+    Anchors come from names, paths and routes the text mentions; parts of compound names (``name_part``, e.g. "coupon"
+    for coupon_rate); error messages in a labelled log line or quoted in prose (``error_message``,
+    ``quoted_message``); and, only when nothing else matched, functions whose body shares the issue's words
+    (``text_match``, low score: check them).
+
+    Args:
+        issue_text: The issue or bug description.
+        graph_version: Graph version to ground on (the one build_or_update_graph returned).
+        task_id: Identifier the task is bound to for get_related_context.
+        failing_tests: Optional failing test selectors.
+    """
     def call():
         legacy_binding(graph_version=graph_version, task_id=task_id)
         return graph_service.find_task_anchors(issue_text, failing_tests, graph_version=graph_version, task_id=task_id)

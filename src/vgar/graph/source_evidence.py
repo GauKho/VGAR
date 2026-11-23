@@ -18,7 +18,49 @@ def diagnostic_lines(text):
                  if _DIAGNOSTIC_LINE.search(line))
 
 
-def message_matches(nodes, verified_sources, issue_text):
+_QUOTED = re.compile(r'["“]([^"“”\n]{3,300})["”]')
+_BACKTICKS = re.compile(r'`[^`\n]*`')
+_FRAGMENT_EDGES = " :;,.!?'\""
+
+
+def quoted_phrases(text):
+    """Phrases of two or more words in double quotes, outside backticks (spec 2026-11-23 §4.5, G3); lower-cased."""
+    phrases = (' '.join(match.lower().split()) for match in _QUOTED.findall(_BACKTICKS.sub(' ', text)))
+    return tuple(dict.fromkeys(phrase for phrase in phrases if len(phrase.split()) >= 2))
+
+
+def _fragment_in(fragment, line):
+    """A message fragment occurs in an issue line, or a quoted line of at least 4 words occurs in the fragment."""
+    fragment = fragment.strip(_FRAGMENT_EDGES)
+    return bool(fragment) and (fragment in line or (len(line.split()) >= 4 and line in fragment))
+
+
+def quoted_message_matches(nodes, verified_sources, issue_text, *, evidence=None):
+    """Functions whose message literals an issue quotes in prose ("always gets \"...\""); same rule as labelled lines.
+
+    Args:
+        nodes: Graph nodes; functions, methods and tests are matched.
+        verified_sources: Source text by repository path; paths missing here are skipped.
+        issue_text: The task's issue text.
+        evidence: Prebuilt ``SourceEvidence`` with messages over the same sources; built here when None.
+
+    Returns:
+        Node id -> matched message fragments.
+    """
+    from vgar.graph.grounding import issue_symbol_text
+
+    phrases = quoted_phrases(issue_symbol_text(issue_text))
+    if not phrases:
+        return {}
+    return (evidence or _message_evidence(nodes, verified_sources)).diagnostic_matches(phrases)
+
+
+def _message_evidence(nodes, verified_sources):
+    present = [node for node in nodes if node.get('path') in verified_sources]
+    return SourceEvidence(present, verified_sources, lambda text: frozenset(), include_messages=True)
+
+
+def message_matches(nodes, verified_sources, issue_text, *, evidence=None):
     """Functions whose message literals occur in a labelled log line of the issue (proposal §6.6 "error messages").
 
     Sources are not read when the issue has no labelled line, which is the usual case.
@@ -27,6 +69,7 @@ def message_matches(nodes, verified_sources, issue_text):
         nodes: Graph nodes; functions, methods and tests are matched.
         verified_sources: Source text by repository path; paths missing here are skipped.
         issue_text: The task's issue text.
+        evidence: Prebuilt ``SourceEvidence`` with messages over the same sources; built here when None.
 
     Returns:
         Node id -> matched message fragments.
@@ -37,8 +80,7 @@ def message_matches(nodes, verified_sources, issue_text):
     lines = diagnostic_lines(issue_symbol_text(issue_text))
     if not lines:
         return {}
-    present = [node for node in nodes if node.get('path') in verified_sources]
-    return SourceEvidence(present, verified_sources, lambda text: frozenset(), include_messages=True).diagnostic_matches(lines)
+    return (evidence or _message_evidence(nodes, verified_sources)).diagnostic_matches(lines)
 
 
 def _message_fragments(function):
@@ -140,6 +182,7 @@ def _terms(function, tokenize):
 class SourceEvidence:
     def __init__(self, nodes, verified_sources, tokenize, *, include_messages=False):
         tokenize = lru_cache(maxsize=4096)(tokenize)
+        self.tokenize = tokenize
         wanted = defaultdict(dict)
         for node in nodes:
             if node['type'] in {'Function', 'Method', 'Test'}:
@@ -175,9 +218,9 @@ class SourceEvidence:
 
     def diagnostic_matches(self, lines):
         return {node_id: [fragment for fragment in fragments
-                          if any(fragment in line for line in lines)]
+                          if any(_fragment_in(fragment, line) for line in lines)]
                 for node_id, fragments in self.messages.items()
-                if any(fragment in line for fragment in fragments for line in lines)}
+                if any(_fragment_in(fragment, line) for fragment in fragments for line in lines)}
 
     def _compute_query_mass(self, task_words):
         return sum(self.idf.get(term, 0) for term in sorted(task_words))

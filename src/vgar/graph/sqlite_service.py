@@ -12,9 +12,9 @@ from typing import Callable, Any
 
 from vgar.contracts.error import GraphNotReadyError, NodeNotFoundError, StaleGraphVersionError
 from vgar.graph.grounding import issue_symbol_text
-from vgar.graph.retrieval import GraphContextRetriever, RetrievalConfig, ranking_config_hash
+from vgar.graph.retrieval import GraphContextRetriever, RetrievalConfig, _words, ranking_config_hash
 from vgar.graph.snapshot_sources import worktree_changes
-from vgar.graph.source_evidence import diagnostic_lines
+from vgar.graph.source_evidence import SourceEvidence, diagnostic_lines, quoted_phrases
 from vgar.graph.task_overlay import TaskOverlayBuilder
 from vgar.graph.trace_links import rank_component_traces
 from vgar.graph.test_selection import select_related_tests
@@ -72,6 +72,7 @@ class SQLiteGraphService:
         self.counter_label = counter_label
         self._documents: dict[str, dict[str, Any]] = {}
         self._retrievers: dict[tuple[str, str], GraphContextRetriever] = {}
+        self._evidence: dict[str, SourceEvidence] = {}
         self._tasks: dict[str, dict[str, Any]] = {}
 
     def _document(self, graph_version: str) -> dict[str, Any]:
@@ -95,11 +96,13 @@ class SQLiteGraphService:
             keep: The version just published.
         """
         self._forget({version for version in self._documents if version != keep}
-                     | {key[0] for key in self._retrievers if key[0] != keep})
+                     | {key[0] for key in self._retrievers if key[0] != keep}
+                     | {version for version in self._evidence if version != keep})
 
     def _forget(self, versions: set[str]) -> None:
         for version in versions:
             self._documents.pop(version, None)
+            self._evidence.pop(version, None)
         for key in [key for key in self._retrievers if key[0] in versions]:
             del self._retrievers[key]
 
@@ -112,8 +115,7 @@ class SQLiteGraphService:
     def find_task_anchors(self, issue_text: str, failing_tests: list[str] | None = None, *,
                           graph_version: str, task_id: str) -> dict[str, Any]:
         document = self._document(graph_version)
-        overlay = TaskOverlayBuilder(document).build(task_id, issue_text, failing_tests,
-                                                     sources=self._message_sources(document, graph_version, issue_text))
+        overlay = self._overlay(document, graph_version, task_id, issue_text, failing_tests)
         issue_id = overlay.nodes[0]["id"]
         traces = rank_component_traces(edge for edge in overlay.edges
                                        if edge["type"] == "TRACES_TO" and edge["source_id"] == issue_id)
@@ -140,11 +142,33 @@ class SQLiteGraphService:
         return retriever
 
     def _message_sources(self, document: dict[str, Any], graph_version: str, issue_text: str) -> dict | None:
-        """Verified sources for error-message anchors; None without a quoted log line or a usable checkout."""
-        if (self.repository_root is None or self.count_tokens is None or not self.counter_label
-                or not diagnostic_lines(issue_symbol_text(issue_text))):
+        """Sources for the task overlay: the graph's stored source whenever it has one (spec 2026-11-23 §4.5);
+        for an older graph, the verified working tree only when the issue has a labelled log line or a quoted phrase."""
+        if self.repository_root is None or self.count_tokens is None or not self.counter_label:
             return None
-        return self._retriever(document, graph_version)._verify_snapshot()
+        retriever = self._retriever(document, graph_version)
+        if retriever.stored_sources is not None:
+            return retriever.stored_sources
+        visible = issue_symbol_text(issue_text)
+        if not (diagnostic_lines(visible) or quoted_phrases(visible)):
+            return None
+        return retriever._verify_snapshot()
+
+    def _source_evidence(self, document: dict[str, Any], graph_version: str) -> SourceEvidence:
+        """Message and term evidence over the graph's stored source, built once per version."""
+        if graph_version not in self._evidence:
+            sources = self.snapshot_sources(graph_version) or {}
+            present = [node for node in document["nodes"] if node.get("path") in sources]
+            self._evidence[graph_version] = SourceEvidence(present, sources, _words, include_messages=True)
+        return self._evidence[graph_version]
+
+    def _overlay(self, document: dict[str, Any], graph_version: str, task_id: str, issue_text: str,
+                 failing_tests: list[str] | None):
+        sources = self._message_sources(document, graph_version, issue_text)
+        stored = sources is not None and sources is self._retriever(document, graph_version).stored_sources
+        return TaskOverlayBuilder(document).build(
+            task_id, issue_text, failing_tests, sources=sources,
+            evidence=(lambda: self._source_evidence(document, graph_version)) if stored else None)
 
     def get_related_context(self, anchor_ids: list[str], budget_tokens: int, *, graph_version: str,
                             task_id: str, issue_text: str = "", failing_tests: list[str] | None = None,
@@ -174,8 +198,7 @@ class SQLiteGraphService:
         document = self._document(graph_version)
         history = self._history(document, history_commits) if use_history else None
         retriever = self._retriever(document, graph_version, config, history)
-        overlay = TaskOverlayBuilder(document).build(task_id, issue_text, failing_tests,
-                                                     sources=self._message_sources(document, graph_version, issue_text))
+        overlay = self._overlay(document, graph_version, task_id, issue_text, failing_tests)
         try:
             result = retriever.retrieve(anchor_ids, budget_tokens, issue_text=issue_text, overlay=overlay)
         except Exception as error:

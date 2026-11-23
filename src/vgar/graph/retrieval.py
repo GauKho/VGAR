@@ -19,7 +19,7 @@ from vgar.contracts.error import GraphError, InvalidLimitError, InvalidQueryErro
 from vgar.contracts.schema import validate_graph_document
 from vgar.graph.builder import discover_python_files
 from vgar.graph.grounding import issue_symbol_text, issue_topic_text
-from vgar.graph.source_evidence import SourceEvidence, diagnostic_lines
+from vgar.graph.source_evidence import SourceEvidence, diagnostic_lines, quoted_phrases
 from vgar.graph.task_overlay import TaskOverlay
 from vgar.graph.trace_links import rank_component_traces
 from vgar.observability.graph_trace import GraphTrace
@@ -243,7 +243,9 @@ class GraphContextRetriever:
         task_words = frozenset(_words(visible_issue))
         topic_words = (frozenset(_words(issue_topic_text(issue_text))) - _TOPIC_STOP
                        if self.config.use_topic_evidence and self.config.use_source_evidence else frozenset())
-        logs = diagnostic_lines(visible_issue) if self.config.use_diagnostic_evidence else ()
+        # G3 (spec 2026-11-23 §4.5): messages quoted in prose count like labelled log lines.
+        logs = (diagnostic_lines(visible_issue) + quoted_phrases(visible_issue)
+                if self.config.use_diagnostic_evidence else ())
         component_nodes = self._component_nodes(visible_issue, anchors, include) if self.config.use_component_seeds else {}
         sources = None
         if (anchors and task_words and self.config.use_source_evidence) or logs or component_nodes:

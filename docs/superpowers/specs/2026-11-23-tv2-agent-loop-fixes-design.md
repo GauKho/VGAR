@@ -1,7 +1,7 @@
 # Đợt 4: sửa vòng sửa lỗi của agent sau lượt OpenCode A/B trên ShopFlow (TV2, 23/11/2026)
 
-Trạng thái: **phần A đã cài đặt 23/11/2026** theo plan `docs/superpowers/plans/2026-11-23-tv2-agent-loop-fixes.md`; phần B
-chưa làm. Quyết định ở §6.1 áp dụng theo đề xuất (D1 = c, D2 = R1 hai lần, D3 = phần A trước). Khác plan một chỗ: lỗi
+Trạng thái: **phần A và phần B đã cài đặt 23/11/2026** theo plan `docs/superpowers/plans/2026-11-23-tv2-agent-loop-fixes.md`;
+phần B qua cổng D2 (R1 dev-50, `docs/status/tv2_batch4_grounding_2026-11-23.md`). Quyết định ở §6.1 áp dụng theo đề xuất (D1 = c, D2 = R1 hai lần, D3 = phần A trước). Khác plan một chỗ: lỗi
 `graph_version` cũ giữ mã `GRAPH_NOT_READY` (`StaleGraphVersionError`), vì đó là mã sẵn có của version không có trong
 database; `details` vẫn nêu version hiện hành. Nguồn số liệu:
 `docs/status/tv2_opencode_ab_shopflow_2026-11-22.md` (lượt A-vi, B-vi, B-en, A-en). Không đổi contract của TV1.

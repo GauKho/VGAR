@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import ast
+import math
 import re
 from collections import defaultdict
 from collections.abc import Collection
@@ -238,6 +239,17 @@ class TaskAnchorFinder:
                     path, methods = route
                     self.routes.setdefault(path, []).append((node, methods))
 
+        # G1 (spec 2026-11-23 §4.5): name parts of the code symbols an issue word can name.
+        self._part_node = {node["id"]: node for node in self.nodes if node["type"] in {"Class", "Function", "Method"}}
+        # Single-part names ("Customer") are whole-name matches, left to the exact symbol rules and G2.
+        self._parts = {node_id: parts for node_id, node in self._part_node.items()
+                       if len(parts := _name_parts(node["name"])) >= 2}
+        self._part_index: dict[str, list[str]] = defaultdict(list)
+        for node_id, parts in self._parts.items():
+            for part in set(parts):
+                self._part_index[part].append(node_id)
+        self._part_df = {part: len(ids) for part, ids in self._part_index.items()}
+
     def find_task_anchors(
         self, issue_text: str, failing_tests: list[str] | None = None,
     ) -> AnchorResult:
@@ -391,6 +403,8 @@ class TaskAnchorFinder:
                         prose_fallbacks.append((matches, evidence))
                         continue
                     code_like = "_" in token or any(char.isupper() for char in token)
+                    if code_like and token[0].isupper() and token[1:].islower() and _sentence_start(text, match.start()):
+                        code_like = False   # G2 (spec 2026-11-23 §4.5): "Customer C003 ..." is prose, not a class
                     score = (0.8 if qualified or imported else 0.6 if source == "failing_test"
                              else 0.75 if explicit else 0.6 if code_like else 0.4)
                     if receiver_fallback:
@@ -398,6 +412,17 @@ class TaskAnchorFinder:
                     if not qualified and not explicit and len(matches) > 1:
                         score = min(score, 0.25)
                     add(matches, evidence, score)
+
+            if source == "issue":
+                # Spans another rule already judged (paths, routes, tracebacks) are not prose for G1 either.
+                free = "".join(" " if any(start <= index < end for start, end in consumed) else char
+                               for index, char in enumerate(text))
+                groups: dict[str, list[tuple[dict[str, Any], float]]] = defaultdict(list)
+                for node, part_score, named in self._name_part_matches(free):
+                    groups[named].append((node, part_score))
+                for named, group in groups.items():   # the same words naming several symbols stay ambiguous
+                    add([node for node, _ in group], AnchorEvidence("name_part", named, source),
+                        max(part_score for _, part_score in group))
 
         # A narrative-only request such as "read fails" must still be usable.
         # Common prose words cannot dilute more specific path/API/code evidence.
@@ -412,6 +437,30 @@ class TaskAnchorFinder:
             sorted(unmatched),
         )
 
+    def _name_part_matches(self, text: str) -> list[tuple[dict[str, Any], float, str]]:
+        """G1 (spec 2026-11-23 §4.5): symbols whose rare name parts the issue's words name, best covered first."""
+        words = {word for word in re.findall(r"[a-z]+", text.lower())
+                 if len(word) >= 3 and word not in _COMMON_PROSE_NAMES}
+        hits: dict[str, set[str]] = defaultdict(set)   # name part -> issue words naming it
+        for word in words:
+            for part in {word, *(word[:end] for end in range(_PREFIX_MIN, len(word)))}:
+                if part in self._part_df:
+                    hits[part].add(word)
+        candidates = {node_id for part in hits if self._part_df[part] <= _RARE_PART_DF
+                      for node_id in self._part_index[part]}
+        total = len(self._parts)
+        found = []
+        for node_id in sorted(candidates):
+            parts = set(self._parts[node_id])
+            matched = parts & hits.keys()
+            idf = {part: math.log(1 + total / self._part_df[part]) for part in parts}
+            coverage = sum(idf[part] for part in matched) / sum(idf.values())
+            if coverage > _MIN_COVERAGE:   # the named part must carry more than half the name
+                node = self._part_node[node_id]
+                found.append((node, 0.3 + 0.2 * coverage, " ".join(sorted(set().union(*(hits[p] for p in matched))))))
+        found.sort(key=lambda item: (-item[1], item[0]["qualified_name"], item[0]["id"]))
+        return found[:_MAX_NAME_PART_ANCHORS]
+
     def _match_paths(self, path: str) -> list[str]:
         if ".." in path.split("/") or path.startswith("/") or re.match(r"^[A-Za-z]:", path):
             return []
@@ -419,6 +468,31 @@ class TaskAnchorFinder:
         if normalized in self.files:
             return [normalized]
         return sorted(candidate for candidate in self.files if candidate.endswith("/" + normalized))
+
+
+# G1 constants, fixed before measuring R1 (plan 2026-11-23 Task 8): never tuned on its results.
+_RARE_PART_DF = 3
+_MIN_COVERAGE = 0.5
+_PREFIX_MIN = 4
+_MAX_NAME_PART_ANCHORS = 5
+
+
+def _name_parts(name: str) -> tuple[str, ...]:
+    """Lower-case parts of an identifier, split on underscores and inner capitals."""
+    spaced = re.sub(r"([a-z0-9])([A-Z])", r"\1_\2", name)
+    return tuple(part.lower() for part in spaced.split("_") if part)
+
+
+_BULLET = re.compile(r"(?:[-*•]|\d+[.)])")
+
+
+def _sentence_start(text: str, position: int) -> bool:
+    """True when ``position`` starts a sentence: text or line start, after ``.``/``!``/``?``/``:``, or after a bullet."""
+    stripped = text[:position].rstrip(" \t")
+    if not stripped or stripped.endswith(("\n", "\r", ".", "!", "?", ":")):
+        return True
+    line = stripped.rsplit("\n", 1)[-1].strip()
+    return bool(_BULLET.fullmatch(line))
 
 
 def is_absolute_path(path: str) -> bool:
