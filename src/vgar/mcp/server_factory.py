@@ -4,8 +4,22 @@ from __future__ import annotations
 import logging
 
 from mcp.server import MCPServer
+from mcp.types import CallToolResult, TextContent
+
+from vgar.mcp.agent_output import compact_json
 
 logger = logging.getLogger(__name__)
+
+
+class _CompactServer(MCPServer):
+    """MCPServer whose tool text is compact JSON; structured content is unchanged."""
+
+    async def call_tool(self, name, arguments, context=None):
+        result = await super().call_tool(name, arguments, context)
+        # SDK 2.2 renders a returned dict with indent=2 (func_metadata.py:653): 14-31% longer text (spec 2026-11-24 §4.1).
+        if isinstance(result, CallToolResult) and result.structured_content is not None:
+            return result.model_copy(update={"content": [TextContent(type="text", text=compact_json(result.structured_content))]})
+        return result
 
 
 def create_server(name: str, *, log_level: str = "WARNING") -> MCPServer:
@@ -16,7 +30,7 @@ def create_server(name: str, *, log_level: str = "WARNING") -> MCPServer:
         log_level: SDK log level.
     """
     logger.debug("server=%s log_level=%s", name, log_level)
-    return MCPServer(name, log_level=log_level)
+    return _CompactServer(name, log_level=log_level)
 
 
 def create_resource_server(name: str, resource_reader, *, log_level: str = "WARNING", prompt_reader=None) -> MCPServer:
@@ -39,7 +53,7 @@ def create_resource_server(name: str, resource_reader, *, log_level: str = "WARN
         code = -32602 if error.code == "INVALID_ARGUMENT" else -32603
         raise MCPError(code, error.message, error.model_dump()) from None
 
-    class ResourceServer(MCPServer):
+    class ResourceServer(_CompactServer):
         async def read_resource(self, uri, *args, **kwargs):
             # Read-only bounded adapter, awaited to completion. Do not abandon a
             # thread on cancellation and pretend its work has stopped.

@@ -166,6 +166,33 @@ def test_run_tool_marks_untrusted_text(tmp_path):
     assert "untrusted" not in plain["metadata"]
 
 
+@pytest.mark.parametrize("verdict", ["PASS", "FAIL", "NOT_RUN"])
+def test_run_tool_puts_the_verdict_in_the_outer_status(tmp_path, verdict):
+    from vgar.mcp.tooling import run_tool
+    audit = AuditLogger(tmp_path / "audit.jsonl")
+    response = run_tool(server="t", tool="x", backend="b", audit=audit, call=lambda: {"status": verdict},
+                        verdict=lambda data: data["status"])
+    assert response["status"] == verdict and response["data"] == {"status": verdict} and response["error"] is None
+    assert json.loads(audit._path.read_text(encoding="utf-8").splitlines()[-1])["payload"]["status"] == verdict
+
+
+@pytest.mark.parametrize("verdict", ["ERROR", "SOMETHING_ELSE"])
+def test_run_tool_check_error_keeps_data_and_sets_error(tmp_path, verdict):
+    from vgar.mcp.tooling import run_tool
+    response = run_tool(server="t", tool="x", backend="b", audit=AuditLogger(tmp_path / "audit.jsonl"),
+                        call=lambda: {"status": verdict, "reasons": ["PATCH_REJECTED: bad hunk"]},
+                        verdict=lambda data: data["status"])
+    assert response["status"] == "ERROR" and response["data"]["status"] == verdict
+    assert response["error"]["code"] == "INTERNAL_ERROR" and "PATCH_REJECTED: bad hunk" in response["error"]["message"]
+
+
+def test_run_tool_without_a_verdict_stays_pass(tmp_path):
+    from vgar.mcp.tooling import run_tool
+    response = run_tool(server="t", tool="x", backend="b", audit=AuditLogger(tmp_path / "audit.jsonl"),
+                        call=lambda: {"status": "FAIL"})
+    assert response["status"] == "PASS"
+
+
 def test_leased_root_and_inside(tmp_path, monkeypatch):
     # S1 / S2 shared guards (security design §4.2)
     from vgar.mcp.schemas import CodedToolError

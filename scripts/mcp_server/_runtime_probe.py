@@ -33,7 +33,8 @@ def main():
     bad_imports = sorted(n for n in sys.modules if n.split(".")[0].startswith(FORBIDDEN))
     require(not bad_imports, f"Forbidden runtime imports: {bad_imports}")
     major = int(metadata.version("mcp").split(".")[0])
-    require(all(value.endswith(".ResourceServer" if name == "graph" else ".MCPServer" if major == 2 else ".FastMCP")
+    # SDK 2: the servers subclass MCPServer to send compact JSON text (spec 2026-11-24 §4.1).
+    require(all(value.endswith(".ResourceServer" if name == "graph" else "._CompactServer" if major == 2 else ".FastMCP")
                 for name, value in classes.items()), "Incorrect server class")
     print(json.dumps({"status": "PASS", "python": sys.executable, "sdk": metadata.version("mcp"),
                       "classes": classes, "packages": packages, "forbidden_packages": bad,

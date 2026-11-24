@@ -64,10 +64,14 @@ def test_mcp_context_metadata_prompt_and_test_selection(snapshot, tmp_path, monk
     response = graph_server.get_related_context([target], graph_version=version, task_id='task', budget_tokens=1000, issue_text='target fails')
     assert response['status'] == 'PASS'
     data = response['data']
-    assert data['context_format'] == 'vgar.context.v1'
-    payload = ContextPayload.model_validate(data['context'])
-    assert 'schema_version' not in data['context']
-    assert all(data['source_metadata'][item.node_id]['content_hash'] for item in payload.items)
+    assert data['context_format'] == 'vgar.context.agent.v1' and 'source_metadata' not in data
+    assert any(item['path'] == 'app.py' for item in data['context']['items'])
+    # The MCP tool sends the agent shape (spec 2026-11-24 §4.5); the service still exports ContextPayload v1.
+    exported = service.get_related_context([target], 1000, graph_version=version, task_id='task', issue_text='target fails')
+    assert exported['context_format'] == 'vgar.context.v1'
+    payload = ContextPayload.model_validate(exported['context'])
+    assert 'schema_version' not in exported['context']
+    assert all(exported['source_metadata'][item.node_id]['content_hash'] for item in payload.items)
     prompt = render_context_for_repair(payload)
     assert 'app.py' in prompt and 'app.target' in prompt and 'unified diff' in prompt
     selected = graph_server.get_related_tests([target], version)

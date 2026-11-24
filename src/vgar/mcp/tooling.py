@@ -21,9 +21,11 @@ from vgar.mcp.schemas import (
     ROOT_NOT_LEASED,
     CodedToolError,
     ToolMetadata,
+    ToolError,
     ToolResponse,
     error_from_exception,
 )
+from vgar.observability.redact import redact_text
 
 logger = logging.getLogger(__name__)
 
@@ -81,11 +83,14 @@ def run_tool(
     audit_fields: dict[str, Any] | None = None,
     summarize: Callable[[dict[str, Any]], dict[str, Any]] | None = None,
     untrusted: bool = False,
+    verdict: Callable[[dict[str, Any]], str] | None = None,
 ) -> dict[str, Any]:
     """Execute `call`, always return a ToolResponse dict, always write one audit line.
 
     `audit_fields` are the call arguments to log; `summarize(data)` adds result
-    counts on success. Errors are logged too, with their error_code.
+    counts on success. Errors are logged too, with their error_code. `verdict(data)`
+    gives the check's own conclusion: PASS/FAIL/NOT_RUN become the outer status, anything
+    else is ERROR with the data kept (spec 2026-11-24 §4.4).
     """
     context = current_context()
     request_id = context.request_id if context else uuid.uuid4().hex
@@ -96,9 +101,11 @@ def run_tool(
     error = None
     interrupted = None
     extra: dict[str, Any] = {}
+    outcome = None
     try:
         data = call()
         extra = summarize(data) if summarize else {}
+        outcome = verdict(data) if verdict else None
     except Exception as exc:  # noqa: BLE001 - boundary: nothing may escape raw
         error = error_from_exception(exc)
         extra = _error_audit_fields(exc, error.code)
@@ -111,6 +118,11 @@ def run_tool(
 
     duration_ms = _elapsed_ms(started)
     status = "ERROR" if error else "PASS"
+    if error is None and outcome is not None:
+        status = outcome if outcome in ("PASS", "FAIL", "NOT_RUN") else "ERROR"
+        if status == "ERROR":
+            error = ToolError(code=INTERNAL_ERROR, message=redact_text(
+                f"the check did not finish: {'; '.join(data.get('reasons') or [])}"))
     fields = {
             "server": server,
             "backend": backend,

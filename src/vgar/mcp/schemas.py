@@ -7,9 +7,11 @@
 
 Rules:
 - status PASS  -> data is set,  error is null.
-- status ERROR -> data is null, error is set (the tool could not answer).
-- FAIL / NOT_RUN are reserved for verification-style tools (M2); graph query
-  tools only ever return PASS or ERROR.
+- status ERROR -> error is set; data is null (the tool could not answer), except a
+  check tool whose own verdict is ERROR, which keeps its data.
+- FAIL / NOT_RUN are the verdict of a check tool (verify_patch_graph_constraints and
+  run_relevant_tests without a host provider, spec 2026-11-24 §4.4); every other tool
+  returns PASS (it answered) or ERROR.
 """
 from __future__ import annotations
 

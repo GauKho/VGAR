@@ -16,6 +16,7 @@ from pydantic import Strict
 from vgar.contracts.error import GraphError, GraphNotReadyError
 from vgar.graph.factory import create_graph_service
 from vgar.graph.retrieval import RetrievalConfig
+from vgar.mcp.agent_output import agent_context, compact_json, verify_view
 from vgar.mcp.audit import AuditLogger
 from vgar.mcp.proposal import contracts as proposal_contracts
 from vgar.mcp.proposal.context import current_context, request_scope
@@ -56,7 +57,7 @@ prompt_renderer = PromptRenderer()  # Host may configure lower limits/redaction 
 _audit_logger = AuditLogger(Path(os.getenv("VGAR_MCP_AUDIT_LOG", "logs/mcp_audit.jsonl")))
 
 
-def _tool(tool: str, call, audit_fields: dict[str, Any], summarize) -> dict[str, Any]:
+def _tool(tool: str, call, audit_fields: dict[str, Any], summarize, verdict=None) -> dict[str, Any]:
     # Module globals are looked up at call time so tests can swap the backend/logger.
     def guarded_call():
         ctx = legacy_binding()
@@ -72,6 +73,7 @@ def _tool(tool: str, call, audit_fields: dict[str, Any], summarize) -> dict[str,
         "server": "graph", "tool": tool, "backend": graph_service.backend_name, "audit": _audit_logger,
         "call": guarded_call, "audit_fields": audit_fields, "summarize": summarize,
         "untrusted": True,  # S12: names, paths and snippets come from the repository
+        "verdict": verdict,
     }
     try:
         ctx = current_context()
@@ -220,7 +222,9 @@ def find_task_anchors(issue_text: str, graph_version: str, task_id: str,
         lambda data: {"anchor_count": len(data["anchors"])})
 
 
-DEFAULT_CONTEXT_BUDGET = 12000  # [P] §9.2 line 972: extract_context_graph(..., budget_tokens=12000)
+# Deviates from [P] §9.2 line 972 (budget_tokens=12000): host output limits and the batch-5 measurements
+# (spec 2026-11-24 §4.2). Agents may still ask for up to MAX_CONTEXT_BUDGET.
+DEFAULT_CONTEXT_BUDGET = 4000
 MAX_CONTEXT_BUDGET = 12000  # [P] §10.5 line 1134: resource limit per tool; value from §9.2
 
 
@@ -231,8 +235,11 @@ def get_related_context(anchor_ids: list[str], graph_version: str, task_id: str,
                         failing_tests: list[str] | None = None) -> dict[str, Any]:
     """Retrieve and pack graph context around anchors under a token budget; task inputs are request-local.
 
-    The budget bounds this one call, not the whole session. Tokens are UTF-8 bytes / 4, not the model's own
-    tokens. ``diagnostics.budget`` in the result gives the requested and effective budget and whether the
+    The budget is the most code this one call returns, not a cost for the session: unused budget costs nothing,
+    and a higher budget only adds code when there is more. Tokens are UTF-8 bytes / 4, not the model's own
+    tokens. The response is also kept under 32 KiB: the lowest-ranked items are dropped first and
+    ``diagnostics.response_limit`` says how many. Each item gives ``node_id``, ``path``, ``lines`` [start, end],
+    ``score``, ``distance`` (graph hops), ``why`` (TASK_ANCHOR, or ``RELATION a -> b`` steps) and ``snippet``. ``diagnostics.budget`` in the result gives the requested and effective budget and whether the
     request was clamped to the server ceiling; ``diagnostics.traversal_limited`` says whether the candidate
     resource limit cut the k=2 neighbourhood. The full ranking diagnostics go to the audit log only.
     The context is the code the graph was built from, even after you edit files; ``diagnostics.worktree_changes``
@@ -243,7 +250,7 @@ def get_related_context(anchor_ids: list[str], graph_version: str, task_id: str,
             symbol ids from search_symbols.
         graph_version: Graph version the anchors belong to.
         task_id: Task identifier used for the task overlay; a task bound by find_task_anchors is ranked against.
-        budget_tokens: Optional token budget; defaults to 12000 and is capped at 12000.
+        budget_tokens: Optional token budget for the code; defaults to 4000 and is capped at 12000.
         issue_text: Issue text used for ranking when find_task_anchors has not bound task_id.
         failing_tests: Optional failing test selectors.
     """
@@ -268,12 +275,18 @@ def get_related_context(anchor_ids: list[str], graph_version: str, task_id: str,
         if not anchor_ids and not data["context"]["items"]:
             data["diagnostics"]["hint"] = ("no anchor_ids and nothing in issue_text matched the graph: pass the anchors "
                                            "returned by find_task_anchors, or symbol ids from search_symbols")
-        return data
+        if data["context"]["truncated"]:
+            data["diagnostics"]["budget_hint"] = (f"the token budget ({effective}) left out lower-ranked items; "
+                                                  f"budget_tokens can go up to {MAX_CONTEXT_BUDGET}")
+        return agent_context(data)
     return _tool("get_related_context", call,
         {"graph_version": graph_version, "task_id": task_id, "budget_tokens": budget_tokens,
          "effective_budget_tokens": effective},
         lambda data: {"item_count": len(data["context"]["items"]),
                       "total_token_count": data["context"]["total_token_count"],
+                      "response_bytes": len(compact_json(data).encode("utf-8")),
+                      **({"dropped_items": data["diagnostics"]["response_limit"]["dropped_items"]}
+                         if "response_limit" in data["diagnostics"] else {}),
                       "diagnostics": _audit_diagnostics(held.get("diagnostics"))})
 
 
@@ -593,15 +606,19 @@ def explain_dependency_path(source_id: str, target_id: str) -> dict[str, Any]:
 
 @mcp.tool()
 @instrument_mcp_tool("verify_patch_graph_constraints")
-async def verify_patch_graph_constraints(diff: str = "") -> dict[str, Any]:
+async def verify_patch_graph_constraints(diff: str = "", details: bool = False) -> dict[str, Any]:
     """Check a change against the graph: schema, structure, public API, import cycles and lost Ports.
 
     Call it BEFORE build_or_update_graph. The repository is never modified; the change is checked on a temporary
     copy of the source the graph was built from. ``checked_diff`` in the result says which diff was checked;
     each change it could not carry (new or deleted file, line endings only) adds a ``NOT_CHECKED`` reason.
+    The outer ``status`` is the verdict: PASS, FAIL, NOT_RUN (not verified) or ERROR (the check did not finish;
+    ``data`` is kept).
 
     Args:
         diff: Optional unified diff. Leave it empty: the server diffs the working tree against the graph's source.
+        details: False (default) returns a summary: ``summary``, each check's status and reasons,
+            ``unsupported_changes``, ``diagnostic_counts``; True adds every check's details and the checked diff.
     """
     if not _has_provider("verification"):
         def call() -> dict[str, Any]:
@@ -609,14 +626,16 @@ async def verify_patch_graph_constraints(diff: str = "") -> dict[str, Any]:
             version = graph_service.get_repository_summary().graph_version
             checked, record = resolve_diff(graph_service, version, diff)
             if not checked:
-                return with_checked_diff({"status": "NOT_RUN", "checks": {}, "reasons": ["NO_CHANGES"],
-                                          "graph_version": version, "diff_sha256": _diff_hash("")}, record)
-            return with_checked_diff(_verified(checked), record)
+                return verify_view(with_checked_diff({"status": "NOT_RUN", "checks": {}, "reasons": ["NO_CHANGES"],
+                                                      "graph_version": version, "diff_sha256": _diff_hash("")}, record),
+                                   details)
+            return verify_view(with_checked_diff(_verified(checked), record), details)
 
         # Building the candidate graph is slow: run it off the event loop (build-server guide: stay responsive).
         return await anyio.to_thread.run_sync(lambda: _tool(
             "verify_patch_graph_constraints", call, {"diff_sha256": _diff_hash(diff)},
-            lambda data: {"verdict": data["status"], "reason_count": len(data["reasons"]), **_checked_audit(data)}))
+            lambda data: {"verdict": data["status"], "reason_count": len(data["reasons"]), **_checked_audit(data)},
+            verdict=lambda data: data["status"]))
     return core_tools.respond("verify_patch_graph_constraints",
                               lambda: proposal_contracts.DiffRequest.from_diff(require_diff(diff, "verification")),
                               server="graph", audit=_audit_logger, invoke=core_tools.verify)

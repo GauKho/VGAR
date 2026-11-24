@@ -406,3 +406,88 @@ def test_verify_with_a_stored_source_does_not_claim_the_copy_is_missing(tmp_path
     _edit_pricing(root)
     monkeypatch.setattr(patch_evidence.PythonGraphBuilder, "_calculate_graph_version", lambda self, *a: "sha256:other")
     assert verify_patch(service, PRICING_FIX, graph_version=version)["reasons"] == ["BUILDER_OPTIONS_OR_SOURCE_DIFFER_FROM_SNAPSHOT"]
+
+
+# --- Batch 5: outer status is the verdict (spec 2026-11-24 §4.4) ---------------------------------
+
+def test_verify_outer_status_is_not_run_without_changes(served, tmp_path):
+    response = verify()
+    assert response["status"] == response["data"]["status"] == "NOT_RUN"
+    lines = (tmp_path / "audit.jsonl").read_text(encoding="utf-8").splitlines()
+    assert json.loads(lines[-1])["payload"]["status"] == "NOT_RUN"
+
+
+def test_verify_outer_status_is_fail_on_a_syntax_error(served):
+    (served[1] / "shop/pricing.py").write_text("def round_vnd(amount):\n    return (\n", encoding="utf-8", newline="")
+    assert verify()["status"] == "FAIL"
+
+
+def test_verify_outer_status_is_pass_when_every_check_passes(served):
+    _edit_pricing(served[1])
+    assert verify()["status"] == "PASS"
+
+
+def test_verify_that_cannot_finish_is_error_and_keeps_its_data(served):
+    response = anyio.run(lambda: graph_server.verify_patch_graph_constraints(diff="not a diff"))
+    assert response["status"] == "ERROR" and response["data"]["status"] == "ERROR"
+    assert response["error"]["code"] == "INTERNAL_ERROR" and "PATCH_REJECTED" in response["error"]["message"]
+
+
+def test_run_relevant_tests_outer_status_is_not_run_without_related_tests(tmp_path, monkeypatch):
+    service, version, root = _build(tmp_path)
+    monkeypatch.setattr(execution_server, "_graph_service", service)
+    monkeypatch.setattr(execution_server, "_audit_logger", AuditLogger(tmp_path / "x.jsonl"))
+    _edit_pricing(root)
+    response = anyio.run(execution_server.run_relevant_tests)
+    assert response["status"] == "NOT_RUN" and response["data"]["reasons"] == ["NO_RELATED_TESTS"]
+
+
+def test_a_tool_without_a_verdict_stays_pass(served):
+    assert graph_server.search_symbols("round_vnd")["status"] == "PASS"
+
+
+# --- Batch 5: verify summary (spec 2026-11-24 §4.3) -----------------------------------------------
+
+ORDER = ('class Status:\n    NEW = "new"\n    PAID = "paid"\n\n\nALLOWED = {Status.NEW: [Status.PAID]}\n\n\n'
+         'def can_move(a, b):\n    return b in ALLOWED.get(a, [])\n')
+
+
+@pytest.fixture
+def served_order(tmp_path, monkeypatch):
+    """A module constant the API check cannot read (non-literal value), edited in the working tree: like ALLOWED_TRANSITIONS."""
+    service, version, root = _build(tmp_path, {**SHOP, "shop/order.py": ORDER})
+    _serve(tmp_path, monkeypatch, service)
+    (root / "shop/order.py").write_text(ORDER.replace("[Status.PAID]", "[Status.PAID, Status.NEW]"), encoding="utf-8",
+                                        newline="")
+    return version, root
+
+
+def test_verify_summary_names_the_unsupported_module_constant(served_order):
+    response = verify()
+    data = response["data"]
+    assert response["status"] == "NOT_RUN"
+    assert set(data) == {"status", "reasons", "graph_version", "diff_sha256", "summary", "checks",
+                         "unsupported_changes", "diagnostic_counts", "checked_diff"}
+    assert data["summary"] == "Change NOT verified: api NOT_RUN (API_UNSUPPORTED_DECLARATION: ALLOWED in shop/order.py)"
+    assert data["unsupported_changes"] == [{"symbol": "ALLOWED", "path": "shop/order.py",
+                                            "reason": "API_UNSUPPORTED_DECLARATION"}]
+    assert data["diagnostic_counts"]["API_UNSUPPORTED_DECLARATION"] == 2   # baseline + candidate
+    assert all(set(check) == {"status", "reasons"} for check in data["checks"].values())
+    assert "diff" not in data["checked_diff"] and data["checked_diff"]["files"] == ["shop/order.py"]
+
+
+def test_verify_with_details_keeps_the_full_checks(served_order):
+    data = anyio.run(lambda: graph_server.verify_patch_graph_constraints(details=True))["data"]
+    assert "analysis_scope" in data["checks"]["api"]["details"] and data["checked_diff"]["diff"]
+    assert data["summary"].startswith("Change NOT verified: api NOT_RUN")
+
+
+def test_verify_summary_of_a_passing_change_lists_unchecked_files(served):
+    _edit_pricing(served[1])
+    (served[1] / "scratch.py").write_text("print(1)\n", encoding="utf-8")
+    assert verify()["data"]["summary"] == ("Change verified: schema, structural, api, source_imports, port_check PASS on "
+                                           "shop/pricing.py; not checked: new file: scratch.py")
+
+
+def test_verify_summary_without_changes_gives_the_reason(served):
+    assert verify()["data"]["summary"] == "Change NOT verified: NO_CHANGES"

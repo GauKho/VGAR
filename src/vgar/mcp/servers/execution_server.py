@@ -101,6 +101,8 @@ async def run_relevant_tests(diff: str = "") -> dict[str, Any]:
     Call it BEFORE build_or_update_graph. The repository is never modified: the copy holds the source the graph
     was built from. Tests are chosen from the graph (TESTS edges and callers). ``checked_diff`` in the result says
     which diff was tested; each change it could not carry adds a ``NOT_CHECKED`` reason.
+    The outer ``status`` is the verdict: PASS, FAIL, NOT_RUN (not verified) or ERROR (the check did not finish;
+    ``data`` is kept).
 
     Args:
         diff: Optional unified diff. Leave it empty: the server diffs the working tree against the graph's source.
@@ -126,7 +128,7 @@ async def run_relevant_tests(diff: str = "") -> dict[str, Any]:
                         summarize=lambda data: {"verdict": data["status"], "test_count": len(data["selectors"]),
                                                 "checked_sha256": (data.get("checked_diff") or {}).get("sha256"),
                                                 "diff_source": (data.get("checked_diff") or {}).get("source")},
-                        untrusted=True)
+                        untrusted=True, verdict=lambda data: data["status"])
     from vgar.repair.patch_evidence import require_diff
     return await core_tools.respond_async("run_relevant_tests", lambda: DiffRequest.from_diff(require_diff(diff, "tests")),
                                           server="execution", audit=_audit_logger, invoke=core_tools.tests)
