@@ -286,9 +286,12 @@ Ghi chú cho bảng:
 | B-en ② | nemotron | – | 25 | 8 | 15,13 triệu | 8,02 triệu | 41 | 28 | 13,5 |
 | **A-en big-pickle** | big-pickle high | đợt 4 | **18** | **15** | 7,44 triệu | 0,54 triệu | 62 | 7 | 16,7 |
 | **B-en big-pickle** | big-pickle high | – | **18** | **14** | 3,15 triệu | 0,09 triệu | 57 | 9 | 8,3 |
+| **A-en big-pickle medium** | big-pickle medium | đợt 4 | **18** | **15** | 8,56 triệu | 0,49 triệu | 48 | 8 | 14,1 |
+| **B-en big-pickle medium** | big-pickle medium | – | **17** | **14** | 4,57 triệu | 1,42 triệu | 51 | 9 | 8,2 |
 
 "Input + cache" đã cộng token của các lần nén ngữ cảnh (message `compaction`). Mọi lượt A đều có nén ngữ cảnh (A-vi,
-A-en ①: 1 lần, 0,11 triệu; A-en ②: 1 lần, 0,22 triệu; A-en big-pickle: 3 lần, 0,40 triệu), không lượt B nào có. Các bảng
+A-en ①: 1 lần, 0,11 triệu; A-en ②: 1 lần, 0,22 triệu; A-en big-pickle: 3 lần, 0,40 triệu; A-en big-pickle medium: 3 lần,
+0,39 triệu), không lượt B nào có. Hai lượt medium (24/11) xem ở Lượt lặp 4. Các bảng
 ở Lượt lặp 1–2 và CSV chưa cộng phần này, nên số của nhánh A ở đó thấp hơn 0,11 triệu. Cột "Đọc file" của hai lượt
 big-pickle chỉ tính file mã nguồn (A còn 4 lần đọc lại output VGAR bị cắt). Cột "Input không cache" phụ thuộc cách nhà cung
 cấp cache, chỉ để tham khảo. "Edit" gồm cả tạo file nháp. Lượt A-vi gửi Bước 1 hai lần, A-en ① gửi lại lỗi 4–5, B-en ② bị dừng một lần ở lỗi 2 rồi
@@ -352,3 +355,96 @@ Ghi nhận về VGAR ở lượt A-en big-pickle:
   không đòi dán JSON). Thêm ít nhất 2 lượt mỗi nhánh để ước lượng độ dao động.
 - NOT_RUN không được để mô hình đọc thành PASS (status ngoài cùng hoặc thông báo "not verified"). Đưa hằng số cấp module thành
   node.
+
+## Lượt lặp 4: cặp big-pickle medium, 24/11/2026
+
+### Điều kiện
+
+| | A-en medium (VGAR) | B-en medium |
+|---|---|---|
+| Phiên | `ses_df5c9ffa` (04:00–04:19) | `ses_df5ec401` (03:23–03:37) |
+| Repo | `D:\kltn\shopflow-clean1\shopflow` (repo mới) | `D:\kltn\shopflow-clean\shopflow` |
+| Code xuất phát | `b8a60fb` (03:59; tree giống hệt `ee54b36`) | `ee54b36` |
+| Commit kết quả | `13dbdae` (trên `master`) | `0c7119f` (trên `master`) |
+| Mô hình | `oc/big-pickle`, variant `medium` | như A |
+| Server VGAR | đợt 4 (không đổi so với lượt high) | tắt |
+| Prompt | như lượt high, có prompt rerun cuối | như lượt high, có prompt rerun cuối |
+
+- `b8a60fb` có cùng tree hash với `ee54b36` (`2f95ff90…`), nên hai lượt medium xuất phát từ đúng code của cặp high.
+- Lượt bị loại: `ses_df5da86a` (A-en medium, 03:42–03:55). Lượt này chạy trên `master` của repo cũ, lúc đó đã là `0c7119f` (có
+  sẵn mọi bản sửa của B-en medium). Agent không sửa gì, báo đúng là "None by me", mọi lần kiểm đều NO_CHANGES.
+- Hai lượt đều không có lần sửa nào trong bước rerun.
+- CSV thêm 6 lượt, tổng 584 dòng: `B_nomcp_en_2` 151, `A_vgar_en_2` 106 (cặp nemotron ② của Lượt lặp 3),
+  `B_nomcp_en_bigpickle_high` 59, `A_vgar_en_bigpickle_high` 101, `B_nomcp_en_bigpickle_medium` 60,
+  `A_vgar_en_bigpickle_medium` 107. Khác 4 lượt nemotron cũ trong CSV: có cả dòng nén ngữ cảnh (`tools` = `compaction`) và bước
+  rerun (`step` = `Rerun`, chỉ có ở các lượt big-pickle). Cột `model` của các lượt big-pickle ghi kèm variant
+  (`oc/big-pickle:high`, `oc/big-pickle:medium`). Ở `B_nomcp_en_2`, prompt "continue" sau lần bị dừng được tính vào bước Lỗi 2.
+
+### Big-pickle medium: A so với B (phần lõi)
+
+| | A-en medium (VGAR) | B-en medium | A / B |
+|---|---|---|---|
+| Bộ test ẩn (FAIL / 105) | **18** | **17** | B hơn 1 test (`test_order_copies_input_lines`) |
+| Bước 2: đúng / 17 | 15 (sót B05, B14), không báo thừa | 14 (sót B05, B14, B15), 2 mục thừa | +1 |
+| Bước 3: sửa đúng hẳn | B03, B08, B09, B11, B13, B16, B17 | như A, thêm B04 | – |
+| Sửa một phần | B04 (giữ dùng chung list truyền vào) | – | – |
+| Thời gian agent làm việc | 14,1 phút | 8,2 phút | ×1,7 |
+| Token đầu vào: input + cache (gồm nén ngữ cảnh) | 8,56 triệu (8,17 + 0,39 nén) | 4,57 triệu | ×1,9 |
+| Output + reasoning (gồm nén ngữ cảnh) | 89k (75k + 14k nén) | 49k | ×1,8 |
+| — Bước 1–2: thời gian / token | 5,9 phút / 2,08 triệu | 3,0 phút / 0,47 triệu | ×2,0 / ×4,4 |
+| — 5 lỗi: thời gian / token | 8,3 phút / 6,48 triệu | 5,2 phút / 4,09 triệu | ×1,6 / ×1,6 |
+| Lần gọi mô hình | 95 | 57 | ×1,7 |
+| Lần gọi tool (VGAR) | 205 (116) | 106 | ×1,9 |
+| Thời gian chạy của server VGAR | 18 giây | – | – |
+| Output VGAR | ≥ 1,29 MB (11 lần bị OpenCode cắt ở 50 KB) | – | ≈ 47 lần toàn bộ mã nguồn |
+| Lần đọc mã nguồn | 48 (5 lỗi: 21) | 51 (5 lỗi: 24) | không giảm |
+| Lần đọc lại output VGAR bị cắt | 0 | – | – |
+| Lần edit / write | 8 | 9 | tương đương |
+| Lần nén ngữ cảnh | 3 | 0 | – |
+| File nháp để lại | 0 (nhưng commit có 27 file `__pycache__/*.pyc`) | 0 | – |
+| *Bước rerun (riêng)* | *0,63 triệu, 2,2 phút* | *0,41 triệu, 1,0 phút* | – |
+
+Ghi chú cho bảng:
+- Cách đo giống Lượt lặp 3: thời gian là wall time từng prompt (gồm cả thời gian nén ngữ cảnh), token cộng theo message.
+  Riêng B-en medium, tổng theo message (4,98 triệu cả phiên) thấp hơn `info.tokens` (5,08 triệu) khoảng 0,1 triệu.
+- Bộ test ẩn: 17 FAIL của B-en medium đều thuộc lỗi không có trong 5 prompt (B01, B02, B05, B06, B07, B10, B12, B14, B15).
+  Đây là mức trần của phạm vi 5 prompt. A-en medium FAIL thêm đúng 1 test của B04, cùng danh sách 18 test với cả hai lượt high.
+  Code sửa của hai lượt medium giống hệt nhau, trừ một dòng: B sửa `self.lines = list(lines) if lines is not None else []`,
+  A bỏ `list(...)`.
+- Cả hai lượt sửa B08 bằng 1 dòng `except Exception` (như A high). Không lượt nào gặp vấn đề "đơn đã lưu nhưng giữ chỗ đã
+  nhả" của B high.
+- Mức cache khác nhiều giữa các lượt B (B medium: input không cache 1,42 triệu, khoảng 31%; B high: 0,09 triệu, khoảng 3%).
+  Tỉ lệ này phụ thuộc nhà cung cấp, nên vẫn so bằng input + cache.
+- Thời gian chênh lệch nằm ở phía mô hình: chờ token đầu 434 so với 215 giây. Server VGAR chạy tổng cộng 18 giây.
+- Output VGAR theo tool: `get_related_context` 14 lần, 625 KB (trung bình 45 KB, 9 lần bị cắt); `verify_patch_graph_constraints`
+  6 lần, 289 KB (2 lần bị cắt); `find_task_anchors` 14 lần, 155 KB; còn lại dưới 70 KB mỗi tool. Lần nén ngữ cảnh đầu lại xảy
+  ra ở Bước 2, ngay sau loạt `get_related_context` cho 6 quy tắc.
+- Phân bổ 116 lần gọi VGAR: Bước 1: 23, Bước 2: 42, 5 lỗi: 8 / 14 / 8 / 9 / 12. Prompt bắt buộc ít nhất 38 lần, nên khoảng 78
+  lần do mô hình tự chọn (bằng lượt high). Khác lượt high: không có diff giả nào ở Bước 1.
+
+### Ghi nhận về VGAR ở lượt A-en medium
+
+- Anchor trúng ít nhất một file lỗi ở cả 5 lỗi, giống lượt high: lỗi 3 → `OrderLine`, `Order.subtotal`; lỗi 1 →
+  `combine_rates` (0,85, khớp nguyên văn thông báo lỗi), `coupon_rate`; lỗi 2 → `quote_order`, `shipping_fee`; lỗi 4 →
+  `order_shipped`; lỗi 5 → `cancel_order`. Chỗ sửa thứ hai của các lỗi ghép không được anchor (`place_order` cho B08,
+  `InventoryService.commit` cho B17), và hằng số `ALLOWED_TRANSITIONS` chưa là node.
+- Kiểm patch: `verify` PASS ở lỗi 3, 1, 2, 4. Mỗi lần build đều có `checks_before_update: CHECKED` đúng các file vừa sửa. Lỗi 5:
+  `verify` NOT_RUN (`API_UNSUPPORTED_DECLARATION`), và agent báo đúng là NOT CHECKED. Không lần kiểm nào làm agent đổi bản sửa.
+- Lỗi 1: agent gọi lại `analyze` + `verify` lần hai chỉ vì OpenCode đã cắt output `verify` lần đầu, nên chưa có bản nguyên
+  văn để dán. Output `verify` lần hai cũng bị cắt.
+- Bước 2: A-en medium là lượt duy nhất tìm ra B15 (`find_by_email` không lowercase), và không báo mục thừa nào. Agent cũng chạy
+  thử triệu chứng trong bộ nhớ ở nhiều mục. Lượt B cùng mô hình tìm được 14 lỗi, sót đúng các lỗi mà B high đã sót.
+
+### Nhận định (lượt lặp 4)
+
+- Kết luận của lượt lặp 3 không đổi khi hạ mức suy nghĩ từ high xuống medium:
+  - Kết quả: A 18 so với B 17. Phần chênh chỉ là 1 dòng copy list ở B04, chưa đủ để coi là khác biệt (n = 1). Cả 4 lượt
+    big-pickle đều sửa đúng mọi lỗi trong prompt.
+  - Chi phí: A tốn ×1,9 token và ×1,7 thời gian (lượt high: ×2,4 và ×2,0). Phần chênh vẫn nằm nhiều nhất ở Bước 1–2.
+- Medium so với high: B medium dùng nhiều token hơn B high (4,57 so với 3,15 triệu) nhưng thời gian bằng nhau. A medium dùng
+  nhiều token hơn A high (8,56 so với 7,44 triệu) nhưng nhanh hơn (14,1 so với 16,7 phút). Bước 2 bằng nhau ở cả hai nhánh
+  (A 15, B 14). Với 1 lượt mỗi ô, chưa thấy medium kém hơn high trên ShopFlow.
+- Output VGAR quá lớn tiếp tục là nguyên nhân chính gây cắt output, gọi lại tool và nén ngữ cảnh. Điều này ủng hộ việc giảm
+  kích thước output (spec đợt 5).
+- ShopFlow vẫn chạm trần: B-en medium đạt đúng mức trần của phạm vi 5 prompt. Hướng tiếp theo giữ như Lượt lặp 3: cần
+  benchmark khó hơn.

@@ -101,7 +101,7 @@ Thứ tự gợi ý: lỗi 3 trước (làm nhiễu các lần tái hiện khác
 | 2 | B16 + B11 | Khách C003 (hạng standard) đặt 2 KEY-1001 (159.80 USD, 2.4 kg). Báo giá ra phí ship 244.70 và thuế tính cả trên phí ship. Đúng ra phải miễn ship, thuế 15.98, tổng 175.78. |
 | 3 | B04 | Alice (C001) đặt 1 MOU-2001, sau đó Bob (C002) đặt 1 CAB-4001. Đơn của Bob lại chứa cả dòng MOU-2001 của Alice, và subtotal cộng luôn tiền của đơn kia. |
 | 4 | B09 + B17 | Đặt 2 HUB-5001, xác nhận, rồi gọi POST /orders/<id>/ship thì nhận 500 "internal error". Dù báo lỗi, đơn vẫn chuyển sang shipped và tồn kho đã bị trừ; sau đó "available" của HUB-5001 ra số âm. |
-| 5 | B13 | Huỷ được một đơn đã ở trạng thái shipped, và việc huỷ còn cộng trả lại hàng vào kho. |
+| 5 | B13 | Huỷ được một đơn đã ở trạng thái shipped, và việc huỷ còn cộng trả lại hàng vào kho. Theo đặc tả, shipped là trạng thái cuối: huỷ đơn đã giao phải báo lỗi chuyển trạng thái và không được cộng lại kho. |
 | 6 | B06 | HUB-5001 còn 3 cái. Đơn thứ nhất đặt 2 cái thành công; đơn thứ hai đặt thêm 2 cái cũng thành công, nên tổng giữ chỗ vượt tồn kho. |
 | 7 | B07 | Với build_app(today=lambda: date(2026, 11, 20)) (thứ 6), giao một đơn: ngày giao dự kiến ra 2026-11-26, sớm hơn một ngày, như thể thứ 7 là ngày làm việc. |
 | 8 | B02 | Giá 2.675 được làm tròn thành 2.67, trong khi phải là 2.68 (ROUND_HALF_UP). |
@@ -122,8 +122,48 @@ verify_patch_graph_constraints ghi nguyên văn) -> phần chưa kiểm được
 
 ## Nhánh đối chứng không có VGAR
 
-`git switch -c agent-run-nomcp <commit gốc>`, đặt `"disabled": true` cho cả ba server, phiên mới với **cùng mô hình**,
-cùng prompt nhưng bỏ các câu nhắc tool `vgar-*` và bỏ mục 5 của Bước 3.
+`git switch -c run-nomcp <commit gốc>`, đặt `"disabled": true` cho cả ba server (kiểm `opencode.cmd mcp list`: không
+server nào "connected"), phiên mới với **cùng mô hình**. Prompt (giống lần có VGAR, bỏ phần tool VGAR):
+
+Bước 1:
+
+```text
+Đọc repo này rồi tóm tắt kiến trúc: các component, luồng đặt đơn từ API -> service -> repository, và module nào phụ
+thuộc module nào. Chỉ đọc, chưa sửa gì.
+```
+
+Bước 2:
+
+```text
+Repo này không có test và không có tài liệu. Đặc tả nghiệp vụ là:
+- Tiền tệ dùng Decimal, làm tròn ROUND_HALF_UP đến 2 chữ số.
+- Chiết khấu hạng khách + coupon kết hợp kiểu nhân dồn, tối đa 50%. Coupon trong config.COUPONS lưu theo phần trăm.
+- Miễn phí ship khi giá trị sau chiết khấu >= 100; thuế 10% chỉ tính trên tiền hàng sau chiết khấu, không tính trên phí ship.
+- Đặt đơn giữ chỗ (reserve) hàng; mọi lỗi khi đặt đơn phải nhả lại toàn bộ chỗ đã giữ.
+- Trạng thái: pending -> confirmed -> shipped; pending/confirmed -> cancelled. shipped và cancelled là trạng thái cuối.
+- Ngày giao dự kiến tính theo ngày làm việc (thứ 2 - thứ 6).
+Với TỪNG quy tắc: tìm và đọc các file, hàm liên quan; nếu logic đi qua nhiều file thì lần theo nơi gọi và hàm được gọi.
+Ngoài đặc tả, tìm cả chỗ code mâu thuẫn với chính nó giữa các file: gọi sai thứ tự tham số, dùng thuộc tính không tồn
+tại, dữ liệu lưu một kiểu nhưng đọc kiểu khác, so sánh biên sai, phân trang, mã lỗi HTTP.
+Liệt kê: file:dòng, triệu chứng người dùng thấy, lỗi có liên quan nhiều file không. Xét đủ mọi module trong shopflow/,
+cuối cùng liệt kê các module đã xét. Không lặp một lỗi ở nhiều dòng. CHƯA sửa code.
+```
+
+Bước 3 (khung, thay `<MÔ TẢ LỖI>` bằng dòng trong bảng ở trên; thứ tự 3, 1, 2, 4, 5, …):
+
+```text
+<MÔ TẢ LỖI>
+Làm theo thứ tự, không tạo file mới trong repo:
+1. Tìm các file, hàm liên quan tới lỗi.
+2. Nếu lỗi đi qua nhiều file, lần theo nơi gọi và hàm được gọi.
+3. Đọc các file đó. Tái hiện lỗi bằng `python -c` dùng shopflow.app.build_app.
+4. Sửa tối thiểu nhưng đúng đặc tả, rồi chạy lại đoạn tái hiện.
+5. Chạy `git diff` và kiểm lại bằng cách đọc thay đổi đó có làm hỏng nơi khác gọi tới không.
+6. Báo: nguyên nhân, file:dòng đã sửa, kết quả kiểm.
+```
+
+Bước 4–5: dùng nguyên prompt "Kiểm lại cuối và báo cáo" ở trên, bỏ cụm "kết quả analyze_patch_impact và
+verify_patch_graph_constraints ghi nguyên văn".
 
 ## Chấm
 
