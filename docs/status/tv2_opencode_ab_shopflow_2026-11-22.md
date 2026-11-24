@@ -289,6 +289,7 @@ Ghi chú cho bảng:
 | **A-en big-pickle medium** | big-pickle medium | đợt 4 | **18** | **15** | 8,56 triệu | 0,49 triệu | 48 | 8 | 14,1 |
 | **B-en big-pickle medium** | big-pickle medium | – | **17** | **14** | 4,57 triệu | 1,42 triệu | 51 | 9 | 8,2 |
 | **A-en big-pickle medium (đợt 5)** | big-pickle medium | đợt 5 | **18** | **15** | 13,27 triệu | 0,57 triệu | 56 | 7 | 15,9 |
+| **A-en big-pickle medium (đợt 6, SCIP)** | big-pickle medium | đợt 6 | **18** | **15** | 13,13 triệu | 0,91 triệu | 55 | 10 | 21,5 |
 
 "Input + cache" đã cộng token của các lần nén ngữ cảnh (message `compaction`). Mọi lượt A đều có nén ngữ cảnh (A-vi,
 A-en ①: 1 lần, 0,11 triệu; A-en ②: 1 lần, 0,22 triệu; A-en big-pickle: 3 lần, 0,40 triệu; A-en big-pickle medium: 3 lần,
@@ -502,3 +503,63 @@ Ghi chú:
 - Chưa thấy lợi về chi phí: chi phí do số lần gọi mô hình × độ dài ngữ cảnh quyết định, không chỉ do kích thước output.
   Cần lặp ≥ 3 lượt mỗi cấu hình và tính $/task solved có tách giá cache (spec đợt 5 §5.4).
 - ShopFlow vẫn chạm trần (17–18 FAIL ở mọi lượt big-pickle); cần benchmark khó hơn để thấy khác biệt chất lượng.
+
+## Lượt lặp 6: A-en big-pickle medium với SCIP mặc định (đợt 6), 24/11/2026
+
+### Điều kiện
+
+| | A-en medium đợt 6 (SCIP) | A-en medium đợt 5 (Lượt lặp 5) |
+|---|---|---|
+| Phiên | `ses_df1ad49d` | `ses_df3c1717` |
+| Repo (gốc MCP) | `D:\kltn\shopflow-clean\shopflow` (thư mục chứa package `shopflow\`) | `D:\kltn\shopflow-clean1\shopflow` |
+| Code xuất phát / kết quả | `2c9b176` → `c7cce6f` (commit thẳng trên `master`) | `68c96af` → `9119471` |
+| Mô hình | `oc/big-pickle`, variant `medium` | như cột bên |
+| Server VGAR | đợt 6: SCIP → LSP (khi SCIP lỗi) → tĩnh, mặc định | đợt 5, không layer |
+| Prompt | như Lượt lặp 4–5, có prompt rerun | như cột bên |
+
+- Lượt bị loại: `ses_df211e36` (cùng ngày). MCP trỏ vào thư mục package `shopflow\shopflow`, nên module mất tiền tố
+  `shopflow.`, 136/139 import thành "external", graph chỉ 33 CALLS. Không dùng số của lượt đó.
+- Bảng "Tất cả các lượt" không tính bước rerun; bảng dưới tính cả rerun.
+
+### SCIP trong phiên thật
+
+| Kiểm | Kết quả |
+|---|---|
+| `layers` ở 6/6 lần `build_or_update_graph` | `scip: ready`, `lsp: skipped` ("SCIP ready") |
+| Graph | 615 node, 931 cạnh (136 CALLS từ SCIP, như `tv2_scip_in_served_graph_run_2026-11-24.md`) |
+| Thời gian mỗi lần dựng (đầy đủ) | 2,8–3,4 s |
+| `changed_files` sau mỗi lỗi | đúng file, có tiền tố `shopflow/` |
+| `checks_before_update.verify` | PASS ở lỗi 1–4, NOT_RUN ở lỗi 5 (`ALLOWED_TRANSITIONS`) |
+| File lạ trong repo | không |
+
+### Kết quả
+
+| | Đợt 5 (Lượt lặp 5, không SCIP) | Đợt 6 (SCIP) |
+|---|---|---|
+| Bộ test ẩn (FAIL / 105) | 18 | **18** (cùng danh sách; B04 vẫn không copy list) |
+| Bước 2: đúng / 17 | 15 (sót B05, B14) + 1 mục ngoài đáp án | 15 (sót B05, B14) + 1 mục ngoài đáp án khác (body `items` sai định dạng) |
+| Output VGAR | 595 KB | 648 KB (0 lần bị cắt) |
+| Lần gọi mô hình | 127 | 132 |
+| Lần gọi VGAR | 82 | 96 |
+| Lần đọc mã nguồn | 56 | 59 |
+| Lần edit | 7 | 10 |
+| Lần nén ngữ cảnh | 1 | 2 |
+| Thời gian (cả phiên) | 17,7 phút | 24,2 phút |
+| Token đầu vào: input + cache | 13,55 triệu | **13,93 triệu** |
+| Output + reasoning | 92k | 88k |
+
+Ghi chú:
+- Bước 2 rẻ (0,74 triệu; 6–11 tool mỗi lần gọi), nhưng phần sửa lỗi đắt (1,9–3,2 triệu mỗi lỗi). Lỗi 1 mất 5,9 phút,
+  35 lần gọi VGAR: agent gọi `verify` với `details=true` hai lần (34–38 KB mỗi lần); lần sửa đầu chuyển đoạn lưu đơn vào
+  `try` nên `verify` NOT_RUN (`API_UNSUPPORTED_EXPORT`), agent sửa lại rồi kiểm tiếp.
+- Bước rerun: agent tự gõ diff đưa vào `verify` → ERROR `PATCH_DOES_NOT_APPLY`.
+- B08 được sửa bằng cách đưa cả bước lưu đơn và gửi thông báo vào `try` (giống B high): nếu thông báo lỗi sau khi đơn đã lưu,
+  giữ chỗ bị nhả mà đơn vẫn còn. Test ẩn không kiểm trường hợp này.
+
+### Nhận xét
+
+- RQ1: SCIP (Layer 2, §5.4) chạy ổn định trong phiên agent thật với graph đầy đủ: 6/6 lần dựng `ready`, khoảng 3 s mỗi
+  lần, `verify` đúng, không ghi file vào repo.
+- Chi phí: SCIP **không giảm token** trên ShopFlow (13,93 so với 13,55 triệu); chi phí do số lần gọi mô hình và cách agent
+  dùng tool (`details=true`, sửa lại) quyết định.
+- Chất lượng: như đợt 5 (18 FAIL, 15/17). ShopFlow vẫn chạm trần; cần benchmark khó hơn và ≥ 2–3 lượt mỗi cấu hình.
