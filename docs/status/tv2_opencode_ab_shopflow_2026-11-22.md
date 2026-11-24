@@ -288,6 +288,7 @@ Ghi chú cho bảng:
 | **B-en big-pickle** | big-pickle high | – | **18** | **14** | 3,15 triệu | 0,09 triệu | 57 | 9 | 8,3 |
 | **A-en big-pickle medium** | big-pickle medium | đợt 4 | **18** | **15** | 8,56 triệu | 0,49 triệu | 48 | 8 | 14,1 |
 | **B-en big-pickle medium** | big-pickle medium | – | **17** | **14** | 4,57 triệu | 1,42 triệu | 51 | 9 | 8,2 |
+| **A-en big-pickle medium (đợt 5)** | big-pickle medium | đợt 5 | **18** | **15** | 13,27 triệu | 0,57 triệu | 56 | 7 | 15,9 |
 
 "Input + cache" đã cộng token của các lần nén ngữ cảnh (message `compaction`). Mọi lượt A đều có nén ngữ cảnh (A-vi,
 A-en ①: 1 lần, 0,11 triệu; A-en ②: 1 lần, 0,22 triệu; A-en big-pickle: 3 lần, 0,40 triệu; A-en big-pickle medium: 3 lần,
@@ -448,3 +449,56 @@ Ghi chú cho bảng:
   kích thước output (spec đợt 5).
 - ShopFlow vẫn chạm trần: B-en medium đạt đúng mức trần của phạm vi 5 prompt. Hướng tiếp theo giữ như Lượt lặp 3: cần
   benchmark khó hơn.
+
+## Lượt lặp 5: A-en big-pickle medium sau đợt 5 (thu nhỏ output), 24/11/2026
+
+### Điều kiện
+
+| | A-en medium sau đợt 5 | A-en medium đợt 4 (Lượt lặp 4) |
+|---|---|---|
+| Phiên | `ses_df3c1717` | `ses_df5c9ffa` |
+| Repo | `D:\kltn\shopflow-clean1\shopflow` (tạo lại, xuất phát `68c96af`) | như cột bên, `b8a60fb` |
+| Commit kết quả | `9119471` | `13dbdae` |
+| Mô hình | `oc/big-pickle`, variant `medium` | như cột bên |
+| Server VGAR | đợt 5 (spec `2026-11-24-tv2-smaller-tool-output-design.md`, chưa commit) | đợt 4 |
+| Prompt | như Lượt lặp 4, có prompt rerun | như cột bên |
+
+Chưa có lượt B chạy cùng thời điểm; lượt này so với lượt A đợt 4. Số liệu đo bằng
+`D:\kltn\vgar-work\opencode-logs\session_metrics.py`, **tính cả bước rerun** (bảng Lượt lặp 4 không tính rerun, nên số cột
+đợt 4 ở đây lớn hơn bảng đó).
+
+### Kết quả
+
+| | Đợt 4 | Đợt 5 |
+|---|---|---|
+| Bộ test ẩn (FAIL / 105) | 18 | **18** (cùng danh sách) |
+| Bước 2: đúng / 17 | 15 (sót B05, B14) | 15 (sót B05, B14), thêm 1 mục ngoài đáp án |
+| Bước 3: code sửa | | giống hệt đợt 4, kể cả B04 sửa một phần |
+| Output VGAR | 1.485 KB | **595 KB** (−60%) |
+| Lần bị OpenCode cắt ở 50 KB | 11 | **0** |
+| `get_related_context` lớn nhất | 85,6 KB | **32,8 KB** |
+| `verify_patch_graph_constraints` mỗi lần | 49–54 KB | **~1,1 KB** |
+| Lần nén ngữ cảnh | 3 | **1** |
+| Lần gọi VGAR | 116 | 82 |
+| Lần đọc mã nguồn | 55 | 56 |
+| Lần gọi mô hình | 104 | 127 |
+| Thời gian (wall, cả phiên) | 16,4 phút | 17,7 phút |
+| Token đầu vào: input + cache | 9,18 triệu | **13,55 triệu** (+48%) |
+| Output + reasoning | 110k | 92k |
+
+Ghi chú:
+- Mục ngoài đáp án ở Bước 2: `ship_order` đổi trạng thái sang SHIPPED trước `inventory.commit()`. Không phải lỗi cài sẵn.
+- `get_related_context`: 14 lần, mọi response ≤ 32,8 KB, 5 lần bị giới hạn 32 KiB bỏ mục (6–13 mục). Không hàm lỗi nào mất:
+  code sửa và kết quả chấm giống đợt 4.
+- Lỗi 5: `verify` trả `status` ngoài cùng NOT_RUN, summary nêu `API_UNSUPPORTED_DECLARATION: ALLOWED_TRANSITIONS`. Agent
+  báo đúng "NOT checked — verification did not complete". Các lượt trước có lúc báo NOT_RUN thành PASS.
+- Token tăng gần hết ở Bước 2 (6,71 so với 1,70 triệu): 59 lần gọi mô hình, **mỗi lần đúng 1 tool**, không nén ngữ cảnh,
+  mỗi lần đọc lại khoảng 114k token. Đợt 4: 23 lần gọi, nhiều lần chạy 6–11 tool song song, và bị nén ngay trong Bước 2.
+  Mô hình thôi gọi tool song song là biến động của mô hình/nhà cung cấp, chưa quy được cho đợt 5 (n=1).
+
+### Nhận xét
+
+- Đợt 5 đạt mục tiêu của nó: output nhỏ, không bị cắt, kết luận kiểm hiện ở `status` ngoài cùng và được agent báo đúng.
+- Chưa thấy lợi về chi phí: chi phí do số lần gọi mô hình × độ dài ngữ cảnh quyết định, không chỉ do kích thước output.
+  Cần lặp ≥ 3 lượt mỗi cấu hình và tính $/task solved có tách giá cache (spec đợt 5 §5.4).
+- ShopFlow vẫn chạm trần (17–18 FAIL ở mọi lượt big-pickle); cần benchmark khó hơn để thấy khác biệt chất lượng.
