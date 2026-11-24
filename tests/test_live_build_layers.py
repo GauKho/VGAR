@@ -136,3 +136,27 @@ def test_unreadable_git_data_falls_back_to_cli(tmp_path, monkeypatch):
 
     monkeypatch.setattr(dulwich.repo.Repo, "head", broken)
     assert head_revision(root) == ("cli", False)
+
+
+def test_full_rebuild_with_layers_lists_changed_files(tmp_path):
+    """Spec 2026-11-24 §4.5: with a layer on every build is full, and changed_files still names the edited files."""
+    root = write_tree(tmp_path / "plain", FILES)
+    missing = TsgConfig(executable=tmp_path / "no-such-tsg", tree_sitter_dir=tmp_path)
+    live = LiveGraphBuilder(root, tmp_path / "g.db", layers=LayerConfigs(tsg=missing))
+    assert live.run()["changed_files"] == []
+    (root / "pkg/mod.py").write_bytes(FILES["pkg/mod.py"] + b"\nX = 1\n")
+    edited = live.run()
+    assert edited["mode"] == "cold" and edited["changed_files"] == ["pkg/mod.py"]
+    (root / "pkg/new.py").write_text("Y = 2\n", encoding="utf-8")
+    (root / "pkg/mod.py").unlink()
+    assert live.run()["changed_files"] == ["pkg/mod.py", "pkg/new.py"]
+
+
+def test_changed_files_survive_a_server_restart(tmp_path):
+    """Final review: hosts start a new server per session; the first layered build must still name edited files."""
+    root = write_tree(tmp_path / "plain", FILES)
+    missing = TsgConfig(executable=tmp_path / "no-such-tsg", tree_sitter_dir=tmp_path)
+    LiveGraphBuilder(root, tmp_path / "g.db", layers=LayerConfigs(tsg=missing)).run()
+    (root / "pkg/mod.py").write_bytes(FILES["pkg/mod.py"] + b"\nX = 1\n")
+    restarted = LiveGraphBuilder(root, tmp_path / "g.db", layers=LayerConfigs(tsg=missing))
+    assert restarted.run()["changed_files"] == ["pkg/mod.py"]

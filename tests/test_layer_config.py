@@ -1,14 +1,17 @@
 """Layer settings shared by scripts/build_graph.py and the served build (spec 2026-11-15 §1)."""
 from __future__ import annotations
 
+import os
 from pathlib import Path
 
 import pytest
 
 from vgar.graph.layer_config import (
     LayerConfigs,
+    default_resolver_entries,
     layer_configs,
     layer_summary,
+    prune_runs,
     lsp_config,
     scip_config,
 )
@@ -108,3 +111,71 @@ def test_host_config_rejects_half_tsg_pair(tmp_path):
 def test_host_config_rejects_non_numeric_timeout(tmp_path):
     env = dict(_graph_env(tmp_path), VGAR_JOERN="1", VGAR_JOERN_TIMEOUT="abc")
     assert any(p.startswith("VGAR_JOERN_TIMEOUT") for p in check_host_config("graph", env))
+
+
+# --- Batch 6: SCIP and LSP on by default for the server process (spec 2026-11-24 §4.1) -------------
+@pytest.fixture
+def runtimes(tmp_path):
+    scip, lsp = tmp_path / "scip.js", tmp_path / "lsp.js"
+    scip.write_text("", encoding="utf-8")
+    lsp.write_text("", encoding="utf-8")
+    return scip, lsp
+
+
+def test_default_entries_point_to_installed_runtimes(runtimes):
+    scip, lsp = runtimes
+    assert default_resolver_entries({}, scip_runtime=scip, lsp_runtime=lsp) == {
+        "VGAR_SCIP_ENTRY": str(scip.resolve()), "VGAR_LSP_ENTRY": str(lsp.resolve())}
+
+
+@pytest.mark.parametrize("name,entry", [("VGAR_SCIP", "VGAR_SCIP_ENTRY"), ("VGAR_LSP", "VGAR_LSP_ENTRY")])
+def test_off_switch_leaves_that_resolver_unset(runtimes, name, entry):
+    scip, lsp = runtimes
+    assert entry not in default_resolver_entries({name: " OFF "}, scip_runtime=scip, lsp_runtime=lsp)
+
+
+def test_host_entry_is_kept(runtimes, tmp_path):
+    scip, lsp = runtimes
+    entries = default_resolver_entries({"VGAR_SCIP_ENTRY": str(tmp_path / "mine.js")}, scip_runtime=scip, lsp_runtime=lsp)
+    assert "VGAR_SCIP_ENTRY" not in entries and entries["VGAR_LSP_ENTRY"] == str(lsp.resolve())
+
+
+def test_missing_runtime_sets_nothing(tmp_path):
+    assert default_resolver_entries({}, scip_runtime=tmp_path / "no.js", lsp_runtime=tmp_path / "no2.js") == {}
+
+
+@pytest.mark.parametrize("status", ["skipped", "not_needed"])
+def test_lsp_with_nothing_to_do_is_skipped(status):
+    document = {"statistics": {"resolver": {"requested": "scip", "status": "fallback", "reason": "x",
+                                            "lsp": {"status": status, "reason": "why"}}}}
+    summary = layer_summary(document, LayerConfigs(scip=object(), lsp=object()))
+    assert summary["lsp"] == {"status": "skipped", "reason": "why"}
+
+
+def test_only_lsp_is_not_a_fallback(tmp_path):
+    assert layer_configs({"VGAR_LSP_ENTRY": str(tmp_path / "l.js")}).lsp.fallback_only is False
+
+
+# --- Batch 6: run folders next to the database (spec 2026-11-24 §4.4) ---------------------------------
+def test_run_directories_sit_next_to_the_database(tmp_path):
+    layers = layer_configs({"VGAR_GRAPH_DATABASE": str(tmp_path / "data" / "g.db"),
+                            "VGAR_SCIP_ENTRY": str(tmp_path / "s.js"), "VGAR_LSP_ENTRY": str(tmp_path / "l.js")})
+    assert Path(layers.scip.output_directory) == tmp_path / "data" / "scip-runs"
+    assert Path(layers.lsp.output_directory) == tmp_path / "data" / "lsp-runs"
+
+
+@pytest.mark.parametrize("database", [None, "relative/g.db"])
+def test_without_an_absolute_database_the_old_directories_stay(tmp_path, database):
+    env = {"VGAR_SCIP_ENTRY": str(tmp_path / "s.js"), **({"VGAR_GRAPH_DATABASE": database} if database else {})}
+    assert str(layer_configs(env).scip.output_directory) == "artifacts/m1/w7-w8/scip"
+
+
+def test_prune_runs_keeps_the_three_newest(tmp_path):
+    for index in range(5):
+        run = tmp_path / f"run{index}"
+        run.mkdir()
+        (run / "index.scip").write_bytes(b"x")
+        os.utime(run, (1_000 + index, 1_000 + index))
+    prune_runs(tmp_path)
+    assert sorted(p.name for p in tmp_path.iterdir()) == ["run2", "run3", "run4"]
+    prune_runs(tmp_path / "missing")   # no error

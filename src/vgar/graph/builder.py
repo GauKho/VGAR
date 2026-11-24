@@ -244,6 +244,13 @@ class PythonGraphBuilder:
                 self.trace.emit("resolver_fallback", **self.resolver_report)
                 if self.scip_config.strict:
                     raise
+        if self.lsp_config is not None and self.lsp_config.fallback_only and self.scip_resolver is not None:
+            # LSP is the fallback of a ready SCIP: skip it, and identify the graph as a SCIP-only build.
+            self.resolver_report["lsp"] = {"status": "skipped", "reason": "SCIP ready"}
+            self.lsp_config = None
+            self.graph_version = self._calculate_graph_version(root, python_files)
+            for item in [*self.nodes, *self.edges]:
+                item["graph_version"] = self.graph_version
         if self.lsp_config is not None:
             if current_fingerprint(root) != lsp_sources or auxiliary_fingerprint(root) != lsp_inputs:
                 raise ValueError("Repository changed before LSP resolution")
@@ -253,6 +260,8 @@ class PythonGraphBuilder:
             if self.scip_config is None:
                 self.resolver_report.update(requested="lsp", active=lsp_report["active"],
                     status=lsp_report["status"], reason=lsp_report["reason"])
+            elif self.lsp_config.fallback_only:   # SCIP failed: keep its status/reason, LSP decides what is active
+                self.resolver_report["active"] = lsp_report["active"]
             # LSP answers are known after extraction. IDs are source-derived;
             # update the snapshot on every existing node/edge before linking calls.
             self.graph_version = self._calculate_graph_version(root, python_files)

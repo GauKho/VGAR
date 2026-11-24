@@ -14,7 +14,7 @@ import logging
 import shutil
 import tempfile
 import time
-from dataclasses import asdict
+from dataclasses import asdict, replace
 from pathlib import Path
 from typing import Any
 
@@ -133,7 +133,7 @@ def _port_status(port_check: dict[str, Any]) -> str:
 
 
 def verify_patch(service: Any, diff: str, *, graph_version: str,
-                 source_roots: tuple[str, ...] = ("src",)) -> dict[str, Any]:
+                 source_roots: tuple[str, ...] = ("src",), layers: Any = None) -> dict[str, Any]:
     """Check a unified diff against schema S, structure, public API, import cycles and lost Ports.
 
     Args:
@@ -141,6 +141,8 @@ def verify_patch(service: Any, diff: str, *, graph_version: str,
         diff: Unified diff against the snapshot's source.
         graph_version: Baseline graph to compare with.
         source_roots: Builder source roots used for the baseline graph.
+        layers: The server's ``LayerConfigs``; the candidate is built with the resolver the baseline really used
+            (SCIP, LSP or static), so a resolver difference is never reported as a patch effect.
 
     Returns:
         ``status`` (PASS/FAIL/NOT_RUN/ERROR), per-check ``checks``, ``reasons``, ``graph_version``, ``diff_sha256``.
@@ -152,6 +154,13 @@ def verify_patch(service: Any, diff: str, *, graph_version: str,
         parsed = parse_unified_diff(diff, policy)
     except (ValueError, UnicodeError) as error:
         return _result("ERROR", [f"PATCH_REJECTED: {error}"], {}, graph_version, diff)
+    active = (document.get("statistics", {}).get("resolver") or {}).get("active", "static")
+    resolver: dict[str, Any] = {}
+    if active in {"scip", "lsp"}:
+        config = getattr(layers, active, None)
+        if config is None:
+            return _result("NOT_RUN", [f"CANDIDATE_RESOLVER_UNAVAILABLE: {active}: not configured"], {}, graph_version, diff)
+        resolver = {"scip": config} if active == "scip" else {"lsp": replace(config, fallback_only=False)}
 
     sources = service.snapshot_sources(graph_version)
     with tempfile.TemporaryDirectory(prefix="vgar-verify-") as folder:
@@ -161,9 +170,10 @@ def verify_patch(service: Any, diff: str, *, graph_version: str,
         else:
             shutil.copytree(root, copy, ignore=_IGNORED)
         builder = PythonGraphBuilder(repo_key=document["repo_key"], repository_revision=document["repository_revision"],
-                                     source_roots=source_roots)
+                                     source_roots=source_roots, **resolver)
         builder.trace.path = None
-        if builder._calculate_graph_version(copy, discover_python_files(copy)) != graph_version:
+        # Stored source: the copy is the graph's own code. Without it, check the copy reproduces the snapshot.
+        if sources is None and builder._calculate_graph_version(copy, discover_python_files(copy)) != graph_version:
             from vgar.graph.impact import source_drift
             drift = source_drift(document, root) if sources is None else None   # stored source: builder options differ
             return _result("ERROR", [f"SOURCE_DIFFERS_FROM_SNAPSHOT: {drift} {NO_SOURCE_COPY_HINT}" if drift
@@ -185,6 +195,15 @@ def verify_patch(service: Any, diff: str, *, graph_version: str,
         except GraphValidationError as error:
             return _result("FAIL", ["CANDIDATE_SCHEMA_VIOLATION"], {"schema": {"status": "FAIL", "details": str(error)}},
                            graph_version, diff)
+        if resolver:
+            from vgar.graph.layer_config import prune_layer_runs
+            prune_layer_runs(layers)
+        report = candidate["statistics"].get("resolver") or {}
+        ran = (report.get("status") == "ready" if active == "scip" else
+               (report.get("lsp") or {}).get("status") in {"ready", "not_needed"} if active == "lsp" else True)
+        if not ran:
+            reason = report.get("reason") if active == "scip" else (report.get("lsp") or {}).get("reason")
+            return _result("NOT_RUN", [f"CANDIDATE_RESOLVER_UNAVAILABLE: {active}: {reason}"], {}, graph_version, diff)
 
     after = {**before, **changed}
     api = check_api({path: before[path] for path in changed}, changed, changed_only=True)

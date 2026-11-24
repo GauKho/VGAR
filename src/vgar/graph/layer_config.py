@@ -8,7 +8,7 @@ from __future__ import annotations
 
 import shutil
 from collections.abc import Mapping
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from pathlib import Path
 from typing import Any
 
@@ -116,6 +116,55 @@ def _on(env: Mapping[str, str], name: str) -> bool:
     return (env.get(name) or "").strip().lower() in {"1", "true", "yes", "on"}
 
 
+RUNS_KEPT = 3
+
+
+def prune_runs(directory: Path, keep: int = RUNS_KEPT) -> None:
+    """Delete the oldest run folders of a resolver, keeping the ``keep`` newest; a missing folder is fine.
+
+    Args:
+        directory: A resolver's ``output_directory``.
+        keep: Number of newest run folders to keep.
+    """
+    try:
+        runs = sorted((path for path in Path(directory).iterdir() if path.is_dir()), key=lambda path: path.stat().st_mtime)
+    except OSError:
+        return
+    for path in runs[:-keep] if keep else runs:
+        shutil.rmtree(path, ignore_errors=True)
+
+
+def prune_layer_runs(layers: LayerConfigs) -> None:
+    """``prune_runs`` for the SCIP and LSP run folders of ``layers``.
+
+    Args:
+        layers: Layer configs of a build.
+    """
+    for config in (layers.scip, layers.lsp):
+        if config is not None:
+            prune_runs(Path(config.output_directory))
+
+
+def default_resolver_entries(env: Mapping[str, str], *, scip_runtime: Path = SCIP_RUNTIME,
+                             lsp_runtime: Path = LSP_RUNTIME) -> dict[str, str]:
+    """Settings that turn SCIP and LSP on for the server process when their pinned runtimes are installed (§5.4).
+
+    ``VGAR_SCIP=off`` / ``VGAR_LSP=off`` keep a resolver off; an entry the host already set is kept.
+
+    Args:
+        env: The server's settings (not modified).
+        scip_runtime: Pinned scip-python ``index.js``.
+        lsp_runtime: Pinned pyright ``langserver.index.js``.
+    """
+    entries = {}
+    for switch, name, runtime in (("VGAR_SCIP", "VGAR_SCIP_ENTRY", scip_runtime),
+                                  ("VGAR_LSP", "VGAR_LSP_ENTRY", lsp_runtime)):
+        if (env.get(switch) or "").strip().lower() == "off" or (env.get(name) or "").strip() or not runtime.is_file():
+            continue
+        entries[name] = str(runtime.resolve())
+    return entries
+
+
 def layer_configs(env: Mapping[str, str]) -> LayerConfigs:
     """Layer configs from host settings; an absent setting leaves its layer off.
 
@@ -143,6 +192,14 @@ def layer_configs(env: Mapping[str, str]) -> LayerConfigs:
                           timeout_seconds=_number(env, "VGAR_JARVIS_TIMEOUT", 120)) if _on(env, "VGAR_JARVIS") else None
     joern = JoernConfig(image=(env.get("VGAR_JOERN_IMAGE") or JOERN_IMAGE).strip(),
                         timeout_seconds=_number(env, "VGAR_JOERN_TIMEOUT", 900)) if _on(env, "VGAR_JOERN") else None
+    database = (env.get("VGAR_GRAPH_DATABASE") or "").strip()
+    if database and Path(database).is_absolute():   # run folders next to the graph, never under the server's cwd
+        if scip is not None:
+            scip = replace(scip, output_directory=Path(database).parent / "scip-runs")
+        if lsp is not None:
+            lsp = replace(lsp, output_directory=Path(database).parent / "lsp-runs")
+    if scip is not None and lsp is not None:
+        lsp = replace(lsp, fallback_only=True)
     return LayerConfigs(tsg=tsg, scip=scip, lsp=lsp, jarvis=jarvis, joern=joern)
 
 
@@ -196,6 +253,8 @@ def _status(report: Mapping[str, Any] | None) -> dict[str, Any]:
     if not report:
         return {"status": "failed", "reason": "no report from the build"}
     status = str(report.get("status"))
+    if status in {"skipped", "not_needed"}:   # nothing for the layer to do, e.g. LSP while SCIP is ready
+        return {"status": "skipped", "reason": report.get("reason")}
     if status == "ready":
         return {"status": "ready", "reason": report.get("reason")}
     if status == "partial":  # the layer ran; some files failed

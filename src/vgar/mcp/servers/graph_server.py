@@ -41,6 +41,8 @@ from vgar.repair.patch_evidence import require_diff, resolve_diff, with_checked_
 logger = logging.getLogger("vgar.mcp.servers.graph_server" if __name__ == "__main__" else __name__)
 
 if __name__ == "__main__":  # started by a host: everything it works on comes from the host configuration
+    from vgar.graph.layer_config import default_resolver_entries
+    os.environ.update(default_resolver_entries(os.environ))   # SCIP/LSP on when installed (spec 2026-11-24 §4.1)
     require_host_config("graph")
 
 
@@ -415,7 +417,8 @@ def _verified(diff: str) -> dict[str, Any]:
     version, key = _cache_key(diff)
     if (version, key) in _verify_cache:
         return _verify_cache[(version, key)]
-    result = verify_patch(graph_service, diff, graph_version=version)
+    from vgar.graph.layer_config import layer_configs
+    result = verify_patch(graph_service, diff, graph_version=version, layers=layer_configs(os.environ))
     if result["status"] != "ERROR":   # an unfinished check depends on the working tree: never replay it
         _verify_cache[(version, key)] = result
     return result
@@ -510,6 +513,9 @@ async def build_or_update_graph(repo_path: str) -> dict[str, Any]:
     If the working tree has changes the graph does not have, the server first checks them (analyze_patch_impact and
     verify_patch_graph_constraints, no tests) and returns the results in checks_before_update; read them before
     continuing.
+    Calls are resolved with SCIP when installed, with LSP only when SCIP fails, otherwise with the built-in static
+    resolver; ``layers`` says which ran (``ready``, ``skipped``, ``failed`` with the reason, ``off``). With a resolver
+    on, every build is a full build (``mode`` ``cold``); ``changed_files`` still lists the files that changed.
 
     Args:
         repo_path: The repository root this server is configured for (VGAR_REPOSITORY_ROOT); any other path is refused.
@@ -695,9 +701,10 @@ def main() -> None:
             graph_version = graph_service.get_repository_summary().graph_version
         except GraphError:  # no graph yet: the agent builds it with build_or_update_graph
             graph_version = "not built"
-        logger.info("server=vgar-graph mcp=%s backend=%s database=%s graph_version=%s repository_root=%s",
+        logger.info("server=vgar-graph mcp=%s backend=%s database=%s graph_version=%s repository_root=%s scip=%s lsp=%s",
                     version("mcp"), os.getenv("VGAR_GRAPH_BACKEND", "sqlite"), os.getenv("VGAR_GRAPH_DATABASE"),
-                    graph_version, os.getenv("VGAR_REPOSITORY_ROOT"))
+                    graph_version, os.getenv("VGAR_REPOSITORY_ROOT"), os.getenv("VGAR_SCIP_ENTRY") or "off",
+                    os.getenv("VGAR_LSP_ENTRY") or "off")
     try:
         mcp.run(transport="stdio")
     finally:

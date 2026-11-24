@@ -160,6 +160,19 @@ Then edit `opencode.json` as in [`opencode.example.jsonc`](configs/mcp_server/op
 | `VGAR_GRAPH_BUILD_TIMEOUT_SECONDS` | graph | limit for one build or update (default 900) |
 | `VGAR_MCP_LOG_LEVEL` | all | `WARNING` (default), `INFO`, `DEBUG`; logs go to stderr |
 | `VGAR_MCP_METRICS_LOG` | all | per-call metrics JSONL (default `<audit log name>.metrics.jsonl` next to the audit log) |
+| `VGAR_SCIP_ENTRY`, `VGAR_LSP_ENTRY` | graph | absolute path of scip-python `index.js` / pyright `langserver.index.js`; default: the pinned runtime when installed (see below) |
+| `VGAR_SCIP=off`, `VGAR_LSP=off` | graph | keep that resolver off |
+
+### Symbol resolvers (proposal §5.4)
+
+Install the pinned runtimes once (needs Node.js on `PATH`):
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/install_scip_runtime.ps1
+powershell -ExecutionPolicy Bypass -File scripts/install_lsp_runtime.ps1
+```
+
+The graph server then resolves calls with SCIP; LSP runs only when SCIP fails; when neither runs, the built-in static resolver is used. `layers` in the result of `build_or_update_graph` says which one ran and why the others did not. Their run folders go to `scip-runs/` and `lsp-runs/` next to `VGAR_GRAPH_DATABASE` (the 3 newest are kept). With a resolver on, every build is a full build.
 
 ## Working session (proposal §10–§11)
 

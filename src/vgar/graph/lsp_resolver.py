@@ -37,6 +37,7 @@ class LspConfig:
     import_roots: tuple[str, ...] = ("src", "lib")
     python_executable: str | Path | None = None
     strict: bool = False
+    fallback_only: bool = False   # only when SCIP is not ready (spec 2026-11-24 §4.2)
 
     def __post_init__(self):
         for value in (self.request_timeout, self.initialize_timeout, self.total_timeout):

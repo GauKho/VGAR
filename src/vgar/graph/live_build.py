@@ -15,7 +15,7 @@ from typing import Any
 from vgar.contracts.error import GraphNotReadyError
 from vgar.graph.builder import PythonGraphBuilder
 from vgar.graph.incremental import IncrementalGraphBuilder
-from vgar.graph.layer_config import LayerConfigs, layer_summary
+from vgar.graph.layer_config import LayerConfigs, layer_summary, prune_layer_runs
 from vgar.graph.snapshot_sources import read_graph_sources
 from vgar.graph.sqlite_store import SQLiteGraphStore
 
@@ -94,6 +94,7 @@ class LiveGraphBuilder:
         self._incremental: IncrementalGraphBuilder | None = None
         self._revision: str | None = None
         self._dirty = False
+        self._file_hashes: dict[str, str] | None = None   # path -> content hash of the last published graph
         self._guard = threading.Lock()
         self._job: _Job | None = None
         self._enclosing_git = enclosing_git_root(self.root)
@@ -109,7 +110,9 @@ class LiveGraphBuilder:
 
         Returns:
             ``graph_version``, ``previous_graph_version``, ``mode`` (``cold`` or ``incremental``),
-            ``changed_files``, ``nodes``, ``edges``, ``duration_ms`` and ``unchanged``.
+            ``changed_files``, ``nodes``, ``edges``, ``duration_ms`` and ``unchanged``. With an optional layer on
+            every build is full (``mode`` ``cold``) and ``changed_files`` lists the files that differ from the
+            last published graph.
         """
         with self._guard:
             if self._job is None:
@@ -138,6 +141,9 @@ class LiveGraphBuilder:
             revision, _ = head_revision(self.root, check_dirty=False)
             # A new HEAD starts a new snapshot lineage: the cached builder carries the old revision.
             cold = self._incremental is None or previous is None or revision != self._revision
+            if self.layers.any_optional and self._file_hashes is None and previous is not None:
+                # A new server process: compare the first full build with the graph already published.
+                self._file_hashes = _file_hashes(store.load_document(previous))
             builder, document, changed = self._compute(None if cold else self._incremental, revision)
             # Full comparison with HEAD only on a cold build; an update is dirty once any graphed file changed
             # since HEAD was read (a revert to HEAD stays dirty until HEAD moves: the safe side).
@@ -155,6 +161,8 @@ class LiveGraphBuilder:
                 store.prune_other_versions(version, str(document["repo_key"]))
             elif not store.get_sources(version):   # a graph stored before source copies existed
                 store.put_sources(version, read_graph_sources(self.root, document))
+            if self.layers.any_optional:   # only once published: a failed build must not become the comparison base
+                self._file_hashes = _file_hashes(document)
             job.result = {"graph_version": version, "previous_graph_version": previous,
                           "mode": "cold" if cold else "incremental", "changed_files": changed,
                           "nodes": len(document["nodes"]), "edges": len(document["edges"]),
@@ -166,6 +174,7 @@ class LiveGraphBuilder:
             self._incremental = None
             job.error = error
         finally:
+            prune_layer_runs(self.layers)   # keep the SCIP/LSP run folders bounded (spec 2026-11-24 §4.4)
             job.done.set()
 
     def _compute(self, incremental: IncrementalGraphBuilder | None, revision: str
@@ -173,10 +182,20 @@ class LiveGraphBuilder:
         if self.layers.any_optional:
             builder = PythonGraphBuilder(repo_key=self.root.name, repository_revision=revision,
                                          **self.layers.builder_kwargs())
-            return None, builder.build(self.root), []
+            document = builder.build(self.root)
+            hashes, previous = _file_hashes(document), self._file_hashes
+            # Full build: name the files whose content differs from the last published graph (spec 2026-11-24 §4.5).
+            changed = [] if previous is None else sorted(path for path in {*previous, *hashes}
+                                                         if previous.get(path) != hashes.get(path))
+            return None, document, changed
         if incremental is None:
             builder = IncrementalGraphBuilder(repo_key=self.root.name, repository_revision=revision)
             return builder, builder.build(self.root), []
         document, summary = incremental.update(self.root)
         changed = sorted({*summary.changed_files, *summary.added_files, *summary.deleted_files})
         return incremental, document, changed
+
+
+def _file_hashes(document: dict[str, Any]) -> dict[str, str]:
+    """Path -> content hash of the File nodes of a graph document."""
+    return {node["path"]: node["content_hash"] for node in document["nodes"] if node["type"] == "File"}

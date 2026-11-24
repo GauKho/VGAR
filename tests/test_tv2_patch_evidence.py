@@ -321,7 +321,7 @@ def test_long_running_tools_run_off_the_event_loop(tmp_path, monkeypatch):
     service, _ = _service(tmp_path)
     monkeypatch.setattr(graph_server, "graph_service", service)
     monkeypatch.setattr(graph_server, "_audit_logger", AuditLogger(tmp_path / "audit.jsonl"))
-    graph_server._verify_cache.clear()
+    monkeypatch.setattr(graph_server, "_verify_cache", {})   # the stub result must not stay cached for later tests
 
     async def call():
         loop_thread = threading.get_ident()

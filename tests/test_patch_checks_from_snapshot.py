@@ -18,7 +18,9 @@ from vgar.graph.sqlite_store import SQLiteGraphStore
 from vgar.repair.patch import PatchPolicy, _bind, parse_unified_diff
 from vgar.repair.patch_evidence import run_patch_tests, verify_patch
 from vgar.repair.worktree_diff import worktree_diff
+from vgar.graph.layer_config import LSP_RUNTIME, SCIP_RUNTIME, layer_configs
 from vgar.mcp.audit import AuditLogger
+from resolver_fixture import CHAIN, needs_resolvers
 from vgar.mcp.servers import execution_server, graph_server
 
 SHOP = {
@@ -39,9 +41,9 @@ def _write(root: Path, files: dict[str, str | bytes]) -> Path:
     return root
 
 
-def _doc(tmp_path: Path, files: dict[str, str | bytes] = SHOP) -> tuple[Path, dict]:
+def _doc(tmp_path: Path, files: dict[str, str | bytes] = SHOP, **builder_kwargs) -> tuple[Path, dict]:
     root = _write(tmp_path / "repo", files)
-    return root, PythonGraphBuilder(repo_key="t/snap", repository_revision="rev").build(root)
+    return root, PythonGraphBuilder(repo_key="t/snap", repository_revision="rev", **builder_kwargs).build(root)
 
 
 def _files(root: Path, document: dict) -> dict[str, bytes]:
@@ -140,8 +142,8 @@ PRICING_FIX = """diff --git a/shop/pricing.py b/shop/pricing.py
 """
 
 
-def _build(tmp_path: Path, files: dict[str, str | bytes] = SHOP, *, with_sources: bool = True):
-    root, document = _doc(tmp_path, files)
+def _build(tmp_path: Path, files: dict[str, str | bytes] = SHOP, *, with_sources: bool = True, **builder_kwargs):
+    root, document = _doc(tmp_path, files, **builder_kwargs)
     store = SQLiteGraphStore(tmp_path / "graph.db")
     store.ingest(document, sources=read_graph_sources(root, document) if with_sources else None)
     service = SQLiteGraphService(store, repository_root=root, count_tokens=len, counter_label="test")
@@ -400,12 +402,13 @@ def test_a_form_feed_line_is_listed_instead_of_breaking_the_diff(tmp_path):
     assert wd.diff == "" and wd.not_checked == ("unsupported line separator: m.py",)
 
 
-def test_verify_with_a_stored_source_does_not_claim_the_copy_is_missing(tmp_path, monkeypatch):
+def test_verify_with_a_stored_source_does_not_recompute_the_graph_version(tmp_path, monkeypatch):
+    # Spec 2026-11-24 §4.3: the copy is the graph's stored code, so the version check (which broke SCIP/LSP graphs) is skipped.
     from vgar.repair import patch_evidence
     service, version, root = _build(tmp_path)
     _edit_pricing(root)
     monkeypatch.setattr(patch_evidence.PythonGraphBuilder, "_calculate_graph_version", lambda self, *a: "sha256:other")
-    assert verify_patch(service, PRICING_FIX, graph_version=version)["reasons"] == ["BUILDER_OPTIONS_OR_SOURCE_DIFFER_FROM_SNAPSHOT"]
+    assert verify_patch(service, PRICING_FIX, graph_version=version)["status"] == "PASS"
 
 
 # --- Batch 5: outer status is the verdict (spec 2026-11-24 §4.4) ---------------------------------
@@ -491,3 +494,58 @@ def test_verify_summary_of_a_passing_change_lists_unchecked_files(served):
 
 def test_verify_summary_without_changes_gives_the_reason(served):
     assert verify()["data"]["summary"] == "Change NOT verified: NO_CHANGES"
+
+
+# --- Batch 6: verify on SCIP/LSP graphs (spec 2026-11-24 §4.3) ---------------------------------------
+
+def _resolver_env(monkeypatch, tmp_path, **env):
+    monkeypatch.setenv("VGAR_GRAPH_DATABASE", str(tmp_path / "graph.db"))
+    for name, value in env.items():
+        monkeypatch.setenv(name, value)
+    import os
+    return layer_configs(os.environ)
+
+
+@needs_resolvers
+@pytest.mark.parametrize("active", ["scip", "lsp"])
+def test_verify_passes_on_a_resolver_graph(tmp_path, monkeypatch, active):
+    scip = str(SCIP_RUNTIME) if active == "scip" else str(tmp_path / "missing.js")
+    layers = _resolver_env(monkeypatch, tmp_path, VGAR_SCIP_ENTRY=scip, VGAR_LSP_ENTRY=str(LSP_RUNTIME))
+    service, version, root = _build(tmp_path, {**SHOP, **CHAIN}, **layers.builder_kwargs())   # CHAIN: a call LSP must answer
+    assert service._document(version)["statistics"]["resolver"]["active"] == active
+    _serve(tmp_path, monkeypatch, service)
+    _edit_pricing(root)
+    response = verify()
+    assert response["status"] == "PASS", response
+
+
+@needs_resolvers
+def test_verify_on_scip_graph_names_the_unsupported_constant(tmp_path, monkeypatch):
+    layers = _resolver_env(monkeypatch, tmp_path, VGAR_SCIP_ENTRY=str(SCIP_RUNTIME), VGAR_LSP_ENTRY=str(LSP_RUNTIME))
+    service, version, root = _build(tmp_path, {**SHOP, "shop/order.py": ORDER}, **layers.builder_kwargs())
+    _serve(tmp_path, monkeypatch, service)
+    assert verify()["data"]["reasons"] == ["NO_CHANGES"]
+    (root / "shop/order.py").write_text(ORDER.replace("[Status.PAID]", "[Status.PAID, Status.NEW]"), encoding="utf-8",
+                                        newline="")
+    data = verify()["data"]
+    assert data["status"] == "NOT_RUN" and data["unsupported_changes"][0]["symbol"] == "ALLOWED"
+    assert not any("BUILDER_OPTIONS_OR_SOURCE_DIFFER" in r for r in data["reasons"])
+
+
+@needs_resolvers
+def test_candidate_resolver_failure_is_not_run(tmp_path, monkeypatch):
+    layers = _resolver_env(monkeypatch, tmp_path, VGAR_SCIP_ENTRY=str(SCIP_RUNTIME), VGAR_LSP_ENTRY=str(LSP_RUNTIME))
+    service, version, root = _build(tmp_path, **layers.builder_kwargs())
+    _serve(tmp_path, monkeypatch, service)
+    monkeypatch.setenv("VGAR_SCIP_ENTRY", str(tmp_path / "gone.js"))
+    _edit_pricing(root)
+    data = verify()["data"]
+    assert data["status"] == "NOT_RUN" and data["reasons"][0].startswith("CANDIDATE_RESOLVER_UNAVAILABLE: scip: ")
+
+
+@needs_resolvers
+def test_verify_patch_without_layers_on_scip_graph_is_not_run(tmp_path, monkeypatch):
+    layers = _resolver_env(monkeypatch, tmp_path, VGAR_SCIP_ENTRY=str(SCIP_RUNTIME), VGAR_LSP_ENTRY=str(LSP_RUNTIME))
+    service, version, root = _build(tmp_path, **layers.builder_kwargs())
+    result = verify_patch(service, PRICING_FIX, graph_version=version)
+    assert result["status"] == "NOT_RUN" and result["reasons"] == ["CANDIDATE_RESOLVER_UNAVAILABLE: scip: not configured"]
