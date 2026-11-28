@@ -1,0 +1,35 @@
+{
+  "host_version": "opencode v2.3.0",
+  "model": {
+    "providerID": "9router",
+    "model": "oc/deepseek-v4.1-flash-free"
+  },
+  "common_config": {
+    "model": {
+      "providerID": "9router",
+      "model": "oc/deepseek-v4.1-flash-free"
+    },
+    "agents": {
+      "explorer": {
+        "model": {
+          "providerID": "9router",
+          "model": "oc/deepseek-v4.1-flash-free"
+        }
+      }
+    },
+    "mcp": {
+      "timeout": {
+        "startup": 120000,
+        "catalog": 120000,
+        "execution": 150000
+      }
+    }
+  },
+  "global_config_path": "C:\\Users\\pc\\.config\\opencode\\opencode.json",
+  "global_config_sha256": "ec6b2f55a378254346c8bd288693b8b2ef6e2bafad8b4ad9ce469d7875eff25f",
+  "global_mcp_names": [],
+  "credential_handling": "Inherited from existing global config; no credentials copied",
+  "model_calls": 0,
+  "budget": "UNCHANGED_HOST_DEFAULTS_NOT_CAMPAIGN_FROZEN",
+  "gateway_routing": "INHERITED_NOT_INDEPENDENTLY_ATTESTED"
+}

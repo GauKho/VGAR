@@ -1,0 +1,53 @@
+2026-11-23 14:55:00,254 - INFO - Creating container for pylint-dev__pylint-4604...
+2026-11-23 14:55:00,332 - INFO - Container for pylint-dev__pylint-4604 created: ca5631e5f19dc5daebccefc7f7063634cd29317b46e725bf0455f33f395be38f
+2026-11-23 14:55:00,533 - INFO - Container for pylint-dev__pylint-4604 started: ca5631e5f19dc5daebccefc7f7063634cd29317b46e725bf0455f33f395be38f
+2026-11-23 14:55:00,533 - INFO - Intermediate patch for pylint-dev__pylint-4604 written to logs/run_evaluation/pylint4604-a0-20261123-145456-ff38e9/opencode-9router-A0/pylint-dev__pylint-4604/patch.diff, now applying to container...
+2026-11-23 14:55:00,753 - INFO - >>>>> Applied Patch:
+Checking patch pylint/checkers/variables.py...
+Applied patch pylint/checkers/variables.py cleanly.
+
+2026-11-23 14:55:02,061 - INFO - Git diff before:
+diff --git a/pylint/checkers/variables.py b/pylint/checkers/variables.py
+index 3ddafd59..42ce0ee6 100644
+--- a/pylint/checkers/variables.py
++++ b/pylint/checkers/variables.py
+@@ -1826,6 +1826,13 @@ class VariablesChecker(BaseChecker):
+             self._type_annotation_names.append(type_annotation.name)
+             return
+ 
++        if isinstance(type_annotation, astroid.Attribute):
++            self._type_annotation_names.extend(
++                annotation.name
++                for annotation in type_annotation.nodes_of_class(astroid.Name)
++            )
++            return
++
+         if not isinstance(type_annotation, astroid.Subscript):
+             return
+2026-11-23 14:55:02,061 - INFO - Eval script for pylint-dev__pylint-4604 written to logs/run_evaluation/pylint4604-a0-20261123-145456-ff38e9/opencode-9router-A0/pylint-dev__pylint-4604/eval.sh; copying to container...
+2026-11-23 14:55:05,574 - INFO - Test runtime: 3.40 seconds
+2026-11-23 14:55:05,575 - INFO - Test output for pylint-dev__pylint-4604 written to logs/run_evaluation/pylint4604-a0-20261123-145456-ff38e9/opencode-9router-A0/pylint-dev__pylint-4604/test_output.txt
+2026-11-23 14:55:05,668 - INFO - Git diff after:
+diff --git a/pylint/checkers/variables.py b/pylint/checkers/variables.py
+index 3ddafd59..42ce0ee6 100644
+--- a/pylint/checkers/variables.py
++++ b/pylint/checkers/variables.py
+@@ -1826,6 +1826,13 @@ class VariablesChecker(BaseChecker):
+             self._type_annotation_names.append(type_annotation.name)
+             return
+ 
++        if isinstance(type_annotation, astroid.Attribute):
++            self._type_annotation_names.extend(
++                annotation.name
++                for annotation in type_annotation.nodes_of_class(astroid.Name)
++            )
++            return
++
+         if not isinstance(type_annotation, astroid.Subscript):
+             return
+2026-11-23 14:55:05,668 - INFO - Grading answer for pylint-dev__pylint-4604...
+2026-11-23 14:55:05,669 - INFO - report: {'pylint-dev__pylint-4604': {'patch_is_None': False, 'patch_exists': True, 'patch_successfully_applied': True, 'resolved': False, 'tests_status': {'FAIL_TO_PASS': {'success': [], 'failure': ['tests/checkers/unittest_variables.py::TestVariablesChecker::test_bitbucket_issue_78', 'tests/checkers/unittest_variables.py::TestVariablesChecker::test_no_name_in_module_skipped', 'tests/checkers/unittest_variables.py::TestVariablesChecker::test_all_elements_without_parent', 'tests/checkers/unittest_variables.py::TestVariablesChecker::test_redefined_builtin_ignored', 'tests/checkers/unittest_variables.py::TestVariablesChecker::test_redefined_builtin_custom_modules', 'tests/checkers/unittest_variables.py::TestVariablesChecker::test_redefined_builtin_modname_not_ignored', 'tests/checkers/unittest_variables.py::TestVariablesChecker::test_redefined_builtin_in_function', 'tests/checkers/unittest_variables.py::TestVariablesChecker::test_unassigned_global', 'tests/checkers/unittest_variables.py::TestVariablesChecker::test_listcomp_in_decorator', 'tests/checkers/unittest_variables.py::TestVariablesChecker::test_listcomp_in_ancestors', 'tests/checkers/unittest_variables.py::TestVariablesChecker::test_return_type_annotation', 'tests/checkers/unittest_variables.py::TestVariablesChecker::test_attribute_in_type_comment', 'tests/checkers/unittest_variables.py::TestVariablesCheckerWithTearDown::test_custom_callback_string', 'tests/checkers/unittest_variables.py::TestVariablesCheckerWithTearDown::test_redefined_builtin_modname_not_ignored', 'tests/checkers/unittest_variables.py::TestVariablesCheckerWithTearDown::test_redefined_builtin_in_function', 'tests/checkers/unittest_variables.py::TestVariablesCheckerWithTearDown::test_import_as_underscore', 'tests/checkers/unittest_variables.py::TestVariablesCheckerWithTearDown::test_lambda_in_classdef', 'tests/checkers/unittest_variables.py::TestVariablesCheckerWithTearDown::test_nested_lambda', 'tests/checkers/unittest_variables.py::TestVariablesCheckerWithTearDown::test_ignored_argument_names_no_message', 'tests/checkers/unittest_variables.py::TestVariablesCheckerWithTearDown::test_ignored_argument_names_starred_args', 'tests/checkers/unittest_variables.py::TestMissingSubmodule::test_package_all']}, 'PASS_TO_PASS': {'success': [], 'failure': []}, 'FAIL_TO_FAIL': {'success': [], 'failure': []}, 'PASS_TO_FAIL': {'success': [], 'failure': []}}}}
+Result for pylint-dev__pylint-4604: resolved: False
+2026-11-23 14:55:05,669 - INFO - Attempting to stop container sweb.eval.pylint-dev__pylint-4604.pylint4604-a0-20261123-145456-ff38e9...
+2026-11-23 14:55:20,886 - INFO - Attempting to remove container sweb.eval.pylint-dev__pylint-4604.pylint4604-a0-20261123-145456-ff38e9...
+2026-11-23 14:55:20,927 - INFO - Container sweb.eval.pylint-dev__pylint-4604.pylint4604-a0-20261123-145456-ff38e9 removed.

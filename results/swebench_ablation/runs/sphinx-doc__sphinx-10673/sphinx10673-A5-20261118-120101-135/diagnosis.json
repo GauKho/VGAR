@@ -1,0 +1,36 @@
+{
+    "status":  "HOST_INPUT_ABORTED",
+    "task_id":  "sphinx-doc__sphinx-10673",
+    "arm":  "A5",
+    "session_id":  "ses_e12f608ffffeu8IBn01kYG9Kc9",
+    "host_exit":  1,
+    "wall_ms":  197762,
+    "terminal_error":  "Cancelled a request for input this run cannot answer: Web Search",
+    "candidate_bytes":  0,
+    "candidate_sha256":  "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+    "tool_calls":  42,
+    "mcp_calls":  [
+                      {
+                          "tool":  "vgar-graph_build_or_update_graph",
+                          "status":  "completed"
+                      },
+                      {
+                          "tool":  "vgar-graph_find_task_anchors",
+                          "status":  "error"
+                      },
+                      {
+                          "tool":  "vgar-graph_search_symbols",
+                          "status":  "completed"
+                      }
+                  ],
+    "anchor_issue_matches_pinned":  false,
+    "unmeasured":  [
+                       "get_related_context",
+                       "analyze_patch_impact",
+                       "run_relevant_tests",
+                       "verify_patch_graph_constraints",
+                       "rank_patch_candidates"
+                   ],
+    "official_resolution":  "NOT_GRADED",
+    "experimental_attempt":  "PRESERVE_ORIGINAL_NO_SILENT_REPLACEMENT"
+}

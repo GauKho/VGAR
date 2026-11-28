@@ -1,0 +1,75 @@
+{
+  "model": {
+    "providerID": "9router",
+    "model": "oc/deepseek-v4.1-flash-free"
+  },
+  "agents": {
+    "explorer": {
+      "model": {
+        "providerID": "9router",
+        "model": "oc/deepseek-v4.1-flash-free"
+      }
+    }
+  },
+  "mcp": {
+    "timeout": {
+      "startup": 120000,
+      "catalog": 120000,
+      "execution": 150000
+    },
+    "servers": {
+      "vgar-execution": {
+        "type": "local",
+        "command": [
+          "C:/Windows/System32/wsl.exe",
+          "-d",
+          "VGAR-Harness-W9",
+          "--",
+          "env",
+          "PYTHONPATH=/home/vgar/swebench-ablation/bindings/20261117-completion/runtime-v6/src",
+          "PYTHONDONTWRITEBYTECODE=1",
+          "/home/vgar/swebench-ablation/bindings/20261117-completion/venv/bin/python",
+          "-B",
+          "-m",
+          "vgar.evaluation.swebench_ablation.binding_server",
+          "--binding",
+          "/home/vgar/swebench-ablation/opencode-arms/sphinx-10673-20261117/A1/binding.json",
+          "--expected-hash",
+          "sha256:fef78c3acb96a68c74367b23271348b3fadf698205b2bca12f8dafb9bd505800",
+          "--server",
+          "execution"
+        ],
+        "cwd": "D:/Project/CAPSTONES/agent-workspaces/sphinx-10673-20261117/arms/A1/repo",
+        "codemode": false
+      },
+      "vgar-graph": {
+        "type": "local",
+        "command": [
+          "C:/Windows/System32/wsl.exe",
+          "-d",
+          "VGAR-Harness-W9",
+          "--",
+          "env",
+          "PYTHONPATH=/home/vgar/swebench-ablation/bindings/20261117-completion/runtime-v6/src",
+          "PYTHONDONTWRITEBYTECODE=1",
+          "/home/vgar/swebench-ablation/bindings/20261117-completion/venv/bin/python",
+          "-B",
+          "-m",
+          "vgar.evaluation.swebench_ablation.binding_server",
+          "--binding",
+          "/home/vgar/swebench-ablation/opencode-arms/sphinx-10673-20261117/A1/binding.json",
+          "--expected-hash",
+          "sha256:fef78c3acb96a68c74367b23271348b3fadf698205b2bca12f8dafb9bd505800",
+          "--server",
+          "graph"
+        ],
+        "cwd": "D:/Project/CAPSTONES/agent-workspaces/sphinx-10673-20261117/arms/A1/repo",
+        "codemode": false
+      },
+      "vgar-repository": {
+        "disabled": true
+      }
+    }
+  },
+  "$schema": "https://opencode.ai/config.json"
+}

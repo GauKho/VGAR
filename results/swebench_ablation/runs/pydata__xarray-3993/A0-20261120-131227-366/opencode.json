@@ -1,0 +1,37 @@
+{
+  "model": {
+    "providerID": "9router",
+    "model": "oc/deepseek-v4.1-flash-free"
+  },
+  "agents": {
+    "explorer": {
+      "model": {
+        "providerID": "9router",
+        "model": "oc/deepseek-v4.1-flash-free"
+      }
+    }
+  },
+  "mcp": {
+    "timeout": {
+      "startup": 120000,
+      "catalog": 120000,
+      "execution": 150000
+    },
+    "servers": {
+      "vgar-graph": {
+        "disabled": true
+      },
+      "vgar-execution": {
+        "disabled": true
+      },
+      "vgar-repository": {
+        "disabled": true
+      },
+      "vgar-repair": {
+        "disabled": true
+      }
+    }
+  },
+  "websearch": false,
+  "$schema": "https://opencode.ai/config.json"
+}

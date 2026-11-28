@@ -1,0 +1,8 @@
+﻿
+
+Algorithm : SHA256
+Hash      : 81EE3DEFD13F206839E946BEEDCB3FAEFD0683F00BAD640B4848688CF69B9040
+Path      : D:\Project\CAPSTONES\agent-workspaces\sphinx-a5-20261119\result-20261119-101714\candidate.diff
+
+
+

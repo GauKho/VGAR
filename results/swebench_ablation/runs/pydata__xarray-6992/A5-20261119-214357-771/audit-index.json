@@ -1,0 +1,13 @@
+{
+  "authoritative": "workflow-audit-20261119-145308-15bb64",
+  "superseded": [
+    {
+      "directory": "workflow-audit-20261119-145103-dabe68",
+      "reason": "Initial parser could not recover host truncation"
+    },
+    {
+      "directory": "workflow-audit-20261119-145230-4c7bc6",
+      "reason": "Superseded by audit including actual public-test scope"
+    }
+  ]
+}

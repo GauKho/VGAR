@@ -1,0 +1,13 @@
+{
+  "task_id": "pydata__xarray-3993",
+  "arm": "A3",
+  "status": "PREPARED_USER_RUN_REQUIRED",
+  "workspace": "D:\\Project\\CAPSTONES\\agent-workspaces\\xarray-3993-runtime05-20261120\\pydata__xarray-3993\\arms\\A3\\repo",
+  "base_commit": "8cc34cb412ba89ebca12fc84f76a9e452628f1bc",
+  "binding": "/home/vgar/swebench-ablation/bindings/20261120-xarray3993-runtime05/agent-A3/binding.json",
+  "binding_hash": "sha256:356c96dede4a08b24dc627ea385e7ca453d9aca49c2217713796e9900a58b865",
+  "config_sha256": "5e1efd312acfa6450fcc4de9f3486e29983545b489161156d044a0e0bd692d60",
+  "graph_version": "sha256:1c0a4c339446955c9a024f11302f160668e4f9ff506bc540d4c19ad98c41a101",
+  "source_root": "/home/vgar/swebench-ablation/task-preparation/20261118-seven-multifile/sources/pydata__xarray-3993",
+  "runtime": "/home/vgar/swebench-ablation/execution/20261120-compact-evidence/runtime-05"
+}

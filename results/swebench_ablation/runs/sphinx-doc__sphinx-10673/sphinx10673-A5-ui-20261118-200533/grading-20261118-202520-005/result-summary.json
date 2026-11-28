@@ -1,0 +1,19 @@
+{
+    "task_id":  "sphinx-doc__sphinx-10673",
+    "arm":  "A5",
+    "experiment_type":  "DIAGNOSTIC_ONLY",
+    "included_in_final_matrix":  false,
+    "model":  "opencode/big-pickle",
+    "session_id":  "ses_e114dd420ffeTudRujji0YZzMm",
+    "grading_run_id":  "sphinx10673-a5-smoke-20261118-202520-005",
+    "candidate_sha256":  "4A390B28D6BA22E7D1E2752D93571D09A89D0ACD4FB99B6453196611C370C0AA",
+    "harness_exit":  0,
+    "official_resolved":  true,
+    "patch_applied":  true,
+    "fail_to_pass_passed":  1,
+    "fail_to_pass_failed":  0,
+    "pass_to_pass_passed":  9,
+    "pass_to_pass_failed":  0,
+    "official_report_wsl":  "/home/vgar/swebench-ablation/environments/20261117T045325Z-sphinx/private/agent-sphinx10673-a5-smoke-20261118-202520-005/logs/run_evaluation/sphinx10673-a5-smoke-20261118-202520-005/opencode-big-pickle-A5-smoke/sphinx-doc__sphinx-10673/report.json",
+    "mcp_workflow_coverage":  "REQUIRES_SEPARATE_SESSION_AUDIT"
+}

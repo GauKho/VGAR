@@ -1,0 +1,2 @@
+run_id=sphinx10673-a5-smoke-20261118-202520-005
+linux_directory=/home/vgar/swebench-ablation/environments/20261117T045325Z-sphinx/private/agent-sphinx10673-a5-smoke-20261118-202520-005

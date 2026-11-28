@@ -1,0 +1,13 @@
+{
+  "task_id": "pylint-dev__pylint-4604",
+  "arm": "A1",
+  "status": "PREPARED_USER_RUN_REQUIRED",
+  "workspace": "D:\\Project\\CAPSTONES\\agent-workspaces\\pylint-4604-runtime05-20261123\\pylint-dev__pylint-4604\\arms\\A1\\repo",
+  "base_commit": "1e55ae64624d28c5fe8b63ad7979880ee2e6ef3f",
+  "binding": "/home/vgar/swebench-ablation/bindings/20261123-pylint4604-runtime05/agent-A1/binding.json",
+  "binding_hash": "sha256:0dbb1bd5fefcc66485bafe737183a7fd065a6d41f9f84a05b9d5304941421682",
+  "config_sha256": "fab471b43b0f79729edf393906759f3cf414121caf31374ec78608e7f5f37922",
+  "graph_version": "sha256:fb8a570149e11b7d8dbcd1ee012fc4e542a97966832604dd3e5cc80a2dce17ab",
+  "source_root": "/home/vgar/swebench-ablation/task-preparation/20261118-seven-multifile/sources/pylint-dev__pylint-4604",
+  "runtime": "/home/vgar/swebench-ablation/execution/20261120-compact-evidence/runtime-05"
+}

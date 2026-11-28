@@ -1,0 +1,2534 @@
+{
+  "status": "PASS",
+  "data": {
+    "graph_version": "sha256:1bf0ccc7d35740cf7e15bb033cd8de351c235634bf224f7973dfcf99c39849ba",
+    "anchors": [
+      {
+        "node_id": "vgar:pydata/xarray:python:file:xarray/core/dataset.py",
+        "path": "xarray/core/dataset.py",
+        "symbol": "xarray/core/dataset.py",
+        "score": 0.7,
+        "evidence": [
+          {
+            "kind": "source_link",
+            "matched_text": "https://github.com/pydata/xarray/blob/63ba862d03c8d0cd8b44d2071bc360e9fed4519d/xarray/core/dataset.py#L368",
+            "source": "issue"
+          }
+        ]
+      },
+      {
+        "node_id": "vgar:pydata/xarray:python:class:xarray/core/dataset.py:xarray.core.dataset.Dataset",
+        "path": "xarray/core/dataset.py",
+        "symbol": "xarray.core.dataset.Dataset",
+        "score": 0.6,
+        "evidence": [
+          {
+            "kind": "symbol",
+            "matched_text": "Dataset",
+            "source": "issue"
+          },
+          {
+            "kind": "receiver_member",
+            "matched_text": "xr.Dataset",
+            "source": "issue"
+          }
+        ]
+      },
+      {
+        "node_id": "vgar:pydata/xarray:python:method:xarray/backends/lru_cache.py:xarray.backends.lru_cache.LRUCache.__len__",
+        "path": "xarray/backends/lru_cache.py",
+        "symbol": "xarray.backends.lru_cache.LRUCache.__len__",
+        "score": 0.5,
+        "evidence": [
+          {
+            "kind": "symbol",
+            "matched_text": "__len__",
+            "source": "issue"
+          }
+        ]
+      },
+      {
+        "node_id": "vgar:pydata/xarray:python:method:xarray/core/coordinates.py:xarray.core.coordinates.Coordinates.__len__",
+        "path": "xarray/core/coordinates.py",
+        "symbol": "xarray.core.coordinates.Coordinates.__len__",
+        "score": 0.5,
+        "evidence": [
+          {
+            "kind": "symbol",
+            "matched_text": "__len__",
+            "source": "issue"
+          }
+        ]
+      },
+      {
+        "node_id": "vgar:pydata/xarray:python:method:xarray/core/dataarray.py:xarray.core.dataarray.DataArray.__len__",
+        "path": "xarray/core/dataarray.py",
+        "symbol": "xarray.core.dataarray.DataArray.__len__",
+        "score": 0.5,
+        "evidence": [
+          {
+            "kind": "symbol",
+            "matched_text": "__len__",
+            "source": "issue"
+          }
+        ]
+      },
+      {
+        "node_id": "vgar:pydata/xarray:python:method:xarray/core/dataarray.py:xarray.core.dataarray.DataArray.coords",
+        "path": "xarray/core/dataarray.py",
+        "symbol": "xarray.core.dataarray.DataArray.coords",
+        "score": 0.5,
+        "evidence": [
+          {
+            "kind": "symbol",
+            "matched_text": "coords",
+            "source": "issue"
+          }
+        ]
+      },
+      {
+        "node_id": "vgar:pydata/xarray:python:method:xarray/core/dataarray.py:xarray.core.dataarray.DataArray.drop",
+        "path": "xarray/core/dataarray.py",
+        "symbol": "xarray.core.dataarray.DataArray.drop",
+        "score": 0.5,
+        "evidence": [
+          {
+            "kind": "symbol",
+            "matched_text": "drop",
+            "source": "issue"
+          }
+        ]
+      },
+      {
+        "node_id": "vgar:pydata/xarray:python:method:xarray/core/dataarray.py:xarray.core.dataarray.DataArray.reset_index",
+        "path": "xarray/core/dataarray.py",
+        "symbol": "xarray.core.dataarray.DataArray.reset_index",
+        "score": 0.5,
+        "evidence": [
+          {
+            "kind": "symbol",
+            "matched_text": "reset_index",
+            "source": "issue"
+          }
+        ]
+      },
+      {
+        "node_id": "vgar:pydata/xarray:python:method:xarray/core/dataset.py:xarray.core.dataset.DataVariables.__len__",
+        "path": "xarray/core/dataset.py",
+        "symbol": "xarray.core.dataset.DataVariables.__len__",
+        "score": 0.5,
+        "evidence": [
+          {
+            "kind": "symbol",
+            "matched_text": "__len__",
+            "source": "issue"
+          }
+        ]
+      },
+      {
+        "node_id": "vgar:pydata/xarray:python:method:xarray/core/dataset.py:xarray.core.dataset.Dataset.__len__",
+        "path": "xarray/core/dataset.py",
+        "symbol": "xarray.core.dataset.Dataset.__len__",
+        "score": 0.5,
+        "evidence": [
+          {
+            "kind": "symbol",
+            "matched_text": "__len__",
+            "source": "issue"
+          }
+        ]
+      },
+      {
+        "node_id": "vgar:pydata/xarray:python:method:xarray/core/dataset.py:xarray.core.dataset.Dataset.coords",
+        "path": "xarray/core/dataset.py",
+        "symbol": "xarray.core.dataset.Dataset.coords",
+        "score": 0.5,
+        "evidence": [
+          {
+            "kind": "symbol",
+            "matched_text": "coords",
+            "source": "issue"
+          }
+        ]
+      },
+      {
+        "node_id": "vgar:pydata/xarray:python:method:xarray/core/dataset.py:xarray.core.dataset.Dataset.drop",
+        "path": "xarray/core/dataset.py",
+        "symbol": "xarray.core.dataset.Dataset.drop",
+        "score": 0.5,
+        "evidence": [
+          {
+            "kind": "symbol",
+            "matched_text": "drop",
+            "source": "issue"
+          }
+        ]
+      },
+      {
+        "node_id": "vgar:pydata/xarray:python:method:xarray/core/dataset.py:xarray.core.dataset.Dataset.reset_index",
+        "path": "xarray/core/dataset.py",
+        "symbol": "xarray.core.dataset.Dataset.reset_index",
+        "score": 0.5,
+        "evidence": [
+          {
+            "kind": "symbol",
+            "matched_text": "reset_index",
+            "source": "issue"
+          }
+        ]
+      },
+      {
+        "node_id": "vgar:pydata/xarray:python:method:xarray/core/groupby.py:xarray.core.groupby.GroupBy.__len__",
+        "path": "xarray/core/groupby.py",
+        "symbol": "xarray.core.groupby.GroupBy.__len__",
+        "score": 0.5,
+        "evidence": [
+          {
+            "kind": "symbol",
+            "matched_text": "__len__",
+            "source": "issue"
+          }
+        ]
+      },
+      {
+        "node_id": "vgar:pydata/xarray:python:method:xarray/core/indexes.py:xarray.core.indexes.Indexes.__len__",
+        "path": "xarray/core/indexes.py",
+        "symbol": "xarray.core.indexes.Indexes.__len__",
+        "score": 0.5,
+        "evidence": [
+          {
+            "kind": "symbol",
+            "matched_text": "__len__",
+            "source": "issue"
+          }
+        ]
+      },
+      {
+        "node_id": "vgar:pydata/xarray:python:method:xarray/core/rolling.py:xarray.core.rolling.Rolling.__len__",
+        "path": "xarray/core/rolling.py",
+        "symbol": "xarray.core.rolling.Rolling.__len__",
+        "score": 0.5,
+        "evidence": [
+          {
+            "kind": "symbol",
+            "matched_text": "__len__",
+            "source": "issue"
+          }
+        ]
+      },
+      {
+        "node_id": "vgar:pydata/xarray:python:method:xarray/core/utils.py:xarray.core.utils.Frozen.__len__",
+        "path": "xarray/core/utils.py",
+        "symbol": "xarray.core.utils.Frozen.__len__",
+        "score": 0.5,
+        "evidence": [
+          {
+            "kind": "symbol",
+            "matched_text": "__len__",
+            "source": "issue"
+          }
+        ]
+      },
+      {
+        "node_id": "vgar:pydata/xarray:python:method:xarray/core/utils.py:xarray.core.utils.HiddenKeyDict.__len__",
+        "path": "xarray/core/utils.py",
+        "symbol": "xarray.core.utils.HiddenKeyDict.__len__",
+        "score": 0.5,
+        "evidence": [
+          {
+            "kind": "symbol",
+            "matched_text": "__len__",
+            "source": "issue"
+          }
+        ]
+      },
+      {
+        "node_id": "vgar:pydata/xarray:python:method:xarray/core/utils.py:xarray.core.utils.HybridMappingProxy.__len__",
+        "path": "xarray/core/utils.py",
+        "symbol": "xarray.core.utils.HybridMappingProxy.__len__",
+        "score": 0.5,
+        "evidence": [
+          {
+            "kind": "symbol",
+            "matched_text": "__len__",
+            "source": "issue"
+          }
+        ]
+      },
+      {
+        "node_id": "vgar:pydata/xarray:python:method:xarray/core/utils.py:xarray.core.utils.NdimSizeLenMixin.__len__",
+        "path": "xarray/core/utils.py",
+        "symbol": "xarray.core.utils.NdimSizeLenMixin.__len__",
+        "score": 0.5,
+        "evidence": [
+          {
+            "kind": "symbol",
+            "matched_text": "__len__",
+            "source": "issue"
+          }
+        ]
+      },
+      {
+        "node_id": "vgar:pydata/xarray:python:method:xarray/core/utils.py:xarray.core.utils.OrderedSet.__len__",
+        "path": "xarray/core/utils.py",
+        "symbol": "xarray.core.utils.OrderedSet.__len__",
+        "score": 0.5,
+        "evidence": [
+          {
+            "kind": "symbol",
+            "matched_text": "__len__",
+            "source": "issue"
+          }
+        ]
+      },
+      {
+        "node_id": "vgar:pydata/xarray:python:method:xarray/core/dataarray.py:xarray.core.dataarray.DataArray.set_index",
+        "path": "xarray/core/dataarray.py",
+        "symbol": "xarray.core.dataarray.DataArray.set_index",
+        "score": 0.45,
+        "evidence": [
+          {
+            "kind": "receiver_member",
+            "matched_text": "ds.set_index",
+            "source": "issue"
+          }
+        ]
+      },
+      {
+        "node_id": "vgar:pydata/xarray:python:class:xarray/core/dataset.py:xarray.core.dataset.DataVariables",
+        "path": "xarray/core/dataset.py",
+        "symbol": "xarray.core.dataset.DataVariables",
+        "score": 0.45,
+        "evidence": [
+          {
+            "kind": "receiver_member",
+            "matched_text": "xr.core.dataset.DataVariables",
+            "source": "issue"
+          }
+        ]
+      },
+      {
+        "node_id": "vgar:pydata/xarray:python:method:xarray/core/dataset.py:xarray.core.dataset.Dataset.set_index",
+        "path": "xarray/core/dataset.py",
+        "symbol": "xarray.core.dataset.Dataset.set_index",
+        "score": 0.45,
+        "evidence": [
+          {
+            "kind": "receiver_member",
+            "matched_text": "ds.set_index",
+            "source": "issue"
+          }
+        ]
+      },
+      {
+        "node_id": "vgar:pydata/xarray:python:method:xarray/core/dataarray.py:xarray.core.dataarray.DataArray.variable",
+        "path": "xarray/core/dataarray.py",
+        "symbol": "xarray.core.dataarray.DataArray.variable",
+        "score": 0.4,
+        "evidence": [
+          {
+            "kind": "symbol",
+            "matched_text": "variable",
+            "source": "issue"
+          }
+        ]
+      },
+      {
+        "node_id": "vgar:pydata/xarray:python:method:xarray/core/_reductions.py:xarray.core._reductions.DataArrayGroupByReductions.all",
+        "path": "xarray/core/_reductions.py",
+        "symbol": "xarray.core._reductions.DataArrayGroupByReductions.all",
+        "score": 0.25,
+        "evidence": [
+          {
+            "kind": "symbol",
+            "matched_text": "all",
+            "source": "issue"
+          }
+        ]
+      },
+      {
+        "node_id": "vgar:pydata/xarray:python:method:xarray/core/_reductions.py:xarray.core._reductions.DataArrayGroupByReductions.any",
+        "path": "xarray/core/_reductions.py",
+        "symbol": "xarray.core._reductions.DataArrayGroupByReductions.any",
+        "score": 0.25,
+        "evidence": [
+          {
+            "kind": "symbol",
+            "matched_text": "any",
+            "source": "issue"
+          }
+        ]
+      },
+      {
+        "node_id": "vgar:pydata/xarray:python:method:xarray/core/_reductions.py:xarray.core._reductions.DataArrayReductions.all",
+        "path": "xarray/core/_reductions.py",
+        "symbol": "xarray.core._reductions.DataArrayReductions.all",
+        "score": 0.25,
+        "evidence": [
+          {
+            "kind": "symbol",
+            "matched_text": "all",
+            "source": "issue"
+          }
+        ]
+      },
+      {
+        "node_id": "vgar:pydata/xarray:python:method:xarray/core/_reductions.py:xarray.core._reductions.DataArrayReductions.any",
+        "path": "xarray/core/_reductions.py",
+        "symbol": "xarray.core._reductions.DataArrayReductions.any",
+        "score": 0.25,
+        "evidence": [
+          {
+            "kind": "symbol",
+            "matched_text": "any",
+            "source": "issue"
+          }
+        ]
+      },
+      {
+        "node_id": "vgar:pydata/xarray:python:method:xarray/core/_reductions.py:xarray.core._reductions.DataArrayResampleReductions.all",
+        "path": "xarray/core/_reductions.py",
+        "symbol": "xarray.core._reductions.DataArrayResampleReductions.all",
+        "score": 0.25,
+        "evidence": [
+          {
+            "kind": "symbol",
+            "matched_text": "all",
+            "source": "issue"
+          }
+        ]
+      },
+      {
+        "node_id": "vgar:pydata/xarray:python:method:xarray/core/_reductions.py:xarray.core._reductions.DataArrayResampleReductions.any",
+        "path": "xarray/core/_reductions.py",
+        "symbol": "xarray.core._reductions.DataArrayResampleReductions.any",
+        "score": 0.25,
+        "evidence": [
+          {
+            "kind": "symbol",
+            "matched_text": "any",
+            "source": "issue"
+          }
+        ]
+      },
+      {
+        "node_id": "vgar:pydata/xarray:python:method:xarray/core/_reductions.py:xarray.core._reductions.DatasetGroupByReductions.all",
+        "path": "xarray/core/_reductions.py",
+        "symbol": "xarray.core._reductions.DatasetGroupByReductions.all",
+        "score": 0.25,
+        "evidence": [
+          {
+            "kind": "symbol",
+            "matched_text": "all",
+            "source": "issue"
+          }
+        ]
+      },
+      {
+        "node_id": "vgar:pydata/xarray:python:method:xarray/core/_reductions.py:xarray.core._reductions.DatasetGroupByReductions.any",
+        "path": "xarray/core/_reductions.py",
+        "symbol": "xarray.core._reductions.DatasetGroupByReductions.any",
+        "score": 0.25,
+        "evidence": [
+          {
+            "kind": "symbol",
+            "matched_text": "any",
+            "source": "issue"
+          }
+        ]
+      },
+      {
+        "node_id": "vgar:pydata/xarray:python:method:xarray/core/_reductions.py:xarray.core._reductions.DatasetReductions.all",
+        "path": "xarray/core/_reductions.py",
+        "symbol": "xarray.core._reductions.DatasetReductions.all",
+        "score": 0.25,
+        "evidence": [
+          {
+            "kind": "symbol",
+            "matched_text": "all",
+            "source": "issue"
+          }
+        ]
+      },
+      {
+        "node_id": "vgar:pydata/xarray:python:method:xarray/core/_reductions.py:xarray.core._reductions.DatasetReductions.any",
+        "path": "xarray/core/_reductions.py",
+        "symbol": "xarray.core._reductions.DatasetReductions.any",
+        "score": 0.25,
+        "evidence": [
+          {
+            "kind": "symbol",
+            "matched_text": "any",
+            "source": "issue"
+          }
+        ]
+      },
+      {
+        "node_id": "vgar:pydata/xarray:python:method:xarray/core/_reductions.py:xarray.core._reductions.DatasetResampleReductions.all",
+        "path": "xarray/core/_reductions.py",
+        "symbol": "xarray.core._reductions.DatasetResampleReductions.all",
+        "score": 0.25,
+        "evidence": [
+          {
+            "kind": "symbol",
+            "matched_text": "all",
+            "source": "issue"
+          }
+        ]
+      },
+      {
+        "node_id": "vgar:pydata/xarray:python:method:xarray/core/_reductions.py:xarray.core._reductions.DatasetResampleReductions.any",
+        "path": "xarray/core/_reductions.py",
+        "symbol": "xarray.core._reductions.DatasetResampleReductions.any",
+        "score": 0.25,
+        "evidence": [
+          {
+            "kind": "symbol",
+            "matched_text": "any",
+            "source": "issue"
+          }
+        ]
+      },
+      {
+        "node_id": "vgar:pydata/xarray:python:method:xarray/core/accessor_str.py:xarray.core.accessor_str.StringAccessor.index",
+        "path": "xarray/core/accessor_str.py",
+        "symbol": "xarray.core.accessor_str.StringAccessor.index",
+        "score": 0.25,
+        "evidence": [
+          {
+            "kind": "symbol",
+            "matched_text": "index",
+            "source": "issue"
+          }
+        ]
+      },
+      {
+        "node_id": "vgar:pydata/xarray:python:method:xarray/core/dataarray.py:xarray.core.dataarray.DataArray.copy",
+        "path": "xarray/core/dataarray.py",
+        "symbol": "xarray.core.dataarray.DataArray.copy",
+        "score": 0.25,
+        "evidence": [
+          {
+            "kind": "symbol",
+            "matched_text": "copy",
+            "source": "issue"
+          }
+        ]
+      },
+      {
+        "node_id": "vgar:pydata/xarray:python:method:xarray/core/dataarray.py:xarray.core.dataarray.DataArray.data",
+        "path": "xarray/core/dataarray.py",
+        "symbol": "xarray.core.dataarray.DataArray.data",
+        "score": 0.25,
+        "evidence": [
+          {
+            "kind": "symbol",
+            "matched_text": "data",
+            "source": "issue"
+          }
+        ]
+      },
+      {
+        "node_id": "vgar:pydata/xarray:python:method:xarray/core/dataarray.py:xarray.core.dataarray.DataArray.data.setter",
+        "path": "xarray/core/dataarray.py",
+        "symbol": "xarray.core.dataarray.DataArray.data",
+        "score": 0.25,
+        "evidence": [
+          {
+            "kind": "symbol",
+            "matched_text": "data",
+            "source": "issue"
+          }
+        ]
+      },
+      {
+        "node_id": "vgar:pydata/xarray:python:method:xarray/core/dataset.py:xarray.core.dataset.Dataset.copy",
+        "path": "xarray/core/dataset.py",
+        "symbol": "xarray.core.dataset.Dataset.copy",
+        "score": 0.25,
+        "evidence": [
+          {
+            "kind": "symbol",
+            "matched_text": "copy",
+            "source": "issue"
+          }
+        ]
+      },
+      {
+        "node_id": "vgar:pydata/xarray:python:method:xarray/core/groupby.py:xarray.core.groupby._DummyGroup.data",
+        "path": "xarray/core/groupby.py",
+        "symbol": "xarray.core.groupby._DummyGroup.data",
+        "score": 0.25,
+        "evidence": [
+          {
+            "kind": "symbol",
+            "matched_text": "data",
+            "source": "issue"
+          }
+        ]
+      },
+      {
+        "node_id": "vgar:pydata/xarray:python:method:xarray/core/indexes.py:xarray.core.indexes.Index.copy",
+        "path": "xarray/core/indexes.py",
+        "symbol": "xarray.core.indexes.Index.copy",
+        "score": 0.25,
+        "evidence": [
+          {
+            "kind": "symbol",
+            "matched_text": "copy",
+            "source": "issue"
+          }
+        ]
+      },
+      {
+        "node_id": "vgar:pydata/xarray:python:method:xarray/core/indexes.py:xarray.core.indexes.Indexes.copy",
+        "path": "xarray/core/indexes.py",
+        "symbol": "xarray.core.indexes.Indexes.copy",
+        "score": 0.25,
+        "evidence": [
+          {
+            "kind": "symbol",
+            "matched_text": "copy",
+            "source": "issue"
+          }
+        ]
+      },
+      {
+        "node_id": "vgar:pydata/xarray:python:method:xarray/core/indexes.py:xarray.core.indexes.PandasIndex.copy",
+        "path": "xarray/core/indexes.py",
+        "symbol": "xarray.core.indexes.PandasIndex.copy",
+        "score": 0.25,
+        "evidence": [
+          {
+            "kind": "symbol",
+            "matched_text": "copy",
+            "source": "issue"
+          }
+        ]
+      },
+      {
+        "node_id": "vgar:pydata/xarray:python:method:xarray/core/indexing.py:xarray.core.indexing.PandasIndexingAdapter.copy",
+        "path": "xarray/core/indexing.py",
+        "symbol": "xarray.core.indexing.PandasIndexingAdapter.copy",
+        "score": 0.25,
+        "evidence": [
+          {
+            "kind": "symbol",
+            "matched_text": "copy",
+            "source": "issue"
+          }
+        ]
+      },
+      {
+        "node_id": "vgar:pydata/xarray:python:method:xarray/core/indexing.py:xarray.core.indexing.PandasMultiIndexingAdapter.copy",
+        "path": "xarray/core/indexing.py",
+        "symbol": "xarray.core.indexing.PandasMultiIndexingAdapter.copy",
+        "score": 0.25,
+        "evidence": [
+          {
+            "kind": "symbol",
+            "matched_text": "copy",
+            "source": "issue"
+          }
+        ]
+      },
+      {
+        "node_id": "vgar:pydata/xarray:python:method:xarray/core/variable.py:xarray.core.variable.IndexVariable.copy",
+        "path": "xarray/core/variable.py",
+        "symbol": "xarray.core.variable.IndexVariable.copy",
+        "score": 0.25,
+        "evidence": [
+          {
+            "kind": "symbol",
+            "matched_text": "copy",
+            "source": "issue"
+          }
+        ]
+      },
+      {
+        "node_id": "vgar:pydata/xarray:python:method:xarray/core/variable.py:xarray.core.variable.IndexVariable.data",
+        "path": "xarray/core/variable.py",
+        "symbol": "xarray.core.variable.IndexVariable.data",
+        "score": 0.25,
+        "evidence": [
+          {
+            "kind": "symbol",
+            "matched_text": "data",
+            "source": "issue"
+          }
+        ]
+      },
+      {
+        "node_id": "vgar:pydata/xarray:python:method:xarray/core/variable.py:xarray.core.variable.Variable.copy",
+        "path": "xarray/core/variable.py",
+        "symbol": "xarray.core.variable.Variable.copy",
+        "score": 0.25,
+        "evidence": [
+          {
+            "kind": "symbol",
+            "matched_text": "copy",
+            "source": "issue"
+          }
+        ]
+      },
+      {
+        "node_id": "vgar:pydata/xarray:python:method:xarray/core/variable.py:xarray.core.variable.Variable.data",
+        "path": "xarray/core/variable.py",
+        "symbol": "xarray.core.variable.Variable.data",
+        "score": 0.25,
+        "evidence": [
+          {
+            "kind": "symbol",
+            "matched_text": "data",
+            "source": "issue"
+          }
+        ]
+      },
+      {
+        "node_id": "vgar:pydata/xarray:python:method:xarray/core/variable.py:xarray.core.variable.Variable.data.setter",
+        "path": "xarray/core/variable.py",
+        "symbol": "xarray.core.variable.Variable.data",
+        "score": 0.25,
+        "evidence": [
+          {
+            "kind": "symbol",
+            "matched_text": "data",
+            "source": "issue"
+          }
+        ]
+      },
+      {
+        "node_id": "vgar:pydata/xarray:python:function:xarray/tests/test_accessor_dt.py:xarray.tests.test_accessor_dt.data",
+        "path": "xarray/tests/test_accessor_dt.py",
+        "symbol": "xarray.tests.test_accessor_dt.data",
+        "score": 0.25,
+        "evidence": [
+          {
+            "kind": "symbol",
+            "matched_text": "data",
+            "source": "issue"
+          }
+        ]
+      },
+      {
+        "node_id": "vgar:pydata/xarray:python:function:xarray/tests/test_cftimeindex.py:xarray.tests.test_cftimeindex.index",
+        "path": "xarray/tests/test_cftimeindex.py",
+        "symbol": "xarray.tests.test_cftimeindex.index",
+        "score": 0.25,
+        "evidence": [
+          {
+            "kind": "symbol",
+            "matched_text": "index",
+            "source": "issue"
+          }
+        ]
+      },
+      {
+        "node_id": "vgar:pydata/xarray:python:function:xarray/tests/test_coding_times.py:xarray.tests.test_coding_times.data",
+        "path": "xarray/tests/test_coding_times.py",
+        "symbol": "xarray.tests.test_coding_times.data",
+        "score": 0.25,
+        "evidence": [
+          {
+            "kind": "symbol",
+            "matched_text": "data",
+            "source": "issue"
+          }
+        ]
+      },
+      {
+        "node_id": "vgar:pydata/xarray:python:method:xarray/tests/test_concat.py:xarray.tests.test_concat.TestConcatDataset.data",
+        "path": "xarray/tests/test_concat.py",
+        "symbol": "xarray.tests.test_concat.TestConcatDataset.data",
+        "score": 0.25,
+        "evidence": [
+          {
+            "kind": "symbol",
+            "matched_text": "data",
+            "source": "issue"
+          }
+        ]
+      },
+      {
+        "node_id": "vgar:pydata/xarray:python:method:xarray/tests/test_indexes.py:xarray.tests.test_indexes.TestIndex.index",
+        "path": "xarray/tests/test_indexes.py",
+        "symbol": "xarray.tests.test_indexes.TestIndex.index",
+        "score": 0.25,
+        "evidence": [
+          {
+            "kind": "symbol",
+            "matched_text": "index",
+            "source": "issue"
+          }
+        ]
+      }
+    ],
+    "ambiguous_matches": [
+      {
+        "matched_text": "__len__",
+        "candidate_ids": [
+          "vgar:pydata/xarray:python:method:xarray/backends/lru_cache.py:xarray.backends.lru_cache.LRUCache.__len__",
+          "vgar:pydata/xarray:python:method:xarray/core/coordinates.py:xarray.core.coordinates.Coordinates.__len__",
+          "vgar:pydata/xarray:python:method:xarray/core/dataarray.py:xarray.core.dataarray.DataArray.__len__",
+          "vgar:pydata/xarray:python:method:xarray/core/dataset.py:xarray.core.dataset.DataVariables.__len__",
+          "vgar:pydata/xarray:python:method:xarray/core/dataset.py:xarray.core.dataset.Dataset.__len__",
+          "vgar:pydata/xarray:python:method:xarray/core/groupby.py:xarray.core.groupby.GroupBy.__len__",
+          "vgar:pydata/xarray:python:method:xarray/core/indexes.py:xarray.core.indexes.Indexes.__len__",
+          "vgar:pydata/xarray:python:method:xarray/core/rolling.py:xarray.core.rolling.Rolling.__len__",
+          "vgar:pydata/xarray:python:method:xarray/core/utils.py:xarray.core.utils.Frozen.__len__",
+          "vgar:pydata/xarray:python:method:xarray/core/utils.py:xarray.core.utils.HiddenKeyDict.__len__",
+          "vgar:pydata/xarray:python:method:xarray/core/utils.py:xarray.core.utils.HybridMappingProxy.__len__",
+          "vgar:pydata/xarray:python:method:xarray/core/utils.py:xarray.core.utils.NdimSizeLenMixin.__len__",
+          "vgar:pydata/xarray:python:method:xarray/core/utils.py:xarray.core.utils.OrderedSet.__len__"
+        ]
+      },
+      {
+        "matched_text": "all",
+        "candidate_ids": [
+          "vgar:pydata/xarray:python:method:xarray/core/_reductions.py:xarray.core._reductions.DataArrayGroupByReductions.all",
+          "vgar:pydata/xarray:python:method:xarray/core/_reductions.py:xarray.core._reductions.DataArrayReductions.all",
+          "vgar:pydata/xarray:python:method:xarray/core/_reductions.py:xarray.core._reductions.DataArrayResampleReductions.all",
+          "vgar:pydata/xarray:python:method:xarray/core/_reductions.py:xarray.core._reductions.DatasetGroupByReductions.all",
+          "vgar:pydata/xarray:python:method:xarray/core/_reductions.py:xarray.core._reductions.DatasetReductions.all",
+          "vgar:pydata/xarray:python:method:xarray/core/_reductions.py:xarray.core._reductions.DatasetResampleReductions.all"
+        ]
+      },
+      {
+        "matched_text": "any",
+        "candidate_ids": [
+          "vgar:pydata/xarray:python:method:xarray/core/_reductions.py:xarray.core._reductions.DataArrayGroupByReductions.any",
+          "vgar:pydata/xarray:python:method:xarray/core/_reductions.py:xarray.core._reductions.DataArrayReductions.any",
+          "vgar:pydata/xarray:python:method:xarray/core/_reductions.py:xarray.core._reductions.DataArrayResampleReductions.any",
+          "vgar:pydata/xarray:python:method:xarray/core/_reductions.py:xarray.core._reductions.DatasetGroupByReductions.any",
+          "vgar:pydata/xarray:python:method:xarray/core/_reductions.py:xarray.core._reductions.DatasetReductions.any",
+          "vgar:pydata/xarray:python:method:xarray/core/_reductions.py:xarray.core._reductions.DatasetResampleReductions.any"
+        ]
+      },
+      {
+        "matched_text": "coords",
+        "candidate_ids": [
+          "vgar:pydata/xarray:python:method:xarray/core/dataarray.py:xarray.core.dataarray.DataArray.coords",
+          "vgar:pydata/xarray:python:method:xarray/core/dataset.py:xarray.core.dataset.Dataset.coords"
+        ]
+      },
+      {
+        "matched_text": "copy",
+        "candidate_ids": [
+          "vgar:pydata/xarray:python:method:xarray/core/dataarray.py:xarray.core.dataarray.DataArray.copy",
+          "vgar:pydata/xarray:python:method:xarray/core/dataset.py:xarray.core.dataset.Dataset.copy",
+          "vgar:pydata/xarray:python:method:xarray/core/indexes.py:xarray.core.indexes.Index.copy",
+          "vgar:pydata/xarray:python:method:xarray/core/indexes.py:xarray.core.indexes.Indexes.copy",
+          "vgar:pydata/xarray:python:method:xarray/core/indexes.py:xarray.core.indexes.PandasIndex.copy",
+          "vgar:pydata/xarray:python:method:xarray/core/indexing.py:xarray.core.indexing.PandasIndexingAdapter.copy",
+          "vgar:pydata/xarray:python:method:xarray/core/indexing.py:xarray.core.indexing.PandasMultiIndexingAdapter.copy",
+          "vgar:pydata/xarray:python:method:xarray/core/variable.py:xarray.core.variable.IndexVariable.copy",
+          "vgar:pydata/xarray:python:method:xarray/core/variable.py:xarray.core.variable.Variable.copy"
+        ]
+      },
+      {
+        "matched_text": "data",
+        "candidate_ids": [
+          "vgar:pydata/xarray:python:function:xarray/tests/test_accessor_dt.py:xarray.tests.test_accessor_dt.data",
+          "vgar:pydata/xarray:python:function:xarray/tests/test_coding_times.py:xarray.tests.test_coding_times.data",
+          "vgar:pydata/xarray:python:method:xarray/core/dataarray.py:xarray.core.dataarray.DataArray.data",
+          "vgar:pydata/xarray:python:method:xarray/core/dataarray.py:xarray.core.dataarray.DataArray.data.setter",
+          "vgar:pydata/xarray:python:method:xarray/core/groupby.py:xarray.core.groupby._DummyGroup.data",
+          "vgar:pydata/xarray:python:method:xarray/core/variable.py:xarray.core.variable.IndexVariable.data",
+          "vgar:pydata/xarray:python:method:xarray/core/variable.py:xarray.core.variable.Variable.data",
+          "vgar:pydata/xarray:python:method:xarray/core/variable.py:xarray.core.variable.Variable.data.setter",
+          "vgar:pydata/xarray:python:method:xarray/tests/test_concat.py:xarray.tests.test_concat.TestConcatDataset.data"
+        ]
+      },
+      {
+        "matched_text": "drop",
+        "candidate_ids": [
+          "vgar:pydata/xarray:python:method:xarray/core/dataarray.py:xarray.core.dataarray.DataArray.drop",
+          "vgar:pydata/xarray:python:method:xarray/core/dataset.py:xarray.core.dataset.Dataset.drop"
+        ]
+      },
+      {
+        "matched_text": "ds.set_index",
+        "candidate_ids": [
+          "vgar:pydata/xarray:python:method:xarray/core/dataarray.py:xarray.core.dataarray.DataArray.set_index",
+          "vgar:pydata/xarray:python:method:xarray/core/dataset.py:xarray.core.dataset.Dataset.set_index"
+        ]
+      },
+      {
+        "matched_text": "index",
+        "candidate_ids": [
+          "vgar:pydata/xarray:python:function:xarray/tests/test_cftimeindex.py:xarray.tests.test_cftimeindex.index",
+          "vgar:pydata/xarray:python:method:xarray/core/accessor_str.py:xarray.core.accessor_str.StringAccessor.index",
+          "vgar:pydata/xarray:python:method:xarray/tests/test_indexes.py:xarray.tests.test_indexes.TestIndex.index"
+        ]
+      },
+      {
+        "matched_text": "reset_index",
+        "candidate_ids": [
+          "vgar:pydata/xarray:python:method:xarray/core/dataarray.py:xarray.core.dataarray.DataArray.reset_index",
+          "vgar:pydata/xarray:python:method:xarray/core/dataset.py:xarray.core.dataset.Dataset.reset_index"
+        ]
+      }
+    ],
+    "unmatched_locations": [
+      "/details>"
+    ],
+    "overlay_id": "sha256:f26b9c71c0ef60cc943715e2a4fa882152ef22c5c27fffca2cad6412e05caac0",
+    "trace_nodes": [
+      {
+        "id": "vgar:pydata/xarray:issue:sha256:6e90669c9a4b16d3bd337fce67f2e570dbf05395c1324dbc39386993c384b2c3",
+        "type": "Issue",
+        "repo_key": "pydata/xarray",
+        "name": "pydata__xarray-6992",
+        "qualified_name": "pydata__xarray-6992",
+        "path": null,
+        "language": null,
+        "range": null,
+        "graph_version": "sha256:1bf0ccc7d35740cf7e15bb033cd8de351c235634bf224f7973dfcf99c39849ba",
+        "content_hash": "sha256:4429040490fdee2bfa532377a909c75c7cb2bf96aa2c8ddbf36a8d646594a38b",
+        "properties": {
+          "task_id": "pydata__xarray-6992",
+          "issue_text": "index refactor: more `_coord_names` than `_variables` on Dataset\n### What happened?\n\n`xr.core.dataset.DataVariables` assumes that everything that is in `ds._dataset._variables` and not in `self._dataset._coord_names` is a \"data variable\". However, since the index refactor we can end up with more `_coord_names` than `_variables` which breaks a number of stuff (e.g. the repr).\n\n### What did you expect to happen?\n\nWell it seems this assumption is now wrong.\n\n### Minimal Complete Verifiable Example\n\n```Python\nds = xr.Dataset(coords={\"a\": (\"x\", [1, 2, 3]), \"b\": (\"x\", ['a', 'b', 'c'])})\r\nds.set_index(z=['a', 'b']).reset_index(\"z\", drop=True)\n```\n\n\n### MVCE confirmation\n\n- [ ] Minimal example — the example is as focused as reasonably possible to demonstrate the underlying issue in xarray.\n- [ ] Complete example — the example is self-contained, including all data and the text of any traceback.\n- [ ] Verifiable example — the example copy & pastes into an IPython prompt or [Binder notebook](https://mybinder.org/v2/gh/pydata/xarray/main?urlpath=lab/tree/doc/examples/blank_template.ipynb), returning the result.\n- [ ] New issue — a search of GitHub Issues suggests this is not a duplicate.\n\n### Relevant log output\n\n```Python\nValueError: __len__() should return >= 0\n```\n\n\n### Anything else we need to know?\n\nThe error comes from here\r\n\r\nhttps://github.com/pydata/xarray/blob/63ba862d03c8d0cd8b44d2071bc360e9fed4519d/xarray/core/dataset.py#L368\r\n\r\nBisected to #5692 - which probably does not help too much.\r\n\n\n### Environment\n\n<details>\r\n\r\n\r\n\r\n</details>\r\n\n",
+          "failing_tests": [],
+          "labels": [],
+          "overlay_id": "sha256:f26b9c71c0ef60cc943715e2a4fa882152ef22c5c27fffca2cad6412e05caac0"
+        }
+      },
+      {
+        "id": "vgar:pydata/xarray:task:sha256:6e90669c9a4b16d3bd337fce67f2e570dbf05395c1324dbc39386993c384b2c3:bug_report:0",
+        "type": "BugReport",
+        "repo_key": "pydata/xarray",
+        "name": "pydata__xarray-6992",
+        "qualified_name": "pydata__xarray-6992::bug_report:0",
+        "path": null,
+        "language": null,
+        "range": null,
+        "graph_version": "sha256:1bf0ccc7d35740cf7e15bb033cd8de351c235634bf224f7973dfcf99c39849ba",
+        "content_hash": "sha256:f451c99628a34cbdda0908fd667581349690e151dce459944ae3e994a0133109",
+        "properties": {
+          "signals": [
+            "error_message"
+          ]
+        }
+      },
+      {
+        "id": "vgar:pydata/xarray:task:sha256:6e90669c9a4b16d3bd337fce67f2e570dbf05395c1324dbc39386993c384b2c3:error:0",
+        "type": "ErrorMessage",
+        "repo_key": "pydata/xarray",
+        "name": "ValueError",
+        "qualified_name": "pydata__xarray-6992::error:0",
+        "path": null,
+        "language": null,
+        "range": null,
+        "graph_version": "sha256:1bf0ccc7d35740cf7e15bb033cd8de351c235634bf224f7973dfcf99c39849ba",
+        "content_hash": "sha256:8ed9a26153d19cc7a140c3ca719a194cd34cd59e3dfb858be7855a937f3cc227",
+        "properties": {
+          "exception_type": "ValueError",
+          "message": "__len__() should return >= 0",
+          "occurrences": 1
+        }
+      }
+    ],
+    "trace_edges": [
+      {
+        "id": "sha256:eb7123138d117d21e2729f376f8bbc6e3d3fdf59b61960f934d47f9a3c36b38c",
+        "type": "MENTIONS",
+        "source_id": "vgar:pydata/xarray:issue:sha256:6e90669c9a4b16d3bd337fce67f2e570dbf05395c1324dbc39386993c384b2c3",
+        "target_id": "vgar:pydata/xarray:python:class:xarray/core/dataset.py:xarray.core.dataset.DataVariables",
+        "confidence": 0.45,
+        "resolution": "heuristic",
+        "graph_version": "sha256:1bf0ccc7d35740cf7e15bb033cd8de351c235634bf224f7973dfcf99c39849ba",
+        "properties": {
+          "overlay_id": "sha256:f26b9c71c0ef60cc943715e2a4fa882152ef22c5c27fffca2cad6412e05caac0",
+          "has_ambiguous_evidence": false
+        },
+        "provenance": {
+          "source_tool": "vgar-m1-task-overlay",
+          "source_tool_version": "0.1.0",
+          "rule_id": "task.mentions.v1",
+          "source_revision": "45c0a114e2b7b27b83c9618bc05b36afac82183c",
+          "evidence": [
+            {
+              "kind": "receiver_member",
+              "matched_text": "xr.core.dataset.DataVariables",
+              "source": "issue"
+            }
+          ]
+        }
+      },
+      {
+        "id": "sha256:752061c54828647f91beae44b17064b7d34be3a3391ca9da71748b033de9d4da",
+        "type": "MENTIONS",
+        "source_id": "vgar:pydata/xarray:issue:sha256:6e90669c9a4b16d3bd337fce67f2e570dbf05395c1324dbc39386993c384b2c3",
+        "target_id": "vgar:pydata/xarray:python:class:xarray/core/dataset.py:xarray.core.dataset.Dataset",
+        "confidence": 0.6,
+        "resolution": "heuristic",
+        "graph_version": "sha256:1bf0ccc7d35740cf7e15bb033cd8de351c235634bf224f7973dfcf99c39849ba",
+        "properties": {
+          "overlay_id": "sha256:f26b9c71c0ef60cc943715e2a4fa882152ef22c5c27fffca2cad6412e05caac0",
+          "has_ambiguous_evidence": false
+        },
+        "provenance": {
+          "source_tool": "vgar-m1-task-overlay",
+          "source_tool_version": "0.1.0",
+          "rule_id": "task.mentions.v1",
+          "source_revision": "45c0a114e2b7b27b83c9618bc05b36afac82183c",
+          "evidence": [
+            {
+              "kind": "symbol",
+              "matched_text": "Dataset",
+              "source": "issue"
+            },
+            {
+              "kind": "receiver_member",
+              "matched_text": "xr.Dataset",
+              "source": "issue"
+            }
+          ]
+        }
+      },
+      {
+        "id": "sha256:8b6be0be3f8a8432a8e7d4a636d908fbfe064fdbe8d960038179fabd8e1c3643",
+        "type": "MENTIONS",
+        "source_id": "vgar:pydata/xarray:issue:sha256:6e90669c9a4b16d3bd337fce67f2e570dbf05395c1324dbc39386993c384b2c3",
+        "target_id": "vgar:pydata/xarray:python:file:xarray/core/dataset.py",
+        "confidence": 0.7,
+        "resolution": "heuristic",
+        "graph_version": "sha256:1bf0ccc7d35740cf7e15bb033cd8de351c235634bf224f7973dfcf99c39849ba",
+        "properties": {
+          "overlay_id": "sha256:f26b9c71c0ef60cc943715e2a4fa882152ef22c5c27fffca2cad6412e05caac0",
+          "has_ambiguous_evidence": false
+        },
+        "provenance": {
+          "source_tool": "vgar-m1-task-overlay",
+          "source_tool_version": "0.1.0",
+          "rule_id": "task.mentions.v1",
+          "source_revision": "45c0a114e2b7b27b83c9618bc05b36afac82183c",
+          "evidence": [
+            {
+              "kind": "source_link",
+              "matched_text": "https://github.com/pydata/xarray/blob/63ba862d03c8d0cd8b44d2071bc360e9fed4519d/xarray/core/dataset.py#L368",
+              "source": "issue"
+            }
+          ]
+        }
+      },
+      {
+        "id": "sha256:417dc0bca8a009b158c747fe2a0d696b25e744f6f6a0a402b2e9e633371c1493",
+        "type": "MENTIONS",
+        "source_id": "vgar:pydata/xarray:issue:sha256:6e90669c9a4b16d3bd337fce67f2e570dbf05395c1324dbc39386993c384b2c3",
+        "target_id": "vgar:pydata/xarray:python:function:xarray/tests/test_accessor_dt.py:xarray.tests.test_accessor_dt.data",
+        "confidence": 0.25,
+        "resolution": "heuristic",
+        "graph_version": "sha256:1bf0ccc7d35740cf7e15bb033cd8de351c235634bf224f7973dfcf99c39849ba",
+        "properties": {
+          "overlay_id": "sha256:f26b9c71c0ef60cc943715e2a4fa882152ef22c5c27fffca2cad6412e05caac0",
+          "has_ambiguous_evidence": true
+        },
+        "provenance": {
+          "source_tool": "vgar-m1-task-overlay",
+          "source_tool_version": "0.1.0",
+          "rule_id": "task.mentions.v1",
+          "source_revision": "45c0a114e2b7b27b83c9618bc05b36afac82183c",
+          "evidence": [
+            {
+              "kind": "symbol",
+              "matched_text": "data",
+              "source": "issue"
+            }
+          ]
+        }
+      },
+      {
+        "id": "sha256:96bb00f1f4ab97933b2e699654fe42766bd78160ede92c8f284765b1e6041067",
+        "type": "MENTIONS",
+        "source_id": "vgar:pydata/xarray:issue:sha256:6e90669c9a4b16d3bd337fce67f2e570dbf05395c1324dbc39386993c384b2c3",
+        "target_id": "vgar:pydata/xarray:python:function:xarray/tests/test_cftimeindex.py:xarray.tests.test_cftimeindex.index",
+        "confidence": 0.25,
+        "resolution": "heuristic",
+        "graph_version": "sha256:1bf0ccc7d35740cf7e15bb033cd8de351c235634bf224f7973dfcf99c39849ba",
+        "properties": {
+          "overlay_id": "sha256:f26b9c71c0ef60cc943715e2a4fa882152ef22c5c27fffca2cad6412e05caac0",
+          "has_ambiguous_evidence": true
+        },
+        "provenance": {
+          "source_tool": "vgar-m1-task-overlay",
+          "source_tool_version": "0.1.0",
+          "rule_id": "task.mentions.v1",
+          "source_revision": "45c0a114e2b7b27b83c9618bc05b36afac82183c",
+          "evidence": [
+            {
+              "kind": "symbol",
+              "matched_text": "index",
+              "source": "issue"
+            }
+          ]
+        }
+      },
+      {
+        "id": "sha256:5a36058dd015d94c897a299342db944b4664438a4845dd4b1d1e9954b8545066",
+        "type": "MENTIONS",
+        "source_id": "vgar:pydata/xarray:issue:sha256:6e90669c9a4b16d3bd337fce67f2e570dbf05395c1324dbc39386993c384b2c3",
+        "target_id": "vgar:pydata/xarray:python:function:xarray/tests/test_coding_times.py:xarray.tests.test_coding_times.data",
+        "confidence": 0.25,
+        "resolution": "heuristic",
+        "graph_version": "sha256:1bf0ccc7d35740cf7e15bb033cd8de351c235634bf224f7973dfcf99c39849ba",
+        "properties": {
+          "overlay_id": "sha256:f26b9c71c0ef60cc943715e2a4fa882152ef22c5c27fffca2cad6412e05caac0",
+          "has_ambiguous_evidence": true
+        },
+        "provenance": {
+          "source_tool": "vgar-m1-task-overlay",
+          "source_tool_version": "0.1.0",
+          "rule_id": "task.mentions.v1",
+          "source_revision": "45c0a114e2b7b27b83c9618bc05b36afac82183c",
+          "evidence": [
+            {
+              "kind": "symbol",
+              "matched_text": "data",
+              "source": "issue"
+            }
+          ]
+        }
+      },
+      {
+        "id": "sha256:e179fc940d14b72c260bd0716671213a636f2575226a5573b3a931b5e9ebdffd",
+        "type": "MENTIONS",
+        "source_id": "vgar:pydata/xarray:issue:sha256:6e90669c9a4b16d3bd337fce67f2e570dbf05395c1324dbc39386993c384b2c3",
+        "target_id": "vgar:pydata/xarray:python:method:xarray/backends/lru_cache.py:xarray.backends.lru_cache.LRUCache.__len__",
+        "confidence": 0.5,
+        "resolution": "heuristic",
+        "graph_version": "sha256:1bf0ccc7d35740cf7e15bb033cd8de351c235634bf224f7973dfcf99c39849ba",
+        "properties": {
+          "overlay_id": "sha256:f26b9c71c0ef60cc943715e2a4fa882152ef22c5c27fffca2cad6412e05caac0",
+          "has_ambiguous_evidence": true
+        },
+        "provenance": {
+          "source_tool": "vgar-m1-task-overlay",
+          "source_tool_version": "0.1.0",
+          "rule_id": "task.mentions.v1",
+          "source_revision": "45c0a114e2b7b27b83c9618bc05b36afac82183c",
+          "evidence": [
+            {
+              "kind": "symbol",
+              "matched_text": "__len__",
+              "source": "issue"
+            }
+          ]
+        }
+      },
+      {
+        "id": "sha256:18e44b9c908d5cb597d04ab032fa664548eab66da954f0a5e9880a6383db965c",
+        "type": "MENTIONS",
+        "source_id": "vgar:pydata/xarray:issue:sha256:6e90669c9a4b16d3bd337fce67f2e570dbf05395c1324dbc39386993c384b2c3",
+        "target_id": "vgar:pydata/xarray:python:method:xarray/core/_reductions.py:xarray.core._reductions.DataArrayGroupByReductions.all",
+        "confidence": 0.25,
+        "resolution": "heuristic",
+        "graph_version": "sha256:1bf0ccc7d35740cf7e15bb033cd8de351c235634bf224f7973dfcf99c39849ba",
+        "properties": {
+          "overlay_id": "sha256:f26b9c71c0ef60cc943715e2a4fa882152ef22c5c27fffca2cad6412e05caac0",
+          "has_ambiguous_evidence": true
+        },
+        "provenance": {
+          "source_tool": "vgar-m1-task-overlay",
+          "source_tool_version": "0.1.0",
+          "rule_id": "task.mentions.v1",
+          "source_revision": "45c0a114e2b7b27b83c9618bc05b36afac82183c",
+          "evidence": [
+            {
+              "kind": "symbol",
+              "matched_text": "all",
+              "source": "issue"
+            }
+          ]
+        }
+      },
+      {
+        "id": "sha256:4a62b5d9416fc89087fe94d0c9f0b332e3fcdf46ba92dfcbe563349e4a43f197",
+        "type": "MENTIONS",
+        "source_id": "vgar:pydata/xarray:issue:sha256:6e90669c9a4b16d3bd337fce67f2e570dbf05395c1324dbc39386993c384b2c3",
+        "target_id": "vgar:pydata/xarray:python:method:xarray/core/_reductions.py:xarray.core._reductions.DataArrayGroupByReductions.any",
+        "confidence": 0.25,
+        "resolution": "heuristic",
+        "graph_version": "sha256:1bf0ccc7d35740cf7e15bb033cd8de351c235634bf224f7973dfcf99c39849ba",
+        "properties": {
+          "overlay_id": "sha256:f26b9c71c0ef60cc943715e2a4fa882152ef22c5c27fffca2cad6412e05caac0",
+          "has_ambiguous_evidence": true
+        },
+        "provenance": {
+          "source_tool": "vgar-m1-task-overlay",
+          "source_tool_version": "0.1.0",
+          "rule_id": "task.mentions.v1",
+          "source_revision": "45c0a114e2b7b27b83c9618bc05b36afac82183c",
+          "evidence": [
+            {
+              "kind": "symbol",
+              "matched_text": "any",
+              "source": "issue"
+            }
+          ]
+        }
+      },
+      {
+        "id": "sha256:6a49059dccb375c5f15d02df199fde805a1a81f6ebfb20d7ef9afcc8e087c1fa",
+        "type": "MENTIONS",
+        "source_id": "vgar:pydata/xarray:issue:sha256:6e90669c9a4b16d3bd337fce67f2e570dbf05395c1324dbc39386993c384b2c3",
+        "target_id": "vgar:pydata/xarray:python:method:xarray/core/_reductions.py:xarray.core._reductions.DataArrayReductions.all",
+        "confidence": 0.25,
+        "resolution": "heuristic",
+        "graph_version": "sha256:1bf0ccc7d35740cf7e15bb033cd8de351c235634bf224f7973dfcf99c39849ba",
+        "properties": {
+          "overlay_id": "sha256:f26b9c71c0ef60cc943715e2a4fa882152ef22c5c27fffca2cad6412e05caac0",
+          "has_ambiguous_evidence": true
+        },
+        "provenance": {
+          "source_tool": "vgar-m1-task-overlay",
+          "source_tool_version": "0.1.0",
+          "rule_id": "task.mentions.v1",
+          "source_revision": "45c0a114e2b7b27b83c9618bc05b36afac82183c",
+          "evidence": [
+            {
+              "kind": "symbol",
+              "matched_text": "all",
+              "source": "issue"
+            }
+          ]
+        }
+      },
+      {
+        "id": "sha256:e44d75f5fd9ecff6169cbfafb2bc6761aef4dbe09ece3a250db167ce68180539",
+        "type": "MENTIONS",
+        "source_id": "vgar:pydata/xarray:issue:sha256:6e90669c9a4b16d3bd337fce67f2e570dbf05395c1324dbc39386993c384b2c3",
+        "target_id": "vgar:pydata/xarray:python:method:xarray/core/_reductions.py:xarray.core._reductions.DataArrayReductions.any",
+        "confidence": 0.25,
+        "resolution": "heuristic",
+        "graph_version": "sha256:1bf0ccc7d35740cf7e15bb033cd8de351c235634bf224f7973dfcf99c39849ba",
+        "properties": {
+          "overlay_id": "sha256:f26b9c71c0ef60cc943715e2a4fa882152ef22c5c27fffca2cad6412e05caac0",
+          "has_ambiguous_evidence": true
+        },
+        "provenance": {
+          "source_tool": "vgar-m1-task-overlay",
+          "source_tool_version": "0.1.0",
+          "rule_id": "task.mentions.v1",
+          "source_revision": "45c0a114e2b7b27b83c9618bc05b36afac82183c",
+          "evidence": [
+            {
+              "kind": "symbol",
+              "matched_text": "any",
+              "source": "issue"
+            }
+          ]
+        }
+      },
+      {
+        "id": "sha256:fa7d2d845c39883bb05216b63e13b8e364d52ef0867b5c73e8daef4aabb69750",
+        "type": "MENTIONS",
+        "source_id": "vgar:pydata/xarray:issue:sha256:6e90669c9a4b16d3bd337fce67f2e570dbf05395c1324dbc39386993c384b2c3",
+        "target_id": "vgar:pydata/xarray:python:method:xarray/core/_reductions.py:xarray.core._reductions.DataArrayResampleReductions.all",
+        "confidence": 0.25,
+        "resolution": "heuristic",
+        "graph_version": "sha256:1bf0ccc7d35740cf7e15bb033cd8de351c235634bf224f7973dfcf99c39849ba",
+        "properties": {
+          "overlay_id": "sha256:f26b9c71c0ef60cc943715e2a4fa882152ef22c5c27fffca2cad6412e05caac0",
+          "has_ambiguous_evidence": true
+        },
+        "provenance": {
+          "source_tool": "vgar-m1-task-overlay",
+          "source_tool_version": "0.1.0",
+          "rule_id": "task.mentions.v1",
+          "source_revision": "45c0a114e2b7b27b83c9618bc05b36afac82183c",
+          "evidence": [
+            {
+              "kind": "symbol",
+              "matched_text": "all",
+              "source": "issue"
+            }
+          ]
+        }
+      },
+      {
+        "id": "sha256:8cc8567ff2b9f318ae1887764b5cbf07431019345197a012a0fce675e7e4019b",
+        "type": "MENTIONS",
+        "source_id": "vgar:pydata/xarray:issue:sha256:6e90669c9a4b16d3bd337fce67f2e570dbf05395c1324dbc39386993c384b2c3",
+        "target_id": "vgar:pydata/xarray:python:method:xarray/core/_reductions.py:xarray.core._reductions.DataArrayResampleReductions.any",
+        "confidence": 0.25,
+        "resolution": "heuristic",
+        "graph_version": "sha256:1bf0ccc7d35740cf7e15bb033cd8de351c235634bf224f7973dfcf99c39849ba",
+        "properties": {
+          "overlay_id": "sha256:f26b9c71c0ef60cc943715e2a4fa882152ef22c5c27fffca2cad6412e05caac0",
+          "has_ambiguous_evidence": true
+        },
+        "provenance": {
+          "source_tool": "vgar-m1-task-overlay",
+          "source_tool_version": "0.1.0",
+          "rule_id": "task.mentions.v1",
+          "source_revision": "45c0a114e2b7b27b83c9618bc05b36afac82183c",
+          "evidence": [
+            {
+              "kind": "symbol",
+              "matched_text": "any",
+              "source": "issue"
+            }
+          ]
+        }
+      },
+      {
+        "id": "sha256:acf59baa3489d036c443f54980d9cb1d0ae9ac7312c5180e6d900afecfb9f8dc",
+        "type": "MENTIONS",
+        "source_id": "vgar:pydata/xarray:issue:sha256:6e90669c9a4b16d3bd337fce67f2e570dbf05395c1324dbc39386993c384b2c3",
+        "target_id": "vgar:pydata/xarray:python:method:xarray/core/_reductions.py:xarray.core._reductions.DatasetGroupByReductions.all",
+        "confidence": 0.25,
+        "resolution": "heuristic",
+        "graph_version": "sha256:1bf0ccc7d35740cf7e15bb033cd8de351c235634bf224f7973dfcf99c39849ba",
+        "properties": {
+          "overlay_id": "sha256:f26b9c71c0ef60cc943715e2a4fa882152ef22c5c27fffca2cad6412e05caac0",
+          "has_ambiguous_evidence": true
+        },
+        "provenance": {
+          "source_tool": "vgar-m1-task-overlay",
+          "source_tool_version": "0.1.0",
+          "rule_id": "task.mentions.v1",
+          "source_revision": "45c0a114e2b7b27b83c9618bc05b36afac82183c",
+          "evidence": [
+            {
+              "kind": "symbol",
+              "matched_text": "all",
+              "source": "issue"
+            }
+          ]
+        }
+      },
+      {
+        "id": "sha256:cff95aff3c386d0185db079c8bf65677787b6dc7e8afd5265a3425f70e3b96cb",
+        "type": "MENTIONS",
+        "source_id": "vgar:pydata/xarray:issue:sha256:6e90669c9a4b16d3bd337fce67f2e570dbf05395c1324dbc39386993c384b2c3",
+        "target_id": "vgar:pydata/xarray:python:method:xarray/core/_reductions.py:xarray.core._reductions.DatasetGroupByReductions.any",
+        "confidence": 0.25,
+        "resolution": "heuristic",
+        "graph_version": "sha256:1bf0ccc7d35740cf7e15bb033cd8de351c235634bf224f7973dfcf99c39849ba",
+        "properties": {
+          "overlay_id": "sha256:f26b9c71c0ef60cc943715e2a4fa882152ef22c5c27fffca2cad6412e05caac0",
+          "has_ambiguous_evidence": true
+        },
+        "provenance": {
+          "source_tool": "vgar-m1-task-overlay",
+          "source_tool_version": "0.1.0",
+          "rule_id": "task.mentions.v1",
+          "source_revision": "45c0a114e2b7b27b83c9618bc05b36afac82183c",
+          "evidence": [
+            {
+              "kind": "symbol",
+              "matched_text": "any",
+              "source": "issue"
+            }
+          ]
+        }
+      },
+      {
+        "id": "sha256:9a8afe106020366bc91a12bb0fa94ca05c3de4c0810d3eebf12be50850e058fa",
+        "type": "MENTIONS",
+        "source_id": "vgar:pydata/xarray:issue:sha256:6e90669c9a4b16d3bd337fce67f2e570dbf05395c1324dbc39386993c384b2c3",
+        "target_id": "vgar:pydata/xarray:python:method:xarray/core/_reductions.py:xarray.core._reductions.DatasetReductions.all",
+        "confidence": 0.25,
+        "resolution": "heuristic",
+        "graph_version": "sha256:1bf0ccc7d35740cf7e15bb033cd8de351c235634bf224f7973dfcf99c39849ba",
+        "properties": {
+          "overlay_id": "sha256:f26b9c71c0ef60cc943715e2a4fa882152ef22c5c27fffca2cad6412e05caac0",
+          "has_ambiguous_evidence": true
+        },
+        "provenance": {
+          "source_tool": "vgar-m1-task-overlay",
+          "source_tool_version": "0.1.0",
+          "rule_id": "task.mentions.v1",
+          "source_revision": "45c0a114e2b7b27b83c9618bc05b36afac82183c",
+          "evidence": [
+            {
+              "kind": "symbol",
+              "matched_text": "all",
+              "source": "issue"
+            }
+          ]
+        }
+      },
+      {
+        "id": "sha256:6b5618553908a1740f61b9e082ce5198655de53bc926652efcc4f0fe18c6cd0b",
+        "type": "MENTIONS",
+        "source_id": "vgar:pydata/xarray:issue:sha256:6e90669c9a4b16d3bd337fce67f2e570dbf05395c1324dbc39386993c384b2c3",
+        "target_id": "vgar:pydata/xarray:python:method:xarray/core/_reductions.py:xarray.core._reductions.DatasetReductions.any",
+        "confidence": 0.25,
+        "resolution": "heuristic",
+        "graph_version": "sha256:1bf0ccc7d35740cf7e15bb033cd8de351c235634bf224f7973dfcf99c39849ba",
+        "properties": {
+          "overlay_id": "sha256:f26b9c71c0ef60cc943715e2a4fa882152ef22c5c27fffca2cad6412e05caac0",
+          "has_ambiguous_evidence": true
+        },
+        "provenance": {
+          "source_tool": "vgar-m1-task-overlay",
+          "source_tool_version": "0.1.0",
+          "rule_id": "task.mentions.v1",
+          "source_revision": "45c0a114e2b7b27b83c9618bc05b36afac82183c",
+          "evidence": [
+            {
+              "kind": "symbol",
+              "matched_text": "any",
+              "source": "issue"
+            }
+          ]
+        }
+      },
+      {
+        "id": "sha256:ed3f5ab79afb924c43d093ac6840e6a760c2405c9ce99400ba0b40bf7e46cce9",
+        "type": "MENTIONS",
+        "source_id": "vgar:pydata/xarray:issue:sha256:6e90669c9a4b16d3bd337fce67f2e570dbf05395c1324dbc39386993c384b2c3",
+        "target_id": "vgar:pydata/xarray:python:method:xarray/core/_reductions.py:xarray.core._reductions.DatasetResampleReductions.all",
+        "confidence": 0.25,
+        "resolution": "heuristic",
+        "graph_version": "sha256:1bf0ccc7d35740cf7e15bb033cd8de351c235634bf224f7973dfcf99c39849ba",
+        "properties": {
+          "overlay_id": "sha256:f26b9c71c0ef60cc943715e2a4fa882152ef22c5c27fffca2cad6412e05caac0",
+          "has_ambiguous_evidence": true
+        },
+        "provenance": {
+          "source_tool": "vgar-m1-task-overlay",
+          "source_tool_version": "0.1.0",
+          "rule_id": "task.mentions.v1",
+          "source_revision": "45c0a114e2b7b27b83c9618bc05b36afac82183c",
+          "evidence": [
+            {
+              "kind": "symbol",
+              "matched_text": "all",
+              "source": "issue"
+            }
+          ]
+        }
+      },
+      {
+        "id": "sha256:db86118e205eba4c71e53ac13f710ca5e6db86e9f53dd2bb51a90c3f77e88e86",
+        "type": "MENTIONS",
+        "source_id": "vgar:pydata/xarray:issue:sha256:6e90669c9a4b16d3bd337fce67f2e570dbf05395c1324dbc39386993c384b2c3",
+        "target_id": "vgar:pydata/xarray:python:method:xarray/core/_reductions.py:xarray.core._reductions.DatasetResampleReductions.any",
+        "confidence": 0.25,
+        "resolution": "heuristic",
+        "graph_version": "sha256:1bf0ccc7d35740cf7e15bb033cd8de351c235634bf224f7973dfcf99c39849ba",
+        "properties": {
+          "overlay_id": "sha256:f26b9c71c0ef60cc943715e2a4fa882152ef22c5c27fffca2cad6412e05caac0",
+          "has_ambiguous_evidence": true
+        },
+        "provenance": {
+          "source_tool": "vgar-m1-task-overlay",
+          "source_tool_version": "0.1.0",
+          "rule_id": "task.mentions.v1",
+          "source_revision": "45c0a114e2b7b27b83c9618bc05b36afac82183c",
+          "evidence": [
+            {
+              "kind": "symbol",
+              "matched_text": "any",
+              "source": "issue"
+            }
+          ]
+        }
+      },
+      {
+        "id": "sha256:053d10accdea2abc6d35194df3c44bb4e1c5241074a52df0b1ac7fc341c7dcdc",
+        "type": "MENTIONS",
+        "source_id": "vgar:pydata/xarray:issue:sha256:6e90669c9a4b16d3bd337fce67f2e570dbf05395c1324dbc39386993c384b2c3",
+        "target_id": "vgar:pydata/xarray:python:method:xarray/core/accessor_str.py:xarray.core.accessor_str.StringAccessor.index",
+        "confidence": 0.25,
+        "resolution": "heuristic",
+        "graph_version": "sha256:1bf0ccc7d35740cf7e15bb033cd8de351c235634bf224f7973dfcf99c39849ba",
+        "properties": {
+          "overlay_id": "sha256:f26b9c71c0ef60cc943715e2a4fa882152ef22c5c27fffca2cad6412e05caac0",
+          "has_ambiguous_evidence": true
+        },
+        "provenance": {
+          "source_tool": "vgar-m1-task-overlay",
+          "source_tool_version": "0.1.0",
+          "rule_id": "task.mentions.v1",
+          "source_revision": "45c0a114e2b7b27b83c9618bc05b36afac82183c",
+          "evidence": [
+            {
+              "kind": "symbol",
+              "matched_text": "index",
+              "source": "issue"
+            }
+          ]
+        }
+      },
+      {
+        "id": "sha256:e8fb7b9e57e382f16fe293b00711f73b751d3f16eb931802bf419009d8992f81",
+        "type": "MENTIONS",
+        "source_id": "vgar:pydata/xarray:issue:sha256:6e90669c9a4b16d3bd337fce67f2e570dbf05395c1324dbc39386993c384b2c3",
+        "target_id": "vgar:pydata/xarray:python:method:xarray/core/coordinates.py:xarray.core.coordinates.Coordinates.__len__",
+        "confidence": 0.5,
+        "resolution": "heuristic",
+        "graph_version": "sha256:1bf0ccc7d35740cf7e15bb033cd8de351c235634bf224f7973dfcf99c39849ba",
+        "properties": {
+          "overlay_id": "sha256:f26b9c71c0ef60cc943715e2a4fa882152ef22c5c27fffca2cad6412e05caac0",
+          "has_ambiguous_evidence": true
+        },
+        "provenance": {
+          "source_tool": "vgar-m1-task-overlay",
+          "source_tool_version": "0.1.0",
+          "rule_id": "task.mentions.v1",
+          "source_revision": "45c0a114e2b7b27b83c9618bc05b36afac82183c",
+          "evidence": [
+            {
+              "kind": "symbol",
+              "matched_text": "__len__",
+              "source": "issue"
+            }
+          ]
+        }
+      },
+      {
+        "id": "sha256:a6a802ba52a0a07cd3564e70d588784c2751a849dec26c397830297624b485c2",
+        "type": "MENTIONS",
+        "source_id": "vgar:pydata/xarray:issue:sha256:6e90669c9a4b16d3bd337fce67f2e570dbf05395c1324dbc39386993c384b2c3",
+        "target_id": "vgar:pydata/xarray:python:method:xarray/core/dataarray.py:xarray.core.dataarray.DataArray.__len__",
+        "confidence": 0.5,
+        "resolution": "heuristic",
+        "graph_version": "sha256:1bf0ccc7d35740cf7e15bb033cd8de351c235634bf224f7973dfcf99c39849ba",
+        "properties": {
+          "overlay_id": "sha256:f26b9c71c0ef60cc943715e2a4fa882152ef22c5c27fffca2cad6412e05caac0",
+          "has_ambiguous_evidence": true
+        },
+        "provenance": {
+          "source_tool": "vgar-m1-task-overlay",
+          "source_tool_version": "0.1.0",
+          "rule_id": "task.mentions.v1",
+          "source_revision": "45c0a114e2b7b27b83c9618bc05b36afac82183c",
+          "evidence": [
+            {
+              "kind": "symbol",
+              "matched_text": "__len__",
+              "source": "issue"
+            }
+          ]
+        }
+      },
+      {
+        "id": "sha256:fdc16c312271e1c5da3127d9a5f4c07996c3cd1531c20a1425d3a0eda5a49bba",
+        "type": "MENTIONS",
+        "source_id": "vgar:pydata/xarray:issue:sha256:6e90669c9a4b16d3bd337fce67f2e570dbf05395c1324dbc39386993c384b2c3",
+        "target_id": "vgar:pydata/xarray:python:method:xarray/core/dataarray.py:xarray.core.dataarray.DataArray.coords",
+        "confidence": 0.5,
+        "resolution": "heuristic",
+        "graph_version": "sha256:1bf0ccc7d35740cf7e15bb033cd8de351c235634bf224f7973dfcf99c39849ba",
+        "properties": {
+          "overlay_id": "sha256:f26b9c71c0ef60cc943715e2a4fa882152ef22c5c27fffca2cad6412e05caac0",
+          "has_ambiguous_evidence": true
+        },
+        "provenance": {
+          "source_tool": "vgar-m1-task-overlay",
+          "source_tool_version": "0.1.0",
+          "rule_id": "task.mentions.v1",
+          "source_revision": "45c0a114e2b7b27b83c9618bc05b36afac82183c",
+          "evidence": [
+            {
+              "kind": "symbol",
+              "matched_text": "coords",
+              "source": "issue"
+            }
+          ]
+        }
+      },
+      {
+        "id": "sha256:beba10a53dca49596e16643f0cc013b1ae42134bc9f1c151a0e7d89e8ca25e6b",
+        "type": "MENTIONS",
+        "source_id": "vgar:pydata/xarray:issue:sha256:6e90669c9a4b16d3bd337fce67f2e570dbf05395c1324dbc39386993c384b2c3",
+        "target_id": "vgar:pydata/xarray:python:method:xarray/core/dataarray.py:xarray.core.dataarray.DataArray.copy",
+        "confidence": 0.25,
+        "resolution": "heuristic",
+        "graph_version": "sha256:1bf0ccc7d35740cf7e15bb033cd8de351c235634bf224f7973dfcf99c39849ba",
+        "properties": {
+          "overlay_id": "sha256:f26b9c71c0ef60cc943715e2a4fa882152ef22c5c27fffca2cad6412e05caac0",
+          "has_ambiguous_evidence": true
+        },
+        "provenance": {
+          "source_tool": "vgar-m1-task-overlay",
+          "source_tool_version": "0.1.0",
+          "rule_id": "task.mentions.v1",
+          "source_revision": "45c0a114e2b7b27b83c9618bc05b36afac82183c",
+          "evidence": [
+            {
+              "kind": "symbol",
+              "matched_text": "copy",
+              "source": "issue"
+            }
+          ]
+        }
+      },
+      {
+        "id": "sha256:f221c745d0841cbc40e54e3f9c76df726ea5eeaaa8f8bd66bf6bb8ad43a7d2cf",
+        "type": "MENTIONS",
+        "source_id": "vgar:pydata/xarray:issue:sha256:6e90669c9a4b16d3bd337fce67f2e570dbf05395c1324dbc39386993c384b2c3",
+        "target_id": "vgar:pydata/xarray:python:method:xarray/core/dataarray.py:xarray.core.dataarray.DataArray.data",
+        "confidence": 0.25,
+        "resolution": "heuristic",
+        "graph_version": "sha256:1bf0ccc7d35740cf7e15bb033cd8de351c235634bf224f7973dfcf99c39849ba",
+        "properties": {
+          "overlay_id": "sha256:f26b9c71c0ef60cc943715e2a4fa882152ef22c5c27fffca2cad6412e05caac0",
+          "has_ambiguous_evidence": true
+        },
+        "provenance": {
+          "source_tool": "vgar-m1-task-overlay",
+          "source_tool_version": "0.1.0",
+          "rule_id": "task.mentions.v1",
+          "source_revision": "45c0a114e2b7b27b83c9618bc05b36afac82183c",
+          "evidence": [
+            {
+              "kind": "symbol",
+              "matched_text": "data",
+              "source": "issue"
+            }
+          ]
+        }
+      },
+      {
+        "id": "sha256:feb6ee88ac961dca12cfb1bf19d25cfe1d56a0083fec2bc892a6f1c6d57bc4f2",
+        "type": "MENTIONS",
+        "source_id": "vgar:pydata/xarray:issue:sha256:6e90669c9a4b16d3bd337fce67f2e570dbf05395c1324dbc39386993c384b2c3",
+        "target_id": "vgar:pydata/xarray:python:method:xarray/core/dataarray.py:xarray.core.dataarray.DataArray.data.setter",
+        "confidence": 0.25,
+        "resolution": "heuristic",
+        "graph_version": "sha256:1bf0ccc7d35740cf7e15bb033cd8de351c235634bf224f7973dfcf99c39849ba",
+        "properties": {
+          "overlay_id": "sha256:f26b9c71c0ef60cc943715e2a4fa882152ef22c5c27fffca2cad6412e05caac0",
+          "has_ambiguous_evidence": true
+        },
+        "provenance": {
+          "source_tool": "vgar-m1-task-overlay",
+          "source_tool_version": "0.1.0",
+          "rule_id": "task.mentions.v1",
+          "source_revision": "45c0a114e2b7b27b83c9618bc05b36afac82183c",
+          "evidence": [
+            {
+              "kind": "symbol",
+              "matched_text": "data",
+              "source": "issue"
+            }
+          ]
+        }
+      },
+      {
+        "id": "sha256:d19c4d7d726e9ea93c86b42ec77b4ac3285ed863f204a86b9eaecf34d9cc960f",
+        "type": "MENTIONS",
+        "source_id": "vgar:pydata/xarray:issue:sha256:6e90669c9a4b16d3bd337fce67f2e570dbf05395c1324dbc39386993c384b2c3",
+        "target_id": "vgar:pydata/xarray:python:method:xarray/core/dataarray.py:xarray.core.dataarray.DataArray.drop",
+        "confidence": 0.5,
+        "resolution": "heuristic",
+        "graph_version": "sha256:1bf0ccc7d35740cf7e15bb033cd8de351c235634bf224f7973dfcf99c39849ba",
+        "properties": {
+          "overlay_id": "sha256:f26b9c71c0ef60cc943715e2a4fa882152ef22c5c27fffca2cad6412e05caac0",
+          "has_ambiguous_evidence": true
+        },
+        "provenance": {
+          "source_tool": "vgar-m1-task-overlay",
+          "source_tool_version": "0.1.0",
+          "rule_id": "task.mentions.v1",
+          "source_revision": "45c0a114e2b7b27b83c9618bc05b36afac82183c",
+          "evidence": [
+            {
+              "kind": "symbol",
+              "matched_text": "drop",
+              "source": "issue"
+            }
+          ]
+        }
+      },
+      {
+        "id": "sha256:61e3d72391ebbec12b92ca2862facd4cb4b67eef7a33c44c688a535709deaf3c",
+        "type": "MENTIONS",
+        "source_id": "vgar:pydata/xarray:issue:sha256:6e90669c9a4b16d3bd337fce67f2e570dbf05395c1324dbc39386993c384b2c3",
+        "target_id": "vgar:pydata/xarray:python:method:xarray/core/dataarray.py:xarray.core.dataarray.DataArray.reset_index",
+        "confidence": 0.5,
+        "resolution": "heuristic",
+        "graph_version": "sha256:1bf0ccc7d35740cf7e15bb033cd8de351c235634bf224f7973dfcf99c39849ba",
+        "properties": {
+          "overlay_id": "sha256:f26b9c71c0ef60cc943715e2a4fa882152ef22c5c27fffca2cad6412e05caac0",
+          "has_ambiguous_evidence": true
+        },
+        "provenance": {
+          "source_tool": "vgar-m1-task-overlay",
+          "source_tool_version": "0.1.0",
+          "rule_id": "task.mentions.v1",
+          "source_revision": "45c0a114e2b7b27b83c9618bc05b36afac82183c",
+          "evidence": [
+            {
+              "kind": "symbol",
+              "matched_text": "reset_index",
+              "source": "issue"
+            }
+          ]
+        }
+      },
+      {
+        "id": "sha256:3a25b463aa5819f685cf7427b562de33683d1d9f6ea362bfbb7b5eb1ccd137a4",
+        "type": "MENTIONS",
+        "source_id": "vgar:pydata/xarray:issue:sha256:6e90669c9a4b16d3bd337fce67f2e570dbf05395c1324dbc39386993c384b2c3",
+        "target_id": "vgar:pydata/xarray:python:method:xarray/core/dataarray.py:xarray.core.dataarray.DataArray.set_index",
+        "confidence": 0.45,
+        "resolution": "heuristic",
+        "graph_version": "sha256:1bf0ccc7d35740cf7e15bb033cd8de351c235634bf224f7973dfcf99c39849ba",
+        "properties": {
+          "overlay_id": "sha256:f26b9c71c0ef60cc943715e2a4fa882152ef22c5c27fffca2cad6412e05caac0",
+          "has_ambiguous_evidence": true
+        },
+        "provenance": {
+          "source_tool": "vgar-m1-task-overlay",
+          "source_tool_version": "0.1.0",
+          "rule_id": "task.mentions.v1",
+          "source_revision": "45c0a114e2b7b27b83c9618bc05b36afac82183c",
+          "evidence": [
+            {
+              "kind": "receiver_member",
+              "matched_text": "ds.set_index",
+              "source": "issue"
+            }
+          ]
+        }
+      },
+      {
+        "id": "sha256:35f425e9e17bf5a47b2f72fbb5dd3608d8e9ce1b4a6dcaa0ea8cb836c4be192b",
+        "type": "MENTIONS",
+        "source_id": "vgar:pydata/xarray:issue:sha256:6e90669c9a4b16d3bd337fce67f2e570dbf05395c1324dbc39386993c384b2c3",
+        "target_id": "vgar:pydata/xarray:python:method:xarray/core/dataarray.py:xarray.core.dataarray.DataArray.variable",
+        "confidence": 0.4,
+        "resolution": "heuristic",
+        "graph_version": "sha256:1bf0ccc7d35740cf7e15bb033cd8de351c235634bf224f7973dfcf99c39849ba",
+        "properties": {
+          "overlay_id": "sha256:f26b9c71c0ef60cc943715e2a4fa882152ef22c5c27fffca2cad6412e05caac0",
+          "has_ambiguous_evidence": false
+        },
+        "provenance": {
+          "source_tool": "vgar-m1-task-overlay",
+          "source_tool_version": "0.1.0",
+          "rule_id": "task.mentions.v1",
+          "source_revision": "45c0a114e2b7b27b83c9618bc05b36afac82183c",
+          "evidence": [
+            {
+              "kind": "symbol",
+              "matched_text": "variable",
+              "source": "issue"
+            }
+          ]
+        }
+      },
+      {
+        "id": "sha256:8bff554188ec5b38218b5445bdfbc2f36f4aeb2bf4b376dfd811c8d1d5592fd9",
+        "type": "MENTIONS",
+        "source_id": "vgar:pydata/xarray:issue:sha256:6e90669c9a4b16d3bd337fce67f2e570dbf05395c1324dbc39386993c384b2c3",
+        "target_id": "vgar:pydata/xarray:python:method:xarray/core/dataset.py:xarray.core.dataset.DataVariables.__len__",
+        "confidence": 0.5,
+        "resolution": "heuristic",
+        "graph_version": "sha256:1bf0ccc7d35740cf7e15bb033cd8de351c235634bf224f7973dfcf99c39849ba",
+        "properties": {
+          "overlay_id": "sha256:f26b9c71c0ef60cc943715e2a4fa882152ef22c5c27fffca2cad6412e05caac0",
+          "has_ambiguous_evidence": true
+        },
+        "provenance": {
+          "source_tool": "vgar-m1-task-overlay",
+          "source_tool_version": "0.1.0",
+          "rule_id": "task.mentions.v1",
+          "source_revision": "45c0a114e2b7b27b83c9618bc05b36afac82183c",
+          "evidence": [
+            {
+              "kind": "symbol",
+              "matched_text": "__len__",
+              "source": "issue"
+            }
+          ]
+        }
+      },
+      {
+        "id": "sha256:4430418d4f18c42b6ff2424a5a5238a734195c26b4312ee5b24db0fafbd8374d",
+        "type": "MENTIONS",
+        "source_id": "vgar:pydata/xarray:issue:sha256:6e90669c9a4b16d3bd337fce67f2e570dbf05395c1324dbc39386993c384b2c3",
+        "target_id": "vgar:pydata/xarray:python:method:xarray/core/dataset.py:xarray.core.dataset.Dataset.__len__",
+        "confidence": 0.5,
+        "resolution": "heuristic",
+        "graph_version": "sha256:1bf0ccc7d35740cf7e15bb033cd8de351c235634bf224f7973dfcf99c39849ba",
+        "properties": {
+          "overlay_id": "sha256:f26b9c71c0ef60cc943715e2a4fa882152ef22c5c27fffca2cad6412e05caac0",
+          "has_ambiguous_evidence": true
+        },
+        "provenance": {
+          "source_tool": "vgar-m1-task-overlay",
+          "source_tool_version": "0.1.0",
+          "rule_id": "task.mentions.v1",
+          "source_revision": "45c0a114e2b7b27b83c9618bc05b36afac82183c",
+          "evidence": [
+            {
+              "kind": "symbol",
+              "matched_text": "__len__",
+              "source": "issue"
+            }
+          ]
+        }
+      },
+      {
+        "id": "sha256:fbc75132f91fc817165c98040e36d661247709d5270e0b06d2718fb99467bb57",
+        "type": "MENTIONS",
+        "source_id": "vgar:pydata/xarray:issue:sha256:6e90669c9a4b16d3bd337fce67f2e570dbf05395c1324dbc39386993c384b2c3",
+        "target_id": "vgar:pydata/xarray:python:method:xarray/core/dataset.py:xarray.core.dataset.Dataset.coords",
+        "confidence": 0.5,
+        "resolution": "heuristic",
+        "graph_version": "sha256:1bf0ccc7d35740cf7e15bb033cd8de351c235634bf224f7973dfcf99c39849ba",
+        "properties": {
+          "overlay_id": "sha256:f26b9c71c0ef60cc943715e2a4fa882152ef22c5c27fffca2cad6412e05caac0",
+          "has_ambiguous_evidence": true
+        },
+        "provenance": {
+          "source_tool": "vgar-m1-task-overlay",
+          "source_tool_version": "0.1.0",
+          "rule_id": "task.mentions.v1",
+          "source_revision": "45c0a114e2b7b27b83c9618bc05b36afac82183c",
+          "evidence": [
+            {
+              "kind": "symbol",
+              "matched_text": "coords",
+              "source": "issue"
+            }
+          ]
+        }
+      },
+      {
+        "id": "sha256:53e33800e2aff002d9c3c7af80210f6850a7e3ee7a82887cdf3acf91a9a98909",
+        "type": "MENTIONS",
+        "source_id": "vgar:pydata/xarray:issue:sha256:6e90669c9a4b16d3bd337fce67f2e570dbf05395c1324dbc39386993c384b2c3",
+        "target_id": "vgar:pydata/xarray:python:method:xarray/core/dataset.py:xarray.core.dataset.Dataset.copy",
+        "confidence": 0.25,
+        "resolution": "heuristic",
+        "graph_version": "sha256:1bf0ccc7d35740cf7e15bb033cd8de351c235634bf224f7973dfcf99c39849ba",
+        "properties": {
+          "overlay_id": "sha256:f26b9c71c0ef60cc943715e2a4fa882152ef22c5c27fffca2cad6412e05caac0",
+          "has_ambiguous_evidence": true
+        },
+        "provenance": {
+          "source_tool": "vgar-m1-task-overlay",
+          "source_tool_version": "0.1.0",
+          "rule_id": "task.mentions.v1",
+          "source_revision": "45c0a114e2b7b27b83c9618bc05b36afac82183c",
+          "evidence": [
+            {
+              "kind": "symbol",
+              "matched_text": "copy",
+              "source": "issue"
+            }
+          ]
+        }
+      },
+      {
+        "id": "sha256:8a089b7a38d631240ddcd1964269ed36e0c75094dbf1776267642121c7cc43a2",
+        "type": "MENTIONS",
+        "source_id": "vgar:pydata/xarray:issue:sha256:6e90669c9a4b16d3bd337fce67f2e570dbf05395c1324dbc39386993c384b2c3",
+        "target_id": "vgar:pydata/xarray:python:method:xarray/core/dataset.py:xarray.core.dataset.Dataset.drop",
+        "confidence": 0.5,
+        "resolution": "heuristic",
+        "graph_version": "sha256:1bf0ccc7d35740cf7e15bb033cd8de351c235634bf224f7973dfcf99c39849ba",
+        "properties": {
+          "overlay_id": "sha256:f26b9c71c0ef60cc943715e2a4fa882152ef22c5c27fffca2cad6412e05caac0",
+          "has_ambiguous_evidence": true
+        },
+        "provenance": {
+          "source_tool": "vgar-m1-task-overlay",
+          "source_tool_version": "0.1.0",
+          "rule_id": "task.mentions.v1",
+          "source_revision": "45c0a114e2b7b27b83c9618bc05b36afac82183c",
+          "evidence": [
+            {
+              "kind": "symbol",
+              "matched_text": "drop",
+              "source": "issue"
+            }
+          ]
+        }
+      },
+      {
+        "id": "sha256:96c1f7905415dcc042e5556ba52629a0c07e78fe8bf68e96cbe0193eb051cafd",
+        "type": "MENTIONS",
+        "source_id": "vgar:pydata/xarray:issue:sha256:6e90669c9a4b16d3bd337fce67f2e570dbf05395c1324dbc39386993c384b2c3",
+        "target_id": "vgar:pydata/xarray:python:method:xarray/core/dataset.py:xarray.core.dataset.Dataset.reset_index",
+        "confidence": 0.5,
+        "resolution": "heuristic",
+        "graph_version": "sha256:1bf0ccc7d35740cf7e15bb033cd8de351c235634bf224f7973dfcf99c39849ba",
+        "properties": {
+          "overlay_id": "sha256:f26b9c71c0ef60cc943715e2a4fa882152ef22c5c27fffca2cad6412e05caac0",
+          "has_ambiguous_evidence": true
+        },
+        "provenance": {
+          "source_tool": "vgar-m1-task-overlay",
+          "source_tool_version": "0.1.0",
+          "rule_id": "task.mentions.v1",
+          "source_revision": "45c0a114e2b7b27b83c9618bc05b36afac82183c",
+          "evidence": [
+            {
+              "kind": "symbol",
+              "matched_text": "reset_index",
+              "source": "issue"
+            }
+          ]
+        }
+      },
+      {
+        "id": "sha256:d1284829b6a68b3271a2b2b0788ffeb94d3d317fa8697c2819737318d834cf4b",
+        "type": "MENTIONS",
+        "source_id": "vgar:pydata/xarray:issue:sha256:6e90669c9a4b16d3bd337fce67f2e570dbf05395c1324dbc39386993c384b2c3",
+        "target_id": "vgar:pydata/xarray:python:method:xarray/core/dataset.py:xarray.core.dataset.Dataset.set_index",
+        "confidence": 0.45,
+        "resolution": "heuristic",
+        "graph_version": "sha256:1bf0ccc7d35740cf7e15bb033cd8de351c235634bf224f7973dfcf99c39849ba",
+        "properties": {
+          "overlay_id": "sha256:f26b9c71c0ef60cc943715e2a4fa882152ef22c5c27fffca2cad6412e05caac0",
+          "has_ambiguous_evidence": true
+        },
+        "provenance": {
+          "source_tool": "vgar-m1-task-overlay",
+          "source_tool_version": "0.1.0",
+          "rule_id": "task.mentions.v1",
+          "source_revision": "45c0a114e2b7b27b83c9618bc05b36afac82183c",
+          "evidence": [
+            {
+              "kind": "receiver_member",
+              "matched_text": "ds.set_index",
+              "source": "issue"
+            }
+          ]
+        }
+      },
+      {
+        "id": "sha256:210ef897190afb848c16d9231d7c1b1ac8b8f1f3d0ea55b9dbb993474465b2dd",
+        "type": "MENTIONS",
+        "source_id": "vgar:pydata/xarray:issue:sha256:6e90669c9a4b16d3bd337fce67f2e570dbf05395c1324dbc39386993c384b2c3",
+        "target_id": "vgar:pydata/xarray:python:method:xarray/core/groupby.py:xarray.core.groupby.GroupBy.__len__",
+        "confidence": 0.5,
+        "resolution": "heuristic",
+        "graph_version": "sha256:1bf0ccc7d35740cf7e15bb033cd8de351c235634bf224f7973dfcf99c39849ba",
+        "properties": {
+          "overlay_id": "sha256:f26b9c71c0ef60cc943715e2a4fa882152ef22c5c27fffca2cad6412e05caac0",
+          "has_ambiguous_evidence": true
+        },
+        "provenance": {
+          "source_tool": "vgar-m1-task-overlay",
+          "source_tool_version": "0.1.0",
+          "rule_id": "task.mentions.v1",
+          "source_revision": "45c0a114e2b7b27b83c9618bc05b36afac82183c",
+          "evidence": [
+            {
+              "kind": "symbol",
+              "matched_text": "__len__",
+              "source": "issue"
+            }
+          ]
+        }
+      },
+      {
+        "id": "sha256:0ddb9ba0af6ed567b2e0984ff381e3e3fe1f3bf994076ba463e202ef68f4528e",
+        "type": "MENTIONS",
+        "source_id": "vgar:pydata/xarray:issue:sha256:6e90669c9a4b16d3bd337fce67f2e570dbf05395c1324dbc39386993c384b2c3",
+        "target_id": "vgar:pydata/xarray:python:method:xarray/core/groupby.py:xarray.core.groupby._DummyGroup.data",
+        "confidence": 0.25,
+        "resolution": "heuristic",
+        "graph_version": "sha256:1bf0ccc7d35740cf7e15bb033cd8de351c235634bf224f7973dfcf99c39849ba",
+        "properties": {
+          "overlay_id": "sha256:f26b9c71c0ef60cc943715e2a4fa882152ef22c5c27fffca2cad6412e05caac0",
+          "has_ambiguous_evidence": true
+        },
+        "provenance": {
+          "source_tool": "vgar-m1-task-overlay",
+          "source_tool_version": "0.1.0",
+          "rule_id": "task.mentions.v1",
+          "source_revision": "45c0a114e2b7b27b83c9618bc05b36afac82183c",
+          "evidence": [
+            {
+              "kind": "symbol",
+              "matched_text": "data",
+              "source": "issue"
+            }
+          ]
+        }
+      },
+      {
+        "id": "sha256:745097834763f536f4297f9640e536374d2fd7058441d427e323de059233dd42",
+        "type": "MENTIONS",
+        "source_id": "vgar:pydata/xarray:issue:sha256:6e90669c9a4b16d3bd337fce67f2e570dbf05395c1324dbc39386993c384b2c3",
+        "target_id": "vgar:pydata/xarray:python:method:xarray/core/indexes.py:xarray.core.indexes.Index.copy",
+        "confidence": 0.25,
+        "resolution": "heuristic",
+        "graph_version": "sha256:1bf0ccc7d35740cf7e15bb033cd8de351c235634bf224f7973dfcf99c39849ba",
+        "properties": {
+          "overlay_id": "sha256:f26b9c71c0ef60cc943715e2a4fa882152ef22c5c27fffca2cad6412e05caac0",
+          "has_ambiguous_evidence": true
+        },
+        "provenance": {
+          "source_tool": "vgar-m1-task-overlay",
+          "source_tool_version": "0.1.0",
+          "rule_id": "task.mentions.v1",
+          "source_revision": "45c0a114e2b7b27b83c9618bc05b36afac82183c",
+          "evidence": [
+            {
+              "kind": "symbol",
+              "matched_text": "copy",
+              "source": "issue"
+            }
+          ]
+        }
+      },
+      {
+        "id": "sha256:c3ae426dcd8dc8a38f82b3dcbd12665bca795e0afaa09facb45a1233b5cd24e9",
+        "type": "MENTIONS",
+        "source_id": "vgar:pydata/xarray:issue:sha256:6e90669c9a4b16d3bd337fce67f2e570dbf05395c1324dbc39386993c384b2c3",
+        "target_id": "vgar:pydata/xarray:python:method:xarray/core/indexes.py:xarray.core.indexes.Indexes.__len__",
+        "confidence": 0.5,
+        "resolution": "heuristic",
+        "graph_version": "sha256:1bf0ccc7d35740cf7e15bb033cd8de351c235634bf224f7973dfcf99c39849ba",
+        "properties": {
+          "overlay_id": "sha256:f26b9c71c0ef60cc943715e2a4fa882152ef22c5c27fffca2cad6412e05caac0",
+          "has_ambiguous_evidence": true
+        },
+        "provenance": {
+          "source_tool": "vgar-m1-task-overlay",
+          "source_tool_version": "0.1.0",
+          "rule_id": "task.mentions.v1",
+          "source_revision": "45c0a114e2b7b27b83c9618bc05b36afac82183c",
+          "evidence": [
+            {
+              "kind": "symbol",
+              "matched_text": "__len__",
+              "source": "issue"
+            }
+          ]
+        }
+      },
+      {
+        "id": "sha256:d5eeee1e9e87d67f0c0ac0b547cf92db9b7347242b12fff673d62eb4384cb009",
+        "type": "MENTIONS",
+        "source_id": "vgar:pydata/xarray:issue:sha256:6e90669c9a4b16d3bd337fce67f2e570dbf05395c1324dbc39386993c384b2c3",
+        "target_id": "vgar:pydata/xarray:python:method:xarray/core/indexes.py:xarray.core.indexes.Indexes.copy",
+        "confidence": 0.25,
+        "resolution": "heuristic",
+        "graph_version": "sha256:1bf0ccc7d35740cf7e15bb033cd8de351c235634bf224f7973dfcf99c39849ba",
+        "properties": {
+          "overlay_id": "sha256:f26b9c71c0ef60cc943715e2a4fa882152ef22c5c27fffca2cad6412e05caac0",
+          "has_ambiguous_evidence": true
+        },
+        "provenance": {
+          "source_tool": "vgar-m1-task-overlay",
+          "source_tool_version": "0.1.0",
+          "rule_id": "task.mentions.v1",
+          "source_revision": "45c0a114e2b7b27b83c9618bc05b36afac82183c",
+          "evidence": [
+            {
+              "kind": "symbol",
+              "matched_text": "copy",
+              "source": "issue"
+            }
+          ]
+        }
+      },
+      {
+        "id": "sha256:ee2cd42fe2c250f7b8c3c853dc4df34baba1484db824f57e67d587945e75b55d",
+        "type": "MENTIONS",
+        "source_id": "vgar:pydata/xarray:issue:sha256:6e90669c9a4b16d3bd337fce67f2e570dbf05395c1324dbc39386993c384b2c3",
+        "target_id": "vgar:pydata/xarray:python:method:xarray/core/indexes.py:xarray.core.indexes.PandasIndex.copy",
+        "confidence": 0.25,
+        "resolution": "heuristic",
+        "graph_version": "sha256:1bf0ccc7d35740cf7e15bb033cd8de351c235634bf224f7973dfcf99c39849ba",
+        "properties": {
+          "overlay_id": "sha256:f26b9c71c0ef60cc943715e2a4fa882152ef22c5c27fffca2cad6412e05caac0",
+          "has_ambiguous_evidence": true
+        },
+        "provenance": {
+          "source_tool": "vgar-m1-task-overlay",
+          "source_tool_version": "0.1.0",
+          "rule_id": "task.mentions.v1",
+          "source_revision": "45c0a114e2b7b27b83c9618bc05b36afac82183c",
+          "evidence": [
+            {
+              "kind": "symbol",
+              "matched_text": "copy",
+              "source": "issue"
+            }
+          ]
+        }
+      },
+      {
+        "id": "sha256:0041564923a1b1ea4d1add9153b66273bca0a651a57a020326a6abc4a2d06999",
+        "type": "MENTIONS",
+        "source_id": "vgar:pydata/xarray:issue:sha256:6e90669c9a4b16d3bd337fce67f2e570dbf05395c1324dbc39386993c384b2c3",
+        "target_id": "vgar:pydata/xarray:python:method:xarray/core/indexing.py:xarray.core.indexing.PandasIndexingAdapter.copy",
+        "confidence": 0.25,
+        "resolution": "heuristic",
+        "graph_version": "sha256:1bf0ccc7d35740cf7e15bb033cd8de351c235634bf224f7973dfcf99c39849ba",
+        "properties": {
+          "overlay_id": "sha256:f26b9c71c0ef60cc943715e2a4fa882152ef22c5c27fffca2cad6412e05caac0",
+          "has_ambiguous_evidence": true
+        },
+        "provenance": {
+          "source_tool": "vgar-m1-task-overlay",
+          "source_tool_version": "0.1.0",
+          "rule_id": "task.mentions.v1",
+          "source_revision": "45c0a114e2b7b27b83c9618bc05b36afac82183c",
+          "evidence": [
+            {
+              "kind": "symbol",
+              "matched_text": "copy",
+              "source": "issue"
+            }
+          ]
+        }
+      },
+      {
+        "id": "sha256:bc98cb38bc833dfc20c774fc0132301aa8fd27c5178080c6698a6deaa7cd5216",
+        "type": "MENTIONS",
+        "source_id": "vgar:pydata/xarray:issue:sha256:6e90669c9a4b16d3bd337fce67f2e570dbf05395c1324dbc39386993c384b2c3",
+        "target_id": "vgar:pydata/xarray:python:method:xarray/core/indexing.py:xarray.core.indexing.PandasMultiIndexingAdapter.copy",
+        "confidence": 0.25,
+        "resolution": "heuristic",
+        "graph_version": "sha256:1bf0ccc7d35740cf7e15bb033cd8de351c235634bf224f7973dfcf99c39849ba",
+        "properties": {
+          "overlay_id": "sha256:f26b9c71c0ef60cc943715e2a4fa882152ef22c5c27fffca2cad6412e05caac0",
+          "has_ambiguous_evidence": true
+        },
+        "provenance": {
+          "source_tool": "vgar-m1-task-overlay",
+          "source_tool_version": "0.1.0",
+          "rule_id": "task.mentions.v1",
+          "source_revision": "45c0a114e2b7b27b83c9618bc05b36afac82183c",
+          "evidence": [
+            {
+              "kind": "symbol",
+              "matched_text": "copy",
+              "source": "issue"
+            }
+          ]
+        }
+      },
+      {
+        "id": "sha256:57c847db2af8a0583a14335e0628614d4d478d5e6aa51d34c6f9fee4fba72c2d",
+        "type": "MENTIONS",
+        "source_id": "vgar:pydata/xarray:issue:sha256:6e90669c9a4b16d3bd337fce67f2e570dbf05395c1324dbc39386993c384b2c3",
+        "target_id": "vgar:pydata/xarray:python:method:xarray/core/rolling.py:xarray.core.rolling.Rolling.__len__",
+        "confidence": 0.5,
+        "resolution": "heuristic",
+        "graph_version": "sha256:1bf0ccc7d35740cf7e15bb033cd8de351c235634bf224f7973dfcf99c39849ba",
+        "properties": {
+          "overlay_id": "sha256:f26b9c71c0ef60cc943715e2a4fa882152ef22c5c27fffca2cad6412e05caac0",
+          "has_ambiguous_evidence": true
+        },
+        "provenance": {
+          "source_tool": "vgar-m1-task-overlay",
+          "source_tool_version": "0.1.0",
+          "rule_id": "task.mentions.v1",
+          "source_revision": "45c0a114e2b7b27b83c9618bc05b36afac82183c",
+          "evidence": [
+            {
+              "kind": "symbol",
+              "matched_text": "__len__",
+              "source": "issue"
+            }
+          ]
+        }
+      },
+      {
+        "id": "sha256:845e9dd736993536ce17a336557d6abdcb7caba3bed9499f5dbcd568573f5022",
+        "type": "MENTIONS",
+        "source_id": "vgar:pydata/xarray:issue:sha256:6e90669c9a4b16d3bd337fce67f2e570dbf05395c1324dbc39386993c384b2c3",
+        "target_id": "vgar:pydata/xarray:python:method:xarray/core/utils.py:xarray.core.utils.Frozen.__len__",
+        "confidence": 0.5,
+        "resolution": "heuristic",
+        "graph_version": "sha256:1bf0ccc7d35740cf7e15bb033cd8de351c235634bf224f7973dfcf99c39849ba",
+        "properties": {
+          "overlay_id": "sha256:f26b9c71c0ef60cc943715e2a4fa882152ef22c5c27fffca2cad6412e05caac0",
+          "has_ambiguous_evidence": true
+        },
+        "provenance": {
+          "source_tool": "vgar-m1-task-overlay",
+          "source_tool_version": "0.1.0",
+          "rule_id": "task.mentions.v1",
+          "source_revision": "45c0a114e2b7b27b83c9618bc05b36afac82183c",
+          "evidence": [
+            {
+              "kind": "symbol",
+              "matched_text": "__len__",
+              "source": "issue"
+            }
+          ]
+        }
+      },
+      {
+        "id": "sha256:f891189b127d1a4371844a9e1d0700971445281b0d96f2aaac6f4a808aeb8e5a",
+        "type": "MENTIONS",
+        "source_id": "vgar:pydata/xarray:issue:sha256:6e90669c9a4b16d3bd337fce67f2e570dbf05395c1324dbc39386993c384b2c3",
+        "target_id": "vgar:pydata/xarray:python:method:xarray/core/utils.py:xarray.core.utils.HiddenKeyDict.__len__",
+        "confidence": 0.5,
+        "resolution": "heuristic",
+        "graph_version": "sha256:1bf0ccc7d35740cf7e15bb033cd8de351c235634bf224f7973dfcf99c39849ba",
+        "properties": {
+          "overlay_id": "sha256:f26b9c71c0ef60cc943715e2a4fa882152ef22c5c27fffca2cad6412e05caac0",
+          "has_ambiguous_evidence": true
+        },
+        "provenance": {
+          "source_tool": "vgar-m1-task-overlay",
+          "source_tool_version": "0.1.0",
+          "rule_id": "task.mentions.v1",
+          "source_revision": "45c0a114e2b7b27b83c9618bc05b36afac82183c",
+          "evidence": [
+            {
+              "kind": "symbol",
+              "matched_text": "__len__",
+              "source": "issue"
+            }
+          ]
+        }
+      },
+      {
+        "id": "sha256:e842a8a8e5bbd589fa8ac51f2fc9c51a56b34c0259b04976b6bf45f42e4df168",
+        "type": "MENTIONS",
+        "source_id": "vgar:pydata/xarray:issue:sha256:6e90669c9a4b16d3bd337fce67f2e570dbf05395c1324dbc39386993c384b2c3",
+        "target_id": "vgar:pydata/xarray:python:method:xarray/core/utils.py:xarray.core.utils.HybridMappingProxy.__len__",
+        "confidence": 0.5,
+        "resolution": "heuristic",
+        "graph_version": "sha256:1bf0ccc7d35740cf7e15bb033cd8de351c235634bf224f7973dfcf99c39849ba",
+        "properties": {
+          "overlay_id": "sha256:f26b9c71c0ef60cc943715e2a4fa882152ef22c5c27fffca2cad6412e05caac0",
+          "has_ambiguous_evidence": true
+        },
+        "provenance": {
+          "source_tool": "vgar-m1-task-overlay",
+          "source_tool_version": "0.1.0",
+          "rule_id": "task.mentions.v1",
+          "source_revision": "45c0a114e2b7b27b83c9618bc05b36afac82183c",
+          "evidence": [
+            {
+              "kind": "symbol",
+              "matched_text": "__len__",
+              "source": "issue"
+            }
+          ]
+        }
+      },
+      {
+        "id": "sha256:61ebffc7493080b51866847f84bebaafb8437751458940d8c6e65be6356cbbdb",
+        "type": "MENTIONS",
+        "source_id": "vgar:pydata/xarray:issue:sha256:6e90669c9a4b16d3bd337fce67f2e570dbf05395c1324dbc39386993c384b2c3",
+        "target_id": "vgar:pydata/xarray:python:method:xarray/core/utils.py:xarray.core.utils.NdimSizeLenMixin.__len__",
+        "confidence": 0.5,
+        "resolution": "heuristic",
+        "graph_version": "sha256:1bf0ccc7d35740cf7e15bb033cd8de351c235634bf224f7973dfcf99c39849ba",
+        "properties": {
+          "overlay_id": "sha256:f26b9c71c0ef60cc943715e2a4fa882152ef22c5c27fffca2cad6412e05caac0",
+          "has_ambiguous_evidence": true
+        },
+        "provenance": {
+          "source_tool": "vgar-m1-task-overlay",
+          "source_tool_version": "0.1.0",
+          "rule_id": "task.mentions.v1",
+          "source_revision": "45c0a114e2b7b27b83c9618bc05b36afac82183c",
+          "evidence": [
+            {
+              "kind": "symbol",
+              "matched_text": "__len__",
+              "source": "issue"
+            }
+          ]
+        }
+      },
+      {
+        "id": "sha256:a3e5a2db704992eb1f38d2ab48c105b4c659dbfef863ee70aef4d376d47b6ca9",
+        "type": "MENTIONS",
+        "source_id": "vgar:pydata/xarray:issue:sha256:6e90669c9a4b16d3bd337fce67f2e570dbf05395c1324dbc39386993c384b2c3",
+        "target_id": "vgar:pydata/xarray:python:method:xarray/core/utils.py:xarray.core.utils.OrderedSet.__len__",
+        "confidence": 0.5,
+        "resolution": "heuristic",
+        "graph_version": "sha256:1bf0ccc7d35740cf7e15bb033cd8de351c235634bf224f7973dfcf99c39849ba",
+        "properties": {
+          "overlay_id": "sha256:f26b9c71c0ef60cc943715e2a4fa882152ef22c5c27fffca2cad6412e05caac0",
+          "has_ambiguous_evidence": true
+        },
+        "provenance": {
+          "source_tool": "vgar-m1-task-overlay",
+          "source_tool_version": "0.1.0",
+          "rule_id": "task.mentions.v1",
+          "source_revision": "45c0a114e2b7b27b83c9618bc05b36afac82183c",
+          "evidence": [
+            {
+              "kind": "symbol",
+              "matched_text": "__len__",
+              "source": "issue"
+            }
+          ]
+        }
+      },
+      {
+        "id": "sha256:eec85b92d47ed9711546e5e4dfdc79c35df5b863ddb662c6f7263fe0398543d5",
+        "type": "MENTIONS",
+        "source_id": "vgar:pydata/xarray:issue:sha256:6e90669c9a4b16d3bd337fce67f2e570dbf05395c1324dbc39386993c384b2c3",
+        "target_id": "vgar:pydata/xarray:python:method:xarray/core/variable.py:xarray.core.variable.IndexVariable.copy",
+        "confidence": 0.25,
+        "resolution": "heuristic",
+        "graph_version": "sha256:1bf0ccc7d35740cf7e15bb033cd8de351c235634bf224f7973dfcf99c39849ba",
+        "properties": {
+          "overlay_id": "sha256:f26b9c71c0ef60cc943715e2a4fa882152ef22c5c27fffca2cad6412e05caac0",
+          "has_ambiguous_evidence": true
+        },
+        "provenance": {
+          "source_tool": "vgar-m1-task-overlay",
+          "source_tool_version": "0.1.0",
+          "rule_id": "task.mentions.v1",
+          "source_revision": "45c0a114e2b7b27b83c9618bc05b36afac82183c",
+          "evidence": [
+            {
+              "kind": "symbol",
+              "matched_text": "copy",
+              "source": "issue"
+            }
+          ]
+        }
+      },
+      {
+        "id": "sha256:89b3646cea63755135474c5288cc92bea47f8745011dbcf71174817bc3e13d99",
+        "type": "MENTIONS",
+        "source_id": "vgar:pydata/xarray:issue:sha256:6e90669c9a4b16d3bd337fce67f2e570dbf05395c1324dbc39386993c384b2c3",
+        "target_id": "vgar:pydata/xarray:python:method:xarray/core/variable.py:xarray.core.variable.IndexVariable.data",
+        "confidence": 0.25,
+        "resolution": "heuristic",
+        "graph_version": "sha256:1bf0ccc7d35740cf7e15bb033cd8de351c235634bf224f7973dfcf99c39849ba",
+        "properties": {
+          "overlay_id": "sha256:f26b9c71c0ef60cc943715e2a4fa882152ef22c5c27fffca2cad6412e05caac0",
+          "has_ambiguous_evidence": true
+        },
+        "provenance": {
+          "source_tool": "vgar-m1-task-overlay",
+          "source_tool_version": "0.1.0",
+          "rule_id": "task.mentions.v1",
+          "source_revision": "45c0a114e2b7b27b83c9618bc05b36afac82183c",
+          "evidence": [
+            {
+              "kind": "symbol",
+              "matched_text": "data",
+              "source": "issue"
+            }
+          ]
+        }
+      },
+      {
+        "id": "sha256:7c3348973b9da1fdfaeb98709b7668231fd354b677757f18506052bba97854ef",
+        "type": "MENTIONS",
+        "source_id": "vgar:pydata/xarray:issue:sha256:6e90669c9a4b16d3bd337fce67f2e570dbf05395c1324dbc39386993c384b2c3",
+        "target_id": "vgar:pydata/xarray:python:method:xarray/core/variable.py:xarray.core.variable.Variable.copy",
+        "confidence": 0.25,
+        "resolution": "heuristic",
+        "graph_version": "sha256:1bf0ccc7d35740cf7e15bb033cd8de351c235634bf224f7973dfcf99c39849ba",
+        "properties": {
+          "overlay_id": "sha256:f26b9c71c0ef60cc943715e2a4fa882152ef22c5c27fffca2cad6412e05caac0",
+          "has_ambiguous_evidence": true
+        },
+        "provenance": {
+          "source_tool": "vgar-m1-task-overlay",
+          "source_tool_version": "0.1.0",
+          "rule_id": "task.mentions.v1",
+          "source_revision": "45c0a114e2b7b27b83c9618bc05b36afac82183c",
+          "evidence": [
+            {
+              "kind": "symbol",
+              "matched_text": "copy",
+              "source": "issue"
+            }
+          ]
+        }
+      },
+      {
+        "id": "sha256:4c82c8d39f3fd2119c052382ba62d94b6b9975fd02365e861c8274e562e3f14b",
+        "type": "MENTIONS",
+        "source_id": "vgar:pydata/xarray:issue:sha256:6e90669c9a4b16d3bd337fce67f2e570dbf05395c1324dbc39386993c384b2c3",
+        "target_id": "vgar:pydata/xarray:python:method:xarray/core/variable.py:xarray.core.variable.Variable.data",
+        "confidence": 0.25,
+        "resolution": "heuristic",
+        "graph_version": "sha256:1bf0ccc7d35740cf7e15bb033cd8de351c235634bf224f7973dfcf99c39849ba",
+        "properties": {
+          "overlay_id": "sha256:f26b9c71c0ef60cc943715e2a4fa882152ef22c5c27fffca2cad6412e05caac0",
+          "has_ambiguous_evidence": true
+        },
+        "provenance": {
+          "source_tool": "vgar-m1-task-overlay",
+          "source_tool_version": "0.1.0",
+          "rule_id": "task.mentions.v1",
+          "source_revision": "45c0a114e2b7b27b83c9618bc05b36afac82183c",
+          "evidence": [
+            {
+              "kind": "symbol",
+              "matched_text": "data",
+              "source": "issue"
+            }
+          ]
+        }
+      },
+      {
+        "id": "sha256:9c5a9ada7fd865fc384f5d8447ccd243e39a356ededa905ccc19cc8a5e8d4b02",
+        "type": "MENTIONS",
+        "source_id": "vgar:pydata/xarray:issue:sha256:6e90669c9a4b16d3bd337fce67f2e570dbf05395c1324dbc39386993c384b2c3",
+        "target_id": "vgar:pydata/xarray:python:method:xarray/core/variable.py:xarray.core.variable.Variable.data.setter",
+        "confidence": 0.25,
+        "resolution": "heuristic",
+        "graph_version": "sha256:1bf0ccc7d35740cf7e15bb033cd8de351c235634bf224f7973dfcf99c39849ba",
+        "properties": {
+          "overlay_id": "sha256:f26b9c71c0ef60cc943715e2a4fa882152ef22c5c27fffca2cad6412e05caac0",
+          "has_ambiguous_evidence": true
+        },
+        "provenance": {
+          "source_tool": "vgar-m1-task-overlay",
+          "source_tool_version": "0.1.0",
+          "rule_id": "task.mentions.v1",
+          "source_revision": "45c0a114e2b7b27b83c9618bc05b36afac82183c",
+          "evidence": [
+            {
+              "kind": "symbol",
+              "matched_text": "data",
+              "source": "issue"
+            }
+          ]
+        }
+      },
+      {
+        "id": "sha256:93261cc25747123ea36e4a2b514cefe3e6123ec5176b4857103ae965ca12f290",
+        "type": "MENTIONS",
+        "source_id": "vgar:pydata/xarray:issue:sha256:6e90669c9a4b16d3bd337fce67f2e570dbf05395c1324dbc39386993c384b2c3",
+        "target_id": "vgar:pydata/xarray:python:method:xarray/tests/test_concat.py:xarray.tests.test_concat.TestConcatDataset.data",
+        "confidence": 0.25,
+        "resolution": "heuristic",
+        "graph_version": "sha256:1bf0ccc7d35740cf7e15bb033cd8de351c235634bf224f7973dfcf99c39849ba",
+        "properties": {
+          "overlay_id": "sha256:f26b9c71c0ef60cc943715e2a4fa882152ef22c5c27fffca2cad6412e05caac0",
+          "has_ambiguous_evidence": true
+        },
+        "provenance": {
+          "source_tool": "vgar-m1-task-overlay",
+          "source_tool_version": "0.1.0",
+          "rule_id": "task.mentions.v1",
+          "source_revision": "45c0a114e2b7b27b83c9618bc05b36afac82183c",
+          "evidence": [
+            {
+              "kind": "symbol",
+              "matched_text": "data",
+              "source": "issue"
+            }
+          ]
+        }
+      },
+      {
+        "id": "sha256:244dbbc8da4349d15e9ce59f2a1583d8ef9db79c69e17f4ae7a2d9938e812475",
+        "type": "MENTIONS",
+        "source_id": "vgar:pydata/xarray:issue:sha256:6e90669c9a4b16d3bd337fce67f2e570dbf05395c1324dbc39386993c384b2c3",
+        "target_id": "vgar:pydata/xarray:python:method:xarray/tests/test_indexes.py:xarray.tests.test_indexes.TestIndex.index",
+        "confidence": 0.25,
+        "resolution": "heuristic",
+        "graph_version": "sha256:1bf0ccc7d35740cf7e15bb033cd8de351c235634bf224f7973dfcf99c39849ba",
+        "properties": {
+          "overlay_id": "sha256:f26b9c71c0ef60cc943715e2a4fa882152ef22c5c27fffca2cad6412e05caac0",
+          "has_ambiguous_evidence": true
+        },
+        "provenance": {
+          "source_tool": "vgar-m1-task-overlay",
+          "source_tool_version": "0.1.0",
+          "rule_id": "task.mentions.v1",
+          "source_revision": "45c0a114e2b7b27b83c9618bc05b36afac82183c",
+          "evidence": [
+            {
+              "kind": "symbol",
+              "matched_text": "index",
+              "source": "issue"
+            }
+          ]
+        }
+      },
+      {
+        "id": "sha256:76433bba017b38e4b44194cc4cb9826f60b6ecf6bfd8a50d5c170a0f52723fb2",
+        "type": "MENTIONS",
+        "source_id": "vgar:pydata/xarray:issue:sha256:6e90669c9a4b16d3bd337fce67f2e570dbf05395c1324dbc39386993c384b2c3",
+        "target_id": "vgar:pydata/xarray:task:sha256:6e90669c9a4b16d3bd337fce67f2e570dbf05395c1324dbc39386993c384b2c3:bug_report:0",
+        "confidence": 0.7,
+        "resolution": "heuristic",
+        "graph_version": "sha256:1bf0ccc7d35740cf7e15bb033cd8de351c235634bf224f7973dfcf99c39849ba",
+        "properties": {
+          "overlay_id": "sha256:f26b9c71c0ef60cc943715e2a4fa882152ef22c5c27fffca2cad6412e05caac0"
+        },
+        "provenance": {
+          "source_tool": "vgar-m1-task-overlay",
+          "source_tool_version": "0.1.0",
+          "rule_id": "task.mentions.v1",
+          "source_revision": "45c0a114e2b7b27b83c9618bc05b36afac82183c",
+          "evidence": []
+        }
+      },
+      {
+        "id": "sha256:f01269b41a9aaefcae279ce99b409896d8085f6dc35497139f9c11328fc15e64",
+        "type": "MENTIONS",
+        "source_id": "vgar:pydata/xarray:issue:sha256:6e90669c9a4b16d3bd337fce67f2e570dbf05395c1324dbc39386993c384b2c3",
+        "target_id": "vgar:pydata/xarray:task:sha256:6e90669c9a4b16d3bd337fce67f2e570dbf05395c1324dbc39386993c384b2c3:error:0",
+        "confidence": 0.9,
+        "resolution": "heuristic",
+        "graph_version": "sha256:1bf0ccc7d35740cf7e15bb033cd8de351c235634bf224f7973dfcf99c39849ba",
+        "properties": {
+          "overlay_id": "sha256:f26b9c71c0ef60cc943715e2a4fa882152ef22c5c27fffca2cad6412e05caac0"
+        },
+        "provenance": {
+          "source_tool": "vgar-m1-task-overlay",
+          "source_tool_version": "0.1.0",
+          "rule_id": "task.mentions.v1",
+          "source_revision": "45c0a114e2b7b27b83c9618bc05b36afac82183c",
+          "evidence": []
+        }
+      },
+      {
+        "id": "sha256:985c220ec77f628d9b7f2ce15db158880cd2f2aa6495939317c226a63205c3e2",
+        "type": "TRACES_TO",
+        "source_id": "vgar:pydata/xarray:issue:sha256:6e90669c9a4b16d3bd337fce67f2e570dbf05395c1324dbc39386993c384b2c3",
+        "target_id": "vgar:pydata/xarray:python:component:xarray/core",
+        "confidence": 0.7,
+        "resolution": "heuristic",
+        "graph_version": "sha256:1bf0ccc7d35740cf7e15bb033cd8de351c235634bf224f7973dfcf99c39849ba",
+        "properties": {
+          "overlay_id": "sha256:f26b9c71c0ef60cc943715e2a4fa882152ef22c5c27fffca2cad6412e05caac0",
+          "anchor_count": 4
+        },
+        "provenance": {
+          "source_tool": "vgar-m1-task-overlay",
+          "source_tool_version": "0.1.0",
+          "rule_id": "task.traces_to.v1",
+          "source_revision": "45c0a114e2b7b27b83c9618bc05b36afac82183c",
+          "evidence": [
+            {
+              "kind": "anchor",
+              "node_id": "vgar:pydata/xarray:python:class:xarray/core/dataset.py:xarray.core.dataset.DataVariables"
+            },
+            {
+              "kind": "anchor",
+              "node_id": "vgar:pydata/xarray:python:class:xarray/core/dataset.py:xarray.core.dataset.Dataset"
+            },
+            {
+              "kind": "anchor",
+              "node_id": "vgar:pydata/xarray:python:file:xarray/core/dataset.py"
+            },
+            {
+              "kind": "anchor",
+              "node_id": "vgar:pydata/xarray:python:method:xarray/core/dataarray.py:xarray.core.dataarray.DataArray.variable"
+            }
+          ]
+        }
+      }
+    ],
+    "view_hash": "sha256:a994d22ab32c5926c40ae84243e2c775a9a3b9ecb620830a418e39ddeee10f88"
+  },
+  "error": null,
+  "metadata": {
+    "duration_ms": 2324,
+    "request_id": "4ea4972a379c46b1b87083c19a52fc7a",
+    "backend": "bound-sqlite",
+    "tool": "find_task_anchors",
+    "untrusted": true,
+    "run_id": "agent-pydata__xarray-6992-A5-20261119",
+    "task_id": "pydata__xarray-6992",
+    "snapshot_hash": "sha256:1bf0ccc7d35740cf7e15bb033cd8de351c235634bf224f7973dfcf99c39849ba"
+  }
+}

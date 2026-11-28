@@ -1,0 +1,89 @@
+{
+  "model": {
+    "providerID": "9router",
+    "model": "oc/deepseek-v4.1-flash-free"
+  },
+  "agents": {
+    "explorer": {
+      "model": {
+        "providerID": "9router",
+        "model": "oc/deepseek-v4.1-flash-free"
+      }
+    }
+  },
+  "mcp": {
+    "timeout": {
+      "startup": 120000,
+      "catalog": 120000,
+      "execution": 150000
+    },
+    "servers": {
+      "vgar-graph": {
+        "type": "local",
+        "command": [
+          "C:/Windows/System32/wsl.exe",
+          "-d",
+          "VGAR-Harness-W9",
+          "--",
+          "env",
+          "PYTHONPATH=/home/vgar/swebench-ablation/a5/task-profiles-20261119/runtime-02/src",
+          "PYTHONDONTWRITEBYTECODE=1",
+          "/home/vgar/swebench-ablation/bindings/20261117-completion/venv/bin/python",
+          "-B",
+          "-m",
+          "vgar.evaluation.swebench_ablation.binding_server",
+          "--binding",
+          "/home/vgar/swebench-ablation/a5/task-profiles-20261119/agent-runs/pydata__xarray-6992__A4/binding.json",
+          "--expected-hash",
+          "sha256:797d96db5fbd2649c53169328b219bdcfd9d8262f2d36dc9cc56614a82ce88d2",
+          "--server",
+          "graph"
+        ],
+        "cwd": "D:\\Project\\CAPSTONES\\agent-workspaces\\full-a5-20261119\\pydata__xarray-6992\\arms\\A4\\repo",
+        "codemode": false,
+        "timeout": {
+          "startup": 120000,
+          "catalog": 120000,
+          "execution": 150000
+        }
+      },
+      "vgar-execution": {
+        "type": "local",
+        "command": [
+          "C:/Windows/System32/wsl.exe",
+          "-d",
+          "VGAR-Harness-W9",
+          "--",
+          "env",
+          "PYTHONPATH=/home/vgar/swebench-ablation/a5/task-profiles-20261119/runtime-02/src",
+          "PYTHONDONTWRITEBYTECODE=1",
+          "/home/vgar/swebench-ablation/bindings/20261117-completion/venv/bin/python",
+          "-B",
+          "-m",
+          "vgar.evaluation.swebench_ablation.binding_server",
+          "--binding",
+          "/home/vgar/swebench-ablation/a5/task-profiles-20261119/agent-runs/pydata__xarray-6992__A4/binding.json",
+          "--expected-hash",
+          "sha256:797d96db5fbd2649c53169328b219bdcfd9d8262f2d36dc9cc56614a82ce88d2",
+          "--server",
+          "execution"
+        ],
+        "cwd": "D:\\Project\\CAPSTONES\\agent-workspaces\\full-a5-20261119\\pydata__xarray-6992\\arms\\A4\\repo",
+        "codemode": false,
+        "timeout": {
+          "startup": 120000,
+          "catalog": 120000,
+          "execution": 150000
+        }
+      },
+      "vgar-repository": {
+        "disabled": true
+      },
+      "vgar-repair": {
+        "disabled": true
+      }
+    }
+  },
+  "websearch": false,
+  "$schema": "https://opencode.ai/config.json"
+}

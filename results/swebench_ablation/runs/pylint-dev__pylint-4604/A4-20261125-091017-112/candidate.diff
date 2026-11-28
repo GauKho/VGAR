@@ -1,0 +1,18 @@
+diff --git a/pylint/checkers/variables.py b/pylint/checkers/variables.py
+index 3ddafd5..decec0f 100644
+--- a/pylint/checkers/variables.py
++++ b/pylint/checkers/variables.py
+@@ -1826,7 +1826,12 @@ class VariablesChecker(BaseChecker):
+             self._type_annotation_names.append(type_annotation.name)
+             return
+ 
+-        if not isinstance(type_annotation, astroid.Subscript):
++        if not isinstance(type_annotation, (astroid.Subscript, astroid.Attribute)):
++            return
++
++        if isinstance(type_annotation, astroid.Attribute):
++            # A dotted name such as ``abc.ABC`` refers to the ``abc`` module.
++            self._type_annotation_names.append(type_annotation.expr.as_string())
+             return
+ 
+         if (

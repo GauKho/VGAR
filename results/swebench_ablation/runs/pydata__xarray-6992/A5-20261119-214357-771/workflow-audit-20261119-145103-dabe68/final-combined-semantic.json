@@ -1,0 +1,71 @@
+{
+  "profile": "public-task-a5-docker-v1",
+  "binding": {
+    "snapshot_hash": "sha256:1bf0ccc7d35740cf7e15bb033cd8de351c235634bf224f7973dfcf99c39849ba",
+    "source_hash": "sha256:455be6cbd7f74f69135ed141db18145c12029426ae729d3fe4d4454ae3dea4b4",
+    "config_hash": "sha256:7a92e9fe1894878567cc96db968b7276cc56f9e0ae977e6f017be39d2f78dff9",
+    "task_id": "pydata__xarray-6992",
+    "run_id": "agent-pydata__xarray-6992-A5-20261119"
+  },
+  "diff_hash": "sha256:115b7d93853506cfe1bf6b13ab24f3703e103136cafe1b89d28fab56fd7047c4",
+  "status": "PASS",
+  "tests_status": "PASS",
+  "semantic_status": "PASS",
+  "contracts": {
+    "status": "PASS",
+    "outcomes": {
+      "regression_ordinary_data_variables_mapping": "PASS",
+      "regression_coordinate_only_mapping": "PASS",
+      "feature_reset_index_empty_mapping_length": "PASS",
+      "feature_reset_index_mapping_repr": "PASS",
+      "feature_reset_index_preserves_real_data_mapping": "PASS"
+    }
+  },
+  "semantic_invariants": {
+    "profile": "tv3-l5-invariants-v1",
+    "status": "PASS",
+    "reasons": [
+      "daikon not configured"
+    ],
+    "noise_patterns": [
+      "is a power of 2",
+      "\\*\\*2",
+      "is boolean",
+      "% \\S+ == 0",
+      "__len__\\b",
+      "has only one value"
+    ],
+    "engine": "python-fallback",
+    "learned": 42,
+    "filtered_noise": 56,
+    "violations": [],
+    "violations_total": 0,
+    "new_points": [],
+    "unexercised_points": [],
+    "limitations": [
+      "LIKELY_INVARIANTS_NOT_PROOF"
+    ],
+    "python_version": "3.10.15",
+    "daikon_version": null
+  },
+  "baseline_semantic": {
+    "path": "/home/vgar/swebench-ablation/a5/task-profiles-20261119/agent-runs/pydata__xarray-6992__A5/evidence/semantic-0a7267d8dfb94738b2eca51251de206c/evidence.json",
+    "sha256": "sha256:f5b4317a71a646eda5d6d7a3c1f0059bea7d19e9d7e5b176cbb713840e99bdb7"
+  },
+  "candidate_semantic": {
+    "path": "/home/vgar/swebench-ablation/a5/task-profiles-20261119/agent-runs/pydata__xarray-6992__A5/evidence/semantic-8b3ddd455fcf43c09941f746319ac913/evidence.json",
+    "sha256": "sha256:65fda6d168bd95265f2fbe63217791c8d2fac8e0903728e5a99600706a52bee5"
+  },
+  "public_tests_evidence": [
+    {
+      "path": "public-tests-684ca18683ba4202b4c0f45b10a4bb5d.json",
+      "sha256": "sha256:b22004b4f59736316231fcb114ffa3145557e4050d6b94df4e57ab35e21ce686"
+    }
+  ],
+  "limitations": [
+    "PUBLIC_CONTRACTS_NOT_BENCHMARK_ORACLE",
+    "SCOPED_TRACE_HOST_PINNED_MODULES",
+    "LIKELY_INVARIANTS_ARE_NOT_PROOF",
+    "NOT_OFFICIAL_SWEBENCH_RESOLUTION"
+  ]
+}

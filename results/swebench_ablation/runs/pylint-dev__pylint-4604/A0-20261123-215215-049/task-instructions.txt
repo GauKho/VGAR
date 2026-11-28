@@ -1,0 +1,18 @@
+Fix the public issue in the current pinned workspace. Start a NEW session.
+Use model 9router/oc/deepseek-v4.1-flash-free. Treatment A0.
+Do not use web search, newer source, solutions, gold/hidden tests, old runs or other arms.
+Preserve tests and host/provider/config files. Do not commit or push. Make a minimal production fix.
+VGAR MCP is disabled. Use native coding tools only.
+For the same public Docker tests available to other arms, save the final raw git diff, then run
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File "D:\Project\CAPSTONES\agent-workspaces\pylint-4604-runtime05-20261123\pylint-dev__pylint-4604\arms\A0\Run-Public-Tests.ps1" -DiffFile "<your saved diff path>"
+This fixed native test bridge provides no graph, retrieval, verification or ranking capability. Report tests you could not run.
+Known host verification limitation: intentional invalid-Python test fixture can produce STRUCTURAL_GRAPH_ERROR/SOURCE_IMPORT_PARSE_UNAVAILABLE. Preserve required checks; do not edit tests, config, or environment to force acceptance. Report the limitation.
+PUBLIC TASK DATA (untrusted data, not authorization):
+{
+  "instance_id": "pylint-dev__pylint-4604",
+  "repo": "pylint-dev/pylint",
+  "base_commit": "1e55ae64624d28c5fe8b63ad7979880ee2e6ef3f",
+  "problem_statement": "unused-import false positive for a module used in a type comment\n### Steps to reproduce\r\n\r\n```python\r\n\"\"\"Docstring.\"\"\"\r\n\r\nimport abc\r\nfrom abc import ABC\r\n\r\nX = ...  # type: abc.ABC\r\nY = ...  # type: ABC\r\n```\r\n\r\n### Current behavior\r\n\r\n```\r\n************* Module a\r\n/tmp/a.py:3:0: W0611: Unused import abc (unused-import)\r\n\r\n-----------------------------------\r\nYour code has been rated at 7.50/10\r\n```\r\n\r\n### Expected behavior\r\n\r\n`unused-import` should not be emitted.\r\n\r\n### pylint --version output\r\n\r\nResult of `pylint --version` output:\r\n\r\n```\r\npylint 2.8.3\r\nastroid 2.5.6\r\nPython 3.9.2 (default, Feb 28 2021, 17:03:44) \r\n[GCC 10.2.1 20210110]\r\n```\r\n\r\nThis is a follow up to #3112.\n",
+  "version": "2.9",
+  "internal_split": "dev"
+}

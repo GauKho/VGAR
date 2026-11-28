@@ -1,0 +1,1294 @@
+{
+  "status": "PASS",
+  "data": {
+    "repo_key": "pydata/xarray",
+    "repository_revision": "45c0a114e2b7b27b83c9618bc05b36afac82183c",
+    "graph_version": "sha256:1bf0ccc7d35740cf7e15bb033cd8de351c235634bf224f7973dfcf99c39849ba",
+    "graph_hash": "sha256:aef413efbb75ac3bd382e6293ee576121520f7f8976a503357d28830a06d7041",
+    "source_hash": "sha256:6ee0f71382bf16c78443119c70d7dfcc3071ca0a5f2d08f91493917225b00a53",
+    "patch_hash": "sha256:5652bd5067be63eb12b0a7a88db04c6a3037e4b28f2551fcd84b5882fd4aa0ff",
+    "source_scope": "python-inventory",
+    "changed": [
+      {
+        "path": "xarray/core/dataset.py",
+        "node_id": "vgar:pydata/xarray:python:method:xarray/core/dataset.py:xarray.core.dataset.Dataset.reset_index",
+        "kind": "Method",
+        "source_range": {
+          "start_line": 4108,
+          "start_col": 4,
+          "end_line": 4182,
+          "end_col": 81
+        },
+        "basis": "baseline_changed_lines",
+        "spans": [
+          {
+            "hunk_index": 1,
+            "old_start": 4180,
+            "old_count": 1,
+            "new_start": 4180,
+            "new_count": 1
+          }
+        ]
+      }
+    ],
+    "unmapped": [],
+    "impacted": {
+      "status": "COMPLETE",
+      "items": [
+        {
+          "path": "xarray/core/dataset.py",
+          "node_id": "vgar:pydata/xarray:python:port:xarray/core/dataset.py:xarray.core.dataset.Dataset.reset_index",
+          "qualified_name": "xarray.core.dataset.Dataset.reset_index",
+          "kind": "Port",
+          "hops": 0,
+          "relation": "EXPOSES_PORT",
+          "via": "vgar:pydata/xarray:python:method:xarray/core/dataset.py:xarray.core.dataset.Dataset.reset_index"
+        },
+        {
+          "path": null,
+          "node_id": "vgar:pydata/xarray:python:component:xarray/core",
+          "qualified_name": "xarray.core",
+          "kind": "Component",
+          "hops": 0,
+          "relation": "LIFT",
+          "via": "vgar:pydata/xarray:python:method:xarray/core/dataset.py:xarray.core.dataset.Dataset.reset_index"
+        },
+        {
+          "path": null,
+          "node_id": "vgar:pydata/xarray:python:component:xarray",
+          "qualified_name": "xarray",
+          "kind": "Component",
+          "hops": 1,
+          "relation": "DEPENDS_ON",
+          "via": "vgar:pydata/xarray:python:component:xarray/core"
+        },
+        {
+          "path": null,
+          "node_id": "vgar:pydata/xarray:python:component:xarray/backends",
+          "qualified_name": "xarray.backends",
+          "kind": "Component",
+          "hops": 1,
+          "relation": "DEPENDS_ON",
+          "via": "vgar:pydata/xarray:python:component:xarray/core"
+        },
+        {
+          "path": null,
+          "node_id": "vgar:pydata/xarray:python:component:xarray/coding",
+          "qualified_name": "xarray.coding",
+          "kind": "Component",
+          "hops": 1,
+          "relation": "DEPENDS_ON",
+          "via": "vgar:pydata/xarray:python:component:xarray/core"
+        },
+        {
+          "path": null,
+          "node_id": "vgar:pydata/xarray:python:component:xarray/plot",
+          "qualified_name": "xarray.plot",
+          "kind": "Component",
+          "hops": 1,
+          "relation": "DEPENDS_ON",
+          "via": "vgar:pydata/xarray:python:component:xarray/core"
+        },
+        {
+          "path": "xarray/__init__.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/__init__.py:xarray",
+          "qualified_name": "xarray",
+          "kind": "Module",
+          "hops": 1,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:method:xarray/core/dataset.py:xarray.core.dataset.Dataset.reset_index"
+        },
+        {
+          "path": "xarray/backends/api.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/backends/api.py:xarray.backends.api",
+          "qualified_name": "xarray.backends.api",
+          "kind": "Module",
+          "hops": 1,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:method:xarray/core/dataset.py:xarray.core.dataset.Dataset.reset_index"
+        },
+        {
+          "path": "xarray/backends/store.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/backends/store.py:xarray.backends.store",
+          "qualified_name": "xarray.backends.store",
+          "kind": "Module",
+          "hops": 1,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:method:xarray/core/dataset.py:xarray.core.dataset.Dataset.reset_index"
+        },
+        {
+          "path": "xarray/core/_reductions.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/core/_reductions.py:xarray.core._reductions",
+          "qualified_name": "xarray.core._reductions",
+          "kind": "Module",
+          "hops": 1,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:method:xarray/core/dataset.py:xarray.core.dataset.Dataset.reset_index"
+        },
+        {
+          "path": "xarray/core/accessor_dt.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/core/accessor_dt.py:xarray.core.accessor_dt",
+          "qualified_name": "xarray.core.accessor_dt",
+          "kind": "Module",
+          "hops": 1,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:method:xarray/core/dataset.py:xarray.core.dataset.Dataset.reset_index"
+        },
+        {
+          "path": "xarray/core/alignment.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/core/alignment.py:xarray.core.alignment",
+          "qualified_name": "xarray.core.alignment",
+          "kind": "Module",
+          "hops": 1,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:method:xarray/core/dataset.py:xarray.core.dataset.Dataset.reset_index"
+        },
+        {
+          "path": "xarray/core/combine.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/core/combine.py:xarray.core.combine",
+          "qualified_name": "xarray.core.combine",
+          "kind": "Module",
+          "hops": 1,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:method:xarray/core/dataset.py:xarray.core.dataset.Dataset.reset_index"
+        },
+        {
+          "path": "xarray/core/common.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/core/common.py:xarray.core.common",
+          "qualified_name": "xarray.core.common",
+          "kind": "Module",
+          "hops": 1,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:method:xarray/core/dataset.py:xarray.core.dataset.Dataset.reset_index"
+        },
+        {
+          "path": "xarray/core/computation.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/core/computation.py:xarray.core.computation",
+          "qualified_name": "xarray.core.computation",
+          "kind": "Module",
+          "hops": 1,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:method:xarray/core/dataset.py:xarray.core.dataset.Dataset.reset_index"
+        },
+        {
+          "path": "xarray/core/coordinates.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/core/coordinates.py:xarray.core.coordinates",
+          "qualified_name": "xarray.core.coordinates",
+          "kind": "Module",
+          "hops": 1,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:method:xarray/core/dataset.py:xarray.core.dataset.Dataset.reset_index"
+        },
+        {
+          "path": "xarray/core/dataarray.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/core/dataarray.py:xarray.core.dataarray",
+          "qualified_name": "xarray.core.dataarray",
+          "kind": "Module",
+          "hops": 1,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:method:xarray/core/dataset.py:xarray.core.dataset.Dataset.reset_index"
+        },
+        {
+          "path": "xarray/core/extensions.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/core/extensions.py:xarray.core.extensions",
+          "qualified_name": "xarray.core.extensions",
+          "kind": "Module",
+          "hops": 1,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:method:xarray/core/dataset.py:xarray.core.dataset.Dataset.reset_index"
+        },
+        {
+          "path": "xarray/core/groupby.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/core/groupby.py:xarray.core.groupby",
+          "qualified_name": "xarray.core.groupby",
+          "kind": "Module",
+          "hops": 1,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:method:xarray/core/dataset.py:xarray.core.dataset.Dataset.reset_index"
+        },
+        {
+          "path": "xarray/core/merge.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/core/merge.py:xarray.core.merge",
+          "qualified_name": "xarray.core.merge",
+          "kind": "Module",
+          "hops": 1,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:method:xarray/core/dataset.py:xarray.core.dataset.Dataset.reset_index"
+        },
+        {
+          "path": "xarray/core/missing.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/core/missing.py:xarray.core.missing",
+          "qualified_name": "xarray.core.missing",
+          "kind": "Module",
+          "hops": 1,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:method:xarray/core/dataset.py:xarray.core.dataset.Dataset.reset_index"
+        },
+        {
+          "path": "xarray/core/parallel.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/core/parallel.py:xarray.core.parallel",
+          "qualified_name": "xarray.core.parallel",
+          "kind": "Module",
+          "hops": 1,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:method:xarray/core/dataset.py:xarray.core.dataset.Dataset.reset_index"
+        },
+        {
+          "path": "xarray/core/resample.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/core/resample.py:xarray.core.resample",
+          "qualified_name": "xarray.core.resample",
+          "kind": "Module",
+          "hops": 1,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:method:xarray/core/dataset.py:xarray.core.dataset.Dataset.reset_index"
+        },
+        {
+          "path": "xarray/core/rolling.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/core/rolling.py:xarray.core.rolling",
+          "qualified_name": "xarray.core.rolling",
+          "kind": "Module",
+          "hops": 1,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:method:xarray/core/dataset.py:xarray.core.dataset.Dataset.reset_index"
+        },
+        {
+          "path": "xarray/core/types.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/core/types.py:xarray.core.types",
+          "qualified_name": "xarray.core.types",
+          "kind": "Module",
+          "hops": 1,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:method:xarray/core/dataset.py:xarray.core.dataset.Dataset.reset_index"
+        },
+        {
+          "path": "xarray/core/weighted.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/core/weighted.py:xarray.core.weighted",
+          "qualified_name": "xarray.core.weighted",
+          "kind": "Module",
+          "hops": 1,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:method:xarray/core/dataset.py:xarray.core.dataset.Dataset.reset_index"
+        },
+        {
+          "path": "xarray/testing.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/testing.py:xarray.testing",
+          "qualified_name": "xarray.testing",
+          "kind": "Module",
+          "hops": 1,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:method:xarray/core/dataset.py:xarray.core.dataset.Dataset.reset_index"
+        },
+        {
+          "path": "xarray/tutorial.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/tutorial.py:xarray.tutorial",
+          "qualified_name": "xarray.tutorial",
+          "kind": "Module",
+          "hops": 1,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:method:xarray/core/dataset.py:xarray.core.dataset.Dataset.reset_index"
+        },
+        {
+          "path": "xarray/tests/test_dataset.py",
+          "node_id": "vgar:pydata/xarray:python:class:xarray/tests/test_dataset.py:xarray.tests.test_dataset.test_subclass_slots.MyDS",
+          "qualified_name": "xarray.tests.test_dataset.test_subclass_slots.MyDS",
+          "kind": "Class",
+          "hops": 1,
+          "relation": "INHERITS",
+          "via": "vgar:pydata/xarray:python:method:xarray/core/dataset.py:xarray.core.dataset.Dataset.reset_index"
+        },
+        {
+          "path": "asv_bench/benchmarks/combine.py",
+          "node_id": "vgar:pydata/xarray:python:module:asv_bench/benchmarks/combine.py:asv_bench.benchmarks.combine",
+          "qualified_name": "asv_bench.benchmarks.combine",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/__init__.py:xarray"
+        },
+        {
+          "path": "asv_bench/benchmarks/dataarray_missing.py",
+          "node_id": "vgar:pydata/xarray:python:module:asv_bench/benchmarks/dataarray_missing.py:asv_bench.benchmarks.dataarray_missing",
+          "qualified_name": "asv_bench.benchmarks.dataarray_missing",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/__init__.py:xarray"
+        },
+        {
+          "path": "asv_bench/benchmarks/dataset_io.py",
+          "node_id": "vgar:pydata/xarray:python:module:asv_bench/benchmarks/dataset_io.py:asv_bench.benchmarks.dataset_io",
+          "qualified_name": "asv_bench.benchmarks.dataset_io",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/__init__.py:xarray"
+        },
+        {
+          "path": "asv_bench/benchmarks/groupby.py",
+          "node_id": "vgar:pydata/xarray:python:module:asv_bench/benchmarks/groupby.py:asv_bench.benchmarks.groupby",
+          "qualified_name": "asv_bench.benchmarks.groupby",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/__init__.py:xarray"
+        },
+        {
+          "path": "asv_bench/benchmarks/indexing.py",
+          "node_id": "vgar:pydata/xarray:python:module:asv_bench/benchmarks/indexing.py:asv_bench.benchmarks.indexing",
+          "qualified_name": "asv_bench.benchmarks.indexing",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/__init__.py:xarray"
+        },
+        {
+          "path": "asv_bench/benchmarks/interp.py",
+          "node_id": "vgar:pydata/xarray:python:module:asv_bench/benchmarks/interp.py:asv_bench.benchmarks.interp",
+          "qualified_name": "asv_bench.benchmarks.interp",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/__init__.py:xarray"
+        },
+        {
+          "path": "asv_bench/benchmarks/pandas.py",
+          "node_id": "vgar:pydata/xarray:python:module:asv_bench/benchmarks/pandas.py:asv_bench.benchmarks.pandas",
+          "qualified_name": "asv_bench.benchmarks.pandas",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/__init__.py:xarray"
+        },
+        {
+          "path": "asv_bench/benchmarks/polyfit.py",
+          "node_id": "vgar:pydata/xarray:python:module:asv_bench/benchmarks/polyfit.py:asv_bench.benchmarks.polyfit",
+          "qualified_name": "asv_bench.benchmarks.polyfit",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/__init__.py:xarray"
+        },
+        {
+          "path": "asv_bench/benchmarks/reindexing.py",
+          "node_id": "vgar:pydata/xarray:python:module:asv_bench/benchmarks/reindexing.py:asv_bench.benchmarks.reindexing",
+          "qualified_name": "asv_bench.benchmarks.reindexing",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/__init__.py:xarray"
+        },
+        {
+          "path": "asv_bench/benchmarks/repr.py",
+          "node_id": "vgar:pydata/xarray:python:module:asv_bench/benchmarks/repr.py:asv_bench.benchmarks.repr",
+          "qualified_name": "asv_bench.benchmarks.repr",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/__init__.py:xarray"
+        },
+        {
+          "path": "asv_bench/benchmarks/rolling.py",
+          "node_id": "vgar:pydata/xarray:python:module:asv_bench/benchmarks/rolling.py:asv_bench.benchmarks.rolling",
+          "qualified_name": "asv_bench.benchmarks.rolling",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/__init__.py:xarray"
+        },
+        {
+          "path": "asv_bench/benchmarks/unstacking.py",
+          "node_id": "vgar:pydata/xarray:python:module:asv_bench/benchmarks/unstacking.py:asv_bench.benchmarks.unstacking",
+          "qualified_name": "asv_bench.benchmarks.unstacking",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/__init__.py:xarray"
+        },
+        {
+          "path": "doc/conf.py",
+          "node_id": "vgar:pydata/xarray:python:module:doc/conf.py:doc.conf",
+          "qualified_name": "doc.conf",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/__init__.py:xarray"
+        },
+        {
+          "path": "doc/examples/_code/accessor_example.py",
+          "node_id": "vgar:pydata/xarray:python:module:doc/examples/_code/accessor_example.py:doc.examples._code.accessor_example",
+          "qualified_name": "doc.examples._code.accessor_example",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/__init__.py:xarray"
+        },
+        {
+          "path": "doc/gallery/plot_cartopy_facetgrid.py",
+          "node_id": "vgar:pydata/xarray:python:module:doc/gallery/plot_cartopy_facetgrid.py:doc.gallery.plot_cartopy_facetgrid",
+          "qualified_name": "doc.gallery.plot_cartopy_facetgrid",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/__init__.py:xarray"
+        },
+        {
+          "path": "doc/gallery/plot_colorbar_center.py",
+          "node_id": "vgar:pydata/xarray:python:module:doc/gallery/plot_colorbar_center.py:doc.gallery.plot_colorbar_center",
+          "qualified_name": "doc.gallery.plot_colorbar_center",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/__init__.py:xarray"
+        },
+        {
+          "path": "doc/gallery/plot_control_colorbar.py",
+          "node_id": "vgar:pydata/xarray:python:module:doc/gallery/plot_control_colorbar.py:doc.gallery.plot_control_colorbar",
+          "qualified_name": "doc.gallery.plot_control_colorbar",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/__init__.py:xarray"
+        },
+        {
+          "path": "doc/gallery/plot_lines_from_2d.py",
+          "node_id": "vgar:pydata/xarray:python:module:doc/gallery/plot_lines_from_2d.py:doc.gallery.plot_lines_from_2d",
+          "qualified_name": "doc.gallery.plot_lines_from_2d",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/__init__.py:xarray"
+        },
+        {
+          "path": "doc/gallery/plot_rasterio.py",
+          "node_id": "vgar:pydata/xarray:python:module:doc/gallery/plot_rasterio.py:doc.gallery.plot_rasterio",
+          "qualified_name": "doc.gallery.plot_rasterio",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/__init__.py:xarray"
+        },
+        {
+          "path": "doc/gallery/plot_rasterio_rgb.py",
+          "node_id": "vgar:pydata/xarray:python:module:doc/gallery/plot_rasterio_rgb.py:doc.gallery.plot_rasterio_rgb",
+          "qualified_name": "doc.gallery.plot_rasterio_rgb",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/__init__.py:xarray"
+        },
+        {
+          "path": "properties/test_encode_decode.py",
+          "node_id": "vgar:pydata/xarray:python:module:properties/test_encode_decode.py:properties.test_encode_decode",
+          "qualified_name": "properties.test_encode_decode",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/__init__.py:xarray"
+        },
+        {
+          "path": "properties/test_pandas_roundtrip.py",
+          "node_id": "vgar:pydata/xarray:python:module:properties/test_pandas_roundtrip.py:properties.test_pandas_roundtrip",
+          "qualified_name": "properties.test_pandas_roundtrip",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/__init__.py:xarray"
+        },
+        {
+          "path": "xarray/backends/netCDF4_.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/backends/netCDF4_.py:xarray.backends.netCDF4_",
+          "qualified_name": "xarray.backends.netCDF4_",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/__init__.py:xarray"
+        },
+        {
+          "path": "xarray/backends/netcdf3.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/backends/netcdf3.py:xarray.backends.netcdf3",
+          "qualified_name": "xarray.backends.netcdf3",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/__init__.py:xarray"
+        },
+        {
+          "path": "xarray/backends/zarr.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/backends/zarr.py:xarray.backends.zarr",
+          "qualified_name": "xarray.backends.zarr",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/__init__.py:xarray"
+        },
+        {
+          "path": "xarray/core/variable.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/core/variable.py:xarray.core.variable",
+          "qualified_name": "xarray.core.variable",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/__init__.py:xarray"
+        },
+        {
+          "path": "xarray/tests/__init__.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/tests/__init__.py:xarray.tests",
+          "qualified_name": "xarray.tests",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/__init__.py:xarray"
+        },
+        {
+          "path": "xarray/tests/conftest.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/tests/conftest.py:xarray.tests.conftest",
+          "qualified_name": "xarray.tests.conftest",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/__init__.py:xarray"
+        },
+        {
+          "path": "xarray/tests/test_accessor_dt.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/tests/test_accessor_dt.py:xarray.tests.test_accessor_dt",
+          "qualified_name": "xarray.tests.test_accessor_dt",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/__init__.py:xarray"
+        },
+        {
+          "path": "xarray/tests/test_accessor_str.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/tests/test_accessor_str.py:xarray.tests.test_accessor_str",
+          "qualified_name": "xarray.tests.test_accessor_str",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/__init__.py:xarray"
+        },
+        {
+          "path": "xarray/tests/test_array_api.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/tests/test_array_api.py:xarray.tests.test_array_api",
+          "qualified_name": "xarray.tests.test_array_api",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/__init__.py:xarray"
+        },
+        {
+          "path": "xarray/tests/test_backends.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/tests/test_backends.py:xarray.tests.test_backends",
+          "qualified_name": "xarray.tests.test_backends",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/__init__.py:xarray"
+        },
+        {
+          "path": "xarray/tests/test_backends_api.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/tests/test_backends_api.py:xarray.tests.test_backends_api",
+          "qualified_name": "xarray.tests.test_backends_api",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/__init__.py:xarray"
+        },
+        {
+          "path": "xarray/tests/test_calendar_ops.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/tests/test_calendar_ops.py:xarray.tests.test_calendar_ops",
+          "qualified_name": "xarray.tests.test_calendar_ops",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/__init__.py:xarray"
+        },
+        {
+          "path": "xarray/tests/test_cftime_offsets.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/tests/test_cftime_offsets.py:xarray.tests.test_cftime_offsets",
+          "qualified_name": "xarray.tests.test_cftime_offsets",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/__init__.py:xarray"
+        },
+        {
+          "path": "xarray/tests/test_cftimeindex.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/tests/test_cftimeindex.py:xarray.tests.test_cftimeindex",
+          "qualified_name": "xarray.tests.test_cftimeindex",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/__init__.py:xarray"
+        },
+        {
+          "path": "xarray/tests/test_cftimeindex_resample.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/tests/test_cftimeindex_resample.py:xarray.tests.test_cftimeindex_resample",
+          "qualified_name": "xarray.tests.test_cftimeindex_resample",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/__init__.py:xarray"
+        },
+        {
+          "path": "xarray/tests/test_coarsen.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/tests/test_coarsen.py:xarray.tests.test_coarsen",
+          "qualified_name": "xarray.tests.test_coarsen",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/__init__.py:xarray"
+        },
+        {
+          "path": "xarray/tests/test_coding.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/tests/test_coding.py:xarray.tests.test_coding",
+          "qualified_name": "xarray.tests.test_coding",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/__init__.py:xarray"
+        },
+        {
+          "path": "xarray/tests/test_coding_strings.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/tests/test_coding_strings.py:xarray.tests.test_coding_strings",
+          "qualified_name": "xarray.tests.test_coding_strings",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/__init__.py:xarray"
+        },
+        {
+          "path": "xarray/tests/test_coding_times.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/tests/test_coding_times.py:xarray.tests.test_coding_times",
+          "qualified_name": "xarray.tests.test_coding_times",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/__init__.py:xarray"
+        },
+        {
+          "path": "xarray/tests/test_combine.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/tests/test_combine.py:xarray.tests.test_combine",
+          "qualified_name": "xarray.tests.test_combine",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/__init__.py:xarray"
+        },
+        {
+          "path": "xarray/tests/test_computation.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/tests/test_computation.py:xarray.tests.test_computation",
+          "qualified_name": "xarray.tests.test_computation",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/__init__.py:xarray"
+        },
+        {
+          "path": "xarray/tests/test_concat.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/tests/test_concat.py:xarray.tests.test_concat",
+          "qualified_name": "xarray.tests.test_concat",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/__init__.py:xarray"
+        },
+        {
+          "path": "xarray/tests/test_conventions.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/tests/test_conventions.py:xarray.tests.test_conventions",
+          "qualified_name": "xarray.tests.test_conventions",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/__init__.py:xarray"
+        },
+        {
+          "path": "xarray/tests/test_cupy.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/tests/test_cupy.py:xarray.tests.test_cupy",
+          "qualified_name": "xarray.tests.test_cupy",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/__init__.py:xarray"
+        },
+        {
+          "path": "xarray/tests/test_dask.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/tests/test_dask.py:xarray.tests.test_dask",
+          "qualified_name": "xarray.tests.test_dask",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/__init__.py:xarray"
+        },
+        {
+          "path": "xarray/tests/test_dataarray.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/tests/test_dataarray.py:xarray.tests.test_dataarray",
+          "qualified_name": "xarray.tests.test_dataarray",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/__init__.py:xarray"
+        },
+        {
+          "path": "xarray/tests/test_dataset.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/tests/test_dataset.py:xarray.tests.test_dataset",
+          "qualified_name": "xarray.tests.test_dataset",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/__init__.py:xarray"
+        },
+        {
+          "path": "xarray/tests/test_distributed.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/tests/test_distributed.py:xarray.tests.test_distributed",
+          "qualified_name": "xarray.tests.test_distributed",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/__init__.py:xarray"
+        },
+        {
+          "path": "xarray/tests/test_duck_array_ops.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/tests/test_duck_array_ops.py:xarray.tests.test_duck_array_ops",
+          "qualified_name": "xarray.tests.test_duck_array_ops",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/__init__.py:xarray"
+        },
+        {
+          "path": "xarray/tests/test_extensions.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/tests/test_extensions.py:xarray.tests.test_extensions",
+          "qualified_name": "xarray.tests.test_extensions",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/__init__.py:xarray"
+        },
+        {
+          "path": "xarray/tests/test_formatting.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/tests/test_formatting.py:xarray.tests.test_formatting",
+          "qualified_name": "xarray.tests.test_formatting",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/__init__.py:xarray"
+        },
+        {
+          "path": "xarray/tests/test_formatting_html.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/tests/test_formatting_html.py:xarray.tests.test_formatting_html",
+          "qualified_name": "xarray.tests.test_formatting_html",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/__init__.py:xarray"
+        },
+        {
+          "path": "xarray/tests/test_groupby.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/tests/test_groupby.py:xarray.tests.test_groupby",
+          "qualified_name": "xarray.tests.test_groupby",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/__init__.py:xarray"
+        },
+        {
+          "path": "xarray/tests/test_indexes.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/tests/test_indexes.py:xarray.tests.test_indexes",
+          "qualified_name": "xarray.tests.test_indexes",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/__init__.py:xarray"
+        },
+        {
+          "path": "xarray/tests/test_indexing.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/tests/test_indexing.py:xarray.tests.test_indexing",
+          "qualified_name": "xarray.tests.test_indexing",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/__init__.py:xarray"
+        },
+        {
+          "path": "xarray/tests/test_interp.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/tests/test_interp.py:xarray.tests.test_interp",
+          "qualified_name": "xarray.tests.test_interp",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/__init__.py:xarray"
+        },
+        {
+          "path": "xarray/tests/test_merge.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/tests/test_merge.py:xarray.tests.test_merge",
+          "qualified_name": "xarray.tests.test_merge",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/__init__.py:xarray"
+        },
+        {
+          "path": "xarray/tests/test_missing.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/tests/test_missing.py:xarray.tests.test_missing",
+          "qualified_name": "xarray.tests.test_missing",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/__init__.py:xarray"
+        },
+        {
+          "path": "xarray/tests/test_options.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/tests/test_options.py:xarray.tests.test_options",
+          "qualified_name": "xarray.tests.test_options",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/__init__.py:xarray"
+        },
+        {
+          "path": "xarray/tests/test_plot.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/tests/test_plot.py:xarray.tests.test_plot",
+          "qualified_name": "xarray.tests.test_plot",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/__init__.py:xarray"
+        },
+        {
+          "path": "xarray/tests/test_print_versions.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/tests/test_print_versions.py:xarray.tests.test_print_versions",
+          "qualified_name": "xarray.tests.test_print_versions",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/__init__.py:xarray"
+        },
+        {
+          "path": "xarray/tests/test_rolling.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/tests/test_rolling.py:xarray.tests.test_rolling",
+          "qualified_name": "xarray.tests.test_rolling",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/__init__.py:xarray"
+        },
+        {
+          "path": "xarray/tests/test_sparse.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/tests/test_sparse.py:xarray.tests.test_sparse",
+          "qualified_name": "xarray.tests.test_sparse",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/__init__.py:xarray"
+        },
+        {
+          "path": "xarray/tests/test_testing.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/tests/test_testing.py:xarray.tests.test_testing",
+          "qualified_name": "xarray.tests.test_testing",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/__init__.py:xarray"
+        },
+        {
+          "path": "xarray/tests/test_tutorial.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/tests/test_tutorial.py:xarray.tests.test_tutorial",
+          "qualified_name": "xarray.tests.test_tutorial",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/__init__.py:xarray"
+        },
+        {
+          "path": "xarray/tests/test_ufuncs.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/tests/test_ufuncs.py:xarray.tests.test_ufuncs",
+          "qualified_name": "xarray.tests.test_ufuncs",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/__init__.py:xarray"
+        },
+        {
+          "path": "xarray/tests/test_units.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/tests/test_units.py:xarray.tests.test_units",
+          "qualified_name": "xarray.tests.test_units",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/__init__.py:xarray"
+        },
+        {
+          "path": "xarray/tests/test_variable.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/tests/test_variable.py:xarray.tests.test_variable",
+          "qualified_name": "xarray.tests.test_variable",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/__init__.py:xarray"
+        },
+        {
+          "path": "xarray/tests/test_weighted.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/tests/test_weighted.py:xarray.tests.test_weighted",
+          "qualified_name": "xarray.tests.test_weighted",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/__init__.py:xarray"
+        },
+        {
+          "path": "xarray/core/dataset.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/core/dataset.py:xarray.core.dataset",
+          "qualified_name": "xarray.core.dataset",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/backends/api.py:xarray.backends.api"
+        },
+        {
+          "path": "xarray/backends/cfgrib_.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/backends/cfgrib_.py:xarray.backends.cfgrib_",
+          "qualified_name": "xarray.backends.cfgrib_",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/backends/store.py:xarray.backends.store"
+        },
+        {
+          "path": "xarray/backends/h5netcdf_.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/backends/h5netcdf_.py:xarray.backends.h5netcdf_",
+          "qualified_name": "xarray.backends.h5netcdf_",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/backends/store.py:xarray.backends.store"
+        },
+        {
+          "path": "xarray/backends/pseudonetcdf_.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/backends/pseudonetcdf_.py:xarray.backends.pseudonetcdf_",
+          "qualified_name": "xarray.backends.pseudonetcdf_",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/backends/store.py:xarray.backends.store"
+        },
+        {
+          "path": "xarray/backends/pydap_.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/backends/pydap_.py:xarray.backends.pydap_",
+          "qualified_name": "xarray.backends.pydap_",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/backends/store.py:xarray.backends.store"
+        },
+        {
+          "path": "xarray/backends/pynio_.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/backends/pynio_.py:xarray.backends.pynio_",
+          "qualified_name": "xarray.backends.pynio_",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/backends/store.py:xarray.backends.store"
+        },
+        {
+          "path": "xarray/backends/scipy_.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/backends/scipy_.py:xarray.backends.scipy_",
+          "qualified_name": "xarray.backends.scipy_",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/backends/store.py:xarray.backends.store"
+        },
+        {
+          "path": "xarray/core/concat.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/core/concat.py:xarray.core.concat",
+          "qualified_name": "xarray.core.concat",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/core/alignment.py:xarray.core.alignment"
+        },
+        {
+          "path": "xarray/plot/dataset_plot.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/plot/dataset_plot.py:xarray.plot.dataset_plot",
+          "qualified_name": "xarray.plot.dataset_plot",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/core/alignment.py:xarray.core.alignment"
+        },
+        {
+          "path": "xarray/plot/plot.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/plot/plot.py:xarray.plot.plot",
+          "qualified_name": "xarray.plot.plot",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/core/alignment.py:xarray.core.alignment"
+        },
+        {
+          "path": "xarray/coding/calendar_ops.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/coding/calendar_ops.py:xarray.coding.calendar_ops",
+          "qualified_name": "xarray.coding.calendar_ops",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/core/common.py:xarray.core.common"
+        },
+        {
+          "path": "xarray/coding/cftime_offsets.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/coding/cftime_offsets.py:xarray.coding.cftime_offsets",
+          "qualified_name": "xarray.coding.cftime_offsets",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/core/common.py:xarray.core.common"
+        },
+        {
+          "path": "xarray/coding/cftimeindex.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/coding/cftimeindex.py:xarray.coding.cftimeindex",
+          "qualified_name": "xarray.coding.cftimeindex",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/core/common.py:xarray.core.common"
+        },
+        {
+          "path": "xarray/coding/frequencies.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/coding/frequencies.py:xarray.coding.frequencies",
+          "qualified_name": "xarray.coding.frequencies",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/core/common.py:xarray.core.common"
+        },
+        {
+          "path": "xarray/coding/times.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/coding/times.py:xarray.coding.times",
+          "qualified_name": "xarray.coding.times",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/core/common.py:xarray.core.common"
+        },
+        {
+          "path": "xarray/conventions.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/conventions.py:xarray.conventions",
+          "qualified_name": "xarray.conventions",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/core/common.py:xarray.core.common"
+        },
+        {
+          "path": "xarray/core/arithmetic.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/core/arithmetic.py:xarray.core.arithmetic",
+          "qualified_name": "xarray.core.arithmetic",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/core/common.py:xarray.core.common"
+        },
+        {
+          "path": "xarray/core/accessor_str.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/core/accessor_str.py:xarray.core.accessor_str",
+          "qualified_name": "xarray.core.accessor_str",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/core/computation.py:xarray.core.computation"
+        },
+        {
+          "path": "xarray/backends/rasterio_.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/backends/rasterio_.py:xarray.backends.rasterio_",
+          "qualified_name": "xarray.backends.rasterio_",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/core/dataarray.py:xarray.core.dataarray"
+        },
+        {
+          "path": "xarray/convert.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/convert.py:xarray.convert",
+          "qualified_name": "xarray.convert",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/core/dataarray.py:xarray.core.dataarray"
+        },
+        {
+          "path": "xarray/plot/utils.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/plot/utils.py:xarray.plot.utils",
+          "qualified_name": "xarray.plot.utils",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/core/dataarray.py:xarray.core.dataarray"
+        },
+        {
+          "path": "xarray/core/indexes.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/core/indexes.py:xarray.core.indexes",
+          "qualified_name": "xarray.core.indexes",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/core/types.py:xarray.core.types"
+        },
+        {
+          "path": "xarray/core/indexing.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/core/indexing.py:xarray.core.indexing",
+          "qualified_name": "xarray.core.indexing",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/core/types.py:xarray.core.types"
+        },
+        {
+          "path": "xarray/core/rolling_exp.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/core/rolling_exp.py:xarray.core.rolling_exp",
+          "qualified_name": "xarray.core.rolling_exp",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/core/types.py:xarray.core.types"
+        },
+        {
+          "path": "xarray/core/utils.py",
+          "node_id": "vgar:pydata/xarray:python:module:xarray/core/utils.py:xarray.core.utils",
+          "qualified_name": "xarray.core.utils",
+          "kind": "Module",
+          "hops": 2,
+          "relation": "IMPORTS",
+          "via": "vgar:pydata/xarray:python:module:xarray/core/types.py:xarray.core.types"
+        },
+        {
+          "path": null,
+          "node_id": "vgar:pydata/xarray:python:component:asv_bench/benchmarks",
+          "qualified_name": "asv_bench.benchmarks",
+          "kind": "Component",
+          "hops": 2,
+          "relation": "LIFT",
+          "via": "vgar:pydata/xarray:python:module:asv_bench/benchmarks/combine.py:asv_bench.benchmarks.combine"
+        }
+      ],
+      "max_hops": 2,
+      "max_nodes": 200,
+      "min_confidence": 0.6,
+      "traversed": [
+        "CALLS",
+        "IMPORTS",
+        "INHERITS",
+        "TESTS",
+        "LIFT",
+        "EXPOSES_PORT",
+        "CONSUMES_PORT",
+        "DEPENDS_ON"
+      ],
+      "unsupported": [
+        {
+          "relation": "REFERENCES",
+          "reason": "NOT_TRAVERSED",
+          "count": null
+        },
+        {
+          "relation": "CALLS",
+          "reason": "UNRESOLVED_CALL_SITES",
+          "count": 28015
+        }
+      ],
+      "extensions": null
+    },
+    "risk": {
+      "status": "COMPLETE",
+      "features": [
+        {
+          "name": "public_symbol_changed",
+          "available": true,
+          "value": true
+        },
+        {
+          "name": "fan_in",
+          "available": true,
+          "value": 0
+        },
+        {
+          "name": "impacted_callers",
+          "available": true,
+          "value": 0
+        },
+        {
+          "name": "impacted_tests",
+          "available": true,
+          "value": 0
+        },
+        {
+          "name": "public_ports_changed",
+          "available": true,
+          "value": 1
+        },
+        {
+          "name": "components_affected",
+          "available": true,
+          "value": 6
+        },
+        {
+          "name": "dependency_cycle_introduced",
+          "available": false,
+          "value": null,
+          "reason": "NOT_COMPUTED"
+        },
+        {
+          "name": "covering_tests_pass",
+          "available": false,
+          "value": null,
+          "reason": "NOT_COMPUTED"
+        },
+        {
+          "name": "signature_changed",
+          "available": false,
+          "value": null,
+          "reason": "NOT_COMPUTED"
+        },
+        {
+          "name": "ports_lost",
+          "available": true,
+          "value": 0
+        }
+      ]
+    },
+    "limits": {
+      "scope": "baseline-symbol-mapping",
+      "status": "COMPLETE",
+      "truncated": false,
+      "reasons": [],
+      "max_diff_bytes": 262144,
+      "max_files": 5,
+      "max_changed_lines": 500,
+      "unsupported_operations": [
+        "add_file",
+        "delete_file",
+        "rename_file"
+      ]
+    },
+    "port_check": {
+      "status": "COMPLETE",
+      "checked_paths": [
+        "xarray/core/dataset.py"
+      ],
+      "lost": [],
+      "removed_api": [],
+      "unchecked": []
+    },
+    "view_hash": "sha256:a994d22ab32c5926c40ae84243e2c775a9a3b9ecb620830a418e39ddeee10f88"
+  },
+  "error": null,
+  "metadata": {
+    "duration_ms": 36190,
+    "request_id": "bd6ef64753ee491c904b2ad67f7a1fd7",
+    "backend": "bound-sqlite",
+    "tool": "analyze_patch_impact",
+    "untrusted": true,
+    "run_id": "agent-pydata__xarray-6992-A5-20261119",
+    "task_id": "pydata__xarray-6992",
+    "snapshot_hash": "sha256:1bf0ccc7d35740cf7e15bb033cd8de351c235634bf224f7973dfcf99c39849ba"
+  }
+}

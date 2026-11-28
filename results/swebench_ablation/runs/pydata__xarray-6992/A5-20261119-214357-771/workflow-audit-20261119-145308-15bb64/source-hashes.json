@@ -1,0 +1,7 @@
+{
+  "/mnt/d/Project/CAPSTONES/agent-workspaces/full-a5-20261119/pydata__xarray-6992/results/A5-20261119-214357-771/candidate.diff": "sha256:115b7d93853506cfe1bf6b13ab24f3703e103136cafe1b89d28fab56fd7047c4",
+  "/mnt/d/Project/CAPSTONES/agent-workspaces/full-a5-20261119/pydata__xarray-6992/results/A5-20261119-214357-771/session.json": "sha256:f22220e8c4a0ede55155777aad81859e46e1bab5a9561571638c10ef3c5c156a",
+  "/mnt/d/Project/CAPSTONES/agent-workspaces/full-a5-20261119/pydata__xarray-6992/results/A5-20261119-214357-771/run-metadata.json": "sha256:4a321d287a372bee308f509199ce6bcf482dd855137a2b5c2dde24f8582f2a28",
+  "/home/vgar/swebench-ablation/a5/task-profiles-20261119/agent-runs/pydata__xarray-6992__A5/binding.json": "sha256:7a92e9fe1894878567cc96db968b7276cc56f9e0ae977e6f017be39d2f78dff9",
+  "/home/vgar/swebench-ablation/a5/task-profiles-20261119/agent-runs/pydata__xarray-6992__A5/evidence/audit.jsonl": "sha256:cc46d49a105203ad1353db74db9e290643bf226e91d043382653c6b761c8f5fb"
+}

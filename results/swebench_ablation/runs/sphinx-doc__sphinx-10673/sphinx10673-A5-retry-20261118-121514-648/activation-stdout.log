@@ -1,0 +1,2 @@
+﻿{"arm": "A5", "model": {"providerID": "9router", "model": "oc/deepseek-v4.1-flash-free"}, "connected": ["vgar-execution", "vgar-graph"], "workspace": "D:\\Project\\CAPSTONES\\agent-workspaces\\sphinx-10673-20261117\\arms\\A5\\repo", "model_calls": 0}
+Open a NEW session from this workspace; do not use --continue or an earlier session ID.

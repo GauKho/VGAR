@@ -57,3 +57,8 @@ node_modules/
 # Saved local diff.
 /tore -- README.md pyproject.toml
 .workspaces/
+
+# Keep the saved SWE-bench ablation outputs in this handoff branch.
+!/results/
+/results/*
+!/results/swebench_ablation/

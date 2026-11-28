@@ -1,0 +1,86 @@
+{
+  "model": {
+    "providerID": "9router",
+    "model": "oc/deepseek-v4.1-flash-free"
+  },
+  "agents": {
+    "explorer": {
+      "model": {
+        "providerID": "9router",
+        "model": "oc/deepseek-v4.1-flash-free"
+      }
+    }
+  },
+  "mcp": {
+    "timeout": {
+      "startup": 120000,
+      "catalog": 120000,
+      "execution": 150000
+    },
+    "servers": {
+      "vgar-graph": {
+        "type": "local",
+        "command": [
+          "C:/Windows/System32/wsl.exe",
+          "-d",
+          "VGAR-Harness-W9",
+          "--",
+          "env",
+          "PYTHONPATH=/home/vgar/swebench-ablation/a5/20261118-sphinx/runtime-02/src",
+          "PYTHONDONTWRITEBYTECODE=1",
+          "/home/vgar/swebench-ablation/bindings/20261117-completion/venv/bin/python",
+          "-B",
+          "-m",
+          "vgar.evaluation.swebench_ablation.binding_server",
+          "--binding",
+          "/home/vgar/swebench-ablation/manual-sessions/sphinx10673-A5-20261119-recovery01/binding.json",
+          "--expected-hash",
+          "sha256:db6bf867d3604bb3bb863dbbdecfe312b79709fb863c0d0dfb9250e022aba45d",
+          "--server",
+          "graph"
+        ],
+        "cwd": "D:\\Project\\CAPSTONES\\agent-workspaces\\sphinx-a5-20261119\\repo",
+        "codemode": false,
+        "timeout": {
+          "startup": 120000,
+          "catalog": 120000,
+          "execution": 150000
+        }
+      },
+      "vgar-repository": {
+        "disabled": true
+      },
+      "vgar-execution": {
+        "type": "local",
+        "command": [
+          "C:/Windows/System32/wsl.exe",
+          "-d",
+          "VGAR-Harness-W9",
+          "--",
+          "env",
+          "PYTHONPATH=/home/vgar/swebench-ablation/a5/20261118-sphinx/runtime-02/src",
+          "PYTHONDONTWRITEBYTECODE=1",
+          "/home/vgar/swebench-ablation/bindings/20261117-completion/venv/bin/python",
+          "-B",
+          "-m",
+          "vgar.evaluation.swebench_ablation.binding_server",
+          "--binding",
+          "/home/vgar/swebench-ablation/manual-sessions/sphinx10673-A5-20261119-recovery01/binding.json",
+          "--expected-hash",
+          "sha256:db6bf867d3604bb3bb863dbbdecfe312b79709fb863c0d0dfb9250e022aba45d",
+          "--server",
+          "execution"
+        ],
+        "cwd": "D:\\Project\\CAPSTONES\\agent-workspaces\\sphinx-a5-20261119\\repo",
+        "codemode": false,
+        "timeout": {
+          "startup": 120000,
+          "catalog": 120000,
+          "execution": 150000
+        }
+      }
+    }
+  },
+  "$schema": "https://opencode.ai/config.json",
+  "websearch": false
+}

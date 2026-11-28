@@ -1,0 +1,23 @@
+{
+    "run_id":  "sphinx10673-A5-retry-20261118-121514-648",
+    "task_id":  "sphinx-doc__sphinx-10673",
+    "arm":  "A5",
+    "attempt_type":  "DIAGNOSTIC_RETRY",
+    "previous_run":  "D:\\Project\\CAPSTONES\\agent-workspaces\\sphinx-10673-20261117\\runs\\sphinx10673-A5-20261118-120101-135",
+    "model":  "9router/oc/deepseek-v4.1-flash-free",
+    "workspace":  "D:\\Project\\CAPSTONES\\agent-workspaces\\sphinx-10673-20261117\\arms\\A5\\repo",
+    "protocol_changes":  [
+                             "Web Search disabled",
+                             "Explicit verbatim issue requirement",
+                             "Explicit final verification/ranking requirement",
+                             "Private standalone host"
+                         ],
+    "binding":  "/home/vgar/swebench-ablation/a5/20261118-sphinx/binding-agent.json",
+    "binding_hash":  "sha256:e184f31f27e1c9699ccf65c0ab9e3a3e7a8d3515d0e5e50958ef9e30c857eb45",
+    "started_utc":  "2026-11-18T05:15:15.5935634Z",
+    "ended_utc":  "2026-11-18T05:15:20.6262668Z",
+    "wall_ms":  5031,
+    "host_exit":  1,
+    "launch_error":  null,
+    "official_grade":  "NOT_RUN"
+}

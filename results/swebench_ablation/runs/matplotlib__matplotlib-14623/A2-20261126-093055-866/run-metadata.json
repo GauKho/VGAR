@@ -1,0 +1,13 @@
+{
+    "task_id":  "matplotlib__matplotlib-14623",
+    "arm":  "A2",
+    "session_id":  "ses_dea59b9fdffeXGuwC09zh6aK2q",
+    "model":  "9router/oc/deepseek-v4.1-flash-free",
+    "workspace":  "D:\\Project\\CAPSTONES\\agent-workspaces\\matplotlib-14623-runtime05-20261125\\matplotlib__matplotlib-14623\\arms\\A2\\repo",
+    "runtime":  "/home/vgar/swebench-ablation/execution/20261120-compact-evidence/runtime-05",
+    "saved_utc":  "2026-11-26T02:30:56.8646953Z",
+    "candidate_sha256":  "sha256:f1f391e475ff5c9a1c6538d487d98f77e5f20d91b8fc03d1a31fc374a6c76ca4",
+    "candidate_bytes":  525,
+    "official_resolved":  null,
+    "grading_status":  "NOT_RUN"
+}

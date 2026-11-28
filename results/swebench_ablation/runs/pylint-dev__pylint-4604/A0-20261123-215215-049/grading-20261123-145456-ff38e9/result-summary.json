@@ -1,0 +1,20 @@
+{
+  "task_id": "pylint-dev__pylint-4604",
+  "arm": "A0",
+  "session_id": "ses_df724622fffesCh3UYl8ZP1wiR",
+  "model": "9router/oc/deepseek-v4.1-flash-free",
+  "grading_run_id": "pylint4604-a0-20261123-145456-ff38e9",
+  "candidate_sha256": "sha256:cb5eed9d3f49381b4362756cd22ec6827a186b2925fca8938e27cced75ea5c1b",
+  "harness_exit": 0,
+  "official_resolved": false,
+  "patch_applied": true,
+  "fail_to_pass_passed": 0,
+  "fail_to_pass_failed": 21,
+  "pass_to_pass_passed": 0,
+  "pass_to_pass_failed": 0,
+  "grading_wall_ms": 25026,
+  "official_report_wsl": "/home/vgar/swebench-ablation/manual-grading/pylint4604-a0-20261123-145456-ff38e9/logs/run_evaluation/pylint4604-a0-20261123-145456-ff38e9/opencode-9router-A0/pylint-dev__pylint-4604/report.json",
+  "model_calls_during_grading": 0,
+  "mcp_workflow_coverage": "NOT_APPLICABLE_A0_MCP_DISABLED",
+  "saved_session_vgar_mcp_calls": 0
+}

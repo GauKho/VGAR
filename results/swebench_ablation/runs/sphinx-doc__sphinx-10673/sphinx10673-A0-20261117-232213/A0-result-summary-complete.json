@@ -1,0 +1,14 @@
+{
+    "task_id":  "sphinx-doc__sphinx-10673",
+    "arm":  "A0",
+    "session_id":  "ses_e15ade18fffebDJt9vhHIQPokx",
+    "host_status":  "ERROR",
+    "host_error":  "Cancelled input request: Web Search",
+    "official_resolved":  true,
+    "patch_applied":  true,
+    "fail_to_pass_passed":  1,
+    "fail_to_pass_failed":  0,
+    "pass_to_pass_passed":  9,
+    "pass_to_pass_failed":  0,
+    "official_report_wsl":  "/home/vgar/swebench-ablation/environments/20261117T045325Z-sphinx/private/agent-sphinx10673-a0-20261117-235010/logs/run_evaluation/sphinx10673-a0-20261117-235010/opencode-9router-A0/sphinx-doc__sphinx-10673/report.json"
+}

@@ -1,0 +1,13 @@
+{
+    "task_id":  "pydata__xarray-3993",
+    "arm":  "A3",
+    "session_id":  "ses_e0325c7a8ffeDSIL64OJ0reE5B",
+    "model":  "9router/oc/deepseek-v4.1-flash-free",
+    "workspace":  "D:\\Project\\CAPSTONES\\agent-workspaces\\xarray-3993-runtime05-20261120\\pydata__xarray-3993\\arms\\A3\\repo",
+    "runtime":  "/home/vgar/swebench-ablation/execution/20261120-compact-evidence/runtime-05",
+    "saved_utc":  "2026-11-22T06:54:27.9121930Z",
+    "candidate_sha256":  "sha256:71dccdd01d13f77b0028ca97e3862172a5a63fddb3651a44ae6bb77316289d81",
+    "candidate_bytes":  2438,
+    "official_resolved":  null,
+    "grading_status":  "NOT_RUN"
+}

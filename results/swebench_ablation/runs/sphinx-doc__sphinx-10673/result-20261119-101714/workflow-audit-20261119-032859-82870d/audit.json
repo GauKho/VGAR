@@ -1,0 +1,565 @@
+{
+  "status": "AUDIT_COMPLETE_WORKFLOW_PARTIAL",
+  "task_id": "sphinx-doc__sphinx-10673",
+  "arm": "A5",
+  "session_id": "ses_e0e553f18ffefL00HA9HRdMW8C",
+  "model": {
+    "id": "oc/deepseek-v4.1-flash-free",
+    "providerID": "9router",
+    "variant": "default"
+  },
+  "host_outcome": "succeeded",
+  "candidate_sha256": "sha256:81ee3defd13f206839e946beedcb3faefd0683f00bad640b4848688cf69b9040",
+  "official_resolved": true,
+  "grading": {
+    "task_id": "sphinx-doc__sphinx-10673",
+    "arm": "A5",
+    "session_id": "ses_e0e553f18ffefL00HA9HRdMW8C",
+    "model": "9router/oc/deepseek-v4.1-flash-free",
+    "grading_run_id": "sphinx10673-a5-20261119-032244-a0e951",
+    "candidate_sha256": "sha256:81ee3defd13f206839e946beedcb3faefd0683f00bad640b4848688cf69b9040",
+    "harness_exit": 0,
+    "official_resolved": true,
+    "patch_applied": true,
+    "fail_to_pass_passed": 1,
+    "fail_to_pass_failed": 0,
+    "pass_to_pass_passed": 9,
+    "pass_to_pass_failed": 0,
+    "grading_wall_ms": 29102,
+    "official_report_wsl": "/home/vgar/swebench-ablation/environments/20261117T045325Z-sphinx/private/agent-sphinx10673-a5-20261119-032244-a0e951/logs/run_evaluation/sphinx10673-a5-20261119-032244-a0e951/opencode-9router-A5/sphinx-doc__sphinx-10673/report.json",
+    "model_calls_during_grading": 0,
+    "mcp_workflow_coverage": "REQUIRES_SEPARATE_SESSION_AND_AUDIT_CHECK",
+    "comparison_scope": "Exploratory A5 rerun; web-search policy differs from historical A0-A4"
+  },
+  "metrics": {
+    "input_tokens": 531493,
+    "output_tokens": 42221,
+    "reasoning_tokens": 50824,
+    "cache_read_tokens": 10301824,
+    "cache_write_tokens": 0,
+    "tool_calls": 156,
+    "direct_mcp_tool_attempts": 26,
+    "server_audited_calls": 21,
+    "model_steps_completed": 135,
+    "compactions": 1,
+    "session_busy_to_idle_ms": 2090588,
+    "wall_time_definition": "Host session busy->idle; includes tool waits/possible human interaction, not CLI stopwatch",
+    "host_reported_cost": 0,
+    "actual_billing_cost": "NOT_INDEPENDENTLY_VERIFIED",
+    "http_requests": "NOT_EXPOSED; model steps are not HTTP request count"
+  },
+  "direct_tool_counts": {
+    "vgar-graph_search_symbols": 2,
+    "vgar-graph_find_task_anchors": 4,
+    "vgar-graph_build_or_update_graph": 1,
+    "vgar-graph_get_related_context": 2,
+    "vgar-graph_analyze_patch_impact": 8,
+    "vgar-execution_run_relevant_tests": 3,
+    "vgar-graph_verify_patch_graph_constraints": 3,
+    "vgar-graph_rank_patch_candidates": 3
+  },
+  "server_tool_status_counts": {
+    "search_symbols:PASS": 2,
+    "build_or_update_graph:PASS": 1,
+    "get_related_context:PASS": 1,
+    "analyze_patch_impact:ERROR": 4,
+    "analyze_patch_impact:PASS": 4,
+    "run_relevant_tests:PASS": 3,
+    "verify_patch_graph_constraints:ERROR": 3,
+    "rank_patch_candidates:ERROR": 2,
+    "rank_patch_candidates:PASS": 1
+  },
+  "anchor_checks": [
+    {
+      "call_id": "call_654049edce9041e4ac65329f",
+      "issue_exact": false,
+      "supplied_characters": 1288,
+      "expected_characters": 1333,
+      "task_matches": true,
+      "graph_matches": true
+    },
+    {
+      "call_id": "call_27d5b64b638042a8a278b7e0",
+      "issue_exact": false,
+      "supplied_characters": 83,
+      "expected_characters": 1333,
+      "task_matches": true,
+      "graph_matches": true
+    },
+    {
+      "call_id": "call_5b175e3cfc32412b8952012a",
+      "issue_exact": false,
+      "supplied_characters": 1288,
+      "expected_characters": 1333,
+      "task_matches": true,
+      "graph_matches": true
+    },
+    {
+      "call_id": "call_5fbfe6480deb450584135040",
+      "issue_exact": false,
+      "supplied_characters": 83,
+      "expected_characters": 1333,
+      "task_matches": true,
+      "graph_matches": true
+    }
+  ],
+  "mcp_calls": [
+    {
+      "tool": "vgar-graph_search_symbols",
+      "call_id": "call_2e5503c52b7f4258b2c37f9d",
+      "host_status": "completed",
+      "envelope_status": "PASS",
+      "diff_hash": null,
+      "matches_final_diff": null,
+      "request_id": "d20be2b69c2c4709a81d9a24ff72e881",
+      "error": null,
+      "content_json_parseable": true,
+      "server_request_matched": true
+    },
+    {
+      "tool": "vgar-graph_search_symbols",
+      "call_id": "call_b7a3204e906c4ed0ab78ca21",
+      "host_status": "completed",
+      "envelope_status": "PASS",
+      "diff_hash": null,
+      "matches_final_diff": null,
+      "request_id": "c8911038efc440a6be612990f01a025e",
+      "error": null,
+      "content_json_parseable": true,
+      "server_request_matched": true
+    },
+    {
+      "tool": "vgar-graph_find_task_anchors",
+      "call_id": "call_654049edce9041e4ac65329f",
+      "host_status": "error",
+      "envelope_status": "HOST_ERROR",
+      "diff_hash": null,
+      "matches_final_diff": null,
+      "request_id": null,
+      "error": {
+        "type": "tool.execution",
+        "message": "Error executing tool find_task_anchors"
+      },
+      "content_json_parseable": false,
+      "server_request_matched": null
+    },
+    {
+      "tool": "vgar-graph_find_task_anchors",
+      "call_id": "call_27d5b64b638042a8a278b7e0",
+      "host_status": "error",
+      "envelope_status": "HOST_ERROR",
+      "diff_hash": null,
+      "matches_final_diff": null,
+      "request_id": null,
+      "error": {
+        "type": "tool.execution",
+        "message": "Error executing tool find_task_anchors"
+      },
+      "content_json_parseable": false,
+      "server_request_matched": null
+    },
+    {
+      "tool": "vgar-graph_build_or_update_graph",
+      "call_id": "call_1f1f3cc4f40e4d1ea38fbe50",
+      "host_status": "completed",
+      "envelope_status": "PASS",
+      "diff_hash": null,
+      "matches_final_diff": null,
+      "request_id": "910c414c1b2a488ea83edeab87655668",
+      "error": null,
+      "content_json_parseable": true,
+      "server_request_matched": true
+    },
+    {
+      "tool": "vgar-graph_find_task_anchors",
+      "call_id": "call_5b175e3cfc32412b8952012a",
+      "host_status": "error",
+      "envelope_status": "HOST_ERROR",
+      "diff_hash": null,
+      "matches_final_diff": null,
+      "request_id": null,
+      "error": {
+        "type": "tool.execution",
+        "message": "Error executing tool find_task_anchors"
+      },
+      "content_json_parseable": false,
+      "server_request_matched": null
+    },
+    {
+      "tool": "vgar-graph_get_related_context",
+      "call_id": "call_1d4f82db47bf43399586a2d8",
+      "host_status": "error",
+      "envelope_status": "HOST_ERROR",
+      "diff_hash": null,
+      "matches_final_diff": null,
+      "request_id": null,
+      "error": {
+        "type": "tool.execution",
+        "message": "Error executing tool get_related_context"
+      },
+      "content_json_parseable": false,
+      "server_request_matched": null
+    },
+    {
+      "tool": "vgar-graph_find_task_anchors",
+      "call_id": "call_5fbfe6480deb450584135040",
+      "host_status": "error",
+      "envelope_status": "HOST_ERROR",
+      "diff_hash": null,
+      "matches_final_diff": null,
+      "request_id": null,
+      "error": {
+        "type": "tool.execution",
+        "message": "Error executing tool find_task_anchors"
+      },
+      "content_json_parseable": false,
+      "server_request_matched": null
+    },
+    {
+      "tool": "vgar-graph_get_related_context",
+      "call_id": "call_010e02edd3d144feaa722853",
+      "host_status": "completed",
+      "envelope_status": "UNPARSEABLE_CONTENT",
+      "diff_hash": null,
+      "matches_final_diff": null,
+      "request_id": null,
+      "error": null,
+      "content_json_parseable": false,
+      "server_request_matched": null
+    },
+    {
+      "tool": "vgar-graph_analyze_patch_impact",
+      "call_id": "call_c9d7f215cc60484390ba129b",
+      "host_status": "completed",
+      "envelope_status": "ERROR",
+      "diff_hash": "sha256:ae553a4939a3e364e7bff57a0d439bd626bcd708469c8454c1959baabd4df0d0",
+      "matches_final_diff": false,
+      "request_id": "6dafb83eb46042f99f8b2458ea3e66a6",
+      "error": {
+        "code": "INVALID_ARGUMENT",
+        "message": "Original hunk context/removal mismatch",
+        "details": {},
+        "retryable": false
+      },
+      "content_json_parseable": true,
+      "server_request_matched": true
+    },
+    {
+      "tool": "vgar-graph_analyze_patch_impact",
+      "call_id": "call_b167d819e4b940fd89d28f19",
+      "host_status": "completed",
+      "envelope_status": "PASS",
+      "diff_hash": "sha256:7885d6138ca6445bae766fd7cb87fa2a50f6f46023e1766269d9494c7802634d",
+      "matches_final_diff": false,
+      "request_id": "8c24a281401a4f2980fd22b33e94574d",
+      "error": null,
+      "content_json_parseable": true,
+      "server_request_matched": true
+    },
+    {
+      "tool": "vgar-graph_analyze_patch_impact",
+      "call_id": "call_7440d094bcc645c78d58e9a9",
+      "host_status": "completed",
+      "envelope_status": "ERROR",
+      "diff_hash": "sha256:ede21c958721dec9de7b5f8d8f155e1ea34e70c59642149522941fde2dc8e28f",
+      "matches_final_diff": false,
+      "request_id": "c2f5cf9ca07f43519ca9a1b69c057f9e",
+      "error": {
+        "code": "INVALID_ARGUMENT",
+        "message": "Original hunk context/removal mismatch",
+        "details": {},
+        "retryable": false
+      },
+      "content_json_parseable": true,
+      "server_request_matched": true
+    },
+    {
+      "tool": "vgar-graph_analyze_patch_impact",
+      "call_id": "call_d31473dda83e41ee9a6f1399",
+      "host_status": "completed",
+      "envelope_status": "ERROR",
+      "diff_hash": "sha256:1ef93543c170f636bbf1ccd017bcc1c4f159a3432d7c34acb2003f899a02152f",
+      "matches_final_diff": false,
+      "request_id": "6c19837f4d4940ab83b0df776cbd3850",
+      "error": {
+        "code": "INVALID_ARGUMENT",
+        "message": "Original hunk context/removal mismatch",
+        "details": {},
+        "retryable": false
+      },
+      "content_json_parseable": true,
+      "server_request_matched": true
+    },
+    {
+      "tool": "vgar-graph_analyze_patch_impact",
+      "call_id": "call_debdb835dcf14c528f728fc5",
+      "host_status": "completed",
+      "envelope_status": "ERROR",
+      "diff_hash": "sha256:7b08ae09ec7b13ceffb6b7705a23c67d3a53c183a81b75b01c0321b3f16627ab",
+      "matches_final_diff": false,
+      "request_id": "71a3b5d2fc30468a99c9f62ad01577b2",
+      "error": {
+        "code": "INVALID_ARGUMENT",
+        "message": "Hunk offset does not match exact original/output position",
+        "details": {},
+        "retryable": false
+      },
+      "content_json_parseable": true,
+      "server_request_matched": true
+    },
+    {
+      "tool": "vgar-graph_analyze_patch_impact",
+      "call_id": "call_328e091ee81e434eb6d1e1c7",
+      "host_status": "completed",
+      "envelope_status": "PASS",
+      "diff_hash": "sha256:01e2e7980b61871c316698f16da6e41e0b8a3824b835ca552edca9d16ace8998",
+      "matches_final_diff": false,
+      "request_id": "3f2ac83a906346ababdc88044c0d298a",
+      "error": null,
+      "content_json_parseable": true,
+      "server_request_matched": true
+    },
+    {
+      "tool": "vgar-execution_run_relevant_tests",
+      "call_id": "call_f2e9f0340192443591de8a15",
+      "host_status": "completed",
+      "envelope_status": "PASS",
+      "diff_hash": "sha256:01e2e7980b61871c316698f16da6e41e0b8a3824b835ca552edca9d16ace8998",
+      "matches_final_diff": false,
+      "request_id": "8a8e806c20d9461faa0718fb6b64e435",
+      "error": null,
+      "content_json_parseable": true,
+      "server_request_matched": true
+    },
+    {
+      "tool": "vgar-graph_analyze_patch_impact",
+      "call_id": "call_a0dbb1aa16d5428c8ea68469",
+      "host_status": "completed",
+      "envelope_status": "PASS",
+      "diff_hash": "sha256:9042963b90cbc292379ea6218a4e5dc01379c5f4847a518cb44e869d92ffc31a",
+      "matches_final_diff": false,
+      "request_id": "25216202fe49405cb6c00051bef65807",
+      "error": null,
+      "content_json_parseable": true,
+      "server_request_matched": true
+    },
+    {
+      "tool": "vgar-execution_run_relevant_tests",
+      "call_id": "call_ba344a7e766f449794058e7b",
+      "host_status": "completed",
+      "envelope_status": "PASS",
+      "diff_hash": "sha256:9042963b90cbc292379ea6218a4e5dc01379c5f4847a518cb44e869d92ffc31a",
+      "matches_final_diff": false,
+      "request_id": "044e2a96d6bf4e6bae1111742a99d4c1",
+      "error": null,
+      "content_json_parseable": true,
+      "server_request_matched": true
+    },
+    {
+      "tool": "vgar-execution_run_relevant_tests",
+      "call_id": "call_ad7a97911f704c689bd036c8",
+      "host_status": "completed",
+      "envelope_status": "PASS",
+      "diff_hash": "sha256:81ee3defd13f206839e946beedcb3faefd0683f00bad640b4848688cf69b9040",
+      "matches_final_diff": true,
+      "request_id": "16a71f75f3c8435eb080ba9019b26fa0",
+      "error": null,
+      "content_json_parseable": true,
+      "server_request_matched": true
+    },
+    {
+      "tool": "vgar-graph_analyze_patch_impact",
+      "call_id": "call_642eb517444a45128c444bbc",
+      "host_status": "completed",
+      "envelope_status": "PASS",
+      "diff_hash": "sha256:81ee3defd13f206839e946beedcb3faefd0683f00bad640b4848688cf69b9040",
+      "matches_final_diff": true,
+      "request_id": "d05efd4df70a41af998553e3254df547",
+      "error": null,
+      "content_json_parseable": true,
+      "server_request_matched": true
+    },
+    {
+      "tool": "vgar-graph_verify_patch_graph_constraints",
+      "call_id": "call_72d0ffb0cbc34152b093179f",
+      "host_status": "completed",
+      "envelope_status": "ERROR",
+      "diff_hash": "sha256:81ee3defd13f206839e946beedcb3faefd0683f00bad640b4848688cf69b9040",
+      "matches_final_diff": true,
+      "request_id": "6330a308823d4eb19880048082155a6e",
+      "error": {
+        "code": "INTERNAL_ERROR",
+        "message": "Unexpected server error: TimeoutError",
+        "details": {},
+        "retryable": false
+      },
+      "content_json_parseable": true,
+      "server_request_matched": true
+    },
+    {
+      "tool": "vgar-graph_verify_patch_graph_constraints",
+      "call_id": "call_a70ed01a6395495784becf0c",
+      "host_status": "completed",
+      "envelope_status": "ERROR",
+      "diff_hash": "sha256:81ee3defd13f206839e946beedcb3faefd0683f00bad640b4848688cf69b9040",
+      "matches_final_diff": true,
+      "request_id": "e1efc1902c70404aa5b215a1dbd879c8",
+      "error": {
+        "code": "INTERNAL_ERROR",
+        "message": "Unexpected server error: TimeoutError",
+        "details": {},
+        "retryable": false
+      },
+      "content_json_parseable": true,
+      "server_request_matched": true
+    },
+    {
+      "tool": "vgar-graph_rank_patch_candidates",
+      "call_id": "call_c645695b31034e03986e4baa",
+      "host_status": "completed",
+      "envelope_status": "ERROR",
+      "diff_hash": null,
+      "matches_final_diff": null,
+      "request_id": "fce27a82d3d04d218b13dd57d6d6d1ae",
+      "error": {
+        "code": "INVALID_ARGUMENT",
+        "message": "5 validation errors for RankRequest\ncandidates.0.name\n  Extra inputs are not permitted [type=extra_forbidden, input_value='final-special-docnames', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.14/v/extra_forbidden\ncandidates.0.patch_hash\n  Extra inputs are not permitted [type=extra_forbidden, input_value='sha256:81ee3defd13f20683...bad640b4848688cf69b9040', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.14/v/extra_forbidden\ncandidates.0.checks\n  Extra inputs are not permitted [type=extra_forbidden, input_value={'analyze_patch_impact': ...r error: TimeoutError'}}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.14/v/extra_forbidden\ncandidates.0.evidence\n  Extra inputs are not permitted [type=extra_forbidden, input_value=[{'tool': 'analyze_patch_...r error: TimeoutError'}], input_type=list]\n    For further information visit https://errors.pydantic.dev/2.14/v/extra_forbidden\ncandidates\n  Tuple should have at least 1 item after validation, not 0 [type=too_short, input_value=[{'candidate_id': 'final-...error: TimeoutError'}]}], input_type=list]\n    For further information visit https://errors.pydantic.dev/2.14/v/too_short",
+        "details": {},
+        "retryable": false
+      },
+      "content_json_parseable": true,
+      "server_request_matched": true
+    },
+    {
+      "tool": "vgar-graph_rank_patch_candidates",
+      "call_id": "call_261c9139cd604d2ebe2aaf28",
+      "host_status": "completed",
+      "envelope_status": "ERROR",
+      "diff_hash": null,
+      "matches_final_diff": null,
+      "request_id": "63dcd74720cb401eaeaade5f786a5c4a",
+      "error": {
+        "code": "INVALID_ARGUMENT",
+        "message": "2 validation errors for RankRequest\ncandidates.0.diff_hash\n  Field required [type=missing, input_value={'candidate_id': 'final-s...         continue\\n \\n'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.14/v/missing\ncandidates\n  Tuple should have at least 1 item after validation, not 0 [type=too_short, input_value=[{'candidate_id': 'final-...        continue\\n \\n'}], input_type=list]\n    For further information visit https://errors.pydantic.dev/2.14/v/too_short",
+        "details": {},
+        "retryable": false
+      },
+      "content_json_parseable": true,
+      "server_request_matched": true
+    },
+    {
+      "tool": "vgar-graph_rank_patch_candidates",
+      "call_id": "call_5e236b59dfd94565aff2ad9b",
+      "host_status": "completed",
+      "envelope_status": "PASS",
+      "diff_hash": null,
+      "matches_final_diff": null,
+      "request_id": "96455fb668fc43ee99f6cc36ec745642",
+      "error": null,
+      "content_json_parseable": true,
+      "server_request_matched": true
+    },
+    {
+      "tool": "vgar-graph_verify_patch_graph_constraints",
+      "call_id": "call_db1c90e47d32415489282fde",
+      "host_status": "completed",
+      "envelope_status": "ERROR",
+      "diff_hash": "sha256:81ee3defd13f206839e946beedcb3faefd0683f00bad640b4848688cf69b9040",
+      "matches_final_diff": true,
+      "request_id": "49e635e01c2348edacd8c004dcd8ceb8",
+      "error": {
+        "code": "INTERNAL_ERROR",
+        "message": "Unexpected server error: TimeoutError",
+        "details": {},
+        "retryable": false
+      },
+      "content_json_parseable": true,
+      "server_request_matched": true
+    }
+  ],
+  "audit_records_without_arm_field": [
+    "8a8e806c20d9461faa0718fb6b64e435",
+    "044e2a96d6bf4e6bae1111742a99d4c1",
+    "16a71f75f3c8435eb080ba9019b26fa0"
+  ],
+  "final_diff_evidence": {
+    "tests": "PASS",
+    "impact": "PASS",
+    "semantic": "PASS",
+    "contracts": {
+      "status": "PASS",
+      "outcomes": {
+        "regression_plain": "PASS",
+        "regression_unknown": "PASS",
+        "feature_special": "PASS",
+        "feature_explicit": "PASS",
+        "feature_nested": "PASS"
+      }
+    },
+    "invariants": {
+      "profile": "tv3-l5-invariants-v1",
+      "status": "PASS",
+      "reasons": [
+        "daikon not configured"
+      ],
+      "noise_patterns": [
+        "is a power of 2",
+        "\\*\\*2",
+        "is boolean",
+        "% \\S+ == 0",
+        "__len__\\b",
+        "has only one value"
+      ],
+      "engine": "python-fallback",
+      "learned": 408,
+      "filtered_noise": 1354,
+      "violations": [],
+      "violations_total": 0,
+      "new_points": [],
+      "unexercised_points": [],
+      "limitations": [
+        "LIKELY_INVARIANTS_NOT_PROOF"
+      ],
+      "python_version": "3.9.20",
+      "daikon_version": null
+    },
+    "graph_verification": "ERROR_TIMEOUT",
+    "verification_attempts": 3,
+    "ranking": [
+      {
+        "candidate_id": "final-special-docnames",
+        "diff_sha256": "sha256:81ee3defd13f206839e946beedcb3faefd0683f00bad640b4848688cf69b9040",
+        "eligible": false,
+        "score": 0.15,
+        "score_interval": [
+          0.15,
+          1.0
+        ],
+        "evidence_fields": {
+          "tests_passed": "PASS",
+          "previously_failing_tests_fixed": "NOT_RUN",
+          "schema_conformance_passed": "NOT_RUN",
+          "no_new_forbidden_dependency": "NOT_RUN",
+          "public_api_compatible": "NOT_RUN",
+          "impact_radius_acceptable": "NOT_RUN",
+          "static_typecheck_passed": "NOT_RUN",
+          "lint_passed": "NOT_RUN",
+          "semantic_invariant_preserved": "PASS"
+        }
+      }
+    ],
+    "hashes_verified": true
+  },
+  "limitations": [
+    "ANCHORS_FAILED_NONEXACT_ISSUE",
+    "CONTEXT_CLIENT_CONTENT_NOT_PARSEABLE",
+    "GRAPH_VERIFICATION_TIMEOUT",
+    "RANKING_INELIGIBLE",
+    "EXPLORATORY_POST_PILOT_CONTRACTS",
+    "WEB_SEARCH_POLICY_DIFFERS_FROM_OLD_A0_A4",
+    "LOCAL_LOGS_NOT_CRYPTOGRAPHICALLY_ATTESTED",
+    "NATIVE_AGENT_INSTALLED_EDITABLE_PROJECT_DEPS_IN_TEMP_VENV"
+  ],
+  "model_calls_during_audit": 0,
+  "tests_rerun_during_audit": 0
+}

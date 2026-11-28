@@ -1,0 +1,20 @@
+{
+  "task_id": "pydata__xarray-6992",
+  "arm": "A2",
+  "session_id": "ses_e08e453f1ffemhDKgv9Tbk77tt",
+  "model": "9router/oc/deepseek-v4.1-flash-free",
+  "grading_run_id": "xarray6992-a2-20261120-041043-dca881",
+  "candidate_sha256": "sha256:f37e981ae4fd9d7aa85be50f6d7f4bca7e6c82b6f3666a16f0448ba042802f8c",
+  "harness_exit": 0,
+  "official_resolved": false,
+  "patch_applied": true,
+  "fail_to_pass_passed": 1,
+  "fail_to_pass_failed": 11,
+  "pass_to_pass_passed": 945,
+  "pass_to_pass_failed": 0,
+  "grading_wall_ms": 57055,
+  "official_report_wsl": "/home/vgar/swebench-ablation/manual-grading/xarray6992-a2-20261120-041043-dca881/logs/run_evaluation/xarray6992-a2-20261120-041043-dca881/opencode-9router-A2/pydata__xarray-6992/report.json",
+  "model_calls_during_grading": 0,
+  "mcp_workflow_coverage": "REQUIRES_SEPARATE_SESSION_AND_AUDIT_CHECK",
+  "saved_session_vgar_mcp_calls": 6
+}

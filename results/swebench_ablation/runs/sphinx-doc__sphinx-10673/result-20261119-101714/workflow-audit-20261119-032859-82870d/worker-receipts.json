@@ -1,0 +1,68 @@
+[
+  {
+    "path": "job-0b67eeec3c364dc3bc64474500b74b4f.json",
+    "receipt": {
+      "job_id": "job-0b67eeec3c364dc3bc64474500b74b4f",
+      "operation": "verify_patch_graph_constraints",
+      "input_hash": "sha256:d69b57384edc97b93aedb5321cb87518fed353bc34bcb9fd60a74ab19ebe45b7",
+      "run_id": "sphinx10673-A5-20261119-recovery01",
+      "task_id": "sphinx-doc__sphinx-10673",
+      "status": "ERROR",
+      "complete": false,
+      "cancelled": false,
+      "timed_out": true,
+      "output_truncated": false,
+      "exit_code": -9,
+      "cleanup": "PASS",
+      "stdout": "",
+      "stderr": "",
+      "error_type": "ValueError",
+      "error": "Context expired",
+      "duration_ms": 116572
+    }
+  },
+  {
+    "path": "job-480d929c50df4c65a6013b630602db1e.json",
+    "receipt": {
+      "job_id": "job-480d929c50df4c65a6013b630602db1e",
+      "operation": "verify_patch_graph_constraints",
+      "input_hash": "sha256:0d2a8b3ef239776f9e38d0abdbdb69e83325ce1bc85f21e1e761073e97474665",
+      "run_id": "sphinx10673-A5-20261119-recovery01",
+      "task_id": "sphinx-doc__sphinx-10673",
+      "status": "ERROR",
+      "complete": false,
+      "cancelled": false,
+      "timed_out": true,
+      "output_truncated": false,
+      "exit_code": -9,
+      "cleanup": "PASS",
+      "stdout": "",
+      "stderr": "",
+      "error_type": "ValueError",
+      "error": "Context expired",
+      "duration_ms": 115429
+    }
+  },
+  {
+    "path": "job-ddfd30c7af3e484fae761374763e795e.json",
+    "receipt": {
+      "job_id": "job-ddfd30c7af3e484fae761374763e795e",
+      "operation": "verify_patch_graph_constraints",
+      "input_hash": "sha256:b5ce96ff341870e58d96f59975f08dd3823f288a3170de46c41fd2b5d0658106",
+      "run_id": "sphinx10673-A5-20261119-recovery01",
+      "task_id": "sphinx-doc__sphinx-10673",
+      "status": "ERROR",
+      "complete": false,
+      "cancelled": false,
+      "timed_out": true,
+      "output_truncated": false,
+      "exit_code": -9,
+      "cleanup": "PASS",
+      "stdout": "",
+      "stderr": "",
+      "error_type": "ValueError",
+      "error": "Context expired",
+      "duration_ms": 116543
+    }
+  }
+]

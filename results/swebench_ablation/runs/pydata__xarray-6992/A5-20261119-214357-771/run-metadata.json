@@ -1,0 +1,12 @@
+{
+    "task_id":  "pydata__xarray-6992",
+    "arm":  "A5",
+    "session_id":  "ses_e0bcc9046ffeJDlDGy3XuemfLn",
+    "model":  "9router/oc/deepseek-v4.1-flash-free",
+    "workspace":  "D:\\Project\\CAPSTONES\\agent-workspaces\\full-a5-20261119\\pydata__xarray-6992\\arms\\A5\\repo",
+    "saved_utc":  "2026-11-19T14:43:58.6238159Z",
+    "candidate_sha256":  "sha256:115b7d93853506cfe1bf6b13ab24f3703e103136cafe1b89d28fab56fd7047c4",
+    "candidate_bytes":  473,
+    "official_resolved":  null,
+    "grading_status":  "NOT_RUN"
+}

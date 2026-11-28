@@ -1,0 +1,16 @@
+{
+  "task_id": "matplotlib__matplotlib-14623",
+  "arm": "A5",
+  "workspace": "D:\\Project\\CAPSTONES\\agent-workspaces\\matplotlib-14623-runtime05-20261125\\matplotlib__matplotlib-14623\\arms\\A5\\repo",
+  "runtime": "/home/vgar/swebench-ablation/execution/20261127-verification-bootstrap/runtime-10",
+  "base_commit": "d65c9ca20ddf81ef91199e6d819f9d3506ef477c",
+  "binding": "/home/vgar/swebench-ablation/bindings/20261127-matplotlib-runtime10/agent-A5/binding.json",
+  "binding_hash": "sha256:0b7572ca4770cc7c5ccbf656ec352a1e0cc992b8b1a672e287276f8afd3b34b5",
+  "graph_version": "sha256:2da412d8f931339d8cae2125e9d6c4ac2be5d74c101f66f4530740146280ea83",
+  "source_root": "/home/vgar/swebench-ablation/task-preparation/20261118-seven-multifile/sources/matplotlib__matplotlib-14623",
+  "config_sha256": "0e3bec517593a00f8a7b3d2bc0f2b392f4c3f7c4bc0388f0eea648f0074ec512",
+  "status": "READY",
+  "reason": "Runtime10 real full-A5 controls passed; no-fix required-check failures retained; static companion verification scope disclosed",
+  "startup_ms": 240000,
+  "execution_ms": 150000
+}

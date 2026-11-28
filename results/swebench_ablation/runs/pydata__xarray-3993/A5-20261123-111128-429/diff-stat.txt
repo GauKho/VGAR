@@ -1,0 +1,3 @@
+﻿ doc/whats-new.rst        | 2 ++
+ xarray/core/dataarray.py | 8 ++++----
+ 2 files changed, 6 insertions(+), 4 deletions(-)

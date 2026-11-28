@@ -1,0 +1,505 @@
+{
+  "status": "AUDIT_COMPLETE_WORKFLOW_PARTIAL",
+  "task_id": "pydata__xarray-6992",
+  "arm": "A5",
+  "session_id": "ses_e0bcc9046ffeJDlDGy3XuemfLn",
+  "model": {
+    "id": "oc/deepseek-v4.1-flash-free",
+    "providerID": "9router",
+    "variant": "default"
+  },
+  "host_outcome": "succeeded",
+  "candidate_sha256": "sha256:115b7d93853506cfe1bf6b13ab24f3703e103136cafe1b89d28fab56fd7047c4",
+  "official_grading": {
+    "task_id": "pydata__xarray-6992",
+    "arm": "A5",
+    "session_id": "ses_e0bcc9046ffeJDlDGy3XuemfLn",
+    "model": "9router/oc/deepseek-v4.1-flash-free",
+    "grading_run_id": "xarray6992-a5-20261119-144855-89eb09",
+    "candidate_sha256": "sha256:115b7d93853506cfe1bf6b13ab24f3703e103136cafe1b89d28fab56fd7047c4",
+    "harness_exit": 0,
+    "official_resolved": false,
+    "patch_applied": true,
+    "fail_to_pass_passed": 0,
+    "fail_to_pass_failed": 12,
+    "pass_to_pass_passed": 945,
+    "pass_to_pass_failed": 0,
+    "grading_wall_ms": 66667,
+    "official_report_wsl": "/home/vgar/swebench-ablation/manual-grading/xarray6992-a5-20261119-144855-89eb09/logs/run_evaluation/xarray6992-a5-20261119-144855-89eb09/opencode-9router-A5/pydata__xarray-6992/report.json",
+    "model_calls_during_grading": 0,
+    "mcp_workflow_coverage": "REQUIRES_SEPARATE_SESSION_AND_AUDIT_CHECK"
+  },
+  "metrics": {
+    "input_tokens": 170817,
+    "output_tokens": 5958,
+    "reasoning_tokens": 10892,
+    "cache_read_tokens": 1848832,
+    "cache_write_tokens": 0,
+    "tool_calls": 41,
+    "direct_mcp_tool_attempts": 17,
+    "server_audited_calls": 17,
+    "model_steps_completed": 26,
+    "session_busy_to_idle_ms": 976995,
+    "wall_ms": null,
+    "wall_time_definition": "UI host busy-to-idle; not an independently measured CLI stopwatch",
+    "host_reported_cost": 0,
+    "actual_billing_cost": "NOT_INDEPENDENTLY_VERIFIED",
+    "http_requests": "NOT_EXPOSED"
+  },
+  "reasons": [
+    "MISSING_FINAL_vgar-graph_analyze_patch_impact",
+    "MISSING_FINAL_vgar-graph_verify_patch_graph_constraints",
+    "MISSING_SUCCESSFUL_vgar-graph_find_task_anchors",
+    "MISSING_SUCCESSFUL_vgar-graph_get_related_context",
+    "ONLY_AFTER_EDIT_vgar-graph_search_symbols"
+  ],
+  "anchor_checks": [
+    {
+      "host_bound_empty_selector": true,
+      "exact_public_issue": false,
+      "task_matches": true,
+      "graph_matches": true,
+      "envelope_status": "UNPARSEABLE_CONTENT",
+      "anchors": 0
+    }
+  ],
+  "calls": [
+    {
+      "tool": "vgar-graph_build_or_update_graph",
+      "index": 1,
+      "call_id": "call_01_v9blkfl7edwj9ck650zhidv0",
+      "host_status": "completed",
+      "envelope_status": "PASS",
+      "data_status": null,
+      "diff_hash": null,
+      "candidate_hashes": [],
+      "matches_final_diff": false,
+      "before_first_edit": true,
+      "request_id": "17c432c5bdd248b082aa9610def6c0c8",
+      "server_request_matched": true,
+      "error": null
+    },
+    {
+      "tool": "vgar-graph_find_task_anchors",
+      "index": 2,
+      "call_id": "call_00_2y2hh2ofqeqrnptxtzf77rz9",
+      "host_status": "completed",
+      "envelope_status": "UNPARSEABLE_CONTENT",
+      "data_status": null,
+      "diff_hash": null,
+      "candidate_hashes": [],
+      "matches_final_diff": false,
+      "before_first_edit": true,
+      "request_id": null,
+      "server_request_matched": null,
+      "error": null
+    },
+    {
+      "tool": "vgar-graph_get_related_context",
+      "index": 4,
+      "call_id": "call_00_v0m48szl19e2defcf7smf5rd",
+      "host_status": "completed",
+      "envelope_status": "UNPARSEABLE_CONTENT",
+      "data_status": null,
+      "diff_hash": null,
+      "candidate_hashes": [],
+      "matches_final_diff": false,
+      "before_first_edit": true,
+      "request_id": null,
+      "server_request_matched": null,
+      "error": null
+    },
+    {
+      "tool": "vgar-graph_get_related_tests",
+      "index": 14,
+      "call_id": "call_00_97091k59rczg27r74keajjn7",
+      "host_status": "completed",
+      "envelope_status": "PASS",
+      "data_status": null,
+      "diff_hash": null,
+      "candidate_hashes": [],
+      "matches_final_diff": false,
+      "before_first_edit": true,
+      "request_id": "03aaa37f56ae42918c06aafc88a127aa",
+      "server_request_matched": true,
+      "error": null
+    },
+    {
+      "tool": "vgar-graph_analyze_patch_impact",
+      "index": 20,
+      "call_id": "call_00_7t4v9ia1fsrestn3a9k973k2",
+      "host_status": "completed",
+      "envelope_status": "ERROR",
+      "data_status": null,
+      "diff_hash": "sha256:660fcce21db9c0b53b5b31f24f3cffa41927d225f6b7a24423a29e731ac2a587",
+      "candidate_hashes": [],
+      "matches_final_diff": false,
+      "before_first_edit": false,
+      "request_id": "99feb19637914a0db146fb112c1a60db",
+      "server_request_matched": true,
+      "error": {
+        "code": "INVALID_ARGUMENT",
+        "message": "Truncated or malformed hunk",
+        "details": {},
+        "retryable": false
+      }
+    },
+    {
+      "tool": "vgar-graph_verify_patch_graph_constraints",
+      "index": 21,
+      "call_id": "call_01_coi5veko7e8t989kukghw0eg",
+      "host_status": "completed",
+      "envelope_status": "PASS",
+      "data_status": "ERROR",
+      "diff_hash": "sha256:660fcce21db9c0b53b5b31f24f3cffa41927d225f6b7a24423a29e731ac2a587",
+      "candidate_hashes": [],
+      "matches_final_diff": false,
+      "before_first_edit": false,
+      "request_id": "b583fe05eb1e48198293d8af3b51c257",
+      "server_request_matched": true,
+      "error": null
+    },
+    {
+      "tool": "vgar-execution_run_relevant_tests",
+      "index": 22,
+      "call_id": "call_02_axwpjgp5moifvsw3767igq8z",
+      "host_status": "completed",
+      "envelope_status": "ERROR",
+      "data_status": null,
+      "diff_hash": "sha256:660fcce21db9c0b53b5b31f24f3cffa41927d225f6b7a24423a29e731ac2a587",
+      "candidate_hashes": [],
+      "matches_final_diff": false,
+      "before_first_edit": false,
+      "request_id": "2b12325a3b3045eca892e75a2daa432e",
+      "server_request_matched": true,
+      "error": {
+        "code": "INVALID_ARGUMENT",
+        "message": "Truncated or malformed hunk",
+        "details": {},
+        "retryable": false
+      }
+    },
+    {
+      "tool": "vgar-graph_analyze_patch_impact",
+      "index": 24,
+      "call_id": "call_00_7bowogt8sv8eg7tunm4hjl08",
+      "host_status": "completed",
+      "envelope_status": "UNPARSEABLE_CONTENT",
+      "data_status": null,
+      "diff_hash": "sha256:5652bd5067be63eb12b0a7a88db04c6a3037e4b28f2551fcd84b5882fd4aa0ff",
+      "candidate_hashes": [],
+      "matches_final_diff": false,
+      "before_first_edit": false,
+      "request_id": null,
+      "server_request_matched": null,
+      "error": null
+    },
+    {
+      "tool": "vgar-graph_verify_patch_graph_constraints",
+      "index": 25,
+      "call_id": "call_01_uyzgxgkgi67xizh6ovnizm13",
+      "host_status": "completed",
+      "envelope_status": "UNPARSEABLE_CONTENT",
+      "data_status": null,
+      "diff_hash": "sha256:5652bd5067be63eb12b0a7a88db04c6a3037e4b28f2551fcd84b5882fd4aa0ff",
+      "candidate_hashes": [],
+      "matches_final_diff": false,
+      "before_first_edit": false,
+      "request_id": null,
+      "server_request_matched": null,
+      "error": null
+    },
+    {
+      "tool": "vgar-execution_run_relevant_tests",
+      "index": 26,
+      "call_id": "call_02_zxpxkp6v1w50w4v2jgf41hep",
+      "host_status": "completed",
+      "envelope_status": "ERROR",
+      "data_status": null,
+      "diff_hash": "sha256:5652bd5067be63eb12b0a7a88db04c6a3037e4b28f2551fcd84b5882fd4aa0ff",
+      "candidate_hashes": [],
+      "matches_final_diff": false,
+      "before_first_edit": false,
+      "request_id": "0294994f1847427aac9405c35f8f9289",
+      "server_request_matched": true,
+      "error": {
+        "code": "INVALID_ARGUMENT",
+        "message": "Candidate patch could not be applied once",
+        "details": {},
+        "retryable": false
+      }
+    },
+    {
+      "tool": "vgar-execution_run_relevant_tests",
+      "index": 28,
+      "call_id": "call_00_xbxuym6fh30azxuq6zzjunmw",
+      "host_status": "completed",
+      "envelope_status": "PASS",
+      "data_status": "PASS",
+      "diff_hash": "sha256:115b7d93853506cfe1bf6b13ab24f3703e103136cafe1b89d28fab56fd7047c4",
+      "candidate_hashes": [],
+      "matches_final_diff": true,
+      "before_first_edit": false,
+      "request_id": "f303f763fccc4d15a7f6d1cc5453c3f0",
+      "server_request_matched": true,
+      "error": null
+    },
+    {
+      "tool": "vgar-graph_verify_patch_graph_constraints",
+      "index": 29,
+      "call_id": "call_00_afy7oj77kd0nf9z7no3c5wft",
+      "host_status": "completed",
+      "envelope_status": "UNPARSEABLE_CONTENT",
+      "data_status": null,
+      "diff_hash": "sha256:115b7d93853506cfe1bf6b13ab24f3703e103136cafe1b89d28fab56fd7047c4",
+      "candidate_hashes": [],
+      "matches_final_diff": true,
+      "before_first_edit": false,
+      "request_id": null,
+      "server_request_matched": null,
+      "error": null
+    },
+    {
+      "tool": "vgar-graph_rank_patch_candidates",
+      "index": 32,
+      "call_id": "call_00_6emjsnxxypopsgnfbpxu7duk",
+      "host_status": "completed",
+      "envelope_status": "ERROR",
+      "data_status": null,
+      "diff_hash": null,
+      "candidate_hashes": [],
+      "matches_final_diff": false,
+      "before_first_edit": false,
+      "request_id": "21d9fb8663504a74956f858781773bc4",
+      "server_request_matched": true,
+      "error": {
+        "code": "INVALID_ARGUMENT",
+        "message": "6 validation errors for RankRequest\ncandidates.0.diff\n  Field required [type=missing, input_value={'candidate_id': 'A5-rese..., 'semantic': 'PASS'}}}}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.14/v/missing\ncandidates.0.graph_version\n  Extra inputs are not permitted [type=extra_forbidden, input_value='sha256:1bf0ccc7d35740cf7...f224f7973dfcf99c39849ba', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.14/v/extra_forbidden\ncandidates.0.source_hash\n  Extra inputs are not permitted [type=extra_forbidden, input_value='sha256:6bc5034da7ffdf2eb...5d3dd5f4f2b8284a9090b70', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.14/v/extra_forbidden\ncandidates.0.view_hash\n  Extra inputs are not permitted [type=extra_forbidden, input_value='sha256:a994d22ab32c5926c...620830a418e39ddeee10f88', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.14/v/extra_forbidden\ncandidates.0.checks\n  Extra inputs are not permitted [type=extra_forbidden, input_value={'analyze_patch_impact': ...', 'semantic': 'PASS'}}}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.14/v/extra_forbidden\ncandidates\n  Tuple should have at least 1 item after validation, not 0 [type=too_short, input_value=[{'candidate_id': 'A5-res... 'semantic': 'PASS'}}}}], input_type=list]\n    For further information visit https://errors.pydantic.dev/2.14/v/too_short",
+        "details": {},
+        "retryable": false
+      }
+    },
+    {
+      "tool": "vgar-graph_rank_patch_candidates",
+      "index": 33,
+      "call_id": "call_00_8wcfklurgg9jzm9ujmml6fzm",
+      "host_status": "completed",
+      "envelope_status": "ERROR",
+      "data_status": null,
+      "diff_hash": null,
+      "candidate_hashes": [
+        "sha256:115b7d93853506cfe1bf6b13ab24f3703e103136cafe1b89d28fab56fd7047c4"
+      ],
+      "matches_final_diff": true,
+      "before_first_edit": false,
+      "request_id": "ab6e35147d504df993c21258558e8745",
+      "server_request_matched": true,
+      "error": {
+        "code": "INVALID_ARGUMENT",
+        "message": "2 validation errors for RankRequest\ncandidates.0.diff_hash\n  Field required [type=missing, input_value={'candidate_id': 'A5-rese... indexes=indexes)\\n \\n'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.14/v/missing\ncandidates\n  Tuple should have at least 1 item after validation, not 0 [type=too_short, input_value=[{'candidate_id': 'A5-res...indexes=indexes)\\n \\n'}], input_type=list]\n    For further information visit https://errors.pydantic.dev/2.14/v/too_short",
+        "details": {},
+        "retryable": false
+      }
+    },
+    {
+      "tool": "vgar-graph_rank_patch_candidates",
+      "index": 34,
+      "call_id": "call_00_jvc10rvgf4i5982ogixnfkv9",
+      "host_status": "completed",
+      "envelope_status": "PASS",
+      "data_status": null,
+      "diff_hash": null,
+      "candidate_hashes": [
+        "sha256:115b7d93853506cfe1bf6b13ab24f3703e103136cafe1b89d28fab56fd7047c4"
+      ],
+      "matches_final_diff": true,
+      "before_first_edit": false,
+      "request_id": "2f09ef29d6e34dc6be40e29a89cbf736",
+      "server_request_matched": true,
+      "error": null
+    },
+    {
+      "tool": "vgar-graph_search_symbols",
+      "index": 38,
+      "call_id": "call_00_mhmdm7cm0cj41jmi865eewr4",
+      "host_status": "completed",
+      "envelope_status": "PASS",
+      "data_status": null,
+      "diff_hash": null,
+      "candidate_hashes": [],
+      "matches_final_diff": false,
+      "before_first_edit": false,
+      "request_id": "405a60694eee413c902d41225307501f",
+      "server_request_matched": true,
+      "error": null
+    },
+    {
+      "tool": "vgar-graph_analyze_patch_impact",
+      "index": 40,
+      "call_id": "call_00_t48f619t0918uw9g11bfhwhn",
+      "host_status": "completed",
+      "envelope_status": "UNPARSEABLE_CONTENT",
+      "data_status": null,
+      "diff_hash": "sha256:115b7d93853506cfe1bf6b13ab24f3703e103136cafe1b89d28fab56fd7047c4",
+      "candidate_hashes": [],
+      "matches_final_diff": true,
+      "before_first_edit": false,
+      "request_id": null,
+      "server_request_matched": null,
+      "error": null
+    }
+  ],
+  "tool_counts": {
+    "shell": 17,
+    "vgar-graph_build_or_update_graph": 1,
+    "vgar-graph_find_task_anchors": 1,
+    "vgar-graph_get_related_context": 1,
+    "read": 4,
+    "grep": 2,
+    "vgar-graph_get_related_tests": 1,
+    "edit": 1,
+    "vgar-graph_analyze_patch_impact": 3,
+    "vgar-graph_verify_patch_graph_constraints": 3,
+    "vgar-execution_run_relevant_tests": 3,
+    "vgar-graph_rank_patch_candidates": 3,
+    "vgar-graph_search_symbols": 1
+  },
+  "server_tool_status_counts": {
+    "build_or_update_graph:PASS": 1,
+    "find_task_anchors:PASS": 1,
+    "get_related_context:PASS": 1,
+    "get_related_tests:PASS": 1,
+    "run_relevant_tests:ERROR": 2,
+    "analyze_patch_impact:ERROR": 1,
+    "verify_patch_graph_constraints:PASS": 3,
+    "analyze_patch_impact:PASS": 2,
+    "run_relevant_tests:PASS": 1,
+    "rank_patch_candidates:ERROR": 2,
+    "rank_patch_candidates:PASS": 1,
+    "search_symbols:PASS": 1
+  },
+  "final_diff_evidence": {
+    "vgar-execution_run_relevant_tests": {
+      "envelope": "PASS",
+      "status": "PASS",
+      "reasons": [],
+      "checks": null,
+      "ranking": null
+    },
+    "semantic": {
+      "status": "PASS",
+      "semantic_status": "PASS",
+      "contracts": {
+        "status": "PASS",
+        "outcomes": {
+          "regression_ordinary_data_variables_mapping": "PASS",
+          "regression_coordinate_only_mapping": "PASS",
+          "feature_reset_index_empty_mapping_length": "PASS",
+          "feature_reset_index_mapping_repr": "PASS",
+          "feature_reset_index_preserves_real_data_mapping": "PASS"
+        }
+      },
+      "semantic_invariants": {
+        "profile": "tv3-l5-invariants-v1",
+        "status": "PASS",
+        "reasons": [
+          "daikon not configured"
+        ],
+        "noise_patterns": [
+          "is a power of 2",
+          "\\*\\*2",
+          "is boolean",
+          "% \\S+ == 0",
+          "__len__\\b",
+          "has only one value"
+        ],
+        "engine": "python-fallback",
+        "learned": 42,
+        "filtered_noise": 56,
+        "violations": [],
+        "violations_total": 0,
+        "new_points": [],
+        "unexercised_points": [],
+        "limitations": [
+          "LIKELY_INVARIANTS_NOT_PROOF"
+        ],
+        "python_version": "3.10.15",
+        "daikon_version": null
+      },
+      "public_tests_status": null
+    },
+    "semantic_candidate": {
+      "measurement": {
+        "schema": "public-task-semantic-measurement-v1",
+        "task_id": "pydata__xarray-6992",
+        "complete": true,
+        "exit_code": 0,
+        "contracts": {
+          "regression_ordinary_data_variables_mapping": "PASS",
+          "regression_coordinate_only_mapping": "PASS",
+          "feature_reset_index_empty_mapping_length": "PASS",
+          "feature_reset_index_mapping_repr": "PASS",
+          "feature_reset_index_preserves_real_data_mapping": "PASS"
+        },
+        "trace": {
+          "records": 192,
+          "truncated": false,
+          "python": "3.10.15",
+          "source_paths": [
+            "xarray/core/dataset.py",
+            "xarray/core/formatting.py"
+          ]
+        },
+        "python": "3.10.15",
+        "source_root": "/testbed"
+      },
+      "cleaned": true,
+      "applied_count": 1
+    },
+    "vgar-graph_rank_patch_candidates": {
+      "envelope": "PASS",
+      "status": null,
+      "reasons": [],
+      "checks": null,
+      "ranking": [
+        {
+          "candidate_id": "A5-reset-index-drop-coord-names",
+          "diff_sha256": "sha256:115b7d93853506cfe1bf6b13ab24f3703e103136cafe1b89d28fab56fd7047c4",
+          "eligible": true,
+          "score": 0.65,
+          "score_interval": [
+            0.65,
+            1.0
+          ],
+          "evidence_fields": {
+            "tests_passed": "PASS",
+            "previously_failing_tests_fixed": "NOT_RUN",
+            "schema_conformance_passed": "PASS",
+            "no_new_forbidden_dependency": "NOT_RUN",
+            "public_api_compatible": "PASS",
+            "impact_radius_acceptable": "PASS",
+            "static_typecheck_passed": "NOT_RUN",
+            "lint_passed": "NOT_RUN",
+            "semantic_invariant_preserved": "PASS"
+          }
+        }
+      ]
+    }
+  },
+  "verified_evidence_pins": {
+    "/home/vgar/swebench-ablation/a5/task-profiles-20261119/agent-runs/pydata__xarray-6992__A5/evidence/semantic-8b3ddd455fcf43c09941f746319ac913-combined.json": "sha256:b25e52667b87b4a561efcee359d6ea390d890fc329e35d4dd7886c8c93d39b09",
+    "/home/vgar/swebench-ablation/a5/task-profiles-20261119/agent-runs/pydata__xarray-6992__A5/evidence/semantic-8b3ddd455fcf43c09941f746319ac913/evidence.json": "sha256:65fda6d168bd95265f2fbe63217791c8d2fac8e0903728e5a99600706a52bee5",
+    "/home/vgar/swebench-ablation/a5/task-profiles-20261119/agent-runs/pydata__xarray-6992__A5/evidence/semantic-8b3ddd455fcf43c09941f746319ac913/semantic.json": "sha256:cd2203f31222d73e267287050c809a72f40377faa347b24f35f8d00f07c248ac",
+    "/home/vgar/swebench-ablation/a5/task-profiles-20261119/agent-runs/pydata__xarray-6992__A5/evidence/semantic-8b3ddd455fcf43c09941f746319ac913/trace.jsonl": "sha256:cff740b6d5217682d9ece21941ad5e94fb15fc9ea9fca5b8a92fa1591e75ceb5",
+    "/home/vgar/swebench-ablation/a5/task-profiles-20261119/agent-runs/pydata__xarray-6992__A5/evidence/semantic-8b3ddd455fcf43c09941f746319ac913/trace_meta.json": "sha256:263ed667158e649cc5af7d83b7dcacf23694e316763667b0f61cf4199d5a543f",
+    "/home/vgar/swebench-ablation/a5/task-profiles-20261119/agent-runs/pydata__xarray-6992__A5/evidence/semantic-8b3ddd455fcf43c09941f746319ac913/command.json": "sha256:bd8749686282d9397455ff10d5212eaaa36893adf37b95dc44919df7fa1ea766",
+    "/home/vgar/swebench-ablation/a5/task-profiles-20261119/agent-runs/pydata__xarray-6992__A5/evidence/public-tests-684ca18683ba4202b4c0f45b10a4bb5d.json": "sha256:b22004b4f59736316231fcb114ffa3145557e4050d6b94df4e57ab35e21ce686"
+  },
+  "limitations": [
+    "Local evidence hashes checked; logs are not cryptographically attested.",
+    "Public test tool uses its admitted scope; official evaluator verdict is separate.",
+    "One task/one arm is not a completed ablation matrix."
+  ],
+  "model_calls_during_audit": 0,
+  "tests_rerun_during_audit": 0
+}

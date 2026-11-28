@@ -1,0 +1,18 @@
+{
+    "run_id":  "sphinx10673-A5-20261118-120101-135",
+    "task_id":  "sphinx-doc__sphinx-10673",
+    "arm":  "A5",
+    "model":  "9router/oc/deepseek-v4.1-flash-free",
+    "host_version":  "opencode v2.3.0",
+    "workspace":  "D:\\Project\\CAPSTONES\\agent-workspaces\\sphinx-10673-20261117\\arms\\A5\\repo",
+    "base_commit":  "f35d2a6cc726f97d0e859ca7a0e1729f7da8a6c8",
+    "binding":  "/home/vgar/swebench-ablation/a5/20261118-sphinx/binding-agent.json",
+    "binding_hash":  "sha256:e184f31f27e1c9699ccf65c0ab9e3a3e7a8d3515d0e5e50958ef9e30c857eb45",
+    "config_sha256":  "0c5b476376846302192cd68c3d9cfef49e4e093e6d6fb22c9ce067ad9a92d405",
+    "started_utc":  "2026-11-18T05:03:35.4318876Z",
+    "ended_utc":  "2026-11-18T05:06:53.2067713Z",
+    "wall_ms":  197762,
+    "host_exit":  1,
+    "launch_error":  null,
+    "official_grade":  "NOT_RUN"
+}

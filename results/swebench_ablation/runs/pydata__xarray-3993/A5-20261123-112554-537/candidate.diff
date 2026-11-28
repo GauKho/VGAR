@@ -1,0 +1,55 @@
+diff --git a/xarray/core/dataarray.py b/xarray/core/dataarray.py
+index 2fef3ed..c9923fc 100644
+--- a/xarray/core/dataarray.py
++++ b/xarray/core/dataarray.py
+@@ -3481,21 +3481,27 @@ class DataArray(AbstractArray, DataWithCoords):
+         return self._from_temp_dataset(ds)
+ 
+     def integrate(
+-        self, dim: Union[Hashable, Sequence[Hashable]], datetime_unit: str = None
++        self,
++        dim: Union[Hashable, Sequence[Hashable]] = None,
++        datetime_unit: str = None,
++        *,
++        coord: Union[Hashable, Sequence[Hashable]] = None,
+     ) -> "DataArray":
+         """ integrate the array with the trapezoidal rule.
+ 
+         .. note::
+-            This feature is limited to simple cartesian geometry, i.e. dim
++            This feature is limited to simple cartesian geometry, i.e. coord
+             must be one dimensional.
+ 
+         Parameters
+         ----------
+-        dim : hashable, or sequence of hashable
++        coord : hashable, or sequence of hashable
+             Coordinate(s) used for the integration.
+         datetime_unit : {"Y", "M", "W", "D", "h", "m", "s", "ms", "us", "ns", \
+                          "ps", "fs", "as"}, optional
+             Can be used to specify the unit if datetime coordinate is used.
++        dim : hashable, or sequence of hashable, optional
++            Deprecated alias for ``coord``.
+ 
+         Returns
+         -------
+@@ -3528,6 +3534,19 @@ class DataArray(AbstractArray, DataWithCoords):
+         array([5.4, 6.6, 7.8])
+         Dimensions without coordinates: y
+         """
++        if coord is not None:
++            if dim is not None:
++                raise TypeError(
++                    "Cannot specify both `dim` and `coord` in DataArray.integrate."
++                )
++            dim = coord
++        elif dim is not None:
++            warnings.warn(
++                "The `dim` argument to DataArray.integrate is deprecated; "
++                "use `coord` instead.",
++                FutureWarning,
++                stacklevel=2,
++            )
+         ds = self._to_temp_dataset().integrate(dim, datetime_unit)
+         return self._from_temp_dataset(ds)
+ 

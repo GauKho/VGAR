@@ -7,6 +7,7 @@ tests/fixtures/invariants/** -text
 src/vgar/agents/prompts/repair_v11.txt -text
 artifacts/m2/** -text
 results/retrieval/** -text
+results/swebench_ablation/** -text
 docs/audit/** -text
 Task[[:space:]]Status.md -text
 

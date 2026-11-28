@@ -1,0 +1,33 @@
+{
+    "task_id":  "sphinx-doc__sphinx-10673",
+    "arm":  "A4",
+    "session_id":  "ses_e135c62eeffe3I5iRvd823lerp",
+    "host_exit":  1,
+    "host_error":  "Cancelled input request: Web Search",
+    "wall_ms":  539754,
+    "candidate_sha256":  "6A953D9621074D4BB76CB1233A5C444D6CE591546497D051E6C6F60C297AB8AE",
+    "official_resolved":  true,
+    "patch_applied":  true,
+    "fail_to_pass_passed":  1,
+    "fail_to_pass_failed":  0,
+    "pass_to_pass_passed":  9,
+    "pass_to_pass_failed":  0,
+    "retrieval_coverage":  "PARTIAL: anchor failed",
+    "final_public_test_binding":  "VERIFIED",
+    "final_impact_binding":  "VERIFIED",
+    "graph_verification_status":  "NOT_RUN",
+    "graph_verification_binding":  "VERIFIED",
+    "schema_check":  "PASS",
+    "structural_check":  "PASS",
+    "source_imports_check":  "PASS",
+    "port_check":  "PASS",
+    "api_check":  "NOT_RUN",
+    "api_reasons":  [
+                        "API_AMBIGUOUS_BINDING",
+                        "API_UNSUPPORTED_EXPORT"
+                    ],
+    "ranking_status":  "NOT_RUN",
+    "full_verification_exported":  true,
+    "harness_exit":  0,
+    "official_report_wsl":  "/home/vgar/swebench-ablation/environments/20261117T045325Z-sphinx/private/agent-sphinx10673-a4-20261118-102523/logs/run_evaluation/sphinx10673-a4-20261118-102523/opencode-9router-A4/sphinx-doc__sphinx-10673/report.json"
+}

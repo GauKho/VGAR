@@ -1,0 +1,142 @@
+{
+  "status": "CONFIGURED_NOT_CAMPAIGN_RUN",
+  "rows": [
+    {
+      "arm": "A0",
+      "status": "CONFIG_PREPARED_NOT_RUN",
+      "workspace": "D:/Project/CAPSTONES/agent-workspaces/sphinx-10673-20261117/arms/A0/repo",
+      "config_sha256": "dbc825c08e8e13151da70e7fdad1fd6def68014e80acc82a9780abf602998c5f",
+      "binding": "/home/vgar/swebench-ablation/opencode-arms/sphinx-10673-20261117/A0/binding.json",
+      "binding_hash": "sha256:6ce851e188a5babc84765ec4c26315fa6025528734e704654c2ead4425989cb3",
+      "policy": {
+        "architecture": false,
+        "checks": [
+          "tests"
+        ],
+        "graph": "none",
+        "mcp": false,
+        "task_trace": false
+      },
+      "tree": "a38c6b4b1eadc8be9644fbbf9a7ee9930e893d4e"
+    },
+    {
+      "arm": "A1",
+      "status": "CONFIG_PREPARED_NOT_RUN",
+      "workspace": "D:/Project/CAPSTONES/agent-workspaces/sphinx-10673-20261117/arms/A1/repo",
+      "config_sha256": "b908bd907c4baa8b3b8fe693fd5a1ae0568339cd6d369770c10a655087c3501b",
+      "binding": "/home/vgar/swebench-ablation/opencode-arms/sphinx-10673-20261117/A1/binding.json",
+      "binding_hash": "sha256:fef78c3acb96a68c74367b23271348b3fadf698205b2bca12f8dafb9bd505800",
+      "policy": {
+        "architecture": false,
+        "checks": [
+          "tests"
+        ],
+        "graph": "repo",
+        "mcp": true,
+        "task_trace": false
+      },
+      "tree": "a38c6b4b1eadc8be9644fbbf9a7ee9930e893d4e"
+    },
+    {
+      "arm": "A2",
+      "status": "CONFIG_PREPARED_NOT_RUN",
+      "workspace": "D:/Project/CAPSTONES/agent-workspaces/sphinx-10673-20261117/arms/A2/repo",
+      "config_sha256": "4ba735c1ccec383f07567e40b2af0777f82e2540e8c3aaf8110bd9024cd1c6a7",
+      "binding": "/home/vgar/swebench-ablation/opencode-arms/sphinx-10673-20261117/A2/binding.json",
+      "binding_hash": "sha256:8cec8642372d9c838c018e5c0ca6eb38c08ca44bc2ea6223135189d33b4538a0",
+      "policy": {
+        "architecture": false,
+        "checks": [
+          "tests"
+        ],
+        "graph": "repo",
+        "mcp": true,
+        "task_trace": true
+      },
+      "tree": "a38c6b4b1eadc8be9644fbbf9a7ee9930e893d4e"
+    },
+    {
+      "arm": "A3",
+      "status": "CONFIG_PREPARED_NOT_RUN",
+      "workspace": "D:/Project/CAPSTONES/agent-workspaces/sphinx-10673-20261117/arms/A3/repo",
+      "config_sha256": "faeab8536c48c29a01f76f3b9b43f5bfad4390a7d8e0099fe49bf15e65baabf0",
+      "binding": "/home/vgar/swebench-ablation/opencode-arms/sphinx-10673-20261117/A3/binding.json",
+      "binding_hash": "sha256:5c5849b320bd94e8e8e9933d6d1b46279b6b3ba3e4cf5624c050696919a0b613",
+      "policy": {
+        "architecture": true,
+        "checks": [
+          "tests"
+        ],
+        "graph": "repo",
+        "mcp": true,
+        "task_trace": true
+      },
+      "tree": "a38c6b4b1eadc8be9644fbbf9a7ee9930e893d4e"
+    },
+    {
+      "arm": "A4",
+      "status": "CONFIG_PREPARED_NOT_RUN",
+      "workspace": "D:/Project/CAPSTONES/agent-workspaces/sphinx-10673-20261117/arms/A4/repo",
+      "config_sha256": "7b2c066095ea29bce5c98df14cb707264281bfda1c809109c922efce5689d4b4",
+      "binding": "/home/vgar/swebench-ablation/opencode-arms/sphinx-10673-20261117/A4/binding.json",
+      "binding_hash": "sha256:3522c2ba4b93779a30f38a8ca6d0b4a4c156b688b5248a3f465ea7f90a80cac9",
+      "policy": {
+        "architecture": true,
+        "checks": [
+          "tests",
+          "graph"
+        ],
+        "graph": "repo",
+        "mcp": true,
+        "task_trace": true
+      },
+      "tree": "a38c6b4b1eadc8be9644fbbf9a7ee9930e893d4e"
+    },
+    {
+      "arm": "A5",
+      "status": "CONFIG_PREPARED_NOT_RUN",
+      "workspace": "D:\\Project\\CAPSTONES\\agent-workspaces\\sphinx-10673-20261117\\arms\\A5\\repo",
+      "config_sha256": "0c5b476376846302192cd68c3d9cfef49e4e093e6d6fb22c9ce067ad9a92d405",
+      "binding": "/home/vgar/swebench-ablation/a5/20261118-sphinx/binding-agent.json",
+      "binding_hash": "sha256:e184f31f27e1c9699ccf65c0ab9e3a3e7a8d3515d0e5e50958ef9e30c857eb45"
+    }
+  ],
+  "common": {
+    "host_version": "opencode v2.3.0",
+    "model": {
+      "providerID": "9router",
+      "model": "oc/deepseek-v4.1-flash-free"
+    },
+    "common_config": {
+      "model": {
+        "providerID": "9router",
+        "model": "oc/deepseek-v4.1-flash-free"
+      },
+      "agents": {
+        "explorer": {
+          "model": {
+            "providerID": "9router",
+            "model": "oc/deepseek-v4.1-flash-free"
+          }
+        }
+      },
+      "mcp": {
+        "timeout": {
+          "startup": 120000,
+          "catalog": 120000,
+          "execution": 150000
+        }
+      }
+    },
+    "global_config_path": "C:\\Users\\pc\\.config\\opencode\\opencode.json",
+    "global_config_sha256": "ec6b2f55a378254346c8bd288693b8b2ef6e2bafad8b4ad9ce469d7875eff25f",
+    "global_mcp_names": [],
+    "credential_handling": "Inherited from existing global config; no credentials copied",
+    "model_calls": 0,
+    "budget": "UNCHANGED_HOST_DEFAULTS_NOT_CAMPAIGN_FROZEN",
+    "gateway_routing": "INHERITED_NOT_INDEPENDENTLY_ATTESTED"
+  },
+  "model_calls": 0,
+  "attempts_run": 0,
+  "isolation": "Separate workspaces/sessions; native OS sandbox not yet qualified"
+}

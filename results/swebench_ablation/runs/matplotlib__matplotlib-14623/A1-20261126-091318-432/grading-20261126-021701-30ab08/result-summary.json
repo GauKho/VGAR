@@ -1,0 +1,20 @@
+{
+  "task_id": "matplotlib__matplotlib-14623",
+  "arm": "A1",
+  "session_id": "ses_def4c80ecffebJD0TLEVGsp6JS",
+  "model": "9router/oc/deepseek-v4.1-flash-free",
+  "grading_run_id": "matplotlib14623-a1-20261126-021701-30ab08",
+  "candidate_sha256": "sha256:27fd97ece5324d1a89524291d9890baa732f04b2ae54143d293dbd6893da02b6",
+  "harness_exit": 0,
+  "official_resolved": true,
+  "patch_applied": true,
+  "fail_to_pass_passed": 1,
+  "fail_to_pass_failed": 0,
+  "pass_to_pass_passed": 400,
+  "pass_to_pass_failed": 0,
+  "grading_wall_ms": 75026,
+  "official_report_wsl": "/home/vgar/swebench-ablation/manual-grading/matplotlib14623-a1-20261126-021701-30ab08/logs/run_evaluation/matplotlib14623-a1-20261126-021701-30ab08/opencode-9router-A1/matplotlib__matplotlib-14623/report.json",
+  "model_calls_during_grading": 0,
+  "mcp_workflow_coverage": "REQUIRES_SEPARATE_SESSION_AND_AUDIT_CHECK",
+  "saved_session_vgar_mcp_calls": 12
+}

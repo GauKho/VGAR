@@ -1,0 +1,3 @@
+﻿ sphinx/directives/other.py             |  8 ++++++--
+ sphinx/environment/adapters/toctree.py | 13 ++++++++++++-
+ 2 files changed, 18 insertions(+), 3 deletions(-)

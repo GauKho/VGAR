@@ -1,0 +1,3 @@
+run_id=sphinx10673-a0-20261117-235010
+linux_directory=/home/vgar/swebench-ablation/environments/20261117T045325Z-sphinx/private/agent-sphinx10673-a0-20261117-235010
+predictions=D:\Project\CAPSTONES\agent-workspaces\sphinx-10673-20261117\runs\sphinx10673-A0-20261117-232213\predictions-20261117-235010.jsonl

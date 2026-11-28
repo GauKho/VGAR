@@ -1,0 +1,20 @@
+{
+  "task_id": "sphinx-doc__sphinx-10673",
+  "arm": "A5",
+  "session_id": "ses_e0e553f18ffefL00HA9HRdMW8C",
+  "model": "9router/oc/deepseek-v4.1-flash-free",
+  "grading_run_id": "sphinx10673-a5-20261119-032244-a0e951",
+  "candidate_sha256": "sha256:81ee3defd13f206839e946beedcb3faefd0683f00bad640b4848688cf69b9040",
+  "harness_exit": 0,
+  "official_resolved": true,
+  "patch_applied": true,
+  "fail_to_pass_passed": 1,
+  "fail_to_pass_failed": 0,
+  "pass_to_pass_passed": 9,
+  "pass_to_pass_failed": 0,
+  "grading_wall_ms": 29102,
+  "official_report_wsl": "/home/vgar/swebench-ablation/environments/20261117T045325Z-sphinx/private/agent-sphinx10673-a5-20261119-032244-a0e951/logs/run_evaluation/sphinx10673-a5-20261119-032244-a0e951/opencode-9router-A5/sphinx-doc__sphinx-10673/report.json",
+  "model_calls_during_grading": 0,
+  "mcp_workflow_coverage": "REQUIRES_SEPARATE_SESSION_AND_AUDIT_CHECK",
+  "comparison_scope": "Exploratory A5 rerun; web-search policy differs from historical A0-A4"
+}

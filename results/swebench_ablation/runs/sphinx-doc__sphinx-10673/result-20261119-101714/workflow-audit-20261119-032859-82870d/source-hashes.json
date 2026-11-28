@@ -1,0 +1,8 @@
+{
+  "/mnt/d/Project/CAPSTONES/agent-workspaces/sphinx-a5-20261119/result-20261119-101714/candidate.diff": "sha256:81ee3defd13f206839e946beedcb3faefd0683f00bad640b4848688cf69b9040",
+  "/mnt/d/Project/CAPSTONES/agent-workspaces/sphinx-a5-20261119/result-20261119-101714/session.json": "sha256:74c3bcb83402c7e90747bf577de0f857980a707baab77cde97ea57d47cfcc2ae",
+  "/home/vgar/swebench-ablation/manual-sessions/sphinx10673-A5-20261119-recovery01/binding.json": "sha256:db6bf867d3604bb3bb863dbbdecfe312b79709fb863c0d0dfb9250e022aba45d",
+  "/home/vgar/swebench-ablation/manual-sessions/sphinx10673-A5-20261119-recovery01/evidence/audit.jsonl": "sha256:d21798f0b470ba35b4c55c9dbefc41e792b74583295960da9966f1aeaa311bd0",
+  "/mnt/d/Project/CAPSTONES/agent-workspaces/sphinx-a5-20261119/result-20261119-101714/grading-20261119-032244-a0e951/official-report.json": "sha256:33d7e42e0fb51d003d9f4e46e0db28c7afe7c0b8cec0b1640bf6ece6976c85cd",
+  "/mnt/d/Project/CAPSTONES/agent-workspaces/sphinx-a5-20261119/result-20261119-101714/grading-20261119-032244-a0e951/result-summary.json": "sha256:d2aa76d4afb50e5ed86d766f7d2bdb23bc895d9179349729a32a0c0350816f79"
+}

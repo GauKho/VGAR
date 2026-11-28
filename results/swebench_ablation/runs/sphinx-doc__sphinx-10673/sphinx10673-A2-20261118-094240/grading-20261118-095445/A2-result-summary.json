@@ -1,0 +1,19 @@
+{
+    "task_id":  "sphinx-doc__sphinx-10673",
+    "arm":  "A2",
+    "session_id":  "ses_e13770c65ffeV5IS4mWK65iHPB",
+    "host_exit":  0,
+    "wall_ms":  352369,
+    "candidate_sha256":  "9459B22E55EBAB4FCDC90E25755285935D0EACA4B2F50A146D6F76C40ECB54A2",
+    "official_resolved":  true,
+    "patch_applied":  true,
+    "fail_to_pass_passed":  1,
+    "fail_to_pass_failed":  0,
+    "pass_to_pass_passed":  9,
+    "pass_to_pass_failed":  0,
+    "retrieval_coverage":  "PARTIAL: anchor failed; G_task retrieval not verified",
+    "final_public_test_binding":  "NOT_VERIFIED",
+    "final_impact_binding":  "NOT_VERIFIED",
+    "harness_exit":  0,
+    "official_report_wsl":  "/home/vgar/swebench-ablation/environments/20261117T045325Z-sphinx/private/agent-sphinx10673-a2-20261118-095445/logs/run_evaluation/sphinx10673-a2-20261118-095445/opencode-9router-A2/sphinx-doc__sphinx-10673/report.json"
+}

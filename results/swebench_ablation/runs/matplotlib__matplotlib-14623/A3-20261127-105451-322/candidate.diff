@@ -1,0 +1,26 @@
+diff --git a/lib/matplotlib/ticker.py b/lib/matplotlib/ticker.py
+index 209a3f9..74de151 100644
+--- a/lib/matplotlib/ticker.py
++++ b/lib/matplotlib/ticker.py
+@@ -2379,9 +2379,9 @@ class LogLocator(Locator):
+         if not np.isfinite(vmin) or not np.isfinite(vmax):
+             return 1, 10  # initial range, no data plotted yet
+ 
+-        if vmin > vmax:
+-            vmin, vmax = vmax, vmin
+-        if vmax <= 0:
++        # Do not reorder the limits: a reversed range is a valid request to
++        # invert the axis.
++        if vmin <= 0 and vmax <= 0:
+             cbook._warn_external(
+                 "Data has no positive values, and therefore cannot be "
+                 "log-scaled.")
+@@ -2392,6 +2392,8 @@ class LogLocator(Locator):
+             minpos = 1e-300  # This should never take effect.
+         if vmin <= 0:
+             vmin = minpos
++        if vmax <= 0:
++            vmax = minpos
+         if vmin == vmax:
+             vmin = _decade_less(vmin, self._base)
+             vmax = _decade_greater(vmax, self._base)

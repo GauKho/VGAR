@@ -1,0 +1,14 @@
+{
+  "task_id": "matplotlib__matplotlib-14623",
+  "arm": "A1",
+  "workspace": "D:\\Project\\CAPSTONES\\agent-workspaces\\matplotlib-14623-runtime05-20261125\\matplotlib__matplotlib-14623\\arms\\A1\\repo",
+  "runtime": "/home/vgar/swebench-ablation/execution/20261120-compact-evidence/runtime-05",
+  "base_commit": "d65c9ca20ddf81ef91199e6d819f9d3506ef477c",
+  "binding": "/home/vgar/swebench-ablation/bindings/20261124-matplotlib-runtime05/agent-A1/binding.json",
+  "binding_hash": "sha256:c4f9dde647a07e0d7b119fcad1c0fa0b48f9cca587edc717f1a15d53a933dfe9",
+  "graph_version": "sha256:4c020d316f1f2b640fbd6e4404bccc73e2a77eacadee77b474380d6f497384c6",
+  "source_root": "/home/vgar/swebench-ablation/task-preparation/20261118-seven-multifile/sources/matplotlib__matplotlib-14623",
+  "config_sha256": "3b6b5145a365d4eb55a7f10793e5d693a71f36ca906f00a1d1b2bb1300d3adb9",
+  "status": "READY",
+  "reason": "Isolated SDK2 graph/execution and concurrent startup/RAM gates passed; known public baseline failures retained"
+}

@@ -1,0 +1,13 @@
+{
+    "task_id":  "pylint-dev__pylint-4604",
+    "arm":  "A4",
+    "session_id":  "ses_df30f63d8ffeZAuXOXElxinv7X",
+    "model":  "9router/oc/deepseek-v4.1-flash-free",
+    "workspace":  "D:\\Project\\CAPSTONES\\agent-workspaces\\pylint-4604-runtime05-20261123\\pylint-dev__pylint-4604\\arms\\A4\\repo",
+    "runtime":  "/home/vgar/swebench-ablation/execution/20261120-compact-evidence/runtime-05",
+    "saved_utc":  "2026-11-25T02:10:18.0302757Z",
+    "candidate_sha256":  "sha256:80bc61bc34a064a0087a896395172804f394ac90f96ebd2d7a813fe44c100531",
+    "candidate_bytes":  753,
+    "official_resolved":  null,
+    "grading_status":  "NOT_RUN"
+}

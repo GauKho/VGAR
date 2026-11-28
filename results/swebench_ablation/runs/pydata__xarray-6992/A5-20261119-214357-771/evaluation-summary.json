@@ -1,0 +1,59 @@
+{
+  "status": "GRADED_UNRESOLVED",
+  "grading": {
+    "task_id": "pydata__xarray-6992",
+    "arm": "A5",
+    "session_id": "ses_e0bcc9046ffeJDlDGy3XuemfLn",
+    "model": "9router/oc/deepseek-v4.1-flash-free",
+    "grading_run_id": "xarray6992-a5-20261119-144855-89eb09",
+    "candidate_sha256": "sha256:115b7d93853506cfe1bf6b13ab24f3703e103136cafe1b89d28fab56fd7047c4",
+    "harness_exit": 0,
+    "official_resolved": false,
+    "patch_applied": true,
+    "fail_to_pass_passed": 0,
+    "fail_to_pass_failed": 12,
+    "pass_to_pass_passed": 945,
+    "pass_to_pass_failed": 0,
+    "grading_wall_ms": 66667,
+    "official_report_wsl": "/home/vgar/swebench-ablation/manual-grading/xarray6992-a5-20261119-144855-89eb09/logs/run_evaluation/xarray6992-a5-20261119-144855-89eb09/opencode-9router-A5/pydata__xarray-6992/report.json",
+    "model_calls_during_grading": 0,
+    "mcp_workflow_coverage": "REQUIRES_SEPARATE_SESSION_AND_AUDIT_CHECK"
+  },
+  "metrics": {
+    "input_tokens": 170817,
+    "output_tokens": 5958,
+    "reasoning_tokens": 10892,
+    "cache_read_tokens": 1848832,
+    "cache_write_tokens": 0,
+    "tool_calls": 41,
+    "direct_mcp_tool_attempts": 17,
+    "server_audited_calls": 17,
+    "model_steps_completed": 26,
+    "session_busy_to_idle_ms": 976995,
+    "wall_ms": null,
+    "wall_time_definition": "UI host busy-to-idle; not an independently measured CLI stopwatch",
+    "host_reported_cost": 0,
+    "actual_billing_cost": "NOT_INDEPENDENTLY_VERIFIED",
+    "http_requests": "NOT_EXPOSED"
+  },
+  "workflow_protocol_status": "AUDIT_COMPLETE_WORKFLOW_PARTIAL",
+  "workflow_reasons": [
+    "ONLY_AFTER_EDIT_vgar-graph_search_symbols"
+  ],
+  "final_diff_binding": "VERIFIED_FOR_IMPACT_TESTS_VERIFICATION_RANKING",
+  "graph_verification_status": "PASS",
+  "semantic_status": "PASS",
+  "ranking_eligible": true,
+  "official_report": "D:\\Project\\CAPSTONES\\agent-workspaces\\full-a5-20261119\\pydata__xarray-6992\\results\\A5-20261119-214357-771\\grading-20261119-144855-89eb09\\official-report.json",
+  "authoritative_workflow_audit": "D:\\Project\\CAPSTONES\\agent-workspaces\\full-a5-20261119\\pydata__xarray-6992\\results\\A5-20261119-214357-771\\workflow-audit-20261119-145308-15bb64\\audit.json",
+  "model_calls_during_grading_and_audit": 0,
+  "candidate_modified_during_grading": false,
+  "limitations": [
+    "Initial session-only parser misclassified truncated host output; superseded by full-output/server-audit verification.",
+    "Public test admission is a sentinel plus five public semantic contracts, not the official SWE-bench evaluator.",
+    "All five public contracts and Python-fallback invariants passed, but all twelve official FAIL_TO_PASS checks failed.",
+    "search_symbols ran after the first edit; anchors and context ran successfully before editing.",
+    "Time is host UI busy-to-idle, not an independently measured CLI wall clock. HTTP request count/billing not independently available.",
+    "One failed A5 attempt is a measured experimental result; no automatic agent retry or candidate repair was performed."
+  ]
+}

@@ -1,0 +1,3 @@
+﻿ M sphinx/directives/other.py
+ M sphinx/environment/adapters/toctree.py
+ M sphinx/environment/collectors/toctree.py
